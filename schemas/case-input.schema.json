@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "case-input.schema.json",
+  "title": "CaseInput",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "case_id",
+    "data_provenance",
+    "evaluation_time",
+    "conversation",
+    "order",
+    "service_tickets",
+    "evidence_images",
+    "current_issue",
+    "policy_requirement_id"
+  ],
+  "properties": {
+    "case_id": {"type": "string", "minLength": 1},
+    "data_provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_dataset", "source_session_id", "augmentation_notes"],
+      "properties": {
+        "source_dataset": {"const": "TIANCHI_LOREAL_TRACK1_MOCK"},
+        "source_session_id": {"type": "string", "minLength": 1},
+        "augmentation_notes": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "evaluation_time": {"type": "string", "format": "date-time"},
+    "conversation": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["message_id", "timestamp", "speaker", "text", "source_kind"],
+        "properties": {
+          "message_id": {"type": "string"},
+          "timestamp": {"type": "string", "format": "date-time"},
+          "speaker": {"enum": ["CONSUMER", "AGENT", "SYSTEM"]},
+          "text": {"type": "string", "minLength": 1},
+          "source_kind": {"enum": ["COMPETITION_MOCK", "DEMO_AUGMENTATION"]}
+        }
+      }
+    },
+    "order": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["order_id", "channel", "items", "original_logistics_number"],
+      "properties": {
+        "order_id": {"type": "string"},
+        "channel": {"const": "TIANCHI_MOCK_QIANNIU"},
+        "original_logistics_number": {"type": "string"},
+        "items": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["fulfillment_item_id", "sku_id", "product_name", "item_role"],
+            "properties": {
+              "fulfillment_item_id": {"type": "string"},
+              "sku_id": {"type": "string"},
+              "product_name": {"type": "string"},
+              "batch_code": {"type": ["string", "null"]},
+              "item_role": {"enum": ["PRIMARY", "GIFT", "BUNDLE_COMPONENT"]}
+            }
+          }
+        }
+      }
+    },
+    "service_tickets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["ticket_id", "ticket_type", "status", "assignee_id", "created_at", "source_sheet"],
+        "properties": {
+          "ticket_id": {"type": "string"},
+          "ticket_type": {"enum": ["REPLACEMENT", "OFFLINE_PAYMENT", "LOGISTICS", "ADVERSE_REACTION", "RETURN"]},
+          "status": {"type": "string"},
+          "assignee_id": {"type": "string"},
+          "executor_name": {"type": ["string", "null"]},
+          "replacement_logistics_number": {"type": ["string", "null"]},
+          "created_at": {"type": "string", "format": "date-time"},
+          "completed_at": {"type": ["string", "null"], "format": "date-time"},
+          "source_sheet": {"type": "string"}
+        }
+      }
+    },
+    "evidence_images": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["evidence_id", "file_name", "submitted_at", "declared_view_type", "source_kind", "source_message_id"],
+        "properties": {
+          "evidence_id": {"type": "string"},
+          "file_name": {"type": "string"},
+          "submitted_at": {"type": "string", "format": "date-time"},
+          "declared_view_type": {"enum": ["PRODUCT_OVERVIEW", "ISSUE_DETAIL", "PACKAGE_CONTEXT", "OTHER"]},
+          "source_kind": {"enum": ["TEAM_SYNTHETIC_RECREATION", "TEAM_SYNTHETIC_AUGMENTATION"]},
+          "source_message_id": {"type": "string"},
+          "competition_reference_path": {"type": ["string", "null"]}
+        }
+      }
+    },
+    "current_issue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fulfillment_item_id", "sku_id", "issue_type"],
+      "properties": {
+        "fulfillment_item_id": {"type": "string"},
+        "sku_id": {"type": "string"},
+        "issue_type": {"enum": ["PACKAGE_DAMAGE", "LOGISTICS_STALLED", "ADVERSE_REACTION"]},
+        "affected_component": {"enum": ["BOTTLE", "PUMP", "CAP", "SEAL", "OUTER_PACKAGE", "UNKNOWN"]},
+        "integrity_concern": {"type": "boolean"},
+        "hygiene_risk": {"enum": ["LOW", "MEDIUM", "HIGH", "UNKNOWN"]}
+      }
+    },
+    "policy_requirement_id": {"const": "DEMO_POLICY_PACKAGE_DAMAGE_V1"}
+  }
+}

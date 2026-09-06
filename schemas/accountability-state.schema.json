@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "accountability-state.schema.json",
+  "title": "AccountabilityState",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "case_id",
+    "case_status",
+    "consumer_input_required",
+    "accountable_side",
+    "evidence_status",
+    "current_scope",
+    "active_commitments",
+    "prohibited_actions",
+    "experience_gap_diagnosis",
+    "open_obligation",
+    "service_progress_receipt",
+    "experience_risk"
+  ],
+  "properties": {
+    "case_id": {"type": "string"},
+    "case_status": {"enum": ["WAITING_FOR_CONSUMER", "READY_FOR_BRAND", "ACTION_REVIEW", "IN_FULFILLMENT", "AT_RISK", "RESOLVED"]},
+    "consumer_input_required": {"type": "boolean"},
+    "accountable_side": {"enum": ["CONSUMER", "BRAND", "UNKNOWN"]},
+    "evidence_status": {"enum": ["VALID", "MISMATCHED", "NEED_HUMAN_REVIEW"]},
+    "current_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["order_id", "fulfillment_item_id", "sku_id", "issue_type"],
+      "properties": {
+        "order_id": {"type": "string"},
+        "fulfillment_item_id": {"type": "string"},
+        "sku_id": {"type": "string"},
+        "issue_type": {"enum": ["PACKAGE_DAMAGE", "LOGISTICS_STALLED", "ADVERSE_REACTION"]}
+      }
+    },
+    "active_commitments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["promise_type", "raw_text", "status", "deadline", "source_ids"],
+        "properties": {
+          "promise_type": {"type": "string"},
+          "raw_text": {"type": "string"},
+          "status": {"enum": ["ACTIVE", "AT_RISK", "COMPLETED"]},
+          "deadline": {"type": "string", "format": "date-time"},
+          "source_ids": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+        }
+      }
+    },
+    "prohibited_actions": {
+      "type": "array",
+      "items": {"enum": ["ASK_SAME_EVIDENCE", "ASK_REPEAT_EXPLANATION", "SHIFT_FOLLOW_UP_TO_CONSUMER", "MAKE_UNTRACKABLE_PROMISE", "CLOSE_BEFORE_RESOLUTION"]}
+    },
+    "experience_gap_diagnosis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["consumer_expression", "traceable_service_facts", "deterioration_cause", "latent_need", "responsibility_judgment", "action_impacts", "reply_strategy"],
+      "properties": {
+        "consumer_expression": {"type": "string", "minLength": 1},
+        "traceable_service_facts": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["fact_type", "statement", "source_ids"],
+            "properties": {
+              "fact_type": {"enum": ["ISSUE_EXPLAINED", "EVIDENCE_SUBMITTED", "TICKET_CREATED", "PROMISE_ACTIVE", "PROMISE_OVERDUE", "REPEAT_CONTACT", "OTHER"]},
+              "statement": {"type": "string", "minLength": 1},
+              "source_ids": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+            }
+          }
+        },
+        "deterioration_cause": {"type": "string", "minLength": 1},
+        "latent_need": {"type": "string", "minLength": 1},
+        "responsibility_judgment": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["consumer_input_complete", "accountable_side"],
+          "properties": {
+            "consumer_input_complete": {"type": "boolean"},
+            "accountable_side": {"enum": ["CONSUMER", "BRAND", "UNKNOWN"]}
+          }
+        },
+        "action_impacts": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"enum": ["BLOCK_REPEAT_EVIDENCE", "RAISE_PRIORITY", "ROUTE_TO_HUMAN", "CHECK_EXISTING_FULFILLMENT", "REQUEST_MISSING_INPUT", "START_PROACTIVE_UPDATE"]}
+        },
+        "reply_strategy": {"type": "string", "minLength": 1}
+      }
+    },
+    "open_obligation": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["obligation_type", "status", "accountable_side", "executor", "deadline", "next_check_at", "milestone", "resolution_condition"],
+      "properties": {
+        "obligation_type": {"const": "REPLACEMENT_FULFILLMENT"},
+        "status": {"enum": ["ON_TRACK", "AT_RISK", "COMPLETED"]},
+        "accountable_side": {"const": "BRAND"},
+        "executor": {"enum": ["BRAND", "WAREHOUSE", "LOGISTICS_PROVIDER"]},
+        "deadline": {"type": "string", "format": "date-time"},
+        "next_check_at": {"type": "string", "format": "date-time"},
+        "milestone": {"enum": ["AWAITING_CARRIER_PICKUP", "IN_TRANSIT", "DELIVERED"]},
+        "resolution_condition": {"const": "REPLACEMENT_DELIVERED"}
+      }
+    },
+    "service_progress_receipt": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["receipt_id", "status", "received_evidence", "brand_action", "latest_update_at", "next_update_by", "consumer_action_required", "recovery_if_missed"],
+      "properties": {
+        "receipt_id": {"type": "string"},
+        "status": {"enum": ["ACTIVE", "AT_RISK", "COMPLETED"]},
+        "received_evidence": {"type": "array", "items": {"type": "string"}},
+        "brand_action": {"type": "string", "minLength": 1},
+        "latest_update_at": {"type": "string", "format": "date-time"},
+        "next_update_by": {"type": "string", "format": "date-time"},
+        "consumer_action_required": {"type": "boolean"},
+        "recovery_if_missed": {"type": "string", "minLength": 1}
+      }
+    },
+    "experience_risk": {"enum": ["LOW", "MEDIUM", "HIGH"]}
+  }
+}

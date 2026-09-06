@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "decision-result.schema.json",
+  "title": "DecisionResult",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["case_id", "decision", "rule_id", "rule_priority", "fact_trace", "reason", "resolution_path"],
+  "properties": {
+    "case_id": {"type": "string"},
+    "decision": {"enum": ["INTERVENE", "ALLOW", "HUMAN_REVIEW"]},
+    "rule_id": {"enum": ["E1", "E2", "H1"]},
+    "rule_priority": {"enum": [300, 200, 100]},
+    "fact_trace": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["evidence_status", "prepared_action"],
+      "properties": {
+        "evidence_status": {"enum": ["VALID", "MISMATCHED", "NEED_HUMAN_REVIEW"]},
+        "prepared_action": {"type": "string"},
+        "scope_match": {"type": ["boolean", "null"]},
+        "active_promise_count": {"type": "integer", "minimum": 0}
+      }
+    },
+    "reason": {"type": "string", "minLength": 1},
+    "resolution_path": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidate_type",
+        "evidence_basis",
+        "policy_basis",
+        "consumer_reply_draft",
+        "task_prefill",
+        "accountable_side",
+        "executor",
+        "requires_human_approval",
+        "creates_obligation",
+        "compiled_service_responsibility"
+      ],
+      "properties": {
+        "candidate_type": {"enum": ["CHECK_REPLACEMENT_FULFILLMENT", "ASK_CURRENT_SCOPE_EVIDENCE", "HUMAN_EVIDENCE_REVIEW"]},
+        "evidence_basis": {"type": "array", "items": {"type": "string"}},
+        "policy_basis": {"type": "string", "minLength": 1},
+        "consumer_reply_draft": {"type": "string", "minLength": 1},
+        "task_prefill": {
+          "type": "object",
+          "additionalProperties": true,
+          "required": ["task_type", "existing_ticket_id", "summary"],
+          "properties": {
+            "task_type": {"enum": ["CHECK_REPLACEMENT_STATUS", "WAREHOUSE_FOLLOW_UP", "REQUEST_EVIDENCE", "HUMAN_EVIDENCE_REVIEW"]},
+            "existing_ticket_id": {"type": ["string", "null"]},
+            "sku_id": {"type": "string"},
+            "affected_component": {"enum": ["BOTTLE", "PUMP", "CAP", "SEAL", "OUTER_PACKAGE", "UNKNOWN"]},
+            "summary": {"type": "string", "minLength": 1}
+          }
+        },
+        "accountable_side": {"enum": ["CONSUMER", "BRAND", "UNKNOWN"]},
+        "executor": {"enum": ["CONSUMER", "BRAND", "WAREHOUSE", "LOGISTICS_PROVIDER", "HUMAN_REVIEW_QUEUE"]},
+        "requires_human_approval": {"type": "boolean"},
+        "creates_obligation": {"type": "boolean"},
+        "compiled_service_responsibility": {
+          "type": ["object", "null"],
+          "additionalProperties": false,
+          "required": ["source_promise_text", "commitment_class", "activation_status", "deadline", "next_check_at", "recovery_if_missed"],
+          "properties": {
+            "source_promise_text": {"type": "string"},
+            "commitment_class": {"enum": ["STANDARD_APPROVED", "APPROVAL_REQUIRED", "CONDITIONAL", "ERRONEOUS_OR_UNAUTHORIZED", "AMBIGUOUS"]},
+            "activation_status": {"enum": ["ACTIVE", "PENDING_APPROVAL", "BLOCKED", "IGNORED"]},
+            "deadline": {"type": ["string", "null"], "format": "date-time"},
+            "next_check_at": {"type": ["string", "null"], "format": "date-time"},
+            "recovery_if_missed": {"type": "string"}
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"rule_id": {"const": "E1"}}},
+      "then": {"properties": {"decision": {"const": "INTERVENE"}, "rule_priority": {"const": 300}}}
+    },
+    {
+      "if": {"properties": {"rule_id": {"const": "H1"}}},
+      "then": {"properties": {"decision": {"const": "HUMAN_REVIEW"}, "rule_priority": {"const": 200}}}
+    },
+    {
+      "if": {"properties": {"rule_id": {"const": "E2"}}},
+      "then": {"properties": {"decision": {"const": "ALLOW"}, "rule_priority": {"const": 100}}}
+    }
+  ]
+}

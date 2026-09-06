@@ -1,0 +1,65 @@
+[
+  {
+    "demo_case_id": "DEMO_001",
+    "expected_evidence_status": "VALID",
+    "expected_decision": "INTERVENE",
+    "expected_rule_id": "E1",
+    "expected_rule_priority": 300,
+    "expected_resolution_candidate": "CHECK_REPLACEMENT_FULFILLMENT",
+    "expected_creates_obligation": true,
+    "expected_promise": {
+      "raw_text": "换货单已创建，48小时内发出，给您带来不便啦~",
+      "commitment_class": "STANDARD_APPROVED",
+      "activation_status": "ACTIVE",
+      "deadline": "2026-05-07T10:27:37+08:00"
+    },
+    "expected_journey_understanding": {
+      "consumer_intent": "查询换货是否发出，不愿重复说明或提交相同证据",
+      "experience_expression": "我前天图片都发过了，换货到底有没有发？怎么还要我重新说明？",
+      "service_cause": "消费者已经举证且换货承诺已到期，但仍需要主动追问进度",
+      "latent_need": "品牌主动核实补发履约并给出确定进展",
+      "cooperation_willingness": "DECLINING",
+      "action_impact": "阻止重复索证，优先查询已有换货和物流状态"
+    },
+    "expected_action_impacts": ["BLOCK_REPEAT_EVIDENCE", "RAISE_PRIORITY", "CHECK_EXISTING_FULFILLMENT", "START_PROACTIVE_UPDATE"],
+    "rationale": "团队测试图片覆盖同一订单、正装粉底液、泵头损坏与包装环境；赛事聊天和换货工单共同支撑已有证据与48小时承诺。"
+  },
+  {
+    "demo_case_id": "DEMO_002",
+    "expected_evidence_status": "MISMATCHED",
+    "expected_decision": "ALLOW",
+    "expected_rule_id": "E2",
+    "expected_rule_priority": 100,
+    "expected_resolution_candidate": "ASK_CURRENT_SCOPE_EVIDENCE",
+    "expected_creates_obligation": false,
+    "expected_journey_understanding": {
+      "consumer_intent": "说明赠品损坏与正装粉底液泵头问题属于不同商品",
+      "experience_expression": "这是另一件商品。",
+      "service_cause": "历史图片只覆盖赠品包装，不能证明正装泵头问题",
+      "latent_need": "只补充正装泵头问题所需的具体证据",
+      "cooperation_willingness": "STABLE",
+      "action_impact": "放行针对正装泵头的最小必要索证"
+    },
+    "expected_action_impacts": ["REQUEST_MISSING_INPUT"],
+    "rationale": "赠品面膜包装图片与正装粉底液泵头问题的商品范围不一致。"
+  },
+  {
+    "demo_case_id": "DEMO_003",
+    "expected_evidence_status": "NEED_HUMAN_REVIEW",
+    "expected_decision": "HUMAN_REVIEW",
+    "expected_rule_id": "H1",
+    "expected_rule_priority": 200,
+    "expected_resolution_candidate": "HUMAN_EVIDENCE_REVIEW",
+    "expected_creates_obligation": false,
+    "expected_journey_understanding": {
+      "consumer_intent": "希望确认粉底液泵头是否存在损坏",
+      "experience_expression": "手机没有对上焦。",
+      "service_cause": "当前图片无法可靠判断商品和泵头细节",
+      "latent_need": "获得明确的补拍指导或人工协助",
+      "cooperation_willingness": "STABLE",
+      "action_impact": "进入人工复核，不让模型直接作出证据结论"
+    },
+    "expected_action_impacts": ["ROUTE_TO_HUMAN"],
+    "rationale": "同一商品范围下图片模糊，无法可靠确认泵头损坏和证据覆盖。"
+  }
+]

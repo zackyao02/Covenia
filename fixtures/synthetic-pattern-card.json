@@ -1,0 +1,25 @@
+{
+  "card_id": "RISK_CARD_001",
+  "official_mock_metrics": {
+    "data_label": "OFFICIAL_COMPETITION_MOCK_DATA",
+    "conversation_count": 138,
+    "message_count": 998,
+    "order_count": 113,
+    "image_message_count": 29,
+    "ticket_count": 80,
+    "not_completed_ticket_count": 28,
+    "replacement_in_progress": 4,
+    "logistics_in_processing": 5,
+    "adverse_reaction_open": 4
+  },
+  "annotated_test_hypothesis": {
+    "data_label": "HUMAN_ANNOTATED_STRESS_TEST",
+    "pattern_type": "REPEAT_EVIDENCE_AFTER_ACTIVE_PROMISE",
+    "title": "已有证据和有效承诺未进入下一客服动作",
+    "supporting_case_count": 4,
+    "common_touchpoint": "二次进线或动作准备阶段",
+    "investigation_hypothesis": "证据范围和有效服务承诺没有被转化为动作约束",
+    "suggested_investigation": "检查证据复用、工单状态和承诺截止时间是否进入发送前校验",
+    "status": "HYPOTHESIS_TO_INVESTIGATE"
+  }
+}

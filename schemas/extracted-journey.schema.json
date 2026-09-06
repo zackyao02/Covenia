@@ -1,0 +1,142 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "extracted-journey.schema.json",
+  "title": "ExtractedJourney",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "case_id",
+    "completed_actions",
+    "promise_events",
+    "image_observations",
+    "extracted_scope",
+    "journey_understanding",
+    "source_trace",
+    "model_metadata"
+  ],
+  "properties": {
+    "case_id": {"type": "string"},
+    "completed_actions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["issue_explained", "order_verified", "evidence_submitted"],
+      "properties": {
+        "issue_explained": {"type": "boolean"},
+        "order_verified": {"type": "boolean"},
+        "evidence_submitted": {"type": "boolean"}
+      }
+    },
+    "promise_events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "raw_text",
+          "promise_type",
+          "commitment_class",
+          "activation_recommendation",
+          "conditions",
+          "committed_at",
+          "deadline",
+          "confidence",
+          "source_ids"
+        ],
+        "properties": {
+          "raw_text": {"type": "string", "minLength": 1},
+          "promise_type": {"type": "string", "minLength": 1},
+          "commitment_class": {"enum": ["STANDARD_APPROVED", "APPROVAL_REQUIRED", "CONDITIONAL", "ERRONEOUS_OR_UNAUTHORIZED", "AMBIGUOUS"]},
+          "activation_recommendation": {"enum": ["ACTIVE", "PENDING_APPROVAL", "BLOCKED", "IGNORED"]},
+          "conditions": {"type": "array", "items": {"type": "string"}},
+          "committed_at": {"type": "string", "format": "date-time"},
+          "deadline": {"type": ["string", "null"], "format": "date-time"},
+          "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+          "source_ids": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+        }
+      }
+    },
+    "image_observations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidence_id",
+          "readability",
+          "product_identifiable",
+          "sku_match",
+          "product_role",
+          "issue_visible",
+          "affected_component",
+          "view_type",
+          "coverage",
+          "confidence"
+        ],
+        "properties": {
+          "evidence_id": {"type": "string"},
+          "readability": {"enum": ["HIGH", "LOW", "UNKNOWN"]},
+          "product_identifiable": {"type": "boolean"},
+          "sku_match": {"enum": ["MATCH", "MISMATCH", "UNKNOWN"]},
+          "product_role": {"enum": ["PRIMARY", "GIFT", "BUNDLE_COMPONENT", "UNKNOWN"]},
+          "issue_visible": {"type": "boolean"},
+          "affected_component": {"enum": ["BOTTLE", "PUMP", "CAP", "SEAL", "OUTER_PACKAGE", "UNKNOWN"]},
+          "view_type": {"enum": ["PRODUCT_OVERVIEW", "ISSUE_DETAIL", "PACKAGE_CONTEXT", "OTHER"]},
+          "coverage": {"type": "array", "items": {"enum": ["PRODUCT_IDENTITY", "AFFECTED_COMPONENT", "DAMAGE_DETAIL", "PACKAGE_CONTEXT", "BATCH_LABEL"]}},
+          "integrity_concern": {"type": "boolean"},
+          "hygiene_risk_signal": {"enum": ["LOW", "MEDIUM", "HIGH", "UNKNOWN"]},
+          "confidence": {"type": "number", "minimum": 0, "maximum": 1}
+        }
+      }
+    },
+    "extracted_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["order_id", "fulfillment_item_id", "sku_id", "issue_type"],
+      "properties": {
+        "order_id": {"type": "string"},
+        "fulfillment_item_id": {"type": "string"},
+        "sku_id": {"type": "string"},
+        "issue_type": {"enum": ["PACKAGE_DAMAGE", "LOGISTICS_STALLED", "ADVERSE_REACTION"]}
+      }
+    },
+    "journey_understanding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["consumer_intent", "experience_expression", "service_cause", "latent_need", "cooperation_willingness", "action_impact", "source_ids"],
+      "properties": {
+        "consumer_intent": {"type": "string", "minLength": 1},
+        "experience_expression": {"type": "string", "minLength": 1},
+        "service_cause": {"type": "string", "minLength": 1},
+        "latent_need": {"type": "string", "minLength": 1},
+        "cooperation_willingness": {"enum": ["STABLE", "DECLINING", "LOW", "UNKNOWN"]},
+        "action_impact": {"type": "string", "minLength": 1},
+        "source_ids": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+      }
+    },
+    "source_trace": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["field", "source_type", "source_id"],
+        "properties": {
+          "field": {"type": "string"},
+          "source_type": {"enum": ["CHAT", "IMAGE", "ORDER", "TICKET"]},
+          "source_id": {"type": "string"}
+        }
+      }
+    },
+    "model_metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["model_id", "prompt_version", "run_id"],
+      "properties": {
+        "model_id": {"const": "Qwen/Qwen2-VL-2B-Instruct"},
+        "model_revision": {"type": "string"},
+        "prompt_version": {"type": "string"},
+        "run_id": {"type": "string"},
+        "cached_result": {"type": "boolean"}
+      }
+    }
+  }
+}

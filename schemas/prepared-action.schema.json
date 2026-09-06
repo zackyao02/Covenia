@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "prepared-action.schema.json",
+  "title": "PreparedAction",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["action_id", "case_id", "action_type", "requires_human_approval"],
+  "properties": {
+    "action_id": {"type": "string"},
+    "case_id": {"type": "string"},
+    "action_type": {"enum": ["ASK_EVIDENCE", "CHECK_REPLACEMENT_PROGRESS", "CREATE_FOLLOW_UP_TASK", "CLOSE_CASE"]},
+    "requested_scope": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["order_id", "fulfillment_item_id", "sku_id", "issue_type"],
+      "properties": {
+        "order_id": {"type": "string"},
+        "fulfillment_item_id": {"type": "string"},
+        "sku_id": {"type": "string"},
+        "issue_type": {"enum": ["PACKAGE_DAMAGE", "LOGISTICS_STALLED", "ADVERSE_REACTION"]}
+      }
+    },
+    "requires_human_approval": {"type": "boolean"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"action_type": {"const": "ASK_EVIDENCE"}}},
+      "then": {
+        "required": ["requested_scope"],
+        "properties": {"requested_scope": {"type": "object"}}
+      }
+    }
+  ]
+}

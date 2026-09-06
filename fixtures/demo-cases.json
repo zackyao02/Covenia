@@ -1,0 +1,292 @@
+[
+  {
+    "demo_case_id": "DEMO_001",
+    "title": "S00001 压力测试：已有泵头证据与换货承诺，拦截重复索证",
+    "case_input": {
+      "case_id": "DEMO_001",
+      "data_provenance": {
+        "source_dataset": "TIANCHI_LOREAL_TRACK1_MOCK",
+        "source_session_id": "S00001",
+        "augmentation_notes": [
+          "赛事记录只有一条图片路径引用，三张可运行图片为团队合成素材",
+          "第二次进线和评估时间为团队压力测试扩充",
+          "不新增赛事原始记录中不存在的真实业务结论"
+        ]
+      },
+      "evaluation_time": "2026-05-07T11:00:00+08:00",
+      "conversation": [
+        {
+          "message_id": "20974795108539.PNM",
+          "timestamp": "2026-05-05T10:18:45+08:00",
+          "speaker": "CONSUMER",
+          "text": "你好，收到的粉底液泵头是坏的，按不出来东西，急",
+          "source_kind": "COMPETITION_MOCK"
+        },
+        {
+          "message_id": "51831669257761.PNM",
+          "timestamp": "2026-05-05T10:20:59+08:00",
+          "speaker": "AGENT",
+          "text": "亲亲抱歉！麻烦拍下破损部位的照片发给测试客服，为您核实换货哈~",
+          "source_kind": "COMPETITION_MOCK"
+        },
+        {
+          "message_id": "80525870445254.PNM",
+          "timestamp": "2026-05-05T10:21:38+08:00",
+          "speaker": "CONSUMER",
+          "text": "喏，图发你了",
+          "source_kind": "COMPETITION_MOCK"
+        },
+        {
+          "message_id": "22703823958720.PNM",
+          "timestamp": "2026-05-05T10:24:13+08:00",
+          "speaker": "AGENT",
+          "text": "收到亲，确认属包装破损，为您登记换货：先给您发全新的，收到后用包裹里的面单把坏的寄回就好，运费我们出~",
+          "source_kind": "COMPETITION_MOCK"
+        },
+        {
+          "message_id": "36199788469718.PNM",
+          "timestamp": "2026-05-05T10:27:37+08:00",
+          "speaker": "AGENT",
+          "text": "换货单已创建，48小时内发出，给您带来不便啦~",
+          "source_kind": "COMPETITION_MOCK"
+        },
+        {
+          "message_id": "DEMO_AUG_MSG_001",
+          "timestamp": "2026-05-07T10:45:00+08:00",
+          "speaker": "CONSUMER",
+          "text": "我前天图片都发过了，换货到底有没有发？怎么还要我重新说明？",
+          "source_kind": "DEMO_AUGMENTATION"
+        }
+      ],
+      "order": {
+        "order_id": "6920185815517983396",
+        "channel": "TIANCHI_MOCK_QIANNIU",
+        "original_logistics_number": "773478190943155",
+        "items": [
+          {
+            "fulfillment_item_id": "6920185815517983396-XC33003",
+            "sku_id": "XC33003",
+            "product_name": "测试轻透粉底液30ml #N02自然色",
+            "batch_code": null,
+            "item_role": "PRIMARY"
+          },
+          {
+            "fulfillment_item_id": "6920185815517983396-GIFT-01",
+            "sku_id": "GIFT-B5-MASK-2",
+            "product_name": "测试B5面膜体验装2片",
+            "batch_code": null,
+            "item_role": "GIFT"
+          }
+        ]
+      },
+      "service_tickets": [
+        {
+          "ticket_id": "BH919209358357",
+          "ticket_type": "REPLACEMENT",
+          "status": "进行中",
+          "assignee_id": "G003",
+          "executor_name": "测试美妆分销中心",
+          "replacement_logistics_number": "YT7667875838478",
+          "created_at": "2026-05-05T10:29:45+08:00",
+          "completed_at": null,
+          "source_sheet": "补发换货工单"
+        }
+      ],
+      "evidence_images": [
+        {
+          "evidence_id": "S00001_IMG_OVERVIEW",
+          "file_name": "s00001-product-overview.jpg",
+          "submitted_at": "2026-05-05T10:21:38+08:00",
+          "declared_view_type": "PRODUCT_OVERVIEW",
+          "source_kind": "TEAM_SYNTHETIC_RECREATION",
+          "source_message_id": "80525870445254.PNM",
+          "competition_reference_path": "mock_images/broken_pump/S00001_03.jpg"
+        },
+        {
+          "evidence_id": "S00001_IMG_PUMP",
+          "file_name": "s00001-pump-detail.jpg",
+          "submitted_at": "2026-05-05T10:21:38+08:00",
+          "declared_view_type": "ISSUE_DETAIL",
+          "source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
+          "source_message_id": "DEMO_AUG_IMG_002",
+          "competition_reference_path": null
+        },
+        {
+          "evidence_id": "S00001_IMG_PACKAGE",
+          "file_name": "s00001-package-context.jpg",
+          "submitted_at": "2026-05-05T10:21:38+08:00",
+          "declared_view_type": "PACKAGE_CONTEXT",
+          "source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
+          "source_message_id": "DEMO_AUG_IMG_003",
+          "competition_reference_path": null
+        }
+      ],
+      "current_issue": {
+        "fulfillment_item_id": "6920185815517983396-XC33003",
+        "sku_id": "XC33003",
+        "issue_type": "PACKAGE_DAMAGE",
+        "affected_component": "PUMP",
+        "integrity_concern": true,
+        "hygiene_risk": "MEDIUM"
+      },
+      "policy_requirement_id": "DEMO_POLICY_PACKAGE_DAMAGE_V1"
+    },
+    "prepared_action": {
+      "action_id": "ACT_001",
+      "case_id": "DEMO_001",
+      "action_type": "ASK_EVIDENCE",
+      "requested_scope": {
+        "order_id": "6920185815517983396",
+        "fulfillment_item_id": "6920185815517983396-XC33003",
+        "sku_id": "XC33003",
+        "issue_type": "PACKAGE_DAMAGE"
+      },
+      "requires_human_approval": false
+    }
+  },
+  {
+    "demo_case_id": "DEMO_002",
+    "title": "S00001 范围变化：赠品图片不能覆盖正装泵头问题",
+    "case_input": {
+      "case_id": "DEMO_002",
+      "data_provenance": {
+        "source_dataset": "TIANCHI_LOREAL_TRACK1_MOCK",
+        "source_session_id": "S00001",
+        "augmentation_notes": ["赠品损坏图片为团队构建的范围变化测试"]
+      },
+      "evaluation_time": "2026-05-05T11:00:00+08:00",
+      "conversation": [
+        {
+          "message_id": "DEMO_AUG_MSG_002",
+          "timestamp": "2026-05-05T10:58:00+08:00",
+          "speaker": "CONSUMER",
+          "text": "刚才发的是赠品面膜外盒压坏的照片，粉底液泵头也按不出来，这是另一件商品。",
+          "source_kind": "DEMO_AUGMENTATION"
+        }
+      ],
+      "order": {
+        "order_id": "6920185815517983396",
+        "channel": "TIANCHI_MOCK_QIANNIU",
+        "original_logistics_number": "773478190943155",
+        "items": [
+          {
+            "fulfillment_item_id": "6920185815517983396-XC33003",
+            "sku_id": "XC33003",
+            "product_name": "测试轻透粉底液30ml #N02自然色",
+            "batch_code": null,
+            "item_role": "PRIMARY"
+          },
+          {
+            "fulfillment_item_id": "6920185815517983396-GIFT-01",
+            "sku_id": "GIFT-B5-MASK-2",
+            "product_name": "测试B5面膜体验装2片",
+            "batch_code": null,
+            "item_role": "GIFT"
+          }
+        ]
+      },
+      "service_tickets": [],
+      "evidence_images": [
+        {
+          "evidence_id": "S00001_GIFT_IMG",
+          "file_name": "s00001-gift-evidence.jpg",
+          "submitted_at": "2026-05-05T10:55:00+08:00",
+          "declared_view_type": "PACKAGE_CONTEXT",
+          "source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
+          "source_message_id": "DEMO_AUG_IMG_GIFT",
+          "competition_reference_path": null
+        }
+      ],
+      "current_issue": {
+        "fulfillment_item_id": "6920185815517983396-XC33003",
+        "sku_id": "XC33003",
+        "issue_type": "PACKAGE_DAMAGE",
+        "affected_component": "PUMP",
+        "integrity_concern": true,
+        "hygiene_risk": "MEDIUM"
+      },
+      "policy_requirement_id": "DEMO_POLICY_PACKAGE_DAMAGE_V1"
+    },
+    "prepared_action": {
+      "action_id": "ACT_002",
+      "case_id": "DEMO_002",
+      "action_type": "ASK_EVIDENCE",
+      "requested_scope": {
+        "order_id": "6920185815517983396",
+        "fulfillment_item_id": "6920185815517983396-XC33003",
+        "sku_id": "XC33003",
+        "issue_type": "PACKAGE_DAMAGE"
+      },
+      "requires_human_approval": false
+    }
+  },
+  {
+    "demo_case_id": "DEMO_003",
+    "title": "S00001 不确定性：同一泵头图片模糊，进入人工复核",
+    "case_input": {
+      "case_id": "DEMO_003",
+      "data_provenance": {
+        "source_dataset": "TIANCHI_LOREAL_TRACK1_MOCK",
+        "source_session_id": "S00001",
+        "augmentation_notes": ["模糊泵头图片为团队构建的不确定性测试"]
+      },
+      "evaluation_time": "2026-05-05T11:00:00+08:00",
+      "conversation": [
+        {
+          "message_id": "DEMO_AUG_MSG_003",
+          "timestamp": "2026-05-05T10:58:00+08:00",
+          "speaker": "CONSUMER",
+          "text": "粉底液泵头按不出来，我拍了照片，但手机没有对上焦。",
+          "source_kind": "DEMO_AUGMENTATION"
+        }
+      ],
+      "order": {
+        "order_id": "6920185815517983396",
+        "channel": "TIANCHI_MOCK_QIANNIU",
+        "original_logistics_number": "773478190943155",
+        "items": [
+          {
+            "fulfillment_item_id": "6920185815517983396-XC33003",
+            "sku_id": "XC33003",
+            "product_name": "测试轻透粉底液30ml #N02自然色",
+            "batch_code": null,
+            "item_role": "PRIMARY"
+          }
+        ]
+      },
+      "service_tickets": [],
+      "evidence_images": [
+        {
+          "evidence_id": "S00001_BLURRED_IMG",
+          "file_name": "s00001-blurred-pump.jpg",
+          "submitted_at": "2026-05-05T10:59:00+08:00",
+          "declared_view_type": "ISSUE_DETAIL",
+          "source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
+          "source_message_id": "DEMO_AUG_IMG_BLURRED",
+          "competition_reference_path": null
+        }
+      ],
+      "current_issue": {
+        "fulfillment_item_id": "6920185815517983396-XC33003",
+        "sku_id": "XC33003",
+        "issue_type": "PACKAGE_DAMAGE",
+        "affected_component": "PUMP",
+        "integrity_concern": true,
+        "hygiene_risk": "UNKNOWN"
+      },
+      "policy_requirement_id": "DEMO_POLICY_PACKAGE_DAMAGE_V1"
+    },
+    "prepared_action": {
+      "action_id": "ACT_003",
+      "case_id": "DEMO_003",
+      "action_type": "ASK_EVIDENCE",
+      "requested_scope": {
+        "order_id": "6920185815517983396",
+        "fulfillment_item_id": "6920185815517983396-XC33003",
+        "sku_id": "XC33003",
+        "issue_type": "PACKAGE_DAMAGE"
+      },
+      "requires_human_approval": false
+    }
+  }
+]
