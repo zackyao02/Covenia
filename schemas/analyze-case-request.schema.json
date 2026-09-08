@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "analyze-case-request.schema.json",
+  "title": "AnalyzeCaseRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["case_id"],
+  "properties": {
+    "case_id": {"type": "string", "minLength": 1},
+    "evaluation_time": {"type": "string", "format": "date-time"},
+    "challenge_mode": {"type": "boolean", "default": false},
+    "case_input": {"$ref": "case-input.schema.json"}
+  },
+  "allOf": [
+    {
+      "if": {"required": ["case_input"]},
+      "then": {"required": ["challenge_mode"], "properties": {"challenge_mode": {"const": true}}}
+    }
+  ]
+}

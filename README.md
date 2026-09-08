@@ -1,4 +1,4 @@
-# Covenia Competition MVP v0.7
+# Covenia Competition MVP v0.8
 
 Covenia 是嵌入千牛客服工作台右侧的消费者体验责任副驾。它联动聊天、图片、订单与售后工单，把消费者已经提交的证据和客服作出的服务承诺转化为可追踪、可执行、可主动补救的服务责任，在动作发生前阻止重复伤害，并持续推动问题真正闭环。
 
@@ -63,10 +63,12 @@ Covenia 是嵌入千牛客服工作台右侧的消费者体验责任副驾。它
 - [体验防线规则](docs/03-firewall-rules.md)
 - [责任闭环与服务进度回执](docs/04-responsibility-loop.md)
 - [接口与千牛右栏](docs/05-api-and-ui.md)
+- [幂等、时序与接口错误](docs/08-idempotency-and-ordering.md)
 - [研究与评测](docs/06-evaluation-and-research.md)
 - [演示与交付](docs/07-demo-and-delivery.md)
 - [模型治理](MODEL_GOVERNANCE.md)
 - [数据与模拟声明](SIMULATION_DISCLOSURE.md)
+- [多角度评审与修订记录](MULTI-ANGLE-REVIEW-v0.8.0.md)
 
 ## 明确边界
 
@@ -74,4 +76,4 @@ Covenia 不替代千牛，不自动认定质量责任，不自动退款、赔偿
 
 ## 设计冻结
 
-本版冻结产品主链和比赛实现边界。后续得分增长来自真实界面、模型链路、调研与独立评测，不再增加独立模块、页面或售后场景。
+本版冻结产品主链和比赛实现边界。`schemas/` 与 `docs/05-api-and-ui.md` 是实现接口的唯一基线；所有请求、返回、错误、幂等和时序规则均以这两处为准。后续得分增长来自真实界面、模型链路、调研与独立评测，不再增加独立模块、页面或售后场景。

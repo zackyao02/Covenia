@@ -115,9 +115,7 @@
         "fulfillment_item_id": {"type": "string"},
         "sku_id": {"type": "string"},
         "issue_type": {"enum": ["PACKAGE_DAMAGE", "LOGISTICS_STALLED", "ADVERSE_REACTION"]},
-        "affected_component": {"enum": ["BOTTLE", "PUMP", "CAP", "SEAL", "OUTER_PACKAGE", "UNKNOWN"]},
-        "integrity_concern": {"type": "boolean"},
-        "hygiene_risk": {"enum": ["LOW", "MEDIUM", "HIGH", "UNKNOWN"]}
+        "affected_component": {"enum": ["BOTTLE", "PUMP", "CAP", "SEAL", "OUTER_PACKAGE", "UNKNOWN"]}
       }
     },
     "policy_requirement_id": {"const": "DEMO_POLICY_PACKAGE_DAMAGE_V1"}

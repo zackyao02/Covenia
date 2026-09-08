@@ -36,7 +36,7 @@
 
 ## 4. 物流事件分支
 
-P0 支持同一接口下两个可变输入：
+P0 支持同一接口下三个事件；所有事件都由后端状态机处理：
 
 ### `SHIPMENT_PICKED_UP`
 
@@ -51,6 +51,22 @@ P0 支持同一接口下两个可变输入：
 - 若已到期：Case 进入 `AT_RISK`，责任进入 `AT_RISK`。
 - 预填仓库催办任务，生成主管升级候选和消费者主动通知草稿。
 
+### `SHIPMENT_DELIVERED`
+
+- 只接受当前里程碑已为 `IN_TRANSIT` 的责任。
+- 责任和承诺均转为 `COMPLETED`，里程碑转为 `DELIVERED`，Case 转为 `RESOLVED`。
+- 生成最终服务进度回执，明确消费者无需操作。
+
+### 状态转移、时序和重放
+
+| 当前里程碑 | 接受事件 | 结果 | 拒绝条件 |
+|---|---|---|---|
+| `AWAITING_CARRIER_PICKUP` | `SHIPMENT_PICKED_UP` | `IN_TRANSIT` / `ON_TRACK` | 事件时间早于最近状态时间 |
+| `AWAITING_CARRIER_PICKUP` | `SHIPMENT_NOT_PICKED_UP` | 未到期保持 `ON_TRACK`；到期转 `AT_RISK` | 事件时间倒退 |
+| `IN_TRANSIT` | `SHIPMENT_DELIVERED` | `DELIVERED` / `COMPLETED` / `RESOLVED` | 未揽收直接送达、事件时间倒退 |
+
+重复的 `idempotency_key` 返回首次结果，不新增审计记录。未列出的转移返回 `INVALID_EVENT_TRANSITION`，前端不得把它渲染为成功。
+
 事件按钮调用后端接口，不允许直接修改前端状态。
 
 ## 5. 人工修改
@@ -61,7 +77,7 @@ P0 支持同一接口下两个可变输入：
 
 `工单创建 ≠ 已发出 ≠ 已揽收 ≠ 已送达 ≠ 消费者问题真正解决`。
 
-只有完成条件满足后 Case 才进入 `RESOLVED`。Competition MVP 可以演示到已揽收或风险升级，但不得把“生成物流单号”描述为完成。
+只有完成条件满足后 Case 才进入 `RESOLVED`。Competition MVP 要演示真实的 `SHIPMENT_DELIVERED` 结案；不得把“生成物流单号”或“已揽收”描述为完成。
 
 ## 7. P0 不要求
 

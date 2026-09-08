@@ -70,6 +70,8 @@
           "affected_component",
           "view_type",
           "coverage",
+          "integrity_concern",
+          "hygiene_risk_signal",
           "confidence"
         ],
         "properties": {

@@ -1,8 +1,22 @@
-MODEL_GOVERNANCE.md
-PRODUCT_BLUEPRINT.md
+# Covenia 项目文档工程包 v0.8.0
+
+## 产品与治理
+
 README.md
+PRODUCT_BLUEPRINT.md
+PRODUCT-FREEZE.md
+MULTI-ANGLE-REVIEW-v0.8.0.md
+MODEL_GOVERNANCE.md
 SIMULATION_DISCLOSURE.md
 TEAM_AND_TIMELINE.md
+CLAUDE.md
+CLAUDE-PREFLIGHT-REVIEW.md
+CLAUDE-REVIEW-1.md
+CLAUDE-REDTEAM.md
+AGENT-HANDOFF-PROTOCOL.md
+
+## 产品、实现与交付文档
+
 docs/00-product-p0.md
 docs/01-core-contracts.md
 docs/02-ai-extraction.md
@@ -11,13 +25,33 @@ docs/04-responsibility-loop.md
 docs/05-api-and-ui.md
 docs/06-evaluation-and-research.md
 docs/07-demo-and-delivery.md
-fixtures/README.md
-fixtures/demo-cases.json
-fixtures/ground-truth.json
-fixtures/synthetic-pattern-card.json
-reference/Covenia_Competition_MVP_v0.7.docx
+docs/08-idempotency-and-ordering.md
+
+## 机器可校验契约与样例
+
+schemas/api-envelope.schema.json
+schemas/analyze-case-request.schema.json
+schemas/evaluate-action-request.schema.json
+schemas/approve-resolution-request.schema.json
+schemas/shipment-event-request.schema.json
 schemas/accountability-state.schema.json
 schemas/case-input.schema.json
 schemas/decision-result.schema.json
 schemas/extracted-journey.schema.json
 schemas/prepared-action.schema.json
+fixtures/README.md
+fixtures/demo-cases.json
+fixtures/ground-truth.json
+fixtures/synthetic-pattern-card.json
+
+## 数据、参考资料与交接模板
+
+data/tianchi-track1-mock-data.xlsx
+reference/Covenia_Competition_MVP_v0.7.docx
+reference/ANONYMIZED-CUSTOMER-SERVICE-KPI-NOTE.md
+handoff-templates/PRODUCT-FREEZE.template.md
+handoff-templates/IMPLEMENTATION-STATUS.template.md
+handoff-templates/QA-ACCEPTANCE.template.md
+handoff-templates/FIX-REQUESTS.template.md
+
+根目录的《赛题 1：数据共情者-客服工作台示说明.docx》为赛事原始说明，打包时一并保留。

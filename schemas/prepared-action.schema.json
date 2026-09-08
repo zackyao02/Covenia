@@ -4,10 +4,9 @@
   "title": "PreparedAction",
   "type": "object",
   "additionalProperties": false,
-  "required": ["action_id", "case_id", "action_type", "requires_human_approval"],
+  "required": ["action_id", "action_type", "requires_human_approval"],
   "properties": {
     "action_id": {"type": "string"},
-    "case_id": {"type": "string"},
     "action_type": {"enum": ["ASK_EVIDENCE", "CHECK_REPLACEMENT_PROGRESS", "CREATE_FOLLOW_UP_TASK", "CLOSE_CASE"]},
     "requested_scope": {
       "type": ["object", "null"],

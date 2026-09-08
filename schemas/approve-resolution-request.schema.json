@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "approve-resolution-request.schema.json",
+  "title": "ApproveResolutionRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["case_id", "candidate_type", "approver_id", "idempotency_key", "human_edits"],
+  "properties": {
+    "case_id": {"type": "string", "minLength": 1},
+    "candidate_type": {"enum": ["CHECK_REPLACEMENT_FULFILLMENT", "ASK_CURRENT_SCOPE_EVIDENCE", "HUMAN_EVIDENCE_REVIEW"]},
+    "approver_id": {"type": "string", "minLength": 1},
+    "idempotency_key": {"type": "string", "minLength": 8, "maxLength": 128},
+    "human_edits": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "executor": {"enum": ["BRAND", "WAREHOUSE", "LOGISTICS_PROVIDER"]},
+        "next_check_at": {"type": "string", "format": "date-time"},
+        "recovery_if_missed": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

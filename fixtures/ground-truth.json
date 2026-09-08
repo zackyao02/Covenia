@@ -16,7 +16,7 @@
     "expected_journey_understanding": {
       "consumer_intent": "查询换货是否发出，不愿重复说明或提交相同证据",
       "experience_expression": "我前天图片都发过了，换货到底有没有发？怎么还要我重新说明？",
-      "service_cause": "消费者已经举证且换货承诺已到期，但仍需要主动追问进度",
+      "service_cause": "消费者已经举证且换货承诺即将到期，但仍需要主动追问进度",
       "latent_need": "品牌主动核实补发履约并给出确定进展",
       "cooperation_willingness": "DECLINING",
       "action_impact": "阻止重复索证，优先查询已有换货和物流状态"

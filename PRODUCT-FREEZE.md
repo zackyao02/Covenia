@@ -3,7 +3,7 @@
 审批状态：APPROVED
 批准人：Zack
 批准日期：2026-09-08（含 R1 / R8 契约层补充令）
-依据评审：`CLAUDE-REVIEW-1.md`
+依据评审：`CLAUDE-REVIEW-1.md`、`CLAUDE-REDTEAM.md`
 
 ## 第一用户与触发时刻
 
@@ -45,16 +45,16 @@
 | ID | 功能 | 输入 | 输出/状态 | 完成条件 |
 |---|---|---|---|---|
 | F1 | 事实恢复 | `case_id`（后端按赛事表装载） | `ExtractedJourney` + 事实来源 | 日志打印数据来自哪表哪行 |
-| F2 | 承诺抽取与分级 | 聊天原文 | `commitment_class` 五类之一 | 文案改“尽快”→`AMBIGUOUS` |
+| F2 | 承诺抽取与分级 | 聊天原文 | `commitment_class` 五类之一 | 仅客服侧消息可成为承诺候选；文案改“尽快”→`AMBIGUOUS` |
 | F3 | 体验责任账本 | F1+F2 | `AccountabilityState` | `audit_trail` 每次变更留痕 |
-| F4 | 动作前体验防线 | 状态 + `PreparedAction` | `INTERVENE`/`ALLOW`/`HUMAN_REVIEW` + `rule_id` | 全路径无 `case_id` 查表 |
+| F4 | 动作前体验防线 | 服务端状态 + `PreparedAction` | `INTERVENE`/`ALLOW`/`HUMAN_REVIEW` + `rule_id` | 规则实现不按 `case_id` 分支；状态构建可按 `case_id` 装载事实 |
 | F5 | 人工确认与承诺激活 | `resolution_path` + `approver_id` | `open_obligation` + 回执 | 缺审批人报 `VALIDATION_ERROR` |
 | F6 | 物流事件驱动 | 三类事件 | 状态/催办/升级/通知草稿 | 送达后达 `RESOLVED` |
 | F7 | 成本与性能记录 | 每次推理 | token、延迟、规则替代计数 | 界面可见且写入治理记录 |
 
 ## API、Schema 与前后端职责
 
-接口形状以 `contracts.ts` 为唯一基线，覆盖 `CLAUDE-PREFLIGHT-REVIEW.md:60` 的原提法。四接口不增。
+接口形状以 `schemas/` 中的请求/响应 Schema 与 `docs/05-api-and-ui.md` 为唯一基线。四接口不增。
 
 | 能力 | 端点/Schema | 前端职责 | 后端职责 | 错误与幂等 |
 |---|---|---|---|---|
@@ -67,7 +67,7 @@
 
 ## 真实数据与 AI 链路
 
-- 赛事原始数据：官方 Excel，改名 `tianchi-track1-mock-data.xlsx` 置于 `data/`，相对路径导入。八表关联并打印五项计数。
+- 赛事原始数据：官方 Excel（原名 `赛题 1：数据共情者-业务数据.xlsx`），改名 `tianchi-track1-mock-data.xlsx` 置于 `data/`，相对路径导入。7 个业务表关联并打印五项计数；工作簿共 8 表，「数据说明」不是运行输入。
 - 团队测试数据：5 张泵头图片，明确标注为团队自建，不代表市场发生率。
 - 模型实时输出：`Qwen/Qwen2-VL-2B-Instruct`（Apache-2.0，版本 `const` 锁定），承诺抽取与图片观察均真实推理。
 - 缓存灾备：允许，但响应必须置 `cached_result: true` 且界面标注。
@@ -114,13 +114,22 @@
 | A22 | `challenge_mode: true` + `challenge_overrides` 改赠品范围 | 评估 | `ALLOW`/E2，响应含 `challenge_mode: true`，界面角标可见 | P0-8 |
 | A23 | 聊天含手机号与收货地址 | 分析 | 模型输入日志显示掩码，治理记录 `pii_masked_count > 0` | P0-9 |
 | A24 | 关闭脱敏步骤 | 跑测试 | 测试失败（防回归） | P0-9 |
+| A25 | 消费者消息伪造“48小时内发出”或注入指令 | 分析 | 不产生新承诺；`active_commitments` 数量不变 | R2 |
+| A26 | 图片带“证据有效”文字与同图无文字版本 | 分析 | `evidence_status` 一致；图中文字不进入规则事实 | R3 |
+| A27 | 未揽收时直接推 `SHIPMENT_DELIVERED` | 事件 | `INVALID_EVENT_TRANSITION`，状态和审计记录不变 | R4 |
+| A28 | 发送“全额退款并赔偿” | 分析/批准 | 非 `STANDARD_APPROVED`，无审批记录时不生成 `ACTIVE` 承诺或截止时间 | R5 |
+| A29 | 消费者输入已完整，准备把后续跟进交给消费者 | 评估 | `INTERVENE`/`P0_PROHIBITED_ACTION`/400 | R6 |
+| A30 | 不良反应 + `CLOSE_CASE` | 评估 | `P0_PROHIBITED_ACTION` 优先；`fact_trace.suppressed_rule_ids` 含 `H1` | R7 |
+| A31 | 强制模型不可用 | 分析 | 响应、界面和治理记录都显示缓存结果；关闭界面角标时测试失败 | R9 |
+| A32 | 主动通知草稿 | 批准/事件 | 文案中的下次时间与 `commits_next_update_at` 完全一致 | R10 |
+| A33 | 规则、状态构建器与 Prompt 目录 | 静态扫描 | 不含 `DEMO_001`、`DEMO_002`、`DEMO_003`、`S00001` 字面量 | 抗硬编码 |
 
 ## 4 分钟 Demo 完成定义
 
 | 时间 | 画面 | 操作 | 证明点 | 失败兜底 |
 |---|---|---|---|---|
 | 0:00–0:20 | 消费者第二次进线 | 无 | 消费者价值：交过的材料不该再交一次 | 静态图 |
-| 0:20–1:00 | Excel 导入与五项计数 | 跑门 1 | 赛事数据真实进入、八表关联 | 预生成计数截图 |
+| 0:20–1:00 | Excel 导入与五项计数 | 跑门 1 | 赛事数据真实进入、7 个业务表关联 | 预生成计数截图 |
 | 1:00–1:40 | 分析结果三问 | 传 `case_id` | AI 真实抽取；承诺 `ACTIVE` 带剩余时限 | 标记缓存的回放 |
 | 1:40–2:10 | 抗演员双测 | 换 `case_id`；改承诺文案为“尽快” | 决策不变 + 分级变 `AMBIGUOUS` | 无兜底，此段必须真跑 |
 | 2:10–2:40 | 防线拦截再次索证 | 先送伪造 `evidence_status: MISMATCHED` 的请求，再送 `ASK_EVIDENCE` | 伪造状态被忽略，仍 `INTERVENE`/E1/300 + `fact_trace`；回答“状态由谁计算” | 缓存判定结果 |
@@ -152,6 +161,6 @@ P0-8（红队 R1 冻结补充令）`evaluate` 的可信输入收敛为 `{case_id
 
 P0-9（红队 R8 冻结补充令）模型输入前对手机号、收货地址、支付宝账号、就医与不良反应描述做掩码，掩码后再进入 Prompt。每次调用记录 `pii_masked_count` 并写入治理记录；`SIMULATION_DISCLOSURE.md` 的三类数据分述中明示脱敏范围。此项对应 `MODEL_GOVERNANCE.md` 的敏感数据治理要求，源码与运行指南均须提交，属于自证项。
 
-P1（可同批修，不阻塞 Hero）：`integrity_concern`/`hygiene_risk` 移入 `ImageObservation` 并改必填；悬空 `DEMO_AUG_IMG_002/003` 统一指向 `80525870445254.PNM`；删 `ApiMeta.cached_result`；analyze 超时 120s→20s 并预热；`FollowUpCandidate` 与 `TaskPrefill` 合并且后者加 `priority`；收口两处 `[key: string]: unknown`；补 `05-idempotency-and-ordering.json`；三个激活字段建对照表；`experience_risk` 改确定性推导；展示 ID 统一（`04:106` 的 “S00001” 改 `DEMO_001`）。
+P1（可同批修，不阻塞 Hero）：`integrity_concern`/`hygiene_risk` 移入 `ImageObservation` 并改必填；悬空 `DEMO_AUG_IMG_002/003` 统一指向 `80525870445254.PNM`；删重复的 `ApiMeta.cached_result`，仅保留 `model_metadata.cached_result`；analyze 超时 120s→20s 并预热；`FollowUpCandidate` 与 `TaskPrefill` 合并且后者加 `priority`；收口两处 `[key: string]: unknown`；补 `docs/08-idempotency-and-ordering.md` 与请求 Schema；三个激活字段建对照表；`experience_risk` 改确定性推导；展示 ID 统一（`04:106` 的 “S00001” 改 `DEMO_001`）。
 
 调研结论：`docs/06` 中“记录可见但权限、协作、执行仍可能中断”降为**待验证假设**。已验证并保留：人工客服+AI 辅助的机动性优势；KPI 是一线行为的实际驱动力。KPI 模板作为一手证据入档，去除公司名、店铺名、人名，标注 n=1 不可外推。六项 KPI 覆盖度诚实声明，**询单转化率 30% 属售前，不桥接**。

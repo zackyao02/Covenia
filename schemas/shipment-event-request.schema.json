@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "shipment-event-request.schema.json",
+  "title": "ShipmentEventRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["case_id", "event_id", "event_type", "event_time", "idempotency_key"],
+  "properties": {
+    "case_id": {"type": "string", "minLength": 1},
+    "event_id": {"type": "string", "minLength": 1},
+    "event_type": {"enum": ["SHIPMENT_PICKED_UP", "SHIPMENT_NOT_PICKED_UP", "SHIPMENT_DELIVERED"]},
+    "event_time": {"type": "string", "format": "date-time"},
+    "idempotency_key": {"type": "string", "minLength": 8, "maxLength": 128}
+  }
+}

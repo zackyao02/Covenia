@@ -68,6 +68,20 @@
 - 唯一触发规则、事实追踪和中文原因。
 - 下一解决路径：查询动作、回复草稿、催办预填、人工批准、责任与完成条件。
 - 承诺编译结果：原始承诺、分类、生效状态、截止时间与主动补救策略。
+- `accountability_state`：服务端按 `case_id` 装载事实后自行计算的责任状态快照，只作为响应字段，不接受前端提交（P0-8）。
+- `challenge_mode`：变体演示回显，仅在 `challenge_overrides` 生效时为 `true`，界面据此显示角标（P0-8）。
+
+## 5.1 三个激活字段对照表
+
+三个契约各有一个“激活”字段，含义和取值都不同，不能互相赋值：
+
+| 字段 | 位置 | 取值 | 语义 |
+|---|---|---|---|
+| `activation_recommendation` | `ExtractedJourney.promise_events[]` | `ACTIVE` / `PENDING_APPROVAL` / `BLOCKED` / `IGNORED` | AI 的建议，不是结论 |
+| `activation_status` | `DecisionResult.resolution_path.compiled_service_responsibility` | `ACTIVE` / `PENDING_APPROVAL` / `BLOCKED` / `IGNORED` | 规则与人工确认后的编译结果 |
+| `status` | `AccountabilityState.active_commitments[]` | `ACTIVE` / `AT_RISK` / `COMPLETED` | 账本运行时状态 |
+
+流转方向单一：AI 建议 → 编译结果 → 账本状态。只有编译结果为 `ACTIVE` 的承诺才进入 `active_commitments`；`AT_RISK` 与 `COMPLETED` 由时间推进和物流事件产生，AI 不得直接写入（见第 6 节事实来源优先级）。
 
 ## 动作请求｜PreparedAction
 

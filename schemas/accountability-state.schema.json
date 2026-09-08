@@ -16,7 +16,8 @@
     "experience_gap_diagnosis",
     "open_obligation",
     "service_progress_receipt",
-    "experience_risk"
+    "experience_risk",
+    "audit_trail"
   ],
   "properties": {
     "case_id": {"type": "string"},
@@ -123,6 +124,21 @@
         "recovery_if_missed": {"type": "string", "minLength": 1}
       }
     },
-    "experience_risk": {"enum": ["LOW", "MEDIUM", "HIGH"]}
+    "experience_risk": {"enum": ["LOW", "MEDIUM", "HIGH"]},
+    "audit_trail": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["at", "actor", "action", "changed_fields", "request_id"],
+        "properties": {
+          "at": {"type": "string", "format": "date-time"},
+          "actor": {"type": "string", "minLength": 1},
+          "action": {"enum": ["ANALYZED", "RESOLUTION_APPROVED", "SHIPMENT_PICKED_UP", "SHIPMENT_NOT_PICKED_UP", "SHIPMENT_DELIVERED"]},
+          "changed_fields": {"type": "array", "items": {"type": "string"}},
+          "request_id": {"type": "string", "minLength": 1}
+        }
+      }
+    }
   }
 }

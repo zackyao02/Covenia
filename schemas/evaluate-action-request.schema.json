@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "evaluate-action-request.schema.json",
+  "title": "EvaluateActionRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["case_id", "prepared_action"],
+  "properties": {
+    "case_id": {"type": "string", "minLength": 1},
+    "prepared_action": {"$ref": "prepared-action.schema.json"},
+    "evaluation_time": {"type": "string", "format": "date-time"},
+    "challenge_mode": {"type": "boolean", "default": false},
+    "challenge_overrides": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "requested_scope": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["order_id", "fulfillment_item_id", "sku_id", "issue_type"],
+          "properties": {
+            "order_id": {"type": "string"},
+            "fulfillment_item_id": {"type": "string"},
+            "sku_id": {"type": "string"},
+            "issue_type": {"enum": ["PACKAGE_DAMAGE", "LOGISTICS_STALLED", "ADVERSE_REACTION"]}
+          }
+        },
+        "image_observation_overrides": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["evidence_id", "readability"],
+            "properties": {
+              "evidence_id": {"type": "string"},
+              "readability": {"enum": ["HIGH", "LOW", "UNKNOWN"]},
+              "sku_match": {"enum": ["MATCH", "MISMATCH", "UNKNOWN"]},
+              "issue_visible": {"type": "boolean"}
+            }
+          }
+        }
+      }
+    },
+    "accountability_state": {"deprecated": true, "readOnly": true, "description": "兼容字段，服务端忽略。"},
+    "evidence_status": {"deprecated": true, "readOnly": true, "description": "兼容字段，服务端忽略。"},
+    "active_commitments": {"deprecated": true, "readOnly": true, "description": "兼容字段，服务端忽略。"},
+    "prohibited_actions": {"deprecated": true, "readOnly": true, "description": "兼容字段，服务端忽略。"},
+    "current_scope": {"deprecated": true, "readOnly": true, "description": "兼容字段，服务端忽略。"}
+  },
+  "allOf": [
+    {
+      "if": {"required": ["challenge_overrides"]},
+      "then": {"required": ["challenge_mode"], "properties": {"challenge_mode": {"const": true}}}
+    },
+    {
+      "if": {"required": ["challenge_mode"], "properties": {"challenge_mode": {"const": true}}},
+      "then": {"required": ["challenge_overrides"]}
+    }
+  ]
+}

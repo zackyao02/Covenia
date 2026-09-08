@@ -108,7 +108,7 @@
           "submitted_at": "2026-05-05T10:21:38+08:00",
           "declared_view_type": "ISSUE_DETAIL",
           "source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
-          "source_message_id": "DEMO_AUG_IMG_002",
+          "source_message_id": "80525870445254.PNM",
           "competition_reference_path": null
         },
         {
@@ -117,7 +117,7 @@
           "submitted_at": "2026-05-05T10:21:38+08:00",
           "declared_view_type": "PACKAGE_CONTEXT",
           "source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
-          "source_message_id": "DEMO_AUG_IMG_003",
+          "source_message_id": "80525870445254.PNM",
           "competition_reference_path": null
         }
       ],
@@ -125,15 +125,12 @@
         "fulfillment_item_id": "6920185815517983396-XC33003",
         "sku_id": "XC33003",
         "issue_type": "PACKAGE_DAMAGE",
-        "affected_component": "PUMP",
-        "integrity_concern": true,
-        "hygiene_risk": "MEDIUM"
+        "affected_component": "PUMP"
       },
       "policy_requirement_id": "DEMO_POLICY_PACKAGE_DAMAGE_V1"
     },
     "prepared_action": {
       "action_id": "ACT_001",
-      "case_id": "DEMO_001",
       "action_type": "ASK_EVIDENCE",
       "requested_scope": {
         "order_id": "6920185815517983396",
@@ -201,15 +198,12 @@
         "fulfillment_item_id": "6920185815517983396-XC33003",
         "sku_id": "XC33003",
         "issue_type": "PACKAGE_DAMAGE",
-        "affected_component": "PUMP",
-        "integrity_concern": true,
-        "hygiene_risk": "MEDIUM"
+        "affected_component": "PUMP"
       },
       "policy_requirement_id": "DEMO_POLICY_PACKAGE_DAMAGE_V1"
     },
     "prepared_action": {
       "action_id": "ACT_002",
-      "case_id": "DEMO_002",
       "action_type": "ASK_EVIDENCE",
       "requested_scope": {
         "order_id": "6920185815517983396",
@@ -270,15 +264,12 @@
         "fulfillment_item_id": "6920185815517983396-XC33003",
         "sku_id": "XC33003",
         "issue_type": "PACKAGE_DAMAGE",
-        "affected_component": "PUMP",
-        "integrity_concern": true,
-        "hygiene_risk": "UNKNOWN"
+        "affected_component": "PUMP"
       },
       "policy_requirement_id": "DEMO_POLICY_PACKAGE_DAMAGE_V1"
     },
     "prepared_action": {
       "action_id": "ACT_003",
-      "case_id": "DEMO_003",
       "action_type": "ASK_EVIDENCE",
       "requested_scope": {
         "order_id": "6920185815517983396",
