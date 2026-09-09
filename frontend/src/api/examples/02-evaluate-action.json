@@ -1,0 +1,460 @@
+{
+  "endpoint": "POST /api/actions/evaluate",
+  "scenario": "客服准备再次索取同范围证据，发送前触发 E1 拦截",
+  "request": {
+    "case_id": "DEMO_001",
+    "prepared_action": {
+      "action_id": "ACT_001",
+      "action_type": "ASK_EVIDENCE",
+      "requested_scope": {
+        "order_id": "6920185815517983396",
+        "fulfillment_item_id": "6920185815517983396-XC33003",
+        "sku_id": "XC33003",
+        "issue_type": "PACKAGE_DAMAGE"
+      },
+      "requires_human_approval": false
+    },
+    "evaluation_time": "2026-05-07T09:40:00+08:00"
+  },
+  "response": {
+    "data": {
+      "case_id": "DEMO_001",
+      "decision": "INTERVENE",
+      "rule_id": "E1",
+      "rule_priority": 300,
+      "fact_trace": {
+        "evidence_status": "VALID",
+        "prepared_action": "ASK_EVIDENCE",
+        "scope_match": true,
+        "active_promise_count": 1
+      },
+      "reason": "同一订单、正装和泵头问题的有效证据已经提交，不应再次向消费者索取。",
+      "resolution_path": {
+        "candidate_type": "CHECK_REPLACEMENT_FULFILLMENT",
+        "evidence_basis": [
+          "粉底液正装与订单已匹配",
+          "泵头损坏图片可辨认",
+          "换货工单 BH919209358357 已创建"
+        ],
+        "policy_basis": "E1：有效证据与待索取范围一致时拦截重复索证。",
+        "consumer_reply_draft": "您此前提交的粉底液泵头损坏图片我们已经收到，无需再次上传。我正在核实换货件的最新物流进度，并会主动向您更新。",
+        "task_prefill": {
+          "task_type": "WAREHOUSE_FOLLOW_UP",
+          "existing_ticket_id": "BH919209358357",
+          "sku_id": "XC33003",
+          "affected_component": "PUMP",
+          "summary": "核实换货件是否已交物流揽收；若仍未揽收，请立即反馈预计处理时间。"
+        },
+        "accountable_side": "BRAND",
+        "executor": "WAREHOUSE",
+        "requires_human_approval": true,
+        "creates_obligation": true,
+        "compiled_service_responsibility": {
+          "source_promise_text": "换货单已创建，48小时内发出。",
+          "commitment_class": "STANDARD_APPROVED",
+          "activation_status": "ACTIVE",
+          "deadline": "2026-05-07T10:27:37+08:00",
+          "next_check_at": "2026-05-07T11:30:00+08:00",
+          "recovery_if_missed": "品牌主动催办仓库，升级给主管并通知消费者新的处理时间。"
+        }
+      },
+      "accountability_state": {
+        "case_id": "DEMO_001",
+        "case_status": "ACTION_REVIEW",
+        "consumer_input_required": false,
+        "accountable_side": "BRAND",
+        "evidence_status": "VALID",
+        "current_scope": {
+          "order_id": "6920185815517983396",
+          "fulfillment_item_id": "6920185815517983396-XC33003",
+          "sku_id": "XC33003",
+          "issue_type": "PACKAGE_DAMAGE"
+        },
+        "active_commitments": [
+          {
+            "promise_type": "REPLACEMENT_SHIPMENT_DEADLINE",
+            "raw_text": "换货单已创建，48小时内发出。",
+            "status": "AT_RISK",
+            "deadline": "2026-05-07T10:27:37+08:00",
+            "source_ids": [
+              "36199788469718.PNM",
+              "BH919209358357"
+            ]
+          }
+        ],
+        "prohibited_actions": [
+          "ASK_SAME_EVIDENCE",
+          "SHIFT_FOLLOW_UP_TO_CONSUMER",
+          "CLOSE_BEFORE_RESOLUTION"
+        ],
+        "experience_gap_diagnosis": {
+          "consumer_expression": "图片已经提交，消费者仍在追问换货进度。",
+          "traceable_service_facts": [
+            {
+              "fact_type": "EVIDENCE_SUBMITTED",
+              "statement": "同一订单、正装和泵头问题的证据已经提交。",
+              "source_ids": [
+                "80525870445254.PNM",
+                "S00001_IMG_PUMP"
+              ]
+            },
+            {
+              "fact_type": "TICKET_CREATED",
+              "statement": "已有换货工单正在处理。",
+              "source_ids": [
+                "BH919209358357"
+              ]
+            },
+            {
+              "fact_type": "PROMISE_OVERDUE",
+              "statement": "48 小时发出承诺已到期。",
+              "source_ids": [
+                "36199788469718.PNM"
+              ]
+            }
+          ],
+          "deterioration_cause": "已有材料和工单未被沿用，品牌也没有主动同步进展。",
+          "latent_need": "消费者需要确定进展，而不是再次举证。",
+          "responsibility_judgment": {
+            "consumer_input_complete": true,
+            "accountable_side": "BRAND"
+          },
+          "action_impacts": [
+            "BLOCK_REPEAT_EVIDENCE",
+            "CHECK_EXISTING_FULFILLMENT",
+            "START_PROACTIVE_UPDATE"
+          ],
+          "reply_strategy": "确认已有证据，查询既有工单，给出下一更新时间。"
+        },
+        "open_obligation": null,
+        "service_progress_receipt": null,
+        "experience_risk": "HIGH",
+        "audit_trail": []
+      },
+      "challenge_mode": false
+    },
+    "error": null,
+    "request_id": "REQ_EVALUATE_001"
+  },
+  "decision_variants": [
+    {
+      "name": "ALLOW：赠品证据不能覆盖正装泵头问题",
+      "request_overrides": {
+        "challenge_mode": true,
+        "challenge_overrides": {
+          "requested_scope": {
+            "order_id": "6920185815517983396",
+            "fulfillment_item_id": "6920185815517983396-GIFT-B5-MASK-2",
+            "sku_id": "GIFT-B5-MASK-2",
+            "issue_type": "PACKAGE_DAMAGE"
+          }
+        }
+      },
+      "response_data": {
+        "case_id": "DEMO_002",
+        "decision": "ALLOW",
+        "rule_id": "E2",
+        "rule_priority": 100,
+        "fact_trace": {
+          "evidence_status": "MISMATCHED",
+          "prepared_action": "ASK_EVIDENCE",
+          "scope_match": false,
+          "active_promise_count": 0
+        },
+        "reason": "现有图片是赠品面膜外盒，不能覆盖正装粉底液泵头问题，可以请求当前范围的证据。",
+        "resolution_path": {
+          "candidate_type": "ASK_CURRENT_SCOPE_EVIDENCE",
+          "evidence_basis": [
+            "现有证据商品角色为 GIFT",
+            "当前问题商品角色为 PRIMARY"
+          ],
+          "policy_basis": "E2：证据范围发生变化时，允许只请求当前缺失证据。",
+          "consumer_reply_draft": "目前收到的是赠品面膜外盒图片。为核实粉底液泵头问题，请补充一张正装粉底液泵头近照。",
+          "task_prefill": {
+            "task_type": "REQUEST_EVIDENCE",
+            "existing_ticket_id": null,
+            "sku_id": "XC33003",
+            "affected_component": "PUMP",
+            "summary": "请求正装粉底液泵头近照，不重复索取赠品图片。"
+          },
+          "accountable_side": "CONSUMER",
+          "executor": "CONSUMER",
+          "requires_human_approval": false,
+          "creates_obligation": false,
+          "compiled_service_responsibility": null
+        },
+        "accountability_state": {
+          "case_id": "DEMO_001",
+          "case_status": "ACTION_REVIEW",
+          "consumer_input_required": false,
+          "accountable_side": "BRAND",
+          "evidence_status": "VALID",
+          "current_scope": {
+            "order_id": "6920185815517983396",
+            "fulfillment_item_id": "6920185815517983396-XC33003",
+            "sku_id": "XC33003",
+            "issue_type": "PACKAGE_DAMAGE"
+          },
+          "active_commitments": [
+            {
+              "promise_type": "REPLACEMENT_SHIPMENT_DEADLINE",
+              "raw_text": "换货单已创建，48小时内发出。",
+              "status": "AT_RISK",
+              "deadline": "2026-05-07T10:27:37+08:00",
+              "source_ids": [
+                "36199788469718.PNM",
+                "BH919209358357"
+              ]
+            }
+          ],
+          "prohibited_actions": [
+            "ASK_SAME_EVIDENCE",
+            "SHIFT_FOLLOW_UP_TO_CONSUMER",
+            "CLOSE_BEFORE_RESOLUTION"
+          ],
+          "experience_gap_diagnosis": {
+            "consumer_expression": "图片已经提交，消费者仍在追问换货进度。",
+            "traceable_service_facts": [
+              {
+                "fact_type": "EVIDENCE_SUBMITTED",
+                "statement": "同一订单、正装和泵头问题的证据已经提交。",
+                "source_ids": [
+                  "80525870445254.PNM",
+                  "S00001_IMG_PUMP"
+                ]
+              },
+              {
+                "fact_type": "TICKET_CREATED",
+                "statement": "已有换货工单正在处理。",
+                "source_ids": [
+                  "BH919209358357"
+                ]
+              },
+              {
+                "fact_type": "PROMISE_OVERDUE",
+                "statement": "48 小时发出承诺已到期。",
+                "source_ids": [
+                  "36199788469718.PNM"
+                ]
+              }
+            ],
+            "deterioration_cause": "已有材料和工单未被沿用，品牌也没有主动同步进展。",
+            "latent_need": "消费者需要确定进展，而不是再次举证。",
+            "responsibility_judgment": {
+              "consumer_input_complete": true,
+              "accountable_side": "BRAND"
+            },
+            "action_impacts": [
+              "BLOCK_REPEAT_EVIDENCE",
+              "CHECK_EXISTING_FULFILLMENT",
+              "START_PROACTIVE_UPDATE"
+            ],
+            "reply_strategy": "确认已有证据，查询既有工单，给出下一更新时间。"
+          },
+          "open_obligation": null,
+          "service_progress_receipt": null,
+          "experience_risk": "HIGH",
+          "audit_trail": []
+        },
+        "challenge_mode": true
+      }
+    },
+    {
+      "name": "HUMAN_REVIEW：同一泵头图片模糊",
+      "request_overrides": {
+        "challenge_mode": true,
+        "challenge_overrides": {
+          "image_observation_overrides": [
+            {
+              "evidence_id": "S00001_BLURRED_IMG",
+              "readability": "LOW",
+              "sku_match": "UNKNOWN",
+              "issue_visible": false
+            }
+          ]
+        }
+      },
+      "response_data": {
+        "case_id": "DEMO_003",
+        "decision": "HUMAN_REVIEW",
+        "rule_id": "H1",
+        "rule_priority": 200,
+        "fact_trace": {
+          "evidence_status": "NEED_HUMAN_REVIEW",
+          "prepared_action": "ASK_EVIDENCE",
+          "scope_match": null,
+          "active_promise_count": 0
+        },
+        "reason": "图片未对焦，无法确认商品、泵头问题和证据范围，需人工复核后再决定是否补充材料。",
+        "resolution_path": {
+          "candidate_type": "HUMAN_EVIDENCE_REVIEW",
+          "evidence_basis": [
+            "图片可读性为 LOW",
+            "SKU 匹配为 UNKNOWN"
+          ],
+          "policy_basis": "H1：事实不足或图片不可识别时进入人工复核。",
+          "consumer_reply_draft": "您提交的图片我们已经收到，当前正在进一步核实，请暂时无需重复上传，我们会尽快告知是否需要补充具体材料。",
+          "task_prefill": {
+            "task_type": "HUMAN_EVIDENCE_REVIEW",
+            "existing_ticket_id": null,
+            "sku_id": "XC33003",
+            "affected_component": "PUMP",
+            "summary": "人工复核模糊泵头图片，确认商品身份、SKU 和问题可见性。"
+          },
+          "accountable_side": "UNKNOWN",
+          "executor": "HUMAN_REVIEW_QUEUE",
+          "requires_human_approval": true,
+          "creates_obligation": false,
+          "compiled_service_responsibility": null
+        },
+        "accountability_state": {
+          "case_id": "DEMO_001",
+          "case_status": "ACTION_REVIEW",
+          "consumer_input_required": false,
+          "accountable_side": "BRAND",
+          "evidence_status": "VALID",
+          "current_scope": {
+            "order_id": "6920185815517983396",
+            "fulfillment_item_id": "6920185815517983396-XC33003",
+            "sku_id": "XC33003",
+            "issue_type": "PACKAGE_DAMAGE"
+          },
+          "active_commitments": [
+            {
+              "promise_type": "REPLACEMENT_SHIPMENT_DEADLINE",
+              "raw_text": "换货单已创建，48小时内发出。",
+              "status": "AT_RISK",
+              "deadline": "2026-05-07T10:27:37+08:00",
+              "source_ids": [
+                "36199788469718.PNM",
+                "BH919209358357"
+              ]
+            }
+          ],
+          "prohibited_actions": [
+            "ASK_SAME_EVIDENCE",
+            "SHIFT_FOLLOW_UP_TO_CONSUMER",
+            "CLOSE_BEFORE_RESOLUTION"
+          ],
+          "experience_gap_diagnosis": {
+            "consumer_expression": "图片已经提交，消费者仍在追问换货进度。",
+            "traceable_service_facts": [
+              {
+                "fact_type": "EVIDENCE_SUBMITTED",
+                "statement": "同一订单、正装和泵头问题的证据已经提交。",
+                "source_ids": [
+                  "80525870445254.PNM",
+                  "S00001_IMG_PUMP"
+                ]
+              },
+              {
+                "fact_type": "TICKET_CREATED",
+                "statement": "已有换货工单正在处理。",
+                "source_ids": [
+                  "BH919209358357"
+                ]
+              },
+              {
+                "fact_type": "PROMISE_OVERDUE",
+                "statement": "48 小时发出承诺已到期。",
+                "source_ids": [
+                  "36199788469718.PNM"
+                ]
+              }
+            ],
+            "deterioration_cause": "已有材料和工单未被沿用，品牌也没有主动同步进展。",
+            "latent_need": "消费者需要确定进展，而不是再次举证。",
+            "responsibility_judgment": {
+              "consumer_input_complete": true,
+              "accountable_side": "BRAND"
+            },
+            "action_impacts": [
+              "BLOCK_REPEAT_EVIDENCE",
+              "CHECK_EXISTING_FULFILLMENT",
+              "START_PROACTIVE_UPDATE"
+            ],
+            "reply_strategy": "确认已有证据，查询既有工单，给出下一更新时间。"
+          },
+          "open_obligation": null,
+          "service_progress_receipt": null,
+          "experience_risk": "HIGH",
+          "audit_trail": []
+        },
+        "challenge_mode": true
+      }
+    }
+  ],
+  "accountability_state_fixture": {
+    "case_id": "DEMO_001",
+    "case_status": "ACTION_REVIEW",
+    "consumer_input_required": false,
+    "accountable_side": "BRAND",
+    "evidence_status": "VALID",
+    "current_scope": {
+      "order_id": "6920185815517983396",
+      "fulfillment_item_id": "6920185815517983396-XC33003",
+      "sku_id": "XC33003",
+      "issue_type": "PACKAGE_DAMAGE"
+    },
+    "active_commitments": [
+      {
+        "promise_type": "REPLACEMENT_SHIPMENT_DEADLINE",
+        "raw_text": "换货单已创建，48小时内发出。",
+        "status": "AT_RISK",
+        "deadline": "2026-05-07T10:27:37+08:00",
+        "source_ids": [
+          "36199788469718.PNM",
+          "BH919209358357"
+        ]
+      }
+    ],
+    "prohibited_actions": [
+      "ASK_SAME_EVIDENCE",
+      "SHIFT_FOLLOW_UP_TO_CONSUMER",
+      "CLOSE_BEFORE_RESOLUTION"
+    ],
+    "experience_gap_diagnosis": {
+      "consumer_expression": "图片已经提交，消费者仍在追问换货进度。",
+      "traceable_service_facts": [
+        {
+          "fact_type": "EVIDENCE_SUBMITTED",
+          "statement": "同一订单、正装和泵头问题的证据已经提交。",
+          "source_ids": [
+            "80525870445254.PNM",
+            "S00001_IMG_PUMP"
+          ]
+        },
+        {
+          "fact_type": "TICKET_CREATED",
+          "statement": "已有换货工单正在处理。",
+          "source_ids": [
+            "BH919209358357"
+          ]
+        },
+        {
+          "fact_type": "PROMISE_OVERDUE",
+          "statement": "48 小时发出承诺已到期。",
+          "source_ids": [
+            "36199788469718.PNM"
+          ]
+        }
+      ],
+      "deterioration_cause": "已有材料和工单未被沿用，品牌也没有主动同步进展。",
+      "latent_need": "消费者需要确定进展，而不是再次举证。",
+      "responsibility_judgment": {
+        "consumer_input_complete": true,
+        "accountable_side": "BRAND"
+      },
+      "action_impacts": [
+        "BLOCK_REPEAT_EVIDENCE",
+        "CHECK_EXISTING_FULFILLMENT",
+        "START_PROACTIVE_UPDATE"
+      ],
+      "reply_strategy": "确认已有证据，查询既有工单，给出下一更新时间。"
+    },
+    "open_obligation": null,
+    "service_progress_receipt": null,
+    "experience_risk": "HIGH",
+    "audit_trail": []
+  }
+}

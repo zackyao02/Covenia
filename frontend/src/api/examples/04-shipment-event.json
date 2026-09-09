@@ -1,0 +1,264 @@
+{
+  "endpoint": "POST /api/events/shipment",
+  "scenario": "承诺到期后仍未揽收，责任转为 AT_RISK 并生成催办、升级和主动通知",
+  "request": {
+    "case_id": "DEMO_001",
+    "event_type": "SHIPMENT_NOT_PICKED_UP",
+    "event_time": "2026-05-07T11:35:00+08:00",
+    "event_id": "EVT_NOT_PICKED_001",
+    "idempotency_key": "shipment-DEMO_001-0001"
+  },
+  "response": {
+    "data": {
+      "accountability_state": {
+        "case_id": "DEMO_001",
+        "case_status": "AT_RISK",
+        "consumer_input_required": false,
+        "accountable_side": "BRAND",
+        "evidence_status": "VALID",
+        "current_scope": {
+          "order_id": "6920185815517983396",
+          "fulfillment_item_id": "6920185815517983396-XC33003",
+          "sku_id": "XC33003",
+          "issue_type": "PACKAGE_DAMAGE"
+        },
+        "active_commitments": [
+          {
+            "promise_type": "REPLACEMENT_SHIPMENT_DEADLINE",
+            "raw_text": "换货单已创建，48小时内发出。",
+            "status": "AT_RISK",
+            "deadline": "2026-05-07T10:27:37+08:00",
+            "source_ids": [
+              "36199788469718.PNM",
+              "BH919209358357"
+            ]
+          }
+        ],
+        "prohibited_actions": [
+          "ASK_SAME_EVIDENCE",
+          "SHIFT_FOLLOW_UP_TO_CONSUMER",
+          "CLOSE_BEFORE_RESOLUTION"
+        ],
+        "experience_gap_diagnosis": {
+          "consumer_expression": "消费者仍未获得换货件已发出的确认。",
+          "traceable_service_facts": [
+            {
+              "fact_type": "EVIDENCE_SUBMITTED",
+              "statement": "必要证据已经完整提交。",
+              "source_ids": [
+                "80525870445254.PNM",
+                "S00001_IMG_PUMP"
+              ]
+            },
+            {
+              "fact_type": "TICKET_CREATED",
+              "statement": "换货工单已创建，但物流仍未揽收。",
+              "source_ids": [
+                "BH919209358357",
+                "YT7667875838478"
+              ]
+            },
+            {
+              "fact_type": "PROMISE_OVERDUE",
+              "statement": "48 小时发出承诺已经逾期。",
+              "source_ids": [
+                "36199788469718.PNM"
+              ]
+            }
+          ],
+          "deterioration_cause": "换货件未在承诺时限内交给物流揽收。",
+          "latent_need": "品牌主动补救并给出新的可跟踪处理节点。",
+          "responsibility_judgment": {
+            "consumer_input_complete": true,
+            "accountable_side": "BRAND"
+          },
+          "action_impacts": [
+            "RAISE_PRIORITY",
+            "CHECK_EXISTING_FULFILLMENT",
+            "START_PROACTIVE_UPDATE"
+          ],
+          "reply_strategy": "主动说明逾期事实、当前催办动作和下次更新时间。"
+        },
+        "open_obligation": {
+          "obligation_type": "REPLACEMENT_FULFILLMENT",
+          "status": "AT_RISK",
+          "accountable_side": "BRAND",
+          "executor": "WAREHOUSE",
+          "deadline": "2026-05-07T10:27:37+08:00",
+          "next_check_at": "2026-05-07T12:00:00+08:00",
+          "milestone": "AWAITING_CARRIER_PICKUP",
+          "resolution_condition": "REPLACEMENT_DELIVERED"
+        },
+        "service_progress_receipt": {
+          "receipt_id": "RECEIPT_DEMO_001_001",
+          "status": "AT_RISK",
+          "received_evidence": [
+            "粉底液泵头损坏图片",
+            "订单和商品货号",
+            "换货工单 BH919209358357"
+          ],
+          "brand_action": "换货件尚未被物流揽收，已向仓库发起高优先级催办。",
+          "latest_update_at": "2026-05-07T11:35:00+08:00",
+          "next_update_by": "2026-05-07T12:00:00+08:00",
+          "consumer_action_required": false,
+          "recovery_if_missed": "若 12:00 前仍未确认揽收，将升级主管并再次主动更新。"
+        },
+        "experience_risk": "HIGH",
+        "audit_trail": [
+          {
+            "at": "2026-05-07T11:35:00+08:00",
+            "actor": "SIMULATOR",
+            "action": "SHIPMENT_NOT_PICKED_UP",
+            "changed_fields": [
+              "case_status",
+              "open_obligation"
+            ],
+            "request_id": "REQ_SHIPMENT_001"
+          }
+        ]
+      },
+      "follow_up_candidate": {
+        "task_type": "WAREHOUSE_FOLLOW_UP",
+        "existing_ticket_id": "BH919209358357",
+        "priority": "HIGH",
+        "summary": "换货件超过 48 小时仍未揽收，请立即确认仓库状态和预计交运时间。"
+      },
+      "supervisor_escalation_candidate": {
+        "escalation_type": "PROMISE_OVERDUE",
+        "priority": "HIGH",
+        "summary": "S00001 换货发出承诺已逾期且物流未揽收，建议主管介入。"
+      },
+      "proactive_notification_draft": {
+        "text": "您的换货件目前尚未完成物流揽收，我们已向仓库加急催办。您无需再次提供材料，我们会在今天 12:00 前主动更新处理进展。",
+        "commits_next_update_at": "2026-05-07T12:00:00+08:00",
+        "requires_human_approval": true,
+        "channel": "ORIGINAL_CHAT"
+      }
+    },
+    "error": null,
+    "request_id": "REQ_SHIPMENT_001"
+  },
+  "picked_up_variant": {
+    "request": {
+      "case_id": "DEMO_001",
+      "event_type": "SHIPMENT_PICKED_UP",
+      "event_time": "2026-05-07T10:10:00+08:00",
+      "event_id": "EVT_PICKED_001",
+      "idempotency_key": "shipment-DEMO_001-0002"
+    },
+    "response_data": {
+      "accountability_state": {
+        "case_id": "DEMO_001",
+        "case_status": "IN_FULFILLMENT",
+        "consumer_input_required": false,
+        "accountable_side": "BRAND",
+        "evidence_status": "VALID",
+        "current_scope": {
+          "order_id": "6920185815517983396",
+          "fulfillment_item_id": "6920185815517983396-XC33003",
+          "sku_id": "XC33003",
+          "issue_type": "PACKAGE_DAMAGE"
+        },
+        "active_commitments": [
+          {
+            "promise_type": "REPLACEMENT_SHIPMENT_DEADLINE",
+            "raw_text": "换货单已创建，48小时内发出。",
+            "status": "ACTIVE",
+            "deadline": "2026-05-07T10:27:37+08:00",
+            "source_ids": [
+              "36199788469718.PNM",
+              "BH919209358357"
+            ]
+          }
+        ],
+        "prohibited_actions": [
+          "ASK_SAME_EVIDENCE",
+          "SHIFT_FOLLOW_UP_TO_CONSUMER",
+          "CLOSE_BEFORE_RESOLUTION"
+        ],
+        "experience_gap_diagnosis": {
+          "consumer_expression": "消费者希望确认换货件的实际进展。",
+          "traceable_service_facts": [
+            {
+              "fact_type": "EVIDENCE_SUBMITTED",
+              "statement": "必要证据已经完整提交。",
+              "source_ids": [
+                "80525870445254.PNM",
+                "S00001_IMG_PUMP"
+              ]
+            },
+            {
+              "fact_type": "TICKET_CREATED",
+              "statement": "换货工单已创建，物流 YT7667875838478 已揽收。",
+              "source_ids": [
+                "BH919209358357",
+                "YT7667875838478"
+              ]
+            },
+            {
+              "fact_type": "PROMISE_ACTIVE",
+              "statement": "换货发出承诺已按时进入运输阶段。",
+              "source_ids": [
+                "36199788469718.PNM"
+              ]
+            }
+          ],
+          "deterioration_cause": "此前缺少可见的主动进度更新。",
+          "latent_need": "获得可查询的物流进展。",
+          "responsibility_judgment": {
+            "consumer_input_complete": true,
+            "accountable_side": "BRAND"
+          },
+          "action_impacts": [
+            "START_PROACTIVE_UPDATE"
+          ],
+          "reply_strategy": "主动告知已揽收和物流单号，无需消费者继续操作。"
+        },
+        "open_obligation": {
+          "obligation_type": "REPLACEMENT_FULFILLMENT",
+          "status": "ON_TRACK",
+          "accountable_side": "BRAND",
+          "executor": "LOGISTICS_PROVIDER",
+          "deadline": "2026-05-07T10:27:37+08:00",
+          "next_check_at": "2026-05-08T10:10:00+08:00",
+          "milestone": "IN_TRANSIT",
+          "resolution_condition": "REPLACEMENT_DELIVERED"
+        },
+        "service_progress_receipt": {
+          "receipt_id": "RECEIPT_DEMO_001_001",
+          "status": "ACTIVE",
+          "received_evidence": [
+            "粉底液泵头损坏图片",
+            "订单和商品货号",
+            "换货工单 BH919209358357"
+          ],
+          "brand_action": "换货件已由物流揽收，当前正在运输。",
+          "latest_update_at": "2026-05-07T10:10:00+08:00",
+          "next_update_by": "2026-05-08T10:10:00+08:00",
+          "consumer_action_required": false,
+          "recovery_if_missed": "若物流长时间无更新，品牌将主动查询并通知处理结果。"
+        },
+        "experience_risk": "LOW",
+        "audit_trail": [
+          {
+            "at": "2026-05-07T10:10:00+08:00",
+            "actor": "SIMULATOR",
+            "action": "SHIPMENT_PICKED_UP",
+            "changed_fields": [
+              "open_obligation"
+            ],
+            "request_id": "REQ_SHIPMENT_PICKED_001"
+          }
+        ]
+      },
+      "follow_up_candidate": null,
+      "supervisor_escalation_candidate": null,
+      "proactive_notification_draft": {
+        "text": "您的换货件已经由物流揽收，物流单号为 YT7667875838478。您无需操作，我们会继续关注直至送达。",
+        "commits_next_update_at": "2026-05-08T10:10:00+08:00",
+        "requires_human_approval": true,
+        "channel": "ORIGINAL_CHAT"
+      }
+    }
+  }
+}

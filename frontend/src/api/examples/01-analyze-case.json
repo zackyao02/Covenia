@@ -1,0 +1,341 @@
+{
+  "endpoint": "POST /api/cases/analyze",
+  "scenario": "S00001 主案例：从原始聊天、订单、工单和三张证据图生成旅程与责任账本",
+  "request": {
+    "case_id": "DEMO_001",
+    "evaluation_time": "2026-05-07T11:00:00+08:00"
+  },
+  "response": {
+    "data": {
+      "extracted_journey": {
+        "case_id": "DEMO_001",
+        "completed_actions": {
+          "issue_explained": true,
+          "order_verified": true,
+          "evidence_submitted": true
+        },
+        "promise_events": [
+          {
+            "raw_text": "换货单已创建，48小时内发出。",
+            "promise_type": "REPLACEMENT_SHIPMENT_DEADLINE",
+            "commitment_class": "STANDARD_APPROVED",
+            "activation_recommendation": "ACTIVE",
+            "conditions": [
+              "换货工单已创建"
+            ],
+            "committed_at": "2026-05-05T10:27:37+08:00",
+            "deadline": "2026-05-07T10:27:37+08:00",
+            "confidence": 0.97,
+            "source_ids": [
+              "36199788469718.PNM",
+              "BH919209358357"
+            ]
+          }
+        ],
+        "image_observations": [
+          {
+            "evidence_id": "S00001_IMG_OVERVIEW",
+            "readability": "HIGH",
+            "product_identifiable": true,
+            "sku_match": "MATCH",
+            "product_role": "PRIMARY",
+            "issue_visible": false,
+            "affected_component": "UNKNOWN",
+            "view_type": "PRODUCT_OVERVIEW",
+            "coverage": [
+              "PRODUCT_IDENTITY"
+            ],
+            "integrity_concern": true,
+            "confidence": 0.93,
+            "hygiene_risk": "MEDIUM"
+          },
+          {
+            "evidence_id": "S00001_IMG_PUMP",
+            "readability": "HIGH",
+            "product_identifiable": true,
+            "sku_match": "MATCH",
+            "product_role": "PRIMARY",
+            "issue_visible": true,
+            "affected_component": "PUMP",
+            "view_type": "ISSUE_DETAIL",
+            "coverage": [
+              "AFFECTED_COMPONENT",
+              "DAMAGE_DETAIL"
+            ],
+            "integrity_concern": true,
+            "confidence": 0.95,
+            "hygiene_risk": "MEDIUM"
+          },
+          {
+            "evidence_id": "S00001_IMG_PACKAGE",
+            "readability": "HIGH",
+            "product_identifiable": true,
+            "sku_match": "MATCH",
+            "product_role": "PRIMARY",
+            "issue_visible": true,
+            "affected_component": "OUTER_PACKAGE",
+            "view_type": "PACKAGE_CONTEXT",
+            "coverage": [
+              "PACKAGE_CONTEXT"
+            ],
+            "integrity_concern": true,
+            "confidence": 0.91,
+            "hygiene_risk": "MEDIUM"
+          }
+        ],
+        "extracted_scope": {
+          "order_id": "6920185815517983396",
+          "fulfillment_item_id": "6920185815517983396-XC33003",
+          "sku_id": "XC33003",
+          "issue_type": "PACKAGE_DAMAGE"
+        },
+        "journey_understanding": {
+          "consumer_intent": "确认换货是否已经发出",
+          "experience_expression": "消费者已经提交图片但仍需追问进度",
+          "service_cause": "已有换货承诺缺少主动进度回执",
+          "latent_need": "无需再次举证即可获得确定进展",
+          "cooperation_willingness": "DECLINING",
+          "action_impact": "再次索取同一证据会让责任倒流给消费者",
+          "source_ids": [
+            "80525870445254.PNM",
+            "DEMO_AUG_MSG_001"
+          ]
+        },
+        "source_trace": [
+          {
+            "field": "completed_actions.evidence_submitted",
+            "source_type": "CHAT",
+            "source_id": "80525870445254.PNM"
+          },
+          {
+            "field": "promise_events[0]",
+            "source_type": "CHAT",
+            "source_id": "36199788469718.PNM"
+          },
+          {
+            "field": "promise_events[0].conditions",
+            "source_type": "TICKET",
+            "source_id": "BH919209358357"
+          }
+        ],
+        "model_metadata": {
+          "model_id": "Qwen/Qwen2-VL-2B-Instruct",
+          "model_revision": "competition-demo",
+          "prompt_version": "journey-v0.8.0",
+          "run_id": "RUN_DEMO_001_001",
+          "cached_result": false
+        }
+      },
+      "accountability_state": {
+        "case_id": "DEMO_001",
+        "case_status": "ACTION_REVIEW",
+        "consumer_input_required": false,
+        "accountable_side": "BRAND",
+        "evidence_status": "VALID",
+        "current_scope": {
+          "order_id": "6920185815517983396",
+          "fulfillment_item_id": "6920185815517983396-XC33003",
+          "sku_id": "XC33003",
+          "issue_type": "PACKAGE_DAMAGE"
+        },
+        "active_commitments": [
+          {
+            "promise_type": "REPLACEMENT_SHIPMENT_DEADLINE",
+            "raw_text": "换货单已创建，48小时内发出。",
+            "status": "AT_RISK",
+            "deadline": "2026-05-07T10:27:37+08:00",
+            "source_ids": [
+              "36199788469718.PNM",
+              "BH919209358357"
+            ]
+          }
+        ],
+        "prohibited_actions": [
+          "ASK_SAME_EVIDENCE",
+          "SHIFT_FOLLOW_UP_TO_CONSUMER",
+          "CLOSE_BEFORE_RESOLUTION"
+        ],
+        "experience_gap_diagnosis": {
+          "consumer_expression": "图片已经提交，消费者仍在追问换货进度。",
+          "traceable_service_facts": [
+            {
+              "fact_type": "EVIDENCE_SUBMITTED",
+              "statement": "粉底液泵头损坏图片已提交。",
+              "source_ids": [
+                "80525870445254.PNM",
+                "S00001_IMG_PUMP"
+              ]
+            },
+            {
+              "fact_type": "TICKET_CREATED",
+              "statement": "换货工单 BH919209358357 已创建且正在处理。",
+              "source_ids": [
+                "BH919209358357"
+              ]
+            },
+            {
+              "fact_type": "PROMISE_OVERDUE",
+              "statement": "48 小时发出承诺已到期。",
+              "source_ids": [
+                "36199788469718.PNM"
+              ]
+            }
+          ],
+          "deterioration_cause": "品牌未在承诺节点前主动同步换货进度。",
+          "latent_need": "消费者需要确定进展，不应再次提交相同材料。",
+          "responsibility_judgment": {
+            "consumer_input_complete": true,
+            "accountable_side": "BRAND"
+          },
+          "action_impacts": [
+            "BLOCK_REPEAT_EVIDENCE",
+            "CHECK_EXISTING_FULFILLMENT",
+            "START_PROACTIVE_UPDATE"
+          ],
+          "reply_strategy": "先承认已收到证据，再查询已有换货工单并主动告知更新时间。"
+        },
+        "open_obligation": null,
+        "service_progress_receipt": null,
+        "experience_risk": "HIGH",
+        "audit_trail": []
+      },
+      "model_metadata": {
+        "model_id": "Qwen/Qwen2-VL-2B-Instruct",
+        "model_revision": "competition-demo",
+        "prompt_version": "journey-v0.8.0",
+        "run_id": "RUN_DEMO_001_001",
+        "cached_result": false
+      }
+    },
+    "error": null,
+    "request_id": "REQ_ANALYZE_001"
+  },
+  "case_input_fixture": {
+    "case_id": "DEMO_001",
+    "data_provenance": {
+      "source_dataset": "TIANCHI_LOREAL_TRACK1_MOCK",
+      "source_session_id": "S00001",
+      "augmentation_notes": [
+        "赛事记录只有图片路径引用，三张可运行图片为团队合成素材",
+        "第二次进线和评估时间为团队压力测试扩充"
+      ]
+    },
+    "evaluation_time": "2026-05-07T11:00:00+08:00",
+    "conversation": [
+      {
+        "message_id": "20974795108539.PNM",
+        "timestamp": "2026-05-05T10:18:45+08:00",
+        "speaker": "CONSUMER",
+        "text": "你好，收到的粉底液泵头是坏的，按不出来东西，急",
+        "source_kind": "COMPETITION_MOCK"
+      },
+      {
+        "message_id": "51831669257761.PNM",
+        "timestamp": "2026-05-05T10:20:59+08:00",
+        "speaker": "AGENT",
+        "text": "麻烦拍下破损部位的照片发给客服，为您核实换货。",
+        "source_kind": "COMPETITION_MOCK"
+      },
+      {
+        "message_id": "80525870445254.PNM",
+        "timestamp": "2026-05-05T10:21:38+08:00",
+        "speaker": "CONSUMER",
+        "text": "图发你了。",
+        "source_kind": "COMPETITION_MOCK"
+      },
+      {
+        "message_id": "22703823958720.PNM",
+        "timestamp": "2026-05-05T10:24:13+08:00",
+        "speaker": "AGENT",
+        "text": "收到，确认属包装破损，为您登记换货。",
+        "source_kind": "COMPETITION_MOCK"
+      },
+      {
+        "message_id": "36199788469718.PNM",
+        "timestamp": "2026-05-05T10:27:37+08:00",
+        "speaker": "AGENT",
+        "text": "换货单已创建，48小时内发出。",
+        "source_kind": "COMPETITION_MOCK"
+      },
+      {
+        "message_id": "DEMO_AUG_MSG_001",
+        "timestamp": "2026-05-07T10:45:00+08:00",
+        "speaker": "CONSUMER",
+        "text": "我前天图片都发过了，换货到底有没有发？",
+        "source_kind": "DEMO_AUGMENTATION"
+      }
+    ],
+    "order": {
+      "order_id": "6920185815517983396",
+      "channel": "TIANCHI_MOCK_QIANNIU",
+      "original_logistics_number": "773478190943155",
+      "items": [
+        {
+          "fulfillment_item_id": "6920185815517983396-XC33003",
+          "sku_id": "XC33003",
+          "product_name": "测试轻透粉底液30ml #N02自然色",
+          "batch_code": null,
+          "item_role": "PRIMARY"
+        },
+        {
+          "fulfillment_item_id": "6920185815517983396-GIFT-01",
+          "sku_id": "GIFT-B5-MASK-2",
+          "product_name": "测试B5面膜体验装2片",
+          "batch_code": null,
+          "item_role": "GIFT"
+        }
+      ]
+    },
+    "service_tickets": [
+      {
+        "ticket_id": "BH919209358357",
+        "ticket_type": "REPLACEMENT",
+        "status": "进行中",
+        "assignee_id": "G003",
+        "executor_name": "测试美妆分销中心",
+        "replacement_logistics_number": "YT7667875838478",
+        "created_at": "2026-05-05T10:29:45+08:00",
+        "completed_at": null,
+        "source_sheet": "补发换货工单"
+      }
+    ],
+    "evidence_images": [
+      {
+        "evidence_id": "S00001_IMG_OVERVIEW",
+        "file_name": "s00001-product-overview.jpg",
+        "submitted_at": "2026-05-05T10:21:38+08:00",
+        "declared_view_type": "PRODUCT_OVERVIEW",
+        "source_kind": "TEAM_SYNTHETIC_RECREATION",
+        "source_message_id": "80525870445254.PNM",
+        "competition_reference_path": "mock_images/broken_pump/S00001_03.jpg"
+      },
+      {
+        "evidence_id": "S00001_IMG_PUMP",
+        "file_name": "s00001-pump-detail.jpg",
+        "submitted_at": "2026-05-05T10:21:38+08:00",
+        "declared_view_type": "ISSUE_DETAIL",
+        "source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
+        "source_message_id": "DEMO_AUG_IMG_002",
+        "competition_reference_path": null
+      },
+      {
+        "evidence_id": "S00001_IMG_PACKAGE",
+        "file_name": "s00001-package-context.jpg",
+        "submitted_at": "2026-05-05T10:21:38+08:00",
+        "declared_view_type": "PACKAGE_CONTEXT",
+        "source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
+        "source_message_id": "DEMO_AUG_IMG_003",
+        "competition_reference_path": null
+      }
+    ],
+    "current_issue": {
+      "fulfillment_item_id": "6920185815517983396-XC33003",
+      "sku_id": "XC33003",
+      "issue_type": "PACKAGE_DAMAGE",
+      "affected_component": "PUMP",
+      "integrity_concern": true,
+      "hygiene_risk": "MEDIUM"
+    },
+    "policy_requirement_id": "DEMO_POLICY_PACKAGE_DAMAGE_V1"
+  }
+}
