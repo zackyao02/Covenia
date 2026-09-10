@@ -1,0 +1,206 @@
+{
+  "gate": "X-FREEZE",
+  "status": "APPROVED",
+  "approved_by": "Zack",
+  "approved_at": "2026-09-10T23:59:00+08:00",
+  "approval_channel": "产品负责人在审查会话中的明确批准：『8 条都同意』『09:32 / 09:40 是最终剧本时间』",
+  "recorded_by": "审查方（Claude 角色）；本文件为如实转录，不构成审查方自行批准",
+  "based_on": [
+    "PRODUCT-FREEZE.md @ fd52de8a8e3cb439acfb0ab28740fc8d9de15290（APPROVED / Zack / 2026-09-10）",
+    "schemas/（12 个，C 分支）",
+    "docs/03-firewall-rules.md、docs/04-responsibility-loop.md、docs/05-api-and-ui.md、docs/08-idempotency-and-ordering.md",
+    "checks/repo_contract_check.py 核验结果（修正前 12/16，修正后 16/16）"
+  ],
+  "timeline_confirmation": {
+    "id": "T01",
+    "verdict": "APPROVED",
+    "choice": "二次进线 2026-05-07T09:32:00+08:00；evaluation_time 2026-05-07T09:40:00+08:00 为最终剧本时间线",
+    "also_locked": [
+      "approved_at 09:42",
+      "揽收 10:10",
+      "未揽收 11:35",
+      "承诺截止 10:27:37 不变"
+    ],
+    "source": "PRODUCT-FREEZE.md 附录 P0-4"
+  },
+  "decisions": [
+    {
+      "id": "D01",
+      "verdict": "APPROVED",
+      "choice": "以 origin/feat/c-qianniu-plugin @ fd52de8a8e3cb439acfb0ab28740fc8d9de15290 为集成基线，建立 integration/covenia-b；不从 main 重做。",
+      "reason": "main 缺 12 个 schema、缺 frontend、冻结版本更旧，从 main 开工等于丢弃已批准契约与已完成前端。",
+      "source": "MASTER_PLAN D01 提案 + 产品负责人批准",
+      "affected_files": [
+        ".git 分支策略"
+      ],
+      "affected_batches": [
+        "BATCH-01",
+        "BATCH-02",
+        "BATCH-03",
+        "全部"
+      ]
+    },
+    {
+      "id": "D03",
+      "verdict": "APPROVED",
+      "choice": "重复索证归 E1/300/INTERVENE（HTTP 200 + DecisionResult）；P0_PROHIBITED_ACTION/400 仅用于 accountability_state.prohibited_actions 列表命中的动作；ASK_SAME_EVIDENCE 保留为展示用禁止项，不单独触发 P0。",
+      "reason": "A13/A20/A21/A29/A30 五条验收只有在此映射下才能同时成立。",
+      "source": "PRODUCT-FREEZE.md A13/A20/A21/A29/A30 + docs/03",
+      "affected_files": [
+        "docs/03-firewall-rules.md",
+        "schemas/decision-result.schema.json"
+      ],
+      "affected_batches": [
+        "BATCH-03",
+        "BATCH-15",
+        "BATCH-22"
+      ]
+    },
+    {
+      "id": "D04",
+      "verdict": "APPROVED",
+      "choice": "在 PreparedAction.action_type 增加 SHIFT_FOLLOW_UP_TO_CONSUMER 与 REPEAT_EXPLANATION_REQUEST 两个值（仅扩动作编码，不新增业务场景/接口）。禁止用 action_id、前端文案或 Prompt 隐式表达动作语义。",
+      "reason": "docs/03 的 R1（责任倒流）与重复解释在现有四种 action_type 下无法审计表达，A29 需要前者。",
+      "source": "docs/03 完整规则目录 R1 + A29",
+      "affected_files": [
+        "schemas/prepared-action.schema.json",
+        "docs/03-firewall-rules.md"
+      ],
+      "affected_batches": [
+        "BATCH-03",
+        "BATCH-15"
+      ]
+    },
+    {
+      "id": "D05",
+      "verdict": "APPROVED",
+      "choice": "内部 CandidateExtraction 只承载原文/来源/时间表达/条件/观察；公开 ExtractedJourney 的派生必填字段（commitment_class、activation_recommendation、deadline）由服务端富化。模型输出永不直接入账。",
+      "reason": "A25（消费者伪造承诺）、A28（全额退款赔偿）只有在服务端校验下才成立；与『模型只能提供候选事实』一致。",
+      "source": "PRODUCT-FREEZE.md『真实数据与 AI 链路』+ A25/A28",
+      "affected_files": [
+        "schemas/extracted-journey.schema.json",
+        "docs/02-ai-extraction.md"
+      ],
+      "affected_batches": [
+        "BATCH-03",
+        "BATCH-11",
+        "BATCH-13"
+      ]
+    },
+    {
+      "id": "D07",
+      "verdict": "APPROVED",
+      "choice": "判定为夹具缺陷，按 P0-4 修正，且仅限三处：① DEMO_001.evaluation_time 11:00→09:40；② DEMO_AUG_MSG_001 时间戳 10:45→09:32；③ ground-truth DEMO_001.expected_action_impacts 去掉 RAISE_PRIORITY。不得扩展修改范围。修正后须由 repo_contract_check.py 复核至 16/16。",
+      "reason": "修正前 4 项 FAIL：其中『真值措辞为承诺即将到期，但 evaluation_time 已晚于承诺截止』属自相矛盾，A9 必然失败。已在副本上验证修正后 16/16 通过。",
+      "source": "PRODUCT-FREEZE.md P0-4；checks/repo_contract_check.py 输出",
+      "affected_files": [
+        "fixtures/demo-cases.json",
+        "fixtures/ground-truth.json"
+      ],
+      "affected_batches": [
+        "BATCH-06",
+        "BATCH-29"
+      ],
+      "constraint": "本修订是『对齐已批准冻结』，不是为实现背书；除上述三处外不得改动任何原始赛事时间或标签。",
+      "owner": "A 线 semantics；由 Codex 按本授权代为落地并提交"
+    },
+    {
+      "id": "D08",
+      "verdict": "APPROVED",
+      "choice": "next_check_at = 10:30 数值不变，语义明确为『承诺截止（10:27:37）之后的首次检查点』；A6 只要求 通知时间 = next_check_at = next_update_by 三处相等，不要求早于 deadline。同步修订 docs/04 措辞。",
+      "reason": "改数值会连带 A6/A9/A32 与前端文案，收益低风险高。",
+      "source": "PRODUCT-FREEZE.md A6 + P0-4『next_check_at 统一 10:30』",
+      "affected_files": [
+        "docs/04-responsibility-loop.md"
+      ],
+      "affected_batches": [
+        "BATCH-03",
+        "BATCH-13",
+        "BATCH-17"
+      ]
+    },
+    {
+      "id": "D13",
+      "verdict": "APPROVED",
+      "choice": "分层处理：① 结构可用但来源冲突/不可靠 → HUMAN_REVIEW/H1/350；② 无法形成合法抽取（JSON 不可解析、重试仍失败）→ 502 + 显式人工接管提示，不得伪造成功账本；③ 模型整体不可用 → 缓存回退，响应 cached_result:true 且界面标注。",
+      "reason": "A31 要求缓存可见；『不得伪造成功』与团队验收门槛第 5 条一致。",
+      "source": "docs/02 §6、docs/08、PRODUCT-FREEZE.md A31",
+      "affected_files": [
+        "docs/08-idempotency-and-ordering.md",
+        "schemas/"
+      ],
+      "affected_batches": [
+        "BATCH-03",
+        "BATCH-11",
+        "BATCH-20",
+        "BATCH-21"
+      ]
+    },
+    {
+      "id": "D15",
+      "verdict": "APPROVED",
+      "choice": "幂等键 = (case_id, 端点, 规范化请求体摘要)，保存首个响应与 request_id；event_id 独立去重；持久事件时间单调不减；analyze 绝不重置已有批准、义务或已发生事件。",
+      "reason": "A18（同幂等键重放响应一致且状态不二次变更）与 A27（逆序事件被拒）需要确定的键范围与不回退语义。",
+      "source": "PRODUCT-FREEZE.md A18/A27 + docs/08",
+      "affected_files": [
+        "docs/08-idempotency-and-ordering.md"
+      ],
+      "affected_batches": [
+        "BATCH-03",
+        "BATCH-18",
+        "BATCH-23",
+        "BATCH-26"
+      ]
+    },
+    {
+      "id": "D02",
+      "verdict": "COVERED_BY_FREEZE",
+      "source": "PRODUCT-FREEZE.md P0-8 + A34（修复令）",
+      "affected_batches": [
+        "BATCH-03"
+      ]
+    },
+    {
+      "id": "D06",
+      "verdict": "COVERED_BY_FREEZE",
+      "source": "PRODUCT-FREEZE.md A13（P0=400）与 A20/A21（E1=200）",
+      "affected_batches": [
+        "BATCH-03"
+      ]
+    },
+    {
+      "id": "D10",
+      "verdict": "COVERED_BY_FREEZE",
+      "source": "PRODUCT-FREEZE.md P0-2",
+      "affected_batches": [
+        "BATCH-03"
+      ]
+    },
+    {
+      "id": "D11",
+      "verdict": "COVERED_BY_FREEZE",
+      "source": "PRODUCT-FREEZE.md A7 + 『四接口不增』",
+      "affected_batches": [
+        "BATCH-03"
+      ]
+    },
+    {
+      "id": "D16",
+      "verdict": "COVERED_BY_FREEZE",
+      "source": "PRODUCT-FREEZE.md P0-11",
+      "affected_batches": [
+        "BATCH-03"
+      ]
+    }
+  ],
+  "verification": {
+    "command": "python checks/repo_contract_check.py --repo <repo>",
+    "before": "12/16 通过（F1–F4 FAIL）",
+    "after_preview": "16/16 通过（已在 work/fixture-preview 副本上验证）"
+  },
+  "notes": [
+    "D14 由 A 提供图片可辨识/覆盖人工标注，B 编码为确定性组合表（experience_risk 已改为确定性推导）。",
+    "D12 由 C 补齐 approve/shipment 响应 Schema 与 TS 类型同步（X-C-CONTRACT 门）。",
+    "X-A-IMAGES（5 张证据图）仍为门 2/门 3 的硬阻塞，不阻塞 BATCH-01～06。"
+  ]
+}
