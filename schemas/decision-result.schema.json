@@ -4,12 +4,12 @@
   "title": "DecisionResult",
   "type": "object",
   "additionalProperties": false,
-  "required": ["case_id", "decision", "rule_id", "rule_priority", "accountability_state", "challenge_mode", "fact_trace", "reason", "resolution_path"],
+  "required": ["case_id", "decision", "rule_id", "rule_priority", "accountability_state", "challenge_mode", "fact_trace", "reason", "resolution_path", "runtime_metrics"],
   "properties": {
     "case_id": {"type": "string"},
     "decision": {"enum": ["INTERVENE", "ALLOW", "HUMAN_REVIEW"]},
     "rule_id": {"enum": ["P0_PROHIBITED_ACTION", "E1", "E2", "H1", "E0_NO_RULE_MATCHED"]},
-    "rule_priority": {"enum": [400, 300, 200, 100, 0]},
+    "rule_priority": {"enum": [400, 350, 300, 100, 0]},
     "accountability_state": {"$ref": "accountability-state.schema.json"},
     "challenge_mode": {"type": "boolean"},
     "fact_trace": {
@@ -75,7 +75,8 @@
           }
         }
       }
-    }
+    },
+    "runtime_metrics": {"$ref": "runtime-metrics.schema.json"}
   },
   "allOf": [
     {
@@ -88,7 +89,7 @@
     },
     {
       "if": {"properties": {"rule_id": {"const": "H1"}}},
-      "then": {"properties": {"decision": {"const": "HUMAN_REVIEW"}, "rule_priority": {"const": 200}}}
+      "then": {"properties": {"decision": {"const": "HUMAN_REVIEW"}, "rule_priority": {"const": 350}}}
     },
     {
       "if": {"properties": {"rule_id": {"const": "E2"}}},

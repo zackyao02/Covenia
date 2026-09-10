@@ -47,7 +47,7 @@
             ],
             "integrity_concern": true,
             "confidence": 0.93,
-            "hygiene_risk": "MEDIUM"
+            "hygiene_risk_signal": "MEDIUM"
           },
           {
             "evidence_id": "S00001_IMG_PUMP",
@@ -64,7 +64,7 @@
             ],
             "integrity_concern": true,
             "confidence": 0.95,
-            "hygiene_risk": "MEDIUM"
+            "hygiene_risk_signal": "MEDIUM"
           },
           {
             "evidence_id": "S00001_IMG_PACKAGE",
@@ -80,7 +80,7 @@
             ],
             "integrity_concern": true,
             "confidence": 0.91,
-            "hygiene_risk": "MEDIUM"
+            "hygiene_risk_signal": "MEDIUM"
           }
         ],
         "extracted_scope": {
@@ -142,7 +142,7 @@
           {
             "promise_type": "REPLACEMENT_SHIPMENT_DEADLINE",
             "raw_text": "换货单已创建，48小时内发出。",
-            "status": "AT_RISK",
+            "status": "ACTIVE",
             "deadline": "2026-05-07T10:27:37+08:00",
             "source_ids": [
               "36199788469718.PNM",
@@ -174,8 +174,8 @@
               ]
             },
             {
-              "fact_type": "PROMISE_OVERDUE",
-              "statement": "48 小时发出承诺已到期。",
+              "fact_type": "PROMISE_ACTIVE",
+              "statement": "48 小时发出承诺仍在有效期内。",
               "source_ids": [
                 "36199788469718.PNM"
               ]
@@ -198,6 +198,12 @@
         "service_progress_receipt": null,
         "experience_risk": "HIGH",
         "audit_trail": []
+      },
+      "runtime_metrics": {
+        "input_tokens": 1184,
+        "output_tokens": 346,
+        "inference_latency_ms": 842,
+        "rule_substitution_count": 0
       },
       "model_metadata": {
         "model_id": "Qwen/Qwen2-VL-2B-Instruct",
@@ -334,7 +340,7 @@
       "issue_type": "PACKAGE_DAMAGE",
       "affected_component": "PUMP",
       "integrity_concern": true,
-      "hygiene_risk": "MEDIUM"
+      "hygiene_risk_signal": "MEDIUM"
     },
     "policy_requirement_id": "DEMO_POLICY_PACKAGE_DAMAGE_V1"
   }

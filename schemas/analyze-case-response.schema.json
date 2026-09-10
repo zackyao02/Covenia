@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "analyze-case-response.schema.json",
+  "title": "AnalyzeCaseResponse",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["extracted_journey", "accountability_state", "model_metadata", "runtime_metrics"],
+  "properties": {
+    "extracted_journey": {"$ref": "extracted-journey.schema.json"},
+    "accountability_state": {"$ref": "accountability-state.schema.json"},
+    "model_metadata": {"type": "object"},
+    "runtime_metrics": {"$ref": "runtime-metrics.schema.json"}
+  }
+}

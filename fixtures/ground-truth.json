@@ -48,7 +48,7 @@
     "expected_evidence_status": "NEED_HUMAN_REVIEW",
     "expected_decision": "HUMAN_REVIEW",
     "expected_rule_id": "H1",
-    "expected_rule_priority": 200,
+    "expected_rule_priority": 350,
     "expected_resolution_candidate": "HUMAN_EVIDENCE_REVIEW",
     "expected_creates_obligation": false,
     "expected_journey_understanding": {

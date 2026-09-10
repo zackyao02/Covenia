@@ -14,7 +14,7 @@
     "data": {
       "accountability_state": {
         "case_id": "DEMO_001",
-        "case_status": "AT_RISK",
+        "case_status": "IN_FULFILLMENT",
         "consumer_input_required": false,
         "accountable_side": "BRAND",
         "evidence_status": "VALID",
@@ -28,7 +28,7 @@
           {
             "promise_type": "REPLACEMENT_SHIPMENT_DEADLINE",
             "raw_text": "换货单已创建，48小时内发出。",
-            "status": "AT_RISK",
+            "status": "ACTIVE",
             "deadline": "2026-05-07T10:27:37+08:00",
             "source_ids": [
               "36199788469718.PNM",
@@ -60,8 +60,8 @@
               ]
             },
             {
-              "fact_type": "PROMISE_OVERDUE",
-              "statement": "48 小时发出承诺已到期，当前需要品牌主动补救。",
+              "fact_type": "PROMISE_ACTIVE",
+              "statement": "48 小时发出承诺仍在有效期内，品牌持续跟进。",
               "source_ids": [
                 "36199788469718.PNM"
               ]
@@ -83,7 +83,7 @@
         },
         "open_obligation": {
           "obligation_type": "REPLACEMENT_FULFILLMENT",
-          "status": "AT_RISK",
+          "status": "ON_TRACK",
           "accountable_side": "BRAND",
           "executor": "WAREHOUSE",
           "deadline": "2026-05-07T10:27:37+08:00",
@@ -93,15 +93,15 @@
         },
         "service_progress_receipt": {
           "receipt_id": "RECEIPT_DEMO_001_001",
-          "status": "AT_RISK",
+          "status": "ACTIVE",
           "received_evidence": [
             "粉底液泵头损坏图片",
             "订单和商品货号",
             "换货工单 BH919209358357"
           ],
           "brand_action": "正在核实换货件是否已由物流揽收，并催促仓库反馈。",
-          "latest_update_at": "2026-05-07T11:02:00+08:00",
-          "next_update_by": "2026-05-07T11:30:00+08:00",
+          "latest_update_at": "2026-05-07T09:42:00+08:00",
+          "next_update_by": "2026-05-07T10:30:00+08:00",
           "consumer_action_required": false,
           "recovery_if_missed": "若仍未确认揽收，品牌将升级催办并主动通知新的处理时间。"
         },

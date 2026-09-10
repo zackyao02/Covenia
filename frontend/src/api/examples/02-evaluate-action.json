@@ -74,7 +74,7 @@
           {
             "promise_type": "REPLACEMENT_SHIPMENT_DEADLINE",
             "raw_text": "换货单已创建，48小时内发出。",
-            "status": "AT_RISK",
+            "status": "ACTIVE",
             "deadline": "2026-05-07T10:27:37+08:00",
             "source_ids": [
               "36199788469718.PNM",
@@ -106,8 +106,8 @@
               ]
             },
             {
-              "fact_type": "PROMISE_OVERDUE",
-              "statement": "48 小时发出承诺已到期。",
+              "fact_type": "PROMISE_ACTIVE",
+              "statement": "48 小时发出承诺仍在有效期内。",
               "source_ids": [
                 "36199788469718.PNM"
               ]
@@ -131,7 +131,13 @@
         "experience_risk": "HIGH",
         "audit_trail": []
       },
-      "challenge_mode": false
+      "challenge_mode": false,
+      "runtime_metrics": {
+        "input_tokens": 238,
+        "output_tokens": 74,
+        "inference_latency_ms": 36,
+        "rule_substitution_count": 1
+      }
     },
     "error": null,
     "request_id": "REQ_EVALUATE_001"
@@ -199,7 +205,7 @@
             {
               "promise_type": "REPLACEMENT_SHIPMENT_DEADLINE",
               "raw_text": "换货单已创建，48小时内发出。",
-              "status": "AT_RISK",
+            "status": "ACTIVE",
               "deadline": "2026-05-07T10:27:37+08:00",
               "source_ids": [
                 "36199788469718.PNM",
@@ -231,8 +237,8 @@
                 ]
               },
               {
-                "fact_type": "PROMISE_OVERDUE",
-                "statement": "48 小时发出承诺已到期。",
+              "fact_type": "PROMISE_ACTIVE",
+              "statement": "48 小时发出承诺仍在有效期内。",
                 "source_ids": [
                   "36199788469718.PNM"
                 ]
@@ -256,7 +262,13 @@
           "experience_risk": "HIGH",
           "audit_trail": []
         },
-        "challenge_mode": true
+        "challenge_mode": true,
+        "runtime_metrics": {
+          "input_tokens": 238,
+          "output_tokens": 74,
+          "inference_latency_ms": 36,
+          "rule_substitution_count": 1
+        }
       }
     },
     {
@@ -278,7 +290,7 @@
         "case_id": "DEMO_003",
         "decision": "HUMAN_REVIEW",
         "rule_id": "H1",
-        "rule_priority": 200,
+        "rule_priority": 350,
         "fact_trace": {
           "evidence_status": "NEED_HUMAN_REVIEW",
           "prepared_action": "ASK_EVIDENCE",
@@ -323,7 +335,7 @@
             {
               "promise_type": "REPLACEMENT_SHIPMENT_DEADLINE",
               "raw_text": "换货单已创建，48小时内发出。",
-              "status": "AT_RISK",
+            "status": "ACTIVE",
               "deadline": "2026-05-07T10:27:37+08:00",
               "source_ids": [
                 "36199788469718.PNM",
@@ -355,8 +367,8 @@
                 ]
               },
               {
-                "fact_type": "PROMISE_OVERDUE",
-                "statement": "48 小时发出承诺已到期。",
+              "fact_type": "PROMISE_ACTIVE",
+              "statement": "48 小时发出承诺仍在有效期内。",
                 "source_ids": [
                   "36199788469718.PNM"
                 ]
@@ -380,7 +392,13 @@
           "experience_risk": "HIGH",
           "audit_trail": []
         },
-        "challenge_mode": true
+        "challenge_mode": true,
+        "runtime_metrics": {
+          "input_tokens": 238,
+          "output_tokens": 74,
+          "inference_latency_ms": 36,
+          "rule_substitution_count": 1
+        }
       }
     }
   ],

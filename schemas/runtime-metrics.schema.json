@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "runtime-metrics.schema.json",
+  "title": "RuntimeMetrics",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["input_tokens", "output_tokens", "inference_latency_ms", "rule_substitution_count"],
+  "properties": {
+    "input_tokens": {"type": "integer", "minimum": 0},
+    "output_tokens": {"type": "integer", "minimum": 0},
+    "inference_latency_ms": {"type": "integer", "minimum": 0},
+    "rule_substitution_count": {"type": "integer", "minimum": 0}
+  }
+}

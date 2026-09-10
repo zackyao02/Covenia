@@ -126,7 +126,7 @@
       "supervisor_escalation_candidate": {
         "escalation_type": "PROMISE_OVERDUE",
         "priority": "HIGH",
-        "summary": "S00001 换货发出承诺已逾期且物流未揽收，建议主管介入。"
+        "summary": "DEMO_001 换货发出承诺已逾期且物流未揽收，建议主管介入。"
       },
       "proactive_notification_draft": {
         "text": "您的换货件目前尚未完成物流揽收，我们已向仓库加急催办。您无需再次提供材料，我们会在今天 12:00 前主动更新处理进展。",

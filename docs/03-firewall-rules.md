@@ -18,7 +18,7 @@ AND requested_scope = current_scope
 
 ## H1｜人工复核
 
-优先级：`200`
+优先级：`350`
 
 ```text
 evidence_status = NEED_HUMAN_REVIEW
@@ -65,7 +65,7 @@ AND prepared_action = ASK_EVIDENCE
 
 ## 求值顺序与可解释性
 
-规则按 `P0_PROHIBITED_ACTION (400) → E1 (300) → H1 (200) → E2 (100) → E0_NO_RULE_MATCHED (0)` 求值。一次请求可以同时满足多个条件；只返回最高优先级规则，并在 `fact_trace.suppressed_rule_ids` 写入其余命中的规则。这样不良反应与假性结案同时出现时，界面可解释为何先阻断结案。
+规则按 `P0_PROHIBITED_ACTION (400) → H1 (350) → E1 (300) → E2 (100) → E0_NO_RULE_MATCHED (0)` 求值。一次请求可以同时满足多个条件；只返回最高优先级规则，并在 `fact_trace.suppressed_rule_ids` 写入其余命中的规则。这样不良反应与假性结案同时出现时，界面可解释为何先阻断结案。
 
 ## 决策约束
 

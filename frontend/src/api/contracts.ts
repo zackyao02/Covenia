@@ -110,8 +110,6 @@ export interface CurrentIssue {
   sku_id: string;
   issue_type: IssueType;
   affected_component?: AffectedComponent;
-  integrity_concern?: boolean;
-  hygiene_risk?: RiskLevel;
 }
 
 export interface CaseInput {
@@ -168,7 +166,7 @@ export interface ImageObservation {
   view_type: ViewType;
   coverage: EvidenceCoverage[];
   integrity_concern: boolean;
-  hygiene_risk: RiskLevel;
+  hygiene_risk_signal: RiskLevel;
   confidence: number;
 }
 
@@ -338,7 +336,14 @@ export interface PreparedAction {
 
 export type Decision = "INTERVENE" | "ALLOW" | "HUMAN_REVIEW";
 export type RuleId = "P0_PROHIBITED_ACTION" | "E1" | "E2" | "H1" | "E0_NO_RULE_MATCHED";
-export type RulePriority = 400 | 300 | 200 | 100 | 0;
+export type RulePriority = 400 | 350 | 300 | 100 | 0;
+
+export interface RuntimeMetrics {
+  input_tokens: number;
+  output_tokens: number;
+  inference_latency_ms: number;
+  rule_substitution_count: number;
+}
 export type ResolutionCandidateType =
   | "CHECK_REPLACEMENT_FULFILLMENT"
   | "ASK_CURRENT_SCOPE_EVIDENCE"
@@ -401,6 +406,7 @@ export interface DecisionResult {
   };
   reason: string;
   resolution_path: ResolutionPath;
+  runtime_metrics: RuntimeMetrics;
 }
 
 // POST /api/cases/analyze — case_input 仅允许在 challenge_mode 中使用
@@ -414,6 +420,7 @@ export interface AnalyzeCaseResponse {
   extracted_journey: ExtractedJourney;
   accountability_state: AccountabilityState;
   model_metadata: ExtractedJourney["model_metadata"];
+  runtime_metrics: RuntimeMetrics;
 }
 
 // POST /api/actions/evaluate
@@ -431,6 +438,12 @@ export interface EvaluateActionRequest {
       issue_visible?: boolean;
     }>;
   };
+  /** 兼容字段：服务端一律忽略，保留以验证 A21。 */
+  evidence_status?: unknown;
+  active_commitments?: unknown;
+  prohibited_actions?: unknown;
+  current_scope?: unknown;
+  accountability_state?: unknown;
 }
 export type EvaluateActionResponse = DecisionResult;
 

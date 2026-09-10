@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { demoCases } from "./demoData";
 import type { EvaluateActionRequest } from "./api/contracts";
-import { configureMockMode, mockApi } from "./mockApi";
+import { configureMockMode, mockApi, resetMockState } from "./mockApi";
 
 function evaluateRequest(caseId: string): EvaluateActionRequest {
   const demoCase = demoCases.find((item) => item.id === caseId)!;
@@ -49,7 +49,10 @@ async function analyze(caseId: string) {
 }
 
 describe("Covenia v0.8 frontend API contract", () => {
-  beforeEach(() => configureMockMode("normal"));
+  beforeEach(() => {
+    resetMockState();
+    configureMockMode("normal");
+  });
 
   it.each([
     ["DEMO_001", "INTERVENE", "E1", false],
@@ -131,5 +134,105 @@ describe("Covenia v0.8 frontend API contract", () => {
     expect(timedOut.data).toBeNull();
     expect(timedOut.error?.code).toBe("MODEL_UNAVAILABLE");
     expect(timedOut.error?.retryable).toBe(true);
+  });
+
+  it("ignores forged state and inactive challenge overrides", async () => {
+    await analyze("DEMO_001");
+    const base = evaluateRequest("DEMO_001");
+    const forged = await mockApi.evaluateAction({
+      ...base,
+      evidence_status: "MISMATCHED",
+      challenge_overrides: {
+        requested_scope: {
+          ...base.prepared_action.requested_scope!,
+          sku_id: "GIFT-B5-MASK-2",
+          fulfillment_item_id: "6920185815517983396-GIFT-B5-MASK-2",
+        },
+      },
+    });
+    expect(forged.error).toBeNull();
+    if (forged.error) return;
+    expect(forged.data).toMatchObject({ decision: "INTERVENE", rule_id: "E1", challenge_mode: false });
+  });
+
+  it("accepts challenge overrides only when challenge mode is explicitly enabled", async () => {
+    await analyze("DEMO_001");
+    const base = evaluateRequest("DEMO_001");
+    const challenged = await mockApi.evaluateAction({
+      ...base,
+      challenge_mode: true,
+      challenge_overrides: {
+        requested_scope: {
+          ...base.prepared_action.requested_scope!,
+          sku_id: "GIFT-B5-MASK-2",
+          fulfillment_item_id: "6920185815517983396-GIFT-B5-MASK-2",
+        },
+      },
+    });
+    expect(challenged.error).toBeNull();
+    if (challenged.error) return;
+    expect(challenged.data).toMatchObject({ decision: "ALLOW", rule_id: "E2", challenge_mode: true });
+  });
+
+  it("enforces P0, H1=350, E1 and E0 in the documented order", async () => {
+    await analyze("DEMO_001");
+    const hero = evaluateRequest("DEMO_001");
+    const close = await mockApi.evaluateAction({
+      ...hero,
+      prepared_action: { ...hero.prepared_action, action_type: "CLOSE_CASE" },
+    });
+    expect(close.data).toMatchObject({ decision: "INTERVENE", rule_id: "P0_PROHIBITED_ACTION", rule_priority: 400 });
+
+    const adverseInput = structuredClone(demoCases[0].input);
+    adverseInput.current_issue.issue_type = "ADVERSE_REACTION";
+    await mockApi.analyzeCase({ case_id: "ADVERSE", challenge_mode: true, case_input: adverseInput });
+    const adverseAction = {
+      ...hero.prepared_action,
+      requested_scope: { ...hero.prepared_action.requested_scope!, issue_type: "ADVERSE_REACTION" as const },
+    };
+    const adverse = await mockApi.evaluateAction({ ...hero, case_id: "ADVERSE", prepared_action: adverseAction });
+    expect(adverse.data).toMatchObject({ decision: "HUMAN_REVIEW", rule_id: "H1", rule_priority: 350 });
+    if (!adverse.error) expect(adverse.data.fact_trace.suppressed_rule_ids).toContain("E1");
+
+    const adverseClose = await mockApi.evaluateAction({
+      ...hero,
+      case_id: "ADVERSE",
+      prepared_action: { ...adverseAction, action_type: "CLOSE_CASE" },
+    });
+    if (!adverseClose.error) expect(adverseClose.data.fact_trace.suppressed_rule_ids).toContain("H1");
+
+    const noRule = await mockApi.evaluateAction({
+      ...hero,
+      prepared_action: { ...hero.prepared_action, action_type: "CHECK_REPLACEMENT_PROGRESS" },
+    });
+    expect(noRule.data).toMatchObject({ decision: "ALLOW", rule_id: "E0_NO_RULE_MATCHED", rule_priority: 0 });
+  });
+
+  it("requires an approver and retains server-sourced timing", async () => {
+    await analyze("DEMO_001");
+    const evaluated = await mockApi.evaluateAction(evaluateRequest("DEMO_001"));
+    if (evaluated.error) throw new Error("evaluation failed");
+    const missingApprover = await mockApi.approveResolution({
+      case_id: "DEMO_001", candidate_type: evaluated.data.resolution_path.candidate_type,
+      approver_id: "", idempotency_key: "missing-approver", human_edits: {},
+    });
+    expect(missingApprover.error).toMatchObject({ code: "VALIDATION_ERROR", retryable: false });
+
+    const approved = await mockApi.approveResolution({
+      case_id: "DEMO_001", candidate_type: evaluated.data.resolution_path.candidate_type,
+      approver_id: "AGENT_ZHOU", idempotency_key: "timing", human_edits: {},
+    });
+    expect(approved.error).toBeNull();
+    if (approved.error) return;
+    expect(approved.data.accountability_state.active_commitments[0]?.deadline).toBe("2026-05-07T10:27:37+08:00");
+    expect(approved.data.accountability_state.open_obligation?.next_check_at).toBe("2026-05-07T10:30:00+08:00");
+  });
+
+  it("returns server-provided runtime metrics on analysis and evaluation", async () => {
+    const analyzed = await analyze("DEMO_001");
+    expect(analyzed.data?.runtime_metrics.input_tokens).toBeGreaterThan(0);
+    const evaluated = await mockApi.evaluateAction(evaluateRequest("DEMO_001"));
+    expect(evaluated.data?.runtime_metrics.inference_latency_ms).toBeGreaterThan(0);
+    expect(evaluated.data?.runtime_metrics.rule_substitution_count).toBe(1);
   });
 });

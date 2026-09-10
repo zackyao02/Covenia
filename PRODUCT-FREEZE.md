@@ -2,7 +2,7 @@
 
 审批状态：APPROVED
 批准人：Zack
-批准日期：2026-09-08（含 R1 / R8 契约层补充令）
+批准日期：2026-09-10（含 R1 / R8 契约层补充令及 H1=350 修复令）
 依据评审：`CLAUDE-REVIEW-1.md`、`CLAUDE-REDTEAM.md`
 
 ## 第一用户与触发时刻
@@ -123,6 +123,7 @@
 | A31 | 强制模型不可用 | 分析 | 响应、界面和治理记录都显示缓存结果；关闭界面角标时测试失败 | R9 |
 | A32 | 主动通知草稿 | 批准/事件 | 文案中的下次时间与 `commits_next_update_at` 完全一致 | R10 |
 | A33 | 规则、状态构建器与 Prompt 目录 | 静态扫描 | 不含 `DEMO_001`、`DEMO_002`、`DEMO_003`、`S00001` 字面量 | 抗硬编码 |
+| A34 | `challenge_overrides` 存在但 `challenge_mode` 为缺省或 `false` | 评估 | 覆盖字段被忽略，输出与无覆盖请求一致；响应回显 `challenge_mode: false` | 修复令 2026-09-10 |
 
 ## 4 分钟 Demo 完成定义
 
@@ -160,6 +161,12 @@ P0-8（红队 R1 冻结补充令）`evaluate` 的可信输入收敛为 `{case_id
 说明：按 `case_id` 装载事实与 `docs/03-firewall-rules.md` 中“禁止根据 `case_id` 返回固定结果”不冲突。前者只装载规则输入，后者禁止跳过计算直接返回结论；规则实现内不得出现 `case_id` 分支。`02-evaluate-action.json` 在实现工程创建后必须改为上述请求/响应形状，原有 `decision_variants` 中直接提交状态或范围字段的写法不得保留。
 
 P0-9（红队 R8 冻结补充令）模型输入前对手机号、收货地址、支付宝账号、就医与不良反应描述做掩码，掩码后再进入 Prompt。每次调用记录 `pii_masked_count` 并写入治理记录；`SIMULATION_DISCLOSURE.md` 的三类数据分述中明示脱敏范围。此项对应 `MODEL_GOVERNANCE.md` 的敏感数据治理要求，源码与运行指南均须提交，属于自证项。
+
+P0-10（2026-09-10 H1 优先级修复令）H1 的唯一优先级统一为 `350`。规则求值顺序为 `P0_PROHIBITED_ACTION (400) → H1 (350) → E1 (300) → E2 (100) → E0_NO_RULE_MATCHED (0)`；不得通过拆分 H1 规则号实现条件优先级。A14 中不良反应与重复索证同时命中时，返回 `HUMAN_REVIEW/H1/350`，并在 `fact_trace.suppressed_rule_ids` 记录 `E1`。A30 中 `P0_PROHIBITED_ACTION` 仍优先，并记录被压制的 `H1`。A20/A21 的非不良反应 Hero 路径仍为 `INTERVENE/E1/300`。
+
+P0-11（2026-09-10 成本条修复令）`analyze` 与 `evaluate` 响应正式包含服务端产生的 `runtime_metrics`：`input_tokens`、`output_tokens`、`inference_latency_ms`、`rule_substitution_count`，均为非负整数。右下成本条只读取响应字段：本次 token 用量为输入与输出之和，推理延迟直接显示，规则层替代次数直接显示；前端不得估算或伪造这些值。Mock 为演示环境时也必须通过同一响应契约返回固定可追溯值。
+
+P0-12（2026-09-10 修复边界）保留 `schemas/evaluate-action-request.schema.json` 中标记为 deprecated/readOnly 的兼容字段，服务端忽略它们以承载 A21；不得删除。`CLAUDE-REVIEW-1.md` 是历史审查记录，不改写；其中 H1=200 的历史建议由本冻结令覆盖。`02-evaluate-action.json` 只保留 P0-8 的可信请求形状，展示 ID 统一为 `DEMO_001`。
 
 P1（可同批修，不阻塞 Hero）：`integrity_concern`/`hygiene_risk` 移入 `ImageObservation` 并改必填；悬空 `DEMO_AUG_IMG_002/003` 统一指向 `80525870445254.PNM`；删重复的 `ApiMeta.cached_result`，仅保留 `model_metadata.cached_result`；analyze 超时 120s→20s 并预热；`FollowUpCandidate` 与 `TaskPrefill` 合并且后者加 `priority`；收口两处 `[key: string]: unknown`；补 `docs/08-idempotency-and-ordering.md` 与请求 Schema；三个激活字段建对照表；`experience_risk` 改确定性推导；展示 ID 统一（`04:106` 的 “S00001” 改 `DEMO_001`）。
 

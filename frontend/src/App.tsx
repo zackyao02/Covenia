@@ -41,6 +41,9 @@ import type {
   ServiceProgressReceipt,
   ShipmentEventType,
   EvaluateActionRequest,
+  FollowUpCandidate,
+  SupervisorEscalationCandidate,
+  RuntimeMetrics,
 } from "./api/contracts";
 import { api } from "./api/client";
 import { decisionLabels, demoCases, formatClock, type DemoCase } from "./demoData";
@@ -171,6 +174,9 @@ function App() {
   const [toast, setToast] = useState<string | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [cachedResult, setCachedResult] = useState(false);
+  const [runtimeMetrics, setRuntimeMetrics] = useState<RuntimeMetrics | null>(null);
+  const [followUpCandidate, setFollowUpCandidate] = useState<FollowUpCandidate | null>(null);
+  const [supervisorCandidate, setSupervisorCandidate] = useState<SupervisorEscalationCandidate | null>(null);
   const [mockMode, setMockMode] = useState<MockMode>("normal");
   const [reloadKey, setReloadKey] = useState(0);
 
@@ -185,6 +191,9 @@ function App() {
       setLoading(true);
       setLoadError(null);
       setCachedResult(false);
+      setRuntimeMetrics(null);
+      setFollowUpCandidate(null);
+      setSupervisorCandidate(null);
       setAccountability(null);
       setJourney(null);
       setDecision(null);
@@ -208,6 +217,7 @@ function App() {
         return;
       }
       setCachedResult(result.data.model_metadata.cached_result === true);
+      setRuntimeMetrics(result.data.runtime_metrics);
       setAccountability(result.data.accountability_state);
       setJourney(result.data.extracted_journey);
 
@@ -220,6 +230,7 @@ function App() {
           return;
         }
         setDecision(evaluated.data);
+        setRuntimeMetrics(evaluated.data.runtime_metrics);
         setPhase("decision");
       }
       setLoading(false);
@@ -246,6 +257,7 @@ function App() {
       return null;
     }
     setDecision(result.data);
+    setRuntimeMetrics(result.data.runtime_metrics);
     return result.data;
   }
 
@@ -386,6 +398,8 @@ function App() {
       return;
     }
     setAccountability(result.data.accountability_state);
+    setFollowUpCandidate(result.data.follow_up_candidate);
+    setSupervisorCandidate(result.data.supervisor_escalation_candidate);
     const receipt = result.data.accountability_state.service_progress_receipt;
     if (receipt) {
       setExtraMessages((items) => [
@@ -456,6 +470,9 @@ function App() {
           }}
           onShipment={handleShipment}
           shipmentChoice={shipmentChoice}
+          runtimeMetrics={runtimeMetrics}
+          followUpCandidate={followUpCandidate}
+          supervisorCandidate={supervisorCandidate}
           loadError={loadError}
           cachedResult={cachedResult}
           mockMode={mockMode}
@@ -764,6 +781,9 @@ function CoveniaPlugin({
   onApprove,
   onShipment,
   shipmentChoice,
+  runtimeMetrics,
+  followUpCandidate,
+  supervisorCandidate,
   loadError,
   cachedResult,
   mockMode,
@@ -785,6 +805,9 @@ function CoveniaPlugin({
   onApprove: () => void;
   onShipment: (event: ShipmentEventType) => void;
   shipmentChoice: ShipmentEventType | null;
+  runtimeMetrics: RuntimeMetrics | null;
+  followUpCandidate: FollowUpCandidate | null;
+  supervisorCandidate: SupervisorEscalationCandidate | null;
   loadError: string | null;
   cachedResult: boolean;
   mockMode: MockMode;
@@ -826,7 +849,7 @@ function CoveniaPlugin({
     <aside className="plugin-panel">
       <PluginHeader mockMode={mockMode} onMockModeChange={onMockModeChange} />
       <div className="plugin-scroll">
-        {demoCase.id !== "DEMO_001" ? (
+        {decision?.challenge_mode ? (
           <div className="challenge-notice">Challenge Mode</div>
         ) : null}
         {phase === "approved" && accountability.service_progress_receipt ? (
@@ -835,15 +858,19 @@ function CoveniaPlugin({
             acting={acting}
             onShipment={onShipment}
             shipmentChoice={shipmentChoice}
+            runtimeMetrics={runtimeMetrics}
+            followUpCandidate={followUpCandidate}
+            supervisorCandidate={supervisorCandidate}
           />
         ) : (
           <>
             {cachedResult ? (
               <div className="cached-notice"><RefreshCw size={13} /> 当前使用缓存抽取结果，后续规则仍实时运行</div>
             ) : null}
-            {decision ? <DecisionBanner decision={decision} /> : (
+            {decision && decision.decision !== "ALLOW" ? <DecisionBanner decision={decision} /> : (
               <div className="quiet-status"><Sparkles size={14} /> 已读懂当前服务上下文</div>
             )}
+            <AccountabilitySummary accountability={accountability} />
             <section className="answer-section known-section">
               <div className="section-number">01</div>
               <div className="section-content">
@@ -913,6 +940,7 @@ function CoveniaPlugin({
             {detailsOpen ? (
               <DiagnosisDetails accountability={accountability} journey={journey} />
             ) : null}
+            {runtimeMetrics ? <RuntimeCostBar metrics={runtimeMetrics} /> : null}
           </>
         )}
       </div>
@@ -1020,16 +1048,43 @@ function DiagnosisDetails({ accountability, journey }: { accountability: Account
   );
 }
 
+function AccountabilitySummary({ accountability }: { accountability: AccountabilityState }) {
+  const commitment = accountability.active_commitments[0];
+  return (
+    <section className="accountability-summary">
+      <div><span>案件状态</span><b>{accountability.case_status}</b></div>
+      {commitment ? <>
+        <div><span>承诺原文</span><b>{commitment.raw_text}</b></div>
+        <div><span>当前义务</span><b>{commitment.status} · {formatClock(commitment.deadline)} 前</b></div>
+        <div><span>执行方</span><b>{accountability.open_obligation?.executor ?? "待人工确认"}</b></div>
+      </> : <div><span>当前义务</span><b>尚未激活</b></div>}
+    </section>
+  );
+}
+
+function RuntimeCostBar({ metrics }: { metrics: RuntimeMetrics }) {
+  return <section className="runtime-cost-bar" aria-label="本次运行成本">
+    <span>本次运行</span><b>{metrics.input_tokens + metrics.output_tokens} tokens</b>
+    <b>{metrics.inference_latency_ms} ms</b><b>规则替代 {metrics.rule_substitution_count}</b>
+  </section>;
+}
+
 function ProgressView({
   accountability,
   acting,
   onShipment,
   shipmentChoice,
+  runtimeMetrics,
+  followUpCandidate,
+  supervisorCandidate,
 }: {
   accountability: AccountabilityState;
   acting: boolean;
   onShipment: (event: ShipmentEventType) => void;
   shipmentChoice: ShipmentEventType | null;
+  runtimeMetrics: RuntimeMetrics | null;
+  followUpCandidate: FollowUpCandidate | null;
+  supervisorCandidate: SupervisorEscalationCandidate | null;
 }) {
   const receipt = accountability.service_progress_receipt!;
   const pickedUp = accountability.open_obligation?.milestone === "IN_TRANSIT";
@@ -1104,6 +1159,12 @@ function ProgressView({
           ><PackageCheck size={16} /><span><b>已送达</b><small>揽收后可闭环</small></span></button>
         </div>
       </section>
+      <section className="supervisor-zone">
+        <div className="timeline-title"><span>主管跟踪区</span><small>服务端候选</small></div>
+        {followUpCandidate ? <p>催办：{followUpCandidate.summary}</p> : <p>当前没有仓库催办候选</p>}
+        {supervisorCandidate ? <p>升级：{supervisorCandidate.summary}</p> : <p>当前没有主管升级候选</p>}
+      </section>
+      {runtimeMetrics ? <RuntimeCostBar metrics={runtimeMetrics} /> : null}
     </div>
   );
 }

@@ -252,6 +252,13 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-
 .details-toggle svg { transition: transform .18s ease; }
 .details-toggle svg.rotated { transform: rotate(180deg); }
 .diagnosis-details { padding: 7px 9px; border: 1px solid #e4e7ec; border-radius: 9px; background: #fff; }
+.accountability-summary { display: grid; gap: 6px; margin-top: 8px; padding: 9px; border: 1px solid #e1dffc; border-radius: 10px; background: #fbfaff; }
+.accountability-summary div { display: grid; grid-template-columns: 58px 1fr; gap: 7px; align-items: baseline; }
+.accountability-summary span { font-size: 8px; color: #667085; }
+.accountability-summary b { font-size: 8.5px; color: #344054; line-height: 1.35; }
+.runtime-cost-bar { display: flex; flex-wrap: wrap; gap: 5px 8px; align-items: center; margin-top: 9px; padding: 7px 8px; border: 1px solid #e4e7ec; border-radius: 8px; background: #fff; color: #667085; font-size: 7.5px; }
+.runtime-cost-bar span { font-weight: 700; color: #475467; }
+.runtime-cost-bar b { font-weight: 650; }
 .diagnosis-details > div:not(.fact-chips) { margin-bottom: 8px; }
 .diagnosis-details span { font-size: 7.5px; text-transform: uppercase; letter-spacing: .05em; color: #98a2b3; font-weight: 700; }
 .diagnosis-details p { font-size: 8.5px; line-height: 1.5; color: #475467; margin: 3px 0 0; }
@@ -295,7 +302,9 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-
 .countdown-strip.overdue b { color: var(--danger); }
 .responsibility-line { display: flex; align-items: center; gap: 6px; font-size: 8.5px; color: #344054; }
 .responsibility-line span { width: 6px; height: 6px; border-radius: 50%; background: var(--brand); box-shadow: 0 0 0 3px #e5e2ff; }
-.receipt-card, .timeline-card, .shipment-simulator { background: #fff; border: 1px solid #e4e7ec; border-radius: 11px; padding: 10px; }
+.receipt-card, .timeline-card, .shipment-simulator, .supervisor-zone { background: #fff; border: 1px solid #e4e7ec; border-radius: 11px; padding: 10px; }
+.supervisor-zone { display: grid; gap: 6px; }
+.supervisor-zone p { margin: 0; padding: 6px 7px; background: #f9fafb; border-radius: 7px; color: #475467; font-size: 8px; line-height: 1.35; }
 .receipt-card-title, .timeline-title, .simulator-title { display: flex; align-items: center; justify-content: space-between; }
 .receipt-card-title span { display: flex; align-items: center; gap: 5px; color: var(--brand-dark); font-size: 9.5px; font-weight: 700; }
 .receipt-card-title small, .timeline-title small { font-size: 7.5px; color: #98a2b3; }

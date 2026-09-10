@@ -8,8 +8,8 @@
 
 | 接口 | 请求 Schema | 成功 `data` | 关键错误 |
 |---|---|---|---|
-| `POST /api/cases/analyze` | `analyze-case-request.schema.json` | `ExtractedJourney`、`AccountabilityState`、`model_metadata` | `SCHEMA_INVALID`、`MODEL_UNAVAILABLE`、`MODEL_OUTPUT_INVALID` |
-| `POST /api/actions/evaluate` | `evaluate-action-request.schema.json` | `DecisionResult` | `SCHEMA_INVALID`、`E0_NO_RULE_MATCHED` |
+| `POST /api/cases/analyze` | `analyze-case-request.schema.json` | `ExtractedJourney`、`AccountabilityState`、`model_metadata`、`runtime_metrics` | `SCHEMA_INVALID`、`MODEL_UNAVAILABLE`、`MODEL_OUTPUT_INVALID` |
+| `POST /api/actions/evaluate` | `evaluate-action-request.schema.json` | `DecisionResult`（含 `runtime_metrics`） | `SCHEMA_INVALID`、`E0_NO_RULE_MATCHED` |
 | `POST /api/resolutions/approve` | `approve-resolution-request.schema.json` | 更新后的账本、`approved_resolution`、`audit_trail` | `VALIDATION_ERROR`、`IDEMPOTENCY_CONFLICT` |
 | `POST /api/events/shipment` | `shipment-event-request.schema.json` | 更新后的账本、催办候选、通知草稿 | `INVALID_EVENT_TRANSITION`、`IDEMPOTENCY_CONFLICT` |
 
@@ -22,6 +22,8 @@
 可信输入为 `{case_id, evaluation_time?, challenge_mode?, case_input?}`。后端按 `case_id` 从赛事数据装载事实；仅在 `challenge_mode: true` 时允许 `case_input` 作为演示变体。承诺候选仅来自 `speaker: AGENT` 的消息，敏感字段先掩码再送入模型。
 
 模型失败时可返回缓存结果，但必须在响应的 `model_metadata.cached_result`、界面角标和治理记录三处同时可见。
+
+每个 `analyze` 与 `evaluate` 成功响应还必须返回服务端生成的 `runtime_metrics`：`input_tokens`、`output_tokens`、`inference_latency_ms`、`rule_substitution_count`。右下成本条只展示这些响应值，不在前端估算。
 
 ## 3. 评估动作
 

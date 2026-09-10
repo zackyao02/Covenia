@@ -16,6 +16,8 @@ import type {
   ExtractedJourney,
   ShipmentEventRequest,
   ShipmentEventResponse,
+  ApiErrorCode,
+  RuntimeMetrics,
 } from "./api/contracts";
 
 export type MockMode =
@@ -26,6 +28,7 @@ export type MockMode =
   | "state_conflict";
 
 let mockMode: MockMode = "normal";
+let serviceClock = "2026-05-07T09:42:00+08:00";
 
 export function configureMockMode(mode: MockMode) {
   mockMode = mode;
@@ -33,6 +36,11 @@ export function configureMockMode(mode: MockMode) {
 
 export function getMockMode() {
   return mockMode;
+}
+
+/** Test-only clock injection: the mock never derives service deadlines from the browser clock. */
+export function configureMockClock(value = "2026-05-07T09:42:00+08:00") {
+  serviceClock = value;
 }
 
 const wait = (ms = 420) =>
@@ -43,13 +51,14 @@ function ok<T>(data: T, prefix: string): ApiResult<T> {
 }
 
 function fail<T>(
-  code: "MODEL_UNAVAILABLE" | "INVALID_EVENT_TRANSITION",
+  code: ApiErrorCode,
   message: string,
   prefix: string,
+  retryable = true,
 ): ApiResult<T> {
   return {
     data: null,
-    error: { code, message, retryable: true },
+    error: { code, message, retryable },
     request_id: `${prefix}_${Date.now()}`,
   };
 }
@@ -70,6 +79,28 @@ const states = new Map<string, AccountabilityState>();
 const decisions = new Map<string, DecisionResult>();
 const shipmentStages = new Map<string, "AWAITING_PICKUP" | "IN_TRANSIT" | "DELIVERED">();
 
+const analysisMetrics: RuntimeMetrics = {
+  input_tokens: 1184,
+  output_tokens: 346,
+  inference_latency_ms: 842,
+  rule_substitution_count: 0,
+};
+
+const evaluationMetrics: RuntimeMetrics = {
+  input_tokens: 238,
+  output_tokens: 74,
+  inference_latency_ms: 36,
+  rule_substitution_count: 1,
+};
+
+export function resetMockState() {
+  states.clear();
+  decisions.clear();
+  shipmentStages.clear();
+  serviceClock = "2026-05-07T09:42:00+08:00";
+  mockMode = "normal";
+}
+
 function analysisFor(input: AnalyzeCaseRequest): AnalyzeCaseResponse {
   const response = structuredClone(heroAnalysis);
   const caseInput = (input.case_input ?? sourceHeroInput) as CaseInput;
@@ -88,6 +119,9 @@ function analysisFor(input: AnalyzeCaseRequest): AnalyzeCaseResponse {
     changed_fields: ["extracted_journey", "accountability_state"],
     request_id: `REQ_ANALYZE_${Date.now()}`,
   }];
+  response.accountability_state.active_commitments = response.accountability_state.active_commitments.map(
+    (commitment) => ({ ...commitment, status: "ACTIVE" }),
+  );
 
   const firstEvidence = caseInput.evidence_images[0];
   const isGiftChallenge = input.challenge_mode === true && firstEvidence?.declared_view_type === "PACKAGE_CONTEXT";
@@ -110,7 +144,7 @@ function analysisFor(input: AnalyzeCaseRequest): AnalyzeCaseResponse {
           view_type: "PACKAGE_CONTEXT",
           coverage: ["PRODUCT_IDENTITY", "PACKAGE_CONTEXT"],
           integrity_concern: false,
-          hygiene_risk: "LOW",
+          hygiene_risk_signal: "LOW",
           confidence: 0.96,
         },
       ],
@@ -155,7 +189,7 @@ function analysisFor(input: AnalyzeCaseRequest): AnalyzeCaseResponse {
           view_type: "ISSUE_DETAIL",
           coverage: [],
           integrity_concern: false,
-          hygiene_risk: "UNKNOWN",
+          hygiene_risk_signal: "UNKNOWN",
           confidence: 0.41,
         },
       ],
@@ -184,25 +218,61 @@ function analysisFor(input: AnalyzeCaseRequest): AnalyzeCaseResponse {
   }
 
   response.model_metadata = response.extracted_journey.model_metadata;
+  response.runtime_metrics = structuredClone(analysisMetrics);
   states.set(input.case_id, structuredClone(response.accountability_state));
   shipmentStages.set(input.case_id, "AWAITING_PICKUP");
   return response;
 }
 
 function decisionFor(state: AccountabilityState, input: EvaluateActionRequest): DecisionResult {
-  const challengedImage = input.challenge_overrides?.image_observation_overrides?.[0];
-  if (challengedImage?.readability === "LOW" || challengedImage?.readability === "UNKNOWN") {
-    return structuredClone(reviewDecision);
-  }
-  const challengedScope = input.challenge_overrides?.requested_scope;
-  if (challengedScope && challengedScope.sku_id !== state.current_scope.sku_id) {
-    return structuredClone(allowDecision);
-  }
-  if (state.evidence_status === "MISMATCHED") return structuredClone(allowDecision);
-  if (state.evidence_status === "NEED_HUMAN_REVIEW") {
-    return structuredClone(reviewDecision);
-  }
-  return structuredClone(interveneDecision);
+  const isChallenge = input.challenge_mode === true;
+  const challengedImage = isChallenge
+    ? input.challenge_overrides?.image_observation_overrides?.[0]
+    : undefined;
+  const challengedScope = isChallenge ? input.challenge_overrides?.requested_scope : undefined;
+  const evidenceStatus = challengedImage?.readability === "LOW" || challengedImage?.readability === "UNKNOWN"
+    ? "NEED_HUMAN_REVIEW"
+    : challengedScope && challengedScope.sku_id !== state.current_scope.sku_id
+      ? "MISMATCHED"
+      : state.evidence_status;
+  const requestedScope = challengedScope ?? input.prepared_action.requested_scope;
+  const scopeMatch = requestedScope
+    ? requestedScope.order_id === state.current_scope.order_id
+      && requestedScope.fulfillment_item_id === state.current_scope.fulfillment_item_id
+      && requestedScope.sku_id === state.current_scope.sku_id
+      && requestedScope.issue_type === state.current_scope.issue_type
+    : null;
+  const action = input.prepared_action.action_type;
+  const base = structuredClone(interveneDecision);
+  base.accountability_state = structuredClone(state);
+  base.case_id = state.case_id;
+  base.challenge_mode = isChallenge;
+  base.fact_trace = {
+    evidence_status: evidenceStatus,
+    prepared_action: action,
+    scope_match: scopeMatch,
+    active_promise_count: state.active_commitments.length,
+  };
+  base.runtime_metrics = structuredClone(evaluationMetrics);
+
+  const apply = (template: DecisionResult, ruleId: DecisionResult["rule_id"], priority: DecisionResult["rule_priority"], decision: DecisionResult["decision"], suppressed: DecisionResult["fact_trace"]["suppressed_rule_ids"] = []) => ({
+    ...structuredClone(template),
+    ...base,
+    decision,
+    rule_id: ruleId,
+    rule_priority: priority,
+    fact_trace: { ...base.fact_trace, suppressed_rule_ids: suppressed },
+  } satisfies DecisionResult);
+
+  const e1Matches = action === "ASK_EVIDENCE" && evidenceStatus === "VALID" && scopeMatch === true;
+  const h1Matches = evidenceStatus === "NEED_HUMAN_REVIEW" || state.current_scope.issue_type === "ADVERSE_REACTION";
+  const p0Matches = action === "CLOSE_CASE" && state.prohibited_actions.includes("CLOSE_BEFORE_RESOLUTION");
+
+  if (p0Matches) return apply(interveneDecision, "P0_PROHIBITED_ACTION", 400, "INTERVENE", h1Matches ? ["H1"] : []);
+  if (h1Matches) return apply(reviewDecision, "H1", 350, "HUMAN_REVIEW", e1Matches ? ["E1"] : []);
+  if (e1Matches) return apply(interveneDecision, "E1", 300, "INTERVENE");
+  if (action === "ASK_EVIDENCE" && evidenceStatus === "MISMATCHED") return apply(allowDecision, "E2", 100, "ALLOW");
+  return apply(allowDecision, "E0_NO_RULE_MATCHED", 0, "ALLOW");
 }
 
 export const mockApi = {
@@ -234,8 +304,6 @@ export const mockApi = {
     const decision = decisionFor(state, input);
     decision.case_id = input.case_id;
     decision.accountability_state = structuredClone(state);
-    decision.challenge_mode = input.challenge_mode === true;
-    decision.fact_trace.prepared_action = input.prepared_action.action_type;
     decisions.set(input.case_id, structuredClone(decision));
     return ok(decision, "REQ_EVALUATE");
   },
@@ -247,10 +315,15 @@ export const mockApi = {
     if (mockMode === "state_conflict") {
       return fail("INVALID_EVENT_TRANSITION", "当前解决路径基于旧状态，请刷新后重试。", "REQ_APPROVE");
     }
+    if (!input.approver_id?.trim()) {
+      return fail("VALIDATION_ERROR", "请填写审批人，才可以激活服务责任。", "REQ_APPROVE", false);
+    }
     const response = structuredClone(approved);
-    const approvedAt = Date.now();
-    const deadline = new Date(approvedAt + 30 * 60_000).toISOString();
-    const nextCheckAt = new Date(approvedAt + 10 * 60_000).toISOString();
+    const existingState = states.get(input.case_id);
+    const deadline = existingState?.active_commitments[0]?.deadline
+      ?? response.accountability_state.active_commitments[0]?.deadline
+      ?? "2026-05-07T10:27:37+08:00";
+    const nextCheckAt = "2026-05-07T10:30:00+08:00";
     response.accountability_state.case_id = input.case_id;
     response.accountability_state.case_status = "IN_FULFILLMENT";
     response.accountability_state.experience_risk = "MEDIUM";
@@ -264,9 +337,7 @@ export const mockApi = {
     }
     if (response.accountability_state.service_progress_receipt) {
       response.accountability_state.service_progress_receipt.status = "ACTIVE";
-      response.accountability_state.service_progress_receipt.latest_update_at = new Date(
-        approvedAt,
-      ).toISOString();
+      response.accountability_state.service_progress_receipt.latest_update_at = serviceClock;
       response.accountability_state.service_progress_receipt.next_update_by = nextCheckAt;
       response.accountability_state.service_progress_receipt.brand_action =
         "正在核实换货件是否已由物流揽收。";
@@ -283,11 +354,11 @@ export const mockApi = {
         input.human_edits.recovery_if_missed ?? response.approved_resolution.compiled_service_responsibility.recovery_if_missed;
     }
     const auditEntry = {
-      at: new Date(approvedAt).toISOString(),
+      at: serviceClock,
       actor: input.approver_id,
       action: "RESOLUTION_APPROVED" as const,
       changed_fields: Object.keys(input.human_edits),
-      request_id: `REQ_APPROVE_${Date.now()}`,
+      request_id: `REQ_APPROVE_${serviceClock}`,
     };
     response.accountability_state.audit_trail = [
       ...(states.get(input.case_id)?.audit_trail ?? []),
@@ -314,7 +385,7 @@ export const mockApi = {
         ? shipmentPickedUp
         : shipmentNotPickedUp;
     const response = structuredClone(source);
-    const eventAt = Date.now();
+    const eventAt = input.event_time;
     response.accountability_state.case_id = input.case_id;
     if (input.event_type === "SHIPMENT_DELIVERED") {
       response.accountability_state.case_status = "RESOLVED";
@@ -332,20 +403,24 @@ export const mockApi = {
       response.supervisor_escalation_candidate = null;
       shipmentStages.set(input.case_id, "DELIVERED");
     } else if (input.event_type === "SHIPMENT_PICKED_UP") {
-      const nextUpdate = new Date(eventAt + 24 * 60 * 60_000).toISOString();
+      const nextUpdate = "2026-05-08T10:10:00+08:00";
       if (response.accountability_state.open_obligation) {
         response.accountability_state.open_obligation.next_check_at = nextUpdate;
+        response.accountability_state.open_obligation.status = "ON_TRACK";
+        response.accountability_state.open_obligation.milestone = "IN_TRANSIT";
       }
+      response.accountability_state.active_commitments = response.accountability_state.active_commitments.map(
+        (commitment) => ({ ...commitment, status: "COMPLETED" }),
+      );
       shipmentStages.set(input.case_id, "IN_TRANSIT");
       if (response.accountability_state.service_progress_receipt) {
-        response.accountability_state.service_progress_receipt.latest_update_at = new Date(
-          eventAt,
-        ).toISOString();
+        response.accountability_state.service_progress_receipt.latest_update_at = eventAt;
         response.accountability_state.service_progress_receipt.next_update_by = nextUpdate;
       }
     } else {
-      const overdueDeadline = new Date(eventAt - 5 * 60_000).toISOString();
-      const nextUpdate = new Date(eventAt + 30 * 60_000).toISOString();
+      const overdueDeadline = states.get(input.case_id)?.active_commitments[0]?.deadline
+        ?? "2026-05-07T10:27:37+08:00";
+      const nextUpdate = "2026-05-07T12:00:00+08:00";
       response.accountability_state.active_commitments = response.accountability_state.active_commitments.map(
         (commitment) => ({ ...commitment, status: "AT_RISK", deadline: overdueDeadline }),
       );
@@ -354,13 +429,11 @@ export const mockApi = {
         response.accountability_state.open_obligation.next_check_at = nextUpdate;
       }
       if (response.accountability_state.service_progress_receipt) {
-        response.accountability_state.service_progress_receipt.latest_update_at = new Date(
-          eventAt,
-        ).toISOString();
+        response.accountability_state.service_progress_receipt.latest_update_at = eventAt;
         response.accountability_state.service_progress_receipt.next_update_by = nextUpdate;
       }
     }
-    const nextUpdateAt = response.accountability_state.service_progress_receipt?.next_update_by ?? new Date(eventAt).toISOString();
+    const nextUpdateAt = response.accountability_state.service_progress_receipt?.next_update_by ?? eventAt;
     const notificationText = typeof response.proactive_notification_draft === "string"
       ? response.proactive_notification_draft
       : response.proactive_notification_draft?.text ?? response.accountability_state.service_progress_receipt?.brand_action ?? "服务状态已更新。";
@@ -377,7 +450,7 @@ export const mockApi = {
         actor: "SIMULATOR",
         action: input.event_type,
         changed_fields: ["case_status", "open_obligation", "service_progress_receipt"],
-        request_id: `REQ_SHIPMENT_${Date.now()}`,
+        request_id: `REQ_SHIPMENT_${input.event_id}`,
       },
     ];
     states.set(input.case_id, structuredClone(response.accountability_state));
