@@ -1,0 +1,131 @@
+{
+  "schema_version": "1.0",
+  "batch_id": "BATCH-01",
+  "recorded_at": "2026-09-11T00:05:44.5564594+08:00",
+  "environment": {
+    "cwd": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/worktrees/covenia-batch-01",
+    "shell": "PowerShell",
+    "git_version": "2.53.0.windows.1",
+    "python_version": "3.13.5",
+    "run_dir": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/worktrees/covenia-batch-01/reports/batches/BATCH-01/runtime"
+  },
+  "acceptance_commands": [
+    {
+      "id": "AC-01",
+      "command": "git fetch origin --prune",
+      "cwd": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/worktrees/covenia-batch-01",
+      "exit_code": 0,
+      "duration_seconds": 1.6636112,
+      "mode": "PROTOCOL_DOUBLE",
+      "tests": {"run": 1, "passed": 1, "failed": 0},
+      "evidence": "docs/planning/b/baseline-lock.json#/remote_observation/fetch"
+    },
+    {
+      "id": "AC-02",
+      "command": "git ls-remote --heads origin",
+      "cwd": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/worktrees/covenia-batch-01",
+      "exit_code": 0,
+      "duration_seconds": 1.8803045,
+      "mode": "PROTOCOL_DOUBLE",
+      "tests": {"run": 1, "passed": 1, "failed": 0},
+      "evidence": "reports/batches/BATCH-01/evidence/remote-heads.txt"
+    },
+    {
+      "id": "AC-03",
+      "command": "git log --all --oneline --decorate -10",
+      "cwd": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/worktrees/covenia-batch-01",
+      "exit_code": 0,
+      "duration_seconds": 0.0000046,
+      "mode": "PROTOCOL_DOUBLE",
+      "tests": {"run": 1, "passed": 1, "failed": 0},
+      "evidence": "reports/batches/BATCH-01/evidence/git-log-all.txt"
+    },
+    {
+      "id": "AC-04",
+      "command": "git rev-list --left-right --count origin/main...origin/feat/c-qianniu-plugin",
+      "cwd": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/worktrees/covenia-batch-01",
+      "exit_code": 0,
+      "duration_seconds": 0.0000019,
+      "mode": "PROTOCOL_DOUBLE",
+      "tests": {"run": 1, "passed": 1, "failed": 0},
+      "evidence": "reports/batches/BATCH-01/evidence/remote-commit-delta.txt",
+      "observed_value": {"main_only": 0, "c_line_only": 2}
+    },
+    {
+      "id": "AC-05",
+      "command": "python -m json.tool docs/planning/b/baseline-lock.json",
+      "cwd": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/worktrees/covenia-batch-01",
+      "exit_code": 0,
+      "duration_seconds": 0.0000014,
+      "mode": "UNIT",
+      "tests": {"run": 1, "passed": 1, "failed": 0},
+      "evidence": "docs/planning/b/baseline-lock.json"
+    },
+    {
+      "id": "AC-06",
+      "command": "python -m json.tool docs/planning/b/decisions.json",
+      "cwd": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/worktrees/covenia-batch-01",
+      "exit_code": 0,
+      "duration_seconds": 0.1726544,
+      "mode": "UNIT",
+      "tests": {"run": 1, "passed": 1, "failed": 0},
+      "evidence": "docs/planning/b/decisions.json"
+    },
+    {
+      "id": "AC-07",
+      "command": "git diff --check",
+      "cwd": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/worktrees/covenia-batch-01",
+      "exit_code": 0,
+      "duration_seconds": 0.2329078,
+      "mode": "UNIT",
+      "tests": {"run": 1, "passed": 1, "failed": 0},
+      "evidence": "reports/batches/BATCH-01/commands.json#/acceptance_commands/6",
+      "stdout": ""
+    },
+    {
+      "id": "AC-08",
+      "command": "git status --short",
+      "cwd": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/worktrees/covenia-batch-01",
+      "exit_code": 0,
+      "duration_seconds": 0.2189306,
+      "mode": "UNIT",
+      "tests": {"run": 1, "passed": 1, "failed": 0},
+      "evidence": "reports/batches/BATCH-01/evidence/precommit-status.txt",
+      "note": "Expected BATCH-01 planning/report paths were untracked at this pre-commit check."
+    }
+  ],
+  "supporting_operations": [
+    {
+      "command": "git branch integration/covenia-b fd52de8a8e3cb439acfb0ab28740fc8d9de15290",
+      "exit_code": 0,
+      "duration_seconds": 0.2587988,
+      "result": "Created local integration pointer only; no push or merge."
+    },
+    {
+      "command": "git diff --name-status origin/main...origin/feat/c-qianniu-plugin",
+      "exit_code": 0,
+      "result": "33 changed files recorded.",
+      "evidence": "reports/batches/BATCH-01/evidence/main-vs-c-name-status.txt"
+    },
+    {
+      "command": "curl.exe -L -s -H Accept:application/vnd.github+json -H User-Agent:Covenia-BATCH-01 https://api.github.com/repos/zackyao02/Covenia/pulls?state=all&per_page=100",
+      "exit_code": 0,
+      "duration_seconds": 1.0225548,
+      "result": "[]",
+      "evidence": "reports/batches/BATCH-01/evidence/remote-prs.json"
+    },
+    {
+      "command": "external gate artifact probes",
+      "exit_code": 0,
+      "result": "All ten required artifact paths were absent; evidence directory contained README.md only.",
+      "evidence": "reports/batches/BATCH-01/evidence/external-gate-probes.txt"
+    }
+  ],
+  "summary": {
+    "acceptance_checks_run": 8,
+    "acceptance_checks_passed": 8,
+    "acceptance_checks_failed": 0,
+    "business_tests_run": 0,
+    "note": "This is a documentation/baseline batch. These checks validate provenance, JSON syntax, and scope; they are not independent acceptance PASS."
+  }
+}

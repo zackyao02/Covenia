@@ -1,0 +1,119 @@
+{
+  "schema_version": "1.0",
+  "batch_id": "BATCH-01",
+  "status": "LOCKED_FOR_REVIEW",
+  "captured_at": "2026-09-11T00:05:44.5564594+08:00",
+  "repository": {
+    "repo_root": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/worktrees/covenia-batch-01",
+    "remote": "origin",
+    "remote_url": "https://github.com/zackyao02/Covenia.git",
+    "execution_branch": "codex/covenia-batch-01",
+    "initial_head": "fd52de8a8e3cb439acfb0ab28740fc8d9de15290",
+    "initial_worktree_status": "CLEAN"
+  },
+  "planning_import": {
+    "source_location": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松",
+    "import_method": "byte-for-byte local planning-material import",
+    "materials": [
+      {
+        "path": "MASTER_PLAN.md",
+        "sha256": "EFDECD6FE12DE28A19F0422010BC2100DF808B6BC369179C3A944547072B0D5A",
+        "verified_after_import": true
+      },
+      {
+        "path": "batches.json",
+        "sha256": "FDF74B9156102EC3759CA1031260013520E8355FADED4C9CDB76CECE32B1A0E3",
+        "verified_after_import": true
+      },
+      {
+        "path": "BATCH_PROMPT_TEMPLATE.md",
+        "sha256": "8EE5AF07099181A64E10A2430A085CBB9131D725871AC44A15439B10CB1E15A3",
+        "verified_after_import": true
+      },
+      {
+        "path": "VERIFICATION_PROMPT_TEMPLATE.md",
+        "sha256": "6F581129A08AEE428CA2A958F7133265DAE68018CE4CAD261C9A1100D5167655",
+        "verified_after_import": true
+      }
+    ]
+  },
+  "remote_observation": {
+    "fetch": {
+      "command": "git fetch origin --prune",
+      "started_at": "2026-09-11T00:05:34.4623559+08:00",
+      "completed_at": "2026-09-11T00:05:44.5564594+08:00",
+      "exit_code": 0,
+      "duration_seconds": 1.6636112
+    },
+    "heads": [
+      {
+        "name": "refs/heads/main",
+        "sha": "4e83f3baeb5f4d6d9ee9b8bfc61c112abc1f55cb"
+      },
+      {
+        "name": "refs/heads/feat/c-qianniu-plugin",
+        "sha": "fd52de8a8e3cb439acfb0ab28740fc8d9de15290"
+      }
+    ],
+    "all_advertised_refs_match_heads": true,
+    "pull_requests": {
+      "source": "GitHub public REST pulls endpoint, state=all, per_page=100",
+      "result": "NONE_FOUND",
+      "count": 0,
+      "authenticated_cli_check": "UNAVAILABLE: gh is not authenticated; public API result is retained as the evidence"
+    }
+  },
+  "reviewed_baseline": {
+    "main_sha": "4e83f3baeb5f4d6d9ee9b8bfc61c112abc1f55cb",
+    "main_subject": "docs: harden Covenia v0.8 engineering pack",
+    "c_line_ref": "origin/feat/c-qianniu-plugin",
+    "reviewed_base_sha": "fd52de8a8e3cb439acfb0ab28740fc8d9de15290",
+    "reviewed_base_subject": "fix: apply accepted C-line review repairs",
+    "commit_delta_from_main": {
+      "main_only": 0,
+      "c_line_only": 2,
+      "c_line_commits": [
+        "50a5a99 feat: add qianniu right-side plugin frontend",
+        "fd52de8 fix: apply accepted C-line review repairs"
+      ]
+    },
+    "tree_delta_from_main": {
+      "changed_file_count": 33,
+      "insertions": 7039,
+      "deletions": 10,
+      "evidence": "reports/batches/BATCH-01/evidence/main-vs-c-name-status.txt"
+    },
+    "approved_product_input": {
+      "path": "PRODUCT-FREEZE.md",
+      "commit": "fd52de8a8e3cb439acfb0ab28740fc8d9de15290",
+      "approval_status": "APPROVED",
+      "approver": "Zack",
+      "approval_date": "2026-09-10",
+      "scope_note": "This records the existing approved freeze; it does not approve D01-D16."
+    }
+  },
+  "integration_branch": {
+    "name": "integration/covenia-b",
+    "sha": "fd52de8a8e3cb439acfb0ab28740fc8d9de15290",
+    "action": "CREATED_LOCAL",
+    "pushed": false,
+    "merged_to_main": false,
+    "verification": "The reviewed base is an ancestor of the local integration pointer."
+  },
+  "scope_boundary": {
+    "business_code_changed": false,
+    "schemas_changed": false,
+    "approved_records_changed": false,
+    "decision_registry": "docs/planning/b/decisions.json",
+    "external_gate_registry": "docs/planning/b/external-gates.json"
+  },
+  "handoff": {
+    "reviewed_base_sha": "fd52de8a8e3cb439acfb0ab28740fc8d9de15290",
+    "required_next_inputs": [
+      "All D01-D16 remain PROPOSED until Zack's sourced X-FREEZE decision record exists.",
+      "BATCH-02 may consume this base only for a non-business skeleton.",
+      "BATCH-03 must not start contract implementation without X-FREEZE accepted evidence."
+    ],
+    "evidence_index": "reports/batches/BATCH-01/commands.json"
+  }
+}

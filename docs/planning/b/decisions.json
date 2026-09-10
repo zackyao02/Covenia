@@ -1,0 +1,247 @@
+{
+  "schema_version": "1.0",
+  "batch_id": "BATCH-01",
+  "document_status": "PROPOSED_ONLY",
+  "captured_at": "2026-09-11T00:05:44.5564594+08:00",
+  "authority_order": [
+    "PRODUCT-FREEZE.md (latest APPROVED content)",
+    "docs/05-api-and-ui.md",
+    "schemas/",
+    "docs/03-firewall-rules.md",
+    "docs/04-responsibility-loop.md",
+    "docs/08-idempotency-and-ordering.md",
+    "fixtures/ground-truth.json"
+  ],
+  "planning_source": {
+    "path": "MASTER_PLAN.md",
+    "sha256": "EFDECD6FE12DE28A19F0422010BC2100DF808B6BC369179C3A944547072B0D5A",
+    "decision_table": "MASTER_PLAN.md:60-77",
+    "rule": "The proposals below are not approvals and may not unlock BATCH-03."
+  },
+  "existing_approved_baseline_facts": [
+    "The approved freeze specifies four business POST endpoints.",
+    "The approved model identifier is Qwen/Qwen2-VL-2B-Instruct; no automatic model upgrade is authorized.",
+    "H1 priority is 350, with P0(400) then H1(350), E1(300), E2(100), E0(0).",
+    "analyze and evaluate expose server-generated runtime_metrics.",
+    "The evaluate compatibility fields remain and are ignored by the service.",
+    "An uncollected shipment cannot be delivered, and collection alone does not close the case."
+  ],
+  "consolidated_request": {
+    "id": "REQUEST-ZACK-01",
+    "recipient": "Zack",
+    "status": "PENDING",
+    "delivery_artifact": "docs/planning/b/decisions.json",
+    "decision_ids": [
+      "D01", "D02", "D03", "D04", "D05", "D06", "D07", "D08",
+      "D09", "D10", "D11", "D12", "D13", "D14", "D15", "D16"
+    ],
+    "required_response_per_decision": [
+      "final choice",
+      "approver",
+      "approval time",
+      "verbatim approval text or stable source reference",
+      "affected files and downstream batches"
+    ],
+    "approval_text": null,
+    "approval_source": null,
+    "note": "This is one prepared handoff request. No external dispatch receipt was available in this batch, so it is not represented as sent or approved."
+  },
+  "decisions": [
+    {
+      "id": "D01",
+      "status": "PROPOSED",
+      "owner": "Zack",
+      "consulted_owners": ["C"],
+      "issue": "The approved C-line freeze, H1 repair, metrics additions, and schemas are absent from main.",
+      "evidence": ["MASTER_PLAN.md:62", "reports/batches/BATCH-01/evidence/main-vs-c-name-status.txt"],
+      "proposal": "Use the reviewed C-line SHA as the local B integration base and retain both C commits; any branch merge or PR remains a separate authorization.",
+      "affected_batches": ["BATCH-01", "BATCH-03"],
+      "required_gate": "X-FREEZE",
+      "approval": null
+    },
+    {
+      "id": "D02",
+      "status": "PROPOSED",
+      "owner": "Zack",
+      "consulted_owners": ["B", "C"],
+      "issue": "A34 says challenge overrides are ignored when challenge_mode is absent or false, while the evaluate schema allOf condition requires true when overrides appear.",
+      "evidence": ["MASTER_PLAN.md:63", "schemas/evaluate-action-request.schema.json"],
+      "proposal": "When challenge mode is off, ignore and do not validate or apply override content; when it is on, strictly validate allowed overrides. Do not infer analyze semantics from A34.",
+      "affected_batches": ["BATCH-03", "BATCH-21", "BATCH-22", "BATCH-30"],
+      "required_gate": "X-FREEZE",
+      "approval": null
+    },
+    {
+      "id": "D03",
+      "status": "PROPOSED",
+      "owner": "Zack",
+      "consulted_owners": ["B", "C"],
+      "issue": "The firewall maps ASK_SAME_EVIDENCE to P0/400, but Hero expectations require E1/300 or H1/350 for overlapping cases.",
+      "evidence": ["MASTER_PLAN.md:64", "docs/03-firewall-rules.md"],
+      "proposal": "Classify repeat-evidence requests under E1 for the display-prohibited action and reserve P0 for coercive responsibility reversal or premature closure; approve the complete mapping explicitly.",
+      "affected_batches": ["BATCH-03", "BATCH-14", "BATCH-15"],
+      "required_gate": "X-FREEZE",
+      "approval": null
+    },
+    {
+      "id": "D04",
+      "status": "PROPOSED",
+      "owner": "Zack",
+      "consulted_owners": ["B", "C"],
+      "issue": "The firewall describes repeat explanation and responsibility-reversal actions, but A29 lacks a PreparedAction representation and the schema exposes only four action types.",
+      "evidence": ["MASTER_PLAN.md:65", "schemas/prepared-action.schema.json", "docs/03-firewall-rules.md"],
+      "proposal": "Approve a minimal auditable action encoding or constrained field; do not let a prompt, UI phrase, or action_id implicitly determine the action.",
+      "affected_batches": ["BATCH-03", "BATCH-15", "BATCH-22", "BATCH-31"],
+      "required_gate": "X-FREEZE",
+      "approval": null
+    },
+    {
+      "id": "D05",
+      "status": "PROPOSED",
+      "owner": "Zack",
+      "consulted_owners": ["B", "A"],
+      "issue": "ExtractedJourney requires commitment-related fields while the AI extraction document says the model distinguishes them, conflicting with the rule that AI does not activate commitments or make final accountability decisions.",
+      "evidence": ["MASTER_PLAN.md:66", "schemas/extracted-journey.schema.json", "docs/02-ai-extraction.md"],
+      "proposal": "Keep CandidateExtraction limited to source-grounded observations and have deterministic service code enrich any public derived fields; no model output may enter the ledger directly.",
+      "affected_batches": ["BATCH-03", "BATCH-04", "BATCH-11", "BATCH-13", "BATCH-19"],
+      "required_gate": "X-FREEZE",
+      "approval": null
+    },
+    {
+      "id": "D06",
+      "status": "PROPOSED",
+      "owner": "Zack",
+      "consulted_owners": ["B", "C"],
+      "issue": "The ordering document lists P0_PROHIBITED_ACTION as HTTP 400, firewall and DecisionResult require a complete INTERVENE result, and the API document lists E0 as an error.",
+      "evidence": ["MASTER_PLAN.md:67", "docs/05-api-and-ui.md", "docs/08-idempotency-and-ordering.md", "schemas/decision-result.schema.json"],
+      "proposal": "Treat E0 as a success as already stated; propose P0 as a successful 200 business evaluation with a full DecisionResult, reserving errors for transport or input failures.",
+      "affected_batches": ["BATCH-03", "BATCH-15", "BATCH-22", "BATCH-31"],
+      "required_gate": "X-FREEZE",
+      "approval": null
+    },
+    {
+      "id": "D07",
+      "status": "PROPOSED",
+      "owner": "Zack",
+      "consulted_owners": ["A"],
+      "issue": "Root demo fixtures retain a 10:45 second contact and 11:00 evaluation, while the freeze/C examples use 09:32 and 09:40; Hero ground truth retains RAISE_PRIORITY.",
+      "evidence": ["MASTER_PLAN.md:68", "fixtures/demo-cases.json", "fixtures/ground-truth.json"],
+      "proposal": "Have A synchronize fixtures to the approved timeline and re-check ground-truth risk/priority semantics; B must not alter source event times or labels to pass tests.",
+      "affected_batches": ["BATCH-03", "BATCH-06", "BATCH-29"],
+      "required_gate": "X-FREEZE",
+      "approval": null
+    },
+    {
+      "id": "D08",
+      "status": "PROPOSED",
+      "owner": "Zack",
+      "consulted_owners": ["B", "C"],
+      "issue": "Approved next_check_at is 10:30, later than a 10:27:37 commitment deadline, while responsibility-loop material calls for a pre-deadline warning and a receipt example uses 10:27.",
+      "evidence": ["MASTER_PLAN.md:69", "PRODUCT-FREEZE.md", "docs/04-responsibility-loop.md"],
+      "proposal": "Do not silently advance the approved value; clarify whether it is an after-deadline check or revise the freeze, and explicitly define next-check and completed-state time behavior without adding a scheduler.",
+      "affected_batches": ["BATCH-03", "BATCH-13", "BATCH-17", "BATCH-25"],
+      "required_gate": "X-FREEZE",
+      "approval": null
+    },
+    {
+      "id": "D09",
+      "status": "PROPOSED",
+      "owner": "Zack",
+      "consulted_owners": ["B", "C"],
+      "issue": "approved_at uses a server clock, historical demo events are in May while the host date differs, and the existing script/UI can submit a 10:10 collection after the 11:35 uncollected path.",
+      "evidence": ["MASTER_PLAN.md:70", "PRODUCT-FREEZE.md", "frontend/src/App.tsx"],
+      "proposal": "Use a trusted injected DemoClock and SystemClock; freeze high-water-mark behavior and two separate legal timelines so an at-risk route never moves backward in time.",
+      "affected_batches": ["BATCH-03", "BATCH-13", "BATCH-25", "BATCH-27", "BATCH-32"],
+      "required_gate": "X-FREEZE",
+      "approval": null
+    },
+    {
+      "id": "D10",
+      "status": "PROPOSED",
+      "owner": "Zack",
+      "consulted_owners": ["B", "C"],
+      "issue": "Human approval activation conflicts with analysis examples that already show an ACTIVE commitment; collection completes a promise while fulfillment remains in transit, and PROMISE_FULFILLED is absent from external shipment/audit enums.",
+      "evidence": ["MASTER_PLAN.md:71", "docs/04-responsibility-loop.md", "schemas/accountability-state.schema.json"],
+      "proposal": "Distinguish an existing lawful customer-service commitment from a newly activated fulfillment obligation; model PROMISE_FULFILLED only as a derived internal fact unless an existing field can be explicitly approved for audit expression.",
+      "affected_batches": ["BATCH-03", "BATCH-13", "BATCH-14", "BATCH-23", "BATCH-25"],
+      "required_gate": "X-FREEZE",
+      "approval": null
+    },
+    {
+      "id": "D11",
+      "status": "PROPOSED",
+      "owner": "Zack",
+      "consulted_owners": ["B", "C", "D"],
+      "issue": "A7 excludes unconfirmed notification drafts from consumer receipts, but the current C application appends a draft after shipment and no dedicated notification-confirmation endpoint exists.",
+      "evidence": ["MASTER_PLAN.md:72", "frontend/src/App.tsx", "docs/05-api-and-ui.md"],
+      "proposal": "Have C perform a second local-chat confirmation and export confirmation evidence while B produces only a draft; any backend persistence must be an approved minimal extension of an existing endpoint, not a new API.",
+      "affected_batches": ["BATCH-03", "BATCH-17", "BATCH-23", "BATCH-32"],
+      "required_gate": "X-FREEZE",
+      "approval": null
+    },
+    {
+      "id": "D12",
+      "status": "PROPOSED",
+      "owner": "Zack",
+      "consulted_owners": ["B", "C"],
+      "issue": "Responsibility-loop material permits edits to classification, deadline, and action while request schemas expose only executor/next_check_at/recovery_if_missed; approve/shipment lack independent schemas and approved_at has no direct response field.",
+      "evidence": ["MASTER_PLAN.md:73", "docs/04-responsibility-loop.md", "schemas/approve-resolution-request.schema.json"],
+      "proposal": "Limit edits to the existing safe fields, add only approved response schema coverage, expose approved_at through auditable service state, and freeze validation behavior for missing approver, unknown cases, expired candidates, and unknown fields.",
+      "affected_batches": ["BATCH-03", "BATCH-04", "BATCH-23", "BATCH-24", "BATCH-26"],
+      "required_gate": "X-FREEZE",
+      "approval": null
+    },
+    {
+      "id": "D13",
+      "status": "PROPOSED",
+      "owner": "Zack",
+      "consulted_owners": ["B", "C"],
+      "issue": "AI extraction documentation routes retry failure to HUMAN_REVIEW, while ordering documentation specifies MODEL_OUTPUT_INVALID/502; invalid JSON cannot truthfully produce a complete successful ledger.",
+      "evidence": ["MASTER_PLAN.md:74", "docs/02-ai-extraction.md", "docs/08-idempotency-and-ordering.md"],
+      "proposal": "For source conflict with a structurally valid extraction, deterministic rules may choose H1; when a legal extraction cannot be formed, return 502 with an explicit human-takeover UI shape and do not fabricate success.",
+      "affected_batches": ["BATCH-03", "BATCH-11", "BATCH-19", "BATCH-21", "BATCH-31"],
+      "required_gate": "X-FREEZE",
+      "approval": null
+    },
+    {
+      "id": "D14",
+      "status": "PROPOSED",
+      "owner": "Zack",
+      "consulted_owners": ["A", "B"],
+      "issue": "No complete policy table defines multi-image conflict, missing-image, confidence, experience-risk, or prohibited-action construction, and hygiene signals must not become medical diagnoses.",
+      "evidence": ["MASTER_PLAN.md:75", "docs/03-firewall-rules.md", "fixtures/ground-truth.json"],
+      "proposal": "Have A provide identifiable coverage labels and B encode only approved combination rules; unknown or conflicting evidence stays conservatively H1 without invented statistical thresholds or medical/legal claims.",
+      "affected_batches": ["BATCH-03", "BATCH-12", "BATCH-14", "BATCH-15"],
+      "required_gate": "X-FREEZE",
+      "approval": null
+    },
+    {
+      "id": "D15",
+      "status": "PROPOSED",
+      "owner": "Zack",
+      "consulted_owners": ["B", "C"],
+      "issue": "Idempotency is only described as unique per case and leaves cross-endpoint keys, duplicate event_id, equal-time events, and analyze behavior after human/event history unresolved.",
+      "evidence": ["MASTER_PLAN.md:76", "docs/08-idempotency-and-ordering.md"],
+      "proposal": "Freeze a case-scoped operation plus normalized-body digest, retain first response/request_id, deduplicate event_id independently, define monotonic ordering including legal equal times, and prohibit analyze from resetting ledger state.",
+      "affected_batches": ["BATCH-03", "BATCH-18", "BATCH-19", "BATCH-23", "BATCH-26"],
+      "required_gate": "X-FREEZE",
+      "approval": null
+    },
+    {
+      "id": "D16",
+      "status": "PROPOSED",
+      "owner": "Zack",
+      "consulted_owners": ["B", "A", "C", "D"],
+      "issue": "evaluate lacks a clear model-cache source path, real usage-missing behavior and rule-substitution counting are incomplete, CaseInput does not represent every imported conversation, and formal G5 uses an existing acceptance record protocol.",
+      "evidence": ["MASTER_PLAN.md:77", "docs/05-api-and-ui.md", "AGENT-HANDOFF-PROTOCOL.md"],
+      "proposal": "Freeze four runtime-metric definitions and visible evaluate cache provenance, separate raw import from analyzable P0 input, and leave formal G5 acceptance to D/Zack without rewriting historical Claude/QA records.",
+      "affected_batches": ["BATCH-03", "BATCH-06", "BATCH-09", "BATCH-20", "BATCH-22", "BATCH-34"],
+      "required_gate": "X-FREEZE",
+      "approval": null
+    }
+  ],
+  "downstream_constraint": {
+    "BATCH-02": "May create a non-business skeleton after integration receipt; it may not settle decisions.",
+    "BATCH-03": "BLOCKED until X-FREEZE supplies a real, sourced decision record covering implementation-relevant proposals."
+  }
+}

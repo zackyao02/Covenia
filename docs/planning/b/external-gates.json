@@ -1,0 +1,204 @@
+{
+  "schema_version": "1.0",
+  "batch_id": "BATCH-01",
+  "captured_at": "2026-09-11T00:05:44.5564594+08:00",
+  "source": {
+    "path": "batches.json.external_gates and MASTER_PLAN.md:174-185",
+    "plan_sha256": "EFDECD6FE12DE28A19F0422010BC2100DF808B6BC369179C3A944547072B0D5A"
+  },
+  "receipt_policy": {
+    "accepted_receipts": [],
+    "rule": "A required artifact path, a prepared handoff, or a prior planning assertion is not an ACCEPTED receipt. Only the named owner and required evidence may change a gate to ACCEPTED."
+  },
+  "outbound_delivery_manifest": [
+    {
+      "recipient": "A",
+      "gate_ids": ["X-A-MAPPING", "X-A-FIXTURES", "X-A-IMAGES", "X-A-TRUTH", "X-A-HOLDOUT"],
+      "artifact": "docs/planning/b/external-gates.json",
+      "delivery_state": "PREPARED_FOR_HANDOFF",
+      "receipt": null
+    },
+    {
+      "recipient": "C",
+      "gate_ids": ["X-C-CONTRACT", "X-C-UI"],
+      "artifact": "docs/planning/b/external-gates.json",
+      "delivery_state": "PREPARED_FOR_HANDOFF",
+      "receipt": null
+    },
+    {
+      "recipient": "D",
+      "gate_ids": ["X-A-TRUTH", "X-A-HOLDOUT", "X-D-RELEASE"],
+      "artifact": "docs/planning/b/external-gates.json",
+      "delivery_state": "PREPARED_FOR_HANDOFF",
+      "receipt": null
+    },
+    {
+      "recipient": "Zack",
+      "gate_ids": ["X-FREEZE"],
+      "artifact": "docs/planning/b/decisions.json",
+      "delivery_state": "PREPARED_FOR_HANDOFF",
+      "receipt": null
+    },
+    {
+      "recipient": "B and team compute owner",
+      "gate_ids": ["X-MODEL"],
+      "artifact": "docs/planning/b/external-gates.json",
+      "delivery_state": "PREPARED_FOR_HANDOFF",
+      "receipt": null
+    }
+  ],
+  "gates": [
+    {
+      "id": "X-FREEZE",
+      "owner": "Zack; B/C co-sign interface; A co-sign facts",
+      "status": "MISSING",
+      "required_before": ["BATCH-03"],
+      "required_artifact": "docs/approvals/b-decisions.json plus an approved PRODUCT-FREEZE.md commit",
+      "required_evidence": [
+        "D01-D16 implementation-relevant items each state final choice, approver, time, verbatim approval/source, and affected files.",
+        "Already-approved H1=350 and four-endpoint facts may be cited but do not substitute for unresolved decisions."
+      ],
+      "observed_path": "docs/approvals/b-decisions.json",
+      "observed_in_reviewed_base": false,
+      "receipt": null
+    },
+    {
+      "id": "X-A-MAPPING",
+      "owner": "A",
+      "status": "MISSING",
+      "required_before": ["BATCH-05"],
+      "required_artifact": "handoff/a/data-mapping.json",
+      "required_evidence": [
+        "Workbook SHA256, eight sheets/seven business-table names, column mapping, primary/foreign keys, ID storage types, time/null rules.",
+        "Five work-order classes and expected-count provenance."
+      ],
+      "observed_path": "handoff/a/data-mapping.json",
+      "observed_in_reviewed_base": false,
+      "receipt": null
+    },
+    {
+      "id": "X-A-FIXTURES",
+      "owner": "A; Zack approves semantic changes",
+      "status": "MISSING",
+      "required_before": ["BATCH-06"],
+      "required_artifact": "handoff/a/cases-manifest.json plus an A-accepted fixtures commit",
+      "required_evidence": [
+        "Hero second contact at 09:32 and evaluation at 09:40, original message and augmentation provenance, alias-to-session mapping.",
+        "Product/gift/image-source associations and root fixture alignment to approved contract."
+      ],
+      "observed_path": "handoff/a/cases-manifest.json",
+      "observed_in_reviewed_base": false,
+      "receipt": null
+    },
+    {
+      "id": "X-A-IMAGES",
+      "owner": "A",
+      "status": "MISSING",
+      "required_before": ["BATCH-28", "BATCH-29", "BATCH-32"],
+      "required_artifact": "handoff/a/images-manifest.json plus five original team images under frontend/public/evidence/ and independent injection-pair images",
+      "required_evidence": [
+        "filename, evidence_id, source_message_id, SHA256, MIME, provenance/license, no-PII declaration, and reviewable human labels for every image.",
+        "Injection pairs retain the same base pixels; B and C reference the registered bytes, not placeholders."
+      ],
+      "observed_path": "handoff/a/images-manifest.json",
+      "observed_in_reviewed_base": false,
+      "additional_observation": "frontend/public/evidence/ contained README.md only during this check.",
+      "receipt": null
+    },
+    {
+      "id": "X-MODEL",
+      "owner": "B and team compute owner; Zack approves cost/model changes",
+      "status": "UNVERIFIED",
+      "required_before": ["BATCH-28"],
+      "required_artifact": "handoff/model/service-manifest.redacted.json",
+      "required_evidence": [
+        "Actual Qwen/Qwen2-VL-2B-Instruct revision, service address and call protocol, usage, region/device/dependency/license record, availability and warm-up record.",
+        "Secrets remain only in environment variables; keys, GPU/rental resources, network, and permissions are supplied by the team."
+      ],
+      "observed_path": "handoff/model/service-manifest.redacted.json",
+      "observed_in_reviewed_base": false,
+      "receipt": null
+    },
+    {
+      "id": "X-A-TRUTH",
+      "owner": "A authors; D receives; Zack approves policy semantics",
+      "status": "PARTIAL",
+      "required_before": ["BATCH-29"],
+      "required_artifact": "fixtures/ground-truth.json plus handoff/a/evaluation-manifest.json",
+      "required_evidence": [
+        "Three demo truth records synchronized for conflicts and twenty development samples with provenance, input, expected result, evaluation definition, and hashes.",
+        "Ten holdout samples are separately delivered to D; the 20/10 split does not create thirty product scenarios."
+      ],
+      "observed_path": "handoff/a/evaluation-manifest.json",
+      "observed_in_reviewed_base": false,
+      "receipt": null
+    },
+    {
+      "id": "X-C-CONTRACT",
+      "owner": "C",
+      "status": "MISSING",
+      "required_before": ["BATCH-31"],
+      "required_artifact": "handoff/c/contract-sync.json plus a C-accepted commit",
+      "required_evidence": [
+        "TypeScript types and four endpoint examples aligned with BATCH-03, including A34, error mapping, model provenance, and constrained human_edits.",
+        "Actual npm test/build output, contract version, and request-example hashes."
+      ],
+      "observed_path": "handoff/c/contract-sync.json",
+      "observed_in_reviewed_base": false,
+      "receipt": null
+    },
+    {
+      "id": "X-C-UI",
+      "owner": "C; D independently rechecks",
+      "status": "MISSING",
+      "required_before": ["BATCH-32"],
+      "required_artifact": "handoff/c/http-ui-ready.json plus a C UI repair commit",
+      "required_evidence": [
+        "Notification drafts do not enter consumer chat until confirmation; retries retain an idempotency key and failures do not display success.",
+        "Events follow a selected legal timeline without backward time movement; HTTP mode renders backend cache/challenge/metrics/model-provenance state."
+      ],
+      "observed_path": "handoff/c/http-ui-ready.json",
+      "observed_in_reviewed_base": false,
+      "receipt": null
+    },
+    {
+      "id": "X-A-HOLDOUT",
+      "owner": "D safeguards; A submits",
+      "status": "MISSING",
+      "required_before": ["BATCH-34"],
+      "required_artifact": "private-evaluation/holdout-manifest.json outside the repository/runtime service",
+      "required_evidence": [
+        "Ten independent holdout cases with hashes, provenance, human labels, and a frozen evaluation definition accessible only to independent evaluation.",
+        "No unapproved accuracy target and no label-based prompt tuning."
+      ],
+      "observed_path": "private-evaluation/holdout-manifest.json",
+      "observed_in_reviewed_base": false,
+      "receipt": null
+    },
+    {
+      "id": "X-D-RELEASE",
+      "owner": "D; Zack approves final release",
+      "status": "MISSING",
+      "required_before": ["BATCH-34"],
+      "required_artifact": "handoff/d/release-review-ready.json",
+      "required_evidence": [
+        "D has accepted independent-review input and records fixed integration SHA, environment, evidence paths, and a real-model availability window.",
+        "This is execution-readiness evidence only; formal G5/QA acceptance remains a post-review team-protocol outcome."
+      ],
+      "observed_path": "handoff/d/release-review-ready.json",
+      "observed_in_reviewed_base": false,
+      "receipt": null
+    }
+  ],
+  "downstream_gate_summary": {
+    "BATCH-02": "No external gate is required, but it may only consume the locked base for a non-business skeleton after normal integration receipt.",
+    "BATCH-03": "BLOCKED by X-FREEZE.",
+    "BATCH-05": "BLOCKED by X-A-MAPPING.",
+    "BATCH-06": "BLOCKED by X-A-FIXTURES.",
+    "BATCH-28": "BLOCKED by X-A-IMAGES and X-MODEL.",
+    "BATCH-29": "BLOCKED by X-A-IMAGES and X-A-TRUTH.",
+    "BATCH-31": "BLOCKED by X-C-CONTRACT.",
+    "BATCH-32": "BLOCKED by X-A-IMAGES and X-C-UI.",
+    "BATCH-34": "BLOCKED by X-A-HOLDOUT and X-D-RELEASE."
+  }
+}

@@ -1,0 +1,5 @@
+fd52de8 (HEAD -> codex/covenia-batch-01, origin/feat/c-qianniu-plugin, integration/covenia-b) fix: apply accepted C-line review repairs
+50a5a99 feat: add qianniu right-side plugin frontend
+4e83f3b (origin/main, origin/HEAD, main) docs: harden Covenia v0.8 engineering pack
+0820ca9 docs: add Claude Codex product review workflow
+f7f941b Add Covenia project documentation pack v0.7.0
