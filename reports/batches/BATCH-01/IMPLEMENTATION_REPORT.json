@@ -3,237 +3,203 @@
   "batch_id": "BATCH-01",
   "result": "IMPLEMENTED",
   "status": "COMPLETED",
-  "summary": "Locked the refreshed reviewed C-line baseline, created a local integration/covenia-b pointer, imported the scheduled planning materials with verified hashes, and recorded all proposed decisions and external gates. No business code, schema, fixture, frontend, or approved record was changed.",
-  "repo_root": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/worktrees/covenia-batch-01",
-  "branch": "codex/covenia-batch-01",
-  "base_integration_sha": "fd52de8a8e3cb439acfb0ab28740fc8d9de15290",
-  "contract_version": "fd52de8a8e3cb439acfb0ab28740fc8d9de15290 / current approved PRODUCT-FREEZE.md content",
-  "plan_sha256": "MASTER_PLAN.md=EFDECD6FE12DE28A19F0422010BC2100DF808B6BC369179C3A944547072B0D5A; batches.json=FDF74B9156102EC3759CA1031260013520E8355FADED4C9CDB76CECE32B1A0E3",
+  "repair_status": "REPAIR_REQUIRED",
+  "repair_type": "PLAN_SCOPE_CORRECTION",
+  "summary": "Completed the minimal BATCH-01 repair required by the 2026-09-11 plan revision: the already approved B decisions record was copied verbatim into the repository and committed. This is a REPAIR_REQUIRED scope correction to prior implementation c13b401db96e0812bdba2e5a71365fe7e2ffd889, not a failure of that old-plan implementation and not a revised-plan independent acceptance or integration claim.",
+  "repo_root": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-01-repair-1",
+  "branch": "codex/covenia-batch-01-repair-1",
+  "base_integration_sha": "c13b401db96e0812bdba2e5a71365fe7e2ffd889",
+  "contract_version": "c13b401db96e0812bdba2e5a71365fe7e2ffd889 baseline; no contract or schema change",
+  "plan_sha256": "MASTER_PLAN.md=ECE161441703962D9D7C0E1650497D2C2BEED560FC3D2239564B4E9E1D4A75E4; batches.json=E78AE0E223B6D5D5A8F427630225D572E1A7D9E844F99CEA82503CC87EEB1693",
+  "repair_context": {
+    "previous_implementation_commit": "c13b401db96e0812bdba2e5a71365fe7e2ffd889",
+    "previous_implementation_report": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/worktrees/covenia-batch-01/reports/batches/BATCH-01/IMPLEMENTATION_REPORT.json",
+    "previous_verification_report": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/worktrees/covenia-batch-01/reports/batches/BATCH-01/VERIFICATION_REPORT.json",
+    "previous_verification_scope": "Old plan only; it was not used as acceptance for the 2026-09-11 revised plan.",
+    "reason": "The revised plan newly requires docs/approvals/b-decisions.json to be archived verbatim. The prior external-gates record's PREPARED_FOR_HANDOFF receipt:null state was truthful under the old plan and is not treated as an implementation defect."
+  },
+  "plan_provenance": {
+    "authoritative_workspace_paths": [
+      "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/MASTER_PLAN.md",
+      "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/batches.json"
+    ],
+    "authoritative_hashes": {
+      "MASTER_PLAN.md": "ECE161441703962D9D7C0E1650497D2C2BEED560FC3D2239564B4E9E1D4A75E4",
+      "batches.json": "E78AE0E223B6D5D5A8F427630225D572E1A7D9E844F99CEA82503CC87EEB1693"
+    },
+    "repair_checkout_base_plan_hashes": {
+      "MASTER_PLAN.md": "81A22727C179E5A4628C84D7412210EAE32317B378B4051DA2B91FE7A2B1E183",
+      "batches.json": "CBB7929A82453197BCA637F7D4470538DA909097B4A47C1BD6DB0A52406487D6"
+    },
+    "note": "The task explicitly preserves the repair checkout at c13b401db96e0812bdba2e5a71365fe7e2ffd889 and forbids planner-file changes. The current-plan hashes above were verified from the authoritative workspace; this report does not claim that the revised plan itself has been independently accepted or integrated on this branch."
+  },
   "initial_worktree": [],
   "dependency_receipts": [],
-  "external_gate_receipts": [],
-  "code_commits": [
-    "78e7522ce0e8eee1e6573d40bf42ed0d7cf0138b"
+  "external_gate_receipts": [
+    {
+      "gate": "X-FREEZE",
+      "status": "ACCEPTED",
+      "approved_by": "Zack",
+      "approved_at": "2026-09-10T23:59:00+08:00",
+      "source_path": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/docs/approvals/b-decisions.json",
+      "source_sha256": "3ACAD4A113EB595BCED29025AF884A4C5EA2835E90E38D0E897298F91DB371DA",
+      "receipt": "Copied verbatim into the repair checkout; no approval content was created, edited, reordered, or supplemented."
+    }
   ],
-  "commit_hash": "78e7522ce0e8eee1e6573d40bf42ed0d7cf0138b",
+  "code_commits": [
+    "cf065228b311dc7f57275a57e325fb0fb9934879"
+  ],
+  "commit_hash": "cf065228b311dc7f57275a57e325fb0fb9934879",
   "changed_files": [
-    "MASTER_PLAN.md",
-    "batches.json",
-    "BATCH_PROMPT_TEMPLATE.md",
-    "VERIFICATION_PROMPT_TEMPLATE.md",
-    "docs/planning/b/baseline-lock.json",
-    "docs/planning/b/decisions.json",
-    "docs/planning/b/external-gates.json",
-    "reports/batches/BATCH-01/commands.json",
-    "reports/batches/BATCH-01/evidence/external-gate-probes.txt",
-    "reports/batches/BATCH-01/evidence/git-log-all.txt",
-    "reports/batches/BATCH-01/evidence/main-vs-c-name-status.txt",
-    "reports/batches/BATCH-01/evidence/precommit-status.txt",
-    "reports/batches/BATCH-01/evidence/preflight.txt",
-    "reports/batches/BATCH-01/evidence/remote-commit-delta.txt",
-    "reports/batches/BATCH-01/evidence/remote-heads.txt",
-    "reports/batches/BATCH-01/evidence/remote-prs.json",
+    "docs/approvals/b-decisions.json",
     "reports/batches/BATCH-01/IMPLEMENTATION_REPORT.json",
-    "reports/batches/BATCH-01/IMPLEMENTATION_REPORT.md"
+    "reports/batches/BATCH-01/IMPLEMENTATION_REPORT.md",
+    "reports/batches/BATCH-01/commands.json"
   ],
   "files_changed": [
-    "MASTER_PLAN.md",
-    "batches.json",
-    "BATCH_PROMPT_TEMPLATE.md",
-    "VERIFICATION_PROMPT_TEMPLATE.md",
-    "docs/planning/b/baseline-lock.json",
-    "docs/planning/b/decisions.json",
-    "docs/planning/b/external-gates.json",
-    "reports/batches/BATCH-01/**"
+    "docs/approvals/b-decisions.json",
+    "reports/batches/BATCH-01/IMPLEMENTATION_REPORT.json",
+    "reports/batches/BATCH-01/IMPLEMENTATION_REPORT.md",
+    "reports/batches/BATCH-01/commands.json"
   ],
   "scope_check": {
     "within_allowlist": true,
     "forbidden_changes": [],
     "business_code_changed": false,
     "schemas_changed": false,
-    "approved_records_changed": false
+    "fixtures_changed": false,
+    "planner_files_changed": false,
+    "source_approval_record_modified": false,
+    "target_archive_mode": "COPY_VERBATIM",
+    "read_only_fixture_spec_not_copied": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/docs/decisions/FIXTURE-ALIGNMENT-SPEC.md"
   },
   "acceptance_results": [
     {
-      "criterion": "Baseline traces to the refreshed remote C-line commit and existing approved freeze, with the full main/C delta recorded.",
+      "criterion": "The approved B decisions record is archived at docs/approvals/b-decisions.json without transformation, and its SHA256 equals the required value.",
       "status": "EVIDENCED",
       "evidence": [
-        "docs/planning/b/baseline-lock.json",
-        "reports/batches/BATCH-01/evidence/remote-heads.txt",
-        "reports/batches/BATCH-01/evidence/main-vs-c-name-status.txt"
+        "docs/approvals/b-decisions.json",
+        "reports/batches/BATCH-01/commands.json#/acceptance_commands/0",
+        "reports/batches/BATCH-01/commands.json#/acceptance_commands/1"
       ]
     },
     {
-      "criterion": "Every conflict and external input has an ID, owner, and truthful status; downstream contract gates are not falsely passed.",
+      "criterion": "The source approval record and repository archive are byte-for-byte identical.",
       "status": "EVIDENCED",
       "evidence": [
-        "docs/planning/b/decisions.json",
-        "docs/planning/b/external-gates.json",
-        "reports/batches/BATCH-01/evidence/external-gate-probes.txt"
+        "reports/batches/BATCH-01/commands.json#/acceptance_commands/2"
       ]
     },
     {
-      "criterion": "No business code, schema, or existing approved record was modified; planning describes only later work.",
+      "criterion": "The repair affects only the approved-record archive and permitted BATCH-01 implementation-report artifacts; no business, schema, fixture, planner, or verification artifact is changed.",
       "status": "EVIDENCED",
       "evidence": [
-        "reports/batches/BATCH-01/evidence/preflight.txt",
-        "reports/batches/BATCH-01/commands.json",
-        "78e7522ce0e8eee1e6573d40bf42ed0d7cf0138b"
+        "cf065228b311dc7f57275a57e325fb0fb9934879",
+        "reports/batches/BATCH-01/commands.json#/supporting_operations/2"
       ]
     }
   ],
   "test_results": [
     {
-      "command": "git fetch origin --prune",
-      "cwd": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/worktrees/covenia-batch-01",
+      "command": "python -m json.tool docs/approvals/b-decisions.json",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-01-repair-1",
       "exit_code": 0,
-      "duration_seconds": 1.6636112,
-      "mode": "PROTOCOL_DOUBLE",
-      "evidence": "docs/planning/b/baseline-lock.json#/remote_observation/fetch"
-    },
-    {
-      "command": "git ls-remote --heads origin",
-      "cwd": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/worktrees/covenia-batch-01",
-      "exit_code": 0,
-      "duration_seconds": 1.8803045,
-      "mode": "PROTOCOL_DOUBLE",
-      "evidence": "reports/batches/BATCH-01/evidence/remote-heads.txt"
-    },
-    {
-      "command": "git log --all --oneline --decorate -10",
-      "cwd": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/worktrees/covenia-batch-01",
-      "exit_code": 0,
-      "duration_seconds": 0.0000046,
-      "mode": "PROTOCOL_DOUBLE",
-      "evidence": "reports/batches/BATCH-01/evidence/git-log-all.txt"
-    },
-    {
-      "command": "git rev-list --left-right --count origin/main...origin/feat/c-qianniu-plugin",
-      "cwd": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/worktrees/covenia-batch-01",
-      "exit_code": 0,
-      "duration_seconds": 0.0000019,
-      "mode": "PROTOCOL_DOUBLE",
-      "evidence": "reports/batches/BATCH-01/evidence/remote-commit-delta.txt"
-    },
-    {
-      "command": "python -m json.tool docs/planning/b/baseline-lock.json",
-      "cwd": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/worktrees/covenia-batch-01",
-      "exit_code": 0,
-      "duration_seconds": 0.0000014,
+      "duration_seconds": 0.068285,
       "mode": "UNIT",
-      "evidence": "docs/planning/b/baseline-lock.json"
+      "evidence": "reports/batches/BATCH-01/commands.json#/acceptance_commands/0"
     },
     {
-      "command": "python -m json.tool docs/planning/b/decisions.json",
-      "cwd": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/worktrees/covenia-batch-01",
+      "command": "if ((Get-FileHash -LiteralPath 'docs/approvals/b-decisions.json' -Algorithm SHA256).Hash -ne '3ACAD4A113EB595BCED29025AF884A4C5EA2835E90E38D0E897298F91DB371DA') { throw 'Approved record hash mismatch' }",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-01-repair-1",
       "exit_code": 0,
-      "duration_seconds": 0.1726544,
+      "duration_seconds": 0.022607,
       "mode": "UNIT",
-      "evidence": "docs/planning/b/decisions.json"
+      "evidence": "reports/batches/BATCH-01/commands.json#/acceptance_commands/1"
+    },
+    {
+      "command": "fc.exe /b source-approval-record docs/approvals/b-decisions.json",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-01-repair-1",
+      "exit_code": 0,
+      "duration_seconds": 0.022947,
+      "mode": "UNIT",
+      "evidence": "reports/batches/BATCH-01/commands.json#/acceptance_commands/2"
     },
     {
       "command": "git diff --check",
-      "cwd": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/worktrees/covenia-batch-01",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-01-repair-1",
       "exit_code": 0,
-      "duration_seconds": 0.1407584,
+      "duration_seconds": 0.063056,
       "mode": "UNIT",
-      "evidence": "reports/batches/BATCH-01/commands.json#/acceptance_commands/6"
+      "evidence": "reports/batches/BATCH-01/commands.json#/acceptance_commands/3"
     },
     {
       "command": "git status --short",
-      "cwd": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/worktrees/covenia-batch-01",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-01-repair-1",
       "exit_code": 0,
-      "duration_seconds": 0.2189306,
+      "duration_seconds": 0.081058,
       "mode": "UNIT",
-      "evidence": "reports/batches/BATCH-01/evidence/precommit-status.txt"
-    },
-    {
-      "command": "decision and gate invariant probe",
-      "cwd": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/worktrees/covenia-batch-01",
-      "exit_code": 0,
-      "duration_seconds": 0.0000019,
-      "mode": "UNIT",
-      "evidence": "decision_and_gate_invariants=OK in the recorded tool output"
+      "evidence": "reports/batches/BATCH-01/commands.json#/acceptance_commands/4"
     }
   ],
-  "tests_run": 9,
-  "tests_passed": 9,
+  "tests_run": 5,
+  "tests_passed": 5,
   "tests_failed": 0,
   "artifacts": [
     {
-      "path": "MASTER_PLAN.md",
-      "sha256": "EFDECD6FE12DE28A19F0422010BC2100DF808B6BC369179C3A944547072B0D5A",
-      "classification": "NON_SENSITIVE_PLANNING"
-    },
-    {
-      "path": "batches.json",
-      "sha256": "FDF74B9156102EC3759CA1031260013520E8355FADED4C9CDB76CECE32B1A0E3",
-      "classification": "NON_SENSITIVE_PLANNING"
-    },
-    {
-      "path": "docs/planning/b/baseline-lock.json",
-      "sha256": "0E5B86C88CF816C52B49BB98A340DBBD6CEAFAA3A46AA72B555B0A276794A4A9",
-      "classification": "NON_SENSITIVE_PLANNING"
-    },
-    {
-      "path": "docs/planning/b/decisions.json",
-      "sha256": "C3B6ABC98BDB22D76269F6459078C3638AC3E7C3075215832B50D44712FAF4E9",
-      "classification": "NON_SENSITIVE_PLANNING"
-    },
-    {
-      "path": "docs/planning/b/external-gates.json",
-      "sha256": "E96ED90E21BB4C6A335865C9E6ECE0F143F06DD393C7B5BD127353CDDDB04B91",
-      "classification": "NON_SENSITIVE_PLANNING"
-    },
-    {
-      "path": "reports/batches/BATCH-01/commands.json",
-      "sha256": "A7B034D819764F427CFA7806AF3D9C87FFBADDF5BB73A221EAF4DD6AA3B024BD",
-      "classification": "NON_SENSITIVE_EVIDENCE"
+      "path": "docs/approvals/b-decisions.json",
+      "sha256": "3ACAD4A113EB595BCED29025AF884A4C5EA2835E90E38D0E897298F91DB371DA",
+      "classification": "APPROVED_RECORD_VERBATIM_COPY",
+      "source_path": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/docs/approvals/b-decisions.json",
+      "operation": "COPY_VERBATIM"
     }
   ],
   "model_runs": [],
   "not_completed": [
     {
-      "item": "Independent verification",
-      "reason": "VERIFICATION_REPORT.json and verification-evidence are intentionally reserved for a separate verifier and were not created or overwritten."
+      "item": "Independent verification against the 2026-09-11 revised plan",
+      "reason": "Reserved for the independent verifier; this implementation repair neither writes nor overwrites VERIFICATION_REPORT.json or verification-evidence."
     },
     {
-      "item": "X-FREEZE decision receipt",
-      "reason": "All D01-D16 remain PROPOSED pending Zack's sourced approval record."
+      "item": "Integration and post-integration retest",
+      "reason": "Reserved for the scheduler/integration flow. This repair branch was not pushed, merged, or integrated."
     }
   ],
   "remaining_risks": [
-    "X-FREEZE is MISSING and blocks BATCH-03 contract implementation.",
-    "X-A-MAPPING, X-A-FIXTURES, X-A-IMAGES, X-C-CONTRACT, X-C-UI, X-A-HOLDOUT, and X-D-RELEASE are MISSING; X-MODEL is UNVERIFIED; X-A-TRUTH is PARTIAL.",
-    "The C-line branch is not merged into main; this batch created only a local integration pointer and made no push or merge."
+    "The repair has not received an independent revised-plan verification verdict.",
+    "No scheduler integration receipt or post-integration retest exists; BATCH-03 must not treat the archive alone as a completed dependency.",
+    "The repair checkout intentionally remains on the specified c13b401db96e0812bdba2e5a71365fe7e2ffd889 base while the authoritative revised plan lives in the workspace; planner changes are outside this repair's authorization."
   ],
   "risks": [
-    "The baseline is reviewed at the recorded fetch time; any later remote change requires a new ref comparison before integration.",
-    "No independent verifier has yet assessed this implementation report."
+    "A future checkout with different line-ending settings must preserve the committed approved-record bytes; the source/target byte comparison and SHA256 were confirmed before and after the archive commit.",
+    "The prior old-plan verification report remains historical evidence only and is not a substitute for a revised-plan verifier."
   ],
   "blockers": [],
   "rollback": {
-    "code": "Revert the report commit and then revert 78e7522ce0e8eee1e6573d40bf42ed0d7cf0138b in reverse chronological order; retain integration/covenia-b for audit and do not reset, delete, or force-move user branches.",
-    "runtime_state": "NOT_APPLICABLE: no runtime state, database, model call, or production side effect was created."
+    "code": "Revert the report-only commit and then revert cf065228b311dc7f57275a57e325fb0fb9934879 in reverse chronological order. Do not reset branches, overwrite the source approval record, or alter unrelated planner files.",
+    "runtime_state": "NOT_APPLICABLE: no service, database, model, or production state was created."
   },
   "handoff": {
     "interfaces": [],
     "input_versions": {
-      "reviewed_base_sha": "fd52de8a8e3cb439acfb0ab28740fc8d9de15290",
-      "main_sha": "4e83f3baeb5f4d6d9ee9b8bfc61c112abc1f55cb",
-      "c_line_delta": "main_only=0, c_line_only=2",
-      "decision_ids": "D01-D16"
+      "previous_implementation_commit": "c13b401db96e0812bdba2e5a71365fe7e2ffd889",
+      "current_plan_master_sha256": "ECE161441703962D9D7C0E1650497D2C2BEED560FC3D2239564B4E9E1D4A75E4",
+      "current_plan_batches_sha256": "E78AE0E223B6D5D5A8F427630225D572E1A7D9E844F99CEA82503CC87EEB1693",
+      "approved_record_sha256": "3ACAD4A113EB595BCED29025AF884A4C5EA2835E90E38D0E897298F91DB371DA",
+      "archive_commit": "cf065228b311dc7f57275a57e325fb0fb9934879"
     },
     "reproduction": [
-      "Read docs/planning/b/baseline-lock.json and reports/batches/BATCH-01/commands.json.",
-      "Verify integration/covenia-b resolves to fd52de8a8e3cb439acfb0ab28740fc8d9de15290.",
-      "Read docs/planning/b/decisions.json before any BATCH-03 work."
+      "python -m json.tool docs/approvals/b-decisions.json",
+      "Assert the target SHA256 equals 3ACAD4A113EB595BCED29025AF884A4C5EA2835E90E38D0E897298F91DB371DA.",
+      "Run fc.exe /b against C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/docs/approvals/b-decisions.json and docs/approvals/b-decisions.json.",
+      "git diff --check",
+      "git status --short"
     ],
     "remaining_gates": [
-      "X-FREEZE", "X-A-MAPPING", "X-A-FIXTURES", "X-A-IMAGES", "X-MODEL",
-      "X-A-TRUTH", "X-C-CONTRACT", "X-C-UI", "X-A-HOLDOUT", "X-D-RELEASE"
+      "Independent revised-plan verification",
+      "Scheduler integration receipt",
+      "Post-integration retest"
     ]
   },
-  "handoff_notes": "Pass reviewed_base_sha fd52de8a8e3cb439acfb0ab28740fc8d9de15290, remote delta main_only=0/c_line_only=2, and decision IDs D01-D16 to the coordinator. BATCH-02 may only build a non-business skeleton after normal integration receipt; BATCH-03 requires an independently sourced X-FREEZE decision record.",
+  "handoff_notes": "BATCH-01 is COMPLETED only as a REPAIR_REQUIRED plan-scope correction. The archive is COPY_VERBATIM at the required SHA256 and its content commit is cf065228b311dc7f57275a57e325fb0fb9934879. Do not call this report an independent revised-plan PASS or an integration receipt; do not alter historical external-gates.json, fixtures, source approvals, planner files, schemas, frontend, or verification artifacts.",
   "next_batch_started": false
 }

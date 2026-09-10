@@ -1,31 +1,42 @@
-# BATCH-01 Implementation Report
+# BATCH-01 Repair Implementation Report
 
-Status: **COMPLETED** — planning/baseline implementation only. This is not an independent verification PASS.
+Status: **COMPLETED**. Repair classification: **REPAIR_REQUIRED**.
+
+This is a minimal scope correction caused by the 2026-09-11 plan revision, not a failure of the prior old-plan implementation at 'c13b401db96e0812bdba2e5a71365fe7e2ffd889'.
 
 ## Outcome
 
-- Reviewed base locked to `fd52de8a8e3cb439acfb0ab28740fc8d9de15290` (`origin/feat/c-qianniu-plugin`).
-- `main...C` is `0 2`: C is two commits ahead, with 33 changed files, 7,039 insertions, and 10 deletions relative to main.
-- Created local-only `integration/covenia-b` at the reviewed base; no push and no merge to main occurred.
-- Imported the four scheduled planning materials after SHA-256 verification, then added the baseline lock, all D01–D16 as `PROPOSED`, and all required external gates with their truthful states.
-- The prepared A/C/D/Zack handoff manifests have no receipt and no gate is represented as accepted.
+- Copied the already approved source record at 'C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/docs/approvals/b-decisions.json' to 'docs/approvals/b-decisions.json' with 'COPY_VERBATIM'.
+- Source and target SHA-256 are both '3ACAD4A113EB595BCED29025AF884A4C5EA2835E90E38D0E897298F91DB371DA'.
+- A byte-level comparison confirmed that source and target are identical.
+- The archive content is committed in 'cf065228b311dc7f57275a57e325fb0fb9934879' (docs(b-plan): archive approved B decisions verbatim).
+- No business code, Schema, fixtures, planner file, source approval, or verification artifact was changed. FIXTURE-ALIGNMENT-SPEC.md was not copied.
 
-## Commit and scope
+## Plan provenance
 
-Planning artifacts commit: `78e7522ce0e8eee1e6573d40bf42ed0d7cf0138b` (`docs(b-plan): pin reviewed baseline and decision gates`).
+The authoritative revised-plan hashes were read from the workspace source files:
 
-Only allowed planning and BATCH-01 report paths changed. No business code, schemas, fixtures, frontend files, existing approval records, or verification report were modified.
+- 'MASTER_PLAN.md=ECE161441703962D9D7C0E1650497D2C2BEED560FC3D2239564B4E9E1D4A75E4'
+- 'batches.json=E78AE0E223B6D5D5A8F427630225D572E1A7D9E844F99CEA82503CC87EEB1693'
 
-## Checks
+The repair checkout intentionally remains based on the instructed 'c13b401db96e0812bdba2e5a71365fe7e2ffd889' baseline and does not import or alter planner files. This report does not claim that the revised plan has been independently accepted or integrated.
 
-Nine provenance/JSON/scope checks passed; zero business tests were applicable to this documentation batch. The required remote fetch, head listing, history/delta checks, JSON validation, `git diff --check`, and status recording are itemized with cwd, versions, exit codes, durations, and evidence paths in [commands.json](commands.json).
+## Evidence
 
-## Remaining gates
+All five minimal checks passed:
 
-`X-FREEZE` is MISSING, so BATCH-03 must not begin contract implementation. `X-A-MAPPING`, `X-A-FIXTURES`, `X-A-IMAGES`, `X-C-CONTRACT`, `X-C-UI`, `X-A-HOLDOUT`, and `X-D-RELEASE` are MISSING; `X-MODEL` is UNVERIFIED; `X-A-TRUTH` is PARTIAL. These are downstream constraints, not a false PASS for this completed documentation batch.
+- 'python -m json.tool docs/approvals/b-decisions.json'
+- Target SHA-256 assertion
+- Source/target byte-level comparison
+- 'git diff --check'
+- 'git status --short'
 
-## Handoff and rollback
+Actual cwd, exit code, duration, and sanitized outputs are in [commands.json](commands.json).
 
-Pass `reviewed_base_sha=fd52de8a8e3cb439acfb0ab28740fc8d9de15290`, `main_only=0`, `c_line_only=2`, and `D01`–`D16` to the coordinator. BATCH-02 may create only a non-business skeleton after a normal integration receipt. BATCH-03 requires a real, sourced X-FREEZE decision record.
+## Remaining work and handoff
 
-To roll back, revert the report commit and then revert `78e7522ce0e8eee1e6573d40bf42ed0d7cf0138b`; retain the local integration branch for audit.
+An independent verifier must assess this repair against the revised plan and write the reserved verification artifacts. The scheduler must then integrate the exact repair commit and record post-integration evidence. Neither task was performed here, and no subsequent Batch was started.
+
+'X-FREEZE=ACCEPTED' is recorded from Zack's source approval at '2026-09-10T23:59:00+08:00'; this archive action does not replace independent verification or integration.
+
+To roll back, revert the report-only commit and then revert 'cf065228b311dc7f57275a57e325fb0fb9934879'; do not reset branches or alter the source approval record.
