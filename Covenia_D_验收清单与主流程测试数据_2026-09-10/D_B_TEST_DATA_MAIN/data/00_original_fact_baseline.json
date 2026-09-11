@@ -1,0 +1,196 @@
+{
+  "baseline_id": "D_BASELINE_S00001",
+  "purpose": "D 线门 1 的数据核对基线：赛事 Excel 导入后应当打印的计数，以及 S00001 的全部原始事实。用于核对 B 的导入结果，以及构造测试请求时的取值来源。",
+  "source_file": "data/tianchi-track1-mock-data.xlsx",
+  "data_label": "OFFICIAL_COMPETITION_MOCK_DATA",
+  "disclaimer": "赛事 Excel 为官方提供的 AI 生成虚构 Mock 数据，不代表真实消费者或欧莱雅生产业务结论。",
+  "import_count_expectations": {
+    "note": "下表行数已扣除表头；『数据说明』表不是运行输入。",
+    "sheets": [
+      { "sheet_name": "数据说明", "rows_excluding_header": 23, "is_runtime_input": false },
+      { "sheet_name": "聊天记录", "rows_excluding_header": 998, "is_runtime_input": true, "session_count": 138 },
+      { "sheet_name": "订单", "rows_excluding_header": 113, "is_runtime_input": true },
+      { "sheet_name": "补发换货工单", "rows_excluding_header": 24, "is_runtime_input": true },
+      { "sheet_name": "线下打款工单", "rows_excluding_header": 13, "is_runtime_input": true },
+      { "sheet_name": "物流工单", "rows_excluding_header": 15, "is_runtime_input": true },
+      { "sheet_name": "不良反应工单", "rows_excluding_header": 10, "is_runtime_input": true },
+      { "sheet_name": "售后退货工单", "rows_excluding_header": 18, "is_runtime_input": true }
+    ],
+    "aggregates": {
+      "conversation_count": 138,
+      "message_count": 998,
+      "order_count": 113,
+      "image_message_count": 29,
+      "ticket_count": 80,
+      "not_completed_ticket_count": 28
+    },
+    "acceptance_ref": ["docs/07 门 1", "A19", "D-01"]
+  },
+  "long_id_precision_checks": [
+    { "field": "订单号 order_id", "value": "6920185815517983396", "digits": 19, "must_be_string": true },
+    { "field": "原订单物流单号 original_logistics_number", "value": "773478190943155", "digits": 15, "must_be_string": true },
+    { "field": "补发物流单号 replacement_logistics_number", "value": "YT7667875838478", "digits": 15, "must_be_string": true },
+    { "field": "换货工单号 ticket_id", "value": "BH919209358357", "digits": 14, "must_be_string": true },
+    { "field": "消息 ID source_message_id", "value": "80525870445254.PNM", "digits": 14, "must_be_string": true }
+  ],
+  "hero_session": {
+    "session_id": "S00001",
+    "buyer_nickname_masked": "邓e**",
+    "shop": "测试美妆旗舰店",
+    "scene_major": "补发换货",
+    "scene_minor": "破损换货",
+    "message_count_in_competition_data": 6,
+    "message_count_in_fixture": 5,
+    "fixture_missing_message_id": "94357468399952.PNM",
+    "fixture_missing_note": "赛事原文含买家消息『行，那尽快哈』（2026-05-05 10:25:13），fixtures/demo-cases.json 未保留。见待确认 T-05。",
+    "conversation": [
+      {
+        "message_id": "20974795108539.PNM",
+        "timestamp": "2026-05-05T10:18:45+08:00",
+        "speaker": "CONSUMER",
+        "speaker_raw": "买家",
+        "text": "你好，收到的粉底液泵头是坏的，按不出来东西，急",
+        "content_type": "文本",
+        "source_kind": "COMPETITION_MOCK"
+      },
+      {
+        "message_id": "51831669257761.PNM",
+        "timestamp": "2026-05-05T10:20:59+08:00",
+        "speaker": "AGENT",
+        "speaker_raw": "客服",
+        "text": "亲亲抱歉！麻烦拍下破损部位的照片发给测试客服，为您核实换货哈~",
+        "content_type": "文本",
+        "source_kind": "COMPETITION_MOCK"
+      },
+      {
+        "message_id": "80525870445254.PNM",
+        "timestamp": "2026-05-05T10:21:38+08:00",
+        "speaker": "CONSUMER",
+        "speaker_raw": "买家",
+        "text": "喏，图发你了",
+        "content_type": "图片",
+        "image_path": "mock_images/broken_pump/S00001_03.jpg",
+        "source_kind": "COMPETITION_MOCK"
+      },
+      {
+        "message_id": "22703823958720.PNM",
+        "timestamp": "2026-05-05T10:24:13+08:00",
+        "speaker": "AGENT",
+        "speaker_raw": "客服",
+        "text": "收到亲，确认属包装破损，为您登记换货：先给您发全新的，收到后用包裹里的面单把坏的寄回就好，运费我们出~",
+        "content_type": "文本",
+        "source_kind": "COMPETITION_MOCK"
+      },
+      {
+        "message_id": "94357468399952.PNM",
+        "timestamp": "2026-05-05T10:25:13+08:00",
+        "speaker": "CONSUMER",
+        "speaker_raw": "买家",
+        "text": "行，那尽快哈",
+        "content_type": "文本",
+        "source_kind": "COMPETITION_MOCK",
+        "note": "该条在赛事原文中存在，但未包含在 fixtures/demo-cases.json 中"
+      },
+      {
+        "message_id": "36199788469718.PNM",
+        "timestamp": "2026-05-05T10:27:37+08:00",
+        "speaker": "AGENT",
+        "speaker_raw": "客服",
+        "text": "换货单已创建，48小时内发出，给您带来不便啦~",
+        "content_type": "文本",
+        "source_kind": "COMPETITION_MOCK",
+        "is_promise_source": true
+      },
+      {
+        "message_id": "DEMO_AUG_MSG_001",
+        "timestamp": "2026-05-07T09:32:00+08:00",
+        "timestamp_in_fixture": "2026-05-07T10:45:00+08:00",
+        "speaker": "CONSUMER",
+        "text": "我前天图片都发过了，换货到底有没有发？怎么还要我重新说明？",
+        "source_kind": "DEMO_AUGMENTATION",
+        "note": "第二次进线，团队压力测试扩充。时间以已批准的 PRODUCT-FREEZE.md P0-4 为准。"
+      }
+    ]
+  },
+  "order": {
+    "order_id": "6920185815517983396",
+    "session_id": "S00001",
+    "shop": "测试美妆旗舰店",
+    "channel": "TIANCHI_MOCK_QIANNIU",
+    "order_status": "已发货",
+    "ordered_at": "2026-04-29T08:27:45+08:00",
+    "paid_at": "2026-04-29T08:50:45+08:00",
+    "shipped_at": "2026-04-30T08:50:45+08:00",
+    "carrier": "中通快递",
+    "original_logistics_number": "773478190943155",
+    "receiver_region": "云南省 昆明市",
+    "items": [
+      {
+        "fulfillment_item_id": "6920185815517983396-XC33003",
+        "sku_id": "XC33003",
+        "product_name": "测试轻透粉底液30ml #N02自然色",
+        "quantity": 1,
+        "unit_price": 259,
+        "paid_amount": 259,
+        "item_role": "PRIMARY"
+      },
+      {
+        "fulfillment_item_id": "6920185815517983396-GIFT-01",
+        "sku_id": "GIFT-B5-MASK-2",
+        "product_name": "测试B5面膜体验装2片",
+        "item_role": "GIFT"
+      }
+    ]
+  },
+  "service_ticket": {
+    "ticket_id": "BH919209358357",
+    "session_id": "S00001",
+    "related_order_id": "6920185815517983396",
+    "ticket_type": "REPLACEMENT",
+    "ticket_type_raw": "换货",
+    "after_sale_reason": "换货-到手破损",
+    "issued_sku_id": "XC33003",
+    "issued_product_name": "测试轻透粉底液30ml #N02自然色",
+    "quantity": 1,
+    "original_logistics_number": "773478190943155",
+    "replacement_logistics_number": "YT7667875838478",
+    "carrier": "圆通快递",
+    "warehouse": "测试美妆分销中心",
+    "urgent_flag": "否",
+    "status": "进行中",
+    "assignee_id": "G003",
+    "created_at": "2026-05-05T10:29:45+08:00",
+    "completed_at": null,
+    "source_sheet": "补发换货工单"
+  },
+  "promise_facts": {
+    "raw_text": "换货单已创建，48小时内发出，给您带来不便啦~",
+    "source_message_id": "36199788469718.PNM",
+    "committed_at": "2026-05-05T10:27:37+08:00",
+    "commitment_class_expected": "STANDARD_APPROVED",
+    "activation_recommendation_expected": "ACTIVE",
+    "deadline": "2026-05-07T10:27:37+08:00",
+    "deadline_derivation": "committed_at + 48 小时",
+    "data_label": "COMPETITION_MOCK"
+  },
+  "team_augmentation_facts": {
+    "data_label": "DEMO_AUGMENTATION",
+    "items": [
+      "第二次进线消息 DEMO_AUG_MSG_001",
+      "三张可运行的泵头测试图片",
+      "赠品范围变化测试图片",
+      "模糊泵头测试图片",
+      "评估时间与物流事件时间点"
+    ],
+    "statement_allowed": "基于赛事 S00001 会话、订单和换货工单构建的压力测试案例。",
+    "statement_forbidden": [
+      "欧莱雅真实消费者复联案例",
+      "赛事数据已经证明重复索证发生"
+    ]
+  },
+  "privacy_notes": {
+    "pii_fields_to_mask": ["手机号", "收货地址", "支付宝账号", "就医描述", "不良反应描述"],
+    "buyer_nickname_already_masked_in_source": true,
+    "acceptance_ref": ["A23", "A24", "D-41"]
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "file_id": "D_TESTDATA_SHIPMENT",
+  "endpoint": "POST /api/events/shipment",
+  "request_schema": "schemas/shipment-event-request.schema.json",
+  "how_to_use": "每条记录里的 request 对象就是要发送的请求体。summary 与 expected_ref 只是给 D 记账用的，不要放进请求。",
+  "branch_rule": "两条分支互斥，必须分开跑。跑完一条分支后，要把案例重置回『人工确认完成』的状态再跑另一条，否则会撞上 INVALID_EVENT_TRANSITION，误判成 bug。",
+  "branches": {
+    "branch_A_picked_up_then_delivered": {
+      "steps": ["T23_SHIPMENT_PICKED_UP", "T24_SHIPMENT_DELIVERED_AFTER_PICKUP"],
+      "narrative": "已揽收 → 更新真实进展，不创建催办 → 送达 → 结案",
+      "expected_end_state": "case_status = RESOLVED，open_obligation.status = COMPLETED，milestone = DELIVERED"
+    },
+    "branch_B_not_picked_up": {
+      "steps": ["T25_SHIPMENT_NOT_PICKED_UP"],
+      "narrative": "未揽收且已到期 → 责任转为 AT_RISK → 仓库催办 + 主管升级 + 主动通知草稿",
+      "expected_end_state": "case_status = AT_RISK，experience_risk = HIGH，三个候选对象均非空"
+    },
+    "negative_and_replay_vectors": {
+      "steps": ["T26_SHIPMENT_TIME_REWIND", "T27_SHIPMENT_DELIVERED_WITHOUT_PICKUP", "T28_SHIPMENT_PICKED_UP_REPLAY"]
+    }
+  },
+  "requests": {
+    "T23_SHIPMENT_PICKED_UP": {
+      "summary": "已揽收：更新为在途，责任保持正常，不创建仓库催办。对应 A5、D-27、I-18。",
+      "expected_ref": "T23",
+      "request": {
+        "case_id": "DEMO_001",
+        "event_id": "EVT_PICKED_UP_001",
+        "event_type": "SHIPMENT_PICKED_UP",
+        "event_time": "2026-05-07T10:10:00+08:00",
+        "idempotency_key": "IDEM-D-EVENT-001-A-20260911"
+      }
+    },
+    "T24_SHIPMENT_DELIVERED_AFTER_PICKUP": {
+      "summary": "送达结案：必须在 T23 揽收之后发送。预期 RESOLVED + 义务 COMPLETED + 无 ACTIVE 承诺。对应 A4、D-29、I-20。",
+      "expected_ref": "T24",
+      "request": {
+        "case_id": "DEMO_001",
+        "event_id": "EVT_DELIVERED_001",
+        "event_type": "SHIPMENT_DELIVERED",
+        "event_time": "2026-05-08T14:00:00+08:00",
+        "idempotency_key": "IDEM-D-EVENT-001-B-20260911"
+      }
+    },
+    "T25_SHIPMENT_NOT_PICKED_UP": {
+      "summary": "未揽收且已到期：责任转为 AT_RISK，生成仓库催办、主管升级候选与主动通知草稿。对应 A10、D-28、I-19。",
+      "expected_ref": "T25",
+      "request": {
+        "case_id": "DEMO_001",
+        "event_id": "EVT_NOT_PICKED_UP_001",
+        "event_type": "SHIPMENT_NOT_PICKED_UP",
+        "event_time": "2026-05-07T11:35:00+08:00",
+        "idempotency_key": "IDEM-D-EVENT-001-C-20260911"
+      }
+    },
+    "T26_SHIPMENT_TIME_REWIND": {
+      "summary": "时序非法（V4）：事件时间早于账本最近状态时间。预期 INVALID_EVENT_TRANSITION，状态与审计不变。对应 D-32。",
+      "expected_ref": "T26",
+      "request": {
+        "case_id": "DEMO_001",
+        "event_id": "EVT_REWIND_001",
+        "event_type": "SHIPMENT_PICKED_UP",
+        "event_time": "2026-05-07T09:00:00+08:00",
+        "idempotency_key": "IDEM-D-EVENT-001-D-20260911"
+      }
+    },
+    "T27_SHIPMENT_DELIVERED_WITHOUT_PICKUP": {
+      "summary": "未揽收直接送达（V3）：当前里程碑仍是 AWAITING_CARRIER_PICKUP，不能直接结案。预期 INVALID_EVENT_TRANSITION。对应 A27、D-31、I-21。",
+      "expected_ref": "T27",
+      "request": {
+        "case_id": "DEMO_001",
+        "event_id": "EVT_BAD_DELIVERED_001",
+        "event_type": "SHIPMENT_DELIVERED",
+        "event_time": "2026-05-07T10:20:00+08:00",
+        "idempotency_key": "IDEM-D-EVENT-001-E-20260911"
+      }
+    },
+    "T28_SHIPMENT_PICKED_UP_REPLAY": {
+      "summary": "幂等重放（V1）：与 T23 完全相同的键与请求体再发一次。预期响应一致，audit_trail 不新增，状态不二次变更。对应 A18、D-33。",
+      "expected_ref": "T28",
+      "request": {
+        "case_id": "DEMO_001",
+        "event_id": "EVT_PICKED_UP_001",
+        "event_type": "SHIPMENT_PICKED_UP",
+        "event_time": "2026-05-07T10:10:00+08:00",
+        "idempotency_key": "IDEM-D-EVENT-001-A-20260911"
+      }
+    }
+  }
+}

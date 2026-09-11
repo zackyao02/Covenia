@@ -1,0 +1,274 @@
+{
+  "file_id": "D_TESTDATA_ANALYZE",
+  "endpoint": "POST /api/cases/analyze",
+  "request_schema": "schemas/analyze-case-request.schema.json",
+  "how_to_use": "每条记录里的 request 对象就是要发送的请求体。summary 与 expected_ref 只是给 D 记账用的，不要放进请求。",
+  "time_note": "主案例时间线取自已批准的 PRODUCT-FREEZE.md P0-4：第二次进线 09:32、evaluation_time 09:40。fixtures/demo-cases.json 中仍为 11:00，差异见待确认 T-02。",
+  "requests": {
+    "T01_ANALYZE_DEMO_001_HERO": {
+      "summary": "主案例分析：只给 case_id 与评估时刻，由后端按 case_id 装载赛事事实。",
+      "expected_ref": "T01",
+      "request": {
+        "case_id": "DEMO_001",
+        "evaluation_time": "2026-05-07T09:40:00+08:00"
+      }
+    },
+    "T02_ANALYZE_DEMO_002_SCOPE_CHANGE": {
+      "summary": "范围变化案例分析：赠品图片不能覆盖正装泵头问题。评估时刻沿用 fixtures 原值。",
+      "expected_ref": "T02",
+      "request": {
+        "case_id": "DEMO_002",
+        "evaluation_time": "2026-05-05T11:00:00+08:00"
+      }
+    },
+    "T03_ANALYZE_DEMO_003_BLURRED": {
+      "summary": "图片模糊案例分析：同一商品但无法可靠判断，应进入人工复核。评估时刻沿用 fixtures 原值。",
+      "expected_ref": "T03",
+      "request": {
+        "case_id": "DEMO_003",
+        "evaluation_time": "2026-05-05T11:00:00+08:00"
+      }
+    },
+    "T04_ANALYZE_DEMO_001_PROMISE_ASAP": {
+      "summary": "承诺分级变体：把客服承诺由『48小时内发出』改成『尽快发出』，验证 commitment_class 变为 AMBIGUOUS 且不生成确定截止时间。对应 A17。",
+      "expected_ref": "T04",
+      "request": {
+        "case_id": "DEMO_001",
+        "evaluation_time": "2026-05-07T09:40:00+08:00",
+        "challenge_mode": true,
+        "case_input": {
+          "case_id": "DEMO_001",
+          "data_provenance": {
+            "source_dataset": "TIANCHI_LOREAL_TRACK1_MOCK",
+            "source_session_id": "S00001",
+            "augmentation_notes": [
+              "赛事记录只有一条图片路径引用，三张可运行图片为团队合成素材",
+              "第二次进线和评估时间为团队压力测试扩充",
+              "不新增赛事原始记录中不存在的真实业务结论",
+              "承诺文案变体：由『48小时内发出』改为『尽快发出』，用于验证承诺分级 AMBIGUOUS，对应 A17"
+            ]
+          },
+          "evaluation_time": "2026-05-07T09:40:00+08:00",
+          "conversation": [
+            {
+              "message_id": "20974795108539.PNM",
+              "timestamp": "2026-05-05T10:18:45+08:00",
+              "speaker": "CONSUMER",
+              "text": "你好，收到的粉底液泵头是坏的，按不出来东西，急",
+              "source_kind": "COMPETITION_MOCK"
+            },
+            {
+              "message_id": "51831669257761.PNM",
+              "timestamp": "2026-05-05T10:20:59+08:00",
+              "speaker": "AGENT",
+              "text": "亲亲抱歉！麻烦拍下破损部位的照片发给测试客服，为您核实换货哈~",
+              "source_kind": "COMPETITION_MOCK"
+            },
+            {
+              "message_id": "80525870445254.PNM",
+              "timestamp": "2026-05-05T10:21:38+08:00",
+              "speaker": "CONSUMER",
+              "text": "喏，图发你了",
+              "source_kind": "COMPETITION_MOCK"
+            },
+            {
+              "message_id": "22703823958720.PNM",
+              "timestamp": "2026-05-05T10:24:13+08:00",
+              "speaker": "AGENT",
+              "text": "收到亲，确认属包装破损，为您登记换货：先给您发全新的，收到后用包裹里的面单把坏的寄回就好，运费我们出~",
+              "source_kind": "COMPETITION_MOCK"
+            },
+            {
+              "message_id": "36199788469718.PNM",
+              "timestamp": "2026-05-05T10:27:37+08:00",
+              "speaker": "AGENT",
+              "text": "换货单已创建，尽快发出，给您带来不便啦~",
+              "source_kind": "COMPETITION_MOCK"
+            },
+            {
+              "message_id": "DEMO_AUG_MSG_001",
+              "timestamp": "2026-05-07T09:32:00+08:00",
+              "speaker": "CONSUMER",
+              "text": "我前天图片都发过了，换货到底有没有发？怎么还要我重新说明？",
+              "source_kind": "DEMO_AUGMENTATION"
+            }
+          ],
+          "order": {
+            "order_id": "6920185815517983396",
+            "channel": "TIANCHI_MOCK_QIANNIU",
+            "original_logistics_number": "773478190943155",
+            "items": [
+              {
+                "fulfillment_item_id": "6920185815517983396-XC33003",
+                "sku_id": "XC33003",
+                "product_name": "测试轻透粉底液30ml #N02自然色",
+                "batch_code": null,
+                "item_role": "PRIMARY"
+              },
+              {
+                "fulfillment_item_id": "6920185815517983396-GIFT-01",
+                "sku_id": "GIFT-B5-MASK-2",
+                "product_name": "测试B5面膜体验装2片",
+                "batch_code": null,
+                "item_role": "GIFT"
+              }
+            ]
+          },
+          "service_tickets": [
+            {
+              "ticket_id": "BH919209358357",
+              "ticket_type": "REPLACEMENT",
+              "status": "进行中",
+              "assignee_id": "G003",
+              "executor_name": "测试美妆分销中心",
+              "replacement_logistics_number": "YT7667875838478",
+              "created_at": "2026-05-05T10:29:45+08:00",
+              "completed_at": null,
+              "source_sheet": "补发换货工单"
+            }
+          ],
+          "evidence_images": [
+            {
+              "evidence_id": "S00001_IMG_OVERVIEW",
+              "file_name": "s00001-product-overview.jpg",
+              "submitted_at": "2026-05-05T10:21:38+08:00",
+              "declared_view_type": "PRODUCT_OVERVIEW",
+              "source_kind": "TEAM_SYNTHETIC_RECREATION",
+              "source_message_id": "80525870445254.PNM",
+              "competition_reference_path": "mock_images/broken_pump/S00001_03.jpg"
+            },
+            {
+              "evidence_id": "S00001_IMG_PUMP",
+              "file_name": "s00001-pump-detail.jpg",
+              "submitted_at": "2026-05-05T10:21:38+08:00",
+              "declared_view_type": "ISSUE_DETAIL",
+              "source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
+              "source_message_id": "80525870445254.PNM",
+              "competition_reference_path": null
+            },
+            {
+              "evidence_id": "S00001_IMG_PACKAGE",
+              "file_name": "s00001-package-context.jpg",
+              "submitted_at": "2026-05-05T10:21:38+08:00",
+              "declared_view_type": "PACKAGE_CONTEXT",
+              "source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
+              "source_message_id": "80525870445254.PNM",
+              "competition_reference_path": null
+            }
+          ],
+          "current_issue": {
+            "fulfillment_item_id": "6920185815517983396-XC33003",
+            "sku_id": "XC33003",
+            "issue_type": "PACKAGE_DAMAGE",
+            "affected_component": "PUMP"
+          },
+          "policy_requirement_id": "DEMO_POLICY_PACKAGE_DAMAGE_V1"
+        }
+      }
+    },
+    "T05_ANALYZE_DEMO_001_MINIMAL": {
+      "summary": "最小输入：只传 case_id。验证后端能自己装载事实并完成分析，日志打印来源表与行。对应 A16。",
+      "expected_ref": "T05",
+      "request": {
+        "case_id": "DEMO_001"
+      }
+    },
+    "T06_ANALYZE_PII_MASKING": {
+      "summary": "脱敏验证：聊天里含手机号与收货地址，模型输入必须先掩码，治理记录 pii_masked_count > 0。对应 A23。手机号与地址均为虚构测试数据。",
+      "expected_ref": "T06",
+      "request": {
+        "case_id": "DEMO_001",
+        "evaluation_time": "2026-05-07T09:40:00+08:00",
+        "challenge_mode": true,
+        "case_input": {
+          "case_id": "DEMO_001",
+          "data_provenance": {
+            "source_dataset": "TIANCHI_LOREAL_TRACK1_MOCK",
+            "source_session_id": "S00001",
+            "augmentation_notes": [
+              "脱敏测试变体：新增一条含虚构手机号与虚构收货地址的买家消息，用于验证模型输入前掩码，对应 A23"
+            ]
+          },
+          "evaluation_time": "2026-05-07T09:40:00+08:00",
+          "conversation": [
+            {
+              "message_id": "20974795108539.PNM",
+              "timestamp": "2026-05-05T10:18:45+08:00",
+              "speaker": "CONSUMER",
+              "text": "你好，收到的粉底液泵头是坏的，按不出来东西，急",
+              "source_kind": "COMPETITION_MOCK"
+            },
+            {
+              "message_id": "36199788469718.PNM",
+              "timestamp": "2026-05-05T10:27:37+08:00",
+              "speaker": "AGENT",
+              "text": "换货单已创建，48小时内发出，给您带来不便啦~",
+              "source_kind": "COMPETITION_MOCK"
+            },
+            {
+              "message_id": "DEMO_AUG_PII_001",
+              "timestamp": "2026-05-07T09:32:00+08:00",
+              "speaker": "CONSUMER",
+              "text": "我的手机号是13800138000，收货地址是云南省昆明市五华区示例路1号2栋3单元401，麻烦尽快帮我处理",
+              "source_kind": "DEMO_AUGMENTATION"
+            }
+          ],
+          "order": {
+            "order_id": "6920185815517983396",
+            "channel": "TIANCHI_MOCK_QIANNIU",
+            "original_logistics_number": "773478190943155",
+            "items": [
+              {
+                "fulfillment_item_id": "6920185815517983396-XC33003",
+                "sku_id": "XC33003",
+                "product_name": "测试轻透粉底液30ml #N02自然色",
+                "batch_code": null,
+                "item_role": "PRIMARY"
+              }
+            ]
+          },
+          "service_tickets": [
+            {
+              "ticket_id": "BH919209358357",
+              "ticket_type": "REPLACEMENT",
+              "status": "进行中",
+              "assignee_id": "G003",
+              "executor_name": "测试美妆分销中心",
+              "replacement_logistics_number": "YT7667875838478",
+              "created_at": "2026-05-05T10:29:45+08:00",
+              "completed_at": null,
+              "source_sheet": "补发换货工单"
+            }
+          ],
+          "evidence_images": [
+            {
+              "evidence_id": "S00001_IMG_OVERVIEW",
+              "file_name": "s00001-product-overview.jpg",
+              "submitted_at": "2026-05-05T10:21:38+08:00",
+              "declared_view_type": "PRODUCT_OVERVIEW",
+              "source_kind": "TEAM_SYNTHETIC_RECREATION",
+              "source_message_id": "80525870445254.PNM",
+              "competition_reference_path": "mock_images/broken_pump/S00001_03.jpg"
+            },
+            {
+              "evidence_id": "S00001_IMG_PUMP",
+              "file_name": "s00001-pump-detail.jpg",
+              "submitted_at": "2026-05-05T10:21:38+08:00",
+              "declared_view_type": "ISSUE_DETAIL",
+              "source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
+              "source_message_id": "80525870445254.PNM",
+              "competition_reference_path": null
+            }
+          ],
+          "current_issue": {
+            "fulfillment_item_id": "6920185815517983396-XC33003",
+            "sku_id": "XC33003",
+            "issue_type": "PACKAGE_DAMAGE",
+            "affected_component": "PUMP"
+          },
+          "policy_requirement_id": "DEMO_POLICY_PACKAGE_DAMAGE_V1"
+        }
+      }
+    }
+  }
+}
