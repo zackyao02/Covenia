@@ -1,90 +1,58 @@
 {
-  "report_version": "1.1",
   "batch_id": "BATCH-03",
-  "result": "IMPLEMENTED_REPAIR",
   "status": "COMPLETED",
-  "repair_scope": {
-    "finding": "F-B03-001",
-    "source_acceptance_report": "worktrees/covenia-batch-03/reports/batches/BATCH-03/VERIFICATION_REPORT.json (read-only input)",
-    "approved_decision": "D03",
-    "summary": "Restore the approved same-scope ASK_EVIDENCE result: HTTP 200 DecisionResult with INTERVENE/E1/300. ASK_SAME_EVIDENCE remains display-only and does not independently select P0."
-  },
-  "summary": "Applied only the F-B03-001 D03 contract repair. The firewall, lock, evaluate vector, strict checker, and contract test now bind the approved D03 wording to a successful E1 result. P0 precedence remains covered with the genuinely prohibited SHIFT_FOLLOW_UP_TO_CONSUMER action against H1.",
-  "repo_root": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/worktrees/covenia-batch-03-repair-1",
-  "branch": "codex/covenia-batch-03-repair-1",
-  "base_integration_sha": "8314c76502cbc9d47d8432b7fe53f7d9fb82de82",
-  "starting_reviewed_sha": "04aabbec3590e7fd1e5a1e9dc742f381f2d7ce4d",
-  "contract_version": "8314c76502cbc9d47d8432b7fe53f7d9fb82de82 / BATCH-03 contract-lock-v1",
-  "plan_sha256": "MASTER_PLAN.md=ECE161441703962D9D7C0E1650497D2C2BEED560FC3D2239564B4E9E1D4A75E4; batches.json=E78AE0E223B6D5D5A8F427630225D572E1A7D9E844F99CEA82503CC87EEB1693",
-  "code_commits": [
-    "2e0437c8ea99491c4601e429c30d8a1910cb1d52",
-    "e5cda914877321a2424627be5cc885ac59a00975"
-  ],
-  "repair_code_commit": "e5cda914877321a2424627be5cc885ac59a00975",
+  "summary": "Completed only the authorized F-B03-003, F-B03-004, and F-B03-005 implementation repairs. DecisionResult success data is now P0/400-free while suppressed-rule audit identifiers remain available; the Hero receipt and shipment text bind to the approved D08/A32 times; and the D03 active-promise trace agrees with its returned state. This is not an independent verification or acceptance verdict.",
   "files_changed": [
     "backend/tests/contracts/test_contracts.py",
-    "docs/03-firewall-rules.md",
+    "docs/04-responsibility-loop.md",
     "docs/contracts/b-contract-lock.json",
-    "tests/contract-vectors/evaluate.json",
-    "tools/contracts/check_contracts.py",
     "reports/batches/BATCH-03/IMPLEMENTATION_REPORT.json",
-    "reports/batches/BATCH-03/IMPLEMENTATION_REPORT.md",
-    "reports/batches/BATCH-03/commands.json"
+    "schemas/decision-result.schema.json",
+    "tests/contract-vectors/evaluate.json",
+    "tests/contract-vectors/shipment.json",
+    "tools/contracts/check_contracts.py"
   ],
-  "scope_check": {
-    "within_allowlist": true,
-    "forbidden_changes": [],
-    "business_routes_added": false,
-    "frontend_files_changed": false,
-    "fixtures_changed": false,
-    "approval_record_changed": false,
-    "docs_02_changed": false,
-    "dependency_lock_changed": false,
-    "verification_report_written": false,
-    "verification_evidence_written": false
-  },
+  "tests_run": 7,
+  "tests_passed": 6,
+  "tests_failed": 1,
   "acceptance_results": [
     {
-      "criterion": "Approved D03 is directly bound to the firewall text, contract lock, and a same-scope ASK_EVIDENCE vector.",
-      "status": "PASS",
-      "evidence": [
-        "docs/approvals/b-decisions.json (read-only D03)",
-        "docs/03-firewall-rules.md",
-        "docs/contracts/b-contract-lock.json",
-        "tests/contract-vectors/evaluate.json",
-        "tools/contracts/check_contracts.py"
-      ]
+      "criterion": "F-B03-003: DecisionResult success data rejects INTERVENE/P0_PROHIBITED_ACTION/400, while the genuine A29 vector remains HTTP 400 with data=null and suppressed-rule audit identifiers remain available.",
+      "result": "IMPLEMENTATION_CHECK_PASS",
+      "evidence": "python tools/contracts/check_contracts.py --strict; backend/tests/contracts/test_contracts.py::test_decision_result_rejects_p0_success_but_keeps_suppressed_rule_audit"
     },
     {
-      "criterion": "Same-scope repeated evidence returns HTTP 200 DecisionResult with INTERVENE/E1/300 while retaining ASK_SAME_EVIDENCE only as a display item.",
-      "status": "PASS",
-      "evidence": "evaluate-d03-repeat-evidence-e1"
+      "criterion": "F-B03-004: the Hero receipt is 10:30, all three machine projections agree, and notification text contains commits_next_update_at; removal or alteration of that instant is rejected.",
+      "result": "IMPLEMENTATION_CHECK_PASS",
+      "evidence": "backend/tests/contracts/test_contracts.py::test_d08_a32_time_authorities_and_notification_text_negative_controls"
     },
     {
-      "criterion": "P0 precedence remains represented by a genuinely prohibited action rather than repeated ASK_EVIDENCE.",
-      "status": "PASS",
-      "evidence": "evaluate-a29-p0-precedes-h1"
+      "criterion": "F-B03-005: evaluate-d03-repeat-evidence-e1 has active_promise_count equal to returned active_commitments cardinality without changing its HTTP 200/INTERVENE/E1/300 mapping.",
+      "result": "IMPLEMENTATION_CHECK_PASS",
+      "evidence": "backend/tests/contracts/test_contracts.py::test_approved_d03_repeat_evidence_contract_uses_e1_not_p0"
     },
     {
-      "criterion": "Strict checker and contract test reject an in-memory D03 remap of repeat evidence to HTTP 400/P0.",
-      "status": "PASS",
-      "evidence": "tools/contracts/check_contracts.py::validate_d03_repeat_evidence_semantics and backend/tests/contracts/test_contracts.py"
+      "criterion": "Required contract validation",
+      "result": "IMPLEMENTATION_CHECK_PASS",
+      "evidence": "strict checker: 14 schemas and 18 vectors; isolated pytest: 6 passed; lock JSON, git diff --check, and scope audit passed"
     },
     {
-      "criterion": "Independent BATCH-03 acceptance and its D03 probe.",
-      "status": "NOT_RUN",
-      "reason": "Reserved for the coordinator-created independent verifier. This repair did not write or run verifier-owned artifacts."
+      "criterion": "Default interpreter pytest command",
+      "result": "ENVIRONMENT_LIMITATION",
+      "evidence": "D:\\python\\python.exe reports No module named pytest; an existing isolated CPython 3.13.5 environment with pytest 8.3.4, jsonschema 4.25.0, and referencing 0.36.2 passed the required contract pytest run"
+    },
+    {
+      "criterion": "Independent BATCH-03 verification",
+      "result": "NOT_RUN",
+      "evidence": "Reserved for a new independent task; no VERIFICATION_REPORT.json or verification-evidence artifact was written"
     }
   ],
-  "tests_run": 5,
-  "tests_passed": 4,
-  "tests_failed": 1,
-  "test_results": "reports/batches/BATCH-03/commands.json",
+  "commit_hash": "4891e27e3bbf2818864b24e2ae0575fa1d5e75e0",
   "remaining_risks": [
-    "F-B03-002 remains unresolved and out of scope: the default D:\\python\\python.exe environment reports No module named pytest for the required pytest command. No dependency lock or dependency was changed.",
-    "A new independent verifier must run the D03 probe and determine final acceptance; this implementation report is not an independent verification report.",
-    "OBS-B03-001 in docs/02-ai-extraction.md remains untouched because it is outside this repair scope."
+    "A fresh independent verifier must validate this commit in its own clean snapshot and issue the acceptance verdict.",
+    "The default D:\\python\\python.exe lacks pytest; the repository dependency lock was intentionally not changed because it is outside this repair scope.",
+    "No integration receipt, push, merge, or post-integration retest was created."
   ],
   "blockers": [],
-  "handoff_notes": "Coordinator: create a fresh independent BATCH-03 verification against the repair code commit e5cda914877321a2424627be5cc885ac59a00975. Re-run the mandated commands in a declared environment and verify that evaluate-d03-repeat-evidence-e1 remains HTTP 200/INTERVENE/E1/300. Do not treat this implementation report as acceptance."
+  "handoff_notes": "Re-verify commit 4891e27e3bbf2818864b24e2ae0575fa1d5e75e0 from a fresh detached snapshot: run the strict contract checker, contract pytest in a clean isolated environment, lock JSON validation, diff/scope checks, and the independent probes. Confirm the P0-success negative control, D08/A32 text controls, and D03 HTTP 200/INTERVENE/E1/300 mapping. Do not treat this implementation report as acceptance."
 }
