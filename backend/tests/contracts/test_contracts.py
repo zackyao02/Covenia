@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-from copy import deepcopy
 import sys
+from copy import deepcopy
+from datetime import datetime
 from pathlib import Path
 
 import pytest
-
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(REPO_ROOT / "tools" / "contracts"))
@@ -20,20 +20,56 @@ def test_locked_contract_vectors_pass_strict_validation() -> None:
     assert summary["vectors_validated"] >= 16
 
 
-def test_draft_2020_12_date_time_format_is_enforced() -> None:
+def shipment_event_with_time(event_time: str) -> dict[str, str]:
+    return {
+        "case_id": "CASE-FORMAT-001",
+        "event_id": "EVENT-FORMAT-001",
+        "event_type": "SHIPMENT_PICKED_UP",
+        "event_time": event_time,
+        "idempotency_key": "shipment-format-key",
+    }
+
+
+@pytest.mark.parametrize(
+    "event_time",
+    (
+        "2030-01-01T11:00:00",
+        "2030-01-01 11:00:00+00:00",
+        "2030-01-01T11:00+00:00",
+        "2030-W01-1T11:00:00+00:00",
+        "2030-01-01T11:00:00,5+00:00",
+        "2030-01-01T11:00:00+00:00:30",
+        "2030-01-01T11:00:00+05:30.5",
+    ),
+)
+def test_draft_2020_12_date_time_rejects_parseable_non_rfc3339_forms(event_time: str) -> None:
     schemas, registry = check_contracts.load_schema_registry()
     validator = check_contracts.validator_for(
         "shipment-event-request.schema.json", schemas, registry
     )
-    invalid = {
-        "case_id": "CASE-FORMAT-001",
-        "event_id": "EVENT-FORMAT-001",
-        "event_type": "SHIPMENT_PICKED_UP",
-        "event_time": "not-a-date-time",
-        "idempotency_key": "shipment-format-key",
-    }
 
-    assert check_contracts.validation_messages(validator, invalid)
+    # These values are accepted by Python's permissive ISO parser but fall
+    # outside RFC 3339's required date-time ABNF.
+    assert datetime.fromisoformat(event_time)
+    assert check_contracts.validation_messages(validator, shipment_event_with_time(event_time))
+
+
+@pytest.mark.parametrize(
+    "event_time",
+    (
+        "2030-01-01T11:00:00Z",
+        "2030-01-01t11:00:00.123456789z",
+        "2032-02-29T11:00:00-00:00",
+        "1990-12-31T23:59:60Z",
+    ),
+)
+def test_draft_2020_12_date_time_keeps_legal_rfc3339_forms(event_time: str) -> None:
+    schemas, registry = check_contracts.load_schema_registry()
+    validator = check_contracts.validator_for(
+        "shipment-event-request.schema.json", schemas, registry
+    )
+
+    assert not check_contracts.validation_messages(validator, shipment_event_with_time(event_time))
 
 
 def test_prepared_action_expresses_the_two_approved_p0_actions() -> None:

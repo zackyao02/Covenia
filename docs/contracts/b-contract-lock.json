@@ -129,7 +129,7 @@
     "rule": "Any change to a locked schema, semantics document, transport mapping, or vector requires a new approved contract decision and re-verification of every affected PASS."
   },
   "locked_files": {
-    "backend/tests/contracts/test_contracts.py": "CC2DA2F86EBA8DFE6CA15FE66658DD2EDAD3C73BE94167B468D3CCD2F95DFC3F",
+    "backend/tests/contracts/test_contracts.py": "A7D9A448CCD4DE3E489F7B54B56736E896BA22AB23EF8D54589119D9F54DA37B",
     "docs/03-firewall-rules.md": "241365E9287CC5663F02790006DD43F2F3BAACA9138B7BCBDF953DDF64E6A0A3",
     "docs/04-responsibility-loop.md": "341798171852BC068BBB8377B1B3063897B5778D60D12A2BF70B176EEEF8377C",
     "docs/05-api-and-ui.md": "6B7D91249A009E209904ABAB14C973B30237A72E9140E0DF787562DCF46E1483",
@@ -154,6 +154,6 @@
     "tests/contract-vectors/evaluate.json": "2B6496A08DE8A460A1291EADBA23522047F1C96BE7CF94EE5DEC2C3B253798D1",
     "tests/contract-vectors/manifest.json": "12C3F78C70B1A3300F33EAA4CAEBF3DF2409D113DC1DBE5A4458C0DC3E7A13D3",
     "tests/contract-vectors/shipment.json": "48128B07E9E5AAD0C59B4D1B03002B7E815027A6423FB757A74B123DE81004AE",
-    "tools/contracts/check_contracts.py": "D60E7645E6473A9DC047187A6564784EA96E401832561725251E0D72A151E867"
+    "tools/contracts/check_contracts.py": "99FC675BE873DFF3B8458C0A073BA13ADA73830C60B26036D3DE481442DDC6CC"
   }
 }

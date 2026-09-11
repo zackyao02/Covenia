@@ -9,11 +9,11 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import subprocess
 import sys
 from collections.abc import Iterator, Mapping
 from copy import deepcopy
-from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -79,20 +79,41 @@ ERROR_HTTP_STATUS = {
     "INTERNAL_ERROR": 500,
 }
 FORMAT_CHECKER = FormatChecker()
+RFC3339_DATETIME_RE = re.compile(
+    r"^(?P<year>[0-9]{4})-(?P<month>0[1-9]|1[0-2])-(?P<day>0[1-9]|[12][0-9]|3[01])"
+    r"[Tt](?P<hour>[01][0-9]|2[0-3]):(?P<minute>[0-5][0-9]):(?P<second>[0-5][0-9]|60)"
+    r"(?:\.[0-9]+)?(?:[Zz]|[+-](?:[01][0-9]|2[0-3]):[0-5][0-9])$"
+)
 
 
 @FORMAT_CHECKER.checks("date-time")
-def is_timezone_aware_datetime(value: object) -> bool:
-    """Require an actually parseable ISO/RFC-3339-style timestamp with an offset."""
+def is_rfc3339_datetime(value: object) -> bool:
+    """Validate the RFC 3339 ``date-time`` ABNF used by Draft 2020-12."""
 
-    if not isinstance(value, str) or "T" not in value:
+    if not isinstance(value, str):
+        return True
+    match = RFC3339_DATETIME_RE.fullmatch(value)
+    if match is None:
         return False
-    candidate = f"{value[:-1]}+00:00" if value.endswith("Z") else value
-    try:
-        parsed = datetime.fromisoformat(candidate)
-    except ValueError:
-        return False
-    return parsed.tzinfo is not None and parsed.utcoffset() is not None
+
+    year = int(match["year"])
+    month = int(match["month"])
+    day = int(match["day"])
+    days_in_month = (
+        31,
+        29 if year % 4 == 0 and (year % 100 != 0 or year % 400 == 0) else 28,
+        31,
+        30,
+        31,
+        30,
+        31,
+        31,
+        30,
+        31,
+        30,
+        31,
+    )
+    return day <= days_in_month[month - 1]
 
 
 class ContractCheckError(RuntimeError):
