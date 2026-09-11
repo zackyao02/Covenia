@@ -1,6 +1,9 @@
 {
+  "batch_id": "BATCH-03",
+  "tested_code_commit": "85ac5f215bfd7a1c778b22502875a7c46f2f4ec5",
   "command": "git status --short",
+  "point_in_time": "after final code repair commit and before writing implementation-report artifacts",
   "exit_code": 0,
-  "output": "",
-  "meaning": "The worktree was clean immediately after the code/schema/vector commit and before implementation-report artifacts were created."
+  "status_short": "",
+  "worktree_clean": true
 }

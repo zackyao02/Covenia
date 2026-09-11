@@ -1,1 +1,15 @@
-3 passed in 0.37s
+BATCH-03 implementation evidence
+tested_code_commit: 85ac5f215bfd7a1c778b22502875a7c46f2f4ec5
+requested_command: python -m pytest backend/tests/contracts -q
+executed_command: python -m pytest -p no:cacheprovider backend/tests/contracts -q
+runner: isolated CPython 3.13.5 virtual environment
+pytest: 8.3.4
+jsonschema: 4.25.0
+referencing: 0.36.2
+pythonpath: null
+user_site_enabled: false
+cache_provider: disabled because this supplied worktree is not writable by the test runner
+exit_code: 0
+
+................                                                         [100%]
+16 passed in 1.23s

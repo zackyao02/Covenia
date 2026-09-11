@@ -1,32 +1,39 @@
 {
-  "report_version": "1.1",
+  "report_version": "1.2",
   "batch_id": "BATCH-03",
-  "repair_finding": "F-B03-001",
-  "repo_root": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-03-repair-1",
-  "branch": "codex/covenia-batch-03-repair-1",
-  "tested_code_commit": "e5cda914877321a2424627be5cc885ac59a00975",
+  "tested_code_commit": "85ac5f215bfd7a1c778b22502875a7c46f2f4ec5",
+  "base_commit": "27f9a4916eca39dd1191b9e572e83e050d9a42e6",
+  "branch": "codex/covenia-batch-03-repair-3",
+  "environment": {
+    "runner": "isolated CPython 3.13.5 virtual environment",
+    "pytest": "8.3.4",
+    "jsonschema": "4.25.0",
+    "referencing": "0.36.2",
+    "pythonpath": null,
+    "user_site_enabled": false
+  },
   "acceptance_commands": [
     {
       "command": "python tools/contracts/check_contracts.py --strict",
       "exit_code": 0,
       "mode": "CONTRACT",
-      "summary": "PASS: 14 schemas and 18 vectors validated; the D03 approved-record/vector binding was checked."
+      "summary": "PASS: 14 schemas and 18 vectors validated against final code repair SHA 85ac5f215bfd7a1c778b22502875a7c46f2f4ec5."
     },
     {
-      "command": "python -m pytest backend/tests/contracts -q",
-      "runner": "D:\\python\\python.exe",
-      "exit_code": 1,
-      "mode": "UNIT_ENVIRONMENT",
-      "summary": "F-B03-002 retained: No module named pytest. No dependency lock, dependency, or PYTHONPATH override was changed."
+      "requested_command": "python -m pytest backend/tests/contracts -q",
+      "executed_command": "python -m pytest -p no:cacheprovider backend/tests/contracts -q",
+      "exit_code": 0,
+      "mode": "UNIT",
+      "summary": "PASS: 16 passed in 1.23s. The isolated runner had no PYTHONPATH or user site; only pytest's on-disk cache provider was disabled because the supplied worktree is not writable by the test runner."
     },
     {
       "command": "python -m json.tool docs/contracts/b-contract-lock.json",
       "exit_code": 0,
       "mode": "FORMAT",
-      "summary": "PASS: contract lock parsed as JSON."
+      "summary": "PASS: read-only JSON parse of the lock for final code repair SHA 85ac5f215bfd7a1c778b22502875a7c46f2f4ec5."
     },
     {
-      "command": "git diff --check",
+      "command": "git diff --check 27f9a4916eca39dd1191b9e572e83e050d9a42e6..85ac5f215bfd7a1c778b22502875a7c46f2f4ec5",
       "exit_code": 0,
       "mode": "GIT",
       "summary": "PASS: no whitespace errors."
@@ -35,17 +42,17 @@
       "command": "git status --short",
       "exit_code": 0,
       "mode": "GIT",
-      "summary": "PASS: empty after the repair code commit and before report artifacts."
+      "summary": "PASS: empty after the final code repair commit and before writing implementation-report artifacts."
+    },
+    {
+      "command": "git diff --name-status 27f9a4916eca39dd1191b9e572e83e050d9a42e6..85ac5f215bfd7a1c778b22502875a7c46f2f4ec5",
+      "exit_code": 0,
+      "mode": "SCOPE",
+      "summary": "PASS: only tools/contracts/check_contracts.py, backend/tests/contracts/test_contracts.py, and the authorized mechanical lock-hash refresh changed."
     }
   ],
-  "negative_control": {
-    "operation": "In-memory mutation of evaluate-d03-repeat-evidence-e1 expected HTTP status from 200 to 400",
-    "result": "PASS_EXPECTED_FAILURE",
-    "observed_error": "D03 repeat evidence must return HTTP 200",
-    "scope": "Implementation regression guard only; not an independent acceptance probe."
-  },
   "independent_verification": {
     "status": "NOT_RUN",
-    "reason": "VERIFICATION_REPORT.json and verification-evidence are verifier-owned and were not written by this repair."
+    "reason": "VERIFICATION_REPORT.json and verification-evidence/** are verifier-owned and were not written or modified."
   }
 }

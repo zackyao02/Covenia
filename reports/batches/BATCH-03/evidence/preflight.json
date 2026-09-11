@@ -1,32 +1,32 @@
 {
+  "batch_id": "BATCH-03",
+  "base_commit": "27f9a4916eca39dd1191b9e572e83e050d9a42e6",
+  "tested_code_commit": "85ac5f215bfd7a1c778b22502875a7c46f2f4ec5",
+  "branch": "codex/covenia-batch-03-repair-3",
   "authoritative_plan_sha256": {
     "MASTER_PLAN.md": "ECE161441703962D9D7C0E1650497D2C2BEED560FC3D2239564B4E9E1D4A75E4",
     "batches.json": "E78AE0E223B6D5D5A8F427630225D572E1A7D9E844F99CEA82503CC87EEB1693"
   },
-  "execution_branch": "codex/covenia-batch-03",
-  "execution_base": "8314c76502cbc9d47d8432b7fe53f7d9fb82de82",
-  "approval_archive": {
-    "path": "docs/approvals/b-decisions.json",
-    "producer_batch": "BATCH-01",
-    "content_sha256": "3ACAD4A113EB595BCED29025AF884A4C5EA2835E90E38D0E897298F91DB371DA",
-    "verification": "The Git blobs at 3f951e4b746e44a864bcd77c0c9e55438cd83347, 8314c76502cbc9d47d8432b7fe53f7d9fb82de82, and HEAD had this SHA-256. The Windows worktree used CRLF conversion; the lock therefore checks canonical LF content plus a clean Git diff rather than rewriting the approved record."
-  },
-  "dependency_receipts": [
-    {
-      "batch_id": "BATCH-01",
-      "verification_result": "PASS",
-      "integration_commit": "3f951e4b746e44a864bcd77c0c9e55438cd83347"
-    },
-    {
-      "batch_id": "BATCH-02",
-      "verification_result": "PASS",
-      "integration_commit": "8314c76502cbc9d47d8432b7fe53f7d9fb82de82"
-    }
+  "code_commit_paths": [
+    "tools/contracts/check_contracts.py",
+    "backend/tests/contracts/test_contracts.py",
+    "docs/contracts/b-contract-lock.json"
   ],
-  "external_gate_observation": {
-    "X-FREEZE": "ACCEPTED; read only",
-    "X-A-FIXTURES": "MISSING; A-owned and not a BATCH-03 external gate",
-    "X-A-IMAGES": "MISSING; A-owned and not a BATCH-03 external gate",
-    "X-C-CONTRACT": "MISSING; BATCH-03 delivers a pending synchronization checklist, not an acceptance"
-  }
+  "mechanical_lock_hash_refresh": {
+    "declaration": "本次仅机械性哈希刷新，无语义变更。",
+    "changed_entries_only": [
+      {
+        "path": "tools/contracts/check_contracts.py",
+        "before": "D60E7645E6473A9DC047187A6564784EA96E401832561725251E0D72A151E867",
+        "after": "99FC675BE873DFF3B8458C0A073BA13ADA73830C60B26036D3DE481442DDC6CC"
+      },
+      {
+        "path": "backend/tests/contracts/test_contracts.py",
+        "before": "CC2DA2F86EBA8DFE6CA15FE66658DD2EDAD3C73BE94167B468D3CCD2F95DFC3F",
+        "after": "A7D9A448CCD4DE3E489F7B54B56736E896BA22AB23EF8D54589119D9F54DA37B"
+      }
+    ],
+    "non_hash_lock_fields_unchanged": true
+  },
+  "independent_verification": "NOT_RUN"
 }

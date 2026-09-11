@@ -1,58 +1,92 @@
 {
   "batch_id": "BATCH-03",
   "status": "COMPLETED",
-  "summary": "Completed only the authorized F-B03-003, F-B03-004, and F-B03-005 implementation repairs. DecisionResult success data is now P0/400-free while suppressed-rule audit identifiers remain available; the Hero receipt and shipment text bind to the approved D08/A32 times; and the D03 active-promise trace agrees with its returned state. This is not an independent verification or acceptance verdict.",
+  "summary": "Completed only F-B03-006 and F-B03-007. The contract checker now enforces the Draft 2020-12/RFC 3339 date-time ABNF rather than Python's broader ISO parser, and contract tests cover parseable-but-invalid boundary forms while preserving legal RFC 3339 forms. All implementation reports, commands, and implementation evidence are anchored to the final code repair SHA below. This is implementation evidence only, not independent verification or acceptance.",
+  "commit_hash": "85ac5f215bfd7a1c778b22502875a7c46f2f4ec5",
+  "final_code_repair_sha": "85ac5f215bfd7a1c778b22502875a7c46f2f4ec5",
+  "base_commit": "27f9a4916eca39dd1191b9e572e83e050d9a42e6",
   "files_changed": [
+    "tools/contracts/check_contracts.py",
     "backend/tests/contracts/test_contracts.py",
-    "docs/04-responsibility-loop.md",
     "docs/contracts/b-contract-lock.json",
     "reports/batches/BATCH-03/IMPLEMENTATION_REPORT.json",
-    "schemas/decision-result.schema.json",
-    "tests/contract-vectors/evaluate.json",
-    "tests/contract-vectors/shipment.json",
-    "tools/contracts/check_contracts.py"
+    "reports/batches/BATCH-03/IMPLEMENTATION_REPORT.md",
+    "reports/batches/BATCH-03/commands.json",
+    "reports/batches/BATCH-03/evidence/contract-check.json",
+    "reports/batches/BATCH-03/evidence/contract-lock-json.txt",
+    "reports/batches/BATCH-03/evidence/git-diff-check.txt",
+    "reports/batches/BATCH-03/evidence/git-status-pre-report.json",
+    "reports/batches/BATCH-03/evidence/preflight.json",
+    "reports/batches/BATCH-03/evidence/pytest-contracts.txt"
   ],
-  "tests_run": 7,
-  "tests_passed": 6,
-  "tests_failed": 1,
+  "tests_run": 16,
+  "tests_passed": 16,
+  "tests_failed": 0,
+  "environment": {
+    "python": "CPython 3.13.5",
+    "pytest": "8.3.4",
+    "jsonschema": "4.25.0",
+    "referencing": "0.36.2",
+    "isolated_venv": true,
+    "user_site_enabled": false,
+    "pythonpath": null,
+    "pytest_cache_provider": "disabled for the command because this supplied worktree is not writable by the test runner"
+  },
   "acceptance_results": [
     {
-      "criterion": "F-B03-003: DecisionResult success data rejects INTERVENE/P0_PROHIBITED_ACTION/400, while the genuine A29 vector remains HTTP 400 with data=null and suppressed-rule audit identifiers remain available.",
+      "criterion": "F-B03-006: format: date-time rejects timezone-less, space-separated, missing-seconds, ISO-week-date, comma-fraction, and fractional/seconds-bearing offset forms that CPython parses but RFC 3339 does not permit.",
       "result": "IMPLEMENTATION_CHECK_PASS",
-      "evidence": "python tools/contracts/check_contracts.py --strict; backend/tests/contracts/test_contracts.py::test_decision_result_rejects_p0_success_but_keeps_suppressed_rule_audit"
+      "evidence": "backend/tests/contracts/test_contracts.py; evidence/pytest-contracts.txt"
     },
     {
-      "criterion": "F-B03-004: the Hero receipt is 10:30, all three machine projections agree, and notification text contains commits_next_update_at; removal or alteration of that instant is rejected.",
+      "criterion": "F-B03-006: legal RFC 3339 uppercase/lowercase T/Z, arbitrary fractional-second precision, -00:00, leap-day, and documented leap-second forms remain accepted.",
       "result": "IMPLEMENTATION_CHECK_PASS",
-      "evidence": "backend/tests/contracts/test_contracts.py::test_d08_a32_time_authorities_and_notification_text_negative_controls"
+      "evidence": "backend/tests/contracts/test_contracts.py; evidence/pytest-contracts.txt"
     },
     {
-      "criterion": "F-B03-005: evaluate-d03-repeat-evidence-e1 has active_promise_count equal to returned active_commitments cardinality without changing its HTTP 200/INTERVENE/E1/300 mapping.",
+      "criterion": "Authorized lock update: only the two hashes corresponding to the actual checker and contract-test edits changed; all lock semantics stayed byte-equivalent at the JSON-field level.",
       "result": "IMPLEMENTATION_CHECK_PASS",
-      "evidence": "backend/tests/contracts/test_contracts.py::test_approved_d03_repeat_evidence_contract_uses_e1_not_p0"
+      "evidence": "evidence/preflight.json; evidence/contract-lock-json.txt"
     },
     {
-      "criterion": "Required contract validation",
+      "criterion": "F-B03-007: required reports, command record, and implementation evidence identify one final code repair SHA.",
       "result": "IMPLEMENTATION_CHECK_PASS",
-      "evidence": "strict checker: 14 schemas and 18 vectors; isolated pytest: 6 passed; lock JSON, git diff --check, and scope audit passed"
-    },
-    {
-      "criterion": "Default interpreter pytest command",
-      "result": "ENVIRONMENT_LIMITATION",
-      "evidence": "D:\\python\\python.exe reports No module named pytest; an existing isolated CPython 3.13.5 environment with pytest 8.3.4, jsonschema 4.25.0, and referencing 0.36.2 passed the required contract pytest run"
+      "evidence": "reports/batches/BATCH-03/**; final_code_repair_sha=85ac5f215bfd7a1c778b22502875a7c46f2f4ec5"
     },
     {
       "criterion": "Independent BATCH-03 verification",
       "result": "NOT_RUN",
-      "evidence": "Reserved for a new independent task; no VERIFICATION_REPORT.json or verification-evidence artifact was written"
+      "evidence": "Verifier-owned VERIFICATION_REPORT.json and verification-evidence/** were not written or changed."
     }
   ],
-  "commit_hash": "4891e27e3bbf2818864b24e2ae0575fa1d5e75e0",
+  "mechanical_lock_hash_refresh": {
+    "declaration": "本次仅机械性哈希刷新，无语义变更。",
+    "before_to_after": [
+      {
+        "path": "tools/contracts/check_contracts.py",
+        "before": "D60E7645E6473A9DC047187A6564784EA96E401832561725251E0D72A151E867",
+        "after": "99FC675BE873DFF3B8458C0A073BA13ADA73830C60B26036D3DE481442DDC6CC"
+      },
+      {
+        "path": "backend/tests/contracts/test_contracts.py",
+        "before": "CC2DA2F86EBA8DFE6CA15FE66658DD2EDAD3C73BE94167B468D3CCD2F95DFC3F",
+        "after": "A7D9A448CCD4DE3E489F7B54B56736E896BA22AB23EF8D54589119D9F54DA37B"
+      }
+    ],
+    "unchanged_lock_fields": [
+      "decision_bindings",
+      "semantic_lock",
+      "endpoints",
+      "handoff",
+      "change_control",
+      "approved_input",
+      "hash_method"
+    ]
+  },
   "remaining_risks": [
-    "A fresh independent verifier must validate this commit in its own clean snapshot and issue the acceptance verdict.",
-    "The default D:\\python\\python.exe lacks pytest; the repository dependency lock was intentionally not changed because it is outside this repair scope.",
-    "No integration receipt, push, merge, or post-integration retest was created."
+    "A new independent verifier must validate the final code repair SHA in a clean snapshot and issue any acceptance verdict.",
+    "No Schema, contract vector, fixture, frontend, backend/src, approval, or product-semantic artifact was changed."
   ],
   "blockers": [],
-  "handoff_notes": "Re-verify commit 4891e27e3bbf2818864b24e2ae0575fa1d5e75e0 from a fresh detached snapshot: run the strict contract checker, contract pytest in a clean isolated environment, lock JSON validation, diff/scope checks, and the independent probes. Confirm the P0-success negative control, D08/A32 text controls, and D03 HTTP 200/INTERVENE/E1/300 mapping. Do not treat this implementation report as acceptance."
+  "handoff_notes": "Independently re-verify final code repair SHA 85ac5f215bfd7a1c778b22502875a7c46f2f4ec5 with the strict checker, isolated contract pytest, lock JSON parse, diff/scope audit, and RFC 3339 edge probes. Do not treat this implementation report as independent acceptance."
 }
