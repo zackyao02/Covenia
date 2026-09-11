@@ -1,0 +1,133 @@
+{
+  "record_version": "1.0",
+  "batch_id": "BATCH-02",
+  "cwd": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/worktrees/covenia-batch-02",
+  "interpreter": {
+    "command_name": "python",
+    "resolved_path": "reports/batches/BATCH-02/runtime/venv/Scripts/python.exe",
+    "version": "Python 3.13.5"
+  },
+  "dependency_versions": {
+    "fastapi": "0.115.6",
+    "pydantic": "2.10.5",
+    "pydantic-settings": "2.7.1",
+    "pytest": "8.3.4",
+    "ruff": "0.8.4",
+    "build": "1.2.2.post1",
+    "uvicorn": "0.34.0",
+    "setuptools": "75.8.0",
+    "wheel": "0.45.1"
+  },
+  "environment_setup": [
+    {
+      "command": "D:/python/python.exe -m venv reports/batches/BATCH-02/runtime/venv",
+      "cwd": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/worktrees/covenia-batch-02",
+      "exit_code": 0,
+      "duration_seconds": 7.997,
+      "evidence": "reports/batches/BATCH-02/evidence/create-venv.txt"
+    }
+  ],
+  "acceptance_commands": [
+    {
+      "command": "python -m pip install -r backend/requirements-dev.lock",
+      "cwd": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/worktrees/covenia-batch-02",
+      "exit_code": 0,
+      "duration_seconds": 40.718,
+      "mode": "UNIT",
+      "test_count": null,
+      "evidence": "reports/batches/BATCH-02/evidence/pip-install.txt"
+    },
+    {
+      "command": "python -m pip install --no-deps -e backend",
+      "cwd": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/worktrees/covenia-batch-02",
+      "exit_code": 0,
+      "duration_seconds": 9.307,
+      "mode": "UNIT",
+      "test_count": null,
+      "evidence": "reports/batches/BATCH-02/evidence/editable-install.txt"
+    },
+    {
+      "command": "python -m pytest backend/tests/test_bootstrap.py -q",
+      "cwd": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/worktrees/covenia-batch-02",
+      "exit_code": 0,
+      "duration_seconds": 1.017,
+      "mode": "UNIT",
+      "test_count": 4,
+      "evidence": "reports/batches/BATCH-02/evidence/pytest-bootstrap.txt"
+    },
+    {
+      "command": "python -m ruff check backend/src/covenia_b/main.py backend/src/covenia_b/settings.py backend/src/covenia_b/api/base.py",
+      "cwd": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/worktrees/covenia-batch-02",
+      "exit_code": 0,
+      "duration_seconds": 0.859,
+      "mode": "UNIT",
+      "test_count": 3,
+      "evidence": "reports/batches/BATCH-02/evidence/ruff-check.txt"
+    },
+    {
+      "command": "python -m build backend --outdir reports/batches/BATCH-02/build",
+      "cwd": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/worktrees/covenia-batch-02",
+      "exit_code": 0,
+      "duration_seconds": 13.501,
+      "mode": "UNIT",
+      "test_count": 2,
+      "evidence": "reports/batches/BATCH-02/evidence/build.txt"
+    },
+    {
+      "command": "git diff --check",
+      "cwd": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/worktrees/covenia-batch-02",
+      "exit_code": 0,
+      "duration_seconds": 0.068,
+      "mode": "UNIT",
+      "test_count": null,
+      "evidence": "reports/batches/BATCH-02/evidence/git-diff-check.txt"
+    },
+    {
+      "command": "git status --short",
+      "cwd": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/worktrees/covenia-batch-02",
+      "exit_code": 0,
+      "duration_seconds": 0.065,
+      "mode": "UNIT",
+      "test_count": null,
+      "evidence": "reports/batches/BATCH-02/evidence/git-status-precommit.txt"
+    }
+  ],
+  "supporting_commands": [
+    {
+      "command": "python -m pip check",
+      "cwd": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/worktrees/covenia-batch-02",
+      "exit_code": 0,
+      "duration_seconds": 0.515,
+      "mode": "UNIT",
+      "output": "No broken requirements found.",
+      "evidence": "reports/batches/BATCH-02/evidence/pip-check.txt"
+    }
+  ],
+  "infrastructure_attempts": [
+    {
+      "command": "python -m pip install -r backend/requirements-dev.lock",
+      "exit_code": 1,
+      "duration_seconds": 9.657,
+      "result": "NETWORK_RESTRICTED",
+      "reason": "The sandbox blocked the package-index socket with WinError 10013; the same pinned command was retried with approved network access and passed.",
+      "evidence": "reports/batches/BATCH-02/evidence/pip-install.txt"
+    },
+    {
+      "command": "python -m pip install --no-deps -e backend",
+      "exit_code": 1,
+      "duration_seconds": 10.693,
+      "result": "NETWORK_RESTRICTED",
+      "reason": "The isolated build backend could not download pinned setuptools in the sandbox; the same pinned command was retried with approved network access and passed.",
+      "evidence": "reports/batches/BATCH-02/evidence/editable-install.txt"
+    }
+  ],
+  "summary": {
+    "acceptance_commands_run": 7,
+    "acceptance_commands_passed": 7,
+    "acceptance_commands_failed": 0,
+    "pytest_cases_passed": 4,
+    "pytest_cases_failed": 0,
+    "logs_redacted": true,
+    "secrets_logged": false
+  }
+}

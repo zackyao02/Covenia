@@ -1,0 +1,55 @@
+Obtaining file:///C:/Users/WONG%20Tsun%20Ming/Desktop/%E6%AC%A7%E8%8E%B1%E9%9B%85%E9%BB%91%E5%AE%A2%E6%9D%BE/worktrees/covenia-batch-02/backend
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'error'
+  error: subprocess-exited-with-error
+
+  pip subprocess to install build dependencies did not run successfully.
+  exit code: 1
+
+  [7 lines of output]
+  WARNING: Retrying (Retry(total=4, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPSConnection object at 0x0000029707BAECF0>: Failed to establish a new connection: [WinError 10013] ��һ�ַ���Ȩ�޲������ķ�ʽ����һ�������׽��ֵĳ��ԡ�')': /simple/setuptools/
+  WARNING: Retrying (Retry(total=3, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPSConnection object at 0x0000029707BC60D0>: Failed to establish a new connection: [WinError 10013] ��һ�ַ���Ȩ�޲������ķ�ʽ����һ�������׽��ֵĳ��ԡ�')': /simple/setuptools/
+  WARNING: Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPSConnection object at 0x0000029707BC6210>: Failed to establish a new connection: [WinError 10013] ��һ�ַ���Ȩ�޲������ķ�ʽ����һ�������׽��ֵĳ��ԡ�')': /simple/setuptools/
+  WARNING: Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPSConnection object at 0x0000029707BC6350>: Failed to establish a new connection: [WinError 10013] ��һ�ַ���Ȩ�޲������ķ�ʽ����һ�������׽��ֵĳ��ԡ�')': /simple/setuptools/
+  WARNING: Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPSConnection object at 0x0000029707BC6490>: Failed to establish a new connection: [WinError 10013] ��һ�ַ���Ȩ�޲������ķ�ʽ����һ�������׽��ֵĳ��ԡ�')': /simple/setuptools/
+  ERROR: Could not find a version that satisfies the requirement setuptools==75.8.0 (from versions: none)
+  ERROR: No matching distribution found for setuptools==75.8.0
+  [end of output]
+
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+
+[notice] A new release of pip is available: 25.1.1 -> 26.2.1
+[notice] To update, run: C:\Users\WONG Tsun Ming\Desktop\ŷ���źڿ���\worktrees\covenia-batch-02\reports\batches\BATCH-02\runtime\venv\Scripts\python.exe -m pip install --upgrade pip
+error: subprocess-exited-with-error
+
+pip subprocess to install build dependencies did not run successfully.
+exit code: 1
+
+See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+exit_code=1
+duration_seconds=10.693
+attempt=escalated_network_retry
+Obtaining file:///C:/Users/WONG%20Tsun%20Ming/Desktop/%E6%AC%A7%E8%8E%B1%E9%9B%85%E9%BB%91%E5%AE%A2%E6%9D%BE/worktrees/covenia-batch-02/backend
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Checking if build backend supports build_editable: started
+  Checking if build backend supports build_editable: finished with status 'done'
+  Getting requirements to build editable: started
+  Getting requirements to build editable: finished with status 'done'
+  Preparing editable metadata (pyproject.toml): started
+  Preparing editable metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: covenia-b
+  Building editable for covenia-b (pyproject.toml): started
+  Building editable for covenia-b (pyproject.toml): finished with status 'done'
+  Created wheel for covenia-b: filename=covenia_b-0.0.0-0.editable-py3-none-any.whl size=2823 sha256=ee7e51c6cac25eaa930675c43d21f22fc8702e10b09bfc660f023e0ad7583663
+  Stored in directory: C:\Users\WONG Tsun Ming\AppData\Local\Temp\pip-ephem-wheel-cache-ronplxqo\wheels\6a\f9\2c\d34e4888cf5f0400864942ca3c05f72e95c84280f1d8a506e4
+Successfully built covenia-b
+Installing collected packages: covenia-b
+Successfully installed covenia-b-0.0.0
+
+[notice] A new release of pip is available: 25.1.1 -> 26.2.1
+[notice] To update, run: C:\Users\WONG Tsun Ming\Desktop\ŷ���źڿ���\worktrees\covenia-batch-02\reports\batches\BATCH-02\runtime\venv\Scripts\python.exe -m pip install --upgrade pip
+exit_code=0
+duration_seconds=9.307

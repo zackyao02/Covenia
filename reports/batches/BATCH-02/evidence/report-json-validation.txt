@@ -1,0 +1,485 @@
+{
+    "environment_version": "1.0",
+    "batch_id": "BATCH-02",
+    "captured_at": "2026-09-11T10:29:45.8125570+08:00",
+    "repo_root": "C:/Users/WONG Tsun Ming/Desktop/\u6b27\u83b1\u96c5\u9ed1\u5ba2\u677e/worktrees/covenia-batch-02",
+    "branch": "codex/covenia-batch-02",
+    "base_integration_sha": "3f951e4b746e44a864bcd77c0c9e55438cd83347",
+    "plan_sha256": {
+        "MASTER_PLAN.md": "ECE161441703962D9D7C0E1650497D2C2BEED560FC3D2239564B4E9E1D4A75E4",
+        "batches.json": "E78AE0E223B6D5D5A8F427630225D572E1A7D9E844F99CEA82503CC87EEB1693"
+    },
+    "python": {
+        "bootstrap_executable": "D:/python/python.exe",
+        "version": "3.13.5",
+        "implementation": "CPython",
+        "platform": "Windows-11-10.0.26200-SP0",
+        "venv_interpreter": "reports/batches/BATCH-02/runtime/venv/Scripts/python.exe",
+        "activation_command": ".\\reports\\batches\\BATCH-02\\runtime\\venv\\Scripts\\Activate.ps1"
+    },
+    "tool_versions": {
+        "pip": "25.1.1",
+        "build": "1.2.2.post1",
+        "fastapi": "0.115.6",
+        "pydantic": "2.10.5",
+        "pydantic-settings": "2.7.1",
+        "pytest": "8.3.4",
+        "ruff": "0.8.4",
+        "setuptools": "75.8.0",
+        "uvicorn": "0.34.0",
+        "wheel": "0.45.1"
+    },
+    "dependency_lock": {
+        "path": "backend/requirements-dev.lock",
+        "sha256": "A35011CDECBC6ED34EEB2CD7130650BDE531F902BF8839890FB3A02A6421CA55",
+        "gpu_stack_installed": false,
+        "pip_check": "PASS"
+    },
+    "build_outputs": {
+        "wheel": {
+            "path": "reports/batches/BATCH-02/build/covenia_b-0.0.0-py3-none-any.whl",
+            "sha256": "94393B0A3086C9DB442D5C251DCE1567A1AA10A802727E75821971E77A85D27B"
+        },
+        "sdist": {
+            "path": "reports/batches/BATCH-02/build/covenia_b-0.0.0.tar.gz",
+            "sha256": "0837D620B275FD84C723A52EA3201B806CE3F82300977D049445912869447E33"
+        }
+    },
+    "security": {
+        "secret_values_recorded": false,
+        "pii_safety_checks_default": true,
+        "external_service_connections_started": false,
+        "notes": "Only non-secret dependency and interpreter metadata is recorded."
+    }
+}
+{
+    "record_version": "1.0",
+    "batch_id": "BATCH-02",
+    "cwd": "C:/Users/WONG Tsun Ming/Desktop/\u6b27\u83b1\u96c5\u9ed1\u5ba2\u677e/worktrees/covenia-batch-02",
+    "interpreter": {
+        "command_name": "python",
+        "resolved_path": "reports/batches/BATCH-02/runtime/venv/Scripts/python.exe",
+        "version": "Python 3.13.5"
+    },
+    "dependency_versions": {
+        "fastapi": "0.115.6",
+        "pydantic": "2.10.5",
+        "pydantic-settings": "2.7.1",
+        "pytest": "8.3.4",
+        "ruff": "0.8.4",
+        "build": "1.2.2.post1",
+        "uvicorn": "0.34.0",
+        "setuptools": "75.8.0",
+        "wheel": "0.45.1"
+    },
+    "environment_setup": [
+        {
+            "command": "D:/python/python.exe -m venv reports/batches/BATCH-02/runtime/venv",
+            "cwd": "C:/Users/WONG Tsun Ming/Desktop/\u6b27\u83b1\u96c5\u9ed1\u5ba2\u677e/worktrees/covenia-batch-02",
+            "exit_code": 0,
+            "duration_seconds": 7.997,
+            "evidence": "reports/batches/BATCH-02/evidence/create-venv.txt"
+        }
+    ],
+    "acceptance_commands": [
+        {
+            "command": "python -m pip install -r backend/requirements-dev.lock",
+            "cwd": "C:/Users/WONG Tsun Ming/Desktop/\u6b27\u83b1\u96c5\u9ed1\u5ba2\u677e/worktrees/covenia-batch-02",
+            "exit_code": 0,
+            "duration_seconds": 40.718,
+            "mode": "UNIT",
+            "test_count": null,
+            "evidence": "reports/batches/BATCH-02/evidence/pip-install.txt"
+        },
+        {
+            "command": "python -m pip install --no-deps -e backend",
+            "cwd": "C:/Users/WONG Tsun Ming/Desktop/\u6b27\u83b1\u96c5\u9ed1\u5ba2\u677e/worktrees/covenia-batch-02",
+            "exit_code": 0,
+            "duration_seconds": 9.307,
+            "mode": "UNIT",
+            "test_count": null,
+            "evidence": "reports/batches/BATCH-02/evidence/editable-install.txt"
+        },
+        {
+            "command": "python -m pytest backend/tests/test_bootstrap.py -q",
+            "cwd": "C:/Users/WONG Tsun Ming/Desktop/\u6b27\u83b1\u96c5\u9ed1\u5ba2\u677e/worktrees/covenia-batch-02",
+            "exit_code": 0,
+            "duration_seconds": 1.017,
+            "mode": "UNIT",
+            "test_count": 4,
+            "evidence": "reports/batches/BATCH-02/evidence/pytest-bootstrap.txt"
+        },
+        {
+            "command": "python -m ruff check backend/src/covenia_b/main.py backend/src/covenia_b/settings.py backend/src/covenia_b/api/base.py",
+            "cwd": "C:/Users/WONG Tsun Ming/Desktop/\u6b27\u83b1\u96c5\u9ed1\u5ba2\u677e/worktrees/covenia-batch-02",
+            "exit_code": 0,
+            "duration_seconds": 0.859,
+            "mode": "UNIT",
+            "test_count": 3,
+            "evidence": "reports/batches/BATCH-02/evidence/ruff-check.txt"
+        },
+        {
+            "command": "python -m build backend --outdir reports/batches/BATCH-02/build",
+            "cwd": "C:/Users/WONG Tsun Ming/Desktop/\u6b27\u83b1\u96c5\u9ed1\u5ba2\u677e/worktrees/covenia-batch-02",
+            "exit_code": 0,
+            "duration_seconds": 13.501,
+            "mode": "UNIT",
+            "test_count": 2,
+            "evidence": "reports/batches/BATCH-02/evidence/build.txt"
+        },
+        {
+            "command": "git diff --check",
+            "cwd": "C:/Users/WONG Tsun Ming/Desktop/\u6b27\u83b1\u96c5\u9ed1\u5ba2\u677e/worktrees/covenia-batch-02",
+            "exit_code": 0,
+            "duration_seconds": 0.068,
+            "mode": "UNIT",
+            "test_count": null,
+            "evidence": "reports/batches/BATCH-02/evidence/git-diff-check.txt"
+        },
+        {
+            "command": "git status --short",
+            "cwd": "C:/Users/WONG Tsun Ming/Desktop/\u6b27\u83b1\u96c5\u9ed1\u5ba2\u677e/worktrees/covenia-batch-02",
+            "exit_code": 0,
+            "duration_seconds": 0.065,
+            "mode": "UNIT",
+            "test_count": null,
+            "evidence": "reports/batches/BATCH-02/evidence/git-status-precommit.txt"
+        }
+    ],
+    "supporting_commands": [
+        {
+            "command": "python -m pip check",
+            "cwd": "C:/Users/WONG Tsun Ming/Desktop/\u6b27\u83b1\u96c5\u9ed1\u5ba2\u677e/worktrees/covenia-batch-02",
+            "exit_code": 0,
+            "duration_seconds": 0.515,
+            "mode": "UNIT",
+            "output": "No broken requirements found.",
+            "evidence": "reports/batches/BATCH-02/evidence/pip-check.txt"
+        }
+    ],
+    "infrastructure_attempts": [
+        {
+            "command": "python -m pip install -r backend/requirements-dev.lock",
+            "exit_code": 1,
+            "duration_seconds": 9.657,
+            "result": "NETWORK_RESTRICTED",
+            "reason": "The sandbox blocked the package-index socket with WinError 10013; the same pinned command was retried with approved network access and passed.",
+            "evidence": "reports/batches/BATCH-02/evidence/pip-install.txt"
+        },
+        {
+            "command": "python -m pip install --no-deps -e backend",
+            "exit_code": 1,
+            "duration_seconds": 10.693,
+            "result": "NETWORK_RESTRICTED",
+            "reason": "The isolated build backend could not download pinned setuptools in the sandbox; the same pinned command was retried with approved network access and passed.",
+            "evidence": "reports/batches/BATCH-02/evidence/editable-install.txt"
+        }
+    ],
+    "summary": {
+        "acceptance_commands_run": 7,
+        "acceptance_commands_passed": 7,
+        "acceptance_commands_failed": 0,
+        "pytest_cases_passed": 4,
+        "pytest_cases_failed": 0,
+        "logs_redacted": true,
+        "secrets_logged": false
+    }
+}
+{
+    "report_version": "1.0",
+    "batch_id": "BATCH-02",
+    "result": "IMPLEMENTED",
+    "status": "COMPLETED",
+    "summary": "Created a CPU-only, installable FastAPI service scaffold with an empty application factory, safe environment settings, request-ID and generic error seams, pinned development dependencies, pytest/ruff/build conventions, and a four-case bootstrap test suite. No business route, domain rule, database connection, model call, frontend change, fixture, GPU dependency, or test switch endpoint was added.",
+    "repo_root": "C:/Users/WONG Tsun Ming/Desktop/\u6b27\u83b1\u96c5\u9ed1\u5ba2\u677e/worktrees/covenia-batch-02",
+    "branch": "codex/covenia-batch-02",
+    "base_integration_sha": "3f951e4b746e44a864bcd77c0c9e55438cd83347",
+    "contract_version": "3f951e4b746e44a864bcd77c0c9e55438cd83347 / BATCH-02 baseline scaffold",
+    "plan_sha256": "MASTER_PLAN.md=ECE161441703962D9D7C0E1650497D2C2BEED560FC3D2239564B4E9E1D4A75E4; batches.json=E78AE0E223B6D5D5A8F427630225D572E1A7D9E844F99CEA82503CC87EEB1693",
+    "initial_worktree": [],
+    "baseline_update": {
+        "from": "c13b401db96e0812bdba2e5a71365fe7e2ffd889",
+        "to": "3f951e4b746e44a864bcd77c0c9e55438cd83347",
+        "method": "git merge --ff-only integration/covenia-b",
+        "result": "PASS"
+    },
+    "dependency_receipts": [
+        {
+            "batch_id": "BATCH-01",
+            "verdict": "PASS",
+            "reviewed_sha": "3f951e4b746e44a864bcd77c0c9e55438cd83347",
+            "integration_sha": "3f951e4b746e44a864bcd77c0c9e55438cd83347",
+            "implementation_report": "reports/batches/BATCH-01/IMPLEMENTATION_REPORT.json",
+            "verification_report": "C:/Users/WONG Tsun Ming/Desktop/\u6b27\u83b1\u96c5\u9ed1\u5ba2\u677e/worktrees/covenia-batch-01-repair-1/reports/batches/BATCH-01/VERIFICATION_REPORT.json",
+            "integration_receipt": "C:/Users/WONG Tsun Ming/covenia-orchestration/runs/covenia-b-20260910-01/integration-receipts/BATCH-01.json",
+            "artifact_hashes": {
+                "docs/approvals/b-decisions.json": "3ACAD4A113EB595BCED29025AF884A4C5EA2835E90E38D0E897298F91DB371DA"
+            }
+        }
+    ],
+    "external_gate_receipts": [],
+    "code_commits": [
+        "0862606e98c4dcc0d24e0891b09362bbe9edab68"
+    ],
+    "commit_hash": "0862606e98c4dcc0d24e0891b09362bbe9edab68",
+    "changed_files": [
+        ".gitignore",
+        "backend/pyproject.toml",
+        "backend/requirements-dev.lock",
+        "backend/.env.example",
+        "backend/README.md",
+        "backend/src/covenia_b/__init__.py",
+        "backend/src/covenia_b/main.py",
+        "backend/src/covenia_b/settings.py",
+        "backend/src/covenia_b/api/base.py",
+        "backend/tests/conftest.py",
+        "backend/tests/test_bootstrap.py",
+        "reports/batches/BATCH-02/environment.json",
+        "reports/batches/BATCH-02/commands.json",
+        "reports/batches/BATCH-02/IMPLEMENTATION_REPORT.json",
+        "reports/batches/BATCH-02/IMPLEMENTATION_REPORT.md",
+        "reports/batches/BATCH-02/evidence/*"
+    ],
+    "files_changed": [
+        ".gitignore",
+        "backend/pyproject.toml",
+        "backend/requirements-dev.lock",
+        "backend/.env.example",
+        "backend/README.md",
+        "backend/src/covenia_b/__init__.py",
+        "backend/src/covenia_b/main.py",
+        "backend/src/covenia_b/settings.py",
+        "backend/src/covenia_b/api/base.py",
+        "backend/tests/conftest.py",
+        "backend/tests/test_bootstrap.py",
+        "reports/batches/BATCH-02/**"
+    ],
+    "scope_check": {
+        "within_allowlist": true,
+        "forbidden_changes": [],
+        "business_routes_added": false,
+        "domain_or_port_files_changed": false,
+        "frontend_files_changed": false,
+        "fixtures_changed": false,
+        "gpu_stack_installed": false,
+        "verification_report_written": false
+    },
+    "acceptance_results": [
+        {
+            "criterion": "A fresh isolated virtual environment can reconstruct the pinned CPU dependency set, import the package, pass bootstrap tests, and build a wheel.",
+            "status": "EVIDENCED",
+            "evidence": [
+                "reports/batches/BATCH-02/evidence/create-venv.txt",
+                "reports/batches/BATCH-02/evidence/pip-install.txt",
+                "reports/batches/BATCH-02/evidence/editable-install.txt",
+                "reports/batches/BATCH-02/evidence/pytest-bootstrap.txt",
+                "reports/batches/BATCH-02/evidence/build.txt",
+                "reports/batches/BATCH-02/environment.json"
+            ]
+        },
+        {
+            "criterion": "The scaffold creates no business connection, logs no secret, exposes no business or test-switch route, and does not claim the four business interfaces are implemented.",
+            "status": "EVIDENCED",
+            "evidence": [
+                "backend/src/covenia_b/main.py",
+                "backend/src/covenia_b/settings.py",
+                "backend/src/covenia_b/api/base.py",
+                "backend/tests/test_bootstrap.py",
+                "backend/README.md"
+            ]
+        },
+        {
+            "criterion": "Pytest markers and repeatable quality/build commands are registered without treating live, HTTP, E2E, or mutation markers as passed verification.",
+            "status": "EVIDENCED",
+            "evidence": [
+                "backend/pyproject.toml",
+                "backend/README.md",
+                "reports/batches/BATCH-02/evidence/ruff-check.txt",
+                "reports/batches/BATCH-02/evidence/git-diff-check.txt"
+            ]
+        }
+    ],
+    "test_results": [
+        {
+            "command": "python -m pip install -r backend/requirements-dev.lock",
+            "cwd": "C:/Users/WONG Tsun Ming/Desktop/\u6b27\u83b1\u96c5\u9ed1\u5ba2\u677e/worktrees/covenia-batch-02",
+            "exit_code": 0,
+            "duration_seconds": 40.718,
+            "mode": "UNIT",
+            "evidence": "reports/batches/BATCH-02/evidence/pip-install.txt"
+        },
+        {
+            "command": "python -m pip install --no-deps -e backend",
+            "cwd": "C:/Users/WONG Tsun Ming/Desktop/\u6b27\u83b1\u96c5\u9ed1\u5ba2\u677e/worktrees/covenia-batch-02",
+            "exit_code": 0,
+            "duration_seconds": 9.307,
+            "mode": "UNIT",
+            "evidence": "reports/batches/BATCH-02/evidence/editable-install.txt"
+        },
+        {
+            "command": "python -m pytest backend/tests/test_bootstrap.py -q",
+            "cwd": "C:/Users/WONG Tsun Ming/Desktop/\u6b27\u83b1\u96c5\u9ed1\u5ba2\u677e/worktrees/covenia-batch-02",
+            "exit_code": 0,
+            "duration_seconds": 1.017,
+            "mode": "UNIT",
+            "test_count": 4,
+            "evidence": "reports/batches/BATCH-02/evidence/pytest-bootstrap.txt"
+        },
+        {
+            "command": "python -m ruff check backend/src/covenia_b/main.py backend/src/covenia_b/settings.py backend/src/covenia_b/api/base.py",
+            "cwd": "C:/Users/WONG Tsun Ming/Desktop/\u6b27\u83b1\u96c5\u9ed1\u5ba2\u677e/worktrees/covenia-batch-02",
+            "exit_code": 0,
+            "duration_seconds": 0.859,
+            "mode": "UNIT",
+            "evidence": "reports/batches/BATCH-02/evidence/ruff-check.txt"
+        },
+        {
+            "command": "python -m build backend --outdir reports/batches/BATCH-02/build",
+            "cwd": "C:/Users/WONG Tsun Ming/Desktop/\u6b27\u83b1\u96c5\u9ed1\u5ba2\u677e/worktrees/covenia-batch-02",
+            "exit_code": 0,
+            "duration_seconds": 13.501,
+            "mode": "UNIT",
+            "evidence": "reports/batches/BATCH-02/evidence/build.txt"
+        },
+        {
+            "command": "git diff --check",
+            "cwd": "C:/Users/WONG Tsun Ming/Desktop/\u6b27\u83b1\u96c5\u9ed1\u5ba2\u677e/worktrees/covenia-batch-02",
+            "exit_code": 0,
+            "duration_seconds": 0.068,
+            "mode": "UNIT",
+            "evidence": "reports/batches/BATCH-02/evidence/git-diff-check.txt"
+        },
+        {
+            "command": "git status --short",
+            "cwd": "C:/Users/WONG Tsun Ming/Desktop/\u6b27\u83b1\u96c5\u9ed1\u5ba2\u677e/worktrees/covenia-batch-02",
+            "exit_code": 0,
+            "duration_seconds": 0.065,
+            "mode": "UNIT",
+            "evidence": "reports/batches/BATCH-02/evidence/git-status-precommit.txt"
+        },
+        {
+            "command": "python -m pip check",
+            "cwd": "C:/Users/WONG Tsun Ming/Desktop/\u6b27\u83b1\u96c5\u9ed1\u5ba2\u677e/worktrees/covenia-batch-02",
+            "exit_code": 0,
+            "duration_seconds": 0.515,
+            "mode": "UNIT",
+            "evidence": "reports/batches/BATCH-02/evidence/pip-check.txt"
+        }
+    ],
+    "tests_run": 8,
+    "tests_passed": 8,
+    "tests_failed": 0,
+    "artifacts": [
+        {
+            "path": ".gitignore",
+            "sha256": "6D2AB5B09B82A5C1D7D40FFA522D8AC9E647F95210D0498B5E9947C318C0A060",
+            "classification": "NON_SENSITIVE_CONFIGURATION"
+        },
+        {
+            "path": "backend/pyproject.toml",
+            "sha256": "C5B316ED64F07C8501EDC58705ED2078BB2C737C6685CFF52F7DBD91AF9178A8",
+            "classification": "NON_SENSITIVE_CONFIGURATION"
+        },
+        {
+            "path": "backend/requirements-dev.lock",
+            "sha256": "A35011CDECBC6ED34EEB2CD7130650BDE531F902BF8839890FB3A02A6421CA55",
+            "classification": "NON_SENSITIVE_DEPENDENCY_LOCK"
+        },
+        {
+            "path": "backend/.env.example",
+            "sha256": "2F959CD6A6B3517EF746A8016E7B2F7CEA7C9F24BE24C1C136AFF52B44642296",
+            "classification": "NON_SECRET_EXAMPLE"
+        },
+        {
+            "path": "backend/src/covenia_b/main.py",
+            "sha256": "33A92FB671E123FDDCD642262DE19DC1C41996FF213EBFA3DE8C712124A3B7B2",
+            "classification": "NON_SENSITIVE_SOURCE"
+        },
+        {
+            "path": "backend/src/covenia_b/settings.py",
+            "sha256": "8FCD4CC90D2DE501CE7309B8C0D6D0AA51DF55A6D958BD63616DAFDAFD89927A",
+            "classification": "NON_SENSITIVE_SOURCE"
+        },
+        {
+            "path": "backend/src/covenia_b/api/base.py",
+            "sha256": "D9C194EB3CFCB47FFD8BCF1286CE2DF7CC471A7151C116E0621ADAC5B41AC709",
+            "classification": "NON_SENSITIVE_SOURCE"
+        },
+        {
+            "path": "backend/tests/test_bootstrap.py",
+            "sha256": "98353E9280B2FD89DEB3EBEE1337899F4DA05F76AADB526BA1D76DE6FCED8413",
+            "classification": "NON_SENSITIVE_TEST"
+        },
+        {
+            "path": "reports/batches/BATCH-02/build/covenia_b-0.0.0-py3-none-any.whl",
+            "sha256": "94393B0A3086C9DB442D5C251DCE1567A1AA10A802727E75821971E77A85D27B",
+            "classification": "REPRODUCIBLE_BUILD_OUTPUT"
+        },
+        {
+            "path": "reports/batches/BATCH-02/build/covenia_b-0.0.0.tar.gz",
+            "sha256": "0837D620B275FD84C723A52EA3201B806CE3F82300977D049445912869447E33",
+            "classification": "REPRODUCIBLE_BUILD_OUTPUT"
+        }
+    ],
+    "model_runs": [],
+    "not_completed": [
+        {
+            "item": "Independent BATCH-02 verification report",
+            "reason": "Reserved for the independent verifier. This implementation did not create or overwrite reports/batches/BATCH-02/VERIFICATION_REPORT.json."
+        },
+        {
+            "item": "Coordinator integration and post-integration retest",
+            "reason": "Coordinator-owned work after this branch commit; no push or merge was performed."
+        }
+    ],
+    "remaining_risks": [
+        "This implementation report is not an independent acceptance PASS; BATCH-03 must wait for BATCH-02 verification and integration receipts.",
+        "The lock was exercised on CPython 3.13.5 for Windows; a different interpreter or platform needs its own compatibility check.",
+        "The isolated build required approved package-index access for its pinned build backend; the initial sandbox-only attempts are retained in commands.json."
+    ],
+    "risks": [
+        "No business contract has been implemented yet, so later contract-owning batches must add routers and domain behavior only within their own scopes."
+    ],
+    "blockers": [],
+    "rollback": {
+        "code": "Revert the report commit first, then revert 0862606e98c4dcc0d24e0891b09362bbe9edab68. Do not reset branches or modify BATCH-01 material.",
+        "runtime_state": "Discard only the ignored reports/batches/BATCH-02/runtime/venv directory if no longer needed; do not uninstall system Python packages."
+    },
+    "handoff": {
+        "interfaces": [
+            "covenia_b.main:create_app",
+            "covenia_b.main:app",
+            "covenia_b.settings:Settings",
+            "covenia_b.api.base:ApiError",
+            "covenia_b.api.base:install_api_seams"
+        ],
+        "input_versions": {
+            "base_integration_sha": "3f951e4b746e44a864bcd77c0c9e55438cd83347",
+            "python": "3.13.5",
+            "package": "covenia_b",
+            "dependency_lock_sha256": "A35011CDECBC6ED34EEB2CD7130650BDE531F902BF8839890FB3A02A6421CA55"
+        },
+        "reproduction": [
+            "python -m venv reports/batches/BATCH-02/runtime/venv",
+            "python -m pip install -r backend/requirements-dev.lock",
+            "python -m pip install --no-deps -e backend",
+            "python -m pytest backend/tests/test_bootstrap.py -q",
+            "python -m ruff check backend/src/covenia_b/main.py backend/src/covenia_b/settings.py backend/src/covenia_b/api/base.py",
+            "python -m build backend --outdir reports/batches/BATCH-02/build"
+        ],
+        "markers": [
+            "live",
+            "http",
+            "e2e",
+            "mutation"
+        ],
+        "remaining_gates": [
+            "Independent BATCH-02 verification",
+            "Coordinator integration receipt"
+        ]
+    },
+    "handoff_notes": "Use the BATCH-02 isolated CPython 3.13.5 environment and backend/requirements-dev.lock. Import covenia_b; add later routes through create_app() and the API base seams. The current app deliberately has no domain routes or test endpoints. Registered markers are live, http, e2e, and mutation; none were claimed as executed here.",
+    "next_batch_started": false
+}
+exit_code=0
+duration_seconds=0.288

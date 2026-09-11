@@ -1,0 +1,54 @@
+{
+  "environment_version": "1.0",
+  "batch_id": "BATCH-02",
+  "captured_at": "2026-09-11T10:29:45.8125570+08:00",
+  "repo_root": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/worktrees/covenia-batch-02",
+  "branch": "codex/covenia-batch-02",
+  "base_integration_sha": "3f951e4b746e44a864bcd77c0c9e55438cd83347",
+  "plan_sha256": {
+    "MASTER_PLAN.md": "ECE161441703962D9D7C0E1650497D2C2BEED560FC3D2239564B4E9E1D4A75E4",
+    "batches.json": "E78AE0E223B6D5D5A8F427630225D572E1A7D9E844F99CEA82503CC87EEB1693"
+  },
+  "python": {
+    "bootstrap_executable": "D:/python/python.exe",
+    "version": "3.13.5",
+    "implementation": "CPython",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "venv_interpreter": "reports/batches/BATCH-02/runtime/venv/Scripts/python.exe",
+    "activation_command": ".\\reports\\batches\\BATCH-02\\runtime\\venv\\Scripts\\Activate.ps1"
+  },
+  "tool_versions": {
+    "pip": "25.1.1",
+    "build": "1.2.2.post1",
+    "fastapi": "0.115.6",
+    "pydantic": "2.10.5",
+    "pydantic-settings": "2.7.1",
+    "pytest": "8.3.4",
+    "ruff": "0.8.4",
+    "setuptools": "75.8.0",
+    "uvicorn": "0.34.0",
+    "wheel": "0.45.1"
+  },
+  "dependency_lock": {
+    "path": "backend/requirements-dev.lock",
+    "sha256": "A35011CDECBC6ED34EEB2CD7130650BDE531F902BF8839890FB3A02A6421CA55",
+    "gpu_stack_installed": false,
+    "pip_check": "PASS"
+  },
+  "build_outputs": {
+    "wheel": {
+      "path": "reports/batches/BATCH-02/build/covenia_b-0.0.0-py3-none-any.whl",
+      "sha256": "94393B0A3086C9DB442D5C251DCE1567A1AA10A802727E75821971E77A85D27B"
+    },
+    "sdist": {
+      "path": "reports/batches/BATCH-02/build/covenia_b-0.0.0.tar.gz",
+      "sha256": "0837D620B275FD84C723A52EA3201B806CE3F82300977D049445912869447E33"
+    }
+  },
+  "security": {
+    "secret_values_recorded": false,
+    "pii_safety_checks_default": true,
+    "external_service_connections_started": false,
+    "notes": "Only non-secret dependency and interpreter metadata is recorded."
+  }
+}
