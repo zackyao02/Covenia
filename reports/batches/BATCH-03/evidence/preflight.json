@@ -1,0 +1,32 @@
+{
+  "authoritative_plan_sha256": {
+    "MASTER_PLAN.md": "ECE161441703962D9D7C0E1650497D2C2BEED560FC3D2239564B4E9E1D4A75E4",
+    "batches.json": "E78AE0E223B6D5D5A8F427630225D572E1A7D9E844F99CEA82503CC87EEB1693"
+  },
+  "execution_branch": "codex/covenia-batch-03",
+  "execution_base": "8314c76502cbc9d47d8432b7fe53f7d9fb82de82",
+  "approval_archive": {
+    "path": "docs/approvals/b-decisions.json",
+    "producer_batch": "BATCH-01",
+    "content_sha256": "3ACAD4A113EB595BCED29025AF884A4C5EA2835E90E38D0E897298F91DB371DA",
+    "verification": "The Git blobs at 3f951e4b746e44a864bcd77c0c9e55438cd83347, 8314c76502cbc9d47d8432b7fe53f7d9fb82de82, and HEAD had this SHA-256. The Windows worktree used CRLF conversion; the lock therefore checks canonical LF content plus a clean Git diff rather than rewriting the approved record."
+  },
+  "dependency_receipts": [
+    {
+      "batch_id": "BATCH-01",
+      "verification_result": "PASS",
+      "integration_commit": "3f951e4b746e44a864bcd77c0c9e55438cd83347"
+    },
+    {
+      "batch_id": "BATCH-02",
+      "verification_result": "PASS",
+      "integration_commit": "8314c76502cbc9d47d8432b7fe53f7d9fb82de82"
+    }
+  ],
+  "external_gate_observation": {
+    "X-FREEZE": "ACCEPTED; read only",
+    "X-A-FIXTURES": "MISSING; A-owned and not a BATCH-03 external gate",
+    "X-A-IMAGES": "MISSING; A-owned and not a BATCH-03 external gate",
+    "X-C-CONTRACT": "MISSING; BATCH-03 delivers a pending synchronization checklist, not an acceptance"
+  }
+}

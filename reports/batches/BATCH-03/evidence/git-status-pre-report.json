@@ -1,0 +1,6 @@
+{
+  "command": "git status --short",
+  "exit_code": 0,
+  "output": "",
+  "meaning": "The worktree was clean immediately after the code/schema/vector commit and before implementation-report artifacts were created."
+}

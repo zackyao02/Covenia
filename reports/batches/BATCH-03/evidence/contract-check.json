@@ -1,0 +1,10 @@
+{
+  "command": "python tools/contracts/check_contracts.py --strict",
+  "result": {
+    "lock": "docs/contracts/b-contract-lock.json",
+    "schemas_validated": 14,
+    "vectors_validated": 18,
+    "strict": true
+  },
+  "exit_code": 0
+}

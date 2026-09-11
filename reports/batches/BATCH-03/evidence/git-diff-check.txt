@@ -1,0 +1,1 @@
+git diff --check completed successfully (exit 0); no whitespace errors were emitted.
