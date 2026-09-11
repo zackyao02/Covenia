@@ -341,7 +341,7 @@
             "evidence_status": "VALID",
             "prepared_action": "ASK_EVIDENCE",
             "scope_match": true,
-            "active_promise_count": 1
+            "active_promise_count": 0
           },
           "reason": "The same-scope evidence request is intercepted under E1; ASK_SAME_EVIDENCE remains display-only.",
           "resolution_path": {

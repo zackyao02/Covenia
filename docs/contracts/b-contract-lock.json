@@ -51,7 +51,7 @@
     "D03": "Same-scope ASK_EVIDENCE is HTTP 200 / DecisionResult / INTERVENE / E1 / 300; ASK_SAME_EVIDENCE is display-only and never independently triggers P0; P0 400 only blocks a corresponding action in accountability_state.prohibited_actions and remains above H1 350, E1 300, E2 100, and E0 0.",
     "D04": "PreparedAction has auditable SHIFT_FOLLOW_UP_TO_CONSUMER and REPEAT_EXPLANATION_REQUEST values.",
     "D05": "Model output is candidate-only; server enrichment produces public commitment, activation, evidence, responsibility, and decision fields.",
-    "D08": "The approved next_check_at remains the first post-deadline check and all three update projections are equal.",
+    "D08": "The Hero receipt next-update is 10:30; next_check_at remains the first post-deadline check after 10:27:37, and open_obligation.next_check_at, service_progress_receipt.next_update_by, and proactive_notification_draft.commits_next_update_at are the same instant.",
     "D13": "Cached model fallback is visible through model_metadata.cached_result; invalid model output is 502 rather than fabricated success.",
     "D15": "Idempotency retains first response/request_id; event_id is independently deduplicated and event time is monotonic."
   },
@@ -100,7 +100,8 @@
         "open_obligation.next_check_at",
         "service_progress_receipt.next_update_by",
         "proactive_notification_draft.commits_next_update_at"
-      ]
+      ],
+      "text_contains_commits_next_update_at": true
     },
     "replay": {
       "idempotency_identity": ["case_id", "endpoint", "idempotency_key"],
@@ -128,9 +129,9 @@
     "rule": "Any change to a locked schema, semantics document, transport mapping, or vector requires a new approved contract decision and re-verification of every affected PASS."
   },
   "locked_files": {
-    "backend/tests/contracts/test_contracts.py": "4DA8F22C405BF2D59E4F28D46861C1A1C42B34B9DBF68762F09543621D676A1C",
+    "backend/tests/contracts/test_contracts.py": "CC2DA2F86EBA8DFE6CA15FE66658DD2EDAD3C73BE94167B468D3CCD2F95DFC3F",
     "docs/03-firewall-rules.md": "241365E9287CC5663F02790006DD43F2F3BAACA9138B7BCBDF953DDF64E6A0A3",
-    "docs/04-responsibility-loop.md": "64985D149F5EAA028ABB5E9ED531A65C906CA2F28A21386716E63AE995B45456",
+    "docs/04-responsibility-loop.md": "341798171852BC068BBB8377B1B3063897B5778D60D12A2BF70B176EEEF8377C",
     "docs/05-api-and-ui.md": "6B7D91249A009E209904ABAB14C973B30237A72E9140E0DF787562DCF46E1483",
     "docs/08-idempotency-and-ordering.md": "C46BCF383E304221AB2F0C860F536846A528872F7F5CC1D63D0927B8B50C6E3E",
     "docs/contracts/b-transport.md": "D2444888F06F239A356C3F1DC5B07F8249E73A0934F4475D9F5FC252CFC61252",
@@ -141,7 +142,7 @@
     "schemas/approve-resolution-request.schema.json": "FB95DB481C1A309E2EE83D21A67F8D5940332F5EF3615191C23783E3E1DA1D45",
     "schemas/approve-resolution-response.schema.json": "F2E927864311E5A19F51636C9297EFC7875BD7CB210434EFBA485629F70C3491",
     "schemas/case-input.schema.json": "37CE1BCC5855CFF1F7ABC0B6C4547E5E86822740CBA71CBF8F6DD98814CEFAF4",
-    "schemas/decision-result.schema.json": "E00E5A4448ED86DE5766060653C248AA3435A3C84B89120BD116C607C1AFDF3E",
+    "schemas/decision-result.schema.json": "188536CD2C5B22C7B81AFA360995BD9B813DB7E2AE620C1060BF5483BB54C9FA",
     "schemas/evaluate-action-request.schema.json": "4F2D5DA1DFA364F6C76DCF0D9B894630896E5ED627578727E1A3B5501A4BCA2C",
     "schemas/extracted-journey.schema.json": "A5E2A3B61849D07A4700DCBD66EC168AA471894E218DC534E0C2E55456818C7E",
     "schemas/prepared-action.schema.json": "EF0C04D5507CE5D0039792CCC6E6A6E4EE03BE8682B2F285B73DD3CD99174C58",
@@ -150,9 +151,9 @@
     "schemas/shipment-event-response.schema.json": "BA624FD797ABCD65C1D9AE1011EB8A8A022D9582DB89DEC7D676D8DA283B5695",
     "tests/contract-vectors/analyze.json": "01764170F0AE71BBBEF1249B17B647DA23E358D6BC024113E2FB280F4C519158",
     "tests/contract-vectors/approve.json": "FACFA4E2BB16BAD22D4EC447B00313D6B200F8D4DFE20A84B16E22F2C725CD6D",
-    "tests/contract-vectors/evaluate.json": "672DE9ACC46E223AA6F64A89492FF3BFA708F10499ACC8D27D052EBFC4180503",
+    "tests/contract-vectors/evaluate.json": "2B6496A08DE8A460A1291EADBA23522047F1C96BE7CF94EE5DEC2C3B253798D1",
     "tests/contract-vectors/manifest.json": "12C3F78C70B1A3300F33EAA4CAEBF3DF2409D113DC1DBE5A4458C0DC3E7A13D3",
-    "tests/contract-vectors/shipment.json": "553BBCA0FE8CD89EAFB091E2BAF8BCEE835C422E1B7EE2A4DE3A6F8D778E538E",
-    "tools/contracts/check_contracts.py": "1446F9E19228B30F97E4C7E20BB32555B264B5B36FCF6B145B9298A2EB086588"
+    "tests/contract-vectors/shipment.json": "48128B07E9E5AAD0C59B4D1B03002B7E815027A6423FB757A74B123DE81004AE",
+    "tools/contracts/check_contracts.py": "D60E7645E6473A9DC047187A6564784EA96E401832561725251E0D72A151E867"
   }
 }

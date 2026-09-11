@@ -12,6 +12,7 @@ import json
 import subprocess
 import sys
 from collections.abc import Iterator, Mapping
+from copy import deepcopy
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -26,6 +27,9 @@ VECTOR_DIR = REPO_ROOT / "tests" / "contract-vectors"
 LOCK_PATH = REPO_ROOT / "docs" / "contracts" / "b-contract-lock.json"
 APPROVAL_PATH = REPO_ROOT / "docs" / "approvals" / "b-decisions.json"
 FIREWALL_RULES_PATH = REPO_ROOT / "docs" / "03-firewall-rules.md"
+RESPONSIBILITY_LOOP_PATH = REPO_ROOT / "docs" / "04-responsibility-loop.md"
+API_UI_PATH = REPO_ROOT / "docs" / "05-api-and-ui.md"
+PRODUCT_FREEZE_PATH = REPO_ROOT / "PRODUCT-FREEZE.md"
 
 D03_APPROVED_CHOICE = (
     "重复索证归 E1/300/INTERVENE（HTTP 200 + DecisionResult）；"
@@ -42,6 +46,26 @@ D03_FIREWALL_SENTENCE = (
     "**D03 锁定映射：**`ASK_SAME_EVIDENCE` 仅为展示禁止项；同范围 `ASK_EVIDENCE` "
     "返回 `HTTP 200 / DecisionResult / INTERVENE / E1 / 300`，不得单独触发 "
     "`P0_PROHIBITED_ACTION`。"
+)
+D08_APPROVED_CHOICE = (
+    "next_check_at = 10:30 数值不变，语义明确为『承诺截止（10:27:37）之后的首次检查点』；"
+    "A6 只要求 通知时间 = next_check_at = next_update_by 三处相等，不要求早于 deadline。"
+    "同步修订 docs/04 措辞。"
+)
+D08_LOCKED_BINDING = (
+    "The Hero receipt next-update is 10:30; next_check_at remains the first post-deadline "
+    "check after 10:27:37, and open_obligation.next_check_at, "
+    "service_progress_receipt.next_update_by, and "
+    "proactive_notification_draft.commits_next_update_at are the same instant."
+)
+D08_HERO_RECEIPT_LINE = "最迟更新：2026-05-07 10:30 前"
+A32_FREEZE_ROW = (
+    "| A32 | 主动通知草稿 | 批准/事件 | 文案中的下次时间与 "
+    "`commits_next_update_at` 完全一致 | R10 |"
+)
+A32_API_SENTENCE = (
+    "主动通知草稿由字段模板渲染，`text` 内的下次更新时间必须等于 "
+    "`commits_next_update_at`；不允许模型自由生成第二个时间承诺。"
 )
 
 ERROR_HTTP_STATUS = {
@@ -215,6 +239,48 @@ def validate_lock_hashes(lock: Mapping[str, Any]) -> None:
         )
 
 
+def validate_active_promise_count(vector: Mapping[str, Any]) -> None:
+    """Keep a DecisionResult trace aligned with its returned state snapshot."""
+
+    data = vector["response"].get("data")
+    if not isinstance(data, Mapping):
+        return
+    trace = data.get("fact_trace")
+    if not isinstance(trace, Mapping) or "active_promise_count" not in trace:
+        return
+    state = data.get("accountability_state")
+    require(isinstance(state, Mapping), f"{vector['id']}: active promise trace has no state")
+    commitments = state.get("active_commitments")
+    require(isinstance(commitments, list), f"{vector['id']}: active_commitments must be a list")
+    require(
+        trace["active_promise_count"] == len(commitments),
+        f"{vector['id']}: active_promise_count differs from returned active_commitments",
+    )
+
+
+def validate_notification_time_projection(vector: Mapping[str, Any]) -> None:
+    """Bind all notification projections, including human text, to one instant."""
+
+    data = vector["response"].get("data")
+    require(isinstance(data, Mapping), f"{vector['id']}: notification assertion needs success data")
+    draft = data["proactive_notification_draft"]
+    state = data["accountability_state"]
+    require(draft is not None, f"{vector['id']}: notification draft is missing")
+    require(draft["requires_human_approval"] is True, f"{vector['id']}: draft bypasses approval")
+    require(state["open_obligation"] is not None, f"{vector['id']}: notification has no obligation")
+    require(state["service_progress_receipt"] is not None, f"{vector['id']}: notification has no receipt")
+    expected_time = state["open_obligation"]["next_check_at"]
+    require(
+        draft["commits_next_update_at"] == expected_time
+        and state["service_progress_receipt"]["next_update_by"] == expected_time,
+        f"{vector['id']}: next-update projections disagree",
+    )
+    require(
+        draft["commits_next_update_at"] in draft["text"],
+        f"{vector['id']}: notification text must contain commits_next_update_at",
+    )
+
+
 def validate_d03_repeat_evidence_semantics(
     lock: Mapping[str, Any], all_vectors: Mapping[str, Mapping[str, Any]],
 ) -> None:
@@ -271,6 +337,7 @@ def validate_d03_repeat_evidence_semantics(
         "ASK_SAME_EVIDENCE" in data["accountability_state"]["prohibited_actions"],
         "D03 vector must retain ASK_SAME_EVIDENCE as a display-only prohibited item",
     )
+    validate_active_promise_count(repeat_vector)
 
     p0_vector = all_vectors.get("evaluate-a29-p0-precedes-h1")
     require(p0_vector is not None, "Genuine P0 precedence vector is missing")
@@ -293,6 +360,89 @@ def validate_d03_repeat_evidence_semantics(
         },
         "P0 precedence must remain above H1 for a genuinely prohibited action",
     )
+    require(p0_expected.get("http_status") == 400, "Genuine A29 P0 must return HTTP 400")
+    require(
+        p0_vector["response"].get("data") is None
+        and p0_vector["response"].get("error", {}).get("code") == "P0_PROHIBITED_ACTION",
+        "Genuine A29 P0 must be an error envelope with data=null",
+    )
+
+
+def validate_p0_success_schema_semantics(
+    schemas: Mapping[str, dict[str, Any]],
+    registry: Registry,
+    all_vectors: Mapping[str, Mapping[str, Any]],
+) -> None:
+    """Prove P0 is error-only while retaining internal suppressed-rule audit IDs."""
+
+    schema = schemas["decision-result.schema.json"]
+    rule_ids = schema["properties"]["rule_id"]["enum"]
+    priorities = schema["properties"]["rule_priority"]["enum"]
+    suppressed_ids = schema["properties"]["fact_trace"]["properties"][
+        "suppressed_rule_ids"
+    ]["items"]["enum"]
+    require("P0_PROHIBITED_ACTION" not in rule_ids, "DecisionResult rule_id must exclude P0")
+    require(400 not in priorities, "DecisionResult rule_priority must exclude 400")
+    require(
+        "P0_PROHIBITED_ACTION" in suppressed_ids,
+        "DecisionResult must retain P0 as an internal suppressed-rule audit value",
+    )
+
+    repeat_vector = all_vectors.get("evaluate-d03-repeat-evidence-e1")
+    require(repeat_vector is not None, "D03 vector is required for the P0 success negative control")
+    validator = validator_for("decision-result.schema.json", schemas, registry)
+    p0_success_data = deepcopy(repeat_vector["response"]["data"])
+    p0_success_data["decision"] = "INTERVENE"
+    p0_success_data["rule_id"] = "P0_PROHIBITED_ACTION"
+    p0_success_data["rule_priority"] = 400
+    require(
+        bool(validation_messages(validator, p0_success_data)),
+        "DecisionResult success schema accepted INTERVENE/P0_PROHIBITED_ACTION/400",
+    )
+
+
+def validate_d08_a32_time_semantics(
+    lock: Mapping[str, Any], all_vectors: Mapping[str, Mapping[str, Any]],
+) -> None:
+    """Bind D08/A32 authorities to the Hero receipt and shipment vector."""
+
+    record = load_json(APPROVAL_PATH)
+    decisions = record.get("decisions")
+    require(isinstance(decisions, list), "Approved record must contain decisions")
+    d08 = next((decision for decision in decisions if decision.get("id") == "D08"), None)
+    require(isinstance(d08, Mapping), "Approved record is missing D08")
+    require(d08.get("verdict") == "APPROVED", "D08 must remain approved")
+    require(d08.get("choice") == D08_APPROVED_CHOICE, "Approved D08 time choice changed")
+    require(
+        lock.get("decision_bindings", {}).get("D08") == D08_LOCKED_BINDING,
+        "D08 contract-lock binding differs from the approved time mapping",
+    )
+    require(
+        lock.get("semantic_lock", {})
+        .get("notification", {})
+        .get("text_contains_commits_next_update_at")
+        is True,
+        "A32 notification-text lock is missing",
+    )
+    require(
+        D08_HERO_RECEIPT_LINE in RESPONSIBILITY_LOOP_PATH.read_text(encoding="utf-8"),
+        "D08 Hero receipt must use the approved 10:30 next-update time",
+    )
+    require(
+        A32_FREEZE_ROW in PRODUCT_FREEZE_PATH.read_text(encoding="utf-8"),
+        "PRODUCT-FREEZE A32 authority differs from the locked notification rule",
+    )
+    require(
+        A32_API_SENTENCE in API_UI_PATH.read_text(encoding="utf-8"),
+        "API contract must state the authoritative A32 notification-text mapping",
+    )
+    shipment_vector = all_vectors.get("shipment-not-picked-up-success")
+    require(shipment_vector is not None, "A32 shipment notification vector is missing")
+    require(
+        shipment_vector.get("expected", {}).get("notification_projection") is True,
+        "A32 shipment vector must enable notification projection assertions",
+    )
+    validate_notification_time_projection(shipment_vector)
 
 
 def validate_vector_semantics(
@@ -302,6 +452,7 @@ def validate_vector_semantics(
     expected = vector["expected"]
     response = vector["response"]
     data = response["data"]
+    validate_active_promise_count(vector)
 
     normalized_request = expected.get("normalized_request")
     if normalized_request is not None:
@@ -379,19 +530,7 @@ def validate_vector_semantics(
         )
 
     if expected.get("notification_projection"):
-        require(data is not None, f"{vector['id']}: notification assertion needs success data")
-        draft = data["proactive_notification_draft"]
-        state = data["accountability_state"]
-        require(draft is not None, f"{vector['id']}: notification draft is missing")
-        require(draft["requires_human_approval"] is True, f"{vector['id']}: draft bypasses approval")
-        require(state["open_obligation"] is not None, f"{vector['id']}: notification has no obligation")
-        require(state["service_progress_receipt"] is not None, f"{vector['id']}: notification has no receipt")
-        expected_time = state["open_obligation"]["next_check_at"]
-        require(
-            draft["commits_next_update_at"] == expected_time
-            and state["service_progress_receipt"]["next_update_by"] == expected_time,
-            f"{vector['id']}: next-update projections disagree",
-        )
+        validate_notification_time_projection(vector)
 
 
 def validate_vectors(
@@ -418,6 +557,8 @@ def validate_vectors(
             loaded.append((payload, vector))
 
     validate_d03_repeat_evidence_semantics(lock, all_vectors)
+    validate_d08_a32_time_semantics(lock, all_vectors)
+    validate_p0_success_schema_semantics(schemas, registry, all_vectors)
 
     envelope_validator = validator_for("api-envelope.schema.json", schemas, registry)
     count = 0
