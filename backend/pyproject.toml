@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools==75.8.0", "wheel==0.45.1"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "covenia-b"
+version = "0.0.0"
+description = "Covenia backend service scaffold"
+readme = "README.md"
+requires-python = ">=3.13,<3.14"
+dependencies = [
+  "fastapi==0.115.6",
+  "pydantic-settings==2.7.1",
+  "uvicorn==0.34.0",
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["covenia_b*"]
+namespaces = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+markers = [
+  "live: requires a real model and image service; never satisfied by a substitute.",
+  "http: requires an actual running HTTP service.",
+  "e2e: requires an end-to-end browser or client workflow.",
+  "mutation: runs a controlled negative assertion; an ordinary failure is not success.",
+]
+
+[tool.ruff]
+target-version = "py313"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]

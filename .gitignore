@@ -1,0 +1,16 @@
+# Python build and test artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+backend/build/
+backend/dist/
+backend/.venv/
+
+# Local configuration may contain deployment-specific values.
+backend/.env
+
+# Batch execution environments and build products are reproducible, not source.
+reports/batches/*/runtime/
+reports/batches/*/build/
