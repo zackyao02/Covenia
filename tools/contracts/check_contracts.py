@@ -25,6 +25,24 @@ SCHEMA_DIR = REPO_ROOT / "schemas"
 VECTOR_DIR = REPO_ROOT / "tests" / "contract-vectors"
 LOCK_PATH = REPO_ROOT / "docs" / "contracts" / "b-contract-lock.json"
 APPROVAL_PATH = REPO_ROOT / "docs" / "approvals" / "b-decisions.json"
+FIREWALL_RULES_PATH = REPO_ROOT / "docs" / "03-firewall-rules.md"
+
+D03_APPROVED_CHOICE = (
+    "重复索证归 E1/300/INTERVENE（HTTP 200 + DecisionResult）；"
+    "P0_PROHIBITED_ACTION/400 仅用于 accountability_state.prohibited_actions 列表命中的动作；"
+    "ASK_SAME_EVIDENCE 保留为展示用禁止项，不单独触发 P0。"
+)
+D03_LOCKED_BINDING = (
+    "Same-scope ASK_EVIDENCE is HTTP 200 / DecisionResult / INTERVENE / E1 / 300; "
+    "ASK_SAME_EVIDENCE is display-only and never independently triggers P0; "
+    "P0 400 only blocks a corresponding action in accountability_state.prohibited_actions "
+    "and remains above H1 350, E1 300, E2 100, and E0 0."
+)
+D03_FIREWALL_SENTENCE = (
+    "**D03 锁定映射：**`ASK_SAME_EVIDENCE` 仅为展示禁止项；同范围 `ASK_EVIDENCE` "
+    "返回 `HTTP 200 / DecisionResult / INTERVENE / E1 / 300`，不得单独触发 "
+    "`P0_PROHIBITED_ACTION`。"
+)
 
 ERROR_HTTP_STATUS = {
     "SCHEMA_INVALID": 400,
@@ -197,6 +215,86 @@ def validate_lock_hashes(lock: Mapping[str, Any]) -> None:
         )
 
 
+def validate_d03_repeat_evidence_semantics(
+    lock: Mapping[str, Any], all_vectors: Mapping[str, Mapping[str, Any]],
+) -> None:
+    """Bind the repeat-evidence vector and firewall text to approved D03."""
+
+    record = load_json(APPROVAL_PATH)
+    decisions = record.get("decisions")
+    require(isinstance(decisions, list), "Approved record must contain decisions")
+    d03 = next((decision for decision in decisions if decision.get("id") == "D03"), None)
+    require(isinstance(d03, Mapping), "Approved record is missing D03")
+    require(d03.get("verdict") == "APPROVED", "D03 must remain approved")
+    require(
+        d03.get("choice") == D03_APPROVED_CHOICE,
+        "Approved D03 repeat-evidence choice differs from the locked contract",
+    )
+    require(
+        lock.get("decision_bindings", {}).get("D03") == D03_LOCKED_BINDING,
+        "D03 contract-lock binding differs from the approved repeat-evidence mapping",
+    )
+    firewall_rules = FIREWALL_RULES_PATH.read_text(encoding="utf-8")
+    require(
+        D03_FIREWALL_SENTENCE in firewall_rules,
+        "Firewall rules must state the approved D03 E1 success mapping",
+    )
+
+    repeat_vector = all_vectors.get("evaluate-d03-repeat-evidence-e1")
+    require(repeat_vector is not None, "D03 repeat-evidence vector is missing")
+    request = repeat_vector["request"]
+    response = repeat_vector["response"]
+    expected = repeat_vector["expected"]
+    require(
+        request["prepared_action"]["action_type"] == "ASK_EVIDENCE",
+        "D03 vector must evaluate ASK_EVIDENCE",
+    )
+    require(expected.get("http_status") == 200, "D03 repeat evidence must return HTTP 200")
+    require(response.get("error") is None and response.get("data") is not None, "D03 must return DecisionResult")
+    require(
+        expected.get("decision")
+        == {"decision": "INTERVENE", "rule_id": "E1", "rule_priority": 300},
+        "D03 repeat evidence must remain INTERVENE/E1/300",
+    )
+    data = response["data"]
+    require(
+        data.get("decision") == "INTERVENE"
+        and data.get("rule_id") == "E1"
+        and data.get("rule_priority") == 300,
+        "D03 response data differs from INTERVENE/E1/300",
+    )
+    require(
+        data["fact_trace"].get("scope_match") is True,
+        "D03 vector must be a same-scope request",
+    )
+    require(
+        "ASK_SAME_EVIDENCE" in data["accountability_state"]["prohibited_actions"],
+        "D03 vector must retain ASK_SAME_EVIDENCE as a display-only prohibited item",
+    )
+
+    p0_vector = all_vectors.get("evaluate-a29-p0-precedes-h1")
+    require(p0_vector is not None, "Genuine P0 precedence vector is missing")
+    p0_expected = p0_vector["expected"]
+    require(
+        p0_vector["request"]["prepared_action"]["action_type"]
+        == "SHIFT_FOLLOW_UP_TO_CONSUMER",
+        "P0 precedence must use a corresponding prohibited action",
+    )
+    require(
+        p0_expected.get("server_prohibited_action") == "SHIFT_FOLLOW_UP_TO_CONSUMER",
+        "P0 vector must name the server-derived prohibited action",
+    )
+    require(
+        p0_expected.get("rule_precedence")
+        == {
+            "matched": ["P0_PROHIBITED_ACTION", "H1"],
+            "selected": "P0_PROHIBITED_ACTION",
+            "priority": 400,
+        },
+        "P0 precedence must remain above H1 for a genuinely prohibited action",
+    )
+
+
 def validate_vector_semantics(
     vector: Mapping[str, Any],
     all_vectors: Mapping[str, Mapping[str, Any]],
@@ -299,6 +397,7 @@ def validate_vector_semantics(
 def validate_vectors(
     schemas: Mapping[str, dict[str, Any]],
     registry: Registry,
+    lock: Mapping[str, Any],
 ) -> int:
     manifest = load_json(VECTOR_DIR / "manifest.json")
     vector_files = manifest.get("vector_files")
@@ -317,6 +416,8 @@ def validate_vectors(
             require(vector_id not in all_vectors, f"Duplicate vector id: {vector_id}")
             all_vectors[vector_id] = vector
             loaded.append((payload, vector))
+
+    validate_d03_repeat_evidence_semantics(lock, all_vectors)
 
     envelope_validator = validator_for("api-envelope.schema.json", schemas, registry)
     count = 0
@@ -372,7 +473,7 @@ def validate_contracts(*, strict: bool = False) -> dict[str, Any]:
     validate_approval_archive(lock)
     validate_lock_hashes(lock)
     schemas, registry = load_schema_registry()
-    vector_count = validate_vectors(schemas, registry)
+    vector_count = validate_vectors(schemas, registry, lock)
     if strict:
         require(lock.get("change_control", {}).get("requires_new_approval") is True, "Strict lock needs approval control")
         require(

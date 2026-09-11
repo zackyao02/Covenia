@@ -48,7 +48,7 @@
     }
   ],
   "decision_bindings": {
-    "D03": "P0 400 remains above H1 350, E1 300, E2 100, and E0 0; E0 is success.",
+    "D03": "Same-scope ASK_EVIDENCE is HTTP 200 / DecisionResult / INTERVENE / E1 / 300; ASK_SAME_EVIDENCE is display-only and never independently triggers P0; P0 400 only blocks a corresponding action in accountability_state.prohibited_actions and remains above H1 350, E1 300, E2 100, and E0 0.",
     "D04": "PreparedAction has auditable SHIFT_FOLLOW_UP_TO_CONSUMER and REPEAT_EXPLANATION_REQUEST values.",
     "D05": "Model output is candidate-only; server enrichment produces public commitment, activation, evidence, responsibility, and decision fields.",
     "D08": "The approved next_check_at remains the first post-deadline check and all three update projections are equal.",
@@ -128,8 +128,8 @@
     "rule": "Any change to a locked schema, semantics document, transport mapping, or vector requires a new approved contract decision and re-verification of every affected PASS."
   },
   "locked_files": {
-    "backend/tests/contracts/test_contracts.py": "3C5AD7853DBAFA6806E51AD5F9183C8E6CC9212E93A3429BCC01A8DF2263A77D",
-    "docs/03-firewall-rules.md": "8FD79764464A7E906DFC935415ED4020BFE33EF68A9A4D32CC483707BC5ACF9C",
+    "backend/tests/contracts/test_contracts.py": "4DA8F22C405BF2D59E4F28D46861C1A1C42B34B9DBF68762F09543621D676A1C",
+    "docs/03-firewall-rules.md": "241365E9287CC5663F02790006DD43F2F3BAACA9138B7BCBDF953DDF64E6A0A3",
     "docs/04-responsibility-loop.md": "64985D149F5EAA028ABB5E9ED531A65C906CA2F28A21386716E63AE995B45456",
     "docs/05-api-and-ui.md": "6B7D91249A009E209904ABAB14C973B30237A72E9140E0DF787562DCF46E1483",
     "docs/08-idempotency-and-ordering.md": "C46BCF383E304221AB2F0C860F536846A528872F7F5CC1D63D0927B8B50C6E3E",
@@ -150,9 +150,9 @@
     "schemas/shipment-event-response.schema.json": "BA624FD797ABCD65C1D9AE1011EB8A8A022D9582DB89DEC7D676D8DA283B5695",
     "tests/contract-vectors/analyze.json": "01764170F0AE71BBBEF1249B17B647DA23E358D6BC024113E2FB280F4C519158",
     "tests/contract-vectors/approve.json": "FACFA4E2BB16BAD22D4EC447B00313D6B200F8D4DFE20A84B16E22F2C725CD6D",
-    "tests/contract-vectors/evaluate.json": "03172E19796A6E1ABC9482AAFAC6CDB56841A576C3F82645C612A1E309AF71D8",
+    "tests/contract-vectors/evaluate.json": "672DE9ACC46E223AA6F64A89492FF3BFA708F10499ACC8D27D052EBFC4180503",
     "tests/contract-vectors/manifest.json": "12C3F78C70B1A3300F33EAA4CAEBF3DF2409D113DC1DBE5A4458C0DC3E7A13D3",
     "tests/contract-vectors/shipment.json": "553BBCA0FE8CD89EAFB091E2BAF8BCEE835C422E1B7EE2A4DE3A6F8D778E538E",
-    "tools/contracts/check_contracts.py": "85461837B42375F5D55340C32B0C7F9ABD5019CD9A5F82AB9A2B8C8C5DBA4763"
+    "tools/contracts/check_contracts.py": "1446F9E19228B30F97E4C7E20BB32555B264B5B36FCF6B145B9298A2EB086588"
   }
 }

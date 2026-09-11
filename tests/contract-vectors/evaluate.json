@@ -278,45 +278,112 @@
       }
     },
     {
-      "id": "evaluate-p0-precedes-e1",
+      "id": "evaluate-d03-repeat-evidence-e1",
       "request": {
-        "case_id": "CASE-EVAL-P0",
+        "case_id": "CASE-EVAL-D03",
         "prepared_action": {
-          "action_id": "ACTION-ASK-P0",
+          "action_id": "ACTION-ASK-D03",
           "action_type": "ASK_EVIDENCE",
           "requested_scope": {
-            "order_id": "ORDER-P0-001",
-            "fulfillment_item_id": "ITEM-P0-001",
-            "sku_id": "SKU-P0-001",
+            "order_id": "ORDER-EVAL-D03-001",
+            "fulfillment_item_id": "ITEM-EVAL-D03-001",
+            "sku_id": "SKU-EVAL-D03-001",
             "issue_type": "PACKAGE_DAMAGE"
           },
           "requires_human_approval": false
         }
       },
       "response": {
-        "data": null,
-        "error": {
-          "code": "P0_PROHIBITED_ACTION",
-          "message": "The server-derived prohibited action blocks a repeated evidence request.",
-          "retryable": false
+        "data": {
+          "case_id": "CASE-EVAL-D03",
+          "decision": "INTERVENE",
+          "rule_id": "E1",
+          "rule_priority": 300,
+          "accountability_state": {
+            "case_id": "CASE-EVAL-D03",
+            "case_status": "IN_FULFILLMENT",
+            "consumer_input_required": false,
+            "accountable_side": "BRAND",
+            "evidence_status": "VALID",
+            "current_scope": {
+              "order_id": "ORDER-EVAL-D03-001",
+              "fulfillment_item_id": "ITEM-EVAL-D03-001",
+              "sku_id": "SKU-EVAL-D03-001",
+              "issue_type": "PACKAGE_DAMAGE"
+            },
+            "active_commitments": [],
+            "prohibited_actions": ["ASK_SAME_EVIDENCE"],
+            "experience_gap_diagnosis": {
+              "consumer_expression": "The same evidence was already submitted.",
+              "traceable_service_facts": [
+                {
+                  "fact_type": "EVIDENCE_SUBMITTED",
+                  "statement": "Evidence already covers the requested scope.",
+                  "source_ids": ["SOURCE-EVAL-D03-001"]
+                }
+              ],
+              "deterioration_cause": "A repeated evidence request would create avoidable burden.",
+              "latent_need": "Progress on the existing fulfillment path",
+              "responsibility_judgment": {
+                "consumer_input_complete": true,
+                "accountable_side": "BRAND"
+              },
+              "action_impacts": ["BLOCK_REPEAT_EVIDENCE", "CHECK_EXISTING_FULFILLMENT"],
+              "reply_strategy": "Check the existing fulfillment instead of requesting the same evidence again."
+            },
+            "open_obligation": null,
+            "service_progress_receipt": null,
+            "experience_risk": "MEDIUM",
+            "audit_trail": []
+          },
+          "challenge_mode": false,
+          "fact_trace": {
+            "evidence_status": "VALID",
+            "prepared_action": "ASK_EVIDENCE",
+            "scope_match": true,
+            "active_promise_count": 1
+          },
+          "reason": "The same-scope evidence request is intercepted under E1; ASK_SAME_EVIDENCE remains display-only.",
+          "resolution_path": {
+            "candidate_type": "CHECK_REPLACEMENT_FULFILLMENT",
+            "evidence_basis": ["SOURCE-EVAL-D03-001"],
+            "policy_basis": "E1",
+            "consumer_reply_draft": "Existing fulfillment progress will be checked instead of requesting the same evidence again.",
+            "task_prefill": {
+              "task_type": "CHECK_REPLACEMENT_STATUS",
+              "existing_ticket_id": null,
+              "summary": "Check the existing fulfillment progress."
+            },
+            "accountable_side": "BRAND",
+            "executor": "BRAND",
+            "requires_human_approval": false,
+            "creates_obligation": false,
+            "compiled_service_responsibility": null
+          },
+          "runtime_metrics": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "inference_latency_ms": 1,
+            "rule_substitution_count": 1
+          }
         },
-        "request_id": "REQ-EVAL-P0"
+        "error": null,
+        "request_id": "REQ-EVAL-D03-E1"
       },
       "expected": {
-        "http_status": 400,
+        "http_status": 200,
         "request_schema_valid": true,
-        "error_code": "P0_PROHIBITED_ACTION",
-        "rule_precedence": {
-          "matched": ["P0_PROHIBITED_ACTION", "E1"],
-          "selected": "P0_PROHIBITED_ACTION",
-          "priority": 400
+        "decision": {
+          "decision": "INTERVENE",
+          "rule_id": "E1",
+          "rule_priority": 300
         }
       }
     },
     {
-      "id": "evaluate-a29-shift-follow-up",
+      "id": "evaluate-a29-p0-precedes-h1",
       "request": {
-        "case_id": "CASE-EVAL-A29",
+        "case_id": "CASE-EVAL-H1",
         "prepared_action": {
           "action_id": "ACTION-SHIFT-FOLLOW-UP-001",
           "action_type": "SHIFT_FOLLOW_UP_TO_CONSUMER",
@@ -327,17 +394,18 @@
         "data": null,
         "error": {
           "code": "P0_PROHIBITED_ACTION",
-          "message": "Follow-up cannot be shifted to the consumer after required input is complete.",
+          "message": "The server-derived prohibited follow-up shift blocks the high-risk review path.",
           "retryable": false
         },
-        "request_id": "REQ-EVAL-A29"
+        "request_id": "REQ-EVAL-A29-P0"
       },
       "expected": {
         "http_status": 400,
         "request_schema_valid": true,
         "error_code": "P0_PROHIBITED_ACTION",
+        "server_prohibited_action": "SHIFT_FOLLOW_UP_TO_CONSUMER",
         "rule_precedence": {
-          "matched": ["P0_PROHIBITED_ACTION"],
+          "matched": ["P0_PROHIBITED_ACTION", "H1"],
           "selected": "P0_PROHIBITED_ACTION",
           "priority": 400
         }

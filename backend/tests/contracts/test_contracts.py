@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from copy import deepcopy
 import sys
 from pathlib import Path
 
@@ -48,3 +49,22 @@ def test_prepared_action_expresses_the_two_approved_p0_actions() -> None:
             "requires_human_approval": False,
         }
         assert not check_contracts.validation_messages(validator, action)
+
+
+def test_approved_d03_repeat_evidence_contract_uses_e1_not_p0() -> None:
+    lock = check_contracts.load_json(check_contracts.LOCK_PATH)
+    evaluate_vectors = check_contracts.load_json(
+        check_contracts.VECTOR_DIR / "evaluate.json"
+    )["vectors"]
+    vectors_by_id = {vector["id"]: vector for vector in evaluate_vectors}
+
+    check_contracts.validate_d03_repeat_evidence_semantics(lock, vectors_by_id)
+
+    regressed_vectors = deepcopy(vectors_by_id)
+    regressed_vectors["evaluate-d03-repeat-evidence-e1"]["expected"]["http_status"] = 400
+    try:
+        check_contracts.validate_d03_repeat_evidence_semantics(lock, regressed_vectors)
+    except check_contracts.ContractCheckError as error:
+        assert "HTTP 200" in str(error)
+    else:
+        raise AssertionError("D03 repeat evidence remapped to P0 was not rejected")
