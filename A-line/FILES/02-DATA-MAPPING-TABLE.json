@@ -1,0 +1,654 @@
+{
+  "mapping_id": "COVENIA_A_DATA_MAPPING_V1",
+  "version": "1.0.0",
+  "generated_at": "2026-09-10",
+  "owner": "A线 数据与调研",
+  "task_ref": "TEAM_AND_TIMELINE.md 9/5–9/11「完成数据映射」",
+  "source": {
+    "workbook": "data/tianchi-track1-mock-data.xlsx",
+    "dataset_label": "TIANCHI_LOREAL_TRACK1_MOCK",
+    "sheets_in_scope": [
+      "聊天记录",
+      "订单",
+      "补发换货工单",
+      "线下打款工单",
+      "物流工单",
+      "不良反应工单",
+      "售后退货工单"
+    ],
+    "sheets_excluded": [
+      {
+        "sheet": "数据说明",
+        "reason": "非业务数据，仅含规模说明与关联关系说明，不作为运行输入"
+      }
+    ],
+    "read_mode": "ALL_CELLS_AS_STRING",
+    "read_mode_reason": "订单号为 19 位数字，超出双精度可精确表示范围；按数值读取会产生精度损失并破坏跨表关联"
+  },
+  "target_contracts": [
+    {
+      "contract": "CaseInput",
+      "schema": "schemas/case-input.schema.json",
+      "role": "可直接由赛事数据映射得到"
+    },
+    {
+      "contract": "ExtractedJourney",
+      "schema": "schemas/extracted-journey.schema.json",
+      "role": "由多模态模型从 CaseInput 产出，不做字段直映射；本表只定义输入约束"
+    },
+    {
+      "contract": "AccountabilityState",
+      "schema": "schemas/accountability-state.schema.json",
+      "role": "由服务端状态构建器派生，禁止由赛事字段直填"
+    },
+    {
+      "contract": "DecisionResult",
+      "schema": "schemas/decision-result.schema.json",
+      "role": "由体验防线规则派生，禁止由赛事字段直填"
+    }
+  ],
+  "join_rules": [
+    {
+      "priority": 1,
+      "join": "聊天记录.会话ID = 订单.会话ID = 五类工单.会话ID",
+      "cardinality": "1:0..1:0..1",
+      "verified": "138 会话 / 113 订单 / 80 工单；一个会话最多一笔订单、最多一张工单"
+    },
+    {
+      "priority": 2,
+      "join": "聊天记录.关联订单号 = 订单.订单号",
+      "cardinality": "一致性校验",
+      "verified": "0 处冲突"
+    },
+    {
+      "priority": 3,
+      "join": "聊天记录.关联工单号 = 工单.工单号",
+      "cardinality": "一致性校验",
+      "verified": "0 处冲突"
+    },
+    {
+      "priority": 4,
+      "join": "订单.订单号 = 工单.关联订单号",
+      "cardinality": "一致性校验",
+      "verified": "80 / 80 命中"
+    },
+    {
+      "priority": 5,
+      "join": "买家昵称",
+      "cardinality": "仅辅助核对",
+      "verified": "112 个昵称对应 113 笔订单，存在一人多单，不得作为主键"
+    }
+  ],
+  "product_dictionary": {
+    "sku_from_order_sheet": {
+      "XC33002": "测试轻透粉底液30ml #01自然白",
+      "XC33003": "测试轻透粉底液30ml #N02自然色",
+      "XC30101": "测试丝绒唇釉 #01赤茶红",
+      "XC30111": "测试丝绒唇釉 #05枫叶红",
+      "XC30204": "测试细致双头眉笔 #02灰棕",
+      "XC30903": "测试九色眼影盘 #03落日大地",
+      "XW40503": "测试轻润护发精油50ml",
+      "XW42502": "测试滋养修护发膜250ml",
+      "XW45001": "测试轻盈控油洗发水500ml",
+      "XL10153": "测试水润保湿眼霜15ml",
+      "XL10302": "测试修护精华液30ml",
+      "XL10501": "测试舒缓修护面霜50ml",
+      "XL11504": "测试氨基酸洁面泡沫150ml",
+      "XL19805": "【预售】测试焕活紧致礼盒(面霜50ml+精华30ml)",
+      "XL19806": "【预售】测试修护精华双支装30ml*2",
+      "XL20401": "测试积雪草舒缓修护霜40ml",
+      "XL21204": "测试净澈卸妆水300ml",
+      "XL21205": "测试温和氨基酸洁面乳120ml",
+      "XL22002": "测试B5多效修护面膜20片",
+      "XL23003": "测试舒缓保湿喷雾300ml"
+    },
+    "gift_sku_dictionary_derived_from_replacement_tickets": {
+      "XLG5001": "测试修护精华小样5ml",
+      "XLG5002": "测试舒缓面霜中样15ml",
+      "XLG5003": "测试积雪草修护霜小样10ml",
+      "XLG5004": "测试B5面膜体验装2片",
+      "XLG5005": "测试丝绒唇釉小样1.2g",
+      "XLG5006": "测试卸妆棉便携装20片",
+      "XLG5007": "测试护发精油小样10ml",
+      "XLG5008": "测试发膜体验装30ml"
+    },
+    "gift_sku_dictionary_note": "订单表只给赠品名称、不给赠品货号；赠品货号可由补发换货工单的「发出商品货号 / 发出商品名称」唯一派生，8 个赠品名称与 XLG5001–XLG5008 一一对应，无缺口。"
+  },
+  "case_input_mapping": [
+    {
+      "target_path": "case_id",
+      "type": "string",
+      "required": true,
+      "source": "聊天记录.会话ID",
+      "transform": "赛事原始会话直接使用会话 ID（如 S00001）；演示扩充案例使用 DEMO_xxx",
+      "note": "一个 case_id 对应一个会话，不跨会话合并"
+    },
+    {
+      "target_path": "data_provenance.source_dataset",
+      "type": "const",
+      "required": true,
+      "source": "常量",
+      "transform": "TIANCHI_LOREAL_TRACK1_MOCK",
+      "note": "Schema 固定值"
+    },
+    {
+      "target_path": "data_provenance.source_session_id",
+      "type": "string",
+      "required": true,
+      "source": "聊天记录.会话ID",
+      "transform": "原样",
+      "note": "与 case_id 相同；扩充案例时指向原型会话"
+    },
+    {
+      "target_path": "data_provenance.augmentation_notes",
+      "type": "string[]",
+      "required": true,
+      "source": "团队扩充记录",
+      "transform": "逐条写明扩充内容与理由",
+      "note": "赛事原始会话无扩充时为空数组；禁止把扩充内容写成赛事原始记录"
+    },
+    {
+      "target_path": "evaluation_time",
+      "type": "date-time",
+      "required": true,
+      "source": "团队设定",
+      "transform": "工作簿无此字段；按案例的评估时刻设定并补 +08:00",
+      "note": "赛事数据不含评估时间，必须由团队显式声明；Hero 评估时间口径见 open_issues OI-03"
+    },
+    {
+      "target_path": "conversation[].message_id",
+      "type": "string",
+      "required": true,
+      "source": "聊天记录.message_id",
+      "transform": "原样（字符串）",
+      "note": "去重主键；扩充消息使用 DEMO_AUG_MSG_xxx"
+    },
+    {
+      "target_path": "conversation[].timestamp",
+      "type": "date-time",
+      "required": true,
+      "source": "聊天记录.发送时间",
+      "transform": "yyyy-MM-dd HH:mm:ss → ISO8601 补 +08:00",
+      "note": "会话内必须保持原始顺序"
+    },
+    {
+      "target_path": "conversation[].speaker",
+      "type": "enum",
+      "required": true,
+      "source": "聊天记录.角色",
+      "transform": "买家→CONSUMER；客服→AGENT；系统推送→SYSTEM",
+      "note": "承诺候选只能来自 AGENT（docs/02 第 4 节）"
+    },
+    {
+      "target_path": "conversation[].text",
+      "type": "string",
+      "required": true,
+      "source": "聊天记录.message_text",
+      "transform": "原样，进模型前按脱敏规则掩码",
+      "note": "图片消息的 text 是配文，不是图片内容"
+    },
+    {
+      "target_path": "conversation[].source_kind",
+      "type": "enum",
+      "required": true,
+      "source": "数据来源",
+      "transform": "赛事工作簿→COMPETITION_MOCK；团队扩充消息→DEMO_AUGMENTATION",
+      "note": "同一数组内允许混用，但每条必须单独标记"
+    },
+    {
+      "target_path": "order.order_id",
+      "type": "string",
+      "required": true,
+      "source": "订单.订单号",
+      "transform": "原样（字符串）",
+      "note": "禁止转为数值"
+    },
+    {
+      "target_path": "order.channel",
+      "type": "const",
+      "required": true,
+      "source": "常量",
+      "transform": "TIANCHI_MOCK_QIANNIU",
+      "note": "Schema 固定值，表示赛事模拟千牛渠道"
+    },
+    {
+      "target_path": "order.original_logistics_number",
+      "type": "string",
+      "required": true,
+      "source": "订单.物流单号",
+      "transform": "原样（字符串）",
+      "note": "16 单为空（未发货/交易关闭）；Hero 用例必须有值"
+    },
+    {
+      "target_path": "order.items[].fulfillment_item_id",
+      "type": "string",
+      "required": true,
+      "source": "订单.订单号 + 订单.商品货号",
+      "transform": "{订单号}-{商品货号}",
+      "note": "工作簿无此字段，由导入层确定性派生；赠品行同理"
+    },
+    {
+      "target_path": "order.items[].sku_id",
+      "type": "string",
+      "required": true,
+      "source": "订单.商品货号（正装）/ 赠品字典（赠品）",
+      "transform": "正装取原值；赠品按赠品名称查 gift_sku_dictionary_derived_from_replacement_tickets",
+      "note": "见 open_issues OI-02"
+    },
+    {
+      "target_path": "order.items[].product_name",
+      "type": "string",
+      "required": true,
+      "source": "订单.商品名称（正装）/ 订单.赠品（赠品）",
+      "transform": "原样",
+      "note": "同一 SKU 的商品名称唯一，无重名"
+    },
+    {
+      "target_path": "order.items[].batch_code",
+      "type": "string | null",
+      "required": false,
+      "source": "不良反应工单.产品批次号",
+      "transform": "仅当该会话存在不良反应工单且批次号不为 00 时填入，否则 null",
+      "note": "订单表本身无批次号字段；00 视为未提供"
+    },
+    {
+      "target_path": "order.items[].item_role",
+      "type": "enum",
+      "required": true,
+      "source": "订单.商品货号 vs 订单.赠品",
+      "transform": "SKU 出现在赠品列同名商品→GIFT；否则→PRIMARY",
+      "note": "本数据集无 BUNDLE_COMPONENT"
+    },
+    {
+      "target_path": "service_tickets[].ticket_id",
+      "type": "string",
+      "required": true,
+      "source": "工单.工单号",
+      "transform": "原样（字符串）",
+      "note": "BH…/HV…/WL…/BLFY…/KOC… 五类前缀"
+    },
+    {
+      "target_path": "service_tickets[].ticket_type",
+      "type": "enum",
+      "required": true,
+      "source": "来源表名",
+      "transform": "补发换货工单→REPLACEMENT；线下打款工单→OFFLINE_PAYMENT；物流工单→LOGISTICS；不良反应工单→ADVERSE_REACTION；售后退货工单→RETURN",
+      "note": "枚举值来自 CaseInput Schema"
+    },
+    {
+      "target_path": "service_tickets[].status",
+      "type": "string",
+      "required": true,
+      "source": "工单状态 或 任务状态",
+      "transform": "原样保留中文值，不做语义改写",
+      "note": "两张表字段名不同，导入层需归一；见 OI-04"
+    },
+    {
+      "target_path": "service_tickets[].assignee_id",
+      "type": "string",
+      "required": true,
+      "source": "工单.处理人",
+      "transform": "原样",
+      "note": "内部代号，不进入消费者可见视图"
+    },
+    {
+      "target_path": "service_tickets[].executor_name",
+      "type": "string | null",
+      "required": false,
+      "source": "补发换货工单.发货仓库 / 物流工单.发货仓",
+      "transform": "原样；无此字段的工单表填 null",
+      "note": "内部执行方，不对消费者展示"
+    },
+    {
+      "target_path": "service_tickets[].replacement_logistics_number",
+      "type": "string | null",
+      "required": false,
+      "source": "补发换货工单.补发物流单号",
+      "transform": "原样（字符串）；其他工单表填 null",
+      "note": "与订单原始物流单号不同，是新增发出单号"
+    },
+    {
+      "target_path": "service_tickets[].created_at",
+      "type": "date-time",
+      "required": true,
+      "source": "工单.创建时间",
+      "transform": "补 +08:00",
+      "note": "实测全部晚于该会话最后一条消息"
+    },
+    {
+      "target_path": "service_tickets[].completed_at",
+      "type": "date-time | null",
+      "required": false,
+      "source": "工单.完成时间",
+      "transform": "补 +08:00；空值保留 null",
+      "note": "非完结工单 28 条均为 null，与状态一致"
+    },
+    {
+      "target_path": "service_tickets[].source_sheet",
+      "type": "string",
+      "required": true,
+      "source": "来源表名",
+      "transform": "中文表名原样",
+      "note": "用于 fact_trace 溯源"
+    },
+    {
+      "target_path": "evidence_images[]",
+      "type": "object[]",
+      "required": true,
+      "source": "聊天记录.image_path + 团队合成素材",
+      "transform": "赛事只在 image_path 给出路径引用，工作簿不含图片文件；须由团队合成同题素材后成对登记",
+      "note": "关键约束：CaseInput.evidence_images 的 source_kind 枚举只允许 TEAM_SYNTHETIC_RECREATION / TEAM_SYNTHETIC_AUGMENTATION，赛事路径本身不能直接成为一条证据；见 OI-01"
+    },
+    {
+      "target_path": "evidence_images[].evidence_id",
+      "type": "string",
+      "required": true,
+      "source": "派生",
+      "transform": "赛事引用：{会话ID}_IMG_{消息序号两位数}；团队素材：沿用素材命名（如 S00001_IMG_PUMP）",
+      "note": "同一案例内唯一"
+    },
+    {
+      "target_path": "evidence_images[].file_name",
+      "type": "string",
+      "required": true,
+      "source": "团队素材文件名 / image_path 文件名",
+      "transform": "取 basename（如 S00001_03.jpg）或团队素材名",
+      "note": "不得含真实消费者身份信息"
+    },
+    {
+      "target_path": "evidence_images[].submitted_at",
+      "type": "date-time",
+      "required": true,
+      "source": "聊天记录.发送时间（对应图片消息）",
+      "transform": "补 +08:00",
+      "note": "用图片消息本身的时间，不用后续追加时间"
+    },
+    {
+      "target_path": "evidence_images[].declared_view_type",
+      "type": "enum",
+      "required": true,
+      "source": "声明映射（不是模型结论）",
+      "transform": "broken_pump/short_item/missing_item/wrong_shade/swatch→ISSUE_DETAIL；broken_parcel→PACKAGE_CONTEXT；live_promise/refund_screenshot/logistics_screenshot/consult_card→OTHER；无法判定→OTHER",
+      "note": "declared_ 前缀表示这是团队声明，模型观察写入 ExtractedJourney.image_observations[].view_type"
+    },
+    {
+      "target_path": "evidence_images[].source_kind",
+      "type": "enum",
+      "required": true,
+      "source": "团队素材来源",
+      "transform": "复刻赛事路径语义→TEAM_SYNTHETIC_RECREATION；纯扩充新图→TEAM_SYNTHETIC_AUGMENTATION",
+      "note": "枚举值来自 Schema"
+    },
+    {
+      "target_path": "evidence_images[].source_message_id",
+      "type": "string",
+      "required": true,
+      "source": "聊天记录.message_id（对应图片消息）",
+      "transform": "原样",
+      "note": "把它和 CaseInput.conversation 对齐，保证证据可追溯"
+    },
+    {
+      "target_path": "evidence_images[].competition_reference_path",
+      "type": "string | null",
+      "required": false,
+      "source": "聊天记录.image_path",
+      "transform": "原样保留路径字符串；纯团队扩充图填 null",
+      "note": "保留原始路径用于来源核对"
+    },
+    {
+      "target_path": "current_issue.fulfillment_item_id",
+      "type": "string",
+      "required": true,
+      "source": "派生",
+      "transform": "{订单号}-{问题商品货号}",
+      "note": "与 order.items[] 中对应条目一致"
+    },
+    {
+      "target_path": "current_issue.sku_id",
+      "type": "string",
+      "required": true,
+      "source": "订单.商品货号 + 聊天语义",
+      "transform": "取当前问题指向的商品货号",
+      "note": "范围变化场景下必须与 order.items 中另一条目可区分"
+    },
+    {
+      "target_path": "current_issue.issue_type",
+      "type": "enum",
+      "required": true,
+      "source": "scene_minor + 聊天语义",
+      "transform": "破损换货/包裹破损/少发正装→PACKAGE_DAMAGE；物流停滞疑似丢件→LOGISTICS_STALLED；泛红刺痒/闷痘爆痘/过敏就医→ADVERSE_REACTION",
+      "note": "枚举仅三值，映射表见 02-数据映射表.md 第 3.9 节"
+    },
+    {
+      "target_path": "current_issue.affected_component",
+      "type": "enum",
+      "required": false,
+      "source": "聊天语义（人工标注）",
+      "transform": "泵头→PUMP；瓶身→BOTTLE；瓶盖→CAP；封口→SEAL；外箱→OUTER_PACKAGE；不确定→UNKNOWN",
+      "note": "工作簿无此字段，属于案例级人工标注"
+    },
+    {
+      "target_path": "policy_requirement_id",
+      "type": "const",
+      "required": true,
+      "source": "常量",
+      "transform": "DEMO_POLICY_PACKAGE_DAMAGE_V1",
+      "note": "模拟政策，不代表欧莱雅真实售后政策"
+    }
+  ],
+  "extracted_journey_input_constraints": [
+    {
+      "field": "promise_events",
+      "allowed_source": "CaseInput.conversation 中 speaker=AGENT 的消息",
+      "forbidden_input": "承诺结论、承诺类型、有效期、截止时间",
+      "ref": "docs/02-ai-extraction.md 第 4、5 节"
+    },
+    {
+      "field": "image_observations",
+      "allowed_source": "CaseInput.evidence_images 对应的实际图片文件",
+      "forbidden_input": "evidence_status、证据是否足够、图中文字断言",
+      "ref": "docs/02-ai-extraction.md 第 2、4.1 节"
+    },
+    {
+      "field": "journey_understanding",
+      "allowed_source": "CaseInput.conversation（已脱敏）",
+      "forbidden_input": "情绪指数、责任方、防线结果",
+      "ref": "docs/02-ai-extraction.md 第 3 节"
+    },
+    {
+      "field": "extracted_scope",
+      "allowed_source": "CaseInput.order / current_issue",
+      "forbidden_input": "范围匹配结论",
+      "ref": "docs/01-core-contracts.md 第 3 节"
+    }
+  ],
+  "not_mapped_fields": [
+    {
+      "field": "聊天记录.店铺 / 订单.店铺 / 五类工单.店铺",
+      "reason": "全表常量「测试美妆旗舰店」，无信息量"
+    },
+    {
+      "field": "聊天记录.chat_content",
+      "reason": "与 message_text 一一对应的冗余结构，当前无额外信息"
+    },
+    {
+      "field": "聊天记录.is_target_buyer_message",
+      "reason": "与「角色=买家」完全等价"
+    },
+    {
+      "field": "聊天记录.买家昵称 / 发送方",
+      "reason": "PII，且已由会话 ID 覆盖其关联作用"
+    },
+    {
+      "field": "订单.收货省 / 收货市",
+      "reason": "PII，不进模型；仅在需要「同省/异地」布尔判断时派生使用"
+    },
+    {
+      "field": "线下打款工单.支付宝实名 / 支付宝账号",
+      "reason": "PII，字段级掩码，不进模型"
+    },
+    {
+      "field": "不良反应工单.年龄 / 不适部位 / 症状描述",
+      "reason": "健康类敏感信息，按治理要求掩码后才可进 Prompt"
+    },
+    {
+      "field": "物流工单.收货省 / 收货市",
+      "reason": "PII"
+    },
+    {
+      "field": "各表.处理人 / 发货仓库 / 发货仓",
+      "reason": "内部组织信息，仅内部追踪使用，不对外展示"
+    },
+    {
+      "field": "订单.买家留言",
+      "reason": "可作为体验成因辅助证据，但当前 52 单为空、且仅 3 种模板化取值，P0 不强制映射"
+    }
+  ],
+  "worked_example": {
+    "case_id": "S00001",
+    "note": "Hero 案例的赛事原始部分（不含团队扩充）",
+    "source_locator": {
+      "chat_rows": "聊天记录!A2:R7（第 2–7 行，共 6 条消息）",
+      "order_row": "订单!A45:S45",
+      "ticket_row": "补发换货工单!A10:S10"
+    },
+    "case_input_excerpt": {
+      "data_provenance": {
+        "source_dataset": "TIANCHI_LOREAL_TRACK1_MOCK",
+        "source_session_id": "S00001"
+      },
+      "conversation_source_rows": 6,
+      "order": {
+        "order_id": "6920185815517983396",
+        "channel": "TIANCHI_MOCK_QIANNIU",
+        "original_logistics_number": "773478190943155",
+        "items": [
+          {
+            "fulfillment_item_id": "6920185815517983396-XC33003",
+            "sku_id": "XC33003",
+            "product_name": "测试轻透粉底液30ml #N02自然色",
+            "batch_code": null,
+            "item_role": "PRIMARY",
+            "derived_from": "订单!A45:S45 商品货号/商品名称/数量"
+          },
+          {
+            "fulfillment_item_id": "6920185815517983396-XLG5004",
+            "sku_id": "XLG5004",
+            "product_name": "测试B5面膜体验装2片",
+            "batch_code": null,
+            "item_role": "GIFT",
+            "derived_from": "订单!R45 赠品 + 赠品货号字典"
+          }
+        ]
+      },
+      "service_tickets": [
+        {
+          "ticket_id": "BH919209358357",
+          "ticket_type": "REPLACEMENT",
+          "status": "进行中",
+          "assignee_id": "G003",
+          "executor_name": "测试美妆分销中心",
+          "replacement_logistics_number": "YT7667875838478",
+          "created_at": "2026-05-05T10:29:45+08:00",
+          "completed_at": null,
+          "source_sheet": "补发换货工单"
+        }
+      ],
+      "evidence_images": [
+        {
+          "evidence_id": "S00001_IMG_03",
+          "file_name": "S00001_03.jpg",
+          "submitted_at": "2026-05-05T10:21:38+08:00",
+          "declared_view_type": "ISSUE_DETAIL",
+          "source_kind": "TEAM_SYNTHETIC_RECREATION",
+          "source_message_id": "80525870445254.PNM",
+          "competition_reference_path": "mock_images/broken_pump/S00001_03.jpg"
+        }
+      ],
+      "current_issue": {
+        "fulfillment_item_id": "6920185815517983396-XC33003",
+        "sku_id": "XC33003",
+        "issue_type": "PACKAGE_DAMAGE",
+        "affected_component": "PUMP"
+      },
+      "policy_requirement_id": "DEMO_POLICY_PACKAGE_DAMAGE_V1"
+    },
+    "agent_promise_candidates": [
+      {
+        "message_id": "22703823958720.PNM",
+        "timestamp": "2026-05-05T10:24:13+08:00",
+        "text": "收到亲，确认属包装破损，为您登记换货：先给您发全新的，收到后用包裹里的面单把坏的寄回就好，运费我们出~",
+        "expected_commitment_class": "STANDARD_APPROVED",
+        "expected_activation_status": "ACTIVE",
+        "note": "有换货工单事实支撑，运费承担为附加承诺"
+      },
+      {
+        "message_id": "36199788469718.PNM",
+        "timestamp": "2026-05-05T10:27:37+08:00",
+        "text": "换货单已创建，48小时内发出，给您带来不便啦~",
+        "expected_commitment_class": "STANDARD_APPROVED",
+        "expected_activation_status": "ACTIVE",
+        "deadline": "2026-05-07T10:27:37+08:00",
+        "note": "主演示承诺；deadline = committed_at + 48h"
+      }
+    ]
+  },
+  "open_issues": [
+    {
+      "id": "OI-01",
+      "topic": "赛事图片路径不能直接构成证据条目",
+      "evidence": [
+        "schemas/case-input.schema.json：evidence_images[].source_kind 仅允许 TEAM_SYNTHETIC_RECREATION / TEAM_SYNTHETIC_AUGMENTATION",
+        "fixtures/README.md：工作簿只有 image_path 引用，没有图片文件，正式 Demo 需团队自制或合成素材"
+      ],
+      "consequence": "29 条赛事图片引用在 P0 中必须先由团队合成同题素材，才能成为一条 evidence_images 记录；Hero 只需覆盖 S00001 一条",
+      "owner": "A线提供素材清单，B线在导入层成对登记",
+      "status": "已澄清，无需裁决"
+    },
+    {
+      "id": "OI-02",
+      "topic": "赠品 SKU 口径不一致",
+      "evidence": [
+        "赛事工作簿：赠品货号 XLG5001–XLG5008（由补发换货工单派生）",
+        "fixtures/demo-cases.json：赠品 SKU 写作 GIFT-B5-MASK-2"
+      ],
+      "consequence": "同一赠品在赛事字典与 fixtures 中代号不同，D 线验收时会造成比对歧义",
+      "suggested_resolution": "统一使用赛事派生的 XLG5004（测试B5面膜体验装2片）",
+      "owner": "产品负责人（fixtures 由开发侧维护，A 线不修改）",
+      "status": "待裁决"
+    },
+    {
+      "id": "OI-03",
+      "topic": "Hero 评估时间与第二次进线时间不一致",
+      "evidence": [
+        "PRODUCT-FREEZE.md 附录 P0-4：二次进线 09:32、evaluation_time 09:40、approved_at 09:42、揽收 10:10、未揽收 11:35、截止 10:27:37",
+        "fixtures/demo-cases.json DEMO_001：evaluation_time 2026-05-07T11:00:00+08:00；第二次进线消息时间 2026-05-07T10:45:00+08:00"
+      ],
+      "consequence": "若按 fixtures 的 11:00 评估，承诺截止 10:27:37 已经过期，与 P0-4 的「承诺即将到期」口径冲突，直接影响到期判定与 AT_RISK 的演示时点",
+      "owner": "产品负责人",
+      "status": "待裁决"
+    },
+    {
+      "id": "OI-04",
+      "topic": "工单状态字段名与取值在五表间不统一",
+      "evidence": [
+        "补发换货/线下打款/物流工单：字段名「工单状态」",
+        "不良反应/售后退货工单：字段名「任务状态」",
+        "状态取值共 6 个：进行中、处理中、工单组处理、仓库处理、待处理、已完结"
+      ],
+      "consequence": "导入层需归一，且赛事文件未定义状态流转语义",
+      "suggested_resolution": "导入层只保留原值，语义映射由 B 线按产品六状态实现；A 线不新增定义",
+      "owner": "B线实现，A线确认字段",
+      "status": "已澄清，无需裁决"
+    },
+    {
+      "id": "OI-05",
+      "topic": "赠品列与客服口述冲突 6 例",
+      "evidence": ["见 01-数据字段确认.md 第 6.2 节"],
+      "consequence": "若按聊天口述认定赠品，会与系统事实冲突",
+      "suggested_resolution": "系统事实优先，冲突进 HUMAN_REVIEW",
+      "owner": "产品负责人",
+      "status": "待裁决"
+    }
+  ]
+}

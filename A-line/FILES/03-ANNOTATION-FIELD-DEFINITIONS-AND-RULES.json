@@ -1,0 +1,382 @@
+{
+  "selection_id": "A_CASE_SELECTION_30",
+  "version": "1.0.0",
+  "generated_at": "2026-09-10",
+  "owner": "A线 数据与调研",
+  "task_ref": "TEAM_AND_TIMELINE.md 9/2–9/4「确认数据字段与案例」＋ 9/5–9/11「首批标注」",
+  "source_pool": {
+    "dataset": "TIANCHI_LOREAL_TRACK1_MOCK",
+    "workbook": "data/tianchi-track1-mock-data.xlsx",
+    "total_sessions": 138,
+    "sessions_with_order": 113,
+    "sessions_with_ticket": 80,
+    "sessions_with_image": 29
+  },
+  "selection_rules": [
+    "规则1：Hero 案例 S00001 必选，且必须位于开发集",
+    "规则2：五类工单（REPLACEMENT / OFFLINE_PAYMENT / LOGISTICS / ADVERSE_REACTION / RETURN）每类至少 2 例",
+    "规则3：三类决策 INTERVENE / ALLOW / HUMAN_REVIEW 全覆盖；其中 ALLOW 同时覆盖 E2 与 E0_NO_RULE_MATCHED",
+    "规则4：五类承诺 STANDARD_APPROVED / APPROVAL_REQUIRED / CONDITIONAL / ERRONEOUS_OR_UNAUTHORIZED / AMBIGUOUS 全覆盖",
+    "规则5：10 个 image_path 目录类别至少各出现 1 次",
+    "规则6：同一话术模板在开发集最多 2 例，其余模板实例进入留出集（防同模板泄漏）",
+    "规则7：留出集 10 例在开发期不提供答案，由非开发成员保管",
+    "规则8：含无订单会话、无工单会话各至少 1 例，用于 E0 边界"
+  ],
+  "coverage_matrix": {
+    "ticket_type": {
+      "REPLACEMENT": { "dev": 8, "held_out": 2, "total": 10 },
+      "OFFLINE_PAYMENT": { "dev": 2, "held_out": 1, "total": 3 },
+      "LOGISTICS": { "dev": 2, "held_out": 3, "total": 5 },
+      "ADVERSE_REACTION": { "dev": 4, "held_out": 1, "total": 5 },
+      "RETURN": { "dev": 3, "held_out": 2, "total": 5 },
+      "NO_TICKET": { "dev": 1, "held_out": 0, "total": 1 }
+    },
+    "decision": {
+      "INTERVENE": { "dev": 9, "held_out": "待第二批", "rules": ["E1"] },
+      "HUMAN_REVIEW": { "dev": 6, "held_out": "待第二批", "rules": ["H1"] },
+      "ALLOW": { "dev": 5, "held_out": "待第二批", "rules": ["E2", "E0_NO_RULE_MATCHED"] }
+    },
+    "commitment_class": {
+      "STANDARD_APPROVED": { "dev": 18, "dev_items": 29, "held_out": "待第二批" },
+      "APPROVAL_REQUIRED": { "dev": 5, "dev_items": 5, "held_out": "待第二批" },
+      "CONDITIONAL": { "dev": 6, "dev_items": 6, "held_out": "待第二批" },
+      "AMBIGUOUS": { "dev": 4, "dev_items": 4, "held_out": "待第二批" },
+      "ERRONEOUS_OR_UNAUTHORIZED": { "dev": 1, "dev_items": 1, "held_out": 0, "note": "来自 S00007 的赠品事实冲突（客服口述与订单赠品列不符）；另有 Challenge Mode 变体与消费者伪造承诺用例覆盖验收 A25 / A28" }
+    },
+    "image_path_category": {
+      "broken_pump": { "dev": 2, "held_out": 1 },
+      "wrong_shade": { "dev": 2, "held_out": 1 },
+      "short_item": { "dev": 1, "held_out": 1 },
+      "broken_parcel": { "dev": 1, "held_out": 1 },
+      "missing_item": { "dev": 1, "held_out": 0 },
+      "refund_screenshot": { "dev": 2, "held_out": 1 },
+      "swatch": { "dev": 1, "held_out": 0 },
+      "live_promise": { "dev": 1, "held_out": 1 },
+      "consult_card": { "dev": 1, "held_out": 0 },
+      "logistics_screenshot": { "dev": 0, "held_out": 0, "note": "该类别仅 1 例（S00107），列入第二批候选池，不占用首批名额" }
+    },
+    "ticket_status": {
+      "已完结": { "dev": 11 },
+      "非已完结（进行中/处理中/工单组处理/仓库处理/待处理）": { "dev": 9 }
+    },
+    "session_structure": {
+      "有订单有工单": { "dev": 19 },
+      "有订单无工单": { "dev": 1, "case": "S00016" },
+      "无订单": { "dev": 0, "note": "25 个无订单会话全部为售前咨询，不进入 CaseInput Hero 队列；保留在池中作为 E0 对照，见 01-数据字段确认.md 第 4.3 节" }
+    }
+  },
+  "dev_regression": [
+    {
+      "annotation_id": "ANN_DEV_01",
+      "case_id": "S00001",
+      "is_hero": true,
+      "scene": { "major": "补发换货", "minor": "破损换货" },
+      "messages": 6,
+      "image_path_category": "broken_pump",
+      "ticket": { "type": "REPLACEMENT", "status": "进行中" },
+      "expected_decision": { "decision": "INTERVENE", "rule_id": "E1", "rule_priority": 300 },
+      "covers": ["HERO", "E1", "STANDARD_APPROVED", "REPLACEMENT", "IMAGE_BROKEN_PUMP", "TICKET_IN_PROGRESS", "OBLIGATION_CREATED"]
+    },
+    {
+      "annotation_id": "ANN_DEV_02",
+      "case_id": "S00203",
+      "is_hero": false,
+      "scene": { "major": "补发换货", "minor": "破损换货" },
+      "messages": 7,
+      "image_path_category": "broken_pump",
+      "ticket": { "type": "REPLACEMENT", "status": "已完结" },
+      "expected_decision": { "decision": "INTERVENE", "rule_id": "E1", "rule_priority": 300 },
+      "covers": ["ANTI_HARDCODING_TWIN", "E1", "STANDARD_APPROVED", "NO_GIFT_ITEM"]
+    },
+    {
+      "annotation_id": "ANN_DEV_03",
+      "case_id": "S00018",
+      "is_hero": false,
+      "scene": { "major": "补发换货", "minor": "错发色号" },
+      "messages": 8,
+      "image_path_category": "wrong_shade",
+      "ticket": { "type": "REPLACEMENT", "status": "已完结" },
+      "expected_decision": { "decision": "INTERVENE", "rule_id": "E1", "rule_priority": 300 },
+      "covers": ["E1", "STANDARD_APPROVED", "E2_VARIANT", "IMAGE_WRONG_SHADE"]
+    },
+    {
+      "annotation_id": "ANN_DEV_04",
+      "case_id": "S00031",
+      "is_hero": false,
+      "scene": { "major": "补发换货", "minor": "错发色号" },
+      "messages": 8,
+      "image_path_category": "wrong_shade",
+      "ticket": { "type": "REPLACEMENT", "status": "已完结" },
+      "expected_decision": { "decision": "INTERVENE", "rule_id": "E1", "rule_priority": 300 },
+      "covers": ["E1", "STANDARD_APPROVED", "EVIDENCE_REUSE_SAME_SKU"]
+    },
+    {
+      "annotation_id": "ANN_DEV_05",
+      "case_id": "S00023",
+      "is_hero": false,
+      "scene": { "major": "物流异常", "minor": "包裹少件" },
+      "messages": 8,
+      "image_path_category": "short_item",
+      "ticket": { "type": "LOGISTICS", "status": "工单组处理" },
+      "expected_decision": { "decision": "INTERVENE", "rule_id": "E1", "rule_priority": 300 },
+      "covers": ["E1", "LOGISTICS", "STANDARD_APPROVED", "IN_SENTENCE_SELF_CORRECTION"]
+    },
+    {
+      "annotation_id": "ANN_DEV_06",
+      "case_id": "S00011",
+      "is_hero": false,
+      "scene": { "major": "物流异常", "minor": "包裹破损" },
+      "messages": 7,
+      "image_path_category": "broken_parcel",
+      "ticket": { "type": "LOGISTICS", "status": "工单组处理" },
+      "expected_decision": { "decision": "INTERVENE", "rule_id": "E1", "rule_priority": 300 },
+      "covers": ["E1", "AMBIGUOUS", "GOODWILL_GIFT", "IMAGE_BROKEN_PARCEL"]
+    },
+    {
+      "annotation_id": "ANN_DEV_07",
+      "case_id": "S00064",
+      "is_hero": false,
+      "scene": { "major": "补发换货", "minor": "少发正装" },
+      "messages": 7,
+      "image_path_category": "missing_item",
+      "ticket": { "type": "REPLACEMENT", "status": "已完结" },
+      "expected_decision": { "decision": "INTERVENE", "rule_id": "E1", "rule_priority": 300 },
+      "covers": ["E1", "STANDARD_APPROVED", "LOW_COOPERATION", "IMAGE_MISSING_ITEM"]
+    },
+    {
+      "annotation_id": "ANN_DEV_08",
+      "case_id": "S00029",
+      "is_hero": false,
+      "scene": { "major": "退款打款", "minor": "退款金额少退补打" },
+      "messages": 8,
+      "image_path_category": "refund_screenshot",
+      "ticket": { "type": "OFFLINE_PAYMENT", "status": "已完结" },
+      "expected_decision": { "decision": "ALLOW", "rule_id": "E0_NO_RULE_MATCHED", "rule_priority": 0 },
+      "covers": ["OFFLINE_PAYMENT", "E0", "APPROVAL_REQUIRED", "PII_MASKING_PHONE"]
+    },
+    {
+      "annotation_id": "ANN_DEV_09",
+      "case_id": "S00362",
+      "is_hero": false,
+      "scene": { "major": "退款打款", "minor": "售后期关闭过敏退款" },
+      "messages": 8,
+      "image_path_category": "refund_screenshot",
+      "ticket": { "type": "OFFLINE_PAYMENT", "status": "进行中" },
+      "expected_decision": { "decision": "ALLOW", "rule_id": "E0_NO_RULE_MATCHED", "rule_priority": 0 },
+      "covers": ["OFFLINE_PAYMENT", "E0", "APPROVAL_REQUIRED", "HEALTH_ADJACENT"]
+    },
+    {
+      "annotation_id": "ANN_DEV_10",
+      "case_id": "S00154",
+      "is_hero": false,
+      "scene": { "major": "不良反应", "minor": "过敏就医" },
+      "messages": 9,
+      "image_path_category": "consult_card",
+      "ticket": { "type": "ADVERSE_REACTION", "status": "已完结" },
+      "expected_decision": { "decision": "HUMAN_REVIEW", "rule_id": "H1", "rule_priority": 200 },
+      "covers": ["H1", "ADVERSE_REACTION", "APPROVAL_REQUIRED", "IMAGE_CONSULT_CARD", "PII_MASKING_HEALTH"]
+    },
+    {
+      "annotation_id": "ANN_DEV_11",
+      "case_id": "S00015",
+      "is_hero": false,
+      "scene": { "major": "不良反应", "minor": "过敏就医" },
+      "messages": 9,
+      "image_path_category": null,
+      "ticket": { "type": "ADVERSE_REACTION", "status": "已完结" },
+      "expected_decision": { "decision": "HUMAN_REVIEW", "rule_id": "H1", "rule_priority": 200 },
+      "covers": ["H1", "APPROVAL_REQUIRED", "NO_IMAGE_TWIN"]
+    },
+    {
+      "annotation_id": "ANN_DEV_12",
+      "case_id": "S00010",
+      "is_hero": false,
+      "scene": { "major": "不良反应", "minor": "泛红刺痒" },
+      "messages": 10,
+      "image_path_category": null,
+      "ticket": { "type": "ADVERSE_REACTION", "status": "待处理" },
+      "expected_decision": { "decision": "HUMAN_REVIEW", "rule_id": "H1", "rule_priority": 200 },
+      "covers": ["H1", "ADVERSE_REACTION", "CONDITIONAL", "TICKET_PENDING"]
+    },
+    {
+      "annotation_id": "ANN_DEV_13",
+      "case_id": "S00098",
+      "is_hero": false,
+      "scene": { "major": "不良反应", "minor": "闷痘爆痘" },
+      "messages": 9,
+      "image_path_category": null,
+      "ticket": { "type": "ADVERSE_REACTION", "status": "已完结" },
+      "expected_decision": { "decision": "HUMAN_REVIEW", "rule_id": "H1", "rule_priority": 200 },
+      "covers": ["H1", "CONDITIONAL", "RETURN_COUPLING"]
+    },
+    {
+      "annotation_id": "ANN_DEV_14",
+      "case_id": "S00024",
+      "is_hero": false,
+      "scene": { "major": "售后退货", "minor": "仅退款疑似异常" },
+      "messages": 7,
+      "image_path_category": null,
+      "ticket": { "type": "RETURN", "status": "处理中" },
+      "expected_decision": { "decision": "HUMAN_REVIEW", "rule_id": "H1", "rule_priority": 200 },
+      "covers": ["H1", "RETURN", "AMBIGUOUS", "CONDITIONAL", "LOW_COOPERATION"]
+    },
+    {
+      "annotation_id": "ANN_DEV_15",
+      "case_id": "S00026",
+      "is_hero": false,
+      "scene": { "major": "售后退货", "minor": "七天无理由退货" },
+      "messages": 9,
+      "image_path_category": null,
+      "ticket": { "type": "RETURN", "status": "处理中" },
+      "expected_decision": { "decision": "ALLOW", "rule_id": "E0_NO_RULE_MATCHED", "rule_priority": 0 },
+      "covers": ["E0", "RETURN", "POLICY_STATEMENT", "NO_EVIDENCE_NEEDED"]
+    },
+    {
+      "annotation_id": "ANN_DEV_16",
+      "case_id": "S00132",
+      "is_hero": false,
+      "scene": { "major": "售后退货", "minor": "色号不合适退货" },
+      "messages": 7,
+      "image_path_category": "swatch",
+      "ticket": { "type": "RETURN", "status": "已完结" },
+      "expected_decision": { "decision": "ALLOW", "rule_id": "E2", "rule_priority": 100 },
+      "covers": ["E2", "RETURN", "STANDARD_APPROVED", "IMAGE_SWATCH", "EVIDENCE_SCOPE_MISMATCH"]
+    },
+    {
+      "annotation_id": "ANN_DEV_17",
+      "case_id": "S00034",
+      "is_hero": false,
+      "scene": { "major": "订单服务", "minor": "直播间承诺纠纷" },
+      "messages": 7,
+      "image_path_category": "live_promise",
+      "ticket": { "type": "REPLACEMENT", "status": "已完结" },
+      "expected_decision": { "decision": "INTERVENE", "rule_id": "E1", "rule_priority": 300 },
+      "covers": ["E1", "CONDITIONAL", "IMAGE_LIVE_PROMISE", "PROMISE_VERIFIED_BY_SCREENSHOT"]
+    },
+    {
+      "annotation_id": "ANN_DEV_18",
+      "case_id": "S00007",
+      "is_hero": false,
+      "scene": { "major": "补发换货", "minor": "漏发赠品" },
+      "messages": 6,
+      "image_path_category": null,
+      "ticket": { "type": "REPLACEMENT", "status": "已完结" },
+      "expected_decision": { "decision": "HUMAN_REVIEW", "rule_id": "H1", "rule_priority": 200 },
+      "covers": ["H1", "STANDARD_APPROVED", "FACT_CONFLICT_GIFT", "SYSTEM_FACT_PRIORITY"]
+    },
+    {
+      "annotation_id": "ANN_DEV_19",
+      "case_id": "S00115",
+      "is_hero": false,
+      "scene": { "major": "补发换货", "minor": "会员权益加赠补发" },
+      "messages": 7,
+      "image_path_category": null,
+      "ticket": { "type": "REPLACEMENT", "status": "进行中" },
+      "expected_decision": { "decision": "INTERVENE", "rule_id": "E1", "rule_priority": 300 },
+      "covers": ["E1", "STANDARD_APPROVED", "GIFT_NOT_ON_ORDER_LEGITIMATE", "TICKET_IN_PROGRESS"]
+    },
+    {
+      "annotation_id": "ANN_DEV_20",
+      "case_id": "S00016",
+      "is_hero": false,
+      "scene": { "major": "订单服务", "minor": "退款进度查询" },
+      "messages": 4,
+      "image_path_category": null,
+      "ticket": null,
+      "expected_decision": { "decision": "ALLOW", "rule_id": "E0_NO_RULE_MATCHED", "rule_priority": 0 },
+      "covers": ["E0", "NO_TICKET", "ORDER_ONLY", "MINIMAL_SESSION"]
+    }
+  ],
+  "held_out": [
+    {
+      "case_id": "S00137",
+      "scene": { "major": "补发换货", "minor": "破损换货" },
+      "messages": 6,
+      "image_path_category": "broken_pump",
+      "ticket": { "type": "REPLACEMENT", "status": "已完结" },
+      "purpose": "HERO 同模板异 SKU 复现；验证规则不因商品类别变化而漂移"
+    },
+    {
+      "case_id": "S00039",
+      "scene": { "major": "补发换货", "minor": "错发色号" },
+      "messages": 9,
+      "image_path_category": "wrong_shade",
+      "ticket": { "type": "REPLACEMENT", "status": "已完结" },
+      "purpose": "错发色号模板的第三个实例；验证 9 条消息的长会话稳定性"
+    },
+    {
+      "case_id": "S00108",
+      "scene": { "major": "物流异常", "minor": "包裹破损" },
+      "messages": 8,
+      "image_path_category": "broken_parcel",
+      "ticket": { "type": "LOGISTICS", "status": "已完结" },
+      "purpose": "已完结物流工单下的重复索证判断"
+    },
+    {
+      "case_id": "S00006",
+      "scene": { "major": "物流异常", "minor": "包裹少件" },
+      "messages": 8,
+      "image_path_category": "short_item",
+      "ticket": { "type": "LOGISTICS", "status": "工单组处理" },
+      "purpose": "包裹少件模板的第二实例；验证 24 小时时限承诺的抽取"
+    },
+    {
+      "case_id": "S00053",
+      "scene": { "major": "退款打款", "minor": "大促价保补差" },
+      "messages": 7,
+      "image_path_category": "live_promise",
+      "ticket": { "type": "OFFLINE_PAYMENT", "status": "进行中" },
+      "purpose": "价保补差 + 线下打款；同时用于验证「路径目录名与内容不符」不污染证据判断（见 01 第 6.3 节）"
+    },
+    {
+      "case_id": "S00044",
+      "scene": { "major": "物流异常", "minor": "物流停滞疑似丢件" },
+      "messages": 9,
+      "image_path_category": null,
+      "ticket": { "type": "LOGISTICS", "status": "已完结" },
+      "purpose": "含「第一时间联系您」与 48 小时补发条件承诺，是两个模糊/条件承诺共存的关键案例"
+    },
+    {
+      "case_id": "S00268",
+      "scene": { "major": "不良反应", "minor": "过敏就医" },
+      "messages": 9,
+      "image_path_category": null,
+      "ticket": { "type": "ADVERSE_REACTION", "status": "处理中" },
+      "purpose": "过敏就医模板第二实例；验证 H1 不受工单状态影响"
+    },
+    {
+      "case_id": "S00037",
+      "scene": { "major": "补发换货", "minor": "漏发赠品" },
+      "messages": 6,
+      "image_path_category": null,
+      "ticket": { "type": "REPLACEMENT", "status": "已完结" },
+      "purpose": "赠品事实冲突第二实例，与 S00007 配对验证系统事实优先级"
+    },
+    {
+      "case_id": "S00040",
+      "scene": { "major": "售后退货", "minor": "仅退款疑似异常" },
+      "messages": 7,
+      "image_path_category": null,
+      "ticket": { "type": "RETURN", "status": "已完结" },
+      "purpose": "消费者明确转向平台申诉，用于验证体验表达只影响优先级、不影响高风险动作"
+    },
+    {
+      "case_id": "S00232",
+      "scene": { "major": "售后退货", "minor": "使用不适退货" },
+      "messages": 7,
+      "image_path_category": null,
+      "ticket": { "type": "RETURN", "status": "处理中" },
+      "purpose": "健康相关退货的边界案例；验证是否应按 H1 转人工的判定口径"
+    }
+  ],
+  "status": {
+    "dev_regression": "已标注（FIRST_PASS），见 03-首批标注-20例.json",
+    "held_out": "已锁定案例 ID，答案待 9/19–9/25 第二批标注",
+    "second_review": "计划 9/12–9/18 由非标注人执行"
+  },
+  "notes": [
+    "本清单是 Ground Truth 的一部分，不得作为运行输入。",
+    "留出集案例在开发期不得被 B、C 线读取，也不得用于调 Prompt 或规则阈值。",
+    "S00107（logistics_screenshot 唯一实例）未进入 30 例，保留在第二批候选池。"
+  ]
+}

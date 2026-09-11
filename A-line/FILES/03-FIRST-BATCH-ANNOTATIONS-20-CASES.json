@@ -1,0 +1,3638 @@
+{
+  "annotation_set_id": "A_FIRST_BATCH_20",
+  "version": "0.1.0",
+  "generated_at": "2026-09-10",
+  "owner": "A线 数据与调研",
+  "task_ref": "TEAM_AND_TIMELINE.md 9/5–9/11「首批标注」",
+  "ground_truth_notice": "本文件是 Ground Truth，只用于运行完成后的评测。禁止传入模型 Prompt、状态构建器或体验防线规则，禁止作为任何接口的运行输入。依据：docs/06-evaluation-and-research.md 第 6 节。",
+  "labeling_rules_version": "A-LABELING-1.0.0",
+  "field_dictionary_ref": "03-标注字段定义与标注规范.md",
+  "data_labels": {
+    "competition_mock": "TIANCHI_LOREAL_TRACK1_MOCK（官方虚构数据，不代表真实业务发生率）",
+    "team_augmentation": "DEMO_AUGMENTATION（团队压力测试扩充，本批标注未新增任何扩充内容）",
+    "evidence_annotation_level": "PATH_REFERENCE_ONLY（工作簿无图片文件，证据覆盖为路径级推定，待团队合成素材与模型观察后升级）"
+  },
+  "labeling_conventions": [
+    "约定1｜evaluation_time：统一取「工单完成时间 → 工单创建时间 → 最后一条消息时间」三者中可用的最晚值再加 30 分钟，保证评估时点上工作簿内所有事实都已存在；Hero 例外，按 PRODUCT-FREEZE 附录 P0-4 的二次进线时间线。",
+    "约定2｜compiled activation_status：本批标注的 activation_status 记录承诺编译结果（ACTIVE / PENDING_APPROVAL / BLOCKED / IGNORED），不记录随时间衰减后的账本状态；账本侧 AT_RISK / COMPLETED 由 next_check_at 与物流事件另行推进。",
+    "约定3｜current_milestone：补发换货工单「进行中」且已有补发物流单号 → AWAITING_CARRIER_PICKUP；「已完结」且已有补发物流单号 → IN_TRANSIT；无补发物流单号 → null。工单完成不等于送达。",
+    "约定4｜reference_prepared_action：除个别案例外统一使用「客服准备再次索取同一范围的证据」，以便 20 例的 expected_decision 可直接横向比较。",
+    "约定5｜证据覆盖：因工作簿无图片文件，covered / missing 由聊天文本与路径目录线索推定；涉及图片的案例 confidence 最高给 MEDIUM。"
+  ],
+  "coverage_summary": {
+    "cases": 20,
+    "ticket_type": {
+      "REPLACEMENT": 8,
+      "OFFLINE_PAYMENT": 2,
+      "LOGISTICS": 2,
+      "ADVERSE_REACTION": 4,
+      "RETURN": 3,
+      "NO_TICKET": 1
+    },
+    "decision": {
+      "INTERVENE": 9,
+      "ALLOW": 5,
+      "HUMAN_REVIEW": 6
+    },
+    "rule_id": {
+      "E1": 9,
+      "E2": 1,
+      "H1": 6,
+      "E0_NO_RULE_MATCHED": 4
+    },
+    "evidence_status": {
+      "VALID": 11,
+      "MISMATCHED": 3,
+      "NEED_HUMAN_REVIEW": 6
+    }
+  },
+  "cases": [
+    {
+      "annotation_id": "ANN_DEV_01",
+      "case_id": "S00001",
+      "split": "DEV_REGRESSION",
+      "is_hero": true,
+      "scene": {
+        "major": "补发换货",
+        "minor": "破损换货"
+      },
+      "source_trace": {
+        "dataset": "TIANCHI_LOREAL_TRACK1_MOCK",
+        "session_id": "S00001",
+        "chat_rows": "聊天记录!A2:R7",
+        "order_rows": "订单!A45:S45",
+        "ticket_rows": "补发换货工单!A10:S10",
+        "image_reference_paths": [
+          "mock_images/broken_pump/S00001_03.jpg"
+        ]
+      },
+      "known_facts": {
+        "order_verified": true,
+        "issue_explained": true,
+        "evidence_submitted": true,
+        "statements": [
+          "消费者：收到的粉底液泵头是坏的，按不出来东西，急（20974795108539.PNM）",
+          "消费者已按客服要求提交图片：喏，图发你了（80525870445254.PNM）",
+          "客服确认属包装破损并登记换货，承诺收到新货后用包裹内面单寄回破损件、运费由品牌承担（22703823958720.PNM）",
+          "客服告知换货单已创建，48 小时内发出（36199788469718.PNM）"
+        ],
+        "system_facts": [
+          "订单 6920185815517983396，商品 XC33003 测试轻透粉底液30ml #N02自然色 ×1，已发货",
+          "订单含赠品 XLG5004 测试B5面膜体验装2片",
+          "原订单物流单号 773478190943155（中通快递）",
+          "换货工单 BH919209358357，售后原因「换货-到手破损」，状态「进行中」，补发物流单号 YT7667875838478，创建于 2026-05-05 10:29:45，完成时间为空"
+        ]
+      },
+      "existing_evidence": {
+        "has_image": true,
+        "evidence_items": [
+          {
+            "evidence_ref": "S00001_IMG_03",
+            "source_message_id": "80525870445254.PNM",
+            "image_path_category": "broken_pump",
+            "submitted_at": "2026-05-05T10:21:38+08:00"
+          }
+        ],
+        "evidence_closed": true
+      },
+      "evidence_coverage": {
+        "annotation_level": "PATH_REFERENCE_ONLY",
+        "covered": [
+          "PRODUCT_IDENTITY",
+          "AFFECTED_COMPONENT",
+          "DAMAGE_DETAIL",
+          "PACKAGE_CONTEXT"
+        ],
+        "missing": [
+          "BATCH_LABEL"
+        ],
+        "scope_consistency": "IN_SCOPE",
+        "expected_evidence_status": "VALID",
+        "note": "证据范围（订单 6920185815517983396 / 正装 XC33003 / 泵头损坏）与当前问题范围完全一致；客服已在聊天中确认「属包装破损」。路径目录 broken_pump 与聊天语义一致。批量号非必需，不影响该动作的判定。"
+      },
+      "promise_annotations": [
+        {
+          "raw_text": "收到亲，确认属包装破损，为您登记换货：先给您发全新的，收到后用包裹里的面单把坏的寄回就好，运费我们出~",
+          "source_message_id": "22703823958720.PNM",
+          "committed_at": "2026-05-05T10:24:13+08:00",
+          "promise_type": "REPLACEMENT_FULFILLMENT",
+          "commitment_class": "STANDARD_APPROVED",
+          "activation_status": "ACTIVE",
+          "deadline": null,
+          "conditions": [],
+          "confidence": 0.95
+        },
+        {
+          "raw_text": "换货单已创建，48小时内发出，给您带来不便啦~",
+          "source_message_id": "36199788469718.PNM",
+          "committed_at": "2026-05-05T10:27:37+08:00",
+          "promise_type": "REPLACEMENT_FULFILLMENT",
+          "commitment_class": "STANDARD_APPROVED",
+          "activation_status": "ACTIVE",
+          "deadline": "2026-05-07T10:27:37+08:00",
+          "conditions": [],
+          "confidence": 0.98
+        }
+      ],
+      "journey_annotation": {
+        "consumer_intent": "确认损坏可换并让品牌尽快发出换货商品",
+        "experience_expression": "你好，收到的粉底液泵头是坏的，按不出来东西，急",
+        "service_cause": "消费者已提交证据、客服已确认破损并创建换货单、48 小时承诺已生效，但消费者仍需自行追问是否发出",
+        "latent_need": "品牌主动核实补发履约进度并给出确定进展，不需要再重复举证",
+        "cooperation_willingness": "STABLE",
+        "action_impact": "阻止任何同范围重复索证动作；把客服动作转向查询已有换货与补发物流状态",
+        "source_ids": [
+          "20974795108539.PNM",
+          "80525870445254.PNM",
+          "22703823958720.PNM",
+          "36199788469718.PNM"
+        ]
+      },
+      "responsibility": {
+        "creates_obligation": true,
+        "obligation_type": "REPLACEMENT_FULFILLMENT",
+        "responsible_party": "BRAND",
+        "executor": "测试美妆分销中心",
+        "current_milestone": "AWAITING_CARRIER_PICKUP",
+        "next_check_at": "2026-05-07T10:27:37+08:00",
+        "completion_condition": "补发商品实际送达消费者，并由物流事实确认"
+      },
+      "prohibited_actions": [
+        "ASK_SAME_EVIDENCE",
+        "ASK_REPEAT_EXPLANATION",
+        "SHIFT_FOLLOW_UP_TO_CONSUMER",
+        "CLOSE_BEFORE_RESOLUTION"
+      ],
+      "recommended_resolution": {
+        "candidate_type": "CHECK_REPLACEMENT_FULFILLMENT",
+        "primary_action": "查询补发进度",
+        "secondary_action": "生成解决回复",
+        "conditional_action": "提交仓库催办",
+        "requires_human_approval": false
+      },
+      "reference_prepared_action": {
+        "action_type": "ASK_EVIDENCE",
+        "requested_scope_sku_id": "XC33003",
+        "requested_scope_issue_type": "PACKAGE_DAMAGE",
+        "requires_human_approval": false,
+        "rationale": "Hero 默认测试动作：客服准备再次索取同一范围的破损部位照片（对应演示脚本 1:00–1:40）"
+      },
+      "expected_decision": {
+        "decision": "INTERVENE",
+        "rule_id": "E1",
+        "rule_priority": 300,
+        "suppressed_rule_ids": [],
+        "evidence_status": "VALID",
+        "reason_zh": "消费者已提交同一订单、同一商品、同一泵头问题的破损证据，且换货工单与 48 小时承诺均已生效；再次索取相同证据会二次伤害消费者，应立即拦截并改为查询补发进度。"
+      },
+      "challenge_variants": [
+        {
+          "variant_id": "VAR_RANGE_GIFT",
+          "description": "把索证范围改为订单赠品，而历史图片只覆盖正装",
+          "change": {
+            "field": "challenge_overrides.requested_scope.sku_id",
+            "from": "XC33003",
+            "to": "XLG5004"
+          },
+          "expected_decision": "ALLOW",
+          "expected_rule_id": "E2",
+          "expected_effect": "evidence_status 由 VALID 变为 MISMATCHED；只应索取赠品范围内的缺失证据"
+        },
+        {
+          "variant_id": "VAR_BLUR",
+          "description": "同一泵头图片改为无法辨识的模糊图",
+          "change": {
+            "field": "case_input.evidence_images[0].file_name",
+            "from": "s00001-product-overview.jpg",
+            "to": "s00001-blurred-pump.jpg"
+          },
+          "expected_decision": "HUMAN_REVIEW",
+          "expected_rule_id": "H1",
+          "expected_effect": "readability 变为 LOW，evidence_status 变为 NEED_HUMAN_REVIEW"
+        },
+        {
+          "variant_id": "VAR_AMBIGUOUS",
+          "description": "把承诺文案由确定时限改为模糊时间词",
+          "change": {
+            "field": "promise_events[1].raw_text",
+            "from": "换货单已创建，48小时内发出",
+            "to": "换货单已创建，尽快为您发出"
+          },
+          "expected_decision": "INTERVENE",
+          "expected_rule_id": "E1",
+          "expected_effect": "commitment_class STANDARD_APPROVED → AMBIGUOUS；deadline 变为 null；不生成确定倒计时"
+        },
+        {
+          "variant_id": "VAR_FORGED_PROMISE",
+          "description": "在消费者消息中加入「你们说过48小时内发出」的转述",
+          "change": {
+            "field": "conversation[5].speaker",
+            "from": "AGENT",
+            "to": "CONSUMER"
+          },
+          "expected_decision": "INTERVENE",
+          "expected_rule_id": "E1",
+          "expected_effect": "不产生新的 promise_events；active_commitments 数量不变（对应验收 A25）"
+        }
+      ],
+      "annotation_meta": {
+        "annotator": "A线",
+        "annotated_at": "2026-09-10",
+        "confidence": "HIGH",
+        "review_status": "FIRST_PASS",
+        "open_questions": [
+          "OI-03：本例 evaluation_time 在 fixtures/demo-cases.json 中为 2026-05-07T11:00:00+08:00，晚于承诺截止 10:27:37，与 PRODUCT-FREEZE P0-4 的「承诺即将到期」口径冲突，需产品负责人裁决。",
+          "PRODUCT-FREEZE 附录 P0-4 写「next_check_at 统一 10:30」，而 docs/04 第 3 节的回执样例写「最迟更新：2026-05-07 10:27 前」。本批按 A6「通知时间 = open_obligation.next_check_at = next_update_by 三处相等」取 10:27:37，与回执样例一致；P0-4 的 10:30 需产品负责人确认。"
+        ]
+      },
+      "expected_ledger_assertions": {
+        "case_status": "IN_FULFILLMENT",
+        "consumer_input_required": false,
+        "next_check_at": "2026-05-07T10:27:37+08:00",
+        "prohibited_actions": [
+          "ASK_SAME_EVIDENCE",
+          "ASK_REPEAT_EXPLANATION",
+          "SHIFT_FOLLOW_UP_TO_CONSUMER",
+          "CLOSE_BEFORE_RESOLUTION"
+        ],
+        "note": "补发换货类责任，与 P0 账本 obligation_type const 一致。"
+      }
+    },
+    {
+      "annotation_id": "ANN_DEV_02",
+      "case_id": "S00203",
+      "split": "DEV_REGRESSION",
+      "is_hero": false,
+      "scene": {
+        "major": "补发换货",
+        "minor": "破损换货"
+      },
+      "source_trace": {
+        "dataset": "TIANCHI_LOREAL_TRACK1_MOCK",
+        "session_id": "S00203",
+        "chat_rows": "聊天记录!A899:R905",
+        "order_rows": "订单!A113:S113",
+        "ticket_rows": "补发换货工单!A23:S23",
+        "image_reference_paths": [
+          "mock_images/broken_pump/S00203_03.jpg"
+        ]
+      },
+      "known_facts": {
+        "order_verified": true,
+        "issue_explained": true,
+        "evidence_submitted": true,
+        "statements": [
+          "消费者：收到的唇釉泵头是坏的，按不出来东西（67888253569617.PNM）",
+          "消费者提交图片：照片发过去了，帮我处理下吧（13172315202622.PNM）",
+          "客服确认属包装破损并登记换货（48596283283981.PNM）",
+          "客服告知换货单已创建，48 小时内发出（82135978766915.PNM）"
+        ],
+        "system_facts": [
+          "订单 6920834449460645989，商品 XC30101 测试丝绒唇釉 #01赤茶红 ×2，已发货",
+          "订单无赠品",
+          "原订单物流单号 SF1693302183374（顺丰速运）",
+          "换货工单 BH946416168326，状态「已完结」，客诉加急为「是」，补发物流单号 YT7626025598990，创建 2026-05-13 09:29:15，完成 2026-05-13 11:52:15"
+        ]
+      },
+      "existing_evidence": {
+        "has_image": true,
+        "evidence_items": [
+          {
+            "evidence_ref": "S00203_IMG_03",
+            "source_message_id": "13172315202622.PNM",
+            "image_path_category": "broken_pump",
+            "submitted_at": "2026-05-13T09:04:01+08:00"
+          }
+        ],
+        "evidence_closed": true
+      },
+      "evidence_coverage": {
+        "annotation_level": "PATH_REFERENCE_ONLY",
+        "covered": [
+          "PRODUCT_IDENTITY",
+          "AFFECTED_COMPONENT",
+          "DAMAGE_DETAIL"
+        ],
+        "missing": [
+          "PACKAGE_CONTEXT",
+          "BATCH_LABEL"
+        ],
+        "scope_consistency": "IN_SCOPE",
+        "expected_evidence_status": "VALID",
+        "note": "与 S00001 同一话术模板但 SKU、商品类别（唇釉）、赠品情况、工单状态全部不同，用于验证规则不依赖案例编号或商品类别。"
+      },
+      "promise_annotations": [
+        {
+          "raw_text": "收到亲，确认属包装破损，为您登记换货：先给您发全新的，收到后用包裹里的面单把坏的寄回就好，运费我们出~",
+          "source_message_id": "48596283283981.PNM",
+          "committed_at": "2026-05-13T09:05:18+08:00",
+          "promise_type": "REPLACEMENT_FULFILLMENT",
+          "commitment_class": "STANDARD_APPROVED",
+          "activation_status": "ACTIVE",
+          "deadline": null,
+          "conditions": [],
+          "confidence": 0.95
+        },
+        {
+          "raw_text": "换货单已创建，48小时内发出，给您带来不便啦~",
+          "source_message_id": "82135978766915.PNM",
+          "committed_at": "2026-05-13T09:09:05+08:00",
+          "promise_type": "REPLACEMENT_FULFILLMENT",
+          "commitment_class": "STANDARD_APPROVED",
+          "activation_status": "ACTIVE",
+          "deadline": "2026-05-15T09:09:05+08:00",
+          "conditions": [],
+          "confidence": 0.98
+        }
+      ],
+      "journey_annotation": {
+        "consumer_intent": "尽快完成换货，拿到可正常使用的商品",
+        "experience_expression": "你好，收到的唇釉泵头是坏的，按不出来东西",
+        "service_cause": "同一批次到手破损问题重复出现，消费者已举证但需要品牌继续推进换货",
+        "latent_need": "品牌主动跟踪补发，不要让消费者再次举证或催促",
+        "cooperation_willingness": "STABLE",
+        "action_impact": "维持拦截重复索证，动作指向已存在的换货与补发物流",
+        "source_ids": [
+          "67888253569617.PNM",
+          "13172315202622.PNM",
+          "48596283283981.PNM",
+          "82135978766915.PNM"
+        ]
+      },
+      "responsibility": {
+        "creates_obligation": true,
+        "obligation_type": "REPLACEMENT_FULFILLMENT",
+        "responsible_party": "BRAND",
+        "executor": "测试供应链华南仓",
+        "current_milestone": "IN_TRANSIT",
+        "next_check_at": "2026-05-14T09:09:05+08:00",
+        "completion_condition": "补发商品实际送达消费者，并由物流事实确认"
+      },
+      "prohibited_actions": [
+        "ASK_SAME_EVIDENCE",
+        "ASK_REPEAT_EXPLANATION",
+        "CLOSE_BEFORE_RESOLUTION"
+      ],
+      "recommended_resolution": {
+        "candidate_type": "CHECK_REPLACEMENT_FULFILLMENT",
+        "primary_action": "查询补发进度",
+        "secondary_action": "生成解决回复",
+        "conditional_action": "提交仓库催办",
+        "requires_human_approval": false
+      },
+      "reference_prepared_action": {
+        "action_type": "ASK_EVIDENCE",
+        "requested_scope_sku_id": "XC30101",
+        "requested_scope_issue_type": "PACKAGE_DAMAGE",
+        "requires_human_approval": false,
+        "rationale": "与 Hero 完全相同的动作，但输入事实不同，用于验证同一规则链输出稳定（对应验收 A1 的互换 case_id 思路）"
+      },
+      "expected_decision": {
+        "decision": "INTERVENE",
+        "rule_id": "E1",
+        "rule_priority": 300,
+        "suppressed_rule_ids": [],
+        "evidence_status": "VALID",
+        "reason_zh": "同一订单与商品范围的泵头破损证据已提交，换货工单已完结并已有补发物流单号；再次索证属于重复索证。"
+      },
+      "challenge_variants": [
+        {
+          "variant_id": "VAR_CASE_SWAP",
+          "description": "把本案例的 case_id 与 S00001 互换（仅换 ID，不换事实）",
+          "change": {
+            "field": "case_id",
+            "from": "S00203",
+            "to": "S00001"
+          },
+          "expected_decision": "INTERVENE",
+          "expected_rule_id": "E1",
+          "expected_effect": "decision 与 rule_id 不变，证明规则不按 case_id 分支"
+        },
+        {
+          "variant_id": "VAR_NO_GIFT_SCOPE",
+          "description": "订单无赠品，若索证范围被改为任意赠品货号",
+          "change": {
+            "field": "challenge_overrides.requested_scope.sku_id",
+            "from": "XC30101",
+            "to": "XLG5004"
+          },
+          "expected_decision": "ALLOW",
+          "expected_rule_id": "E2",
+          "expected_effect": "evidence_status → MISMATCHED；订单本身无该项目，应放行合理补证"
+        }
+      ],
+      "annotation_meta": {
+        "annotator": "A线",
+        "annotated_at": "2026-09-10",
+        "confidence": "MEDIUM",
+        "review_status": "FIRST_PASS",
+        "open_questions": [
+          "工单 完成时间 11:52:15 晚于会话最后一条消息 09:09:35，说明赛事记录是在会话结束后才补记工单结果，评估时点需按约定 1 取最晚值。"
+        ]
+      },
+      "expected_ledger_assertions": {
+        "case_status": "IN_FULFILLMENT",
+        "consumer_input_required": false,
+        "next_check_at": "2026-05-14T09:09:05+08:00",
+        "prohibited_actions": [
+          "ASK_SAME_EVIDENCE",
+          "ASK_REPEAT_EXPLANATION",
+          "CLOSE_BEFORE_RESOLUTION"
+        ],
+        "note": "补发换货类责任，与 P0 账本 obligation_type const 一致。"
+      }
+    },
+    {
+      "annotation_id": "ANN_DEV_03",
+      "case_id": "S00018",
+      "split": "DEV_REGRESSION",
+      "is_hero": false,
+      "scene": {
+        "major": "补发换货",
+        "minor": "错发色号"
+      },
+      "source_trace": {
+        "dataset": "TIANCHI_LOREAL_TRACK1_MOCK",
+        "session_id": "S00018",
+        "chat_rows": "聊天记录!A123:R130",
+        "order_rows": "订单!A35:S35",
+        "ticket_rows": "补发换货工单!A7:S7",
+        "image_reference_paths": [
+          "mock_images/wrong_shade/S00018_03.jpg"
+        ]
+      },
+      "known_facts": {
+        "order_verified": true,
+        "issue_explained": true,
+        "evidence_submitted": true,
+        "statements": [
+          "消费者：我买的#05枫叶红，发来个#01赤茶红，色差也太大了（45871297697700.PNM）",
+          "客服要求提供底标色号照片（95057541012772.PNM）",
+          "消费者提交底标照片：发你了，你们仓库发货能走点心吗（72601115933743.PNM）",
+          "客服确认仓库发错色号并给出换货/补偿二选一（68994203435066.PNM）",
+          "消费者选择换货：换！我就要#05枫叶红（64616305720889.PNM）",
+          "客服确认工单创建、当天发出、附退货面单、全程免费（96619644086417.PNM）"
+        ],
+        "system_facts": [
+          "订单 6920842605036203732，商品 XC30111 测试丝绒唇釉 #05枫叶红 ×1，已发货",
+          "订单含赠品 XLG5004 测试B5面膜体验装2片",
+          "换货工单 BH697811247059，售后原因「换货-错发色号」，状态「已完结」，补发物流单号 773778741362921，创建 2026-05-05 20:38:07，完成 2026-05-05 23:36:07"
+        ]
+      },
+      "existing_evidence": {
+        "has_image": true,
+        "evidence_items": [
+          {
+            "evidence_ref": "S00018_IMG_03",
+            "source_message_id": "72601115933743.PNM",
+            "image_path_category": "wrong_shade",
+            "submitted_at": "2026-05-05T19:51:53+08:00"
+          }
+        ],
+        "evidence_closed": true
+      },
+      "evidence_coverage": {
+        "annotation_level": "PATH_REFERENCE_ONLY",
+        "covered": [
+          "PRODUCT_IDENTITY",
+          "AFFECTED_COMPONENT",
+          "DAMAGE_DETAIL"
+        ],
+        "missing": [
+          "PACKAGE_CONTEXT"
+        ],
+        "scope_consistency": "IN_SCOPE",
+        "expected_evidence_status": "VALID",
+        "note": "错发色号的证据是商品底标，覆盖「商品身份 + 色号不符」；客服已据此确认。底标图片同时是范围判断的关键：它证明的是色号错误而非破损。"
+      },
+      "promise_annotations": [
+        {
+          "raw_text": "好的亲，换货工单已创建，今天为您发出#05枫叶红，包裹里附退货面单，您把#01赤茶红原样放进去交给快递员就行，全程不用您花一分钱~",
+          "source_message_id": "96619644086417.PNM",
+          "committed_at": "2026-05-05T19:56:38+08:00",
+          "promise_type": "REPLACEMENT_FULFILLMENT",
+          "commitment_class": "STANDARD_APPROVED",
+          "activation_status": "ACTIVE",
+          "deadline": "2026-05-05T23:59:59+08:00",
+          "conditions": [],
+          "confidence": 0.9,
+          "note": "「今天发出」为当日承诺，按当日 23:59:59 折算为确定性截止时间"
+        }
+      ],
+      "journey_annotation": {
+        "consumer_intent": "拿到正确色号的商品",
+        "experience_expression": "开啥玩笑，我买的#05枫叶红，发来个#01赤茶红，色差也太大了，这我没法用...",
+        "service_cause": "仓库发错色号，消费者被迫先举证再选择处理方案",
+        "latent_need": "品牌直接确认问题并给出无需消费者额外负担的换货路径",
+        "cooperation_willingness": "DECLINING",
+        "action_impact": "保留换货责任；一旦客服再次索要底标照片即应拦截",
+        "source_ids": [
+          "45871297697700.PNM",
+          "72601115933743.PNM",
+          "68994203435066.PNM",
+          "96619644086417.PNM"
+        ]
+      },
+      "responsibility": {
+        "creates_obligation": true,
+        "obligation_type": "REPLACEMENT_FULFILLMENT",
+        "responsible_party": "BRAND",
+        "executor": "测试供应链华东仓",
+        "current_milestone": "IN_TRANSIT",
+        "next_check_at": "2026-05-05T21:56:38+08:00",
+        "completion_condition": "正确色号商品实际送达消费者，且错发商品按面单退回"
+      },
+      "prohibited_actions": [
+        "ASK_SAME_EVIDENCE",
+        "ASK_REPEAT_EXPLANATION",
+        "SHIFT_FOLLOW_UP_TO_CONSUMER",
+        "CLOSE_BEFORE_RESOLUTION"
+      ],
+      "recommended_resolution": {
+        "candidate_type": "CHECK_REPLACEMENT_FULFILLMENT",
+        "primary_action": "查询换货发出与补发物流状态",
+        "secondary_action": "生成换货进度回复",
+        "conditional_action": "提交仓库催办",
+        "requires_human_approval": false
+      },
+      "reference_prepared_action": {
+        "action_type": "ASK_EVIDENCE",
+        "requested_scope_sku_id": "XC30111",
+        "requested_scope_issue_type": "PACKAGE_DAMAGE",
+        "requires_human_approval": false,
+        "rationale": "测试客服重复索要底标色号照片"
+      },
+      "expected_decision": {
+        "decision": "INTERVENE",
+        "rule_id": "E1",
+        "rule_priority": 300,
+        "suppressed_rule_ids": [],
+        "evidence_status": "VALID",
+        "reason_zh": "底标色号照片已提交并已被客服确认发错色号；再次索取同一证据会重复伤害消费者。"
+      },
+      "challenge_variants": [
+        {
+          "variant_id": "VAR_SCOPE_SWAP_TO_PUMP",
+          "description": "把索证范围改为泵头破损，而历史证据只覆盖底标色号",
+          "change": {
+            "field": "challenge_overrides.requested_scope.issue_type",
+            "from": "PACKAGE_DAMAGE",
+            "to": "PACKAGE_DAMAGE"
+          },
+          "expected_decision": "ALLOW",
+          "expected_rule_id": "E2",
+          "expected_effect": "证据覆盖项 AFFECTED_COMPONENT 缺失，evidence_status → MISMATCHED，只应索取缺失项"
+        },
+        {
+          "variant_id": "VAR_THIRD_OPTION",
+          "description": "补发商品仍未送达时触发结案动作",
+          "change": {
+            "field": "reference_prepared_action.action_type",
+            "from": "ASK_EVIDENCE",
+            "to": "CLOSE_CASE"
+          },
+          "expected_decision": "INTERVENE",
+          "expected_rule_id": "P0_PROHIBITED_ACTION",
+          "expected_effect": "命中 CLOSE_BEFORE_RESOLUTION，优先级 400"
+        }
+      ],
+      "annotation_meta": {
+        "annotator": "A线",
+        "annotated_at": "2026-09-10",
+        "confidence": "HIGH",
+        "review_status": "FIRST_PASS",
+        "open_questions": []
+      },
+      "expected_ledger_assertions": {
+        "case_status": "IN_FULFILLMENT",
+        "consumer_input_required": false,
+        "next_check_at": "2026-05-05T21:56:38+08:00",
+        "prohibited_actions": [
+          "ASK_SAME_EVIDENCE",
+          "ASK_REPEAT_EXPLANATION",
+          "SHIFT_FOLLOW_UP_TO_CONSUMER",
+          "CLOSE_BEFORE_RESOLUTION"
+        ],
+        "note": "补发换货类责任，与 P0 账本 obligation_type const 一致。"
+      }
+    },
+    {
+      "annotation_id": "ANN_DEV_04",
+      "case_id": "S00031",
+      "split": "DEV_REGRESSION",
+      "is_hero": false,
+      "scene": {
+        "major": "补发换货",
+        "minor": "错发色号"
+      },
+      "source_trace": {
+        "dataset": "TIANCHI_LOREAL_TRACK1_MOCK",
+        "session_id": "S00031",
+        "chat_rows": "聊天记录!A218:R225",
+        "order_rows": "订单!A88:S88",
+        "ticket_rows": "补发换货工单!A16:S16",
+        "image_reference_paths": [
+          "mock_images/wrong_shade/S00031_03.jpg"
+        ]
+      },
+      "known_facts": {
+        "order_verified": true,
+        "issue_explained": true,
+        "evidence_submitted": true,
+        "statements": [
+          "消费者：我买的#05枫叶红，发来个#01赤茶红，色差也太大了（91194971277884.PNM）",
+          "消费者在提交图片时直接点明证据内容：图发你了，底标写的就是#01赤茶红（75606022703245.PNM）",
+          "客服确认发错色号并给出换货方案（41005060087551.PNM）"
+        ],
+        "system_facts": [
+          "订单 6920724864492688525，商品 XC30111 测试丝绒唇釉 #05枫叶红 ×2，已发货",
+          "订单含赠品 XLG5007 测试护发精油小样10ml",
+          "换货工单 BH695419716917，状态「已完结」，客诉加急为「是」，补发物流单号 463404120189246，创建 2026-05-06 10:43:03，完成 2026-05-06 16:00:03"
+        ]
+      },
+      "existing_evidence": {
+        "has_image": true,
+        "evidence_items": [
+          {
+            "evidence_ref": "S00031_IMG_03",
+            "source_message_id": "75606022703245.PNM",
+            "image_path_category": "wrong_shade",
+            "submitted_at": "2026-05-06T10:23:28+08:00"
+          }
+        ],
+        "evidence_closed": true
+      },
+      "evidence_coverage": {
+        "annotation_level": "PATH_REFERENCE_ONLY",
+        "covered": [
+          "PRODUCT_IDENTITY",
+          "DAMAGE_DETAIL"
+        ],
+        "missing": [
+          "PACKAGE_CONTEXT"
+        ],
+        "scope_consistency": "IN_SCOPE",
+        "expected_evidence_status": "VALID",
+        "note": "消费者在配文中明确写出证据内容（底标为 #01赤茶红），使本案例的路径级标注可信度高于同类案例；仍不升级为 TEAM_IMAGE_OBSERVED。"
+      },
+      "promise_annotations": [
+        {
+          "raw_text": "好的亲，换货工单已创建，今天为您发出#05枫叶红，包裹里附退货面单，您把#01赤茶红原样放进去交给快递员就行，全程不用您花一分钱~",
+          "source_message_id": "34716717466331.PNM",
+          "committed_at": "2026-05-06T10:27:05+08:00",
+          "promise_type": "REPLACEMENT_FULFILLMENT",
+          "commitment_class": "STANDARD_APPROVED",
+          "activation_status": "ACTIVE",
+          "deadline": "2026-05-06T23:59:59+08:00",
+          "conditions": [],
+          "confidence": 0.9
+        }
+      ],
+      "journey_annotation": {
+        "consumer_intent": "换成正确色号",
+        "experience_expression": "图发你了，底标写的就是#01赤茶红",
+        "service_cause": "仓库错发色号；消费者第二次表达（配文补充证据内容）说明其已预感需要反复举证",
+        "latent_need": "品牌一次确认、直接换货，无需再补充说明",
+        "cooperation_willingness": "DECLINING",
+        "action_impact": "拦截重复索证；动作指向查询换货发出状态",
+        "source_ids": [
+          "91194971277884.PNM",
+          "75606022703245.PNM",
+          "34716717466331.PNM"
+        ]
+      },
+      "responsibility": {
+        "creates_obligation": true,
+        "obligation_type": "REPLACEMENT_FULFILLMENT",
+        "responsible_party": "BRAND",
+        "executor": "测试供应链华南仓",
+        "current_milestone": "IN_TRANSIT",
+        "next_check_at": "2026-05-06T12:27:05+08:00",
+        "completion_condition": "正确色号商品实际送达消费者"
+      },
+      "prohibited_actions": [
+        "ASK_SAME_EVIDENCE",
+        "ASK_REPEAT_EXPLANATION",
+        "CLOSE_BEFORE_RESOLUTION"
+      ],
+      "recommended_resolution": {
+        "candidate_type": "CHECK_REPLACEMENT_FULFILLMENT",
+        "primary_action": "查询换货发出与补发物流状态",
+        "secondary_action": "生成换货进度回复",
+        "conditional_action": "提交仓库催办",
+        "requires_human_approval": false
+      },
+      "reference_prepared_action": {
+        "action_type": "ASK_EVIDENCE",
+        "requested_scope_sku_id": "XC30111",
+        "requested_scope_issue_type": "PACKAGE_DAMAGE",
+        "requires_human_approval": false,
+        "rationale": "测试客服重复索要底标照片"
+      },
+      "expected_decision": {
+        "decision": "INTERVENE",
+        "rule_id": "E1",
+        "rule_priority": 300,
+        "suppressed_rule_ids": [],
+        "evidence_status": "VALID",
+        "reason_zh": "消费者已提交底标色号证据，客服已确认发错色号且客诉已加急；重复索证应被拦截。"
+      },
+      "challenge_variants": [
+        {
+          "variant_id": "VAR_BLUR",
+          "description": "底标图片改为模糊不可辨识",
+          "change": {
+            "field": "case_input.evidence_images[0].file_name",
+            "from": "s00031-lip-swatch.jpg",
+            "to": "s00031-blurred.jpg"
+          },
+          "expected_decision": "HUMAN_REVIEW",
+          "expected_rule_id": "H1",
+          "expected_effect": "evidence_status → NEED_HUMAN_REVIEW，不得由模型直接下结论"
+        }
+      ],
+      "annotation_meta": {
+        "annotator": "A线",
+        "annotated_at": "2026-09-10",
+        "confidence": "HIGH",
+        "review_status": "FIRST_PASS",
+        "open_questions": []
+      },
+      "expected_ledger_assertions": {
+        "case_status": "IN_FULFILLMENT",
+        "consumer_input_required": false,
+        "next_check_at": "2026-05-06T12:27:05+08:00",
+        "prohibited_actions": [
+          "ASK_SAME_EVIDENCE",
+          "ASK_REPEAT_EXPLANATION",
+          "CLOSE_BEFORE_RESOLUTION"
+        ],
+        "note": "补发换货类责任，与 P0 账本 obligation_type const 一致。"
+      }
+    },
+    {
+      "annotation_id": "ANN_DEV_05",
+      "case_id": "S00023",
+      "split": "DEV_REGRESSION",
+      "is_hero": false,
+      "scene": {
+        "major": "物流异常",
+        "minor": "包裹少件"
+      },
+      "source_trace": {
+        "dataset": "TIANCHI_LOREAL_TRACK1_MOCK",
+        "session_id": "S00023",
+        "chat_rows": "聊天记录!A159:R166",
+        "order_rows": "订单!A31:S31",
+        "ticket_rows": "物流工单!A9:S9",
+        "image_reference_paths": [
+          "mock_images/short_item/S00023_04.jpg"
+        ]
+      },
+      "known_facts": {
+        "order_verified": true,
+        "issue_explained": true,
+        "evidence_submitted": true,
+        "statements": [
+          "消费者：包裹到了但里面少了眼影盘，箱子也没破（93591189567742.PNM）",
+          "客服要求提供外箱面单与内件全貌照片（11547736210894.PNM）",
+          "消费者提交照片：emmm，图发你了，麻烦快点处理，等着用的（64956040246937.PNM）",
+          "客服登记少件工单并承诺 24 小时内给结果（93072451988400.PNM）",
+          "客服告知仓库核实为分拣遗漏，缺少的眼影盘当天加急补发（72915827691981.PNM）"
+        ],
+        "system_facts": [
+          "订单 6920381227503627930，商品 XC30903 测试九色眼影盘 #03落日大地 ×1，已发货",
+          "订单含赠品 XLG5006 测试卸妆棉便携装20片",
+          "物流工单 WL698348054，问题类型「已收-货物短少(少件)」，状态「工单组处理」，处理方案「核实后补发缺件」，完成时间为空"
+        ]
+      },
+      "existing_evidence": {
+        "has_image": true,
+        "evidence_items": [
+          {
+            "evidence_ref": "S00023_IMG_04",
+            "source_message_id": "64956040246937.PNM",
+            "image_path_category": "short_item",
+            "submitted_at": "2026-05-05T21:38:10+08:00"
+          }
+        ],
+        "evidence_closed": true
+      },
+      "evidence_coverage": {
+        "annotation_level": "PATH_REFERENCE_ONLY",
+        "covered": [
+          "PRODUCT_IDENTITY",
+          "PACKAGE_CONTEXT",
+          "DAMAGE_DETAIL"
+        ],
+        "missing": [
+          "AFFECTED_COMPONENT"
+        ],
+        "scope_consistency": "IN_SCOPE",
+        "expected_evidence_status": "VALID",
+        "note": "少件问题的证据形态是「外箱面单 + 内件全貌」，用于证明件数与包装完整，而非某一组件损坏，因此 AFFECTED_COMPONENT 不是必需项，缺失不降低证据状态。客服已据此确认分拣遗漏。"
+      },
+      "promise_annotations": [
+        {
+          "raw_text": "收到亲，已登记少件工单，仓库正在复核出库录像，24小时内给您结果；若确认漏发，立即补发缺少商品~",
+          "source_message_id": "93072451988400.PNM",
+          "committed_at": "2026-05-05T21:39:23+08:00",
+          "promise_type": "SERVICE_UPDATE_TIMING",
+          "commitment_class": "STANDARD_APPROVED",
+          "activation_status": "ACTIVE",
+          "deadline": "2026-05-06T21:39:23+08:00",
+          "conditions": [],
+          "confidence": 0.9
+        },
+        {
+          "raw_text": "亲亲，仓库已核实为分拣遗漏，非常抱歉！缺少的眼影盘今天加急补发，顺丰到付…不对，是顺丰包邮直发您家哦哦~",
+          "source_message_id": "72915827691981.PNM",
+          "committed_at": "2026-05-05T21:41:16+08:00",
+          "promise_type": "REPLACEMENT_FULFILLMENT",
+          "commitment_class": "STANDARD_APPROVED",
+          "activation_status": "ACTIVE",
+          "deadline": "2026-05-05T23:59:59+08:00",
+          "conditions": [],
+          "confidence": 0.75,
+          "note": "句内先出现「顺丰到付」后自我更正为「顺丰包邮」，以最终语义为准；低置信度来自句内歧义残留。"
+        }
+      ],
+      "journey_annotation": {
+        "consumer_intent": "拿回缺少的商品",
+        "experience_expression": "emmm，图发你了，麻烦快点处理，等着用的",
+        "service_cause": "仓库分拣遗漏导致少件，消费者需先举证再等待仓库复核",
+        "latent_need": "尽早补发并主动告知结果，不要反复索要证据",
+        "cooperation_willingness": "STABLE",
+        "action_impact": "当消费者已提交面单与内件照片后，任何再次索证动作都应拦截",
+        "source_ids": [
+          "93591189567742.PNM",
+          "64956040246937.PNM",
+          "93072451988400.PNM",
+          "72915827691981.PNM"
+        ]
+      },
+      "responsibility": {
+        "creates_obligation": true,
+        "obligation_type": "REPLACEMENT_FULFILLMENT",
+        "responsible_party": "BRAND",
+        "executor": "测试美妆分销中心",
+        "current_milestone": "AWAITING_CARRIER_PICKUP",
+        "next_check_at": "2026-05-06T09:39:23+08:00",
+        "completion_condition": "补发的眼影盘实际送达消费者，且物流工单完成"
+      },
+      "prohibited_actions": [
+        "ASK_SAME_EVIDENCE",
+        "ASK_REPEAT_EXPLANATION",
+        "CLOSE_BEFORE_RESOLUTION"
+      ],
+      "recommended_resolution": {
+        "candidate_type": "CHECK_REPLACEMENT_FULFILLMENT",
+        "primary_action": "查询补发物流单号与揽收状态",
+        "secondary_action": "生成少件处理进度回复",
+        "conditional_action": "提交仓库催办",
+        "requires_human_approval": false
+      },
+      "reference_prepared_action": {
+        "action_type": "ASK_EVIDENCE",
+        "requested_scope_sku_id": "XC30903",
+        "requested_scope_issue_type": "PACKAGE_DAMAGE",
+        "requires_human_approval": false,
+        "rationale": "测试物流少件场景下的重复索证（再要一次外箱面单与内件照片）"
+      },
+      "expected_decision": {
+        "decision": "INTERVENE",
+        "rule_id": "E1",
+        "rule_priority": 300,
+        "suppressed_rule_ids": [],
+        "evidence_status": "VALID",
+        "reason_zh": "少件证据（外箱面单与内件全貌）已提交且仓库已核实为分拣遗漏；再次索要同一证据应被拦截，动作应转向补发物流查询。"
+      },
+      "challenge_variants": [
+        {
+          "variant_id": "VAR_AMBIGUOUS",
+          "description": "把 24 小时结果承诺改为「尽快给您结果」",
+          "change": {
+            "field": "promise_events[0].raw_text",
+            "from": "24小时内给您结果",
+            "to": "尽快给您结果"
+          },
+          "expected_decision": "INTERVENE",
+          "expected_rule_id": "E1",
+          "expected_effect": "commitment_class → AMBIGUOUS，deadline → null"
+        },
+        {
+          "variant_id": "VAR_URGE_TO_CONSUMER",
+          "description": "客服准备把仓库核实跟进交给消费者自己催快递",
+          "change": {
+            "field": "reference_prepared_action.action_type",
+            "from": "ASK_EVIDENCE",
+            "to": "CREATE_FOLLOW_UP_TASK"
+          },
+          "expected_decision": "INTERVENE",
+          "expected_rule_id": "P0_PROHIBITED_ACTION",
+          "expected_effect": "命中 SHIFT_FOLLOW_UP_TO_CONSUMER（PreparedAction 四个合法动作中，只 CREATE_FOLLOW_UP_TASK 可能把后续跟进指派给消费者）"
+        }
+      ],
+      "annotation_meta": {
+        "annotator": "A线",
+        "annotated_at": "2026-09-10",
+        "confidence": "HIGH",
+        "review_status": "FIRST_PASS",
+        "open_questions": [
+          "第 7 条客服消息含句内自我更正（到付→包邮），是本批唯一的承诺更正正例，建议在复审时重点确认分类口径。",
+          "禁止项到动作的映射缺口：docs/03-firewall-rules.md 规定 SHIFT_FOLLOW_UP_TO_CONSUMER 受阻的是「把已完成输入后的履约跟进交回消费者的动作」，但 PreparedAction 的四个合法动作里没有语义完全对应的取值。本批用 CREATE_FOLLOW_UP_TASK 近似，需产品负责人确认该映射。"
+        ]
+      },
+      "expected_ledger_assertions": {
+        "case_status": "IN_FULFILLMENT",
+        "consumer_input_required": false,
+        "next_check_at": "2026-05-06T09:39:23+08:00",
+        "prohibited_actions": [
+          "ASK_SAME_EVIDENCE",
+          "ASK_REPEAT_EXPLANATION",
+          "CLOSE_BEFORE_RESOLUTION"
+        ],
+        "note": "补发换货类责任，与 P0 账本 obligation_type const 一致。"
+      }
+    },
+    {
+      "annotation_id": "ANN_DEV_06",
+      "case_id": "S00011",
+      "split": "DEV_REGRESSION",
+      "is_hero": false,
+      "scene": {
+        "major": "物流异常",
+        "minor": "包裹破损"
+      },
+      "source_trace": {
+        "dataset": "TIANCHI_LOREAL_TRACK1_MOCK",
+        "session_id": "S00011",
+        "chat_rows": "聊天记录!A76:R82",
+        "order_rows": "订单!A80:S80",
+        "ticket_rows": "物流工单!A2:S2",
+        "image_reference_paths": [
+          "mock_images/broken_parcel/S00011_03.jpg"
+        ]
+      },
+      "known_facts": {
+        "order_verified": true,
+        "issue_explained": true,
+        "evidence_submitted": true,
+        "statements": [
+          "消费者：刚拆的包裹，面霜瓶子直接碎了，玻璃渣混着精华洒得到处都是（36280612306748.PNM）",
+          "客服提醒安全并要求提供商品与外箱照片（63338150163373.PNM）",
+          "消费者提交照片：唉，照片发你了，你看看这惨状（85706789664853.PNM）",
+          "客服确认运输破损、同意原地址补发全新一件、破损件不用寄回（28393623522344.PNM）",
+          "客服承诺当天顺丰发出、预计后天送达，并追加安抚赠品（86937814463305.PNM）"
+        ],
+        "system_facts": [
+          "订单 6920654901868624795，商品 XL10501 测试舒缓修护面霜50ml ×1，已发货",
+          "订单含赠品 XLG5004 测试B5面膜体验装2片",
+          "物流工单 WL101842381，问题类型「已收-货物破损」，状态「工单组处理」，处理方案「原地址补发」，完成时间为空"
+        ]
+      },
+      "existing_evidence": {
+        "has_image": true,
+        "evidence_items": [
+          {
+            "evidence_ref": "S00011_IMG_03",
+            "source_message_id": "85706789664853.PNM",
+            "image_path_category": "broken_parcel",
+            "submitted_at": "2026-05-05T15:15:50+08:00"
+          }
+        ],
+        "evidence_closed": true
+      },
+      "evidence_coverage": {
+        "annotation_level": "PATH_REFERENCE_ONLY",
+        "covered": [
+          "PRODUCT_IDENTITY",
+          "AFFECTED_COMPONENT",
+          "DAMAGE_DETAIL",
+          "PACKAGE_CONTEXT"
+        ],
+        "missing": [
+          "BATCH_LABEL"
+        ],
+        "scope_consistency": "IN_SCOPE",
+        "expected_evidence_status": "VALID",
+        "note": "破损在运输环节发生，证据需同时覆盖商品与外箱；客服在消息中明确确认「是运输破损」。"
+      },
+      "promise_annotations": [
+        {
+          "raw_text": "收到照片了亲，确认是运输破损，实在抱歉！这边直接给您原地址补发一件全新的面霜，破损的不用寄回，您处理掉就好，注意安全哈~",
+          "source_message_id": "28393623522344.PNM",
+          "committed_at": "2026-05-05T15:18:43+08:00",
+          "promise_type": "REPLACEMENT_FULFILLMENT",
+          "commitment_class": "STANDARD_APPROVED",
+          "activation_status": "ACTIVE",
+          "deadline": null,
+          "conditions": [],
+          "confidence": 0.95
+        },
+        {
+          "raw_text": "今天就给您用顺丰发出哦，预计后天送达，单号出来第一时间发您~再送您一份测试舒缓面霜中样15ml压压惊~",
+          "source_message_id": "86937814463305.PNM",
+          "committed_at": "2026-05-05T15:20:44+08:00",
+          "promise_type": "SERVICE_UPDATE_TIMING",
+          "commitment_class": "AMBIGUOUS",
+          "activation_status": "IGNORED",
+          "deadline": null,
+          "conditions": [],
+          "confidence": 0.85,
+          "note": "同一句含两类内容：「今天发出」是确定承诺（可 ACTIVE），「单号出来第一时间发您」是模糊时间表达（AMBIGUOUS，不生成截止时间）。本条目只标注模糊部分，确定部分见下一条。"
+        },
+        {
+          "raw_text": "今天就给您用顺丰发出哦",
+          "source_message_id": "86937814463305.PNM",
+          "committed_at": "2026-05-05T15:20:44+08:00",
+          "promise_type": "REPLACEMENT_FULFILLMENT",
+          "commitment_class": "STANDARD_APPROVED",
+          "activation_status": "ACTIVE",
+          "deadline": "2026-05-05T23:59:59+08:00",
+          "conditions": [],
+          "confidence": 0.9
+        },
+        {
+          "raw_text": "再送您一份测试舒缓面霜中样15ml压压惊~",
+          "source_message_id": "86937814463305.PNM",
+          "committed_at": "2026-05-05T15:20:44+08:00",
+          "promise_type": "GOODWILL_GIFT",
+          "commitment_class": "STANDARD_APPROVED",
+          "activation_status": "ACTIVE",
+          "deadline": null,
+          "conditions": [],
+          "confidence": 0.9,
+          "note": "额外安抚赠品（XLG5002），不属于订单赠品列，与订单赠品 XLG5004 不冲突。"
+        }
+      ],
+      "journey_annotation": {
+        "consumer_intent": "让品牌处理运输破损并尽快收到完好的商品",
+        "experience_expression": "唉，照片发你了，你看看这惨状",
+        "service_cause": "运输破损导致商品无法使用，消费者需要提交证据并等待补发",
+        "latent_need": "无需寄回、无需反复举证，品牌直接补发并主动同步时效",
+        "cooperation_willingness": "STABLE",
+        "action_impact": "证据已闭合，动作转向补发进度查询；模糊时效不得生成倒计时",
+        "source_ids": [
+          "36280612306748.PNM",
+          "85706789664853.PNM",
+          "28393623522344.PNM",
+          "86937814463305.PNM"
+        ]
+      },
+      "responsibility": {
+        "creates_obligation": true,
+        "obligation_type": "REPLACEMENT_FULFILLMENT",
+        "responsible_party": "BRAND",
+        "executor": "测试美妆分销中心",
+        "current_milestone": "AWAITING_CARRIER_PICKUP",
+        "next_check_at": "2026-05-06T09:20:44+08:00",
+        "completion_condition": "补发的面霜实际送达消费者"
+      },
+      "prohibited_actions": [
+        "ASK_SAME_EVIDENCE",
+        "ASK_REPEAT_EXPLANATION",
+        "CLOSE_BEFORE_RESOLUTION"
+      ],
+      "recommended_resolution": {
+        "candidate_type": "CHECK_REPLACEMENT_FULFILLMENT",
+        "primary_action": "查询补发物流单号与揽收状态",
+        "secondary_action": "生成运输破损处理回复",
+        "conditional_action": "提交仓库催办",
+        "requires_human_approval": false
+      },
+      "reference_prepared_action": {
+        "action_type": "ASK_EVIDENCE",
+        "requested_scope_sku_id": "XL10501",
+        "requested_scope_issue_type": "PACKAGE_DAMAGE",
+        "requires_human_approval": false,
+        "rationale": "测试运输破损场景下的重复索证"
+      },
+      "expected_decision": {
+        "decision": "INTERVENE",
+        "rule_id": "E1",
+        "rule_priority": 300,
+        "suppressed_rule_ids": [],
+        "evidence_status": "VALID",
+        "reason_zh": "商品与外箱照片已提交且客服已确认运输破损、确认免于寄回；再次索证属于重复索证。"
+      },
+      "challenge_variants": [
+        {
+          "variant_id": "VAR_AMBIGUOUS_ONLY",
+          "description": "只保留模糊时效表达，去掉「今天发出」",
+          "change": {
+            "field": "promise_events[].raw_text",
+            "from": "今天就给您用顺丰发出哦",
+            "to": "尽快给您用顺丰发出哦"
+          },
+          "expected_decision": "INTERVENE",
+          "expected_rule_id": "E1",
+          "expected_effect": "全部时效承诺变为 AMBIGUOUS，不应生成任何确定截止时间"
+        },
+        {
+          "variant_id": "VAR_DELIVERED_EARLY",
+          "description": "在未揽收状态下直接推送送达事件",
+          "change": {
+            "field": "event_type",
+            "from": "SHIPMENT_PICKED_UP",
+            "to": "SHIPMENT_DELIVERED"
+          },
+          "expected_decision": "HUMAN_REVIEW",
+          "expected_rule_id": "H1",
+          "expected_effect": "接口返回 INVALID_EVENT_TRANSITION，前端不得渲染为成功（对应验收 A27）"
+        }
+      ],
+      "annotation_meta": {
+        "annotator": "A线",
+        "annotated_at": "2026-09-10",
+        "confidence": "MEDIUM",
+        "review_status": "FIRST_PASS",
+        "open_questions": [
+          "同一条客服消息内同时存在确定承诺、模糊表达与安抚赠品三类内容，本批按三条分别标注；复审时需确认是否与 B 线的抽取粒度一致。"
+        ]
+      },
+      "expected_ledger_assertions": {
+        "case_status": "IN_FULFILLMENT",
+        "consumer_input_required": false,
+        "next_check_at": "2026-05-06T09:20:44+08:00",
+        "prohibited_actions": [
+          "ASK_SAME_EVIDENCE",
+          "ASK_REPEAT_EXPLANATION",
+          "CLOSE_BEFORE_RESOLUTION"
+        ],
+        "note": "补发换货类责任，与 P0 账本 obligation_type const 一致。"
+      }
+    },
+    {
+      "annotation_id": "ANN_DEV_07",
+      "case_id": "S00064",
+      "split": "DEV_REGRESSION",
+      "is_hero": false,
+      "scene": {
+        "major": "补发换货",
+        "minor": "少发正装"
+      },
+      "source_trace": {
+        "dataset": "TIANCHI_LOREAL_TRACK1_MOCK",
+        "session_id": "S00064",
+        "chat_rows": "聊天记录!A450:R456",
+        "order_rows": "订单!A62:S62",
+        "ticket_rows": "补发换货工单!A14:S14",
+        "image_reference_paths": [
+          "mock_images/missing_item/S00064_03.jpg"
+        ]
+      },
+      "known_facts": {
+        "order_verified": true,
+        "issue_explained": true,
+        "evidence_submitted": true,
+        "statements": [
+          "消费者：369块钱的单子，少发我一个面霜（20974346487098.PNM）",
+          "客服要求提供外箱面单、内件和填充物照片（15591868814184.PNM）",
+          "消费者提交照片并施加投诉压力：照片给你，最好快点解决，不然我直接投诉到平台（35204991314077.PNM）",
+          "客服确认漏装并承诺当天顺丰补发，追加安抚赠品（43442988249896.PNM）"
+        ],
+        "system_facts": [
+          "订单 6920154185938638662，商品 XL10501 测试舒缓修护面霜50ml ×1，已发货",
+          "订单无赠品",
+          "换货工单 BH877117054803，售后原因「补发-少发商品」，状态「已完结」，补发物流单号 773448633273401，创建 2026-05-07 21:14:31"
+        ]
+      },
+      "existing_evidence": {
+        "has_image": true,
+        "evidence_items": [
+          {
+            "evidence_ref": "S00064_IMG_03",
+            "source_message_id": "35204991314077.PNM",
+            "image_path_category": "missing_item",
+            "submitted_at": "2026-05-07T21:01:13+08:00"
+          }
+        ],
+        "evidence_closed": true
+      },
+      "evidence_coverage": {
+        "annotation_level": "PATH_REFERENCE_ONLY",
+        "covered": [
+          "PRODUCT_IDENTITY",
+          "PACKAGE_CONTEXT",
+          "DAMAGE_DETAIL"
+        ],
+        "missing": [
+          "AFFECTED_COMPONENT"
+        ],
+        "scope_consistency": "IN_SCOPE",
+        "expected_evidence_status": "VALID",
+        "note": "少发正装的证据形态与少件一致（面单 + 内件 + 填充物），用于证明件数与包装完整。"
+      },
+      "promise_annotations": [
+        {
+          "raw_text": "收到亲，已为您登记加急工单。仓库复核出库视频确认面霜漏装，真的非常抱歉！马上为您补发，今天顺丰发出，并附赠测试发膜体验装30ml一份向您赔罪~",
+          "source_message_id": "43442988249896.PNM",
+          "committed_at": "2026-05-07T21:01:57+08:00",
+          "promise_type": "REPLACEMENT_FULFILLMENT",
+          "commitment_class": "STANDARD_APPROVED",
+          "activation_status": "ACTIVE",
+          "deadline": "2026-05-07T23:59:59+08:00",
+          "conditions": [],
+          "confidence": 0.92
+        },
+        {
+          "raw_text": "并附赠测试发膜体验装30ml一份向您赔罪~",
+          "source_message_id": "43442988249896.PNM",
+          "committed_at": "2026-05-07T21:01:57+08:00",
+          "promise_type": "GOODWILL_GIFT",
+          "commitment_class": "STANDARD_APPROVED",
+          "activation_status": "ACTIVE",
+          "deadline": null,
+          "conditions": [],
+          "confidence": 0.9
+        },
+        {
+          "raw_text": "补发单号稍后发您，请留意查收",
+          "source_message_id": "68053515982448.PNM",
+          "committed_at": "2026-05-07T21:04:25+08:00",
+          "promise_type": "SERVICE_UPDATE_TIMING",
+          "commitment_class": "AMBIGUOUS",
+          "activation_status": "IGNORED",
+          "deadline": null,
+          "conditions": [],
+          "confidence": 0.85,
+          "note": "「稍后」无确定时间，不生成截止时间"
+        }
+      ],
+      "journey_annotation": {
+        "consumer_intent": "拿回被漏发的商品并让问题尽快解决",
+        "experience_expression": "照片给你，最好快点解决，不然我直接投诉到平台",
+        "service_cause": "仓库漏装正装商品，消费者被迫举证并以投诉施压",
+        "latent_need": "品牌确认责任、快速补发，且不再要求重复举证",
+        "cooperation_willingness": "LOW",
+        "action_impact": "合作意愿低，优先级提升；但高风险动作仍不可由情绪触发，且不得再次索证",
+        "source_ids": [
+          "20974346487098.PNM",
+          "35204991314077.PNM",
+          "43442988249896.PNM"
+        ]
+      },
+      "responsibility": {
+        "creates_obligation": true,
+        "obligation_type": "REPLACEMENT_FULFILLMENT",
+        "responsible_party": "BRAND",
+        "executor": "测试供应链华南仓",
+        "current_milestone": "IN_TRANSIT",
+        "next_check_at": "2026-05-08T09:01:57+08:00",
+        "completion_condition": "补发的面霜与安抚赠品实际送达消费者"
+      },
+      "prohibited_actions": [
+        "ASK_SAME_EVIDENCE",
+        "ASK_REPEAT_EXPLANATION",
+        "CLOSE_BEFORE_RESOLUTION"
+      ],
+      "recommended_resolution": {
+        "candidate_type": "CHECK_REPLACEMENT_FULFILLMENT",
+        "primary_action": "查询补发物流单号与揽收状态",
+        "secondary_action": "生成少发处理进度回复",
+        "conditional_action": "提交仓库催办",
+        "requires_human_approval": false
+      },
+      "reference_prepared_action": {
+        "action_type": "ASK_EVIDENCE",
+        "requested_scope_sku_id": "XL10501",
+        "requested_scope_issue_type": "PACKAGE_DAMAGE",
+        "requires_human_approval": false,
+        "rationale": "测试高投诉意愿消费者的重复索证场景"
+      },
+      "expected_decision": {
+        "decision": "INTERVENE",
+        "rule_id": "E1",
+        "rule_priority": 300,
+        "suppressed_rule_ids": [],
+        "evidence_status": "VALID",
+        "reason_zh": "少发正装的证据已提交且仓库已复核确认漏装；消费者已表达投诉意向，再次索证会直接升级冲突。"
+      },
+      "challenge_variants": [
+        {
+          "variant_id": "VAR_EMOTION_ONLY",
+          "description": "仅提高消费者负面表达强度，不改变证据与系统事实",
+          "change": {
+            "field": "conversation[2].text",
+            "from": "照片给你，最好快点解决",
+            "to": "照片给你，我马上投诉到12315"
+          },
+          "expected_decision": "INTERVENE",
+          "expected_rule_id": "E1",
+          "expected_effect": "决策与规则不变，仅 action_impacts 与优先级变化（对应验收 A14 的反向验证：情绪不直接决定高风险动作）"
+        }
+      ],
+      "annotation_meta": {
+        "annotator": "A线",
+        "annotated_at": "2026-09-10",
+        "confidence": "MEDIUM",
+        "review_status": "FIRST_PASS",
+        "open_questions": []
+      },
+      "expected_ledger_assertions": {
+        "case_status": "IN_FULFILLMENT",
+        "consumer_input_required": false,
+        "next_check_at": "2026-05-08T09:01:57+08:00",
+        "prohibited_actions": [
+          "ASK_SAME_EVIDENCE",
+          "ASK_REPEAT_EXPLANATION",
+          "CLOSE_BEFORE_RESOLUTION"
+        ],
+        "note": "补发换货类责任，与 P0 账本 obligation_type const 一致。"
+      }
+    },
+    {
+      "annotation_id": "ANN_DEV_08",
+      "case_id": "S00029",
+      "split": "DEV_REGRESSION",
+      "is_hero": false,
+      "scene": {
+        "major": "退款打款",
+        "minor": "退款金额少退补打"
+      },
+      "source_trace": {
+        "dataset": "TIANCHI_LOREAL_TRACK1_MOCK",
+        "session_id": "S00029",
+        "chat_rows": "聊天记录!A206:R213",
+        "order_rows": "订单!A3:S3",
+        "ticket_rows": "线下打款工单!A6:S6",
+        "image_reference_paths": [
+          "mock_images/refund_screenshot/S00029_06.jpg"
+        ]
+      },
+      "known_facts": {
+        "order_verified": true,
+        "issue_explained": true,
+        "evidence_submitted": true,
+        "statements": [
+          "消费者：退货退款到账了，但是少了23.5块（66257464140742.PNM）",
+          "客服核对后确认系统漏算补差运费 23.5 元，走线下打款补付（26370766349085.PNM）",
+          "客服要求提供支付宝实名与账号（86950386443222.PNM）",
+          "消费者回复「信息发你了呢」并提交图片（94257321230182.PNM）"
+        ],
+        "system_facts": [
+          "订单 6920316481414437285，商品 XL19806 【预售】测试修护精华双支装30ml*2 ×2，实付 1598 元，订单状态「预售-交易成功」",
+          "订单含赠品 XLG5003 测试积雪草修护霜小样10ml",
+          "线下打款工单 HV7607477945，退款问题类型「少退/漏退补退」，退款金额 23.5 元，转账状态「转账成功」，状态「已完结」"
+        ]
+      },
+      "existing_evidence": {
+        "has_image": true,
+        "evidence_items": [
+          {
+            "evidence_ref": "S00029_IMG_06",
+            "source_message_id": "94257321230182.PNM",
+            "image_path_category": "refund_screenshot",
+            "submitted_at": "2026-05-05T23:10:28+08:00"
+          }
+        ],
+        "evidence_closed": true
+      },
+      "evidence_coverage": {
+        "annotation_level": "PATH_REFERENCE_ONLY",
+        "covered": [
+          "PRODUCT_IDENTITY"
+        ],
+        "missing": [],
+        "scope_consistency": "OUT_OF_SCOPE",
+        "expected_evidence_status": "MISMATCHED",
+        "note": "本案例的图片发生在客服索取支付宝信息之后，消费者配文为「信息发你了呢」，实际内容是打款所需信息，并非商品破损或质量证据。路径目录名 refund_screenshot 只能视为粗线索（见 01-数据字段核查 6.3）。因此在「商品破损/质量问题」这一证据体系中，本案例属于范围外或无适用证据。"
+      },
+      "promise_annotations": [
+        {
+          "raw_text": "亲亲，核对了您的订单：系统按商品价退款，把您付的补差运费23.5元漏算了，实在抱歉！差额这边走线下打款补给您~",
+          "source_message_id": "26370766349085.PNM",
+          "committed_at": "2026-05-05T23:06:41+08:00",
+          "promise_type": "REFUND_OFFLINE_PAYMENT",
+          "commitment_class": "APPROVAL_REQUIRED",
+          "activation_status": "PENDING_APPROVAL",
+          "deadline": null,
+          "conditions": [
+            "需要消费者提供支付宝实名与账号",
+            "需要财务审核打款申请"
+          ],
+          "confidence": 0.9,
+          "note": "涉及资金出账，按 PRODUCT-FREEZE「明确不做：自动退款、赔偿」与 docs/01 第 4 节，线下打款需人工/财务确认后方可生效。"
+        },
+        {
+          "raw_text": "给您添麻烦了~提供下支付宝实名和账号，登记后1-3个工作日到账~",
+          "source_message_id": "86950386443222.PNM",
+          "committed_at": "2026-05-05T23:09:58+08:00",
+          "promise_type": "SERVICE_UPDATE_TIMING",
+          "commitment_class": "STANDARD_APPROVED",
+          "activation_status": "ACTIVE",
+          "deadline": "2026-05-08T23:09:58+08:00",
+          "conditions": [
+            "以消费者提供支付宝信息为前提"
+          ],
+          "confidence": 0.85
+        }
+      ],
+      "journey_annotation": {
+        "consumer_intent": "拿到被少退的 23.5 元差额",
+        "experience_expression": "唉，所以还得我自己来对账？算了，补上就行",
+        "service_cause": "系统退款漏算补差运费，需要消费者自行发现问题并提出",
+        "latent_need": "退款金额一次算准，不需要消费者对账",
+        "cooperation_willingness": "DECLINING",
+        "action_impact": "资金类动作保持人工确认；同时不应再向消费者索取商品类证据",
+        "source_ids": [
+          "66257464140742.PNM",
+          "26370766349085.PNM",
+          "94257321230182.PNM"
+        ]
+      },
+      "responsibility": {
+        "creates_obligation": true,
+        "obligation_type": "OFFLINE_PAYMENT",
+        "responsible_party": "BRAND",
+        "executor": "线下打款流程（支付宝转账）",
+        "current_milestone": null,
+        "next_check_at": "2026-05-07T09:09:58+08:00",
+        "completion_condition": "23.5 元差额实际到账消费者支付宝账户"
+      },
+      "prohibited_actions": [
+        "ASK_SAME_EVIDENCE",
+        "ASK_REPEAT_EXPLANATION"
+      ],
+      "recommended_resolution": {
+        "candidate_type": "OFFLINE_PAYMENT_REVIEW",
+        "primary_action": "核对打款申请状态",
+        "secondary_action": "生成退款差额进度回复",
+        "conditional_action": "提交财务催办",
+        "requires_human_approval": true
+      },
+      "reference_prepared_action": {
+        "action_type": "CHECK_REPLACEMENT_PROGRESS",
+        "requested_scope_sku_id": "XL19806",
+        "requested_scope_issue_type": "PACKAGE_DAMAGE",
+        "requires_human_approval": false,
+        "rationale": "本案例不涉及商品证据复用，改用生成回复动作作为参考动作：核对并说明打款进度，用于验证无规则命中时返回 E0 基线"
+      },
+      "expected_decision": {
+        "decision": "ALLOW",
+        "rule_id": "E0_NO_RULE_MATCHED",
+        "rule_priority": 0,
+        "suppressed_rule_ids": [
+          "E2"
+        ],
+        "evidence_status": "MISMATCHED",
+        "reason_zh": "本案例不存在商品破损证据，索证动作未命中任何禁止项；资金类动作本身需要人工批准，但索证动作可放行，故返回 E0_NO_RULE_MATCHED 并保留完整事实追踪。"
+      },
+      "challenge_variants": [
+        {
+          "variant_id": "VAR_FORGE_EVIDENCE_STATUS",
+          "description": "请求体中伪造 evidence_status 为 VALID",
+          "change": {
+            "field": "request.evidence_status",
+            "from": "缺失",
+            "to": "VALID"
+          },
+          "expected_decision": "ALLOW",
+          "expected_rule_id": "E0_NO_RULE_MATCHED",
+          "expected_effect": "伪造字段被忽略，结果不变（对应验收 A21）"
+        },
+        {
+          "variant_id": "VAR_CLOSE_BEFORE_RESOLUTION",
+          "description": "在打款未到账时关闭工单",
+          "change": {
+            "field": "reference_prepared_action.action_type",
+            "from": "ASK_EVIDENCE",
+            "to": "CLOSE_CASE"
+          },
+          "expected_decision": "INTERVENE",
+          "expected_rule_id": "P0_PROHIBITED_ACTION",
+          "expected_effect": "命中 CLOSE_BEFORE_RESOLUTION，优先级 400"
+        }
+      ],
+      "annotation_meta": {
+        "annotator": "A线",
+        "annotated_at": "2026-09-10",
+        "confidence": "MEDIUM",
+        "review_status": "FIRST_PASS",
+        "open_questions": [
+          "本案例同时包含「APPROVAL_REQUIRED 的资金承诺」与「可放行的索证动作」，两者分属不同规则层，复审时需确认 expected_decision 的参考动作口径。"
+        ]
+      },
+      "expected_ledger_assertions": {
+        "case_status": "ACTION_REVIEW",
+        "consumer_input_required": false,
+        "next_check_at": "2026-05-07T09:09:58+08:00",
+        "prohibited_actions": [
+          "ASK_SAME_EVIDENCE",
+          "ASK_REPEAT_EXPLANATION"
+        ],
+        "note": "P0 账本只支持 obligation_type = REPLACEMENT_FULFILLMENT（schemas/accountability-state.schema.json 为 const），本案例的 annotation 层责任类型若不属于补发换货，case_status 按最接近的 P0 口径给出，待产品负责人确认跨类型账本扩展口径。"
+      }
+    },
+    {
+      "annotation_id": "ANN_DEV_09",
+      "case_id": "S00362",
+      "split": "DEV_REGRESSION",
+      "is_hero": false,
+      "scene": {
+        "major": "退款打款",
+        "minor": "售后期关闭过敏退款"
+      },
+      "source_trace": {
+        "dataset": "TIANCHI_LOREAL_TRACK1_MOCK",
+        "session_id": "S00362",
+        "chat_rows": "聊天记录!A972:R979",
+        "order_rows": "订单!A41:S41",
+        "ticket_rows": "线下打款工单!A8:S8",
+        "image_reference_paths": [
+          "mock_images/refund_screenshot/S00362_06.jpg"
+        ]
+      },
+      "known_facts": {
+        "order_verified": true,
+        "issue_explained": true,
+        "evidence_submitted": false,
+        "statements": [
+          "消费者：我的退货你们仓库都签收了，但售后单关闭了钱退不出来（64154617218510.PNM）",
+          "客服核对退货已入库验收无误，因平台售后期已过无法原路退款，改走线下打款（41982315189804.PNM）",
+          "客服要求提供支付宝实名与账号，退款 12 元（28765611641666.PNM）"
+        ],
+        "system_facts": [
+          "订单 6920747449279518304，商品 XL19806 【预售】测试修护精华双支装30ml*2 ×2，订单状态「预售-交易成功」",
+          "订单无赠品",
+          "线下打款工单 HV8045912170，退款问题类型「售后期关闭退款」，退款金额 12 元，转账状态「待审核」，状态「进行中」，完成时间为空"
+        ]
+      },
+      "existing_evidence": {
+        "has_image": true,
+        "evidence_items": [
+          {
+            "evidence_ref": "S00362_IMG_06",
+            "source_message_id": "86262665461240.PNM",
+            "image_path_category": "refund_screenshot",
+            "submitted_at": "2026-05-18T20:26:29+08:00"
+          }
+        ],
+        "evidence_closed": false
+      },
+      "evidence_coverage": {
+        "annotation_level": "PATH_REFERENCE_ONLY",
+        "covered": [],
+        "missing": [
+          "PRODUCT_IDENTITY",
+          "AFFECTED_COMPONENT",
+          "DAMAGE_DETAIL"
+        ],
+        "scope_consistency": "OUT_OF_SCOPE",
+        "expected_evidence_status": "MISMATCHED",
+        "note": "与 S00029 同型：图片是打款所需信息而非商品证据，路径目录名仅为粗线索。本案例不存在可复用的商品证据。"
+      },
+      "promise_annotations": [
+        {
+          "raw_text": "亲别担心，查到您的退货已入库验收无误，只是平台售后期已过无法原路退款。这边走线下打款流程给您退，一分不会少的~",
+          "source_message_id": "41982315189804.PNM",
+          "committed_at": "2026-05-18T20:23:37+08:00",
+          "promise_type": "REFUND_OFFLINE_PAYMENT",
+          "commitment_class": "APPROVAL_REQUIRED",
+          "activation_status": "PENDING_APPROVAL",
+          "deadline": null,
+          "conditions": [
+            "需要消费者提供支付宝实名与账号",
+            "需要财务审核打款申请"
+          ],
+          "confidence": 0.92
+        },
+        {
+          "raw_text": "提供下您的支付宝实名和账号就行，退款12元，审核通过后1-3个工作日到账~",
+          "source_message_id": "28765611641666.PNM",
+          "committed_at": "2026-05-18T20:25:36+08:00",
+          "promise_type": "SERVICE_UPDATE_TIMING",
+          "commitment_class": "CONDITIONAL",
+          "activation_status": "PENDING_APPROVAL",
+          "deadline": null,
+          "conditions": [
+            "消费者提供支付宝实名与账号",
+            "审核通过"
+          ],
+          "confidence": 0.88
+        }
+      ],
+      "journey_annotation": {
+        "consumer_intent": "拿回已退货但未到账的 12 元退款",
+        "experience_expression": "在吗，我的退货你们仓库都签收了，但售后单关闭了钱退不出来，急死我了",
+        "service_cause": "平台售后期关闭导致原路退款失败，退款责任需要线下补付",
+        "latent_need": "品牌直接完成线下打款，不需要消费者反复确认流程",
+        "cooperation_willingness": "DECLINING",
+        "action_impact": "资金类动作转人工审核；不应再索取商品证据",
+        "source_ids": [
+          "64154617218510.PNM",
+          "41982315189804.PNM",
+          "28765611641666.PNM"
+        ]
+      },
+      "responsibility": {
+        "creates_obligation": true,
+        "obligation_type": "OFFLINE_PAYMENT",
+        "responsible_party": "BRAND",
+        "executor": "线下打款流程（支付宝转账）",
+        "current_milestone": null,
+        "next_check_at": "2026-05-19T09:25:36+08:00",
+        "completion_condition": "12 元退款实际到账消费者支付宝账户"
+      },
+      "prohibited_actions": [
+        "ASK_SAME_EVIDENCE"
+      ],
+      "recommended_resolution": {
+        "candidate_type": "OFFLINE_PAYMENT_REVIEW",
+        "primary_action": "核对打款申请审核状态",
+        "secondary_action": "生成退款进度回复",
+        "conditional_action": "提交财务催办",
+        "requires_human_approval": true
+      },
+      "reference_prepared_action": {
+        "action_type": "CHECK_REPLACEMENT_PROGRESS",
+        "requested_scope_sku_id": "XL19806",
+        "requested_scope_issue_type": "PACKAGE_DAMAGE",
+        "requires_human_approval": false,
+        "rationale": "本案例不涉及商品证据复用，改用生成回复动作作为参考动作：核对打款审核状态并告知进度"
+      },
+      "expected_decision": {
+        "decision": "ALLOW",
+        "rule_id": "E0_NO_RULE_MATCHED",
+        "rule_priority": 0,
+        "suppressed_rule_ids": [],
+        "evidence_status": "MISMATCHED",
+        "reason_zh": "该案件没有商品破损证据，也不存在生效中的换货承诺；索证动作未命中 E1/H1/E2 任一条件，返回 E0_NO_RULE_MATCHED 并保留事实追踪。"
+      },
+      "challenge_variants": [
+        {
+          "variant_id": "VAR_APPROVAL_REQUIRED",
+          "description": "直接把线下打款承诺标记为生效",
+          "change": {
+            "field": "promise_events[0].activation_status",
+            "from": "PENDING_APPROVAL",
+            "to": "ACTIVE"
+          },
+          "expected_decision": "ALLOW",
+          "expected_rule_id": "E0_NO_RULE_MATCHED",
+          "expected_effect": "无审批记录时不得生成 ACTIVE 承诺或确定截止时间（对应验收 A28）"
+        }
+      ],
+      "annotation_meta": {
+        "annotator": "A线",
+        "annotated_at": "2026-09-10",
+        "confidence": "MEDIUM",
+        "review_status": "FIRST_PASS",
+        "open_questions": [
+          "本案例上下文涉及过敏退货，但赛事工单类型为「线下打款工单」而非不良反应工单；复审需确认是否需要按 H1 转人工，还是仅按资金类人工审批处理。"
+        ]
+      },
+      "expected_ledger_assertions": {
+        "case_status": "ACTION_REVIEW",
+        "consumer_input_required": false,
+        "next_check_at": "2026-05-19T09:25:36+08:00",
+        "prohibited_actions": [
+          "ASK_SAME_EVIDENCE"
+        ],
+        "note": "P0 账本只支持 obligation_type = REPLACEMENT_FULFILLMENT（schemas/accountability-state.schema.json 为 const），本案例的 annotation 层责任类型若不属于补发换货，case_status 按最接近的 P0 口径给出，待产品负责人确认跨类型账本扩展口径。"
+      }
+    },
+    {
+      "annotation_id": "ANN_DEV_10",
+      "case_id": "S00154",
+      "split": "DEV_REGRESSION",
+      "is_hero": false,
+      "scene": {
+        "major": "不良反应",
+        "minor": "过敏就医"
+      },
+      "source_trace": {
+        "dataset": "TIANCHI_LOREAL_TRACK1_MOCK",
+        "session_id": "S00154",
+        "chat_rows": "聊天记录!A830:R838",
+        "order_rows": "订单!A29:S29",
+        "ticket_rows": "不良反应工单!A8:S8",
+        "image_reference_paths": [
+          "mock_images/consult_card/S00154_03.jpg"
+        ]
+      },
+      "known_facts": {
+        "order_verified": true,
+        "issue_explained": true,
+        "evidence_submitted": true,
+        "statements": [
+          "消费者：我用了面霜整张脸肿了，今天去医院挂了皮肤科，医生说是接触性皮炎（94422222481506.PNM）",
+          "客服安抚并请求提供门诊病历与诊断（26089175581339.PNM）",
+          "消费者提交病历图片并主张医疗费与退货：病历发你了，医药费你们出（25581855302692.PNM）",
+          "客服给出三项处置：商品全额退款、凭票据报销门诊费用、专员 24 小时内电话回访（25330006295860.PNM）"
+        ],
+        "system_facts": [
+          "订单 6920073444593979097，商品 XL19805 【预售】测试焕活紧致礼盒(面霜50ml+精华30ml) ×2，订单状态「预售-交易成功」",
+          "不良反应工单 BLFY27898314，类型「线上」，任务状态「已完结」，创建 2026-05-11 16:49:30，完成 2026-05-11 22:33:30",
+          "工单症状描述为脱敏登记文本，含就医事实"
+        ]
+      },
+      "existing_evidence": {
+        "has_image": true,
+        "evidence_items": [
+          {
+            "evidence_ref": "S00154_IMG_03",
+            "source_message_id": "25581855302692.PNM",
+            "image_path_category": "consult_card",
+            "submitted_at": "2026-05-11T16:21:38+08:00"
+          }
+        ],
+        "evidence_closed": true
+      },
+      "evidence_coverage": {
+        "annotation_level": "PATH_REFERENCE_ONLY",
+        "covered": [
+          "PRODUCT_IDENTITY"
+        ],
+        "missing": [
+          "AFFECTED_COMPONENT",
+          "DAMAGE_DETAIL"
+        ],
+        "scope_consistency": "UNDETERMINED",
+        "expected_evidence_status": "NEED_HUMAN_REVIEW",
+        "note": "就医凭证属于就医事实证据，不等于「商品与症状因果关系」证据。不良反应属于高风险边界，任何证据状态都不得由模型单方判定，因此标记为需人工复核。"
+      },
+      "promise_annotations": [
+        {
+          "raw_text": "收到资料，已为您建立不良反应专项工单并升级处理。方案：①商品全额退款；②凭医疗票据报销本次门诊费用；③专员24小时内电话回访跟进恢复情况。您看可以吗？",
+          "source_message_id": "25330006295860.PNM",
+          "committed_at": "2026-05-11T16:22:04+08:00",
+          "promise_type": "REFUND_OFFLINE_PAYMENT",
+          "commitment_class": "APPROVAL_REQUIRED",
+          "activation_status": "PENDING_APPROVAL",
+          "deadline": null,
+          "conditions": [
+            "需消费者确认方案",
+            "需凭医疗票据报销",
+            "需专员/主管审批"
+          ],
+          "confidence": 0.95,
+          "note": "涉及全额退款与医疗费用报销，属高风险让利，必须人工确认后方可生效。"
+        },
+        {
+          "raw_text": "③专员24小时内电话回访跟进恢复情况",
+          "source_message_id": "25330006295860.PNM",
+          "committed_at": "2026-05-11T16:22:04+08:00",
+          "promise_type": "SERVICE_UPDATE_TIMING",
+          "commitment_class": "STANDARD_APPROVED",
+          "activation_status": "ACTIVE",
+          "deadline": "2026-05-12T16:22:04+08:00",
+          "conditions": [],
+          "confidence": 0.9
+        },
+        {
+          "raw_text": "都登记好了亲，打款1-3个工作日内到账。祝您早日康复，专员明天上午会致电回访，请留意接听~",
+          "source_message_id": "20404664912265.PNM",
+          "committed_at": "2026-05-11T16:28:10+08:00",
+          "promise_type": "SERVICE_UPDATE_TIMING",
+          "commitment_class": "CONDITIONAL",
+          "activation_status": "PENDING_APPROVAL",
+          "deadline": null,
+          "conditions": [
+            "打款审核通过",
+            "消费者提供支付宝账号"
+          ],
+          "confidence": 0.85
+        }
+      ],
+      "journey_annotation": {
+        "consumer_intent": "获得医疗费用补偿与退货退款，并确认产品安全性",
+        "experience_expression": "病历发你了，医药费你们出！产品也必须退！，急",
+        "service_cause": "使用后出现就医级不良反应，消费者需要品牌承担处置责任",
+        "latent_need": "被认真对待、尽快获得明确处置方案，而不是被反复询问或推诿",
+        "cooperation_willingness": "DECLINING",
+        "action_impact": "高风险边界，禁止任何自动退款/赔偿/医疗定性；必须转人工处理，并阻止任何索证式的轻率动作",
+        "source_ids": [
+          "94422222481506.PNM",
+          "25581855302692.PNM",
+          "25330006295860.PNM"
+        ]
+      },
+      "responsibility": {
+        "creates_obligation": true,
+        "obligation_type": "ADVERSE_REACTION_HANDOFF",
+        "responsible_party": "BRAND",
+        "executor": "不良反应专项处理（含专员回访）",
+        "current_milestone": null,
+        "next_check_at": "2026-05-12T16:22:04+08:00",
+        "completion_condition": "人工确认处置方案、退款与报销按方案完成、专员回访完成并留痕"
+      },
+      "prohibited_actions": [
+        "ASK_SAME_EVIDENCE",
+        "ASK_REPEAT_EXPLANATION"
+      ],
+      "recommended_resolution": {
+        "candidate_type": "HUMAN_ADVERSE_REACTION_HANDOFF",
+        "primary_action": "转人工不良反应专项复核",
+        "secondary_action": "生成安抚与流程说明回复",
+        "conditional_action": "按人工确认结果执行退款与报销",
+        "requires_human_approval": true
+      },
+      "reference_prepared_action": {
+        "action_type": "ASK_EVIDENCE",
+        "requested_scope_sku_id": "XL19805",
+        "requested_scope_issue_type": "ADVERSE_REACTION",
+        "requires_human_approval": false,
+        "rationale": "测试不良反应案件中被再次索证时的规则行为（应命中 H1 而非 E1）"
+      },
+      "expected_decision": {
+        "decision": "HUMAN_REVIEW",
+        "rule_id": "H1",
+        "rule_priority": 200,
+        "suppressed_rule_ids": [
+          "E1"
+        ],
+        "evidence_status": "NEED_HUMAN_REVIEW",
+        "reason_zh": "案件涉及就医级不良反应，属高风险边界；因果判断、退款与医疗费用报销均须人工复核，不得由模型或规则自动决定。"
+      },
+      "challenge_variants": [
+        {
+          "variant_id": "VAR_EVIDENCE_VALID_ADVERSE",
+          "description": "即使把证据状态改为 VALID，问题类型仍为 ADVERSE_REACTION",
+          "change": {
+            "field": "evidence_status",
+            "from": "NEED_HUMAN_REVIEW",
+            "to": "VALID"
+          },
+          "expected_decision": "HUMAN_REVIEW",
+          "expected_rule_id": "H1",
+          "expected_effect": "H1 条件包含 issue_type = ADVERSE_REACTION，与证据状态无关（对应验收 A14）"
+        },
+        {
+          "variant_id": "VAR_ADVERSE_PLUS_CLOSE",
+          "description": "在不良反应案件上执行结案动作",
+          "change": {
+            "field": "reference_prepared_action.action_type",
+            "from": "ASK_EVIDENCE",
+            "to": "CLOSE_CASE"
+          },
+          "expected_decision": "INTERVENE",
+          "expected_rule_id": "P0_PROHIBITED_ACTION",
+          "expected_effect": "优先级 400 胜出，fact_trace.suppressed_rule_ids 应含 H1（对应验收 A30）"
+        }
+      ],
+      "annotation_meta": {
+        "annotator": "A线",
+        "annotated_at": "2026-09-10",
+        "confidence": "HIGH",
+        "review_status": "FIRST_PASS",
+        "open_questions": [
+          "该案例含健康类敏感信息（症状、就医事实），已按治理要求掩码；标注文件本身保留业务事实用于评测，不外发。"
+        ]
+      },
+      "expected_ledger_assertions": {
+        "case_status": "ACTION_REVIEW",
+        "consumer_input_required": false,
+        "next_check_at": "2026-05-12T16:22:04+08:00",
+        "prohibited_actions": [
+          "ASK_SAME_EVIDENCE",
+          "ASK_REPEAT_EXPLANATION"
+        ],
+        "note": "P0 账本只支持 obligation_type = REPLACEMENT_FULFILLMENT（schemas/accountability-state.schema.json 为 const），本案例的 annotation 层责任类型若不属于补发换货，case_status 按最接近的 P0 口径给出，待产品负责人确认跨类型账本扩展口径。"
+      }
+    },
+    {
+      "annotation_id": "ANN_DEV_11",
+      "case_id": "S00015",
+      "split": "DEV_REGRESSION",
+      "is_hero": false,
+      "scene": {
+        "major": "不良反应",
+        "minor": "过敏就医"
+      },
+      "source_trace": {
+        "dataset": "TIANCHI_LOREAL_TRACK1_MOCK",
+        "session_id": "S00015",
+        "chat_rows": "聊天记录!A103:R111",
+        "order_rows": "订单!A12:S12",
+        "ticket_rows": "不良反应工单!A10:S10",
+        "image_reference_paths": []
+      },
+      "known_facts": {
+        "order_verified": true,
+        "issue_explained": true,
+        "evidence_submitted": false,
+        "statements": [
+          "消费者：用了你们面膜脸过敏，红肿刺痛，我人现在在医院（94931577622383.PNM）",
+          "消费者以理赔与监管渠道施压：咋赔偿说个方案，不行我就走12315（84946246895939.PNM）",
+          "消费者称已提交资料：资料给你（84946246895939.PNM），但会话内没有任何图片消息",
+          "客服给出全额退款、票据报销、专员回访三项方案（28907846239919.PNM）"
+        ],
+        "system_facts": [
+          "订单 6920797553890280371，商品 XL22002 测试B5多效修护面膜20片 ×1，订单状态「交易成功」",
+          "订单无赠品",
+          "不良反应工单 BLFY61738711，类型「线上」，任务状态「已完结」，创建 2026-05-05 17:13:33，完成 2026-05-05 23:56:33"
+        ]
+      },
+      "existing_evidence": {
+        "has_image": false,
+        "evidence_items": [],
+        "evidence_closed": false
+      },
+      "evidence_coverage": {
+        "annotation_level": "PATH_REFERENCE_ONLY",
+        "covered": [],
+        "missing": [
+          "PRODUCT_IDENTITY",
+          "AFFECTED_COMPONENT",
+          "DAMAGE_DETAIL"
+        ],
+        "scope_consistency": "UNDETERMINED",
+        "expected_evidence_status": "NEED_HUMAN_REVIEW",
+        "note": "与 S00154 构成对照组：同样的过敏就医话术模板，但本案例会话内没有任何图片消息，消费者仅口头称「资料给你」。用于验证「声称已提交」不等于「已提交」，系统不得据口头声明认定证据存在。"
+      },
+      "promise_annotations": [
+        {
+          "raw_text": "收到资料，已为您建立不良反应专项工单并升级处理。方案：①商品全额退款；②凭医疗票据报销本次门诊费用；③专员24小时内电话回访跟进恢复情况。您看可以吗？",
+          "source_message_id": "28907846239919.PNM",
+          "committed_at": "2026-05-05T16:38:49+08:00",
+          "promise_type": "REFUND_OFFLINE_PAYMENT",
+          "commitment_class": "APPROVAL_REQUIRED",
+          "activation_status": "PENDING_APPROVAL",
+          "deadline": null,
+          "conditions": [
+            "消费者确认方案",
+            "凭医疗票据报销",
+            "专员与主管审批"
+          ],
+          "confidence": 0.95
+        },
+        {
+          "raw_text": "③专员24小时内电话回访跟进恢复情况",
+          "source_message_id": "28907846239919.PNM",
+          "committed_at": "2026-05-05T16:38:49+08:00",
+          "promise_type": "SERVICE_UPDATE_TIMING",
+          "commitment_class": "STANDARD_APPROVED",
+          "activation_status": "ACTIVE",
+          "deadline": "2026-05-06T16:38:49+08:00",
+          "conditions": [],
+          "confidence": 0.9
+        },
+        {
+          "raw_text": "好的亲，请提供支付宝账号用于医疗费打款，退款走原路退回。也麻烦告知医生开的用药，方便回访时跟进~",
+          "source_message_id": "16208721140001.PNM",
+          "committed_at": "2026-05-05T16:40:17+08:00",
+          "promise_type": "SERVICE_UPDATE_TIMING",
+          "commitment_class": "CONDITIONAL",
+          "activation_status": "PENDING_APPROVAL",
+          "deadline": null,
+          "conditions": [
+            "消费者提供支付宝账号",
+            "医疗票据审核通过"
+          ],
+          "confidence": 0.85
+        }
+      ],
+      "journey_annotation": {
+        "consumer_intent": "获得赔偿与治疗方案确认",
+        "experience_expression": "资料给你，咋赔偿说个方案，不行我就走12315",
+        "service_cause": "使用后出现就医级不良反应，消费者对品牌是否担责缺乏信任",
+        "latent_need": "品牌快速给出可执行的处置方案，而不是要求反复举证",
+        "cooperation_willingness": "LOW",
+        "action_impact": "高风险边界，必须转人工；任何索证动作都应被复核，不得因消费者施压而自动承诺赔付",
+        "source_ids": [
+          "94931577622383.PNM",
+          "84946246895939.PNM",
+          "28907846239919.PNM"
+        ]
+      },
+      "responsibility": {
+        "creates_obligation": true,
+        "obligation_type": "ADVERSE_REACTION_HANDOFF",
+        "responsible_party": "BRAND",
+        "executor": "不良反应专项处理（含专员回访）",
+        "current_milestone": null,
+        "next_check_at": "2026-05-06T16:38:49+08:00",
+        "completion_condition": "人工确认方案、退款与报销按方案完成、专员回访完成并留痕"
+      },
+      "prohibited_actions": [
+        "ASK_SAME_EVIDENCE",
+        "ASK_REPEAT_EXPLANATION"
+      ],
+      "recommended_resolution": {
+        "candidate_type": "HUMAN_ADVERSE_REACTION_HANDOFF",
+        "primary_action": "转人工不良反应专项复核",
+        "secondary_action": "生成安抚与流程说明回复",
+        "conditional_action": "按人工确认结果执行退款与报销",
+        "requires_human_approval": true
+      },
+      "reference_prepared_action": {
+        "action_type": "ASK_EVIDENCE",
+        "requested_scope_sku_id": "XL22002",
+        "requested_scope_issue_type": "ADVERSE_REACTION",
+        "requires_human_approval": false,
+        "rationale": "测试「消费者口头声称已提交、实际无图」时的规则行为"
+      },
+      "expected_decision": {
+        "decision": "HUMAN_REVIEW",
+        "rule_id": "H1",
+        "rule_priority": 200,
+        "suppressed_rule_ids": [],
+        "evidence_status": "NEED_HUMAN_REVIEW",
+        "reason_zh": "涉及就医级不良反应，属高风险边界；且会话内没有图片证据，仅有口头声明，无法在系统内确认，必须转人工复核。"
+      },
+      "challenge_variants": [
+        {
+          "variant_id": "VAR_CLAIM_WITHOUT_EVIDENCE",
+          "description": "把消费者「资料给你」改写为一条图片消息",
+          "change": {
+            "field": "conversation[2].image_path",
+            "from": null,
+            "to": "mock_images/consult_card/S00015_03.jpg"
+          },
+          "expected_decision": "HUMAN_REVIEW",
+          "expected_rule_id": "H1",
+          "expected_effect": "决策不变（H1 由 issue_type 决定），但 evidence_submitted 由 false 变为 true，可用于验证 H1 不依赖证据字段"
+        }
+      ],
+      "annotation_meta": {
+        "annotator": "A线",
+        "annotated_at": "2026-09-10",
+        "confidence": "HIGH",
+        "review_status": "FIRST_PASS",
+        "open_questions": []
+      },
+      "expected_ledger_assertions": {
+        "case_status": "ACTION_REVIEW",
+        "consumer_input_required": false,
+        "next_check_at": "2026-05-06T16:38:49+08:00",
+        "prohibited_actions": [
+          "ASK_SAME_EVIDENCE",
+          "ASK_REPEAT_EXPLANATION"
+        ],
+        "note": "P0 账本只支持 obligation_type = REPLACEMENT_FULFILLMENT（schemas/accountability-state.schema.json 为 const），本案例的 annotation 层责任类型若不属于补发换货，case_status 按最接近的 P0 口径给出，待产品负责人确认跨类型账本扩展口径。"
+      }
+    },
+    {
+      "annotation_id": "ANN_DEV_12",
+      "case_id": "S00010",
+      "split": "DEV_REGRESSION",
+      "is_hero": false,
+      "scene": {
+        "major": "不良反应",
+        "minor": "泛红刺痒"
+      },
+      "source_trace": {
+        "dataset": "TIANCHI_LOREAL_TRACK1_MOCK",
+        "session_id": "S00010",
+        "chat_rows": "聊天记录!A66:R75",
+        "order_rows": "订单!A11:S11",
+        "ticket_rows": "不良反应工单!A5:S5",
+        "image_reference_paths": []
+      },
+      "known_facts": {
+        "order_verified": true,
+        "issue_explained": true,
+        "evidence_submitted": false,
+        "statements": [
+          "消费者：用了面膜以后全脸发红，还起了小疹子，有点痒（77746085712352.PNM）",
+          "客服指导停用、清水洁面，并追问出现时间（23925912428569.PNM）",
+          "消费者：大概用了3小时后开始红的（61514450091603.PNM）",
+          "客服追问年龄、肤质、近期护肤与医美情况（64632754050819.PNM）",
+          "消费者：30，混敏皮，就新用了你家这个（14848483274924.PNM）",
+          "客服给出停用+清洁+保湿建议，并告知已登记不良反应记录单、专员 24 小时内回访（51868178082891.PNM）",
+          "客服建议恢复后做耳后测试，并说明可走「使用不适」退货退款、运费由品牌承担（48654847203756.PNM）"
+        ],
+        "system_facts": [
+          "订单 6920932618149621705，商品 XL22002 测试B5多效修护面膜20片 ×2，订单状态「交易成功」",
+          "订单含赠品 XLG5006 测试卸妆棉便携装20片",
+          "不良反应工单 BLFY49330652，类型「线上」，任务状态「待处理」，完成时间为空"
+        ]
+      },
+      "existing_evidence": {
+        "has_image": false,
+        "evidence_items": [],
+        "evidence_closed": false
+      },
+      "evidence_coverage": {
+        "annotation_level": "PATH_REFERENCE_ONLY",
+        "covered": [],
+        "missing": [
+          "PRODUCT_IDENTITY",
+          "AFFECTED_COMPONENT",
+          "DAMAGE_DETAIL"
+        ],
+        "scope_consistency": "UNDETERMINED",
+        "expected_evidence_status": "NEED_HUMAN_REVIEW",
+        "note": "本案例是 20 例中最长的会话（10 条），客服完整走了问诊式信息收集但消费者未提交任何图片。证据缺口与高风险属性同时存在。"
+      },
+      "promise_annotations": [
+        {
+          "raw_text": "这边已为您登记不良反应记录单，专员会在24小时内回访跟进哦~",
+          "source_message_id": "51868178082891.PNM",
+          "committed_at": "2026-05-05T14:34:29+08:00",
+          "promise_type": "SERVICE_UPDATE_TIMING",
+          "commitment_class": "STANDARD_APPROVED",
+          "activation_status": "ACTIVE",
+          "deadline": "2026-05-06T14:34:29+08:00",
+          "conditions": [],
+          "confidence": 0.9
+        },
+        {
+          "raw_text": "建议皮肤完全恢复后先做耳后测试，若仍不适就不要继续使用了~商品可以走\"使用不适\"退货退款，运费我们承担，稍后专员回访时一并为您办理",
+          "source_message_id": "48654847203756.PNM",
+          "committed_at": "2026-05-05T14:36:57+08:00",
+          "promise_type": "RETURN_ACCEPTANCE",
+          "commitment_class": "CONDITIONAL",
+          "activation_status": "PENDING_APPROVAL",
+          "deadline": null,
+          "conditions": [
+            "皮肤恢复情况确认",
+            "消费者提出退货申请",
+            "专员回访确认"
+          ],
+          "confidence": 0.85,
+          "note": "「稍后专员回访时一并办理」为模糊时间，同时退货成立带有条件，故整体判为 CONDITIONAL。"
+        }
+      ],
+      "journey_annotation": {
+        "consumer_intent": "弄清皮肤反应原因并决定是否继续使用该产品",
+        "experience_expression": "你好，我用了面膜以后全脸发红，还起了小疹子，有点痒，怎么回事啊",
+        "service_cause": "使用后出现泛红刺痒，消费者对产品适肤性产生怀疑，但缺少可视证据",
+        "latent_need": "得到明确的安全指引与后续处理承诺，而不是被反复追问信息",
+        "cooperation_willingness": "STABLE",
+        "action_impact": "转人工复核；不得自动判定质量责任或做医疗结论",
+        "source_ids": [
+          "77746085712352.PNM",
+          "61514450091603.PNM",
+          "51868178082891.PNM",
+          "48654847203756.PNM"
+        ]
+      },
+      "responsibility": {
+        "creates_obligation": true,
+        "obligation_type": "ADVERSE_REACTION_HANDOFF",
+        "responsible_party": "BRAND",
+        "executor": "不良反应专项处理（含专员回访）",
+        "current_milestone": null,
+        "next_check_at": "2026-05-06T14:34:29+08:00",
+        "completion_condition": "专员回访完成、退货退款与运费承担按条件执行完毕并留痕"
+      },
+      "prohibited_actions": [
+        "ASK_SAME_EVIDENCE",
+        "ASK_REPEAT_EXPLANATION"
+      ],
+      "recommended_resolution": {
+        "candidate_type": "HUMAN_ADVERSE_REACTION_HANDOFF",
+        "primary_action": "转人工不良反应专项复核",
+        "secondary_action": "生成安全指引与后续流程回复",
+        "conditional_action": "按条件执行退货与运费承担",
+        "requires_human_approval": true
+      },
+      "reference_prepared_action": {
+        "action_type": "ASK_EVIDENCE",
+        "requested_scope_sku_id": "XL22002",
+        "requested_scope_issue_type": "ADVERSE_REACTION",
+        "requires_human_approval": false,
+        "rationale": "测试不良反应且无任何图片时的规则行为"
+      },
+      "expected_decision": {
+        "decision": "HUMAN_REVIEW",
+        "rule_id": "H1",
+        "rule_priority": 200,
+        "suppressed_rule_ids": [],
+        "evidence_status": "NEED_HUMAN_REVIEW",
+        "reason_zh": "使用后出现泛红刺痒，属不良反应高风险边界；会话内无图片证据，无法在系统内确认，必须转人工。"
+      },
+      "challenge_variants": [
+        {
+          "variant_id": "VAR_NON_ADVERSE_REPHRASE",
+          "description": "把问题改写为「包装破损导致面膜无法使用」",
+          "change": {
+            "field": "conversation[0].text",
+            "from": "我用了面膜以后全脸发红…",
+            "to": "我收到的面膜外包装破损了…"
+          },
+          "expected_decision": "ALLOW",
+          "expected_rule_id": "E2",
+          "expected_effect": "issue_type 由 ADVERSE_REACTION 变为 PACKAGE_DAMAGE 后 H1 不再命中；无证据时应放行合理索证"
+        }
+      ],
+      "annotation_meta": {
+        "annotator": "A线",
+        "annotated_at": "2026-09-10",
+        "confidence": "HIGH",
+        "review_status": "FIRST_PASS",
+        "open_questions": []
+      },
+      "expected_ledger_assertions": {
+        "case_status": "ACTION_REVIEW",
+        "consumer_input_required": false,
+        "next_check_at": "2026-05-06T14:34:29+08:00",
+        "prohibited_actions": [
+          "ASK_SAME_EVIDENCE",
+          "ASK_REPEAT_EXPLANATION"
+        ],
+        "note": "P0 账本只支持 obligation_type = REPLACEMENT_FULFILLMENT（schemas/accountability-state.schema.json 为 const），本案例的 annotation 层责任类型若不属于补发换货，case_status 按最接近的 P0 口径给出，待产品负责人确认跨类型账本扩展口径。"
+      }
+    },
+    {
+      "annotation_id": "ANN_DEV_13",
+      "case_id": "S00098",
+      "split": "DEV_REGRESSION",
+      "is_hero": false,
+      "scene": {
+        "major": "不良反应",
+        "minor": "闷痘爆痘"
+      },
+      "source_trace": {
+        "dataset": "TIANCHI_LOREAL_TRACK1_MOCK",
+        "session_id": "S00098",
+        "chat_rows": "聊天记录!A694:R702",
+        "order_rows": "订单!A65:S65",
+        "ticket_rows": "不良反应工单!A9:S9",
+        "image_reference_paths": []
+      },
+      "known_facts": {
+        "order_verified": true,
+        "issue_explained": true,
+        "evidence_submitted": false,
+        "statements": [
+          "消费者：这个眼霜是不是致痘啊？我用了几天下巴爆痘了（82857723806153.PNM）",
+          "客服先安抚并登记反馈单（28217741611259.PNM）",
+          "客服追问肤质、使用时长与停用后变化（18137019379928.PNM）",
+          "消费者：敏感性肌肤，用了差不多一周开始长的，停了两天感觉没新长了（94468605733387.PNM）",
+          "客服给出退货退款并承担运费的处理（29764036909992.PNM）",
+          "客服确认已提交、仓库签收后当天退款，并赠送体验装兑换券（14601718782435.PNM）"
+        ],
+        "system_facts": [
+          "订单 6920772456259000742，商品 XL10153 测试水润保湿眼霜15ml ×1，订单状态「交易成功」",
+          "订单含赠品 XLG5004 测试B5面膜体验装2片",
+          "不良反应工单 BLFY50417006，类型「线上」，任务状态「已完结」，创建 2026-05-09 11:37:48，完成 2026-05-09 14:48:48"
+        ]
+      },
+      "existing_evidence": {
+        "has_image": false,
+        "evidence_items": [],
+        "evidence_closed": false
+      },
+      "evidence_coverage": {
+        "annotation_level": "PATH_REFERENCE_ONLY",
+        "covered": [],
+        "missing": [
+          "PRODUCT_IDENTITY",
+          "AFFECTED_COMPONENT",
+          "DAMAGE_DETAIL"
+        ],
+        "scope_consistency": "UNDETERMINED",
+        "expected_evidence_status": "NEED_HUMAN_REVIEW",
+        "note": "消费者自述停用后无新增，客服据此判断「大概率是产品不适配」，属推断性结论。推理链涉及因果判断，必须人工复核。"
+      },
+      "promise_annotations": [
+        {
+          "raw_text": "收到，已登记不良反应记录。停用后无新增说明大概率是产品不适配您的肤质~剩余商品支持退货退款，这就为您发起，运费我们承担哦~",
+          "source_message_id": "29764036909992.PNM",
+          "committed_at": "2026-05-09T11:08:14+08:00",
+          "promise_type": "RETURN_ACCEPTANCE",
+          "commitment_class": "APPROVAL_REQUIRED",
+          "activation_status": "PENDING_APPROVAL",
+          "deadline": null,
+          "conditions": [
+            "退货申请发起",
+            "仓库签收验收"
+          ],
+          "confidence": 0.85,
+          "note": "含「产品不适配」的因果推断，且已开封商品退货涉及让利，需人工确认后方可生效。"
+        },
+        {
+          "raw_text": "已为您提交，仓库签收后当天退款。给您带来不好的体验真的很抱歉，赠您一张体验装兑换券，下次可以先试小样再入正装~",
+          "source_message_id": "14601718782435.PNM",
+          "committed_at": "2026-05-09T11:10:31+08:00",
+          "promise_type": "REFUND_OFFLINE_PAYMENT",
+          "commitment_class": "CONDITIONAL",
+          "activation_status": "PENDING_APPROVAL",
+          "deadline": null,
+          "conditions": [
+            "仓库签收验收通过"
+          ],
+          "confidence": 0.85
+        },
+        {
+          "raw_text": "赠您一张体验装兑换券，下次可以先试小样再入正装~",
+          "source_message_id": "14601718782435.PNM",
+          "committed_at": "2026-05-09T11:10:31+08:00",
+          "promise_type": "GOODWILL_GIFT",
+          "commitment_class": "STANDARD_APPROVED",
+          "activation_status": "ACTIVE",
+          "deadline": null,
+          "conditions": [],
+          "confidence": 0.9
+        }
+      ],
+      "journey_annotation": {
+        "consumer_intent": "确认是否因产品致痘，并决定退货",
+        "experience_expression": "你好，这个眼霜是不是致痘啊？我用了几天下巴爆痘了...",
+        "service_cause": "使用后出现闷痘，消费者将因果归因于产品，但缺少客观证据",
+        "latent_need": "得到关于产品是否适合自己的明确说明，以及简单的退货路径",
+        "cooperation_willingness": "STABLE",
+        "action_impact": "转人工复核；因果结论与退货让利不得由模型或客服单方面确定",
+        "source_ids": [
+          "82857723806153.PNM",
+          "94468605733387.PNM",
+          "29764036909992.PNM",
+          "14601718782435.PNM"
+        ]
+      },
+      "responsibility": {
+        "creates_obligation": true,
+        "obligation_type": "ADVERSE_REACTION_HANDOFF",
+        "responsible_party": "BRAND",
+        "executor": "不良反应专项处理与售后退货",
+        "current_milestone": null,
+        "next_check_at": "2026-05-10T11:10:31+08:00",
+        "completion_condition": "人工确认处置、退货入库、退款完成并留痕"
+      },
+      "prohibited_actions": [
+        "ASK_SAME_EVIDENCE",
+        "ASK_REPEAT_EXPLANATION"
+      ],
+      "recommended_resolution": {
+        "candidate_type": "HUMAN_ADVERSE_REACTION_HANDOFF",
+        "primary_action": "转人工不良反应专项复核",
+        "secondary_action": "生成安全使用说明与退货流程回复",
+        "conditional_action": "按人工确认结果执行退货退款",
+        "requires_human_approval": true
+      },
+      "reference_prepared_action": {
+        "action_type": "ASK_EVIDENCE",
+        "requested_scope_sku_id": "XL10153",
+        "requested_scope_issue_type": "ADVERSE_REACTION",
+        "requires_human_approval": false,
+        "rationale": "测试「痘类不良反应 + 已完结工单」时的规则行为"
+      },
+      "expected_decision": {
+        "decision": "HUMAN_REVIEW",
+        "rule_id": "H1",
+        "rule_priority": 200,
+        "suppressed_rule_ids": [],
+        "evidence_status": "NEED_HUMAN_REVIEW",
+        "reason_zh": "闷痘属不良反应边界；现有信息只有消费者自述与客服推断，缺少客观依据，须人工复核后再决定退货与补偿。"
+      },
+      "challenge_variants": [
+        {
+          "variant_id": "VAR_ADVERSE_WITH_IMAGE",
+          "description": "补一张下巴痘情照片",
+          "change": {
+            "field": "case_input.evidence_images",
+            "from": [],
+            "to": [
+              "s00098-chin-acne.jpg"
+            ]
+          },
+          "expected_decision": "HUMAN_REVIEW",
+          "expected_rule_id": "H1",
+          "expected_effect": "决策不变，但图片观察应输出皮肤区域与可读性，仍不得由模型判定因果"
+        }
+      ],
+      "annotation_meta": {
+        "annotator": "A线",
+        "annotated_at": "2026-09-10",
+        "confidence": "MEDIUM",
+        "review_status": "FIRST_PASS",
+        "open_questions": [
+          "客服在会话中给出了「大概率是产品不适配」的推断性结论，属于模型与规则都不应输出的因果判断，建议复审时确认是否列入错误案例。"
+        ]
+      },
+      "expected_ledger_assertions": {
+        "case_status": "ACTION_REVIEW",
+        "consumer_input_required": false,
+        "next_check_at": "2026-05-10T11:10:31+08:00",
+        "prohibited_actions": [
+          "ASK_SAME_EVIDENCE",
+          "ASK_REPEAT_EXPLANATION"
+        ],
+        "note": "P0 账本只支持 obligation_type = REPLACEMENT_FULFILLMENT（schemas/accountability-state.schema.json 为 const），本案例的 annotation 层责任类型若不属于补发换货，case_status 按最接近的 P0 口径给出，待产品负责人确认跨类型账本扩展口径。"
+      }
+    },
+    {
+      "annotation_id": "ANN_DEV_14",
+      "case_id": "S00024",
+      "split": "DEV_REGRESSION",
+      "is_hero": false,
+      "scene": {
+        "major": "售后退货",
+        "minor": "仅退款疑似异常"
+      },
+      "source_trace": {
+        "dataset": "TIANCHI_LOREAL_TRACK1_MOCK",
+        "session_id": "S00024",
+        "chat_rows": "聊天记录!A167:R173",
+        "order_rows": "订单!A52:S52",
+        "ticket_rows": "售后退货工单!A2:S2",
+        "image_reference_paths": []
+      },
+      "known_facts": {
+        "order_verified": true,
+        "issue_explained": true,
+        "evidence_submitted": false,
+        "statements": [
+          "消费者：箱子打开里面是空的！我要仅退款，不退货（76916875954946.PNM）",
+          "客服请求保留外箱与面单，并拍摄外箱六面、面单与内件（85027226123578.PNM）",
+          "消费者拒绝举证并质疑被怀疑：哪那多事，我一个老客户还能骗你这点钱？（36725349925652.PNM）",
+          "客服说明空包裹需核实出库称重与物流揽收重量，已提交核实工单（68706521514812.PNM）"
+        ],
+        "system_facts": [
+          "订单 6920681898386530047，商品 XL19806 【预售】测试修护精华双支装30ml*2 ×1，订单状态「预售-已发货」",
+          "订单无赠品",
+          "售后退货工单 KOC3195289，包裹类型「风控核实」，退货原因「仅退款-空包裹(待核实)」，任务状态「处理中」，是否异常为「是」，退货物流单号为空"
+        ]
+      },
+      "existing_evidence": {
+        "has_image": false,
+        "evidence_items": [],
+        "evidence_closed": false
+      },
+      "evidence_coverage": {
+        "annotation_level": "PATH_REFERENCE_ONLY",
+        "covered": [],
+        "missing": [
+          "PACKAGE_CONTEXT",
+          "PRODUCT_IDENTITY",
+          "AFFECTED_COMPONENT"
+        ],
+        "scope_consistency": "UNDETERMINED",
+        "expected_evidence_status": "NEED_HUMAN_REVIEW",
+        "note": "事实存在争议：消费者主张空包裹，系统仅有出库称重与物流重量可供核实，且消费者拒绝提供证据。争议类案件不得由模型判断谁对，必须转人工/风控。"
+      },
+      "promise_annotations": [
+        {
+          "raw_text": "理解您的心情亲~按流程空包裹需要核实出库称重记录和物流揽收重量，这边已提交核实工单，有结果第一时间联系您，请您配合提供下照片哦~",
+          "source_message_id": "68706521514812.PNM",
+          "committed_at": "2026-05-05T21:42:59+08:00",
+          "promise_type": "SERVICE_UPDATE_TIMING",
+          "commitment_class": "AMBIGUOUS",
+          "activation_status": "IGNORED",
+          "deadline": null,
+          "conditions": [],
+          "confidence": 0.9,
+          "note": "「有结果第一时间联系您」为模糊表达，不生成确定截止时间"
+        },
+        {
+          "raw_text": "若核实确为漏发，一定第一时间给您补发或退款，绝不让您吃亏；若记录显示正常出库，也请您理解我们需按规处理~",
+          "source_message_id": "37751896064486.PNM",
+          "committed_at": "2026-05-05T21:46:23+08:00",
+          "promise_type": "RETURN_ACCEPTANCE",
+          "commitment_class": "CONDITIONAL",
+          "activation_status": "PENDING_APPROVAL",
+          "deadline": null,
+          "conditions": [
+            "核实确为漏发"
+          ],
+          "confidence": 0.9
+        }
+      ],
+      "journey_annotation": {
+        "consumer_intent": "不退货直接拿到全额退款",
+        "experience_expression": "哪那多事，我一个老客户还能骗你这点钱？麻利点退呀",
+        "service_cause": "消费者主张空包裹，但风控流程要求先核实重量与出库记录，双方对事实存在争议",
+        "latent_need": "被信任并快速处理，而不是被要求反复举证",
+        "cooperation_willingness": "LOW",
+        "action_impact": "争议与失去信任同时存在，应转人工/风控；不得因为情绪强度而跳过核实，也不得再次索证",
+        "source_ids": [
+          "76916875954946.PNM",
+          "36725349925652.PNM",
+          "68706521514812.PNM",
+          "37751896064486.PNM"
+        ]
+      },
+      "responsibility": {
+        "creates_obligation": true,
+        "obligation_type": "RETURN_HANDLING",
+        "responsible_party": "BRAND",
+        "executor": "风控核实与售后处理",
+        "current_milestone": null,
+        "next_check_at": "2026-05-06T21:42:59+08:00",
+        "completion_condition": "风控核实结论出具，并按结论完成补发或退款（或按规说明不予支持）"
+      },
+      "prohibited_actions": [
+        "ASK_REPEAT_EXPLANATION",
+        "CLOSE_BEFORE_RESOLUTION"
+      ],
+      "recommended_resolution": {
+        "candidate_type": "VERIFY_EMPTY_PARCEL_CLAIM",
+        "primary_action": "转人工风控核实",
+        "secondary_action": "生成核实流程说明回复",
+        "conditional_action": "核实为漏发后走补发或退款",
+        "requires_human_approval": true
+      },
+      "reference_prepared_action": {
+        "action_type": "ASK_EVIDENCE",
+        "requested_scope_sku_id": "XL19806",
+        "requested_scope_issue_type": "PACKAGE_DAMAGE",
+        "requires_human_approval": false,
+        "rationale": "测试争议类案件中「再次索证」的规则行为"
+      },
+      "expected_decision": {
+        "decision": "HUMAN_REVIEW",
+        "rule_id": "H1",
+        "rule_priority": 200,
+        "suppressed_rule_ids": [
+          "E2"
+        ],
+        "evidence_status": "NEED_HUMAN_REVIEW",
+        "reason_zh": "空包裹主张缺少证据支撑且双方事实存在争议，无法在系统内确认真伪；争议性风控案件必须人工复核。"
+      },
+      "challenge_variants": [
+        {
+          "variant_id": "VAR_EVIDENCE_PROVIDED",
+          "description": "假设消费者随后提交了外箱六面照片",
+          "change": {
+            "field": "case_input.evidence_images",
+            "from": [],
+            "to": [
+              "s00024-parcel-photos.jpg"
+            ]
+          },
+          "expected_decision": "HUMAN_REVIEW",
+          "expected_rule_id": "H1",
+          "expected_effect": "风控核实属性不因单张照片消失；仍应人工复核后再决定退款"
+        },
+        {
+          "variant_id": "VAR_CONSUMER_THREAT",
+          "description": "消费者明确转向平台申诉并要求仅退款",
+          "change": {
+            "field": "conversation[4].text",
+            "from": "搞这复杂，那算了，我平台申请仅退款",
+            "to": "不给我退我就投诉到12315"
+          },
+          "expected_decision": "HUMAN_REVIEW",
+          "expected_rule_id": "H1",
+          "expected_effect": "决策不变；情绪与施压只影响优先级，不触发自动赔付"
+        }
+      ],
+      "annotation_meta": {
+        "annotator": "A线",
+        "annotated_at": "2026-09-10",
+        "confidence": "HIGH",
+        "review_status": "FIRST_PASS",
+        "open_questions": []
+      },
+      "expected_ledger_assertions": {
+        "case_status": "ACTION_REVIEW",
+        "consumer_input_required": false,
+        "next_check_at": "2026-05-06T21:42:59+08:00",
+        "prohibited_actions": [
+          "ASK_REPEAT_EXPLANATION",
+          "CLOSE_BEFORE_RESOLUTION"
+        ],
+        "note": "P0 账本只支持 obligation_type = REPLACEMENT_FULFILLMENT（schemas/accountability-state.schema.json 为 const），本案例的 annotation 层责任类型若不属于补发换货，case_status 按最接近的 P0 口径给出，待产品负责人确认跨类型账本扩展口径。"
+      }
+    },
+    {
+      "annotation_id": "ANN_DEV_15",
+      "case_id": "S00026",
+      "split": "DEV_REGRESSION",
+      "is_hero": false,
+      "scene": {
+        "major": "售后退货",
+        "minor": "七天无理由退货"
+      },
+      "source_trace": {
+        "dataset": "TIANCHI_LOREAL_TRACK1_MOCK",
+        "session_id": "S00026",
+        "chat_rows": "聊天记录!A182:R190",
+        "order_rows": "订单!A42:S42",
+        "ticket_rows": "售后退货工单!A13:S13",
+        "image_reference_paths": []
+      },
+      "known_facts": {
+        "order_verified": true,
+        "issue_explained": true,
+        "evidence_submitted": false,
+        "statements": [
+          "消费者：这个洗发水能七天无理由退吗？没开封呢（11402985818046.PNM）",
+          "客服说明未拆封支持七天无理由、需在订单页申请（61592631962963.PNM）",
+          "客服说明七天无理由运费由买家承担，有运费险可平台理赔（43898321360305.PNM）",
+          "客服说明寄回地址与签收后 1-3 天退款（44478575374733.PNM）"
+        ],
+        "system_facts": [
+          "订单 6920288797534357965，商品 XW45001 测试轻盈控油洗发水500ml ×1，订单状态「已发货」",
+          "订单无赠品",
+          "售后退货工单 KOC2683305，包裹类型「正常退货」，退货原因「不想要了」，任务状态「处理中」，签收建议「同意签收-七天无理由」，是否异常为「否」"
+        ]
+      },
+      "existing_evidence": {
+        "has_image": false,
+        "evidence_items": [],
+        "evidence_closed": true
+      },
+      "evidence_coverage": {
+        "annotation_level": "PATH_REFERENCE_ONLY",
+        "covered": [],
+        "missing": [],
+        "scope_consistency": "IN_SCOPE",
+        "expected_evidence_status": "VALID",
+        "note": "七天无理由退货不需要消费者提供商品证据，未拆封与订单、工单状态一致即视为无需补证。该案例用于验证「不需要证据」时不会误触发索证类规则。"
+      },
+      "promise_annotations": [
+        {
+          "raw_text": "可以的亲，未拆封支持七天无理由退货哦~您在订单页申请退货退款，选\"不想要了\"，系统通过后把退货单号填进去就行~",
+          "source_message_id": "61592631962963.PNM",
+          "committed_at": "2026-05-05T22:19:52+08:00",
+          "promise_type": "POLICY_STATEMENT",
+          "commitment_class": "STANDARD_APPROVED",
+          "activation_status": "ACTIVE",
+          "deadline": null,
+          "conditions": [
+            "商品未拆封"
+          ],
+          "confidence": 0.95
+        },
+        {
+          "raw_text": "七天无理由的情况运费是买家承担哦亲，如果您有运费险，平台会自动理赔大部分运费的~",
+          "source_message_id": "43898321360305.PNM",
+          "committed_at": "2026-05-05T22:22:31+08:00",
+          "promise_type": "POLICY_STATEMENT",
+          "commitment_class": "STANDARD_APPROVED",
+          "activation_status": "ACTIVE",
+          "deadline": null,
+          "conditions": [],
+          "confidence": 0.9
+        },
+        {
+          "raw_text": "是的亲，寄到系统展示的退货地址就好，仓库签收验收无误后1-3天退款到账~",
+          "source_message_id": "44478575374733.PNM",
+          "committed_at": "2026-05-05T22:24:35+08:00",
+          "promise_type": "REFUND_OFFLINE_PAYMENT",
+          "commitment_class": "STANDARD_APPROVED",
+          "activation_status": "ACTIVE",
+          "deadline": "2026-05-08T22:24:35+08:00",
+          "conditions": [
+            "仓库签收验收无误"
+          ],
+          "confidence": 0.9
+        }
+      ],
+      "journey_annotation": {
+        "consumer_intent": "退回不想要的商品并拿回货款",
+        "experience_expression": "这个洗发水能七天无理由退吗？没开封呢",
+        "service_cause": "无服务失误；消费者主动改变购买意愿，需要明确流程与费用归属",
+        "latent_need": "清楚知道怎么退、运费谁出、多久到账",
+        "cooperation_willingness": "STABLE",
+        "action_impact": "无需拦截；动作指向退货流程引导与退款进度跟踪",
+        "source_ids": [
+          "11402985818046.PNM",
+          "61592631962963.PNM",
+          "44478575374733.PNM"
+        ]
+      },
+      "responsibility": {
+        "creates_obligation": true,
+        "obligation_type": "RETURN_HANDLING",
+        "responsible_party": "BRAND",
+        "executor": "退货仓与退款流程",
+        "current_milestone": null,
+        "next_check_at": "2026-05-08T14:24:35+08:00",
+        "completion_condition": "退货商品签收验收无误，货款 1-3 天内退回到账"
+      },
+      "prohibited_actions": [
+        "ASK_SAME_EVIDENCE",
+        "CLOSE_BEFORE_RESOLUTION"
+      ],
+      "recommended_resolution": {
+        "candidate_type": "RETURN_FLOW_GUIDANCE",
+        "primary_action": "说明退货流程与运费归属",
+        "secondary_action": "生成退货进度查询入口",
+        "conditional_action": "提交仓库催办",
+        "requires_human_approval": false
+      },
+      "reference_prepared_action": {
+        "action_type": "CHECK_REPLACEMENT_PROGRESS",
+        "requested_scope_sku_id": "XW45001",
+        "requested_scope_issue_type": "PACKAGE_DAMAGE",
+        "requires_human_approval": false,
+        "rationale": "本类案件不需要消费者补充商品证据，改用生成回复动作作为参考动作：说明退货流程与运费归属，用于验证「无需证据」场景不会误触发索证拦截"
+      },
+      "expected_decision": {
+        "decision": "ALLOW",
+        "rule_id": "E0_NO_RULE_MATCHED",
+        "rule_priority": 0,
+        "suppressed_rule_ids": [],
+        "evidence_status": "VALID",
+        "reason_zh": "七天无理由退货不涉及破损证据复用，也没有被破坏的既有承诺；动作未命中任何限制性规则，返回 E0_NO_RULE_MATCHED 并保留事实追踪。"
+      },
+      "challenge_variants": [
+        {
+          "variant_id": "VAR_OPENED_PRODUCT",
+          "description": "把商品改为已拆封使用",
+          "change": {
+            "field": "current_issue.issue_type",
+            "from": "PACKAGE_DAMAGE",
+            "to": "ADVERSE_REACTION"
+          },
+          "expected_decision": "HUMAN_REVIEW",
+          "expected_rule_id": "H1",
+          "expected_effect": "已拆封使用不适属于高风险边界，转人工"
+        }
+      ],
+      "annotation_meta": {
+        "annotator": "A线",
+        "annotated_at": "2026-09-10",
+        "confidence": "HIGH",
+        "review_status": "FIRST_PASS",
+        "open_questions": []
+      },
+      "expected_ledger_assertions": {
+        "case_status": "READY_FOR_BRAND",
+        "consumer_input_required": false,
+        "next_check_at": "2026-05-08T14:24:35+08:00",
+        "prohibited_actions": [
+          "ASK_SAME_EVIDENCE",
+          "CLOSE_BEFORE_RESOLUTION"
+        ],
+        "note": "P0 账本只支持 obligation_type = REPLACEMENT_FULFILLMENT（schemas/accountability-state.schema.json 为 const），本案例的 annotation 层责任类型若不属于补发换货，case_status 按最接近的 P0 口径给出，待产品负责人确认跨类型账本扩展口径。"
+      }
+    },
+    {
+      "annotation_id": "ANN_DEV_16",
+      "case_id": "S00132",
+      "split": "DEV_REGRESSION",
+      "is_hero": false,
+      "scene": {
+        "major": "售后退货",
+        "minor": "色号不合适退货"
+      },
+      "source_trace": {
+        "dataset": "TIANCHI_LOREAL_TRACK1_MOCK",
+        "session_id": "S00132",
+        "chat_rows": "聊天记录!A775:R781",
+        "order_rows": "订单!A103:S103",
+        "ticket_rows": "售后退货工单!A14:S14",
+        "image_reference_paths": [
+          "mock_images/swatch/S00132_05.jpg"
+        ]
+      },
+      "known_facts": {
+        "order_verified": true,
+        "issue_explained": true,
+        "evidence_submitted": true,
+        "statements": [
+          "消费者：#01赤茶红到手了，上脸有点显黑，想退了换#05枫叶红，就试色了一下（69632230067103.PNM）",
+          "客服说明轻微试色支持退换，建议退货后重新拍下正确色号（36586125873195.PNM）",
+          "客服说明退货后把快递底单拍照，运费以红包形式实报实销（46209520370427.PNM）",
+          "消费者提交图片：拍好了，麻烦发货快点点（88178575855789.PNM）",
+          "客服确认新订单已备注加急、当天发出（64107343113246.PNM）"
+        ],
+        "system_facts": [
+          "订单 6920262265086836896，商品 XC30101 测试丝绒唇釉 #01赤茶红 ×2，订单状态「已发货」",
+          "订单无赠品",
+          "售后退货工单 KOC2089946，退货原因「色号不合适」，任务状态「已完结」，签收建议「同意签收-色号不适退换」，创建 2026-05-10 16:35:45，完成 2026-05-10 21:41:45"
+        ]
+      },
+      "existing_evidence": {
+        "has_image": true,
+        "evidence_items": [
+          {
+            "evidence_ref": "S00132_IMG_05",
+            "source_message_id": "88178575855789.PNM",
+            "image_path_category": "swatch",
+            "submitted_at": "2026-05-10T16:08:18+08:00"
+          }
+        ],
+        "evidence_closed": true
+      },
+      "evidence_coverage": {
+        "annotation_level": "PATH_REFERENCE_ONLY",
+        "covered": [
+          "PRODUCT_IDENTITY"
+        ],
+        "missing": [
+          "AFFECTED_COMPONENT",
+          "DAMAGE_DETAIL"
+        ],
+        "scope_consistency": "OUT_OF_SCOPE",
+        "expected_evidence_status": "MISMATCHED",
+        "note": "消费者提交的是试色照片，覆盖「色号观感」而非「商品破损」。当客服动作转为索取破损部位证据时，证据类型与问题类型不一致，应判 MISMATCHED 并放行针对缺失项的合理索证。"
+      },
+      "promise_annotations": [
+        {
+          "raw_text": "可以的亲~轻微试色支持退换哦。建议直接申请退货退款，寄回后重新拍#05枫叶红，这样最快；运费这边给您报销哦~",
+          "source_message_id": "36586125873195.PNM",
+          "committed_at": "2026-05-10T16:05:12+08:00",
+          "promise_type": "RETURN_ACCEPTANCE",
+          "commitment_class": "STANDARD_APPROVED",
+          "activation_status": "ACTIVE",
+          "deadline": null,
+          "conditions": [
+            "轻微试色情形"
+          ],
+          "confidence": 0.9
+        },
+        {
+          "raw_text": "寄回后把快递底单拍给薇薇，运费以红包形式给您，10元内实报实销哦哦~",
+          "source_message_id": "46209520370427.PNM",
+          "committed_at": "2026-05-10T16:07:23+08:00",
+          "promise_type": "REFUND_OFFLINE_PAYMENT",
+          "commitment_class": "STANDARD_APPROVED",
+          "activation_status": "ACTIVE",
+          "deadline": null,
+          "conditions": [
+            "消费者提供退货快递底单",
+            "运费不超过 10 元"
+          ],
+          "confidence": 0.9
+        },
+        {
+          "raw_text": "收到亲，新订单已备注加急，今天就发~",
+          "source_message_id": "64107343113246.PNM",
+          "committed_at": "2026-05-10T16:08:54+08:00",
+          "promise_type": "REPLACEMENT_FULFILLMENT",
+          "commitment_class": "STANDARD_APPROVED",
+          "activation_status": "ACTIVE",
+          "deadline": "2026-05-10T23:59:59+08:00",
+          "conditions": [],
+          "confidence": 0.9
+        }
+      ],
+      "journey_annotation": {
+        "consumer_intent": "把不合适的色号退掉并换成适合的颜色",
+        "experience_expression": "上脸有点显黑，想退了换#05枫叶红能吗，就试色了一下",
+        "service_cause": "色号不适配，消费者需要退换与运费报销",
+        "latent_need": "换货流程简单、运费有人承担、不再被要求额外举证",
+        "cooperation_willingness": "STABLE",
+        "action_impact": "证据类型与问题类型不一致时，应放行针对缺失项的最小索证，不应拦截",
+        "source_ids": [
+          "69632230067103.PNM",
+          "36586125873195.PNM",
+          "46209520370427.PNM",
+          "64107343113246.PNM"
+        ]
+      },
+      "responsibility": {
+        "creates_obligation": true,
+        "obligation_type": "RETURN_HANDLING",
+        "responsible_party": "BRAND",
+        "executor": "退货仓与换货发出流程",
+        "current_milestone": "IN_TRANSIT",
+        "next_check_at": "2026-05-11T09:08:54+08:00",
+        "completion_condition": "退货入库确认、运费红包到账、新色号商品送达"
+      },
+      "prohibited_actions": [
+        "ASK_REPEAT_EXPLANATION",
+        "CLOSE_BEFORE_RESOLUTION"
+      ],
+      "recommended_resolution": {
+        "candidate_type": "RETURN_FLOW_GUIDANCE",
+        "primary_action": "说明退换与运费报销流程",
+        "secondary_action": "查询新订单发出状态",
+        "conditional_action": "提交仓库催办",
+        "requires_human_approval": false
+      },
+      "reference_prepared_action": {
+        "action_type": "ASK_EVIDENCE",
+        "requested_scope_sku_id": "XC30101",
+        "requested_scope_issue_type": "PACKAGE_DAMAGE",
+        "requires_human_approval": false,
+        "rationale": "测试证据类型变化（试色照片 → 破损照片）时，规则应放行而非拦截"
+      },
+      "expected_decision": {
+        "decision": "ALLOW",
+        "rule_id": "E2",
+        "rule_priority": 100,
+        "suppressed_rule_ids": [],
+        "evidence_status": "MISMATCHED",
+        "reason_zh": "已提交证据为试色照片，覆盖色号观感而非破损部位；证据类型发生变化，可放行针对缺失项的最小必要索证。"
+      },
+      "challenge_variants": [
+        {
+          "variant_id": "VAR_SAME_EVIDENCE_REUSE",
+          "description": "把索证范围改为索要同一张试色照片（色号证据）",
+          "change": {
+            "field": "reference_prepared_action.requested_scope_issue_type",
+            "from": "PACKAGE_DAMAGE(破损)",
+            "to": "色号不适证据类型"
+          },
+          "expected_decision": "INTERVENE",
+          "expected_rule_id": "E1",
+          "expected_effect": "范围一致时同一张试色照片不得被重复索取"
+        }
+      ],
+      "annotation_meta": {
+        "annotator": "A线",
+        "annotated_at": "2026-09-10",
+        "confidence": "MEDIUM",
+        "review_status": "FIRST_PASS",
+        "open_questions": [
+          "E2 规则原文列举的变化项为「订单、商品货号、正装/赠品、问题组件或证据类型」，本案例落在「证据类型」一项；复审时需确认 B 线是否实现了证据类型维度的比对。"
+        ]
+      },
+      "expected_ledger_assertions": {
+        "case_status": "IN_FULFILLMENT",
+        "consumer_input_required": false,
+        "next_check_at": "2026-05-11T09:08:54+08:00",
+        "prohibited_actions": [
+          "ASK_REPEAT_EXPLANATION",
+          "CLOSE_BEFORE_RESOLUTION"
+        ],
+        "note": "P0 账本只支持 obligation_type = REPLACEMENT_FULFILLMENT（schemas/accountability-state.schema.json 为 const），本案例的 annotation 层责任类型若不属于补发换货，case_status 按最接近的 P0 口径给出，待产品负责人确认跨类型账本扩展口径。"
+      }
+    },
+    {
+      "annotation_id": "ANN_DEV_17",
+      "case_id": "S00034",
+      "split": "DEV_REGRESSION",
+      "is_hero": false,
+      "scene": {
+        "major": "订单服务",
+        "minor": "直播间承诺纠纷"
+      },
+      "source_trace": {
+        "dataset": "TIANCHI_LOREAL_TRACK1_MOCK",
+        "session_id": "S00034",
+        "chat_rows": "聊天记录!A240:R246",
+        "order_rows": "订单!A84:S84",
+        "ticket_rows": "补发换货工单!A24:S24",
+        "image_reference_paths": [
+          "mock_images/live_promise/S00034_03.jpg"
+        ]
+      },
+      "known_facts": {
+        "order_verified": true,
+        "issue_explained": true,
+        "evidence_submitted": true,
+        "statements": [
+          "消费者：我昨晚直播间下的单，主播明明说下单送正装小样一套，怎么发来只有正装？（44097604564832.PNM）",
+          "消费者提交截图并强调：我截图了主播口播的，白纸黑字，你们不能不认（50348499700069.PNM）",
+          "客服确认直播福利属实，是发货时赠品未关联，登记补发测试舒缓面霜中样15ml（27016868038145.PNM）",
+          "客服告知已加急登记补发工单（69283166908459.PNM）"
+        ],
+        "system_facts": [
+          "订单 6920272791550024041，商品 XL19805 【预售】测试焕活紧致礼盒(面霜50ml+精华30ml) ×2，订单状态「预售-已发货」",
+          "订单赠品列为空",
+          "换货工单 BH758933100232，售后原因「补发-直播承诺赠品」，状态「已完结」，补发物流单号 YT7673462127402，创建 2026-05-06 15:14:22"
+        ]
+      },
+      "existing_evidence": {
+        "has_image": true,
+        "evidence_items": [
+          {
+            "evidence_ref": "S00034_IMG_03",
+            "source_message_id": "50348499700069.PNM",
+            "image_path_category": "live_promise",
+            "submitted_at": "2026-05-06T14:31:54+08:00"
+          }
+        ],
+        "evidence_closed": true
+      },
+      "evidence_coverage": {
+        "annotation_level": "PATH_REFERENCE_ONLY",
+        "covered": [
+          "PRODUCT_IDENTITY"
+        ],
+        "missing": [],
+        "scope_consistency": "IN_SCOPE",
+        "expected_evidence_status": "VALID",
+        "note": "本案例的证据形态特殊：截图证明的是「直播承诺存在」这一事实，而非商品损坏。客服已据截图核实福利属实且工单已创建，因此就「直播承诺赠品补发」这一范围而言，证据已闭合。"
+      },
+      "promise_annotations": [
+        {
+          "raw_text": "亲亲收到您的截图啦~核实到昨晚直播确有该福利，是发货时赠品未关联上，实在抱歉！这边给您登记补发测试舒缓面霜中样15ml，48小时内发出哦哈~",
+          "source_message_id": "27016868038145.PNM",
+          "committed_at": "2026-05-06T14:32:47+08:00",
+          "promise_type": "REPLACEMENT_FULFILLMENT",
+          "commitment_class": "STANDARD_APPROVED",
+          "activation_status": "ACTIVE",
+          "deadline": "2026-05-08T14:32:47+08:00",
+          "conditions": [],
+          "confidence": 0.95,
+          "note": "承诺由直播口播福利触发，但已由客服核实并落为工单事实，因此属标准承诺而非条件承诺。补发商品 XLG5002 与订单赠品列无关，属额外补发。"
+        },
+        {
+          "raw_text": "已为您加急登记补发工单，单号出来同步给您~给您带来不便非常抱歉，感谢理解~",
+          "source_message_id": "69283166908459.PNM",
+          "committed_at": "2026-05-06T14:35:42+08:00",
+          "promise_type": "SERVICE_UPDATE_TIMING",
+          "commitment_class": "AMBIGUOUS",
+          "activation_status": "IGNORED",
+          "deadline": null,
+          "conditions": [],
+          "confidence": 0.85,
+          "note": "「单号出来同步给您」无确定时间"
+        }
+      ],
+      "journey_annotation": {
+        "consumer_intent": "拿到直播承诺的赠品",
+        "experience_expression": "我截图了主播口播的，白纸黑字，你们不能不认",
+        "service_cause": "直播承诺未随订单履约，消费者需要用截图自证，信任受损",
+        "latent_need": "品牌承认承诺并主动补发，不需要消费者反复举证",
+        "cooperation_willingness": "DECLINING",
+        "action_impact": "拦截重复索证（截图已足够）；动作转向补发物流查询",
+        "source_ids": [
+          "44097604564832.PNM",
+          "50348499700069.PNM",
+          "27016868038145.PNM"
+        ]
+      },
+      "responsibility": {
+        "creates_obligation": true,
+        "obligation_type": "REPLACEMENT_FULFILLMENT",
+        "responsible_party": "BRAND",
+        "executor": "测试美妆分销中心",
+        "current_milestone": "IN_TRANSIT",
+        "next_check_at": "2026-05-07T14:32:47+08:00",
+        "completion_condition": "直播承诺赠品实际送达消费者"
+      },
+      "prohibited_actions": [
+        "ASK_SAME_EVIDENCE",
+        "ASK_REPEAT_EXPLANATION",
+        "CLOSE_BEFORE_RESOLUTION"
+      ],
+      "recommended_resolution": {
+        "candidate_type": "CHECK_REPLACEMENT_FULFILLMENT",
+        "primary_action": "查询补发物流单号与揽收状态",
+        "secondary_action": "生成直播承诺处理回复",
+        "conditional_action": "提交仓库催办",
+        "requires_human_approval": false
+      },
+      "reference_prepared_action": {
+        "action_type": "ASK_EVIDENCE",
+        "requested_scope_sku_id": "XLG5002",
+        "requested_scope_issue_type": "PACKAGE_DAMAGE",
+        "requires_human_approval": false,
+        "rationale": "测试客服要求再次提供直播承诺截图时的规则行为"
+      },
+      "expected_decision": {
+        "decision": "INTERVENE",
+        "rule_id": "E1",
+        "rule_priority": 300,
+        "suppressed_rule_ids": [],
+        "evidence_status": "VALID",
+        "reason_zh": "直播承诺截图已提交并经客服核实、补发工单已创建；再次索取同一截图属于重复索证。"
+      },
+      "challenge_variants": [
+        {
+          "variant_id": "VAR_PROMISE_NOT_VERIFIED",
+          "description": "客服未核实福利属实，只登记待核实",
+          "change": {
+            "field": "promise_events[0].raw_text",
+            "from": "核实到昨晚直播确有该福利",
+            "to": "帮您核实一下直播福利是否存在"
+          },
+          "expected_decision": "HUMAN_REVIEW",
+          "expected_rule_id": "H1",
+          "expected_effect": "承诺未确认时不得生成 ACTIVE 承诺，应转人工确认后再补发"
+        },
+        {
+          "variant_id": "VAR_AMBIGUOUS",
+          "description": "把 48 小时承诺改为「尽快发出」",
+          "change": {
+            "field": "promise_events[0].raw_text",
+            "from": "48小时内发出",
+            "to": "尽快发出"
+          },
+          "expected_decision": "INTERVENE",
+          "expected_rule_id": "E1",
+          "expected_effect": "commitment_class → AMBIGUOUS，不生成确定截止时间"
+        }
+      ],
+      "annotation_meta": {
+        "annotator": "A线",
+        "annotated_at": "2026-09-10",
+        "confidence": "MEDIUM",
+        "review_status": "FIRST_PASS",
+        "open_questions": [
+          "本案例的问题类型是「直播承诺赠品未履约」，但 CaseInput.current_issue.issue_type 的枚举只有 PACKAGE_DAMAGE / LOGISTICS_STALLED / ADVERSE_REACTION，无法直接表达该类问题。本批按 PACKAGE_DAMAGE 归入（履约类问题），建议作为契约适配问题提交产品负责人确认。"
+        ]
+      },
+      "expected_ledger_assertions": {
+        "case_status": "IN_FULFILLMENT",
+        "consumer_input_required": false,
+        "next_check_at": "2026-05-07T14:32:47+08:00",
+        "prohibited_actions": [
+          "ASK_SAME_EVIDENCE",
+          "ASK_REPEAT_EXPLANATION",
+          "CLOSE_BEFORE_RESOLUTION"
+        ],
+        "note": "补发换货类责任，与 P0 账本 obligation_type const 一致。"
+      }
+    },
+    {
+      "annotation_id": "ANN_DEV_18",
+      "case_id": "S00007",
+      "split": "DEV_REGRESSION",
+      "is_hero": false,
+      "scene": {
+        "major": "补发换货",
+        "minor": "漏发赠品"
+      },
+      "source_trace": {
+        "dataset": "TIANCHI_LOREAL_TRACK1_MOCK",
+        "session_id": "S00007",
+        "chat_rows": "聊天记录!A44:R49",
+        "order_rows": "订单!A26:S26",
+        "ticket_rows": "补发换货工单!A6:S6",
+        "image_reference_paths": []
+      },
+      "known_facts": {
+        "order_verified": true,
+        "issue_explained": true,
+        "evidence_submitted": false,
+        "statements": [
+          "消费者：下单时页面写赠测试修护精华小样5ml，包裹里没有，是漏发了吗（88958594295537.PNM）",
+          "客服回复已核实订单确实包含该赠品并登记补发（88929302741876.PNM）",
+          "客服告知补发工单已创建、48 小时内发出、发货后同步单号（63166033470528.PNM）"
+        ],
+        "system_facts": [
+          "订单 6920080450685916204，商品 XL19805 【预售】测试焕活紧致礼盒(面霜50ml+精华30ml) ×2，订单状态「预售-已发货」",
+          "订单赠品列为「测试丝绒唇釉小样1.2g」（XLG5005），与消费者与客服所述赠品不一致",
+          "换货工单 BH142092289687，售后原因「补发-漏发赠品」，状态「已完结」，补发物流单号 463400704026468，创建 2026-05-05 13:25:28"
+        ]
+      },
+      "existing_evidence": {
+        "has_image": false,
+        "evidence_items": [],
+        "evidence_closed": false
+      },
+      "evidence_coverage": {
+        "annotation_level": "PATH_REFERENCE_ONLY",
+        "covered": [
+          "PRODUCT_IDENTITY"
+        ],
+        "missing": [],
+        "scope_consistency": "UNDETERMINED",
+        "expected_evidence_status": "NEED_HUMAN_REVIEW",
+        "note": "系统事实与聊天口述冲突：订单赠品列为 XLG5005（丝绒唇釉小样1.2g），而消费者与客服都称漏发的是「测试修护精华小样5ml」（XLG5001）。按照事实来源优先级，系统事实优先，冲突时不得由模型或客服口述认定赠品归属，必须转人工核实。"
+      },
+      "promise_annotations": [
+        {
+          "raw_text": "已为您创建补发工单，48小时内发出，发货后单号同步给您，这次仓库会重点核对的，请您放心哦~",
+          "source_message_id": "63166033470528.PNM",
+          "committed_at": "2026-05-05T12:45:57+08:00",
+          "promise_type": "REPLACEMENT_FULFILLMENT",
+          "commitment_class": "STANDARD_APPROVED",
+          "activation_status": "ACTIVE",
+          "deadline": "2026-05-07T12:45:57+08:00",
+          "conditions": [],
+          "confidence": 0.85,
+          "note": "承诺本身有工单支撑，可编译为 ACTIVE；但承诺指向的补发标的（赠品）与订单赠品列冲突，需人工确认补发内容后才应执行。"
+        },
+        {
+          "raw_text": "亲，查到您的订单确实包含赠品测试修护精华小样5ml，实在抱歉是仓库漏发了！这边马上给您登记补发~",
+          "source_message_id": "88929302741876.PNM",
+          "committed_at": "2026-05-05T12:43:29+08:00",
+          "promise_type": "REPLACEMENT_FULFILLMENT",
+          "commitment_class": "ERRONEOUS_OR_UNAUTHORIZED",
+          "activation_status": "BLOCKED",
+          "deadline": null,
+          "conditions": [],
+          "confidence": 0.8,
+          "note": "客服称「订单确实包含赠品测试修护精华小样5ml」，与订单表赠品列（测试丝绒唇釉小样1.2g）冲突，属于与系统事实不符的陈述，应阻断并转人工核实，不得据此创建赠与责任。"
+        }
+      ],
+      "journey_annotation": {
+        "consumer_intent": "拿到下单页面承诺的赠品",
+        "experience_expression": "下单时页面写赠测试修护精华小样5ml，包裹里没有，是漏发了吗",
+        "service_cause": "赠品未随包裹发出，且系统赠品记录与消费者认知不一致",
+        "latent_need": "品牌确认赠品归属并主动补发，不需要消费者自证",
+        "cooperation_willingness": "STABLE",
+        "action_impact": "事实冲突未解决前不得自动补发；应转人工核实赠品口径",
+        "source_ids": [
+          "88958594295537.PNM",
+          "88929302741876.PNM",
+          "63166033470528.PNM"
+        ]
+      },
+      "responsibility": {
+        "creates_obligation": false,
+        "obligation_type": null,
+        "responsible_party": null,
+        "executor": "测试供应链华南仓",
+        "current_milestone": null,
+        "next_check_at": null,
+        "completion_condition": "人工核实赠品归属后，再确定补发标的与完成条件"
+      },
+      "prohibited_actions": [
+        "ASK_SAME_EVIDENCE",
+        "CLOSE_BEFORE_RESOLUTION"
+      ],
+      "recommended_resolution": {
+        "candidate_type": "HUMAN_EVIDENCE_REVIEW",
+        "primary_action": "转人工核实赠品归属与补发标的",
+        "secondary_action": "生成赠品核实说明回复",
+        "conditional_action": "核实一致后按补发工单继续履约",
+        "requires_human_approval": true
+      },
+      "reference_prepared_action": {
+        "action_type": "ASK_EVIDENCE",
+        "requested_scope_sku_id": "XLG5001",
+        "requested_scope_issue_type": "PACKAGE_DAMAGE",
+        "requires_human_approval": false,
+        "rationale": "测试「系统事实与口述冲突」时再次索证的规则行为"
+      },
+      "expected_decision": {
+        "decision": "HUMAN_REVIEW",
+        "rule_id": "H1",
+        "rule_priority": 200,
+        "suppressed_rule_ids": [],
+        "evidence_status": "NEED_HUMAN_REVIEW",
+        "reason_zh": "客服口述的赠品与订单系统赠品记录冲突，属于与系统事实不符的陈述；事实来源冲突时必须人工复核，不得据此生成补发责任。"
+      },
+      "challenge_variants": [
+        {
+          "variant_id": "VAR_ORDER_GIFT_ALIGNED",
+          "description": "把客服口述的赠品改为与订单赠品列一致",
+          "change": {
+            "field": "promise_events[1].raw_text",
+            "from": "订单确实包含赠品测试修护精华小样5ml",
+            "to": "订单确实包含赠品测试丝绒唇釉小样1.2g"
+          },
+          "expected_decision": "INTERVENE",
+          "expected_rule_id": "E1",
+          "expected_effect": "冲突消除后承诺恢复为 STANDARD_APPROVED / ACTIVE；系统已有工单事实，重复索证应被拦截"
+        },
+        {
+          "variant_id": "VAR_EXTRA_GIFT_CLAIM",
+          "description": "消费者主张额外赠品但订单与工单均无记录",
+          "change": {
+            "field": "conversation[0].text",
+            "from": "下单时页面写赠测试修护精华小样5ml",
+            "to": "你们必须再送我一套正装小样"
+          },
+          "expected_decision": "ALLOW",
+          "expected_rule_id": "E0_NO_RULE_MATCHED",
+          "expected_effect": "无工单与政策支撑，不生成 ACTIVE 承诺"
+        }
+      ],
+      "annotation_meta": {
+        "annotator": "A线",
+        "annotated_at": "2026-09-10",
+        "confidence": "MEDIUM",
+        "review_status": "FIRST_PASS",
+        "open_questions": [
+          "本案例是本批唯一出现 ERRONEOUS_OR_UNAUTHORIZED 分类的案例，起因是赛事 Mock 数据本身的赠品列与话术不一致（见 01-数据字段确认.md 6.2）。复审时需确认该分类的使用是否符合产品口径，或应改用独立的事实冲突标记。"
+        ]
+      },
+      "expected_ledger_assertions": {
+        "case_status": "ACTION_REVIEW",
+        "consumer_input_required": false,
+        "next_check_at": null,
+        "prohibited_actions": [
+          "ASK_SAME_EVIDENCE",
+          "CLOSE_BEFORE_RESOLUTION"
+        ],
+        "note": "补发换货类责任，与 P0 账本 obligation_type const 一致。"
+      }
+    },
+    {
+      "annotation_id": "ANN_DEV_19",
+      "case_id": "S00115",
+      "split": "DEV_REGRESSION",
+      "is_hero": false,
+      "scene": {
+        "major": "补发换货",
+        "minor": "会员权益加赠补发"
+      },
+      "source_trace": {
+        "dataset": "TIANCHI_LOREAL_TRACK1_MOCK",
+        "session_id": "S00115",
+        "chat_rows": "聊天记录!A758:R764",
+        "order_rows": "订单!A22:S22",
+        "ticket_rows": "补发换货工单!A20:S20",
+        "image_reference_paths": []
+      },
+      "known_facts": {
+        "order_verified": true,
+        "issue_explained": true,
+        "evidence_submitted": false,
+        "statements": [
+          "消费者：会员日下单的加赠礼测试B5面膜体验装2片没随包裹发来（61767673032093.PNM）",
+          "客服核实消费者符合会员加赠条件，是系统未自动关联赠品订单，走权益加赠补发流程（89013798148540.PNM）",
+          "客服承诺 48 小时内发出，并追加会员生日月 8 折券（62787318930580.PNM）"
+        ],
+        "system_facts": [
+          "订单 6920873486631711536，商品 XL21205 测试温和氨基酸洁面乳120ml ×1，订单状态「交易成功」",
+          "订单赠品列为「测试丝绒唇釉小样1.2g」（XLG5005），与加赠礼商品（XLG5004）不同",
+          "换货工单 BH562082745370，售后原因「补发-会员权益加赠」，状态「进行中」，补发物流单号 773745881360891，创建 2026-05-09 22:30:41，完成时间为空"
+        ]
+      },
+      "existing_evidence": {
+        "has_image": false,
+        "evidence_items": [],
+        "evidence_closed": true
+      },
+      "evidence_coverage": {
+        "annotation_level": "PATH_REFERENCE_ONLY",
+        "covered": [
+          "PRODUCT_IDENTITY"
+        ],
+        "missing": [],
+        "scope_consistency": "IN_SCOPE",
+        "expected_evidence_status": "VALID",
+        "note": "本案例与 S00007 构成判别对：虽然加赠礼也不在订单赠品列中，但它由会员权益规则触发，且工单明确记录「补发-会员权益加赠」并已创建补发物流单号，属于合法业务形态而非事实冲突。证据依据是系统工单事实，不是消费者举证。"
+      },
+      "promise_annotations": [
+        {
+          "raw_text": "亲亲，核实到您符合会员加赠条件，是系统没有自动关联赠品订单，抱歉啦！这边走权益加赠补发流程，给您单独补寄测试B5面膜体验装2片~",
+          "source_message_id": "89013798148540.PNM",
+          "committed_at": "2026-05-09T22:19:40+08:00",
+          "promise_type": "REPLACEMENT_FULFILLMENT",
+          "commitment_class": "STANDARD_APPROVED",
+          "activation_status": "ACTIVE",
+          "deadline": null,
+          "conditions": [],
+          "confidence": 0.92
+        },
+        {
+          "raw_text": "48小时内发出哦，另外再送您一张会员生日月8折券，感谢您的支持与理解~",
+          "source_message_id": "62787318930580.PNM",
+          "committed_at": "2026-05-09T22:23:28+08:00",
+          "promise_type": "REPLACEMENT_FULFILLMENT",
+          "commitment_class": "STANDARD_APPROVED",
+          "activation_status": "ACTIVE",
+          "deadline": "2026-05-11T22:23:28+08:00",
+          "conditions": [],
+          "confidence": 0.9
+        }
+      ],
+      "journey_annotation": {
+        "consumer_intent": "拿到会员权益承诺的加赠礼",
+        "experience_expression": "在吗，会员日下单的加赠礼测试B5面膜体验装2片没随包裹发来啊",
+        "service_cause": "系统未自动关联会员加赠，权益未随订单履约",
+        "latent_need": "品牌承认权益并主动补寄，不需要消费者反复说明",
+        "cooperation_willingness": "STABLE",
+        "action_impact": "证据由系统工单事实支撑；阻止重复索证，动作指向补发物流查询",
+        "source_ids": [
+          "61767673032093.PNM",
+          "89013798148540.PNM",
+          "62787318930580.PNM"
+        ]
+      },
+      "responsibility": {
+        "creates_obligation": true,
+        "obligation_type": "REPLACEMENT_FULFILLMENT",
+        "responsible_party": "BRAND",
+        "executor": "测试美妆分销中心",
+        "current_milestone": "AWAITING_CARRIER_PICKUP",
+        "next_check_at": "2026-05-10T22:23:28+08:00",
+        "completion_condition": "加赠礼实际送达消费者"
+      },
+      "prohibited_actions": [
+        "ASK_SAME_EVIDENCE",
+        "ASK_REPEAT_EXPLANATION",
+        "CLOSE_BEFORE_RESOLUTION"
+      ],
+      "recommended_resolution": {
+        "candidate_type": "CHECK_REPLACEMENT_FULFILLMENT",
+        "primary_action": "查询加赠礼补发物流状态",
+        "secondary_action": "生成会员权益处理回复",
+        "conditional_action": "提交仓库催办",
+        "requires_human_approval": false
+      },
+      "reference_prepared_action": {
+        "action_type": "ASK_EVIDENCE",
+        "requested_scope_sku_id": "XLG5004",
+        "requested_scope_issue_type": "PACKAGE_DAMAGE",
+        "requires_human_approval": false,
+        "rationale": "测试权益类补发场景下要求消费者再次自证的规则行为"
+      },
+      "expected_decision": {
+        "decision": "INTERVENE",
+        "rule_id": "E1",
+        "rule_priority": 300,
+        "suppressed_rule_ids": [],
+        "evidence_status": "VALID",
+        "reason_zh": "会员加赠资格已由系统核实、补发工单已创建且已有补发物流单号；要求消费者再次自证属于把品牌履约责任推回消费者。"
+      },
+      "challenge_variants": [
+        {
+          "variant_id": "VAR_MEMBER_RIGHT_UNVERIFIED",
+          "description": "移除会员加赠工单事实",
+          "change": {
+            "field": "case_input.service_tickets",
+            "from": [
+              "BH562082745370"
+            ],
+            "to": []
+          },
+          "expected_decision": "ALLOW",
+          "expected_rule_id": "E0_NO_RULE_MATCHED",
+          "expected_effect": "缺少工单事实时不得生成 ACTIVE 承诺；转为核实权益资格"
+        }
+      ],
+      "annotation_meta": {
+        "annotator": "A线",
+        "annotated_at": "2026-09-10",
+        "confidence": "MEDIUM",
+        "review_status": "FIRST_PASS",
+        "open_questions": [
+          "本案例与 S00007 同为「聊天提到的赠品不在订单赠品列」，但一个合法、一个冲突，区分依据是工单事实与售后原因。建议复审时确认该判别口径已写入 B 线的导入实现。"
+        ]
+      },
+      "expected_ledger_assertions": {
+        "case_status": "IN_FULFILLMENT",
+        "consumer_input_required": false,
+        "next_check_at": "2026-05-10T22:23:28+08:00",
+        "prohibited_actions": [
+          "ASK_SAME_EVIDENCE",
+          "ASK_REPEAT_EXPLANATION",
+          "CLOSE_BEFORE_RESOLUTION"
+        ],
+        "note": "补发换货类责任，与 P0 账本 obligation_type const 一致。"
+      }
+    },
+    {
+      "annotation_id": "ANN_DEV_20",
+      "case_id": "S00016",
+      "split": "DEV_REGRESSION",
+      "is_hero": false,
+      "scene": {
+        "major": "订单服务",
+        "minor": "退款进度查询"
+      },
+      "source_trace": {
+        "dataset": "TIANCHI_LOREAL_TRACK1_MOCK",
+        "session_id": "S00016",
+        "chat_rows": "聊天记录!A112:R115",
+        "order_rows": "订单!A17:S17",
+        "ticket_rows": null,
+        "image_reference_paths": []
+      },
+      "known_facts": {
+        "order_verified": true,
+        "issue_explained": true,
+        "evidence_submitted": false,
+        "statements": [
+          "消费者：订单6920470451725491723的退款咋还没到账啊，都两天了（72389479219117.PNM）",
+          "客服核实退款 5.05 元已于昨日原路退回，银行渠道 1-3 个工作日到账（13423666202904.PNM）",
+          "消费者确认已收到银行短信（56900795330957.PNM）"
+        ],
+        "system_facts": [
+          "订单 6920470451725491723，商品 XL10501 测试舒缓修护面霜50ml ×1，订单状态「交易关闭」",
+          "订单无赠品，无发货时间与物流单号",
+          "该会话没有关联工单"
+        ]
+      },
+      "existing_evidence": {
+        "has_image": false,
+        "evidence_items": [],
+        "evidence_closed": true
+      },
+      "evidence_coverage": {
+        "annotation_level": "PATH_REFERENCE_ONLY",
+        "covered": [],
+        "missing": [],
+        "scope_consistency": "IN_SCOPE",
+        "expected_evidence_status": "VALID",
+        "note": "本案例是 20 例中最短的会话（4 条），只有订单事实、没有工单与证据。退款状态查询不涉及证据复用，用于验证 E0 基线路径与「无工单」边界。"
+      },
+      "promise_annotations": [
+        {
+          "raw_text": "亲亲，查到您的退款5.05元已于昨日原路退回，银行卡支付一般1-3个工作日到账，请您留意银行到账短信哦~",
+          "source_message_id": "13423666202904.PNM",
+          "committed_at": "2026-05-05T16:47:43+08:00",
+          "promise_type": "SERVICE_UPDATE_TIMING",
+          "commitment_class": "STANDARD_APPROVED",
+          "activation_status": "ACTIVE",
+          "deadline": "2026-05-08T16:47:43+08:00",
+          "conditions": [
+            "银行渠道到账时效"
+          ],
+          "confidence": 0.85
+        }
+      ],
+      "journey_annotation": {
+        "consumer_intent": "确认退款是否已经到账",
+        "experience_expression": "你好，订单6920470451725491723的退款咋还没到账啊，都两天了",
+        "service_cause": "银行渠道到账延迟导致消费者产生不确定感，需要人工确认一次",
+        "latent_need": "有人直接告诉他款项状态，而不是让他自己去查",
+        "cooperation_willingness": "STABLE",
+        "action_impact": "无需拦截；动作指向退款状态说明与到账时效告知",
+        "source_ids": [
+          "72389479219117.PNM",
+          "13423666202904.PNM",
+          "56900795330957.PNM"
+        ]
+      },
+      "responsibility": {
+        "creates_obligation": false,
+        "obligation_type": null,
+        "responsible_party": null,
+        "executor": null,
+        "current_milestone": null,
+        "next_check_at": null,
+        "completion_condition": "退款已到账（消费者已确认），无需新建服务责任"
+      },
+      "prohibited_actions": [
+        "CLOSE_BEFORE_RESOLUTION"
+      ],
+      "recommended_resolution": {
+        "candidate_type": "CHECK_REPLACEMENT_PROGRESS",
+        "primary_action": "说明退款状态与到账时效",
+        "secondary_action": "生成标准回复",
+        "conditional_action": "超时未到账则转线下打款核实",
+        "requires_human_approval": false
+      },
+      "reference_prepared_action": {
+        "action_type": "CHECK_REPLACEMENT_PROGRESS",
+        "requested_scope_sku_id": "XL10501",
+        "requested_scope_issue_type": "PACKAGE_DAMAGE",
+        "requires_human_approval": false,
+        "rationale": "本案例不涉及索证动作，改用生成回复动作作为参考动作，用于验证 E0 基线（对应验收 A15）"
+      },
+      "expected_decision": {
+        "decision": "ALLOW",
+        "rule_id": "E0_NO_RULE_MATCHED",
+        "rule_priority": 0,
+        "suppressed_rule_ids": [],
+        "evidence_status": "VALID",
+        "reason_zh": "无禁止项、无有效承诺待履行、不涉及证据复用或高风险边界；动作未命中任何规则，返回 E0_NO_RULE_MATCHED 并保留完整事实追踪，这不是报错。"
+      },
+      "challenge_variants": [
+        {
+          "variant_id": "VAR_REFUND_NOT_ARRIVED",
+          "description": "把退款改为超时未到账",
+          "change": {
+            "field": "conversation[1].text",
+            "from": "退款5.05元已于昨日原路退回",
+            "to": "退款仍未到账，需要走线下打款补付"
+          },
+          "expected_decision": "ALLOW",
+          "expected_rule_id": "E0_NO_RULE_MATCHED",
+          "expected_effect": "转为资金类人工审批，规则层仍不误拦截"
+        }
+      ],
+      "annotation_meta": {
+        "annotator": "A线",
+        "annotated_at": "2026-09-10",
+        "confidence": "HIGH",
+        "review_status": "FIRST_PASS",
+        "open_questions": []
+      },
+      "expected_ledger_assertions": {
+        "case_status": "READY_FOR_BRAND",
+        "consumer_input_required": false,
+        "next_check_at": null,
+        "prohibited_actions": [
+          "CLOSE_BEFORE_RESOLUTION"
+        ],
+        "note": "补发换货类责任，与 P0 账本 obligation_type const 一致。"
+      }
+    }
+  ],
+  "annotation_meta": {
+    "annotator": "A线 数据与调研",
+    "annotated_at": "2026-09-10",
+    "review_status": "FIRST_PASS",
+    "review_plan": "9/12–9/18 由非标注人执行第二遍复审，见 03-标注字段定义与标注规范.md 第 6 节",
+    "next_batch": "留出集 10 例（S00137、S00039、S00108、S00006、S00053、S00044、S00268、S00037、S00040、S00232）在 9/19–9/25 完成标注",
+    "notes": [
+      "本批 20 例全部来自赛事官方 Mock 数据，未新增任何团队扩充内容。",
+      "证据覆盖字段的标注级别统一为 PATH_REFERENCE_ONLY，待团队合成图片素材就绪后由多模态模型观察结果回填并升级。",
+      "本文件与 fixtures/ground-truth.json 相互独立，不得合并。"
+    ]
+  },
+  "contract_value_mapping": {
+    "prepared_action_type": {
+      "allowed_by_schema": [
+        "ASK_EVIDENCE",
+        "CHECK_REPLACEMENT_PROGRESS",
+        "CREATE_FOLLOW_UP_TASK",
+        "CLOSE_CASE"
+      ],
+      "note": "本标注集的 reference_prepared_action.action_type 只使用上述四个合法值。"
+    },
+    "requested_scope_expansion": {
+      "rule": "reference_prepared_action 中的 requested_scope_sku_id / requested_scope_issue_type 展开为完整 requested_scope：{order_id: 该案例订单号, fulfillment_item_id: \"{order_id}-{sku_id}\", sku_id: requested_scope_sku_id, issue_type: requested_scope_issue_type}",
+      "ref": "schemas/prepared-action.schema.json（ASK_EVIDENCE 时 requested_scope 必填）"
+    },
+    "resolution_candidate_type": {
+      "contract_enum": [
+        "CHECK_REPLACEMENT_FULFILLMENT",
+        "ASK_CURRENT_SCOPE_EVIDENCE",
+        "HUMAN_EVIDENCE_REVIEW"
+      ],
+      "annotation_layer_values": {
+        "CHECK_REPLACEMENT_FULFILLMENT": "CHECK_REPLACEMENT_FULFILLMENT",
+        "CHECK_REPLACEMENT_PROGRESS": "CHECK_REPLACEMENT_FULFILLMENT",
+        "ASK_CURRENT_SCOPE_EVIDENCE": "ASK_CURRENT_SCOPE_EVIDENCE",
+        "HUMAN_EVIDENCE_REVIEW": "HUMAN_EVIDENCE_REVIEW",
+        "HUMAN_ADVERSE_REACTION_HANDOFF": "HUMAN_EVIDENCE_REVIEW",
+        "VERIFY_EMPTY_PARCEL_CLAIM": "HUMAN_EVIDENCE_REVIEW",
+        "OFFLINE_PAYMENT_REVIEW": "HUMAN_EVIDENCE_REVIEW",
+        "RETURN_FLOW_GUIDANCE": "ASK_CURRENT_SCOPE_EVIDENCE"
+      },
+      "note": "recommended_resolution.candidate_type 是标注层建议，取值范围大于 DecisionResult 契约枚举；使用时按本表映射到契约值。"
+    },
+    "obligation_type": {
+      "contract_const": "REPLACEMENT_FULFILLMENT",
+      "annotation_layer_values": [
+        "REPLACEMENT_FULFILLMENT",
+        "OFFLINE_PAYMENT",
+        "RETURN_HANDLING",
+        "ADVERSE_REACTION_HANDOFF"
+      ],
+      "note": "annotation 层的 obligation_type 描述案例中的服务责任种类；写入 AccountabilityState.open_obligation 时 P0 只允许 REPLACEMENT_FULFILLMENT。"
+    },
+    "prohibited_actions": {
+      "contract_enum": [
+        "ASK_SAME_EVIDENCE",
+        "ASK_REPEAT_EXPLANATION",
+        "SHIFT_FOLLOW_UP_TO_CONSUMER",
+        "MAKE_UNTRACKABLE_PROMISE",
+        "CLOSE_BEFORE_RESOLUTION"
+      ],
+      "note": "docs/03-firewall-rules.md 的映射表只列出 4 项（缺 MAKE_UNTRACKABLE_PROMISE），Schema 有 5 项，需产品负责人统一。本标注集使用 Schema 的 5 值枚举。"
+    }
+  }
+}

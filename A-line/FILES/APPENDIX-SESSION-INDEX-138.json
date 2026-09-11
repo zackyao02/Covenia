@@ -1,0 +1,4025 @@
+{
+ "index_id": "A_SESSION_INDEX_138",
+ "version": "1.0.0",
+ "generated_at": "2026-09-10",
+ "owner": "A线 数据与调研",
+ "purpose": "138 个赛事会话的全量索引，含订单与工单关联、图片引用、案例选定状态。供 B 线导入层校验与 D 线验收使用。",
+ "ground_truth_notice": "本文件是 Ground Truth 的附属索引，不得作为运行输入。",
+ "source_dataset": "TIANCHI_LOREAL_TRACK1_MOCK",
+ "counts": {
+  "sessions": 138,
+  "with_order": 113,
+  "with_ticket": 80,
+  "with_image": 29,
+  "dev_regression": 20,
+  "held_out": 10,
+  "pool_not_selected": 108
+ },
+ "sessions": [
+  {
+   "session_id": "S00001",
+   "split": "DEV_REGRESSION",
+   "chat_rows": "聊天记录!A2:R7",
+   "message_count": 6,
+   "scene_major": "补发换货",
+   "scene_minor": "破损换货",
+   "order_id": "6920185815517983396",
+   "order_rows": "订单!A45:S45",
+   "sku_id": "XC33003",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试B5面膜体验装2片",
+   "order_status": "已发货",
+   "original_logistics_number": "773478190943155",
+   "has_image": true,
+   "image_path_category": "broken_pump",
+   "image_reference_paths": [
+    "mock_images/broken_pump/S00001_03.jpg"
+   ],
+   "tickets": [
+    {
+     "ticket_type": "REPLACEMENT",
+     "ticket_id": "BH919209358357",
+     "source_sheet": "补发换货工单",
+     "row": 10,
+     "status": "进行中",
+     "reason": "换货-到手破损",
+     "assignee_id": "G003",
+     "created_at": "2026-05-05 10:29:45",
+     "completed_at": null,
+     "replacement_logistics_number": "YT7667875838478"
+    }
+   ]
+  },
+  {
+   "session_id": "S00002",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A8:R15",
+   "message_count": 8,
+   "scene_major": "产品咨询",
+   "scene_minor": "套装搭配推荐",
+   "order_id": null,
+   "order_rows": null,
+   "sku_id": null,
+   "item_role_summary": [],
+   "gift_name": null,
+   "order_status": null,
+   "original_logistics_number": null,
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00003",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A16:R22",
+   "message_count": 7,
+   "scene_major": "订单服务",
+   "scene_minor": "保价申请被拒",
+   "order_id": "6920186002093740058",
+   "order_rows": "订单!A36:S36",
+   "sku_id": "XW45001",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "交易成功",
+   "original_logistics_number": "SF1665939129882",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00004",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A23:R29",
+   "message_count": 7,
+   "scene_major": "补发换货",
+   "scene_minor": "错发色号",
+   "order_id": "6920906372438643491",
+   "order_rows": "订单!A27:S27",
+   "sku_id": "XC30101",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试舒缓面霜中样15ml",
+   "order_status": "已发货",
+   "original_logistics_number": "463435373928579",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "REPLACEMENT",
+     "ticket_id": "BH699081699885",
+     "source_sheet": "补发换货工单",
+     "row": 17,
+     "status": "已完结",
+     "reason": "换货-错发色号",
+     "assignee_id": "A03",
+     "created_at": "2026-05-05 12:40:20",
+     "completed_at": "2026-05-05 16:28:20",
+     "replacement_logistics_number": "773788296066113"
+    }
+   ]
+  },
+  {
+   "session_id": "S00005",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A30:R35",
+   "message_count": 6,
+   "scene_major": "订单服务",
+   "scene_minor": "退款迟迟不到账",
+   "order_id": "6920223542160114724",
+   "order_rows": "订单!A24:S24",
+   "sku_id": "XL20401",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试丝绒唇釉小样1.2g",
+   "order_status": "交易关闭",
+   "original_logistics_number": null,
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00006",
+   "split": "HELD_OUT",
+   "chat_rows": "聊天记录!A36:R43",
+   "message_count": 8,
+   "scene_major": "物流异常",
+   "scene_minor": "包裹少件",
+   "order_id": "6920163607220643752",
+   "order_rows": "订单!A53:S53",
+   "sku_id": "XW45001",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试舒缓面霜中样15ml",
+   "order_status": "已发货",
+   "original_logistics_number": "YT7647522345408",
+   "has_image": true,
+   "image_path_category": "short_item",
+   "image_reference_paths": [
+    "mock_images/short_item/S00006_04.jpg"
+   ],
+   "tickets": [
+    {
+     "ticket_type": "LOGISTICS",
+     "ticket_id": "WL190449095",
+     "source_sheet": "物流工单",
+     "row": 7,
+     "status": "工单组处理",
+     "reason": "已收-货物短少(少件)",
+     "assignee_id": "G001",
+     "created_at": "2026-05-05 12:27:42",
+     "completed_at": null,
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00007",
+   "split": "DEV_REGRESSION",
+   "chat_rows": "聊天记录!A44:R49",
+   "message_count": 6,
+   "scene_major": "补发换货",
+   "scene_minor": "漏发赠品",
+   "order_id": "6920080450685916204",
+   "order_rows": "订单!A26:S26",
+   "sku_id": "XL19805",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试丝绒唇釉小样1.2g",
+   "order_status": "预售-已发货",
+   "original_logistics_number": "773480511527138",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "REPLACEMENT",
+     "ticket_id": "BH142092289687",
+     "source_sheet": "补发换货工单",
+     "row": 6,
+     "status": "已完结",
+     "reason": "补发-漏发赠品",
+     "assignee_id": "A02",
+     "created_at": "2026-05-05 13:25:28",
+     "completed_at": "2026-05-05 14:46:28",
+     "replacement_logistics_number": "463400704026468"
+    }
+   ]
+  },
+  {
+   "session_id": "S00008",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A50:R55",
+   "message_count": 6,
+   "scene_major": "产品咨询",
+   "scene_minor": "正品鉴别咨询",
+   "order_id": "6920931187555789136",
+   "order_rows": "订单!A10:S10",
+   "sku_id": "XC30903",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试丝绒唇釉小样1.2g",
+   "order_status": "交易成功",
+   "original_logistics_number": "YT7646455340612",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00009",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A56:R65",
+   "message_count": 10,
+   "scene_major": "物流异常",
+   "scene_minor": "显示签收未收到",
+   "order_id": "6920252612630995076",
+   "order_rows": "订单!A28:S28",
+   "sku_id": "XW40503",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "已发货",
+   "original_logistics_number": "773766290769689",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "LOGISTICS",
+     "ticket_id": "WL991067160",
+     "source_sheet": "物流工单",
+     "row": 6,
+     "status": "已完结",
+     "reason": "已收-显示签收未收到",
+     "assignee_id": "B12",
+     "created_at": "2026-05-05 14:20:03",
+     "completed_at": "2026-05-05 18:08:03",
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00010",
+   "split": "DEV_REGRESSION",
+   "chat_rows": "聊天记录!A66:R75",
+   "message_count": 10,
+   "scene_major": "不良反应",
+   "scene_minor": "泛红刺痒",
+   "order_id": "6920932618149621705",
+   "order_rows": "订单!A11:S11",
+   "sku_id": "XL22002",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试卸妆棉便携装20片",
+   "order_status": "交易成功",
+   "original_logistics_number": "SF1636810083598",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "ADVERSE_REACTION",
+     "ticket_id": "BLFY49330652",
+     "source_sheet": "不良反应工单",
+     "row": 5,
+     "status": "待处理",
+     "reason": "线上",
+     "assignee_id": "B12",
+     "created_at": "2026-05-05 15:10:33",
+     "completed_at": null,
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00011",
+   "split": "DEV_REGRESSION",
+   "chat_rows": "聊天记录!A76:R82",
+   "message_count": 7,
+   "scene_major": "物流异常",
+   "scene_minor": "包裹破损",
+   "order_id": "6920654901868624795",
+   "order_rows": "订单!A80:S80",
+   "sku_id": "XL10501",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试B5面膜体验装2片",
+   "order_status": "已发货",
+   "original_logistics_number": "SF1610733162312",
+   "has_image": true,
+   "image_path_category": "broken_parcel",
+   "image_reference_paths": [
+    "mock_images/broken_parcel/S00011_03.jpg"
+   ],
+   "tickets": [
+    {
+     "ticket_type": "LOGISTICS",
+     "ticket_id": "WL101842381",
+     "source_sheet": "物流工单",
+     "row": 2,
+     "status": "工单组处理",
+     "reason": "已收-货物破损",
+     "assignee_id": "A05",
+     "created_at": "2026-05-05 15:51:33",
+     "completed_at": null,
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00012",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A83:R89",
+   "message_count": 7,
+   "scene_major": "订单服务",
+   "scene_minor": "预售尾款咨询",
+   "order_id": "6920779722072565829",
+   "order_rows": "订单!A55:S55",
+   "sku_id": "XL19805",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试积雪草修护霜小样10ml",
+   "order_status": "预售-待付尾款",
+   "original_logistics_number": null,
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00013",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A90:R97",
+   "message_count": 8,
+   "scene_major": "产品咨询",
+   "scene_minor": "优惠与赠品咨询",
+   "order_id": null,
+   "order_rows": null,
+   "sku_id": null,
+   "item_role_summary": [],
+   "gift_name": null,
+   "order_status": null,
+   "original_logistics_number": null,
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00014",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A98:R102",
+   "message_count": 5,
+   "scene_major": "物流服务",
+   "scene_minor": "物流查询",
+   "order_id": "6920361931428337283",
+   "order_rows": "订单!A67:S67",
+   "sku_id": "XL22002",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "已发货",
+   "original_logistics_number": "463434884597278",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00015",
+   "split": "DEV_REGRESSION",
+   "chat_rows": "聊天记录!A103:R111",
+   "message_count": 9,
+   "scene_major": "不良反应",
+   "scene_minor": "过敏就医",
+   "order_id": "6920797553890280371",
+   "order_rows": "订单!A12:S12",
+   "sku_id": "XL22002",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "交易成功",
+   "original_logistics_number": "773742029650001",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "ADVERSE_REACTION",
+     "ticket_id": "BLFY61738711",
+     "source_sheet": "不良反应工单",
+     "row": 10,
+     "status": "已完结",
+     "reason": "线上",
+     "assignee_id": "G001",
+     "created_at": "2026-05-05 17:13:33",
+     "completed_at": "2026-05-05 23:56:33",
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00016",
+   "split": "DEV_REGRESSION",
+   "chat_rows": "聊天记录!A112:R115",
+   "message_count": 4,
+   "scene_major": "订单服务",
+   "scene_minor": "退款进度查询",
+   "order_id": "6920470451725491723",
+   "order_rows": "订单!A17:S17",
+   "sku_id": "XL10501",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "交易关闭",
+   "original_logistics_number": null,
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00017",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A116:R122",
+   "message_count": 7,
+   "scene_major": "订单服务",
+   "scene_minor": "预售尾款咨询",
+   "order_id": "6920343456060211393",
+   "order_rows": "订单!A69:S69",
+   "sku_id": "XL19805",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "预售-待付尾款",
+   "original_logistics_number": null,
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00018",
+   "split": "DEV_REGRESSION",
+   "chat_rows": "聊天记录!A123:R130",
+   "message_count": 8,
+   "scene_major": "补发换货",
+   "scene_minor": "错发色号",
+   "order_id": "6920842605036203732",
+   "order_rows": "订单!A35:S35",
+   "sku_id": "XC30111",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试B5面膜体验装2片",
+   "order_status": "已发货",
+   "original_logistics_number": "YT7601736867218",
+   "has_image": true,
+   "image_path_category": "wrong_shade",
+   "image_reference_paths": [
+    "mock_images/wrong_shade/S00018_03.jpg"
+   ],
+   "tickets": [
+    {
+     "ticket_type": "REPLACEMENT",
+     "ticket_id": "BH697811247059",
+     "source_sheet": "补发换货工单",
+     "row": 7,
+     "status": "已完结",
+     "reason": "换货-错发色号",
+     "assignee_id": "B12",
+     "created_at": "2026-05-05 20:38:07",
+     "completed_at": "2026-05-05 23:36:07",
+     "replacement_logistics_number": "773778741362921"
+    }
+   ]
+  },
+  {
+   "session_id": "S00019",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A131:R138",
+   "message_count": 8,
+   "scene_major": "产品咨询",
+   "scene_minor": "色号选择",
+   "order_id": null,
+   "order_rows": null,
+   "sku_id": null,
+   "item_role_summary": [],
+   "gift_name": null,
+   "order_status": null,
+   "original_logistics_number": null,
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00020",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A139:R145",
+   "message_count": 7,
+   "scene_major": "补发换货",
+   "scene_minor": "漏发赠品",
+   "order_id": "6920701895536536178",
+   "order_rows": "订单!A49:S49",
+   "sku_id": "XL19806",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "预售-已发货",
+   "original_logistics_number": "SF1636894449902",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "REPLACEMENT",
+     "ticket_id": "BH689247868745",
+     "source_sheet": "补发换货工单",
+     "row": 18,
+     "status": "已完结",
+     "reason": "补发-漏发赠品",
+     "assignee_id": "B12",
+     "created_at": "2026-05-05 21:55:14",
+     "completed_at": "2026-05-05 23:22:14",
+     "replacement_logistics_number": "773757564058606"
+    }
+   ]
+  },
+  {
+   "session_id": "S00021",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A146:R150",
+   "message_count": 5,
+   "scene_major": "订单服务",
+   "scene_minor": "退款进度查询",
+   "order_id": "6920983614862636274",
+   "order_rows": "订单!A16:S16",
+   "sku_id": "XL10153",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "交易关闭",
+   "original_logistics_number": null,
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00022",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A151:R158",
+   "message_count": 8,
+   "scene_major": "产品咨询",
+   "scene_minor": "成分与肤质适配",
+   "order_id": null,
+   "order_rows": null,
+   "sku_id": null,
+   "item_role_summary": [],
+   "gift_name": null,
+   "order_status": null,
+   "original_logistics_number": null,
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00023",
+   "split": "DEV_REGRESSION",
+   "chat_rows": "聊天记录!A159:R166",
+   "message_count": 8,
+   "scene_major": "物流异常",
+   "scene_minor": "包裹少件",
+   "order_id": "6920381227503627930",
+   "order_rows": "订单!A31:S31",
+   "sku_id": "XC30903",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试卸妆棉便携装20片",
+   "order_status": "已发货",
+   "original_logistics_number": "463478499903000",
+   "has_image": true,
+   "image_path_category": "short_item",
+   "image_reference_paths": [
+    "mock_images/short_item/S00023_04.jpg"
+   ],
+   "tickets": [
+    {
+     "ticket_type": "LOGISTICS",
+     "ticket_id": "WL698348054",
+     "source_sheet": "物流工单",
+     "row": 9,
+     "status": "工单组处理",
+     "reason": "已收-货物短少(少件)",
+     "assignee_id": "G002",
+     "created_at": "2026-05-05 22:00:16",
+     "completed_at": null,
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00024",
+   "split": "DEV_REGRESSION",
+   "chat_rows": "聊天记录!A167:R173",
+   "message_count": 7,
+   "scene_major": "售后退货",
+   "scene_minor": "仅退款疑似异常",
+   "order_id": "6920681898386530047",
+   "order_rows": "订单!A52:S52",
+   "sku_id": "XL19806",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "预售-已发货",
+   "original_logistics_number": "SF1608199997186",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "RETURN",
+     "ticket_id": "KOC3195289",
+     "source_sheet": "售后退货工单",
+     "row": 2,
+     "status": "处理中",
+     "reason": "仅退款-空包裹(待核实)",
+     "assignee_id": "G002",
+     "created_at": "2026-05-05 22:15:52",
+     "completed_at": null,
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00025",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A174:R181",
+   "message_count": 8,
+   "scene_major": "产品咨询",
+   "scene_minor": "优惠与赠品咨询",
+   "order_id": null,
+   "order_rows": null,
+   "sku_id": null,
+   "item_role_summary": [],
+   "gift_name": null,
+   "order_status": null,
+   "original_logistics_number": null,
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00026",
+   "split": "DEV_REGRESSION",
+   "chat_rows": "聊天记录!A182:R190",
+   "message_count": 9,
+   "scene_major": "售后退货",
+   "scene_minor": "七天无理由退货",
+   "order_id": "6920288797534357965",
+   "order_rows": "订单!A42:S42",
+   "sku_id": "XW45001",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "已发货",
+   "original_logistics_number": "YT7634476026418",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "RETURN",
+     "ticket_id": "KOC2683305",
+     "source_sheet": "售后退货工单",
+     "row": 13,
+     "status": "处理中",
+     "reason": "不想要了",
+     "assignee_id": "A02",
+     "created_at": "2026-05-05 22:45:27",
+     "completed_at": null,
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00027",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A191:R196",
+   "message_count": 6,
+   "scene_major": "补发换货",
+   "scene_minor": "漏发赠品",
+   "order_id": "6920673361421035519",
+   "order_rows": "订单!A34:S34",
+   "sku_id": "XL21205",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试丝绒唇釉小样1.2g",
+   "order_status": "已发货",
+   "original_logistics_number": "YT7676828813837",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "REPLACEMENT",
+     "ticket_id": "BH879131096583",
+     "source_sheet": "补发换货工单",
+     "row": 13,
+     "status": "已完结",
+     "reason": "补发-漏发赠品",
+     "assignee_id": "A03",
+     "created_at": "2026-05-05 23:27:29",
+     "completed_at": "2026-05-06 02:04:29",
+     "replacement_logistics_number": "773726805401445"
+    }
+   ]
+  },
+  {
+   "session_id": "S00028",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A197:R205",
+   "message_count": 9,
+   "scene_major": "物流异常",
+   "scene_minor": "拦截改址",
+   "order_id": "6920221908704748785",
+   "order_rows": "订单!A63:S63",
+   "sku_id": "XW40503",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "已发货",
+   "original_logistics_number": "773728063808753",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "LOGISTICS",
+     "ticket_id": "WL643271665",
+     "source_sheet": "物流工单",
+     "row": 12,
+     "status": "仓库处理",
+     "reason": "在途-拦截改址",
+     "assignee_id": "B07",
+     "created_at": "2026-05-05 23:12:57",
+     "completed_at": null,
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00029",
+   "split": "DEV_REGRESSION",
+   "chat_rows": "聊天记录!A206:R213",
+   "message_count": 8,
+   "scene_major": "退款打款",
+   "scene_minor": "退款金额少退补打",
+   "order_id": "6920316481414437285",
+   "order_rows": "订单!A3:S3",
+   "sku_id": "XL19806",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试积雪草修护霜小样10ml",
+   "order_status": "预售-交易成功",
+   "original_logistics_number": "773415850905356",
+   "has_image": true,
+   "image_path_category": "refund_screenshot",
+   "image_reference_paths": [
+    "mock_images/refund_screenshot/S00029_06.jpg"
+   ],
+   "tickets": [
+    {
+     "ticket_type": "OFFLINE_PAYMENT",
+     "ticket_id": "HV7607477945",
+     "source_sheet": "线下打款工单",
+     "row": 6,
+     "status": "已完结",
+     "reason": "少退/漏退补退",
+     "assignee_id": "A05",
+     "created_at": "2026-05-05 23:21:56",
+     "completed_at": "2026-05-06 06:24:56",
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00030",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A214:R217",
+   "message_count": 4,
+   "scene_major": "其他服务",
+   "scene_minor": "好评回访",
+   "order_id": "6920257770434007452",
+   "order_rows": "订单!A14:S14",
+   "sku_id": "XL21205",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "交易成功",
+   "original_logistics_number": "463445493710141",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00031",
+   "split": "DEV_REGRESSION",
+   "chat_rows": "聊天记录!A218:R225",
+   "message_count": 8,
+   "scene_major": "补发换货",
+   "scene_minor": "错发色号",
+   "order_id": "6920724864492688525",
+   "order_rows": "订单!A88:S88",
+   "sku_id": "XC30111",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试护发精油小样10ml",
+   "order_status": "已发货",
+   "original_logistics_number": "773724215072392",
+   "has_image": true,
+   "image_path_category": "wrong_shade",
+   "image_reference_paths": [
+    "mock_images/wrong_shade/S00031_03.jpg"
+   ],
+   "tickets": [
+    {
+     "ticket_type": "REPLACEMENT",
+     "ticket_id": "BH695419716917",
+     "source_sheet": "补发换货工单",
+     "row": 16,
+     "status": "已完结",
+     "reason": "换货-错发色号",
+     "assignee_id": "G001",
+     "created_at": "2026-05-06 10:43:03",
+     "completed_at": "2026-05-06 16:00:03",
+     "replacement_logistics_number": "463404120189246"
+    }
+   ]
+  },
+  {
+   "session_id": "S00032",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A226:R231",
+   "message_count": 6,
+   "scene_major": "订单服务",
+   "scene_minor": "退款迟迟不到账",
+   "order_id": "6920174711577070228",
+   "order_rows": "订单!A13:S13",
+   "sku_id": "XC30903",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试护发精油小样10ml",
+   "order_status": "交易关闭",
+   "original_logistics_number": null,
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00033",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A232:R239",
+   "message_count": 8,
+   "scene_major": "物流异常",
+   "scene_minor": "包裹少件",
+   "order_id": "6920675656664226609",
+   "order_rows": "订单!A44:S44",
+   "sku_id": "XW40503",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "已发货",
+   "original_logistics_number": "SF1601699080229",
+   "has_image": true,
+   "image_path_category": "short_item",
+   "image_reference_paths": [
+    "mock_images/short_item/S00033_04.jpg"
+   ],
+   "tickets": [
+    {
+     "ticket_type": "LOGISTICS",
+     "ticket_id": "WL120890165",
+     "source_sheet": "物流工单",
+     "row": 8,
+     "status": "已完结",
+     "reason": "已收-货物短少(少件)",
+     "assignee_id": "A01",
+     "created_at": "2026-05-06 14:43:52",
+     "completed_at": "2026-05-06 17:47:52",
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00034",
+   "split": "DEV_REGRESSION",
+   "chat_rows": "聊天记录!A240:R246",
+   "message_count": 7,
+   "scene_major": "订单服务",
+   "scene_minor": "直播间承诺纠纷",
+   "order_id": "6920272791550024041",
+   "order_rows": "订单!A84:S84",
+   "sku_id": "XL19805",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "预售-已发货",
+   "original_logistics_number": "773479980155421",
+   "has_image": true,
+   "image_path_category": "live_promise",
+   "image_reference_paths": [
+    "mock_images/live_promise/S00034_03.jpg"
+   ],
+   "tickets": [
+    {
+     "ticket_type": "REPLACEMENT",
+     "ticket_id": "BH758933100232",
+     "source_sheet": "补发换货工单",
+     "row": 24,
+     "status": "已完结",
+     "reason": "补发-直播承诺赠品",
+     "assignee_id": "A05",
+     "created_at": "2026-05-06 15:14:22",
+     "completed_at": "2026-05-06 19:56:22",
+     "replacement_logistics_number": "YT7673462127402"
+    }
+   ]
+  },
+  {
+   "session_id": "S00035",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A247:R253",
+   "message_count": 7,
+   "scene_major": "补发换货",
+   "scene_minor": "漏发赠品",
+   "order_id": "6920420870390416560",
+   "order_rows": "订单!A56:S56",
+   "sku_id": "XL10153",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试护发精油小样10ml",
+   "order_status": "已发货",
+   "original_logistics_number": "SF1643040082892",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "REPLACEMENT",
+     "ticket_id": "BH652810902299",
+     "source_sheet": "补发换货工单",
+     "row": 19,
+     "status": "已完结",
+     "reason": "补发-漏发赠品",
+     "assignee_id": "G001",
+     "created_at": "2026-05-06 15:07:11",
+     "completed_at": "2026-05-06 19:07:11",
+     "replacement_logistics_number": "773700160226927"
+    }
+   ]
+  },
+  {
+   "session_id": "S00036",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A254:R261",
+   "message_count": 8,
+   "scene_major": "产品咨询",
+   "scene_minor": "套装搭配推荐",
+   "order_id": null,
+   "order_rows": null,
+   "sku_id": null,
+   "item_role_summary": [],
+   "gift_name": null,
+   "order_status": null,
+   "original_logistics_number": null,
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00037",
+   "split": "HELD_OUT",
+   "chat_rows": "聊天记录!A262:R267",
+   "message_count": 6,
+   "scene_major": "补发换货",
+   "scene_minor": "漏发赠品",
+   "order_id": "6920674255353974071",
+   "order_rows": "订单!A54:S54",
+   "sku_id": "XL19805",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试舒缓面霜中样15ml",
+   "order_status": "预售-已发货",
+   "original_logistics_number": "773758197946187",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "REPLACEMENT",
+     "ticket_id": "BH121200223854",
+     "source_sheet": "补发换货工单",
+     "row": 5,
+     "status": "已完结",
+     "reason": "补发-漏发赠品",
+     "assignee_id": "G002",
+     "created_at": "2026-05-06 15:30:32",
+     "completed_at": "2026-05-06 20:02:32",
+     "replacement_logistics_number": "773432546241090"
+    }
+   ]
+  },
+  {
+   "session_id": "S00038",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A268:R274",
+   "message_count": 7,
+   "scene_major": "退款打款",
+   "scene_minor": "退货运费报销",
+   "order_id": "6920947277927059788",
+   "order_rows": "订单!A2:S2",
+   "sku_id": "XC33002",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试B5面膜体验装2片",
+   "order_status": "交易成功",
+   "original_logistics_number": "YT7696503801519",
+   "has_image": true,
+   "image_path_category": "refund_screenshot",
+   "image_reference_paths": [
+    "mock_images/refund_screenshot/S00038_04.jpg"
+   ],
+   "tickets": [
+    {
+     "ticket_type": "OFFLINE_PAYMENT",
+     "ticket_id": "HV5725862244",
+     "source_sheet": "线下打款工单",
+     "row": 2,
+     "status": "已完结",
+     "reason": "退退货运费",
+     "assignee_id": "G001",
+     "created_at": "2026-05-06 16:59:44",
+     "completed_at": "2026-05-06 20:02:44",
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00039",
+   "split": "HELD_OUT",
+   "chat_rows": "聊天记录!A275:R283",
+   "message_count": 9,
+   "scene_major": "补发换货",
+   "scene_minor": "错发色号",
+   "order_id": "6920907092800867709",
+   "order_rows": "订单!A78:S78",
+   "sku_id": "XC30101",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试护发精油小样10ml",
+   "order_status": "已发货",
+   "original_logistics_number": "SF1672716628838",
+   "has_image": true,
+   "image_path_category": "wrong_shade",
+   "image_reference_paths": [
+    "mock_images/wrong_shade/S00039_03.jpg"
+   ],
+   "tickets": [
+    {
+     "ticket_type": "REPLACEMENT",
+     "ticket_id": "BH712927465857",
+     "source_sheet": "补发换货工单",
+     "row": 25,
+     "status": "已完结",
+     "reason": "换货-错发色号",
+     "assignee_id": "A02",
+     "created_at": "2026-05-06 17:32:57",
+     "completed_at": "2026-05-06 22:20:57",
+     "replacement_logistics_number": "773426401477328"
+    }
+   ]
+  },
+  {
+   "session_id": "S00040",
+   "split": "HELD_OUT",
+   "chat_rows": "聊天记录!A284:R290",
+   "message_count": 7,
+   "scene_major": "售后退货",
+   "scene_minor": "仅退款疑似异常",
+   "order_id": "6920804559991914721",
+   "order_rows": "订单!A58:S58",
+   "sku_id": "XL11504",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试发膜体验装30ml",
+   "order_status": "已发货",
+   "original_logistics_number": "463484405568551",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "RETURN",
+     "ticket_id": "KOC5432473",
+     "source_sheet": "售后退货工单",
+     "row": 3,
+     "status": "已完结",
+     "reason": "仅退款-空包裹(待核实)",
+     "assignee_id": "A05",
+     "created_at": "2026-05-06 20:51:37",
+     "completed_at": "2026-05-07 02:34:37",
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00041",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A291:R297",
+   "message_count": 7,
+   "scene_major": "产品咨询",
+   "scene_minor": "比价与决策",
+   "order_id": null,
+   "order_rows": null,
+   "sku_id": null,
+   "item_role_summary": [],
+   "gift_name": null,
+   "order_status": null,
+   "original_logistics_number": null,
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00042",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A298:R304",
+   "message_count": 7,
+   "scene_major": "订单服务",
+   "scene_minor": "保价申请被拒",
+   "order_id": "6920692330341928503",
+   "order_rows": "订单!A61:S61",
+   "sku_id": "XW40503",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试卸妆棉便携装20片",
+   "order_status": "交易成功",
+   "original_logistics_number": "463462915105218",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00043",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A305:R311",
+   "message_count": 7,
+   "scene_major": "物流服务",
+   "scene_minor": "催发货",
+   "order_id": "6920230019870235610",
+   "order_rows": "订单!A106:S106",
+   "sku_id": "XL21204",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试积雪草修护霜小样10ml",
+   "order_status": "待发货",
+   "original_logistics_number": null,
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00044",
+   "split": "HELD_OUT",
+   "chat_rows": "聊天记录!A312:R320",
+   "message_count": 9,
+   "scene_major": "物流异常",
+   "scene_minor": "物流停滞疑似丢件",
+   "order_id": "6920550052814663911",
+   "order_rows": "订单!A74:S74",
+   "sku_id": "XC30111",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "已发货",
+   "original_logistics_number": "YT7694992980510",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "LOGISTICS",
+     "ticket_id": "WL631432408",
+     "source_sheet": "物流工单",
+     "row": 11,
+     "status": "已完结",
+     "reason": "在途-物流停滞超48小时",
+     "assignee_id": "G003",
+     "created_at": "2026-05-07 11:32:01",
+     "completed_at": "2026-05-07 14:53:01",
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00045",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A321:R325",
+   "message_count": 5,
+   "scene_major": "订单服务",
+   "scene_minor": "退款进度查询",
+   "order_id": "6920979756112183613",
+   "order_rows": "订单!A46:S46",
+   "sku_id": "XC30204",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "交易关闭",
+   "original_logistics_number": null,
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00046",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A326:R333",
+   "message_count": 8,
+   "scene_major": "退款打款",
+   "scene_minor": "退货运费报销",
+   "order_id": "6920230064007212002",
+   "order_rows": "订单!A4:S4",
+   "sku_id": "XW40503",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "交易成功",
+   "original_logistics_number": "SF1627416150982",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "OFFLINE_PAYMENT",
+     "ticket_id": "HV5972454959",
+     "source_sheet": "线下打款工单",
+     "row": 3,
+     "status": "已完结",
+     "reason": "退退货运费",
+     "assignee_id": "G001",
+     "created_at": "2026-05-07 12:27:28",
+     "completed_at": "2026-05-07 17:40:28",
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00047",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A334:R339",
+   "message_count": 6,
+   "scene_major": "产品咨询",
+   "scene_minor": "正品鉴别咨询",
+   "order_id": "6920495008855930915",
+   "order_rows": "订单!A7:S7",
+   "sku_id": "XC30101",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "交易成功",
+   "original_logistics_number": "463455165782520",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00048",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A340:R346",
+   "message_count": 7,
+   "scene_major": "订单服务",
+   "scene_minor": "退款迟迟不到账",
+   "order_id": "6920071889989423403",
+   "order_rows": "订单!A15:S15",
+   "sku_id": "XW40503",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "交易关闭",
+   "original_logistics_number": null,
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00049",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A347:R351",
+   "message_count": 5,
+   "scene_major": "物流服务",
+   "scene_minor": "物流查询",
+   "order_id": "6920931970463042905",
+   "order_rows": "订单!A73:S73",
+   "sku_id": "XL21205",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试护发精油小样10ml",
+   "order_status": "已发货",
+   "original_logistics_number": "SF1658736448323",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00050",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A352:R358",
+   "message_count": 7,
+   "scene_major": "物流异常",
+   "scene_minor": "包裹破损",
+   "order_id": "6920950249822526532",
+   "order_rows": "订单!A32:S32",
+   "sku_id": "XL19806",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试修护精华小样5ml",
+   "order_status": "预售-已发货",
+   "original_logistics_number": "SF1613835389285",
+   "has_image": true,
+   "image_path_category": "broken_parcel",
+   "image_reference_paths": [
+    "mock_images/broken_parcel/S00050_03.jpg"
+   ],
+   "tickets": [
+    {
+     "ticket_type": "LOGISTICS",
+     "ticket_id": "WL968485853",
+     "source_sheet": "物流工单",
+     "row": 15,
+     "status": "已完结",
+     "reason": "已收-货物破损",
+     "assignee_id": "G002",
+     "created_at": "2026-05-07 16:02:48",
+     "completed_at": "2026-05-07 22:26:48",
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00051",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A359:R368",
+   "message_count": 10,
+   "scene_major": "物流异常",
+   "scene_minor": "显示签收未收到",
+   "order_id": "6920660899105701722",
+   "order_rows": "订单!A64:S64",
+   "sku_id": "XL19806",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "预售-已发货",
+   "original_logistics_number": "773730377636933",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "LOGISTICS",
+     "ticket_id": "WL840101369",
+     "source_sheet": "物流工单",
+     "row": 14,
+     "status": "已完结",
+     "reason": "已收-显示签收未收到",
+     "assignee_id": "A01",
+     "created_at": "2026-05-07 16:04:03",
+     "completed_at": "2026-05-07 21:33:03",
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00052",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A369:R373",
+   "message_count": 5,
+   "scene_major": "订单服务",
+   "scene_minor": "退款进度查询",
+   "order_id": "6920067886399085171",
+   "order_rows": "订单!A38:S38",
+   "sku_id": "XL10302",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "交易关闭",
+   "original_logistics_number": null,
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00053",
+   "split": "HELD_OUT",
+   "chat_rows": "聊天记录!A374:R380",
+   "message_count": 7,
+   "scene_major": "退款打款",
+   "scene_minor": "大促价保补差",
+   "order_id": "6920432671071165790",
+   "order_rows": "订单!A79:S79",
+   "sku_id": "XC30903",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "交易成功",
+   "original_logistics_number": "773453102032756",
+   "has_image": true,
+   "image_path_category": "live_promise",
+   "image_reference_paths": [
+    "mock_images/live_promise/S00053_05.jpg"
+   ],
+   "tickets": [
+    {
+     "ticket_type": "OFFLINE_PAYMENT",
+     "ticket_id": "HV1579311943",
+     "source_sheet": "线下打款工单",
+     "row": 5,
+     "status": "进行中",
+     "reason": "价保补差",
+     "assignee_id": "G002",
+     "created_at": "2026-05-07 16:36:33",
+     "completed_at": null,
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00054",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A381:R387",
+   "message_count": 7,
+   "scene_major": "补发换货",
+   "scene_minor": "错发色号",
+   "order_id": "6920914367097434550",
+   "order_rows": "订单!A75:S75",
+   "sku_id": "XC30111",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试B5面膜体验装2片",
+   "order_status": "已发货",
+   "original_logistics_number": "463476385742006",
+   "has_image": true,
+   "image_path_category": "wrong_shade",
+   "image_reference_paths": [
+    "mock_images/wrong_shade/S00054_03.jpg"
+   ],
+   "tickets": [
+    {
+     "ticket_type": "REPLACEMENT",
+     "ticket_id": "BH331527974180",
+     "source_sheet": "补发换货工单",
+     "row": 8,
+     "status": "已完结",
+     "reason": "换货-错发色号",
+     "assignee_id": "A03",
+     "created_at": "2026-05-07 17:00:40",
+     "completed_at": "2026-05-07 22:51:40",
+     "replacement_logistics_number": "463448234213681"
+    }
+   ]
+  },
+  {
+   "session_id": "S00055",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A388:R394",
+   "message_count": 7,
+   "scene_major": "退款打款",
+   "scene_minor": "大促价保补差",
+   "order_id": "6920036676846030516",
+   "order_rows": "订单!A70:S70",
+   "sku_id": "XC30111",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "交易成功",
+   "original_logistics_number": "773430024612938",
+   "has_image": true,
+   "image_path_category": "live_promise",
+   "image_reference_paths": [
+    "mock_images/live_promise/S00055_05.jpg"
+   ],
+   "tickets": [
+    {
+     "ticket_type": "OFFLINE_PAYMENT",
+     "ticket_id": "HV8934839806",
+     "source_sheet": "线下打款工单",
+     "row": 10,
+     "status": "已完结",
+     "reason": "价保补差",
+     "assignee_id": "A05",
+     "created_at": "2026-05-07 17:21:39",
+     "completed_at": "2026-05-07 22:37:39",
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00056",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A395:R399",
+   "message_count": 5,
+   "scene_major": "订单服务",
+   "scene_minor": "退款进度查询",
+   "order_id": "6920990836092915322",
+   "order_rows": "订单!A30:S30",
+   "sku_id": "XL20401",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "交易关闭",
+   "original_logistics_number": null,
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00057",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A400:R404",
+   "message_count": 5,
+   "scene_major": "物流服务",
+   "scene_minor": "物流查询",
+   "order_id": "6920611177078328696",
+   "order_rows": "订单!A77:S77",
+   "sku_id": "XL19805",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试修护精华小样5ml",
+   "order_status": "预售-已发货",
+   "original_logistics_number": "SF1636197352711",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00058",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A405:R414",
+   "message_count": 10,
+   "scene_major": "不良反应",
+   "scene_minor": "泛红刺痒",
+   "order_id": "6920159387903549147",
+   "order_rows": "订单!A21:S21",
+   "sku_id": "XL22002",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试修护精华小样5ml",
+   "order_status": "交易成功",
+   "original_logistics_number": "YT7621627111359",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "ADVERSE_REACTION",
+     "ticket_id": "BLFY13780992",
+     "source_sheet": "不良反应工单",
+     "row": 11,
+     "status": "处理中",
+     "reason": "线上",
+     "assignee_id": "G001",
+     "created_at": "2026-05-07 18:01:31",
+     "completed_at": null,
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00059",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A415:R422",
+   "message_count": 8,
+   "scene_major": "售后退货",
+   "scene_minor": "仅退款疑似异常",
+   "order_id": "6920621990731110707",
+   "order_rows": "订单!A71:S71",
+   "sku_id": "XL22002",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "已发货",
+   "original_logistics_number": "SF1623842505817",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "RETURN",
+     "ticket_id": "KOC7263722",
+     "source_sheet": "售后退货工单",
+     "row": 15,
+     "status": "处理中",
+     "reason": "仅退款-空包裹(待核实)",
+     "assignee_id": "A01",
+     "created_at": "2026-05-07 18:15:52",
+     "completed_at": null,
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00060",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A423:R429",
+   "message_count": 7,
+   "scene_major": "订单服务",
+   "scene_minor": "保价申请被拒",
+   "order_id": "6920514762118795062",
+   "order_rows": "订单!A39:S39",
+   "sku_id": "XW45001",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "交易成功",
+   "original_logistics_number": "SF1643531588084",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00061",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A430:R434",
+   "message_count": 5,
+   "scene_major": "物流服务",
+   "scene_minor": "物流查询",
+   "order_id": "6920941632597572111",
+   "order_rows": "订单!A50:S50",
+   "sku_id": "XL21204",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "已发货",
+   "original_logistics_number": "YT7610684439096",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00062",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A435:R441",
+   "message_count": 7,
+   "scene_major": "物流服务",
+   "scene_minor": "催发货",
+   "order_id": "6920413704354349960",
+   "order_rows": "订单!A100:S100",
+   "sku_id": "XC30903",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试舒缓面霜中样15ml",
+   "order_status": "待发货",
+   "original_logistics_number": null,
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00063",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A442:R449",
+   "message_count": 8,
+   "scene_major": "物流异常",
+   "scene_minor": "物流停滞疑似丢件",
+   "order_id": "6920958371179868642",
+   "order_rows": "订单!A98:S98",
+   "sku_id": "XC30204",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "已发货",
+   "original_logistics_number": "773491055462115",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "LOGISTICS",
+     "ticket_id": "WL763619183",
+     "source_sheet": "物流工单",
+     "row": 10,
+     "status": "已完结",
+     "reason": "在途-物流停滞超48小时",
+     "assignee_id": "B07",
+     "created_at": "2026-05-07 21:16:18",
+     "completed_at": "2026-05-07 22:34:18",
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00064",
+   "split": "DEV_REGRESSION",
+   "chat_rows": "聊天记录!A450:R456",
+   "message_count": 7,
+   "scene_major": "补发换货",
+   "scene_minor": "少发正装",
+   "order_id": "6920154185938638662",
+   "order_rows": "订单!A62:S62",
+   "sku_id": "XL10501",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "已发货",
+   "original_logistics_number": "463428252415078",
+   "has_image": true,
+   "image_path_category": "missing_item",
+   "image_reference_paths": [
+    "mock_images/missing_item/S00064_03.jpg"
+   ],
+   "tickets": [
+    {
+     "ticket_type": "REPLACEMENT",
+     "ticket_id": "BH877117054803",
+     "source_sheet": "补发换货工单",
+     "row": 14,
+     "status": "已完结",
+     "reason": "补发-少发商品",
+     "assignee_id": "B07",
+     "created_at": "2026-05-07 21:14:31",
+     "completed_at": "2026-05-07 22:34:31",
+     "replacement_logistics_number": "773448633273401"
+    }
+   ]
+  },
+  {
+   "session_id": "S00065",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A457:R464",
+   "message_count": 8,
+   "scene_major": "补发换货",
+   "scene_minor": "少发正装",
+   "order_id": "6920589945455410994",
+   "order_rows": "订单!A92:S92",
+   "sku_id": "XL22002",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试B5面膜体验装2片",
+   "order_status": "已发货",
+   "original_logistics_number": "773777319662949",
+   "has_image": true,
+   "image_path_category": "missing_item",
+   "image_reference_paths": [
+    "mock_images/missing_item/S00065_03.jpg"
+   ],
+   "tickets": [
+    {
+     "ticket_type": "REPLACEMENT",
+     "ticket_id": "BH453897226151",
+     "source_sheet": "补发换货工单",
+     "row": 3,
+     "status": "已完结",
+     "reason": "补发-少发商品",
+     "assignee_id": "A05",
+     "created_at": "2026-05-08 09:42:38",
+     "completed_at": "2026-05-08 13:59:38",
+     "replacement_logistics_number": "YT7643943747787"
+    }
+   ]
+  },
+  {
+   "session_id": "S00066",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A465:R471",
+   "message_count": 7,
+   "scene_major": "订单服务",
+   "scene_minor": "预售尾款咨询",
+   "order_id": "6920360823571199809",
+   "order_rows": "订单!A94:S94",
+   "sku_id": "XL19806",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试护发精油小样10ml",
+   "order_status": "预售-待付尾款",
+   "original_logistics_number": null,
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00067",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A472:R479",
+   "message_count": 8,
+   "scene_major": "产品咨询",
+   "scene_minor": "色号选择",
+   "order_id": null,
+   "order_rows": null,
+   "sku_id": null,
+   "item_role_summary": [],
+   "gift_name": null,
+   "order_status": null,
+   "original_logistics_number": null,
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00068",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A480:R486",
+   "message_count": 7,
+   "scene_major": "售后退货",
+   "scene_minor": "使用不适退货",
+   "order_id": "6920887080308099214",
+   "order_rows": "订单!A93:S93",
+   "sku_id": "XL21204",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "已发货",
+   "original_logistics_number": "463424126607914",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "RETURN",
+     "ticket_id": "KOC3556428",
+     "source_sheet": "售后退货工单",
+     "row": 12,
+     "status": "已完结",
+     "reason": "使用后不适",
+     "assignee_id": "B12",
+     "created_at": "2026-05-08 10:17:24",
+     "completed_at": "2026-05-08 12:48:24",
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00069",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A487:R494",
+   "message_count": 8,
+   "scene_major": "产品咨询",
+   "scene_minor": "色号选择",
+   "order_id": null,
+   "order_rows": null,
+   "sku_id": null,
+   "item_role_summary": [],
+   "gift_name": null,
+   "order_status": null,
+   "original_logistics_number": null,
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00070",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A495:R503",
+   "message_count": 9,
+   "scene_major": "不良反应",
+   "scene_minor": "闷痘爆痘",
+   "order_id": "6920651249457349792",
+   "order_rows": "订单!A5:S5",
+   "sku_id": "XL10153",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试发膜体验装30ml",
+   "order_status": "交易成功",
+   "original_logistics_number": "SF1698592575375",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "ADVERSE_REACTION",
+     "ticket_id": "BLFY72189798",
+     "source_sheet": "不良反应工单",
+     "row": 6,
+     "status": "已完结",
+     "reason": "线上",
+     "assignee_id": "G001",
+     "created_at": "2026-05-08 12:02:35",
+     "completed_at": "2026-05-08 14:22:35",
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00071",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A504:R511",
+   "message_count": 8,
+   "scene_major": "退款打款",
+   "scene_minor": "大促价保补差",
+   "order_id": "6920359873712366198",
+   "order_rows": "订单!A86:S86",
+   "sku_id": "XL19806",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "预售-交易成功",
+   "original_logistics_number": "773474584950453",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "OFFLINE_PAYMENT",
+     "ticket_id": "HV7126972014",
+     "source_sheet": "线下打款工单",
+     "row": 9,
+     "status": "进行中",
+     "reason": "价保补差",
+     "assignee_id": "G003",
+     "created_at": "2026-05-08 12:08:48",
+     "completed_at": null,
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00072",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A512:R519",
+   "message_count": 8,
+   "scene_major": "退款打款",
+   "scene_minor": "退货运费报销",
+   "order_id": "6920880404719813361",
+   "order_rows": "订单!A23:S23",
+   "sku_id": "XL19806",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试舒缓面霜中样15ml",
+   "order_status": "预售-交易成功",
+   "original_logistics_number": "SF1675303933404",
+   "has_image": true,
+   "image_path_category": "refund_screenshot",
+   "image_reference_paths": [
+    "mock_images/refund_screenshot/S00072_04.jpg"
+   ],
+   "tickets": [
+    {
+     "ticket_type": "OFFLINE_PAYMENT",
+     "ticket_id": "HV7649616157",
+     "source_sheet": "线下打款工单",
+     "row": 11,
+     "status": "进行中",
+     "reason": "退退货运费",
+     "assignee_id": "A01",
+     "created_at": "2026-05-08 12:38:07",
+     "completed_at": null,
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00073",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A520:R527",
+   "message_count": 8,
+   "scene_major": "产品咨询",
+   "scene_minor": "成分与肤质适配",
+   "order_id": null,
+   "order_rows": null,
+   "sku_id": null,
+   "item_role_summary": [],
+   "gift_name": null,
+   "order_status": null,
+   "original_logistics_number": null,
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00074",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A528:R533",
+   "message_count": 6,
+   "scene_major": "补发换货",
+   "scene_minor": "漏发赠品",
+   "order_id": "6920870726042170818",
+   "order_rows": "订单!A96:S96",
+   "sku_id": "XL10302",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试舒缓面霜中样15ml",
+   "order_status": "已发货",
+   "original_logistics_number": "463491979814968",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "REPLACEMENT",
+     "ticket_id": "BH218088700239",
+     "source_sheet": "补发换货工单",
+     "row": 22,
+     "status": "已完结",
+     "reason": "补发-漏发赠品",
+     "assignee_id": "G003",
+     "created_at": "2026-05-08 13:39:52",
+     "completed_at": "2026-05-08 16:37:52",
+     "replacement_logistics_number": "773726640127374"
+    }
+   ]
+  },
+  {
+   "session_id": "S00075",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A534:R543",
+   "message_count": 10,
+   "scene_major": "物流异常",
+   "scene_minor": "显示签收未收到",
+   "order_id": "6920980177556899249",
+   "order_rows": "订单!A81:S81",
+   "sku_id": "XC30111",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试B5面膜体验装2片",
+   "order_status": "已发货",
+   "original_logistics_number": "773428544587081",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "LOGISTICS",
+     "ticket_id": "WL885208335",
+     "source_sheet": "物流工单",
+     "row": 16,
+     "status": "已完结",
+     "reason": "已收-显示签收未收到",
+     "assignee_id": "A02",
+     "created_at": "2026-05-08 14:34:40",
+     "completed_at": "2026-05-08 16:10:40",
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00076",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A544:R552",
+   "message_count": 9,
+   "scene_major": "售后退货",
+   "scene_minor": "质疑正品退货",
+   "order_id": "6920527885849331832",
+   "order_rows": "订单!A76:S76",
+   "sku_id": "XC33003",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试修护精华小样5ml",
+   "order_status": "已发货",
+   "original_logistics_number": "773766140701841",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "RETURN",
+     "ticket_id": "KOC2531140",
+     "source_sheet": "售后退货工单",
+     "row": 11,
+     "status": "已完结",
+     "reason": "协商一致退款",
+     "assignee_id": "G001",
+     "created_at": "2026-05-08 16:03:30",
+     "completed_at": "2026-05-08 21:36:30",
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00077",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A553:R556",
+   "message_count": 4,
+   "scene_major": "物流服务",
+   "scene_minor": "物流查询",
+   "order_id": "6920631140664556058",
+   "order_rows": "订单!A66:S66",
+   "sku_id": "XL19805",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试修护精华小样5ml",
+   "order_status": "预售-已发货",
+   "original_logistics_number": "773757559179558",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00078",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A557:R565",
+   "message_count": 9,
+   "scene_major": "售后退货",
+   "scene_minor": "质疑正品退货",
+   "order_id": "6920762215935119531",
+   "order_rows": "订单!A89:S89",
+   "sku_id": "XL20401",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试丝绒唇釉小样1.2g",
+   "order_status": "已发货",
+   "original_logistics_number": "YT7688542165637",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "RETURN",
+     "ticket_id": "KOC6843505",
+     "source_sheet": "售后退货工单",
+     "row": 6,
+     "status": "已完结",
+     "reason": "协商一致退款",
+     "assignee_id": "A05",
+     "created_at": "2026-05-08 17:38:51",
+     "completed_at": "2026-05-08 20:58:51",
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00079",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A566:R575",
+   "message_count": 10,
+   "scene_major": "不良反应",
+   "scene_minor": "泛红刺痒",
+   "order_id": "6920676929380273867",
+   "order_rows": "订单!A19:S19",
+   "sku_id": "XL21205",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "交易成功",
+   "original_logistics_number": "YT7611027129564",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "ADVERSE_REACTION",
+     "ticket_id": "BLFY28579679",
+     "source_sheet": "不良反应工单",
+     "row": 4,
+     "status": "已完结",
+     "reason": "线上",
+     "assignee_id": "A05",
+     "created_at": "2026-05-08 18:04:49",
+     "completed_at": "2026-05-08 23:08:49",
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00080",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A576:R583",
+   "message_count": 8,
+   "scene_major": "产品咨询",
+   "scene_minor": "套装搭配推荐",
+   "order_id": null,
+   "order_rows": null,
+   "sku_id": null,
+   "item_role_summary": [],
+   "gift_name": null,
+   "order_status": null,
+   "original_logistics_number": null,
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00081",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A584:R588",
+   "message_count": 5,
+   "scene_major": "订单服务",
+   "scene_minor": "退款进度查询",
+   "order_id": "6920420759701685989",
+   "order_rows": "订单!A85:S85",
+   "sku_id": "XC30204",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "交易关闭",
+   "original_logistics_number": null,
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00082",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A589:R598",
+   "message_count": 10,
+   "scene_major": "不良反应",
+   "scene_minor": "泛红刺痒",
+   "order_id": "6920505423981949613",
+   "order_rows": "订单!A25:S25",
+   "sku_id": "XL19806",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试B5面膜体验装2片",
+   "order_status": "预售-交易成功",
+   "original_logistics_number": "SF1678898618989",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "ADVERSE_REACTION",
+     "ticket_id": "BLFY70604980",
+     "source_sheet": "不良反应工单",
+     "row": 2,
+     "status": "待处理",
+     "reason": "线上",
+     "assignee_id": "G003",
+     "created_at": "2026-05-08 19:27:11",
+     "completed_at": null,
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00083",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A599:R606",
+   "message_count": 8,
+   "scene_major": "产品咨询",
+   "scene_minor": "成分与肤质适配",
+   "order_id": null,
+   "order_rows": null,
+   "sku_id": null,
+   "item_role_summary": [],
+   "gift_name": null,
+   "order_status": null,
+   "original_logistics_number": null,
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00084",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A607:R610",
+   "message_count": 4,
+   "scene_major": "订单服务",
+   "scene_minor": "退款进度查询",
+   "order_id": "6920287348105350379",
+   "order_rows": "订单!A48:S48",
+   "sku_id": "XL23003",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "交易关闭",
+   "original_logistics_number": null,
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00085",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A611:R617",
+   "message_count": 7,
+   "scene_major": "退款打款",
+   "scene_minor": "大促价保补差",
+   "order_id": "6920264329721846346",
+   "order_rows": "订单!A82:S82",
+   "sku_id": "XL22002",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试护发精油小样10ml",
+   "order_status": "交易成功",
+   "original_logistics_number": "SF1601845076173",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "OFFLINE_PAYMENT",
+     "ticket_id": "HV4749532746",
+     "source_sheet": "线下打款工单",
+     "row": 14,
+     "status": "进行中",
+     "reason": "价保补差",
+     "assignee_id": "G002",
+     "created_at": "2026-05-08 19:50:04",
+     "completed_at": null,
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00086",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A618:R625",
+   "message_count": 8,
+   "scene_major": "产品咨询",
+   "scene_minor": "优惠与赠品咨询",
+   "order_id": null,
+   "order_rows": null,
+   "sku_id": null,
+   "item_role_summary": [],
+   "gift_name": null,
+   "order_status": null,
+   "original_logistics_number": null,
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00087",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A626:R634",
+   "message_count": 9,
+   "scene_major": "补发换货",
+   "scene_minor": "少发正装",
+   "order_id": "6920480727847614042",
+   "order_rows": "订单!A43:S43",
+   "sku_id": "XL19805",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "预售-已发货",
+   "original_logistics_number": "463408179601280",
+   "has_image": true,
+   "image_path_category": "missing_item",
+   "image_reference_paths": [
+    "mock_images/missing_item/S00087_03.jpg"
+   ],
+   "tickets": [
+    {
+     "ticket_type": "REPLACEMENT",
+     "ticket_id": "BH567865392726",
+     "source_sheet": "补发换货工单",
+     "row": 12,
+     "status": "已完结",
+     "reason": "补发-少发商品",
+     "assignee_id": "A01",
+     "created_at": "2026-05-08 20:20:20",
+     "completed_at": "2026-05-09 01:08:20",
+     "replacement_logistics_number": "773743345161980"
+    }
+   ]
+  },
+  {
+   "session_id": "S00088",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A635:R641",
+   "message_count": 7,
+   "scene_major": "物流异常",
+   "scene_minor": "拦截改址",
+   "order_id": "6920271487133153195",
+   "order_rows": "订单!A57:S57",
+   "sku_id": "XW42502",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "已发货",
+   "original_logistics_number": "773721978247059",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "LOGISTICS",
+     "ticket_id": "WL420040817",
+     "source_sheet": "物流工单",
+     "row": 4,
+     "status": "已完结",
+     "reason": "在途-拦截改址",
+     "assignee_id": "A05",
+     "created_at": "2026-05-08 20:43:22",
+     "completed_at": "2026-05-09 03:07:22",
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00089",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A642:R650",
+   "message_count": 9,
+   "scene_major": "不良反应",
+   "scene_minor": "闷痘爆痘",
+   "order_id": "6920908093470756886",
+   "order_rows": "订单!A6:S6",
+   "sku_id": "XL19805",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试B5面膜体验装2片",
+   "order_status": "预售-交易成功",
+   "original_logistics_number": "463449617654042",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "ADVERSE_REACTION",
+     "ticket_id": "BLFY53935414",
+     "source_sheet": "不良反应工单",
+     "row": 3,
+     "status": "已完结",
+     "reason": "线上",
+     "assignee_id": "G002",
+     "created_at": "2026-05-08 21:10:47",
+     "completed_at": "2026-05-08 23:34:47",
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00090",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A651:R657",
+   "message_count": 7,
+   "scene_major": "补发换货",
+   "scene_minor": "漏发赠品",
+   "order_id": "6920073870440867672",
+   "order_rows": "订单!A51:S51",
+   "sku_id": "XL19805",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "预售-已发货",
+   "original_logistics_number": "773701180841061",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "REPLACEMENT",
+     "ticket_id": "BH450849382497",
+     "source_sheet": "补发换货工单",
+     "row": 9,
+     "status": "已完结",
+     "reason": "补发-漏发赠品",
+     "assignee_id": "G002",
+     "created_at": "2026-05-08 21:27:35",
+     "completed_at": "2026-05-08 22:52:35",
+     "replacement_logistics_number": "463458174220690"
+    }
+   ]
+  },
+  {
+   "session_id": "S00091",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A658:R665",
+   "message_count": 8,
+   "scene_major": "产品咨询",
+   "scene_minor": "优惠与赠品咨询",
+   "order_id": null,
+   "order_rows": null,
+   "sku_id": null,
+   "item_role_summary": [],
+   "gift_name": null,
+   "order_status": null,
+   "original_logistics_number": null,
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00092",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A666:R672",
+   "message_count": 7,
+   "scene_major": "产品咨询",
+   "scene_minor": "使用方法",
+   "order_id": null,
+   "order_rows": null,
+   "sku_id": null,
+   "item_role_summary": [],
+   "gift_name": null,
+   "order_status": null,
+   "original_logistics_number": null,
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00093",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A673:R681",
+   "message_count": 9,
+   "scene_major": "物流异常",
+   "scene_minor": "物流停滞疑似丢件",
+   "order_id": "6920489188245931763",
+   "order_rows": "订单!A60:S60",
+   "sku_id": "XL10153",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试卸妆棉便携装20片",
+   "order_status": "已发货",
+   "original_logistics_number": "463448078642852",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "LOGISTICS",
+     "ticket_id": "WL364504665",
+     "source_sheet": "物流工单",
+     "row": 13,
+     "status": "已完结",
+     "reason": "在途-物流停滞超48小时",
+     "assignee_id": "A02",
+     "created_at": "2026-05-08 22:31:44",
+     "completed_at": "2026-05-09 04:17:44",
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00095",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A682:R686",
+   "message_count": 5,
+   "scene_major": "会员服务",
+   "scene_minor": "积分兑换咨询",
+   "order_id": null,
+   "order_rows": null,
+   "sku_id": null,
+   "item_role_summary": [],
+   "gift_name": null,
+   "order_status": null,
+   "original_logistics_number": null,
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00097",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A687:R693",
+   "message_count": 7,
+   "scene_major": "订单服务",
+   "scene_minor": "直播间承诺纠纷",
+   "order_id": "6920664286319046356",
+   "order_rows": "订单!A87:S87",
+   "sku_id": "XL10153",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "已发货",
+   "original_logistics_number": "773425142484182",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "REPLACEMENT",
+     "ticket_id": "BH459193582329",
+     "source_sheet": "补发换货工单",
+     "row": 15,
+     "status": "已完结",
+     "reason": "补发-直播承诺赠品",
+     "assignee_id": "A01",
+     "created_at": "2026-05-09 11:16:01",
+     "completed_at": "2026-05-09 16:06:01",
+     "replacement_logistics_number": "SF1620113357932"
+    }
+   ]
+  },
+  {
+   "session_id": "S00098",
+   "split": "DEV_REGRESSION",
+   "chat_rows": "聊天记录!A694:R702",
+   "message_count": 9,
+   "scene_major": "不良反应",
+   "scene_minor": "闷痘爆痘",
+   "order_id": "6920772456259000742",
+   "order_rows": "订单!A65:S65",
+   "sku_id": "XL10153",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试B5面膜体验装2片",
+   "order_status": "交易成功",
+   "original_logistics_number": "YT7668968370298",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "ADVERSE_REACTION",
+     "ticket_id": "BLFY50417006",
+     "source_sheet": "不良反应工单",
+     "row": 9,
+     "status": "已完结",
+     "reason": "线上",
+     "assignee_id": "B12",
+     "created_at": "2026-05-09 11:37:48",
+     "completed_at": "2026-05-09 14:48:48",
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00099",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A703:R709",
+   "message_count": 7,
+   "scene_major": "物流服务",
+   "scene_minor": "催发货",
+   "order_id": "6920294005666782721",
+   "order_rows": "订单!A108:S108",
+   "sku_id": "XW45001",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "待发货",
+   "original_logistics_number": null,
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00102",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A710:R717",
+   "message_count": 8,
+   "scene_major": "售后退货",
+   "scene_minor": "色号不合适退货",
+   "order_id": "6920798787031463782",
+   "order_rows": "订单!A102:S102",
+   "sku_id": "XC30101",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试B5面膜体验装2片",
+   "order_status": "已发货",
+   "original_logistics_number": "773703024787741",
+   "has_image": true,
+   "image_path_category": "swatch",
+   "image_reference_paths": [
+    "mock_images/swatch/S00102_05.jpg"
+   ],
+   "tickets": [
+    {
+     "ticket_type": "RETURN",
+     "ticket_id": "KOC5630551",
+     "source_sheet": "售后退货工单",
+     "row": 9,
+     "status": "处理中",
+     "reason": "色号不合适",
+     "assignee_id": "G001",
+     "created_at": "2026-05-09 15:06:46",
+     "completed_at": null,
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00103",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A718:R724",
+   "message_count": 7,
+   "scene_major": "订单服务",
+   "scene_minor": "直播间承诺纠纷",
+   "order_id": "6920411786607705281",
+   "order_rows": "订单!A59:S59",
+   "sku_id": "XL19806",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "预售-已发货",
+   "original_logistics_number": "YT7652285386738",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "REPLACEMENT",
+     "ticket_id": "BH227871524735",
+     "source_sheet": "补发换货工单",
+     "row": 2,
+     "status": "进行中",
+     "reason": "补发-直播承诺赠品",
+     "assignee_id": "A05",
+     "created_at": "2026-05-09 15:44:00",
+     "completed_at": null,
+     "replacement_logistics_number": "773738184895461"
+    }
+   ]
+  },
+  {
+   "session_id": "S00106",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A725:R728",
+   "message_count": 4,
+   "scene_major": "其他服务",
+   "scene_minor": "好评回访",
+   "order_id": "6920143239199871415",
+   "order_rows": "订单!A72:S72",
+   "sku_id": "XW42502",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试丝绒唇釉小样1.2g",
+   "order_status": "交易成功",
+   "original_logistics_number": "773715646947513",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00107",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A729:R736",
+   "message_count": 8,
+   "scene_major": "物流异常",
+   "scene_minor": "拦截改址",
+   "order_id": "6920493318327777004",
+   "order_rows": "订单!A105:S105",
+   "sku_id": "XL19806",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试舒缓面霜中样15ml",
+   "order_status": "预售-已发货",
+   "original_logistics_number": "773729682410873",
+   "has_image": true,
+   "image_path_category": "logistics_screenshot",
+   "image_reference_paths": [
+    "mock_images/logistics_screenshot/S00107_03.jpg"
+   ],
+   "tickets": [
+    {
+     "ticket_type": "LOGISTICS",
+     "ticket_id": "WL567743389",
+     "source_sheet": "物流工单",
+     "row": 3,
+     "status": "仓库处理",
+     "reason": "在途-拦截改址",
+     "assignee_id": "A02",
+     "created_at": "2026-05-09 19:15:32",
+     "completed_at": null,
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00108",
+   "split": "HELD_OUT",
+   "chat_rows": "聊天记录!A737:R744",
+   "message_count": 8,
+   "scene_major": "物流异常",
+   "scene_minor": "包裹破损",
+   "order_id": "6920462428734306567",
+   "order_rows": "订单!A47:S47",
+   "sku_id": "XL19805",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "预售-已发货",
+   "original_logistics_number": "SF1603826082552",
+   "has_image": true,
+   "image_path_category": "broken_parcel",
+   "image_reference_paths": [
+    "mock_images/broken_parcel/S00108_03.jpg"
+   ],
+   "tickets": [
+    {
+     "ticket_type": "LOGISTICS",
+     "ticket_id": "WL171140109",
+     "source_sheet": "物流工单",
+     "row": 5,
+     "status": "已完结",
+     "reason": "已收-货物破损",
+     "assignee_id": "G002",
+     "created_at": "2026-05-09 19:26:07",
+     "completed_at": "2026-05-10 00:14:07",
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00109",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A745:R750",
+   "message_count": 6,
+   "scene_major": "产品咨询",
+   "scene_minor": "正品鉴别咨询",
+   "order_id": "6920463065602093505",
+   "order_rows": "订单!A9:S9",
+   "sku_id": "XL22002",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试护发精油小样10ml",
+   "order_status": "交易成功",
+   "original_logistics_number": "773435736081740",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00113",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A751:R757",
+   "message_count": 7,
+   "scene_major": "产品咨询",
+   "scene_minor": "使用方法",
+   "order_id": null,
+   "order_rows": null,
+   "sku_id": null,
+   "item_role_summary": [],
+   "gift_name": null,
+   "order_status": null,
+   "original_logistics_number": null,
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00115",
+   "split": "DEV_REGRESSION",
+   "chat_rows": "聊天记录!A758:R764",
+   "message_count": 7,
+   "scene_major": "补发换货",
+   "scene_minor": "会员权益加赠补发",
+   "order_id": "6920873486631711536",
+   "order_rows": "订单!A22:S22",
+   "sku_id": "XL21205",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试丝绒唇釉小样1.2g",
+   "order_status": "交易成功",
+   "original_logistics_number": "773481704546782",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "REPLACEMENT",
+     "ticket_id": "BH562082745370",
+     "source_sheet": "补发换货工单",
+     "row": 20,
+     "status": "进行中",
+     "reason": "补发-会员权益加赠",
+     "assignee_id": "B07",
+     "created_at": "2026-05-09 22:30:41",
+     "completed_at": null,
+     "replacement_logistics_number": "773745881360891"
+    }
+   ]
+  },
+  {
+   "session_id": "S00117",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A765:R770",
+   "message_count": 6,
+   "scene_major": "订单服务",
+   "scene_minor": "发票申请",
+   "order_id": "6920063725709937880",
+   "order_rows": "订单!A8:S8",
+   "sku_id": "XC33002",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "交易成功",
+   "original_logistics_number": "SF1632977439931",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00130",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A771:R774",
+   "message_count": 4,
+   "scene_major": "其他服务",
+   "scene_minor": "好评回访",
+   "order_id": "6920813108987317881",
+   "order_rows": "订单!A37:S37",
+   "sku_id": "XL19805",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "预售-交易成功",
+   "original_logistics_number": "YT7690616161961",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00132",
+   "split": "DEV_REGRESSION",
+   "chat_rows": "聊天记录!A775:R781",
+   "message_count": 7,
+   "scene_major": "售后退货",
+   "scene_minor": "色号不合适退货",
+   "order_id": "6920262265086836896",
+   "order_rows": "订单!A103:S103",
+   "sku_id": "XC30101",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "已发货",
+   "original_logistics_number": "463463053042590",
+   "has_image": true,
+   "image_path_category": "swatch",
+   "image_reference_paths": [
+    "mock_images/swatch/S00132_05.jpg"
+   ],
+   "tickets": [
+    {
+     "ticket_type": "RETURN",
+     "ticket_id": "KOC2089946",
+     "source_sheet": "售后退货工单",
+     "row": 14,
+     "status": "已完结",
+     "reason": "色号不合适",
+     "assignee_id": "B07",
+     "created_at": "2026-05-10 16:35:45",
+     "completed_at": "2026-05-10 21:41:45",
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00134",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A782:R787",
+   "message_count": 6,
+   "scene_major": "产品咨询",
+   "scene_minor": "孕妇可用咨询",
+   "order_id": null,
+   "order_rows": null,
+   "sku_id": null,
+   "item_role_summary": [],
+   "gift_name": null,
+   "order_status": null,
+   "original_logistics_number": null,
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00137",
+   "split": "HELD_OUT",
+   "chat_rows": "聊天记录!A788:R793",
+   "message_count": 6,
+   "scene_major": "补发换货",
+   "scene_minor": "破损换货",
+   "order_id": "6920091662302260596",
+   "order_rows": "订单!A91:S91",
+   "sku_id": "XW42502",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试舒缓面霜中样15ml",
+   "order_status": "已发货",
+   "original_logistics_number": "YT7689975989966",
+   "has_image": true,
+   "image_path_category": "broken_pump",
+   "image_reference_paths": [
+    "mock_images/broken_pump/S00137_03.jpg"
+   ],
+   "tickets": [
+    {
+     "ticket_type": "REPLACEMENT",
+     "ticket_id": "BH819557327939",
+     "source_sheet": "补发换货工单",
+     "row": 21,
+     "status": "已完结",
+     "reason": "换货-到手破损",
+     "assignee_id": "B07",
+     "created_at": "2026-05-10 19:38:35",
+     "completed_at": "2026-05-11 00:26:35",
+     "replacement_logistics_number": "773740137302107"
+    }
+   ]
+  },
+  {
+   "session_id": "S00140",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A794:R799",
+   "message_count": 6,
+   "scene_major": "产品咨询",
+   "scene_minor": "比价与决策",
+   "order_id": null,
+   "order_rows": null,
+   "sku_id": null,
+   "item_role_summary": [],
+   "gift_name": null,
+   "order_status": null,
+   "original_logistics_number": null,
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00141",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A800:R807",
+   "message_count": 8,
+   "scene_major": "订单服务",
+   "scene_minor": "发票申请",
+   "order_id": "6920263986088953315",
+   "order_rows": "订单!A40:S40",
+   "sku_id": "XC30903",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试积雪草修护霜小样10ml",
+   "order_status": "交易成功",
+   "original_logistics_number": "YT7635242364346",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00146",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A808:R815",
+   "message_count": 8,
+   "scene_major": "售后退货",
+   "scene_minor": "质疑正品退货",
+   "order_id": "6920245332525015651",
+   "order_rows": "订单!A95:S95",
+   "sku_id": "XL21205",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试修护精华小样5ml",
+   "order_status": "已发货",
+   "original_logistics_number": "463431198908008",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "RETURN",
+     "ticket_id": "KOC1849368",
+     "source_sheet": "售后退货工单",
+     "row": 18,
+     "status": "已完结",
+     "reason": "协商一致退款",
+     "assignee_id": "G001",
+     "created_at": "2026-05-11 10:41:29",
+     "completed_at": "2026-05-11 13:00:29",
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00151",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A816:R822",
+   "message_count": 7,
+   "scene_major": "产品咨询",
+   "scene_minor": "使用方法",
+   "order_id": null,
+   "order_rows": null,
+   "sku_id": null,
+   "item_role_summary": [],
+   "gift_name": null,
+   "order_status": null,
+   "original_logistics_number": null,
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00153",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A823:R829",
+   "message_count": 7,
+   "scene_major": "补发换货",
+   "scene_minor": "会员权益加赠补发",
+   "order_id": "6920205432198259811",
+   "order_rows": "订单!A18:S18",
+   "sku_id": "XL11504",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "交易成功",
+   "original_logistics_number": "773700753831239",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "REPLACEMENT",
+     "ticket_id": "BH993957600469",
+     "source_sheet": "补发换货工单",
+     "row": 11,
+     "status": "已完结",
+     "reason": "补发-会员权益加赠",
+     "assignee_id": "A01",
+     "created_at": "2026-05-11 16:26:34",
+     "completed_at": "2026-05-11 16:32:34",
+     "replacement_logistics_number": "773702614946091"
+    }
+   ]
+  },
+  {
+   "session_id": "S00154",
+   "split": "DEV_REGRESSION",
+   "chat_rows": "聊天记录!A830:R838",
+   "message_count": 9,
+   "scene_major": "不良反应",
+   "scene_minor": "过敏就医",
+   "order_id": "6920073444593979097",
+   "order_rows": "订单!A29:S29",
+   "sku_id": "XL19805",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "预售-交易成功",
+   "original_logistics_number": "773795780329410",
+   "has_image": true,
+   "image_path_category": "consult_card",
+   "image_reference_paths": [
+    "mock_images/consult_card/S00154_03.jpg"
+   ],
+   "tickets": [
+    {
+     "ticket_type": "ADVERSE_REACTION",
+     "ticket_id": "BLFY27898314",
+     "source_sheet": "不良反应工单",
+     "row": 8,
+     "status": "已完结",
+     "reason": "线上",
+     "assignee_id": "B12",
+     "created_at": "2026-05-11 16:49:30",
+     "completed_at": "2026-05-11 22:33:30",
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00156",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A839:R845",
+   "message_count": 7,
+   "scene_major": "售后退货",
+   "scene_minor": "拆封少件拒收",
+   "order_id": "6920012167512343101",
+   "order_rows": "订单!A90:S90",
+   "sku_id": "XL10153",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "已发货",
+   "original_logistics_number": "463455562954122",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "RETURN",
+     "ticket_id": "KOC8204206",
+     "source_sheet": "售后退货工单",
+     "row": 7,
+     "status": "已完结",
+     "reason": "拆封少件拒收",
+     "assignee_id": "G003",
+     "created_at": "2026-05-11 17:31:41",
+     "completed_at": "2026-05-11 18:49:41",
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00158",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A846:R852",
+   "message_count": 7,
+   "scene_major": "售后退货",
+   "scene_minor": "色号不合适退货",
+   "order_id": "6920704849395042503",
+   "order_rows": "订单!A104:S104",
+   "sku_id": "XC30101",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "已发货",
+   "original_logistics_number": "SF1626106844312",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "RETURN",
+     "ticket_id": "KOC1677168",
+     "source_sheet": "售后退货工单",
+     "row": 4,
+     "status": "已完结",
+     "reason": "色号不合适",
+     "assignee_id": "G002",
+     "created_at": "2026-05-11 17:22:10",
+     "completed_at": "2026-05-11 22:58:10",
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00159",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A853:R859",
+   "message_count": 7,
+   "scene_major": "补发换货",
+   "scene_minor": "会员权益加赠补发",
+   "order_id": "6920208613936937938",
+   "order_rows": "订单!A68:S68",
+   "sku_id": "XL10153",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试丝绒唇釉小样1.2g",
+   "order_status": "交易成功",
+   "original_logistics_number": "YT7602753079164",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "REPLACEMENT",
+     "ticket_id": "BH959479214460",
+     "source_sheet": "补发换货工单",
+     "row": 4,
+     "status": "进行中",
+     "reason": "补发-会员权益加赠",
+     "assignee_id": "A05",
+     "created_at": "2026-05-11 17:52:27",
+     "completed_at": null,
+     "replacement_logistics_number": "YT7611357659058"
+    }
+   ]
+  },
+  {
+   "session_id": "S00161",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A860:R868",
+   "message_count": 9,
+   "scene_major": "售后退货",
+   "scene_minor": "七天无理由退货",
+   "order_id": "6920831591561436561",
+   "order_rows": "订单!A83:S83",
+   "sku_id": "XL19805",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试积雪草修护霜小样10ml",
+   "order_status": "预售-已发货",
+   "original_logistics_number": "SF1681906502375",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "RETURN",
+     "ticket_id": "KOC3941668",
+     "source_sheet": "售后退货工单",
+     "row": 17,
+     "status": "已完结",
+     "reason": "不想要了",
+     "assignee_id": "B07",
+     "created_at": "2026-05-11 18:04:54",
+     "completed_at": "2026-05-11 21:32:54",
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00162",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A869:R876",
+   "message_count": 8,
+   "scene_major": "售后退货",
+   "scene_minor": "七天无理由退货",
+   "order_id": "6920909586380927697",
+   "order_rows": "订单!A109:S109",
+   "sku_id": "XW42502",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "已发货",
+   "original_logistics_number": "YT7691495703670",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "RETURN",
+     "ticket_id": "KOC2452224",
+     "source_sheet": "售后退货工单",
+     "row": 8,
+     "status": "处理中",
+     "reason": "不想要了",
+     "assignee_id": "G001",
+     "created_at": "2026-05-11 18:04:15",
+     "completed_at": null,
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00169",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A877:R882",
+   "message_count": 6,
+   "scene_major": "产品咨询",
+   "scene_minor": "比价与决策",
+   "order_id": null,
+   "order_rows": null,
+   "sku_id": null,
+   "item_role_summary": [],
+   "gift_name": null,
+   "order_status": null,
+   "original_logistics_number": null,
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00183",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A883:R890",
+   "message_count": 8,
+   "scene_major": "退款打款",
+   "scene_minor": "售后期关闭过敏退款",
+   "order_id": "6920531485420932389",
+   "order_rows": "订单!A97:S97",
+   "sku_id": "XL21205",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "交易成功",
+   "original_logistics_number": "773424124297700",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "OFFLINE_PAYMENT",
+     "ticket_id": "HV8605622861",
+     "source_sheet": "线下打款工单",
+     "row": 4,
+     "status": "已完结",
+     "reason": "售后期关闭退款",
+     "assignee_id": "G002",
+     "created_at": "2026-05-12 16:26:19",
+     "completed_at": "2026-05-12 16:45:19",
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00200",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A891:R898",
+   "message_count": 8,
+   "scene_major": "退款打款",
+   "scene_minor": "退款金额少退补打",
+   "order_id": "6920790799280944930",
+   "order_rows": "订单!A33:S33",
+   "sku_id": "XW42502",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试护发精油小样10ml",
+   "order_status": "交易成功",
+   "original_logistics_number": "773796807065576",
+   "has_image": true,
+   "image_path_category": "refund_screenshot",
+   "image_reference_paths": [
+    "mock_images/refund_screenshot/S00200_06.jpg"
+   ],
+   "tickets": [
+    {
+     "ticket_type": "OFFLINE_PAYMENT",
+     "ticket_id": "HV6129329823",
+     "source_sheet": "线下打款工单",
+     "row": 7,
+     "status": "进行中",
+     "reason": "少退/漏退补退",
+     "assignee_id": "A05",
+     "created_at": "2026-05-12 23:12:19",
+     "completed_at": null,
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00203",
+   "split": "DEV_REGRESSION",
+   "chat_rows": "聊天记录!A899:R905",
+   "message_count": 7,
+   "scene_major": "补发换货",
+   "scene_minor": "破损换货",
+   "order_id": "6920834449460645989",
+   "order_rows": "订单!A113:S113",
+   "sku_id": "XC30101",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "已发货",
+   "original_logistics_number": "SF1693302183374",
+   "has_image": true,
+   "image_path_category": "broken_pump",
+   "image_reference_paths": [
+    "mock_images/broken_pump/S00203_03.jpg"
+   ],
+   "tickets": [
+    {
+     "ticket_type": "REPLACEMENT",
+     "ticket_id": "BH946416168326",
+     "source_sheet": "补发换货工单",
+     "row": 23,
+     "status": "已完结",
+     "reason": "换货-到手破损",
+     "assignee_id": "A02",
+     "created_at": "2026-05-13 09:29:15",
+     "completed_at": "2026-05-13 11:52:15",
+     "replacement_logistics_number": "YT7626025598990"
+    }
+   ]
+  },
+  {
+   "session_id": "S00223",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A906:R912",
+   "message_count": 7,
+   "scene_major": "售后退货",
+   "scene_minor": "拆封少件拒收",
+   "order_id": "6920650877391748582",
+   "order_rows": "订单!A110:S110",
+   "sku_id": "XL21205",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "已发货",
+   "original_logistics_number": "463420065795950",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "RETURN",
+     "ticket_id": "KOC4591299",
+     "source_sheet": "售后退货工单",
+     "row": 10,
+     "status": "处理中",
+     "reason": "拆封少件拒收",
+     "assignee_id": "B07",
+     "created_at": "2026-05-13 19:38:12",
+     "completed_at": null,
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00226",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A913:R919",
+   "message_count": 7,
+   "scene_major": "订单服务",
+   "scene_minor": "发票申请",
+   "order_id": "6920650903209003951",
+   "order_rows": "订单!A20:S20",
+   "sku_id": "XL11504",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试修护精华小样5ml",
+   "order_status": "交易成功",
+   "original_logistics_number": "463456015398686",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00232",
+   "split": "HELD_OUT",
+   "chat_rows": "聊天记录!A920:R926",
+   "message_count": 7,
+   "scene_major": "售后退货",
+   "scene_minor": "使用不适退货",
+   "order_id": "6920712466483288684",
+   "order_rows": "订单!A107:S107",
+   "sku_id": "XL23003",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "已发货",
+   "original_logistics_number": "YT7686728746799",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "RETURN",
+     "ticket_id": "KOC3853509",
+     "source_sheet": "售后退货工单",
+     "row": 16,
+     "status": "处理中",
+     "reason": "使用后不适",
+     "assignee_id": "A01",
+     "created_at": "2026-05-13 23:03:31",
+     "completed_at": null,
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00268",
+   "split": "HELD_OUT",
+   "chat_rows": "聊天记录!A927:R935",
+   "message_count": 9,
+   "scene_major": "不良反应",
+   "scene_minor": "过敏就医",
+   "order_id": "6920156290763740456",
+   "order_rows": "订单!A101:S101",
+   "sku_id": "XL19806",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试发膜体验装30ml",
+   "order_status": "预售-交易成功",
+   "original_logistics_number": "463408756912038",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "ADVERSE_REACTION",
+     "ticket_id": "BLFY41232690",
+     "source_sheet": "不良反应工单",
+     "row": 7,
+     "status": "处理中",
+     "reason": "线上",
+     "assignee_id": "A05",
+     "created_at": "2026-05-15 13:46:43",
+     "completed_at": null,
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00277",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A936:R942",
+   "message_count": 7,
+   "scene_major": "售后退货",
+   "scene_minor": "拆封少件拒收",
+   "order_id": "6920478617542655464",
+   "order_rows": "订单!A114:S114",
+   "sku_id": "XL11504",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试卸妆棉便携装20片",
+   "order_status": "已发货",
+   "original_logistics_number": "YT7638913718803",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "RETURN",
+     "ticket_id": "KOC8458982",
+     "source_sheet": "售后退货工单",
+     "row": 5,
+     "status": "处理中",
+     "reason": "拆封少件拒收",
+     "assignee_id": "B07",
+     "created_at": "2026-05-15 16:31:10",
+     "completed_at": null,
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00285",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A943:R951",
+   "message_count": 9,
+   "scene_major": "售后退货",
+   "scene_minor": "使用不适退货",
+   "order_id": "6920709137708142651",
+   "order_rows": "订单!A111:S111",
+   "sku_id": "XL23003",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试B5面膜体验装2片",
+   "order_status": "已发货",
+   "original_logistics_number": "463437512487960",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "RETURN",
+     "ticket_id": "KOC9911507",
+     "source_sheet": "售后退货工单",
+     "row": 19,
+     "status": "已完结",
+     "reason": "使用后不适",
+     "assignee_id": "G002",
+     "created_at": "2026-05-15 21:09:12",
+     "completed_at": "2026-05-16 00:38:12",
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00303",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A952:R957",
+   "message_count": 6,
+   "scene_major": "产品咨询",
+   "scene_minor": "孕妇可用咨询",
+   "order_id": null,
+   "order_rows": null,
+   "sku_id": null,
+   "item_role_summary": [],
+   "gift_name": null,
+   "order_status": null,
+   "original_logistics_number": null,
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00322",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A958:R963",
+   "message_count": 6,
+   "scene_major": "会员服务",
+   "scene_minor": "积分兑换咨询",
+   "order_id": null,
+   "order_rows": null,
+   "sku_id": null,
+   "item_role_summary": [],
+   "gift_name": null,
+   "order_status": null,
+   "original_logistics_number": null,
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00336",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A964:R971",
+   "message_count": 8,
+   "scene_major": "退款打款",
+   "scene_minor": "退款金额少退补打",
+   "order_id": "6920761109981038788",
+   "order_rows": "订单!A99:S99",
+   "sku_id": "XC33003",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试B5面膜体验装2片",
+   "order_status": "交易成功",
+   "original_logistics_number": "YT7604282471116",
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": [
+    {
+     "ticket_type": "OFFLINE_PAYMENT",
+     "ticket_id": "HV4259994933",
+     "source_sheet": "线下打款工单",
+     "row": 13,
+     "status": "已完结",
+     "reason": "少退/漏退补退",
+     "assignee_id": "A02",
+     "created_at": "2026-05-17 21:13:22",
+     "completed_at": "2026-05-18 01:53:22",
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00362",
+   "split": "DEV_REGRESSION",
+   "chat_rows": "聊天记录!A972:R979",
+   "message_count": 8,
+   "scene_major": "退款打款",
+   "scene_minor": "售后期关闭过敏退款",
+   "order_id": "6920747449279518304",
+   "order_rows": "订单!A41:S41",
+   "sku_id": "XL19806",
+   "item_role_summary": [
+    "PRIMARY"
+   ],
+   "gift_name": null,
+   "order_status": "预售-交易成功",
+   "original_logistics_number": "YT7679979061391",
+   "has_image": true,
+   "image_path_category": "refund_screenshot",
+   "image_reference_paths": [
+    "mock_images/refund_screenshot/S00362_06.jpg"
+   ],
+   "tickets": [
+    {
+     "ticket_type": "OFFLINE_PAYMENT",
+     "ticket_id": "HV8045912170",
+     "source_sheet": "线下打款工单",
+     "row": 8,
+     "status": "进行中",
+     "reason": "售后期关闭退款",
+     "assignee_id": "B12",
+     "created_at": "2026-05-18 20:49:42",
+     "completed_at": null,
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00364",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A980:R985",
+   "message_count": 6,
+   "scene_major": "会员服务",
+   "scene_minor": "积分兑换咨询",
+   "order_id": null,
+   "order_rows": null,
+   "sku_id": null,
+   "item_role_summary": [],
+   "gift_name": null,
+   "order_status": null,
+   "original_logistics_number": null,
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  },
+  {
+   "session_id": "S00381",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A986:R993",
+   "message_count": 8,
+   "scene_major": "退款打款",
+   "scene_minor": "售后期关闭过敏退款",
+   "order_id": "6920914776440905581",
+   "order_rows": "订单!A112:S112",
+   "sku_id": "XL23003",
+   "item_role_summary": [
+    "PRIMARY",
+    "GIFT"
+   ],
+   "gift_name": "测试丝绒唇釉小样1.2g",
+   "order_status": "交易成功",
+   "original_logistics_number": "773402274776732",
+   "has_image": true,
+   "image_path_category": "refund_screenshot",
+   "image_reference_paths": [
+    "mock_images/refund_screenshot/S00381_06.jpg"
+   ],
+   "tickets": [
+    {
+     "ticket_type": "OFFLINE_PAYMENT",
+     "ticket_id": "HV1005604873",
+     "source_sheet": "线下打款工单",
+     "row": 12,
+     "status": "进行中",
+     "reason": "售后期关闭退款",
+     "assignee_id": "A03",
+     "created_at": "2026-05-19 16:26:33",
+     "completed_at": null,
+     "replacement_logistics_number": null
+    }
+   ]
+  },
+  {
+   "session_id": "S00474",
+   "split": "POOL_NOT_SELECTED",
+   "chat_rows": "聊天记录!A994:R999",
+   "message_count": 6,
+   "scene_major": "产品咨询",
+   "scene_minor": "孕妇可用咨询",
+   "order_id": null,
+   "order_rows": null,
+   "sku_id": null,
+   "item_role_summary": [],
+   "gift_name": null,
+   "order_status": null,
+   "original_logistics_number": null,
+   "has_image": false,
+   "image_path_category": null,
+   "image_reference_paths": [],
+   "tickets": []
+  }
+ ]
+}
