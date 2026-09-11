@@ -8,7 +8,7 @@
   "properties": {
     "extracted_journey": {"$ref": "extracted-journey.schema.json"},
     "accountability_state": {"$ref": "accountability-state.schema.json"},
-    "model_metadata": {"type": "object"},
+    "model_metadata": {"$ref": "extracted-journey.schema.json#/properties/model_metadata"},
     "runtime_metrics": {"$ref": "runtime-metrics.schema.json"}
   }
 }

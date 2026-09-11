@@ -51,11 +51,18 @@ AND prepared_action = ASK_EVIDENCE
 | 禁止项 | 受阻动作 |
 |---|---|
 | `ASK_SAME_EVIDENCE` | 同一范围下的 `ASK_EVIDENCE` |
-| `ASK_REPEAT_EXPLANATION` | 要求消费者重新说明已知问题的动作 |
-| `SHIFT_FOLLOW_UP_TO_CONSUMER` | 把已完成输入后的履约跟进交回消费者的动作 |
+| `ASK_REPEAT_EXPLANATION` | `REPEAT_EXPLANATION_REQUEST` |
+| `SHIFT_FOLLOW_UP_TO_CONSUMER` | `SHIFT_FOLLOW_UP_TO_CONSUMER` |
 | `CLOSE_BEFORE_RESOLUTION` | `CLOSE_CASE` |
 
-输出：`INTERVENE` / `P0_PROHIBITED_ACTION` / `400`。禁止项和责任状态只由服务端状态构建器产生，前端提交的同名字段不参与判定。
+`PreparedAction.action_type` 因而有两个可审计的最小扩展：
+`REPEAT_EXPLANATION_REQUEST` 和 `SHIFT_FOLLOW_UP_TO_CONSUMER`。不得以
+`action_id`、前端文案或 Prompt 隐式表达这两个动作。
+
+HTTP 输出：`400` 错误 envelope，`error.code` 为
+`P0_PROHIBITED_ACTION`。它不是成功 `DecisionResult`；错误 envelope 的
+`data` 必为 `null`。禁止项和责任状态只由服务端状态构建器产生，前端提交的
+同名字段不参与判定。
 
 ## E0_NO_RULE_MATCHED｜无规则命中
 
@@ -65,7 +72,7 @@ AND prepared_action = ASK_EVIDENCE
 
 ## 求值顺序与可解释性
 
-规则按 `P0_PROHIBITED_ACTION (400) → H1 (350) → E1 (300) → E2 (100) → E0_NO_RULE_MATCHED (0)` 求值。一次请求可以同时满足多个条件；只返回最高优先级规则，并在 `fact_trace.suppressed_rule_ids` 写入其余命中的规则。这样不良反应与假性结案同时出现时，界面可解释为何先阻断结案。
+规则按 `P0_PROHIBITED_ACTION (400) → H1 (350) → E1 (300) → E2 (100) → E0_NO_RULE_MATCHED (0)` 求值。一次请求可以同时满足多个条件；只选择最高优先级规则。成功 `DecisionResult` 在 `fact_trace.suppressed_rule_ids` 写入其余命中的成功规则；若 P0 胜出，HTTP 错误映射保留 P0/400，内部审计仍须保存被压制规则，不能把 P0 降格为 E1 或 H1。这样不良反应与假性结案同时出现时，审计可以解释为何先阻断结案。
 
 ## 决策约束
 

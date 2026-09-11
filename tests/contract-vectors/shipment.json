@@ -1,0 +1,188 @@
+{
+  "endpoint": "POST /api/events/shipment",
+  "request_schema": "shipment-event-request.schema.json",
+  "success_data_schema": "shipment-event-response.schema.json",
+  "vectors": [
+    {
+      "id": "shipment-not-picked-up-success",
+      "request": {
+        "case_id": "CASE-SHIPMENT-001",
+        "event_id": "EVENT-SHIPMENT-001",
+        "event_type": "SHIPMENT_NOT_PICKED_UP",
+        "event_time": "2030-01-01T10:30:00+00:00",
+        "idempotency_key": "shipment-not-picked-001"
+      },
+      "response": {
+        "data": {
+          "accountability_state": {
+            "case_id": "CASE-SHIPMENT-001",
+            "case_status": "AT_RISK",
+            "consumer_input_required": false,
+            "accountable_side": "BRAND",
+            "evidence_status": "VALID",
+            "current_scope": {
+              "order_id": "ORDER-SHIPMENT-001",
+              "fulfillment_item_id": "ITEM-SHIPMENT-001",
+              "sku_id": "SKU-SHIPMENT-001",
+              "issue_type": "PACKAGE_DAMAGE"
+            },
+            "active_commitments": [
+              {
+                "promise_type": "REPLACEMENT_FULFILLMENT",
+                "raw_text": "A service commitment is overdue.",
+                "status": "AT_RISK",
+                "deadline": "2030-01-01T10:00:00+00:00",
+                "source_ids": ["SOURCE-SHIPMENT-001"]
+              }
+            ],
+            "prohibited_actions": ["SHIFT_FOLLOW_UP_TO_CONSUMER"],
+            "experience_gap_diagnosis": {
+              "consumer_expression": "A promised progress update is missing",
+              "traceable_service_facts": [
+                {
+                  "fact_type": "PROMISE_OVERDUE",
+                  "statement": "The fulfillment handoff has not occurred",
+                  "source_ids": ["SOURCE-SHIPMENT-001"]
+                }
+              ],
+              "deterioration_cause": "Shipment has not been picked up",
+              "latent_need": "A proactive update",
+              "responsibility_judgment": {
+                "consumer_input_complete": true,
+                "accountable_side": "BRAND"
+              },
+              "action_impacts": ["START_PROACTIVE_UPDATE"],
+              "reply_strategy": "Provide a pending approval notification draft"
+            },
+            "open_obligation": {
+              "obligation_type": "REPLACEMENT_FULFILLMENT",
+              "status": "AT_RISK",
+              "accountable_side": "BRAND",
+              "executor": "WAREHOUSE",
+              "deadline": "2030-01-01T10:00:00+00:00",
+              "next_check_at": "2030-01-01T11:00:00+00:00",
+              "milestone": "AWAITING_CARRIER_PICKUP",
+              "resolution_condition": "REPLACEMENT_DELIVERED"
+            },
+            "service_progress_receipt": {
+              "receipt_id": "RECEIPT-SHIPMENT-001",
+              "status": "AT_RISK",
+              "received_evidence": ["Service facts"],
+              "brand_action": "The handoff is being escalated.",
+              "latest_update_at": "2030-01-01T10:30:00+00:00",
+              "next_update_by": "2030-01-01T11:00:00+00:00",
+              "consumer_action_required": false,
+              "recovery_if_missed": "The brand will provide another update."
+            },
+            "experience_risk": "HIGH",
+            "audit_trail": [
+              {
+                "at": "2030-01-01T10:30:00+00:00",
+                "actor": "SIMULATOR",
+                "action": "SHIPMENT_NOT_PICKED_UP",
+                "changed_fields": ["case_status", "open_obligation"],
+                "request_id": "REQ-SHIPMENT-001"
+              }
+            ]
+          },
+          "follow_up_candidate": {
+            "task_type": "WAREHOUSE_FOLLOW_UP",
+            "existing_ticket_id": null,
+            "priority": "HIGH",
+            "summary": "Confirm the delayed shipment handoff."
+          },
+          "supervisor_escalation_candidate": {
+            "escalation_type": "PROMISE_OVERDUE",
+            "priority": "HIGH",
+            "summary": "Review the overdue fulfillment handoff."
+          },
+          "proactive_notification_draft": {
+            "text": "The shipment handoff is being escalated and another update will follow.",
+            "commits_next_update_at": "2030-01-01T11:00:00+00:00",
+            "requires_human_approval": true,
+            "channel": "ORIGINAL_CHAT"
+          }
+        },
+        "error": null,
+        "request_id": "REQ-SHIPMENT-001"
+      },
+      "expected": {
+        "http_status": 200,
+        "request_schema_valid": true,
+        "notification_projection": true
+      }
+    },
+    {
+      "id": "shipment-delivered-before-pickup",
+      "request": {
+        "case_id": "CASE-SHIPMENT-002",
+        "event_id": "EVENT-SHIPMENT-DELIVERED-001",
+        "event_type": "SHIPMENT_DELIVERED",
+        "event_time": "2030-01-01T10:30:00+00:00",
+        "idempotency_key": "shipment-direct-delivered"
+      },
+      "response": {
+        "data": null,
+        "error": {
+          "code": "INVALID_EVENT_TRANSITION",
+          "message": "Shipment delivery requires IN_TRANSIT.",
+          "retryable": false
+        },
+        "request_id": "REQ-SHIPMENT-DIRECT-DELIVERY"
+      },
+      "expected": {
+        "http_status": 409,
+        "request_schema_valid": true,
+        "error_code": "INVALID_EVENT_TRANSITION"
+      }
+    },
+    {
+      "id": "shipment-event-id-conflict",
+      "request": {
+        "case_id": "CASE-SHIPMENT-001",
+        "event_id": "EVENT-SHIPMENT-001",
+        "event_type": "SHIPMENT_PICKED_UP",
+        "event_time": "2030-01-01T10:31:00+00:00",
+        "idempotency_key": "shipment-event-id-conflict"
+      },
+      "response": {
+        "data": null,
+        "error": {
+          "code": "IDEMPOTENCY_CONFLICT",
+          "message": "event_id was already recorded with different event content.",
+          "retryable": false
+        },
+        "request_id": "REQ-SHIPMENT-EVENT-CONFLICT"
+      },
+      "expected": {
+        "http_status": 409,
+        "request_schema_valid": true,
+        "error_code": "IDEMPOTENCY_CONFLICT"
+      }
+    },
+    {
+      "id": "shipment-invalid-event-time",
+      "request": {
+        "case_id": "CASE-SHIPMENT-003",
+        "event_id": "EVENT-SHIPMENT-INVALID-TIME",
+        "event_type": "SHIPMENT_PICKED_UP",
+        "event_time": "not-a-date-time",
+        "idempotency_key": "shipment-invalid-time"
+      },
+      "response": {
+        "data": null,
+        "error": {
+          "code": "SCHEMA_INVALID",
+          "message": "event_time must be a date-time with an offset.",
+          "retryable": false
+        },
+        "request_id": "REQ-SHIPMENT-INVALID-TIME"
+      },
+      "expected": {
+        "http_status": 400,
+        "request_schema_valid": false,
+        "error_code": "SCHEMA_INVALID"
+      }
+    }
+  ]
+}

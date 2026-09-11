@@ -9,7 +9,7 @@
 | 错误码 | HTTP 建议 | 含义 | 前端动作 |
 |---|---:|---|---|
 | `SCHEMA_INVALID` | 400 | 请求不符合 Schema | 标记输入问题，不重试 |
-| `VALIDATION_ERROR` | 400 | 业务必填或字段一致性失败 | 展示缺失字段，不重试 |
+| `VALIDATION_ERROR` | 400 | 业务必填、未知案例、过期候选或受限字段一致性失败 | 展示可修正输入，不重试 |
 | `P0_PROHIBITED_ACTION` | 400 | 动作会造成重复伤害、责任倒流或假性结案 | 保持发送暂停并展示替代动作 |
 | `INVALID_EVENT_TRANSITION` | 409 | 物流事件顺序或时间非法 | 刷新账本，不把操作显示为成功 |
 | `IDEMPOTENCY_CONFLICT` | 409 | 相同幂等键对应不同请求体 | 提示重新发起，不重试原键 |
@@ -20,14 +20,19 @@
 
 ## 3. 幂等规则
 
-`approve` 与 `shipment` 请求的 `idempotency_key` 在同一 `case_id` 下唯一。相同键与相同规范化请求体必须返回首次响应，且不得新增 `audit_trail` 记录；相同键但不同请求体返回 `IDEMPOTENCY_CONFLICT`。建议服务端保存键、规范化请求摘要、首次 `request_id` 与响应体。
+`approve` 与 `shipment` 的重放范围是 `(case_id, endpoint, idempotency_key)`，并保存不含传输 `X-Request-Id` 的规范化请求体摘要。相同键与相同摘要必须返回首次完整响应和首次 `request_id`，且不得新增 `audit_trail`、义务或事件；相同键但不同摘要返回 `IDEMPOTENCY_CONFLICT`。服务端保存键、摘要、首次 `request_id` 与响应体。
+
+`shipment.event_id` 不是幂等键的替代品，而是独立的 `(case_id, event_id)` 事件身份。相同事件身份和相同规范化事件重放首个结果；相同身份但不同 `event_type` 或 `event_time` 返回 `409 / IDEMPOTENCY_CONFLICT`，不推进状态。重放判断先于当前状态机判断，避免已完成状态把原请求的合法重放误判为非法。
+
+`candidate_type` 只是客户端选择的候选类别，不是授权凭证。`approve` 必须在写入前以当前服务端案例事实、状态版本和事件时间高水位重新核验；候选因状态变化而不再合法即为过期，返回 `400 / VALIDATION_ERROR`，不产生部分写入。
 
 ## 4. 时间与事件顺序
 
-- 服务端生成 `approved_at`，客户端不得传入或覆盖。
-- `event_time` 不得早于账本最近状态时间；违反时返回 `INVALID_EVENT_TRANSITION`。
+- 服务端有时区的 `Clock` 生成 `approved_at`，客户端不得传入或覆盖；它在批准审计条目的 `at` 字段表达，并晚于对应分析时点。
+- `event_time` 必须是带时区的 `date-time`，不得早于账本最近状态时间；违反时返回 `INVALID_EVENT_TRANSITION`。等时仅在状态转移仍合法时接受。
 - `SHIPMENT_DELIVERED` 只允许从 `IN_TRANSIT` 到达；`AWAITING_CARRIER_PICKUP → DELIVERED` 一律拒绝。
 - `next_check_at`、回执 `next_update_by` 与通知 `commits_next_update_at` 是同一时点的不同投影，必须相等。
+- 待确认通知固定 `requires_human_approval: true`，在确认前不进入消费者已接收回执；P0 不新增通知确认端点。
 
 ## 5. 可复现验证向量
 
@@ -38,3 +43,6 @@
 | V3 | 未揽收直接 `SHIPMENT_DELIVERED` | `INVALID_EVENT_TRANSITION` |
 | V4 | `event_time` 倒退 | `INVALID_EVENT_TRANSITION` |
 | V5 | 关闭通知模板时间替换 | `VALIDATION_ERROR` 或测试失败 |
+| V6 | `challenge_mode` 关闭时携带畸形覆盖 | 忽略覆盖并与无覆盖请求等价 |
+| V7 | 开启 Challenge 后携带畸形覆盖 | `SCHEMA_INVALID` |
+| V8 | 同一 `event_id` 异体重放 | `IDEMPOTENCY_CONFLICT` 且状态不变 |

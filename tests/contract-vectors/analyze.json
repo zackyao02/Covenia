@@ -1,0 +1,246 @@
+{
+  "endpoint": "POST /api/cases/analyze",
+  "request_schema": "analyze-case-request.schema.json",
+  "success_data_schema": "analyze-case-response.schema.json",
+  "vectors": [
+    {
+      "id": "analyze-live-success",
+      "request": {
+        "case_id": "CASE-ANALYZE-001",
+        "evaluation_time": "2030-01-01T10:00:00+00:00"
+      },
+      "response": {
+        "data": {
+          "extracted_journey": {
+            "case_id": "CASE-ANALYZE-001",
+            "completed_actions": {
+              "issue_explained": true,
+              "order_verified": true,
+              "evidence_submitted": true
+            },
+            "promise_events": [],
+            "image_observations": [],
+            "extracted_scope": {
+              "order_id": "ORDER-001",
+              "fulfillment_item_id": "ITEM-001",
+              "sku_id": "SKU-001",
+              "issue_type": "PACKAGE_DAMAGE"
+            },
+            "journey_understanding": {
+              "consumer_intent": "Request an update",
+              "experience_expression": "Needs a clear next step",
+              "service_cause": "Existing facts require review",
+              "latent_need": "Progress visibility",
+              "cooperation_willingness": "STABLE",
+              "action_impact": "Use authoritative facts",
+              "source_ids": ["SOURCE-001"]
+            },
+            "source_trace": [],
+            "model_metadata": {
+              "model_id": "Qwen/Qwen2-VL-2B-Instruct",
+              "prompt_version": "contract-vector-v1",
+              "run_id": "RUN-ANALYZE-001",
+              "cached_result": false
+            }
+          },
+          "accountability_state": {
+            "case_id": "CASE-ANALYZE-001",
+            "case_status": "READY_FOR_BRAND",
+            "consumer_input_required": false,
+            "accountable_side": "BRAND",
+            "evidence_status": "VALID",
+            "current_scope": {
+              "order_id": "ORDER-001",
+              "fulfillment_item_id": "ITEM-001",
+              "sku_id": "SKU-001",
+              "issue_type": "PACKAGE_DAMAGE"
+            },
+            "active_commitments": [],
+            "prohibited_actions": [],
+            "experience_gap_diagnosis": {
+              "consumer_expression": "Progress is requested",
+              "traceable_service_facts": [
+                {
+                  "fact_type": "OTHER",
+                  "statement": "Authoritative case facts were loaded",
+                  "source_ids": ["SOURCE-001"]
+                }
+              ],
+              "deterioration_cause": "Pending service action",
+              "latent_need": "A confirmed next step",
+              "responsibility_judgment": {
+                "consumer_input_complete": true,
+                "accountable_side": "BRAND"
+              },
+              "action_impacts": ["CHECK_EXISTING_FULFILLMENT"],
+              "reply_strategy": "Use the service-owned status"
+            },
+            "open_obligation": null,
+            "service_progress_receipt": null,
+            "experience_risk": "MEDIUM",
+            "audit_trail": []
+          },
+          "model_metadata": {
+            "model_id": "Qwen/Qwen2-VL-2B-Instruct",
+            "prompt_version": "contract-vector-v1",
+            "run_id": "RUN-ANALYZE-001",
+            "cached_result": false
+          },
+          "runtime_metrics": {
+            "input_tokens": 12,
+            "output_tokens": 4,
+            "inference_latency_ms": 8,
+            "rule_substitution_count": 0
+          }
+        },
+        "error": null,
+        "request_id": "REQ-ANALYZE-001"
+      },
+      "expected": {
+        "http_status": 200,
+        "request_schema_valid": true,
+        "cached_result": false
+      }
+    },
+    {
+      "id": "analyze-cached-success",
+      "request": {
+        "case_id": "CASE-ANALYZE-CACHED",
+        "evaluation_time": "2030-01-01T10:01:00+00:00"
+      },
+      "response": {
+        "data": {
+          "extracted_journey": {
+            "case_id": "CASE-ANALYZE-CACHED",
+            "completed_actions": {
+              "issue_explained": true,
+              "order_verified": true,
+              "evidence_submitted": false
+            },
+            "promise_events": [],
+            "image_observations": [],
+            "extracted_scope": {
+              "order_id": "ORDER-CACHED",
+              "fulfillment_item_id": "ITEM-CACHED",
+              "sku_id": "SKU-CACHED",
+              "issue_type": "LOGISTICS_STALLED"
+            },
+            "journey_understanding": {
+              "consumer_intent": "Request an update",
+              "experience_expression": "Needs a reliable status",
+              "service_cause": "Cached extraction fallback",
+              "latent_need": "Visible fallback provenance",
+              "cooperation_willingness": "STABLE",
+              "action_impact": "Mark the cached result",
+              "source_ids": ["SOURCE-CACHED"]
+            },
+            "source_trace": [],
+            "model_metadata": {
+              "model_id": "Qwen/Qwen2-VL-2B-Instruct",
+              "prompt_version": "contract-vector-v1",
+              "run_id": "RUN-ANALYZE-CACHED",
+              "cached_result": true
+            }
+          },
+          "accountability_state": {
+            "case_id": "CASE-ANALYZE-CACHED",
+            "case_status": "READY_FOR_BRAND",
+            "consumer_input_required": false,
+            "accountable_side": "BRAND",
+            "evidence_status": "NEED_HUMAN_REVIEW",
+            "current_scope": {
+              "order_id": "ORDER-CACHED",
+              "fulfillment_item_id": "ITEM-CACHED",
+              "sku_id": "SKU-CACHED",
+              "issue_type": "LOGISTICS_STALLED"
+            },
+            "active_commitments": [],
+            "prohibited_actions": [],
+            "experience_gap_diagnosis": {
+              "consumer_expression": "Progress is requested",
+              "traceable_service_facts": [
+                {
+                  "fact_type": "OTHER",
+                  "statement": "A cached extraction was used",
+                  "source_ids": ["SOURCE-CACHED"]
+                }
+              ],
+              "deterioration_cause": "Live model unavailable",
+              "latent_need": "Explicit fallback disclosure",
+              "responsibility_judgment": {
+                "consumer_input_complete": false,
+                "accountable_side": "UNKNOWN"
+              },
+              "action_impacts": ["ROUTE_TO_HUMAN"],
+              "reply_strategy": "Show the cached-result marker"
+            },
+            "open_obligation": null,
+            "service_progress_receipt": null,
+            "experience_risk": "HIGH",
+            "audit_trail": []
+          },
+          "model_metadata": {
+            "model_id": "Qwen/Qwen2-VL-2B-Instruct",
+            "prompt_version": "contract-vector-v1",
+            "run_id": "RUN-ANALYZE-CACHED",
+            "cached_result": true
+          },
+          "runtime_metrics": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "inference_latency_ms": 0,
+            "rule_substitution_count": 1
+          }
+        },
+        "error": null,
+        "request_id": "REQ-ANALYZE-CACHED"
+      },
+      "expected": {
+        "http_status": 200,
+        "request_schema_valid": true,
+        "cached_result": true
+      }
+    },
+    {
+      "id": "analyze-unknown-case",
+      "request": {
+        "case_id": "CASE-UNKNOWN-001"
+      },
+      "response": {
+        "data": null,
+        "error": {
+          "code": "VALIDATION_ERROR",
+          "message": "case_id is not available to this service",
+          "retryable": false
+        },
+        "request_id": "REQ-ANALYZE-UNKNOWN"
+      },
+      "expected": {
+        "http_status": 400,
+        "request_schema_valid": true,
+        "error_code": "VALIDATION_ERROR"
+      }
+    },
+    {
+      "id": "analyze-invalid-evaluation-time",
+      "request": {
+        "case_id": "CASE-ANALYZE-002",
+        "evaluation_time": "not-a-date-time"
+      },
+      "response": {
+        "data": null,
+        "error": {
+          "code": "SCHEMA_INVALID",
+          "message": "evaluation_time must be a date-time",
+          "retryable": false
+        },
+        "request_id": "REQ-ANALYZE-INVALID-TIME"
+      },
+      "expected": {
+        "http_status": 400,
+        "request_schema_valid": false,
+        "error_code": "SCHEMA_INVALID"
+      }
+    }
+  ]
+}

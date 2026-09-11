@@ -13,7 +13,7 @@
 - 当前执行方：赛事工单中的发货仓库或模拟物流执行方。
 - 当前里程碑：`AWAITING_CARRIER_PICKUP`。
 - 承诺截止时间：由聊天承诺计算。
-- 下一检查时间：不晚于承诺截止前的预警节点。
+- 下一检查时间：在批准的 Hero 时间线中是承诺截止后的首次检查点；`next_check_at` 的数值不因这一措辞修正而改变。
 - 真正完成条件：补发商品送达，而不是工单创建或物流单号生成。
 
 内部执行方变化不把责任重新推给消费者。
@@ -41,6 +41,7 @@ P0 支持同一接口下三个事件；所有事件都由后端状态机处理�
 ### `SHIPMENT_PICKED_UP`
 
 - 责任保持 `ON_TRACK`。
+- 已发出承诺转为 `COMPLETED`，义务里程碑转为 `IN_TRANSIT`；这不是 Case 结案。
 - 更新为已揽收和可查询物流。
 - 向消费者生成真实进展回复。
 - 不创建仓库催办任务。
@@ -65,9 +66,21 @@ P0 支持同一接口下三个事件；所有事件都由后端状态机处理�
 | `AWAITING_CARRIER_PICKUP` | `SHIPMENT_NOT_PICKED_UP` | 未到期保持 `ON_TRACK`；到期转 `AT_RISK` | 事件时间倒退 |
 | `IN_TRANSIT` | `SHIPMENT_DELIVERED` | `DELIVERED` / `COMPLETED` / `RESOLVED` | 未揽收直接送达、事件时间倒退 |
 
-重复的 `idempotency_key` 返回首次结果，不新增审计记录。未列出的转移返回 `INVALID_EVENT_TRANSITION`，前端不得把它渲染为成功。
+重复的 `idempotency_key` 返回首次结果和首次 `request_id`，不新增审计记录。`event_id` 另按 `(case_id, event_id)` 去重：同一规范化事件重放首个结果；同一 ID 但不同事件内容返回 `IDEMPOTENCY_CONFLICT`。未列出的转移、倒序事件或未建义务的物流事件返回 `INVALID_EVENT_TRANSITION`，前端不得把它渲染为成功。
+
+事件时间与账本高水位使用有时区的服务端 `Clock` 比较。`event_time` 必须带时区，不能早于高水位；相同时刻只在状态转移本身合法时接受。风险路线不能在较晚的未揽收事件后提交较早的揽收事件。
 
 事件按钮调用后端接口，不允许直接修改前端状态。
+
+### 通知确认
+
+物流响应中的 `proactive_notification_draft` 是内部待确认草稿，固定
+`requires_human_approval: true`。草稿不得写入消费者已接收的
+`service_progress_receipt`，也不等于已外发。P0 不增加通知确认接口；C 端如在
+本地模拟聊天中确认，必须留下本地确认留痕，并仍以 B 返回的草稿字段为唯一内容来源。
+
+`open_obligation.next_check_at`、消费者回执 `next_update_by` 与草稿
+`commits_next_update_at` 是同一时点的三个投影，必须完全相等。
 
 ## 5. 人工修改
 

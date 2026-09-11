@@ -1,0 +1,207 @@
+{
+  "endpoint": "POST /api/resolutions/approve",
+  "request_schema": "approve-resolution-request.schema.json",
+  "success_data_schema": "approve-resolution-response.schema.json",
+  "vectors": [
+    {
+      "id": "approve-success-server-clock-and-activation",
+      "request": {
+        "case_id": "CASE-APPROVE-001",
+        "candidate_type": "CHECK_REPLACEMENT_FULFILLMENT",
+        "approver_id": "AGENT-001",
+        "idempotency_key": "approve-live-key-001",
+        "human_edits": {
+          "executor": "WAREHOUSE",
+          "next_check_at": "2030-01-01T12:15:00+00:00"
+        }
+      },
+      "response": {
+        "data": {
+          "accountability_state": {
+            "case_id": "CASE-APPROVE-001",
+            "case_status": "IN_FULFILLMENT",
+            "consumer_input_required": false,
+            "accountable_side": "BRAND",
+            "evidence_status": "VALID",
+            "current_scope": {
+              "order_id": "ORDER-APPROVE-001",
+              "fulfillment_item_id": "ITEM-APPROVE-001",
+              "sku_id": "SKU-APPROVE-001",
+              "issue_type": "PACKAGE_DAMAGE"
+            },
+            "active_commitments": [
+              {
+                "promise_type": "REPLACEMENT_FULFILLMENT",
+                "raw_text": "A service commitment was validated.",
+                "status": "ACTIVE",
+                "deadline": "2030-01-01T12:00:00+00:00",
+                "source_ids": ["SOURCE-APPROVE-001"]
+              }
+            ],
+            "prohibited_actions": [],
+            "experience_gap_diagnosis": {
+              "consumer_expression": "A clear update is needed",
+              "traceable_service_facts": [
+                {
+                  "fact_type": "PROMISE_ACTIVE",
+                  "statement": "A valid service commitment exists",
+                  "source_ids": ["SOURCE-APPROVE-001"]
+                }
+              ],
+              "deterioration_cause": "Fulfillment needs ownership",
+              "latent_need": "A reliable next update",
+              "responsibility_judgment": {
+                "consumer_input_complete": true,
+                "accountable_side": "BRAND"
+              },
+              "action_impacts": ["START_PROACTIVE_UPDATE"],
+              "reply_strategy": "Provide the next update time"
+            },
+            "open_obligation": {
+              "obligation_type": "REPLACEMENT_FULFILLMENT",
+              "status": "ON_TRACK",
+              "accountable_side": "BRAND",
+              "executor": "WAREHOUSE",
+              "deadline": "2030-01-01T12:00:00+00:00",
+              "next_check_at": "2030-01-01T12:15:00+00:00",
+              "milestone": "AWAITING_CARRIER_PICKUP",
+              "resolution_condition": "REPLACEMENT_DELIVERED"
+            },
+            "service_progress_receipt": {
+              "receipt_id": "RECEIPT-APPROVE-001",
+              "status": "ACTIVE",
+              "received_evidence": ["Service facts"],
+              "brand_action": "Fulfillment is being followed up.",
+              "latest_update_at": "2030-01-01T10:02:00+00:00",
+              "next_update_by": "2030-01-01T12:15:00+00:00",
+              "consumer_action_required": false,
+              "recovery_if_missed": "The brand will escalate the follow-up."
+            },
+            "experience_risk": "MEDIUM",
+            "audit_trail": [
+              {
+                "at": "2030-01-01T10:02:00+00:00",
+                "actor": "AGENT-001",
+                "action": "RESOLUTION_APPROVED",
+                "changed_fields": ["executor", "next_check_at"],
+                "request_id": "REQ-APPROVE-001"
+              }
+            ]
+          },
+          "approved_resolution": {
+            "candidate_type": "CHECK_REPLACEMENT_FULFILLMENT",
+            "evidence_basis": ["SOURCE-APPROVE-001"],
+            "policy_basis": "Server-validated candidate",
+            "consumer_reply_draft": "The service progress will be updated proactively.",
+            "task_prefill": {
+              "task_type": "WAREHOUSE_FOLLOW_UP",
+              "existing_ticket_id": null,
+              "summary": "Confirm the fulfillment handoff."
+            },
+            "accountable_side": "BRAND",
+            "executor": "WAREHOUSE",
+            "requires_human_approval": true,
+            "creates_obligation": true,
+            "compiled_service_responsibility": {
+              "source_promise_text": "A service commitment was validated.",
+              "commitment_class": "STANDARD_APPROVED",
+              "activation_status": "ACTIVE",
+              "deadline": "2030-01-01T12:00:00+00:00",
+              "next_check_at": "2030-01-01T12:15:00+00:00",
+              "recovery_if_missed": "The brand will escalate the follow-up."
+            }
+          },
+          "audit_trail": [
+            {
+              "at": "2030-01-01T10:02:00+00:00",
+              "actor": "AGENT-001",
+              "action": "RESOLUTION_APPROVED",
+              "changed_fields": ["executor", "next_check_at"],
+              "request_id": "REQ-APPROVE-001"
+            }
+          ]
+        },
+        "error": null,
+        "request_id": "REQ-APPROVE-001"
+      },
+      "expected": {
+        "http_status": 200,
+        "request_schema_valid": true,
+        "approved_at_from_audit": "2030-01-01T10:02:00+00:00"
+      }
+    },
+    {
+      "id": "approve-missing-approver",
+      "request": {
+        "case_id": "CASE-APPROVE-002",
+        "candidate_type": "CHECK_REPLACEMENT_FULFILLMENT",
+        "idempotency_key": "approve-missing-approver",
+        "human_edits": {}
+      },
+      "response": {
+        "data": null,
+        "error": {
+          "code": "VALIDATION_ERROR",
+          "message": "approver_id is required for approval",
+          "retryable": false
+        },
+        "request_id": "REQ-APPROVE-MISSING"
+      },
+      "expected": {
+        "http_status": 400,
+        "request_schema_valid": false,
+        "error_code": "VALIDATION_ERROR"
+      }
+    },
+    {
+      "id": "approve-expired-candidate",
+      "request": {
+        "case_id": "CASE-APPROVE-STALE",
+        "candidate_type": "CHECK_REPLACEMENT_FULFILLMENT",
+        "approver_id": "AGENT-STALE",
+        "idempotency_key": "approve-stale-key-001",
+        "human_edits": {}
+      },
+      "response": {
+        "data": null,
+        "error": {
+          "code": "VALIDATION_ERROR",
+          "message": "candidate_type is no longer valid for the current server state",
+          "retryable": false
+        },
+        "request_id": "REQ-APPROVE-STALE"
+      },
+      "expected": {
+        "http_status": 400,
+        "request_schema_valid": true,
+        "error_code": "VALIDATION_ERROR"
+      }
+    },
+    {
+      "id": "approve-idempotency-conflict",
+      "request": {
+        "case_id": "CASE-APPROVE-001",
+        "candidate_type": "CHECK_REPLACEMENT_FULFILLMENT",
+        "approver_id": "AGENT-001",
+        "idempotency_key": "approve-live-key-001",
+        "human_edits": {
+          "executor": "LOGISTICS_PROVIDER"
+        }
+      },
+      "response": {
+        "data": null,
+        "error": {
+          "code": "IDEMPOTENCY_CONFLICT",
+          "message": "The idempotency key was already used with a different normalized body.",
+          "retryable": false
+        },
+        "request_id": "REQ-APPROVE-CONFLICT"
+      },
+      "expected": {
+        "http_status": 409,
+        "request_schema_valid": true,
+        "error_code": "IDEMPOTENCY_CONFLICT"
+      }
+    }
+  ]
+}

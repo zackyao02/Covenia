@@ -1,0 +1,158 @@
+{
+  "lock_version": "1.0",
+  "contract_version": "8314c76502cbc9d47d8432b7fe53f7d9fb82de82 / BATCH-03 contract-lock-v1",
+  "schema_dialect": "https://json-schema.org/draft/2020-12/schema",
+  "hash_method": "SHA-256 of UTF-8 content with CRLF and CR normalized to LF; the approved input is additionally checked against a clean Git worktree path.",
+  "authoritative_plan": {
+    "MASTER_PLAN.md": "ECE161441703962D9D7C0E1650497D2C2BEED560FC3D2239564B4E9E1D4A75E4",
+    "batches.json": "E78AE0E223B6D5D5A8F427630225D572E1A7D9E844F99CEA82503CC87EEB1693"
+  },
+  "approved_input": {
+    "path": "docs/approvals/b-decisions.json",
+    "producer_batch": "BATCH-01",
+    "gate": "X-FREEZE",
+    "status": "ACCEPTED",
+    "approved_by": "Zack",
+    "approved_at": "2026-09-10T23:59:00+08:00",
+    "content_sha256": "3ACAD4A113EB595BCED29025AF884A4C5EA2835E90E38D0E897298F91DB371DA",
+    "dependency_receipts": {
+      "BATCH-01": "PASS / integration 3f951e4b746e44a864bcd77c0c9e55438cd83347",
+      "BATCH-02": "PASS / integration 8314c76502cbc9d47d8432b7fe53f7d9fb82de82"
+    },
+    "access": "READ_ONLY"
+  },
+  "endpoints": [
+    {
+      "method": "POST",
+      "path": "/api/cases/analyze",
+      "request_schema": "schemas/analyze-case-request.schema.json",
+      "success_data_schema": "schemas/analyze-case-response.schema.json"
+    },
+    {
+      "method": "POST",
+      "path": "/api/actions/evaluate",
+      "request_schema": "schemas/evaluate-action-request.schema.json",
+      "success_data_schema": "schemas/decision-result.schema.json"
+    },
+    {
+      "method": "POST",
+      "path": "/api/resolutions/approve",
+      "request_schema": "schemas/approve-resolution-request.schema.json",
+      "success_data_schema": "schemas/approve-resolution-response.schema.json"
+    },
+    {
+      "method": "POST",
+      "path": "/api/events/shipment",
+      "request_schema": "schemas/shipment-event-request.schema.json",
+      "success_data_schema": "schemas/shipment-event-response.schema.json"
+    }
+  ],
+  "decision_bindings": {
+    "D03": "P0 400 remains above H1 350, E1 300, E2 100, and E0 0; E0 is success.",
+    "D04": "PreparedAction has auditable SHIFT_FOLLOW_UP_TO_CONSUMER and REPEAT_EXPLANATION_REQUEST values.",
+    "D05": "Model output is candidate-only; server enrichment produces public commitment, activation, evidence, responsibility, and decision fields.",
+    "D08": "The approved next_check_at remains the first post-deadline check and all three update projections are equal.",
+    "D13": "Cached model fallback is visible through model_metadata.cached_result; invalid model output is 502 rather than fabricated success.",
+    "D15": "Idempotency retains first response/request_id; event_id is independently deduplicated and event time is monotonic."
+  },
+  "semantic_lock": {
+    "challenge": {
+      "default": false,
+      "disabled_behavior": "Ignore challenge_overrides before nested validation/application and ignore all five compatibility fields.",
+      "enabled_behavior": "Only explicit true validates and applies restricted overrides.",
+      "response_echo_required": true
+    },
+    "errors": {
+      "unknown_case": "400 / VALIDATION_ERROR",
+      "expired_candidate": "400 / VALIDATION_ERROR",
+      "missing_approver": "400 / VALIDATION_ERROR",
+      "p0_prohibited_action": "400 / P0_PROHIBITED_ACTION",
+      "invalid_event_transition": "409 / INVALID_EVENT_TRANSITION",
+      "idempotency_conflict": "409 / IDEMPOTENCY_CONFLICT",
+      "model_output_invalid": "502 / MODEL_OUTPUT_INVALID",
+      "model_unavailable_without_cache": "503 / MODEL_UNAVAILABLE"
+    },
+    "authority": {
+      "model_may_produce": ["observations", "source references", "time expressions", "conditions"],
+      "server_only": [
+        "evidence status",
+        "commitment class",
+        "activation",
+        "deadline acceptance",
+        "responsibility",
+        "rule decision",
+        "approved resolution",
+        "audit",
+        "approved_at"
+      ],
+      "approved_at_public_path": "approve.data.audit_trail[action=RESOLUTION_APPROVED].at"
+    },
+    "clock": {
+      "source": "timezone-aware trusted server Clock; future implementation receives SystemClock or DemoClock through BATCH-04",
+      "approved_at": "server-generated and later than the evaluation point",
+      "event_time": "timezone-aware, non-decreasing against the persisted event high-water mark"
+    },
+    "notification": {
+      "requires_human_approval": true,
+      "consumer_visible_before_confirmation": false,
+      "confirmation_endpoint": "none",
+      "same_instant_paths": [
+        "open_obligation.next_check_at",
+        "service_progress_receipt.next_update_by",
+        "proactive_notification_draft.commits_next_update_at"
+      ]
+    },
+    "replay": {
+      "idempotency_identity": ["case_id", "endpoint", "idempotency_key"],
+      "body_fingerprint": "normalized request body excluding X-Request-Id",
+      "event_identity": ["case_id", "event_id"],
+      "same_identity_different_body": "409 / IDEMPOTENCY_CONFLICT",
+      "same_identity_same_body": "replay first complete response and request_id without another state mutation"
+    }
+  },
+  "handoff": {
+    "C_pending_files": [
+      "frontend/src/api/contracts.ts",
+      "frontend/src/api/examples/01-analyze-case.json",
+      "frontend/src/api/examples/02-evaluate-action.json",
+      "frontend/src/api/examples/03-approve-resolution.json",
+      "frontend/src/api/examples/04-shipment-event.json"
+    ],
+    "A_pending_files": ["fixtures/demo-cases.json", "fixtures/ground-truth.json"],
+    "vector_manifest": "tests/contract-vectors/manifest.json",
+    "external_status": "C and A handoffs remain externally gated; this BATCH does not accept or modify them."
+  },
+  "change_control": {
+    "requires_new_approval": true,
+    "invalidates_affected_passes": true,
+    "rule": "Any change to a locked schema, semantics document, transport mapping, or vector requires a new approved contract decision and re-verification of every affected PASS."
+  },
+  "locked_files": {
+    "backend/tests/contracts/test_contracts.py": "3C5AD7853DBAFA6806E51AD5F9183C8E6CC9212E93A3429BCC01A8DF2263A77D",
+    "docs/03-firewall-rules.md": "8FD79764464A7E906DFC935415ED4020BFE33EF68A9A4D32CC483707BC5ACF9C",
+    "docs/04-responsibility-loop.md": "64985D149F5EAA028ABB5E9ED531A65C906CA2F28A21386716E63AE995B45456",
+    "docs/05-api-and-ui.md": "6B7D91249A009E209904ABAB14C973B30237A72E9140E0DF787562DCF46E1483",
+    "docs/08-idempotency-and-ordering.md": "C46BCF383E304221AB2F0C860F536846A528872F7F5CC1D63D0927B8B50C6E3E",
+    "docs/contracts/b-transport.md": "D2444888F06F239A356C3F1DC5B07F8249E73A0934F4475D9F5FC252CFC61252",
+    "schemas/accountability-state.schema.json": "D25A319A8FE97332AB8B724A559D56F515F37EA0202605E64C861BAF57C79D3D",
+    "schemas/analyze-case-request.schema.json": "EA4293604DC039DF355C94FEB70104C1277F2537D4703AD334B459EA77ACE123",
+    "schemas/analyze-case-response.schema.json": "5F5BA135446837A2DA498D461FBCCAAD2A5B30BAC35E92B9591742BE59833658",
+    "schemas/api-envelope.schema.json": "327F6BAE6E97587D2ED4EEF6B96B9BF51F1EF6ADDDDB56C3BF2E8E64DF4B0004",
+    "schemas/approve-resolution-request.schema.json": "FB95DB481C1A309E2EE83D21A67F8D5940332F5EF3615191C23783E3E1DA1D45",
+    "schemas/approve-resolution-response.schema.json": "F2E927864311E5A19F51636C9297EFC7875BD7CB210434EFBA485629F70C3491",
+    "schemas/case-input.schema.json": "37CE1BCC5855CFF1F7ABC0B6C4547E5E86822740CBA71CBF8F6DD98814CEFAF4",
+    "schemas/decision-result.schema.json": "E00E5A4448ED86DE5766060653C248AA3435A3C84B89120BD116C607C1AFDF3E",
+    "schemas/evaluate-action-request.schema.json": "4F2D5DA1DFA364F6C76DCF0D9B894630896E5ED627578727E1A3B5501A4BCA2C",
+    "schemas/extracted-journey.schema.json": "A5E2A3B61849D07A4700DCBD66EC168AA471894E218DC534E0C2E55456818C7E",
+    "schemas/prepared-action.schema.json": "EF0C04D5507CE5D0039792CCC6E6A6E4EE03BE8682B2F285B73DD3CD99174C58",
+    "schemas/runtime-metrics.schema.json": "1A4260BFDC6107569DF82B30113F1F7581EC35A8F598D86CDC56AD0617BF901C",
+    "schemas/shipment-event-request.schema.json": "D36760B3B514D71052AE42D3AD87ADEA6276D6818E1D538FC6460F14F823255A",
+    "schemas/shipment-event-response.schema.json": "BA624FD797ABCD65C1D9AE1011EB8A8A022D9582DB89DEC7D676D8DA283B5695",
+    "tests/contract-vectors/analyze.json": "01764170F0AE71BBBEF1249B17B647DA23E358D6BC024113E2FB280F4C519158",
+    "tests/contract-vectors/approve.json": "FACFA4E2BB16BAD22D4EC447B00313D6B200F8D4DFE20A84B16E22F2C725CD6D",
+    "tests/contract-vectors/evaluate.json": "03172E19796A6E1ABC9482AAFAC6CDB56841A576C3F82645C612A1E309AF71D8",
+    "tests/contract-vectors/manifest.json": "12C3F78C70B1A3300F33EAA4CAEBF3DF2409D113DC1DBE5A4458C0DC3E7A13D3",
+    "tests/contract-vectors/shipment.json": "553BBCA0FE8CD89EAFB091E2BAF8BCEE835C422E1B7EE2A4DE3A6F8D778E538E",
+    "tools/contracts/check_contracts.py": "85461837B42375F5D55340C32B0C7F9ABD5019CD9A5F82AB9A2B8C8C5DBA4763"
+  }
+}

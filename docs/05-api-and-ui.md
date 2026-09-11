@@ -9,7 +9,7 @@
 | 接口 | 请求 Schema | 成功 `data` | 关键错误 |
 |---|---|---|---|
 | `POST /api/cases/analyze` | `analyze-case-request.schema.json` | `ExtractedJourney`、`AccountabilityState`、`model_metadata`、`runtime_metrics` | `SCHEMA_INVALID`、`MODEL_UNAVAILABLE`、`MODEL_OUTPUT_INVALID` |
-| `POST /api/actions/evaluate` | `evaluate-action-request.schema.json` | `DecisionResult`（含 `runtime_metrics`） | `SCHEMA_INVALID`、`E0_NO_RULE_MATCHED` |
+| `POST /api/actions/evaluate` | `evaluate-action-request.schema.json` | `DecisionResult`（含 `runtime_metrics`） | `SCHEMA_INVALID`、`P0_PROHIBITED_ACTION`；`E0_NO_RULE_MATCHED` 是 200 成功结果 |
 | `POST /api/resolutions/approve` | `approve-resolution-request.schema.json` | 更新后的账本、`approved_resolution`、`audit_trail` | `VALIDATION_ERROR`、`IDEMPOTENCY_CONFLICT` |
 | `POST /api/events/shipment` | `shipment-event-request.schema.json` | 更新后的账本、催办候选、通知草稿 | `INVALID_EVENT_TRANSITION`、`IDEMPOTENCY_CONFLICT` |
 
@@ -31,7 +31,9 @@
 
 可信输入为 `{case_id, prepared_action, evaluation_time?, challenge_mode?, challenge_overrides?}`。服务端按 `case_id` 装载事实，并自行计算 `evidence_status`、`active_commitments`、`prohibited_actions` 与 `current_scope`。
 
-请求中出现 `accountability_state`、`evidence_status`、`active_commitments`、`prohibited_actions` 或 `current_scope` 时，兼容层记录为忽略字段，不参与规则计算。变体只能通过受限的 `challenge_overrides` 给出，且必须显式启用 `challenge_mode: true`；成功响应回显该标志，右栏显示“Challenge Mode”角标。
+解析顺序固定如下：先将缺省的 `challenge_mode` 规范化为 `false`，再决定是否读取任何覆盖字段。为 `false` 或缺省时，`challenge_overrides` 及五个兼容字段 `accountability_state`、`evidence_status`、`active_commitments`、`prohibited_actions`、`current_scope` 都在嵌套校验和状态计算之前被忽略；即使覆盖对象不符合启用态形状，也不能造成拒绝、污染或悄悄生效。只有显式 `challenge_mode: true` 时，才严格校验并应用 `challenge_overrides` 的受限形状。成功响应必须回显规范化后的布尔值，右栏据此显示“Challenge Mode”角标。
+
+请求中出现五个兼容字段时，兼容层记录为忽略字段，不参与规则计算。未知 `case_id` 返回 `400 / VALIDATION_ERROR`，不创建账本、候选、缓存或审计记录。按 `case_id` 装载事实不等于按案例编号返回固定结果。
 
 按 `case_id` 装载事实不等于按案例编号返回固定结果：规则函数、状态推导与 Prompt 模板中不得出现案例编号分支。
 
@@ -39,7 +41,9 @@
 
 `POST /api/resolutions/approve`
 
-请求必须含 `case_id`、`candidate_type`、`approver_id`、`idempotency_key` 与受限的 `human_edits`。后端使用服务端时间写 `approved_at`，从允许的编辑字段合并出 `approved_resolution`，并追加 `audit_trail`。前端提交的 `approved_at`、完整责任账本或最终解决路径均不采信。
+请求必须含 `case_id`、`candidate_type`、`approver_id`、`idempotency_key` 与受限的 `human_edits`。后端以当前服务端事实重新验证候选；候选已失效、未知案例、缺/空审批人或非法编辑均为 `400 / VALIDATION_ERROR`，且不能产生局部写入。后端使用有时区的服务端 `Clock` 生成 `approved_at`，并通过响应 `audit_trail` 中 `action: RESOLUTION_APPROVED` 条目的 `at` 公开表达；不增加可由客户端填写的顶层 `approved_at` 字段。
+
+从允许的编辑字段合并出的 `approved_resolution`、激活状态、责任、义务和审计均由服务端生成。前端提交的 `approved_at`、完整责任账本、最终解决路径、激活状态或模型候选结论均不采信。
 
 主动通知草稿由字段模板渲染，`text` 内的下次更新时间必须等于 `commits_next_update_at`；不允许模型自由生成第二个时间承诺。
 
@@ -47,9 +51,9 @@
 
 `POST /api/events/shipment`
 
-请求必须含 `case_id`、`event_id`、`event_type`、`event_time` 与 `idempotency_key`。只有 `PICKED_UP → DELIVERED` 能结案；未揽收直接送达、事件倒序和冲突重放均返回错误。状态转移定义见 `docs/04-responsibility-loop.md`。
+请求必须含 `case_id`、`event_id`、`event_type`、`event_time` 与 `idempotency_key`。只有 `PICKED_UP → DELIVERED` 能结案；未揽收直接送达、事件倒序和冲突重放均返回错误。`event_id` 独立去重，重复同内容重放首个响应，异体冲突返回 `409 / IDEMPOTENCY_CONFLICT`。状态转移定义见 `docs/04-responsibility-loop.md`。
 
-接口数量不因服务进度回执增加；回执是账本的派生视图。
+成功 `data` 分别由 `approve-resolution-response.schema.json` 和 `shipment-event-response.schema.json` 验证。接口数量不因服务进度回执或通知确认增加；回执是账本的派生视图，通知只以待确认草稿返回。
 
 ## 6. 千牛布局约束
 

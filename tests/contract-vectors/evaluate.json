@@ -1,0 +1,444 @@
+{
+  "endpoint": "POST /api/actions/evaluate",
+  "request_schema": "evaluate-action-request.schema.json",
+  "success_data_schema": "decision-result.schema.json",
+  "vectors": [
+    {
+      "id": "evaluate-h1-baseline",
+      "request": {
+        "case_id": "CASE-EVAL-H1",
+        "prepared_action": {
+          "action_id": "ACTION-ASK-001",
+          "action_type": "ASK_EVIDENCE",
+          "requested_scope": {
+            "order_id": "ORDER-EVAL-001",
+            "fulfillment_item_id": "ITEM-EVAL-001",
+            "sku_id": "SKU-EVAL-001",
+            "issue_type": "ADVERSE_REACTION"
+          },
+          "requires_human_approval": false
+        }
+      },
+      "response": {
+        "data": {
+          "case_id": "CASE-EVAL-H1",
+          "decision": "HUMAN_REVIEW",
+          "rule_id": "H1",
+          "rule_priority": 350,
+          "accountability_state": {
+            "case_id": "CASE-EVAL-H1",
+            "case_status": "ACTION_REVIEW",
+            "consumer_input_required": false,
+            "accountable_side": "BRAND",
+            "evidence_status": "VALID",
+            "current_scope": {
+              "order_id": "ORDER-EVAL-001",
+              "fulfillment_item_id": "ITEM-EVAL-001",
+              "sku_id": "SKU-EVAL-001",
+              "issue_type": "ADVERSE_REACTION"
+            },
+            "active_commitments": [],
+            "prohibited_actions": [],
+            "experience_gap_diagnosis": {
+              "consumer_expression": "A review is requested",
+              "traceable_service_facts": [
+                {
+                  "fact_type": "OTHER",
+                  "statement": "High-risk issue type requires a human review",
+                  "source_ids": ["SOURCE-EVAL-001"]
+                }
+              ],
+              "deterioration_cause": "Risk requires review",
+              "latent_need": "A safe next action",
+              "responsibility_judgment": {
+                "consumer_input_complete": true,
+                "accountable_side": "BRAND"
+              },
+              "action_impacts": ["ROUTE_TO_HUMAN"],
+              "reply_strategy": "Route to the human review queue"
+            },
+            "open_obligation": null,
+            "service_progress_receipt": null,
+            "experience_risk": "HIGH",
+            "audit_trail": []
+          },
+          "challenge_mode": false,
+          "fact_trace": {
+            "evidence_status": "VALID",
+            "prepared_action": "ASK_EVIDENCE",
+            "scope_match": true,
+            "active_promise_count": 0,
+            "suppressed_rule_ids": ["E1"]
+          },
+          "reason": "The high-risk issue type requires human review before repeating an evidence request.",
+          "resolution_path": {
+            "candidate_type": "HUMAN_EVIDENCE_REVIEW",
+            "evidence_basis": ["SOURCE-EVAL-001"],
+            "policy_basis": "H1",
+            "consumer_reply_draft": "A human reviewer will check the current evidence.",
+            "task_prefill": {
+              "task_type": "HUMAN_EVIDENCE_REVIEW",
+              "existing_ticket_id": null,
+              "summary": "Review the high-risk evidence request."
+            },
+            "accountable_side": "BRAND",
+            "executor": "HUMAN_REVIEW_QUEUE",
+            "requires_human_approval": true,
+            "creates_obligation": false,
+            "compiled_service_responsibility": null
+          },
+          "runtime_metrics": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "inference_latency_ms": 1,
+            "rule_substitution_count": 1
+          }
+        },
+        "error": null,
+        "request_id": "REQ-EVAL-H1-BASELINE"
+      },
+      "expected": {
+        "http_status": 200,
+        "request_schema_valid": true,
+        "decision": {
+          "decision": "HUMAN_REVIEW",
+          "rule_id": "H1",
+          "rule_priority": 350,
+          "suppressed_rule_ids": ["E1"]
+        }
+      }
+    },
+    {
+      "id": "evaluate-a34-disabled-overrides-and-compatibility-fields",
+      "request": {
+        "case_id": "CASE-EVAL-H1",
+        "prepared_action": {
+          "action_id": "ACTION-ASK-001",
+          "action_type": "ASK_EVIDENCE",
+          "requested_scope": {
+            "order_id": "ORDER-EVAL-001",
+            "fulfillment_item_id": "ITEM-EVAL-001",
+            "sku_id": "SKU-EVAL-001",
+            "issue_type": "ADVERSE_REACTION"
+          },
+          "requires_human_approval": false
+        },
+        "challenge_mode": false,
+        "challenge_overrides": {
+          "requested_scope": {
+            "sku_id": 7
+          }
+        },
+        "accountability_state": {"client": "spoofed"},
+        "evidence_status": "MISMATCHED",
+        "active_commitments": ["client"],
+        "prohibited_actions": ["client"],
+        "current_scope": {"client": "spoofed"}
+      },
+      "response": {
+        "data": {
+          "case_id": "CASE-EVAL-H1",
+          "decision": "HUMAN_REVIEW",
+          "rule_id": "H1",
+          "rule_priority": 350,
+          "accountability_state": {
+            "case_id": "CASE-EVAL-H1",
+            "case_status": "ACTION_REVIEW",
+            "consumer_input_required": false,
+            "accountable_side": "BRAND",
+            "evidence_status": "VALID",
+            "current_scope": {
+              "order_id": "ORDER-EVAL-001",
+              "fulfillment_item_id": "ITEM-EVAL-001",
+              "sku_id": "SKU-EVAL-001",
+              "issue_type": "ADVERSE_REACTION"
+            },
+            "active_commitments": [],
+            "prohibited_actions": [],
+            "experience_gap_diagnosis": {
+              "consumer_expression": "A review is requested",
+              "traceable_service_facts": [
+                {
+                  "fact_type": "OTHER",
+                  "statement": "High-risk issue type requires a human review",
+                  "source_ids": ["SOURCE-EVAL-001"]
+                }
+              ],
+              "deterioration_cause": "Risk requires review",
+              "latent_need": "A safe next action",
+              "responsibility_judgment": {
+                "consumer_input_complete": true,
+                "accountable_side": "BRAND"
+              },
+              "action_impacts": ["ROUTE_TO_HUMAN"],
+              "reply_strategy": "Route to the human review queue"
+            },
+            "open_obligation": null,
+            "service_progress_receipt": null,
+            "experience_risk": "HIGH",
+            "audit_trail": []
+          },
+          "challenge_mode": false,
+          "fact_trace": {
+            "evidence_status": "VALID",
+            "prepared_action": "ASK_EVIDENCE",
+            "scope_match": true,
+            "active_promise_count": 0,
+            "suppressed_rule_ids": ["E1"]
+          },
+          "reason": "The high-risk issue type requires human review before repeating an evidence request.",
+          "resolution_path": {
+            "candidate_type": "HUMAN_EVIDENCE_REVIEW",
+            "evidence_basis": ["SOURCE-EVAL-001"],
+            "policy_basis": "H1",
+            "consumer_reply_draft": "A human reviewer will check the current evidence.",
+            "task_prefill": {
+              "task_type": "HUMAN_EVIDENCE_REVIEW",
+              "existing_ticket_id": null,
+              "summary": "Review the high-risk evidence request."
+            },
+            "accountable_side": "BRAND",
+            "executor": "HUMAN_REVIEW_QUEUE",
+            "requires_human_approval": true,
+            "creates_obligation": false,
+            "compiled_service_responsibility": null
+          },
+          "runtime_metrics": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "inference_latency_ms": 1,
+            "rule_substitution_count": 1
+          }
+        },
+        "error": null,
+        "request_id": "REQ-EVAL-A34-DISABLED"
+      },
+      "expected": {
+        "http_status": 200,
+        "request_schema_valid": true,
+        "normalized_request": {
+          "case_id": "CASE-EVAL-H1",
+          "prepared_action": {
+            "action_id": "ACTION-ASK-001",
+            "action_type": "ASK_EVIDENCE",
+            "requested_scope": {
+              "order_id": "ORDER-EVAL-001",
+              "fulfillment_item_id": "ITEM-EVAL-001",
+              "sku_id": "SKU-EVAL-001",
+              "issue_type": "ADVERSE_REACTION"
+            },
+            "requires_human_approval": false
+          },
+          "challenge_mode": false
+        },
+        "same_response_data_as": "evaluate-h1-baseline",
+        "decision": {
+          "decision": "HUMAN_REVIEW",
+          "rule_id": "H1",
+          "rule_priority": 350,
+          "suppressed_rule_ids": ["E1"]
+        }
+      }
+    },
+    {
+      "id": "evaluate-enabled-challenge-invalid-override",
+      "request": {
+        "case_id": "CASE-EVAL-H1",
+        "prepared_action": {
+          "action_id": "ACTION-ASK-001",
+          "action_type": "ASK_EVIDENCE",
+          "requested_scope": {
+            "order_id": "ORDER-EVAL-001",
+            "fulfillment_item_id": "ITEM-EVAL-001",
+            "sku_id": "SKU-EVAL-001",
+            "issue_type": "ADVERSE_REACTION"
+          },
+          "requires_human_approval": false
+        },
+        "challenge_mode": true,
+        "challenge_overrides": {
+          "requested_scope": {
+            "sku_id": 7
+          }
+        }
+      },
+      "response": {
+        "data": null,
+        "error": {
+          "code": "SCHEMA_INVALID",
+          "message": "Enabled challenge overrides must use the restricted schema.",
+          "retryable": false
+        },
+        "request_id": "REQ-EVAL-CHALLENGE-INVALID"
+      },
+      "expected": {
+        "http_status": 400,
+        "request_schema_valid": false,
+        "error_code": "SCHEMA_INVALID"
+      }
+    },
+    {
+      "id": "evaluate-p0-precedes-e1",
+      "request": {
+        "case_id": "CASE-EVAL-P0",
+        "prepared_action": {
+          "action_id": "ACTION-ASK-P0",
+          "action_type": "ASK_EVIDENCE",
+          "requested_scope": {
+            "order_id": "ORDER-P0-001",
+            "fulfillment_item_id": "ITEM-P0-001",
+            "sku_id": "SKU-P0-001",
+            "issue_type": "PACKAGE_DAMAGE"
+          },
+          "requires_human_approval": false
+        }
+      },
+      "response": {
+        "data": null,
+        "error": {
+          "code": "P0_PROHIBITED_ACTION",
+          "message": "The server-derived prohibited action blocks a repeated evidence request.",
+          "retryable": false
+        },
+        "request_id": "REQ-EVAL-P0"
+      },
+      "expected": {
+        "http_status": 400,
+        "request_schema_valid": true,
+        "error_code": "P0_PROHIBITED_ACTION",
+        "rule_precedence": {
+          "matched": ["P0_PROHIBITED_ACTION", "E1"],
+          "selected": "P0_PROHIBITED_ACTION",
+          "priority": 400
+        }
+      }
+    },
+    {
+      "id": "evaluate-a29-shift-follow-up",
+      "request": {
+        "case_id": "CASE-EVAL-A29",
+        "prepared_action": {
+          "action_id": "ACTION-SHIFT-FOLLOW-UP-001",
+          "action_type": "SHIFT_FOLLOW_UP_TO_CONSUMER",
+          "requires_human_approval": false
+        }
+      },
+      "response": {
+        "data": null,
+        "error": {
+          "code": "P0_PROHIBITED_ACTION",
+          "message": "Follow-up cannot be shifted to the consumer after required input is complete.",
+          "retryable": false
+        },
+        "request_id": "REQ-EVAL-A29"
+      },
+      "expected": {
+        "http_status": 400,
+        "request_schema_valid": true,
+        "error_code": "P0_PROHIBITED_ACTION",
+        "rule_precedence": {
+          "matched": ["P0_PROHIBITED_ACTION"],
+          "selected": "P0_PROHIBITED_ACTION",
+          "priority": 400
+        }
+      }
+    },
+    {
+      "id": "evaluate-e0-success",
+      "request": {
+        "case_id": "CASE-EVAL-E0",
+        "prepared_action": {
+          "action_id": "ACTION-PROGRESS-001",
+          "action_type": "CHECK_REPLACEMENT_PROGRESS",
+          "requires_human_approval": false
+        }
+      },
+      "response": {
+        "data": {
+          "case_id": "CASE-EVAL-E0",
+          "decision": "ALLOW",
+          "rule_id": "E0_NO_RULE_MATCHED",
+          "rule_priority": 0,
+          "accountability_state": {
+            "case_id": "CASE-EVAL-E0",
+            "case_status": "READY_FOR_BRAND",
+            "consumer_input_required": false,
+            "accountable_side": "BRAND",
+            "evidence_status": "VALID",
+            "current_scope": {
+              "order_id": "ORDER-E0-001",
+              "fulfillment_item_id": "ITEM-E0-001",
+              "sku_id": "SKU-E0-001",
+              "issue_type": "LOGISTICS_STALLED"
+            },
+            "active_commitments": [],
+            "prohibited_actions": [],
+            "experience_gap_diagnosis": {
+              "consumer_expression": "Progress is requested",
+              "traceable_service_facts": [
+                {
+                  "fact_type": "OTHER",
+                  "statement": "No restrictive rule is matched",
+                  "source_ids": ["SOURCE-E0-001"]
+                }
+              ],
+              "deterioration_cause": "No blocking fact",
+              "latent_need": "Progress visibility",
+              "responsibility_judgment": {
+                "consumer_input_complete": true,
+                "accountable_side": "BRAND"
+              },
+              "action_impacts": ["CHECK_EXISTING_FULFILLMENT"],
+              "reply_strategy": "Check the current status"
+            },
+            "open_obligation": null,
+            "service_progress_receipt": null,
+            "experience_risk": "LOW",
+            "audit_trail": []
+          },
+          "challenge_mode": false,
+          "fact_trace": {
+            "evidence_status": "VALID",
+            "prepared_action": "CHECK_REPLACEMENT_PROGRESS",
+            "scope_match": null,
+            "active_promise_count": 0
+          },
+          "reason": "No firewall rule is matched.",
+          "resolution_path": {
+            "candidate_type": "CHECK_REPLACEMENT_FULFILLMENT",
+            "evidence_basis": ["SOURCE-E0-001"],
+            "policy_basis": "E0_NO_RULE_MATCHED",
+            "consumer_reply_draft": "The current fulfillment status will be checked.",
+            "task_prefill": {
+              "task_type": "CHECK_REPLACEMENT_STATUS",
+              "existing_ticket_id": null,
+              "summary": "Check current replacement status."
+            },
+            "accountable_side": "BRAND",
+            "executor": "BRAND",
+            "requires_human_approval": false,
+            "creates_obligation": false,
+            "compiled_service_responsibility": null
+          },
+          "runtime_metrics": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "inference_latency_ms": 1,
+            "rule_substitution_count": 0
+          }
+        },
+        "error": null,
+        "request_id": "REQ-EVAL-E0"
+      },
+      "expected": {
+        "http_status": 200,
+        "request_schema_valid": true,
+        "decision": {
+          "decision": "ALLOW",
+          "rule_id": "E0_NO_RULE_MATCHED",
+          "rule_priority": 0
+        }
+      }
+    }
+  ]
+}

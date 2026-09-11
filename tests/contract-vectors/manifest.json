@@ -1,0 +1,10 @@
+{
+  "format_version": "1.0",
+  "contract_version": "8314c76502cbc9d47d8432b7fe53f7d9fb82de82 / BATCH-03 contract-lock-v1",
+  "vector_files": [
+    "analyze.json",
+    "evaluate.json",
+    "approve.json",
+    "shipment.json"
+  ]
+}

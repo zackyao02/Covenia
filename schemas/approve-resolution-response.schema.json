@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "approve-resolution-response.schema.json",
+  "title": "ApproveResolutionResponse",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["accountability_state", "approved_resolution", "audit_trail"],
+  "properties": {
+    "accountability_state": {"$ref": "accountability-state.schema.json"},
+    "approved_resolution": {
+      "$ref": "decision-result.schema.json#/properties/resolution_path"
+    },
+    "audit_trail": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "accountability-state.schema.json#/properties/audit_trail/items"
+      },
+      "contains": {
+        "type": "object",
+        "required": ["action"],
+        "properties": {"action": {"const": "RESOLUTION_APPROVED"}}
+      }
+    }
+  }
+}

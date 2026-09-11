@@ -9,8 +9,23 @@
     "case_id": {"type": "string", "minLength": 1},
     "prepared_action": {"$ref": "prepared-action.schema.json"},
     "evaluation_time": {"type": "string", "format": "date-time"},
-    "challenge_mode": {"type": "boolean", "default": false},
+    "challenge_mode": {
+      "type": "boolean",
+      "default": false,
+      "description": "Only an explicit true enables validation and application of challenge_overrides."
+    },
     "challenge_overrides": {
+      "description": "Compatibility payload. It is deliberately not inspected when challenge_mode is absent or false.",
+      "$comment": "The strict shape is selected only by the conditional schema below."
+    },
+    "accountability_state": {"deprecated": true, "readOnly": true, "description": "兼容字段，服务端忽略。"},
+    "evidence_status": {"deprecated": true, "readOnly": true, "description": "兼容字段，服务端忽略。"},
+    "active_commitments": {"deprecated": true, "readOnly": true, "description": "兼容字段，服务端忽略。"},
+    "prohibited_actions": {"deprecated": true, "readOnly": true, "description": "兼容字段，服务端忽略。"},
+    "current_scope": {"deprecated": true, "readOnly": true, "description": "兼容字段，服务端忽略。"}
+  },
+  "$defs": {
+    "enabled_challenge_overrides": {
       "type": "object",
       "additionalProperties": false,
       "minProperties": 1,
@@ -42,21 +57,19 @@
           }
         }
       }
-    },
-    "accountability_state": {"deprecated": true, "readOnly": true, "description": "兼容字段，服务端忽略。"},
-    "evidence_status": {"deprecated": true, "readOnly": true, "description": "兼容字段，服务端忽略。"},
-    "active_commitments": {"deprecated": true, "readOnly": true, "description": "兼容字段，服务端忽略。"},
-    "prohibited_actions": {"deprecated": true, "readOnly": true, "description": "兼容字段，服务端忽略。"},
-    "current_scope": {"deprecated": true, "readOnly": true, "description": "兼容字段，服务端忽略。"}
+    }
   },
   "allOf": [
     {
-      "if": {"required": ["challenge_overrides"]},
-      "then": {"required": ["challenge_mode"], "properties": {"challenge_mode": {"const": true}}}
-    },
-    {
-      "if": {"required": ["challenge_mode"], "properties": {"challenge_mode": {"const": true}}},
-      "then": {"required": ["challenge_overrides"]}
+      "if": {
+        "required": ["challenge_mode"],
+        "properties": {"challenge_mode": {"const": true}}
+      },
+      "then": {
+        "properties": {
+          "challenge_overrides": {"$ref": "#/$defs/enabled_challenge_overrides"}
+        }
+      }
     }
   ]
 }

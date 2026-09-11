@@ -6,8 +6,17 @@
   "additionalProperties": false,
   "required": ["action_id", "action_type", "requires_human_approval"],
   "properties": {
-    "action_id": {"type": "string"},
-    "action_type": {"enum": ["ASK_EVIDENCE", "CHECK_REPLACEMENT_PROGRESS", "CREATE_FOLLOW_UP_TASK", "CLOSE_CASE"]},
+    "action_id": {"type": "string", "minLength": 1},
+    "action_type": {
+      "enum": [
+        "ASK_EVIDENCE",
+        "CHECK_REPLACEMENT_PROGRESS",
+        "CREATE_FOLLOW_UP_TASK",
+        "CLOSE_CASE",
+        "SHIFT_FOLLOW_UP_TO_CONSUMER",
+        "REPEAT_EXPLANATION_REQUEST"
+      ]
+    },
     "requested_scope": {
       "type": ["object", "null"],
       "additionalProperties": false,
