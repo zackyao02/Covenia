@@ -1,136 +1,90 @@
 {
-  "report_version": "1.0",
+  "report_version": "1.1",
   "batch_id": "BATCH-03",
-  "result": "IMPLEMENTED",
+  "result": "IMPLEMENTED_REPAIR",
   "status": "COMPLETED",
-  "summary": "Locked the already-approved B API semantics as Draft 2020-12 schemas, strict offline references, 18 synthetic request/response vectors, a transport handoff, and a hash-checked contract validator. No business service, route, frontend, fixture, approval record, or independent verification report was created or changed.",
-  "repo_root": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/worktrees/covenia-batch-03",
-  "branch": "codex/covenia-batch-03",
+  "repair_scope": {
+    "finding": "F-B03-001",
+    "source_acceptance_report": "worktrees/covenia-batch-03/reports/batches/BATCH-03/VERIFICATION_REPORT.json (read-only input)",
+    "approved_decision": "D03",
+    "summary": "Restore the approved same-scope ASK_EVIDENCE result: HTTP 200 DecisionResult with INTERVENE/E1/300. ASK_SAME_EVIDENCE remains display-only and does not independently select P0."
+  },
+  "summary": "Applied only the F-B03-001 D03 contract repair. The firewall, lock, evaluate vector, strict checker, and contract test now bind the approved D03 wording to a successful E1 result. P0 precedence remains covered with the genuinely prohibited SHIFT_FOLLOW_UP_TO_CONSUMER action against H1.",
+  "repo_root": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/worktrees/covenia-batch-03-repair-1",
+  "branch": "codex/covenia-batch-03-repair-1",
   "base_integration_sha": "8314c76502cbc9d47d8432b7fe53f7d9fb82de82",
+  "starting_reviewed_sha": "04aabbec3590e7fd1e5a1e9dc742f381f2d7ce4d",
   "contract_version": "8314c76502cbc9d47d8432b7fe53f7d9fb82de82 / BATCH-03 contract-lock-v1",
   "plan_sha256": "MASTER_PLAN.md=ECE161441703962D9D7C0E1650497D2C2BEED560FC3D2239564B4E9E1D4A75E4; batches.json=E78AE0E223B6D5D5A8F427630225D572E1A7D9E844F99CEA82503CC87EEB1693",
-  "dependency_receipts": [
-    {
-      "batch_id": "BATCH-01",
-      "verification_result": "PASS",
-      "integration_commit": "3f951e4b746e44a864bcd77c0c9e55438cd83347"
-    },
-    {
-      "batch_id": "BATCH-02",
-      "verification_result": "PASS",
-      "integration_commit": "8314c76502cbc9d47d8432b7fe53f7d9fb82de82"
-    }
+  "code_commits": [
+    "2e0437c8ea99491c4601e429c30d8a1910cb1d52",
+    "e5cda914877321a2424627be5cc885ac59a00975"
   ],
-  "external_gate_receipts": [
-    {
-      "gate": "X-FREEZE",
-      "status": "ACCEPTED",
-      "approved_by": "Zack",
-      "approved_at": "2026-09-10T23:59:00+08:00",
-      "approved_record_sha256": "3ACAD4A113EB595BCED29025AF884A4C5EA2835E90E38D0E897298F91DB371DA",
-      "access": "READ_ONLY",
-      "evidence": "reports/batches/BATCH-03/evidence/preflight.json"
-    }
-  ],
-  "code_commits": ["2e0437c"],
-  "commit_hash": "2e0437c",
+  "repair_code_commit": "e5cda914877321a2424627be5cc885ac59a00975",
   "files_changed": [
-    "schemas/**",
-    "docs/03-firewall-rules.md",
-    "docs/04-responsibility-loop.md",
-    "docs/05-api-and-ui.md",
-    "docs/08-idempotency-and-ordering.md",
-    "docs/contracts/b-contract-lock.json",
-    "docs/contracts/b-transport.md",
-    "tests/contract-vectors/**",
-    "tools/contracts/check_contracts.py",
     "backend/tests/contracts/test_contracts.py",
-    "reports/batches/BATCH-03/**"
+    "docs/03-firewall-rules.md",
+    "docs/contracts/b-contract-lock.json",
+    "tests/contract-vectors/evaluate.json",
+    "tools/contracts/check_contracts.py",
+    "reports/batches/BATCH-03/IMPLEMENTATION_REPORT.json",
+    "reports/batches/BATCH-03/IMPLEMENTATION_REPORT.md",
+    "reports/batches/BATCH-03/commands.json"
   ],
   "scope_check": {
     "within_allowlist": true,
     "forbidden_changes": [],
     "business_routes_added": false,
-    "domain_or_port_files_changed": false,
     "frontend_files_changed": false,
     "fixtures_changed": false,
     "approval_record_changed": false,
-    "verification_report_written": false
+    "docs_02_changed": false,
+    "dependency_lock_changed": false,
+    "verification_report_written": false,
+    "verification_evidence_written": false
   },
   "acceptance_results": [
     {
-      "criterion": "All $ref values resolve offline, use Draft 2020-12, and apply actual timezone-aware date-time validation; positive vectors pass and negative vectors reject.",
-      "status": "EVIDENCED",
-      "evidence": "reports/batches/BATCH-03/evidence/contract-check.json"
-    },
-    {
-      "criterion": "A34, P0/E1 precedence, H1=350, A29 action expression, server time, notification confirmation, HTTP errors, cache visibility, candidate expiry, unknown cases, and event de-duplication have machine-contract mappings.",
-      "status": "EVIDENCED",
+      "criterion": "Approved D03 is directly bound to the firewall text, contract lock, and a same-scope ASK_EVIDENCE vector.",
+      "status": "PASS",
       "evidence": [
+        "docs/approvals/b-decisions.json (read-only D03)",
+        "docs/03-firewall-rules.md",
         "docs/contracts/b-contract-lock.json",
         "tests/contract-vectors/evaluate.json",
-        "tests/contract-vectors/approve.json",
-        "tests/contract-vectors/shipment.json"
+        "tools/contracts/check_contracts.py"
       ]
     },
     {
-      "criterion": "Model candidates cannot produce final activation, evidence, responsibility, decision, or approved resolution; new response schemas do not add endpoints.",
-      "status": "EVIDENCED",
-      "evidence": "docs/contracts/b-transport.md"
+      "criterion": "Same-scope repeated evidence returns HTTP 200 DecisionResult with INTERVENE/E1/300 while retaining ASK_SAME_EVIDENCE only as a display item.",
+      "status": "PASS",
+      "evidence": "evaluate-d03-repeat-evidence-e1"
     },
     {
-      "criterion": "Exact C/A files and vectors are handed off without modifying frontend or fixtures; unaccepted external work remains gated.",
-      "status": "EVIDENCED",
-      "evidence": "docs/contracts/b-transport.md#c-and-a-synchronization-handoff"
+      "criterion": "P0 precedence remains represented by a genuinely prohibited action rather than repeated ASK_EVIDENCE.",
+      "status": "PASS",
+      "evidence": "evaluate-a29-p0-precedes-h1"
     },
     {
-      "criterion": "The BATCH-01 approval archive is read-only, has the required content hash, and is supported by BATCH-01/BATCH-02 PASS integration receipts.",
-      "status": "EVIDENCED",
-      "evidence": "reports/batches/BATCH-03/evidence/preflight.json"
+      "criterion": "Strict checker and contract test reject an in-memory D03 remap of repeat evidence to HTTP 400/P0.",
+      "status": "PASS",
+      "evidence": "tools/contracts/check_contracts.py::validate_d03_repeat_evidence_semantics and backend/tests/contracts/test_contracts.py"
+    },
+    {
+      "criterion": "Independent BATCH-03 acceptance and its D03 probe.",
+      "status": "NOT_RUN",
+      "reason": "Reserved for the coordinator-created independent verifier. This repair did not write or run verifier-owned artifacts."
     }
   ],
   "tests_run": 5,
-  "tests_passed": 5,
-  "tests_failed": 0,
+  "tests_passed": 4,
+  "tests_failed": 1,
   "test_results": "reports/batches/BATCH-03/commands.json",
-  "artifacts": [
-    {
-      "path": "docs/contracts/b-contract-lock.json",
-      "classification": "MACHINE_CONTRACT_LOCK"
-    },
-    {
-      "path": "docs/contracts/b-transport.md",
-      "classification": "CROSS_TEAM_TRANSPORT_HANDOFF"
-    },
-    {
-      "path": "tests/contract-vectors/",
-      "classification": "SYNTHETIC_CONTRACT_VECTORS"
-    }
-  ],
-  "not_completed": [
-    {
-      "item": "Business routes, domain services, persistence, model calls, and notification delivery",
-      "reason": "Explicitly outside BATCH-03; the batch only locks contracts."
-    },
-    {
-      "item": "Independent BATCH-03 verification report and verification evidence",
-      "reason": "Reserved for the independent verifier; this implementation did not create or overwrite them."
-    },
-    {
-      "item": "C/A synchronization and their external-gate acceptance",
-      "reason": "C owns TypeScript/examples; A owns fixtures/ground truth. Their current external statuses remain unchanged."
-    }
-  ],
   "remaining_risks": [
-    "BATCH-03 has implementation evidence only, not independent verification or coordinator integration.",
-    "C must synchronize the named TypeScript contract and examples before X-C-CONTRACT can become accepted.",
-    "A-owned fixture, ground-truth, and image gates remain MISSING and continue to block their downstream integrations.",
-    "The offline checker requires an available jsonschema runtime; this run reused existing local tooling without changing dependency locks."
+    "F-B03-002 remains unresolved and out of scope: the default D:\\python\\python.exe environment reports No module named pytest for the required pytest command. No dependency lock or dependency was changed.",
+    "A new independent verifier must run the D03 probe and determine final acceptance; this implementation report is not an independent verification report.",
+    "OBS-B03-001 in docs/02-ai-extraction.md remains untouched because it is outside this repair scope."
   ],
   "blockers": [],
-  "rollback": {
-    "code": "Revert the implementation-report commit first, then revert 2e0437c. Do not reset, edit the approval archive, or partially revert only a subset of locked schemas.",
-    "runtime_state": "NOT_APPLICABLE: no service, database, model, external notification, or business state was created."
-  },
-  "handoff_notes": "BATCH-04 and later consumers must take the exact contract_version and file hashes from docs/contracts/b-contract-lock.json. Any contract edit needs renewed approval and invalidates affected PASS results. C/A handoff paths and their vectors are listed in docs/contracts/b-transport.md."
+  "handoff_notes": "Coordinator: create a fresh independent BATCH-03 verification against the repair code commit e5cda914877321a2424627be5cc885ac59a00975. Re-run the mandated commands in a declared environment and verify that evaluate-d03-repeat-evidence-e1 remains HTTP 200/INTERVENE/E1/300. Do not treat this implementation report as acceptance."
 }
