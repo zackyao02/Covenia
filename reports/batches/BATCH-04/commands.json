@@ -1,0 +1,151 @@
+{
+  "report_version": "1.0",
+  "batch_id": "BATCH-04",
+  "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-retry-2",
+  "interpreter": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-retry-2\\reports\\batches\\BATCH-04\\runtime\\venv\\Scripts\\python.exe",
+  "commands": [
+    {
+      "id": "required-01-venv-isolation",
+      "kind": "ENVIRONMENT",
+      "command": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-retry-2\\reports\\batches\\BATCH-04\\runtime\\venv\\Scripts\\python.exe -c import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-retry-2\\reports\\batches\\BATCH-04\\runtime\\venv\\Scripts\\python.exe",
+      "exit_code": 0,
+      "duration_seconds": 0.068,
+      "test_count": null,
+      "output_summary": "CPython 3.13.5; executable and isolated-prefix assertions passed.",
+      "evidence_path": "reports/batches/BATCH-04/environment.json"
+    },
+    {
+      "id": "required-02-install-locked-requirements",
+      "kind": "ENVIRONMENT",
+      "command": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-retry-2\\reports\\batches\\BATCH-04\\runtime\\venv\\Scripts\\python.exe -m pip install --no-deps -r backend/requirements-dev.lock",
+      "exit_code": 0,
+      "duration_seconds": 1.572,
+      "test_count": null,
+      "output_summary": "All 29 pinned requirements were already satisfied in the isolated venv; requirements lock was not changed.",
+      "evidence_path": "reports/batches/BATCH-04/environment.json"
+    },
+    {
+      "id": "required-03-editable-install",
+      "kind": "ENVIRONMENT",
+      "command": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-retry-2\\reports\\batches\\BATCH-04\\runtime\\venv\\Scripts\\python.exe -m pip install --no-deps --no-build-isolation -e backend",
+      "exit_code": 0,
+      "duration_seconds": 2.88,
+      "test_count": null,
+      "output_summary": "covenia-b==0.0.0 installed editable from the target worktree backend directory.",
+      "evidence_path": "reports/batches/BATCH-04/environment.json"
+    },
+    {
+      "id": "required-04-import-check",
+      "kind": "ENVIRONMENT",
+      "command": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-retry-2\\reports\\batches\\BATCH-04\\runtime\\venv\\Scripts\\python.exe -c import pytest, jsonschema; print('pytest/jsonschema import OK')",
+      "exit_code": 0,
+      "duration_seconds": 0.416,
+      "test_count": null,
+      "output_summary": "pytest/jsonschema import OK",
+      "evidence_path": "reports/batches/BATCH-04/commands.json"
+    },
+    {
+      "id": "required-05-domain-and-contract-pytest",
+      "kind": "TEST",
+      "mode": "UNIT",
+      "command": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-retry-2\\reports\\batches\\BATCH-04\\runtime\\venv\\Scripts\\python.exe -m pytest backend/tests/domain backend/tests/contracts -q",
+      "exit_code": 0,
+      "duration_seconds": 1.704,
+      "test_count": 39,
+      "output_summary": "39 passed in 1.35s",
+      "evidence_path": "reports/batches/BATCH-04/commands.json"
+    },
+    {
+      "id": "required-06-ruff",
+      "kind": "STATIC_ANALYSIS",
+      "command": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-retry-2\\reports\\batches\\BATCH-04\\runtime\\venv\\Scripts\\python.exe -m ruff check backend/src/covenia_b/domain backend/src/covenia_b/ports",
+      "exit_code": 0,
+      "duration_seconds": 0.11,
+      "test_count": null,
+      "output_summary": "All checks passed.",
+      "evidence_path": "reports/batches/BATCH-04/commands.json"
+    },
+    {
+      "id": "required-07-pip-list",
+      "kind": "ENVIRONMENT",
+      "command": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-retry-2\\reports\\batches\\BATCH-04\\runtime\\venv\\Scripts\\python.exe -m pip list --format=json",
+      "exit_code": 0,
+      "duration_seconds": 0.516,
+      "test_count": 31,
+      "output_summary": "31 installed packages, including the editable covenia-b package.",
+      "evidence_path": "reports/batches/BATCH-04/environment.json"
+    },
+    {
+      "id": "required-08-pip-check",
+      "kind": "ENVIRONMENT",
+      "command": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-retry-2\\reports\\batches\\BATCH-04\\runtime\\venv\\Scripts\\python.exe -m pip check",
+      "exit_code": 0,
+      "duration_seconds": 0.546,
+      "test_count": null,
+      "output_summary": "No broken requirements found.",
+      "evidence_path": "reports/batches/BATCH-04/pip-check.txt"
+    },
+    {
+      "id": "required-09-git-diff-check",
+      "kind": "VCS_SCOPE",
+      "command": "git diff --check",
+      "exit_code": 0,
+      "duration_seconds": 0.133,
+      "test_count": null,
+      "output_summary": "No whitespace errors after all implementation-report artifacts were written.",
+      "evidence_path": "reports/batches/BATCH-04/commands.json"
+    },
+    {
+      "id": "required-10-git-status",
+      "kind": "VCS_SCOPE",
+      "command": "git status --short",
+      "exit_code": 0,
+      "duration_seconds": 0.125,
+      "test_count": null,
+      "output_summary": "Only the owned reports/batches/BATCH-04 directory was untracked after the code/test commit.",
+      "evidence_path": "reports/batches/BATCH-04/commands.json"
+    },
+    {
+      "id": "supplemental-full-backend-pytest",
+      "kind": "TEST",
+      "mode": "UNIT",
+      "command": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-retry-2\\reports\\batches\\BATCH-04\\runtime\\venv\\Scripts\\python.exe -m pytest backend/tests -q",
+      "exit_code": 0,
+      "duration_seconds": 1.952,
+      "test_count": 43,
+      "output_summary": "43 passed in 1.61s",
+      "evidence_path": "reports/batches/BATCH-04/commands.json"
+    },
+    {
+      "id": "supplemental-contract-lock-check",
+      "kind": "TEST",
+      "mode": "UNIT",
+      "command": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-retry-2\\reports\\batches\\BATCH-04\\runtime\\venv\\Scripts\\python.exe tools/contracts/check_contracts.py --strict",
+      "exit_code": 0,
+      "duration_seconds": 0.342,
+      "test_count": 32,
+      "output_summary": "14 locked schemas and 18 vectors validated with strict checking.",
+      "evidence_path": "reports/batches/BATCH-04/commands.json"
+    },
+    {
+      "id": "supplemental-pure-import",
+      "kind": "TEST",
+      "mode": "UNIT",
+      "command": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-retry-2\\reports\\batches\\BATCH-04\\runtime\\venv\\Scripts\\python.exe -c import covenia_b.domain, covenia_b.ports; assert fastapi and covenia_b.api are absent from sys.modules",
+      "exit_code": 0,
+      "duration_seconds": 0.339,
+      "test_count": 1,
+      "output_summary": "Pure domain/ports import OK; no FastAPI or covenia_b.api module was imported.",
+      "evidence_path": "reports/batches/BATCH-04/commands.json"
+    }
+  ],
+  "retried_attempts": [
+    {
+      "id": "locked-requirements-sandbox-attempt",
+      "command": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-retry-2\\reports\\batches\\BATCH-04\\runtime\\venv\\Scripts\\python.exe -m pip install --no-deps -r backend/requirements-dev.lock",
+      "exit_code": 1,
+      "duration_seconds": 9.155,
+      "outcome": "Sandbox socket restrictions prevented the initial package-index connection. It was not treated as a passing result; the same isolated-venv command later exited 0."
+    }
+  ]
+}

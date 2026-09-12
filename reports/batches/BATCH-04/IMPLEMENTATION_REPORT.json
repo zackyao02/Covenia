@@ -1,0 +1,234 @@
+{
+  "report_version": "1.0",
+  "batch_id": "BATCH-04",
+  "result": "IMPLEMENTED",
+  "summary": "Implemented schema-backed public domain types, candidate-safe internal DTOs, pure module ports, and trusted clock/DI seams. This implementation report is not an independent verification PASS.",
+  "repo_root": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-retry-2",
+  "branch": "codex/covenia-batch-04-retry-2",
+  "base_integration_sha": "853f1bcb746050f0ee421cd499e1836843176894",
+  "contract_version": "docs/contracts/b-contract-lock.json at 853f1bcb746050f0ee421cd499e1836843176894; 8314c76502cbc9d47d8432b7fe53f7d9fb82de82 / BATCH-03 contract-lock-v1",
+  "plan_sha256": {
+    "method": "SHA-256 over raw bytes of the external authoritative plan sources",
+    "MASTER_PLAN.md": {
+      "path": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\MASTER_PLAN.md",
+      "sha256": "8ECC2FE8B0E5615C401222D58970B838BA55855E40A53B30F89B138421658A51"
+    },
+    "batches.json": {
+      "path": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\batches.json",
+      "sha256": "A17EF3368E765E498B0DDB3945FC83B8121804AB327D3BB530A284B5E5BDA14E"
+    }
+  },
+  "initial_worktree": [
+    {
+      "head": "853f1bcb746050f0ee421cd499e1836843176894",
+      "branch": "codex/covenia-batch-04-retry-2",
+      "status_short": "",
+      "verified_repo_root": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/worktrees/covenia-batch-04-retry-2",
+      "preservation": "No reset, stash, cleanup, or baseline replacement was performed."
+    }
+  ],
+  "dependency_receipts": [
+    {
+      "batch_id": "BATCH-03",
+      "implementation_report": "reports/batches/BATCH-03/IMPLEMENTATION_REPORT.json",
+      "implementation_report_sha256": "EA62466B009C72398D4FC947E34B98C85B9DC6714AD5733CCCC84D6D49977E70",
+      "implementation_result": "IMPLEMENTED",
+      "verification_report": "reports/batches/BATCH-03/VERIFICATION_REPORT.json",
+      "verification_report_sha256": "F7BA69C5B21AEA42B2F21500C23B9CA9110D648EE89EE2875844E22391DEBC2D",
+      "verification_result": "PASS",
+      "integration_receipt": "C:\\Users\\WONG Tsun Ming\\covenia-orchestration\\runs\\covenia-b-20260910-01\\integration-receipts\\BATCH-03.json",
+      "integration_commit": "2fbbc9d88348e4088332d574051de81d7ec1af15",
+      "integration_status": "SUCCESS",
+      "is_ancestor_of_base_integration_sha": true
+    }
+  ],
+  "external_gate_receipts": [],
+  "code_commits": [
+    "e1070f150de14fa134a5492372828628ca38e89e"
+  ],
+  "changed_files": [
+    "backend/src/covenia_b/domain/__init__.py",
+    "backend/src/covenia_b/domain/time.py",
+    "backend/src/covenia_b/domain/types.py",
+    "backend/src/covenia_b/domain/validation.py",
+    "backend/src/covenia_b/ports/__init__.py",
+    "backend/src/covenia_b/ports/clock.py",
+    "backend/src/covenia_b/ports/contracts.py",
+    "backend/src/covenia_b/ports/errors.py",
+    "backend/src/covenia_b/ports/wiring.py",
+    "backend/tests/domain/test_ports_and_clock.py",
+    "backend/tests/domain/test_schema_backed_types.py",
+    "docs/contracts/b-module-ports.md",
+    "reports/batches/BATCH-04/IMPLEMENTATION_REPORT.json",
+    "reports/batches/BATCH-04/IMPLEMENTATION_REPORT.md",
+    "reports/batches/BATCH-04/commands.json",
+    "reports/batches/BATCH-04/environment.json",
+    "reports/batches/BATCH-04/pip-check.txt"
+  ],
+  "scope_check": {
+    "within_allowlist": true,
+    "forbidden_changes": [],
+    "requirements_dev_lock_modified": false,
+    "requirements_dev_lock_sha256": "886A9FC311F16DA186158EFF8478F3058FF8E0AEFA00091830BBF87863CD0C5D",
+    "schema_or_contract_lock_modified": false,
+    "evidence": "reports/batches/BATCH-04/commands.json"
+  },
+  "acceptance_results": [
+    {
+      "criterion": "All 14 locked public schemas have a consistent strict type and validation entry point; long numeric identifiers remain strings.",
+      "status": "EVIDENCED",
+      "evidence": [
+        "backend/tests/domain/test_schema_backed_types.py",
+        "reports/batches/BATCH-04/commands.json#required-05-domain-and-contract-pytest",
+        "reports/batches/BATCH-04/commands.json#supplemental-contract-lock-check"
+      ]
+    },
+    {
+      "criterion": "Public ports declare inputs, outputs, errors, and persistence responsibility without FastAPI or frontend dependency.",
+      "status": "EVIDENCED",
+      "evidence": [
+        "docs/contracts/b-module-ports.md",
+        "backend/tests/domain/test_ports_and_clock.py",
+        "reports/batches/BATCH-04/commands.json#supplemental-pure-import"
+      ]
+    },
+    {
+      "criterion": "SystemClock and injected DemoClock are timezone-aware; version and event high-watermark are internal-only ledger fields.",
+      "status": "EVIDENCED",
+      "evidence": [
+        "backend/src/covenia_b/ports/clock.py",
+        "backend/src/covenia_b/domain/types.py",
+        "backend/tests/domain/test_ports_and_clock.py"
+      ]
+    },
+    {
+      "criterion": "The prescribed isolated venv was used and pip check exits zero without a new dependency or lock-file change.",
+      "status": "EVIDENCED",
+      "evidence": [
+        "reports/batches/BATCH-04/environment.json",
+        "reports/batches/BATCH-04/pip-check.txt",
+        "reports/batches/BATCH-04/commands.json#required-01-venv-isolation"
+      ]
+    },
+    {
+      "criterion": "Only the BATCH-04 allowlist is changed and no verifier-owned report or verification evidence is written.",
+      "status": "EVIDENCED",
+      "evidence": [
+        "reports/batches/BATCH-04/commands.json"
+      ]
+    }
+  ],
+  "test_results": [
+    {
+      "command": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-retry-2\\reports\\batches\\BATCH-04\\runtime\\venv\\Scripts\\python.exe -m pytest backend/tests/domain backend/tests/contracts -q",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-retry-2",
+      "exit_code": 0,
+      "duration_seconds": 1.704,
+      "mode": "UNIT",
+      "test_count": 39,
+      "evidence": "reports/batches/BATCH-04/commands.json#required-05-domain-and-contract-pytest"
+    },
+    {
+      "command": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-retry-2\\reports\\batches\\BATCH-04\\runtime\\venv\\Scripts\\python.exe -m pytest backend/tests -q",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-retry-2",
+      "exit_code": 0,
+      "duration_seconds": 1.952,
+      "mode": "UNIT",
+      "test_count": 43,
+      "evidence": "reports/batches/BATCH-04/commands.json#supplemental-full-backend-pytest"
+    },
+    {
+      "command": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-retry-2\\reports\\batches\\BATCH-04\\runtime\\venv\\Scripts\\python.exe tools/contracts/check_contracts.py --strict",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-retry-2",
+      "exit_code": 0,
+      "duration_seconds": 0.342,
+      "mode": "UNIT",
+      "test_count": 32,
+      "evidence": "reports/batches/BATCH-04/commands.json#supplemental-contract-lock-check"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "backend/src/covenia_b/domain/types.py",
+      "sha256": "9CDDEF0553C422F25927F0EC23A3FDED7534E0804A35E210D75B80EADD3218AE",
+      "classification": "SOURCE_CODE"
+    },
+    {
+      "path": "backend/src/covenia_b/domain/validation.py",
+      "sha256": "2BCA1C720E755A58C19F8565F4A422652EF4CFD4139FB215BC627289DA97D3F2",
+      "classification": "SOURCE_CODE"
+    },
+    {
+      "path": "backend/src/covenia_b/ports/contracts.py",
+      "sha256": "FF0189B0AC268BC46D6B02F9712BFC042B37D160AD4115709C8706D18E69FC9F",
+      "classification": "SOURCE_CODE"
+    },
+    {
+      "path": "backend/tests/domain/test_schema_backed_types.py",
+      "sha256": "D72AEA82BD990EB7458F23B2838CC46CDA2B660B2A81206BA41D49B1183E7117",
+      "classification": "UNIT_TEST"
+    },
+    {
+      "path": "docs/contracts/b-module-ports.md",
+      "sha256": "2C702645623C9E8643C3DCF53757C70E3C5631B48885A4EE8BD19237CA29B36C",
+      "classification": "CONTRACT_DOCUMENTATION"
+    },
+    {
+      "path": "reports/batches/BATCH-04/environment.json",
+      "classification": "IMPLEMENTATION_ENVIRONMENT_EVIDENCE"
+    },
+    {
+      "path": "reports/batches/BATCH-04/pip-check.txt",
+      "classification": "IMPLEMENTATION_ENVIRONMENT_EVIDENCE"
+    }
+  ],
+  "model_runs": [
+    {
+      "status": "NOT_APPLICABLE",
+      "reason": "BATCH-04 defines candidate-safe provider types only; it does not invoke a model or image provider."
+    }
+  ],
+  "not_completed": [
+    {
+      "item": "Independent BATCH-04 verification report and verifier-owned evidence",
+      "status": "NOT_STARTED",
+      "reason": "Those artifacts are reserved for an independent verifier and were not written by the implementation task."
+    }
+  ],
+  "risks": [
+    {
+      "risk": "The public type boundary is verified on the delegated CPython 3.13.5 isolated venv only.",
+      "mitigation": "Downstream batches must create their own isolated venv and rerun the documented checks."
+    },
+    {
+      "risk": "No live model, image resolver, or persistence adapter was exercised because this batch declares ports rather than implementations.",
+      "mitigation": "Later owner batches must use protocol doubles for unit tests and clearly label any live tests when resources are available."
+    }
+  ],
+  "rollback": {
+    "code": "Revert e1070f150de14fa134a5492372828628ca38e89e and the following BATCH-04 report-only commit, then pause consumers of the BATCH-04 port version until they are reverified.",
+    "runtime_state": "No ledger, provider, model, API, or external service state was created. The ignored isolated runtime venv can be recreated from backend/requirements-dev.lock."
+  },
+  "handoff": {
+    "interfaces": [
+      "SchemaBackedModel.from_contract()/to_contract() for all 14 locked schemas",
+      "CandidateExtraction is candidate-only; EvidenceSummary and CompiledCommitments are server-owned internal DTOs",
+      "Workbook, CaseSource, ImageResolver, ModelProvider, ExtractionStore, LedgerRepository, MetricsSink, Clock",
+      "SystemClock returns aware UTC; DemoClock requires an injected aware instant; LedgerSnapshot version/high-watermark stay internal"
+    ],
+    "input_versions": {
+      "contract_lock_sha256": "FF3657526B5120D51399E2ED482F33C2FC322D676548B97F0E6BB1B4F03C8FE2",
+      "requirements_dev_lock_sha256": "886A9FC311F16DA186158EFF8478F3058FF8E0AEFA00091830BBF87863CD0C5D",
+      "authoritative_master_plan_sha256": "8ECC2FE8B0E5615C401222D58970B838BA55855E40A53B30F89B138421658A51",
+      "authoritative_batches_sha256": "A17EF3368E765E498B0DDB3945FC83B8121804AB327D3BB530A284B5E5BDA14E"
+    },
+    "reproduction": [
+      "Use the absolute interpreter recorded in reports/batches/BATCH-04/environment.json; do not use a global interpreter or this batch's venv from a downstream batch.",
+      "Install the pinned requirements with --no-deps, install backend editable with --no-deps --no-build-isolation, then run the required pytest, Ruff, pip list, pip check, git diff --check, and git status commands."
+    ],
+    "remaining_gates": [
+      "Independent BATCH-04 verification and a coordinator integration receipt are required before a downstream batch may consume this implementation."
+    ]
+  },
+  "next_batch_started": false
+}
