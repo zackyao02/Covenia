@@ -1,69 +1,91 @@
 {
-  "environment_version": "1.0",
+  "environment_version": "2.0",
   "batch_id": "BATCH-04",
-  "repo_root": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-retry-2",
-  "cwd_for_commands": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-retry-2",
-  "interpreter": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-retry-2\\reports\\batches\\BATCH-04\\runtime\\venv\\Scripts\\python.exe",
-  "interpreter_check": {
-    "exit_code": 0,
-    "duration_seconds": 0.068,
-    "python_version": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]",
-    "assertions": [
-      "Path(sys.executable).resolve() equals the delegated absolute interpreter",
-      "sys.prefix differs from sys.base_prefix"
-    ]
+  "evidence_snapshot_id": "BATCH-04-short-path-evidence-repair-1",
+  "repo_root": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-evidence-repair-1",
+  "cwd_for_commands": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-evidence-repair-1",
+  "run_dir": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b04v4",
+  "run_dir_length": 48,
+  "venv_path": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b04v4\\venv",
+  "interpreter": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b04v4\\venv\\Scripts\\python.exe",
+  "python": {
+    "version": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]",
+    "implementation_cache_tag": "cpython-313",
+    "sys_executable": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b04v4\\venv\\Scripts\\python.exe",
+    "sys_prefix": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b04v4\\venv",
+    "sys_base_prefix": "D:\\python",
+    "pyvenv_cfg": {
+      "home": "D:\\python",
+      "include_system_site_packages": false,
+      "version": "3.13.5",
+      "executable": "D:\\python\\python.exe",
+      "command": "D:\\python\\python.exe -m venv C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b04v4\\venv"
+    },
+    "isolation_assertions": {
+      "sys_executable_equals_declared_interpreter": true,
+      "sys_prefix_equals_direct_run_dir_venv": true,
+      "sys_prefix_differs_from_sys_base_prefix": true,
+      "include_system_site_packages": false,
+      "pythonpath_state": "UNSET",
+      "user_site_enabled": false,
+      "global_site_packages_used": false,
+      "d_python_package_install_used": false,
+      "user_install_used": false
+    }
   },
-  "venv": {
-    "path": "reports/batches/BATCH-04/runtime/venv",
-    "home": "D:\\python",
-    "include_system_site_packages": false,
-    "version": "3.13.5",
-    "pyvenv_cfg": "reports/batches/BATCH-04/runtime/venv/pyvenv.cfg"
+  "short_path_preflight": {
+    "performed_before_acceptance_commands": true,
+    "longest_file": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b04v4\\venv\\Lib\\site-packages\\pkg_resources\\tests\\data\\my-test-package_unpacked-egg\\my_test_package-1.0-py3.7.egg\\EGG-INFO\\dependency_links.txt",
+    "longest_file_absolute_path_length": 185,
+    "maximum_allowed_exclusive": 250,
+    "result": "PASS"
   },
   "requirements_dev_lock": {
     "path": "backend/requirements-dev.lock",
-    "sha256": "886A9FC311F16DA186158EFF8478F3058FF8E0AEFA00091830BBF87863CD0C5D",
-    "modified_by_batch": false,
-    "new_third_party_dependencies": []
+    "change_type": "UNCHANGED",
+    "legacy_pins_modified": false,
+    "new_third_party_dependencies": [],
+    "raw_blob_hash_evidence": [
+      {
+        "source_commit": "e1070f150de14fa134a5492372828628ca38e89e",
+        "source_command": "git show e1070f150de14fa134a5492372828628ca38e89e:backend/requirements-dev.lock",
+        "sha256_raw_git_blob": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+        "byte_length": 676,
+        "eol_basis": {"lf_count": 31, "crlf_count": 0, "ends_with_lf": true}
+      },
+      {
+        "source_commit": "f4769280d453ef6d7e13fc8634bdc723d75029e8",
+        "source_command": "git show f4769280d453ef6d7e13fc8634bdc723d75029e8:backend/requirements-dev.lock",
+        "sha256_raw_git_blob": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+        "byte_length": 676,
+        "eol_basis": {"lf_count": 31, "crlf_count": 0, "ends_with_lf": true}
+      }
+    ],
+    "before_to_reviewed_snapshot": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04 -> 177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+    "worktree_hash": "NOT_RECORDED",
+    "worktree_hash_reason": "The checkout is CRLF under core.autocrlf. Only raw Git-blob SHA-256 is lock evidence.",
+    "checkout_eol": {
+      "git_ls_files_eol": "i/lf w/crlf attr/ backend/requirements-dev.lock",
+      "core_autocrlf_value": "true",
+      "core_autocrlf_source": "file:C:/Program Files/Git/etc/gitconfig"
+    },
+    "post_commit_recheck": {
+      "required_command": "git show <final-report-only-repair-commit>:backend/requirements-dev.lock",
+      "purpose": "Reconfirm the unchanged raw blob from the final candidate after commit.",
+      "self_reference_note": "The final object ID is reported in the delivery handoff rather than inserted into its own blobs."
+    }
   },
-  "editable_install": {
-    "package": "covenia-b==0.0.0",
-    "project_location": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-retry-2\\backend",
-    "exit_code": 0,
-    "duration_seconds": 2.88
+  "install_receipts": {
+    "locked_requirements": {"command_id": "required-02-install-locked-requirements", "exit_code": 0, "duration_seconds": 1.612, "result": "All 29 locked requirements already satisfied in this isolated venv."},
+    "editable_backend": {"command_id": "required-03-editable-install", "exit_code": 0, "duration_seconds": 2.792, "package": "covenia-b==0.0.0", "editable_project_location": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-evidence-repair-1\\backend"},
+    "pip_check": {"command_id": "required-08-pip-check", "exit_code": 0, "duration_seconds": 0.454, "result": "No broken requirements found."}
   },
   "pip_list": [
-    {"name": "annotated-types", "version": "0.7.0"},
-    {"name": "anyio", "version": "4.8.0"},
-    {"name": "attrs", "version": "26.1.0"},
-    {"name": "build", "version": "1.2.2.post1"},
-    {"name": "click", "version": "8.1.8"},
-    {"name": "colorama", "version": "0.4.6"},
-    {"name": "covenia-b", "version": "0.0.0"},
-    {"name": "fastapi", "version": "0.115.6"},
-    {"name": "h11", "version": "0.14.0"},
-    {"name": "idna", "version": "3.10"},
-    {"name": "iniconfig", "version": "2.0.0"},
-    {"name": "jsonschema", "version": "4.25.0"},
-    {"name": "jsonschema-specifications", "version": "2025.9.1"},
-    {"name": "packaging", "version": "24.2"},
-    {"name": "pip", "version": "25.1.1"},
-    {"name": "pluggy", "version": "1.5.0"},
-    {"name": "pydantic", "version": "2.10.5"},
-    {"name": "pydantic_core", "version": "2.27.2"},
-    {"name": "pydantic-settings", "version": "2.7.1"},
-    {"name": "pyproject_hooks", "version": "1.2.0"},
-    {"name": "pytest", "version": "8.3.4"},
-    {"name": "python-dotenv", "version": "1.0.1"},
-    {"name": "referencing", "version": "0.37.0"},
-    {"name": "rpds-py", "version": "2026.6.3"},
-    {"name": "ruff", "version": "0.8.4"},
-    {"name": "setuptools", "version": "75.8.0"},
-    {"name": "sniffio", "version": "1.3.1"},
-    {"name": "starlette", "version": "0.41.3"},
-    {"name": "typing_extensions", "version": "4.12.2"},
-    {"name": "uvicorn", "version": "0.34.0"},
-    {"name": "wheel", "version": "0.45.1"}
-  ],
-  "network_note": "The first sandboxed locked-install attempt exited 1 after socket access was denied. The same pinned install was retried with approved network access into this pre-created isolated venv, then rerun successfully without downloading; no global or --user install was used."
+    "annotated-types==0.7.0", "anyio==4.8.0", "attrs==26.1.0", "build==1.2.2.post1", "click==8.1.8", "colorama==0.4.6",
+    "covenia-b==0.0.0 (editable: C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-evidence-repair-1\\backend)",
+    "fastapi==0.115.6", "h11==0.14.0", "idna==3.10", "iniconfig==2.0.0", "jsonschema==4.25.0", "jsonschema-specifications==2025.9.1",
+    "packaging==24.2", "pip==25.1.1", "pluggy==1.5.0", "pydantic==2.10.5", "pydantic_core==2.27.2", "pydantic-settings==2.7.1",
+    "pyproject_hooks==1.2.0", "pytest==8.3.4", "python-dotenv==1.0.1", "referencing==0.37.0", "rpds-py==2026.6.3", "ruff==0.8.4",
+    "setuptools==75.8.0", "sniffio==1.3.1", "starlette==0.41.3", "typing_extensions==4.12.2", "uvicorn==0.34.0", "wheel==0.45.1"
+  ]
 }

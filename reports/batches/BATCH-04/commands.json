@@ -1,151 +1,135 @@
 {
-  "report_version": "1.0",
+  "report_version": "2.0",
   "batch_id": "BATCH-04",
-  "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-retry-2",
-  "interpreter": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-retry-2\\reports\\batches\\BATCH-04\\runtime\\venv\\Scripts\\python.exe",
+  "evidence_snapshot_id": "BATCH-04-short-path-evidence-repair-1",
+  "report_snapshot_base_commit": "f4769280d453ef6d7e13fc8634bdc723d75029e8",
+  "tested_code_commit": "e1070f150de14fa134a5492372828628ca38e89e",
+  "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-evidence-repair-1",
+  "run_dir": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b04v4",
+  "interpreter": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b04v4\\venv\\Scripts\\python.exe",
+  "preflight_gate": {
+    "required_before_acceptance_commands": true,
+    "result": "PASS",
+    "run_dir_length": 48,
+    "venv_directly_under_run_dir": true,
+    "venv_longest_file_length": 185,
+    "venv_longest_path_lt_250": true,
+    "pythonpath_state": "UNSET",
+    "include_system_site_packages": false
+  },
   "commands": [
     {
-      "id": "required-01-venv-isolation",
+      "id": "required-01-short-path-preflight",
       "kind": "ENVIRONMENT",
-      "command": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-retry-2\\reports\\batches\\BATCH-04\\runtime\\venv\\Scripts\\python.exe -c import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-retry-2\\reports\\batches\\BATCH-04\\runtime\\venv\\Scripts\\python.exe",
+      "native_command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b04v4\\venv\\Scripts\\python.exe\" -c <preflight_program_exact>",
+      "preflight_program_exact": "import os,sys,json,site; from pathlib import Path; run_dir=Path(r'C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b04v4').resolve(); venv=run_dir/'venv'; expected=(venv/'Scripts'/'python.exe').resolve(); cfg=venv/'pyvenv.cfg'; cfg_lines=cfg.read_text(encoding='utf-8').splitlines(); include=next((line.split('=',1)[1].strip().lower() for line in cfg_lines if line.lower().startswith('include-system-site-packages')),None); files=[p for p in venv.rglob('*') if p.is_file()]; longest=max(files,key=lambda p:len(str(p.resolve()))); longest_text=str(longest.resolve()); py_path=os.environ.get('PYTHONPATH'); py_path_state='UNSET' if py_path is None else ('EMPTY' if py_path == '' else 'SET'); payload={'run_dir':str(run_dir),'run_dir_length':len(str(run_dir)),'declared_interpreter':str(expected),'sys_executable':str(Path(sys.executable).resolve()),'sys_prefix':str(Path(sys.prefix).resolve()),'sys_base_prefix':str(Path(sys.base_prefix).resolve()),'include_system_site_packages':include,'pythonpath_state':py_path_state,'pythonpath_value':py_path,'user_site_enabled':site.ENABLE_USER_SITE,'site_packages':[str(Path(p).resolve()) for p in site.getsitepackages()],'venv_longest_file':longest_text,'venv_longest_file_length':len(longest_text),'venv_longest_path_lt_250':len(longest_text)<250}; print(json.dumps(payload,ensure_ascii=False)); ok=(Path(sys.executable).resolve()==expected and Path(sys.prefix).resolve()==venv and sys.prefix!=sys.base_prefix and include=='false' and py_path_state!='SET' and not site.ENABLE_USER_SITE and len(longest_text)<250); raise SystemExit(0 if ok else 2)",
       "exit_code": 0,
-      "duration_seconds": 0.068,
-      "test_count": null,
-      "output_summary": "CPython 3.13.5; executable and isolated-prefix assertions passed.",
+      "duration_seconds": 0.773,
+      "output_summary": "RUN_DIR length 48; declared interpreter equals sys.executable; sys.prefix is direct RUN_DIR/venv; sys.base_prefix is D:\\python; include-system-site-packages=false; PYTHONPATH is UNSET; user site disabled; longest venv file path length is 185 (<250).",
       "evidence_path": "reports/batches/BATCH-04/environment.json"
     },
     {
       "id": "required-02-install-locked-requirements",
       "kind": "ENVIRONMENT",
-      "command": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-retry-2\\reports\\batches\\BATCH-04\\runtime\\venv\\Scripts\\python.exe -m pip install --no-deps -r backend/requirements-dev.lock",
+      "native_command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b04v4\\venv\\Scripts\\python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
       "exit_code": 0,
-      "duration_seconds": 1.572,
-      "test_count": null,
-      "output_summary": "All 29 pinned requirements were already satisfied in the isolated venv; requirements lock was not changed.",
+      "duration_seconds": 1.612,
+      "output_summary": "All 29 exact lock requirements were already satisfied in the isolated venv; no lock-file edit occurred.",
       "evidence_path": "reports/batches/BATCH-04/environment.json"
     },
     {
       "id": "required-03-editable-install",
       "kind": "ENVIRONMENT",
-      "command": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-retry-2\\reports\\batches\\BATCH-04\\runtime\\venv\\Scripts\\python.exe -m pip install --no-deps --no-build-isolation -e backend",
+      "native_command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b04v4\\venv\\Scripts\\python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
       "exit_code": 0,
-      "duration_seconds": 2.88,
-      "test_count": null,
-      "output_summary": "covenia-b==0.0.0 installed editable from the target worktree backend directory.",
+      "duration_seconds": 2.792,
+      "output_summary": "covenia-b==0.0.0 built and installed editable from this fixed worktree backend directory.",
       "evidence_path": "reports/batches/BATCH-04/environment.json"
     },
     {
       "id": "required-04-import-check",
       "kind": "ENVIRONMENT",
-      "command": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-retry-2\\reports\\batches\\BATCH-04\\runtime\\venv\\Scripts\\python.exe -c import pytest, jsonschema; print('pytest/jsonschema import OK')",
+      "native_command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b04v4\\venv\\Scripts\\python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
       "exit_code": 0,
-      "duration_seconds": 0.416,
-      "test_count": null,
-      "output_summary": "pytest/jsonschema import OK",
-      "evidence_path": "reports/batches/BATCH-04/commands.json"
+      "duration_seconds": 0.272,
+      "output_summary": "pytest/jsonschema import OK"
     },
     {
       "id": "required-05-domain-and-contract-pytest",
       "kind": "TEST",
       "mode": "UNIT",
-      "command": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-retry-2\\reports\\batches\\BATCH-04\\runtime\\venv\\Scripts\\python.exe -m pytest backend/tests/domain backend/tests/contracts -q",
+      "native_command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b04v4\\venv\\Scripts\\python.exe\" -m pytest backend/tests/domain backend/tests/contracts -q",
       "exit_code": 0,
-      "duration_seconds": 1.704,
-      "test_count": 39,
-      "output_summary": "39 passed in 1.35s",
-      "evidence_path": "reports/batches/BATCH-04/commands.json"
+      "duration_seconds": 1.708,
+      "tests_passed": 39,
+      "tests_failed": 0,
+      "output_summary": "39 passed in 1.38s"
     },
     {
       "id": "required-06-ruff",
       "kind": "STATIC_ANALYSIS",
-      "command": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-retry-2\\reports\\batches\\BATCH-04\\runtime\\venv\\Scripts\\python.exe -m ruff check backend/src/covenia_b/domain backend/src/covenia_b/ports",
+      "native_command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b04v4\\venv\\Scripts\\python.exe\" -m ruff check backend/src/covenia_b/domain backend/src/covenia_b/ports",
       "exit_code": 0,
-      "duration_seconds": 0.11,
-      "test_count": null,
-      "output_summary": "All checks passed.",
-      "evidence_path": "reports/batches/BATCH-04/commands.json"
+      "duration_seconds": 0.117,
+      "output_summary": "All checks passed!"
     },
     {
       "id": "required-07-pip-list",
       "kind": "ENVIRONMENT",
-      "command": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-retry-2\\reports\\batches\\BATCH-04\\runtime\\venv\\Scripts\\python.exe -m pip list --format=json",
+      "native_command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b04v4\\venv\\Scripts\\python.exe\" -m pip list --format=json",
       "exit_code": 0,
-      "duration_seconds": 0.516,
-      "test_count": 31,
-      "output_summary": "31 installed packages, including the editable covenia-b package.",
+      "duration_seconds": 0.334,
+      "package_count": 31,
+      "output_summary": "31 packages listed; covenia-b==0.0.0 has editable_project_location in the fixed worktree backend directory.",
       "evidence_path": "reports/batches/BATCH-04/environment.json"
     },
     {
       "id": "required-08-pip-check",
       "kind": "ENVIRONMENT",
-      "command": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-retry-2\\reports\\batches\\BATCH-04\\runtime\\venv\\Scripts\\python.exe -m pip check",
+      "native_command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b04v4\\venv\\Scripts\\python.exe\" -m pip check",
       "exit_code": 0,
-      "duration_seconds": 0.546,
-      "test_count": null,
+      "duration_seconds": 0.454,
       "output_summary": "No broken requirements found.",
       "evidence_path": "reports/batches/BATCH-04/pip-check.txt"
     },
     {
       "id": "required-09-git-diff-check",
       "kind": "VCS_SCOPE",
-      "command": "git diff --check",
+      "native_command": "git diff --check",
       "exit_code": 0,
-      "duration_seconds": 0.133,
-      "test_count": null,
-      "output_summary": "No whitespace errors after all implementation-report artifacts were written.",
-      "evidence_path": "reports/batches/BATCH-04/commands.json"
+      "duration_seconds": 0.132,
+      "output_summary": "No whitespace errors in the clean pre-report worktree."
     },
     {
       "id": "required-10-git-status",
       "kind": "VCS_SCOPE",
-      "command": "git status --short",
+      "native_command": "git status --short",
       "exit_code": 0,
-      "duration_seconds": 0.125,
-      "test_count": null,
-      "output_summary": "Only the owned reports/batches/BATCH-04 directory was untracked after the code/test commit.",
-      "evidence_path": "reports/batches/BATCH-04/commands.json"
+      "duration_seconds": 0.130,
+      "output_summary": "Empty output: clean pre-report worktree."
     },
     {
-      "id": "supplemental-full-backend-pytest",
-      "kind": "TEST",
+      "id": "supplemental-strict-contract-check",
+      "kind": "CONTRACT",
       "mode": "UNIT",
-      "command": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-retry-2\\reports\\batches\\BATCH-04\\runtime\\venv\\Scripts\\python.exe -m pytest backend/tests -q",
+      "native_command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b04v4\\venv\\Scripts\\python.exe\" tools/contracts/check_contracts.py --strict",
       "exit_code": 0,
-      "duration_seconds": 1.952,
-      "test_count": 43,
-      "output_summary": "43 passed in 1.61s",
-      "evidence_path": "reports/batches/BATCH-04/commands.json"
+      "duration_seconds": 0.332,
+      "schemas_validated": 14,
+      "vectors_validated": 18,
+      "output_summary": "{\"lock\":\"docs/contracts/b-contract-lock.json\",\"schemas_validated\":14,\"strict\":true,\"vectors_validated\":18}"
     },
     {
-      "id": "supplemental-contract-lock-check",
-      "kind": "TEST",
-      "mode": "UNIT",
-      "command": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-retry-2\\reports\\batches\\BATCH-04\\runtime\\venv\\Scripts\\python.exe tools/contracts/check_contracts.py --strict",
+      "id": "lock-blob-provenance",
+      "kind": "INTEGRITY",
+      "native_command": "git show <commit>:backend/requirements-dev.lock, captured as raw bytes and SHA-256 hashed without PowerShell text decoding",
       "exit_code": 0,
-      "duration_seconds": 0.342,
-      "test_count": 32,
-      "output_summary": "14 locked schemas and 18 vectors validated with strict checking.",
-      "evidence_path": "reports/batches/BATCH-04/commands.json"
-    },
-    {
-      "id": "supplemental-pure-import",
-      "kind": "TEST",
-      "mode": "UNIT",
-      "command": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-retry-2\\reports\\batches\\BATCH-04\\runtime\\venv\\Scripts\\python.exe -c import covenia_b.domain, covenia_b.ports; assert fastapi and covenia_b.api are absent from sys.modules",
-      "exit_code": 0,
-      "duration_seconds": 0.339,
-      "test_count": 1,
-      "output_summary": "Pure domain/ports import OK; no FastAPI or covenia_b.api module was imported.",
-      "evidence_path": "reports/batches/BATCH-04/commands.json"
+      "output_summary": "e1070f1 and f476928 raw blobs are both 676 bytes, LF-only (31 LF, 0 CRLF), SHA-256 177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04.",
+      "evidence_path": "reports/batches/BATCH-04/environment.json"
     }
   ],
-  "retried_attempts": [
-    {
-      "id": "locked-requirements-sandbox-attempt",
-      "command": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-04-retry-2\\reports\\batches\\BATCH-04\\runtime\\venv\\Scripts\\python.exe -m pip install --no-deps -r backend/requirements-dev.lock",
-      "exit_code": 1,
-      "duration_seconds": 9.155,
-      "outcome": "Sandbox socket restrictions prevented the initial package-index connection. It was not treated as a passing result; the same isolated-venv command later exited 0."
-    }
-  ]
+  "independent_verification": {
+    "status": "NOT_RUN_BY_IMPLEMENTER",
+    "reason": "VERIFICATION_REPORT.json and verification-evidence/** are verifier-owned and untouched."
+  }
 }

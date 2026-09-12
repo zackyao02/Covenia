@@ -1,6 +1,10 @@
-Command: C:\Users\WONG Tsun Ming\Desktop\欧莱雅黑客松\worktrees\covenia-batch-04-retry-2\reports\batches\BATCH-04\runtime\venv\Scripts\python.exe -m pip check
-CWD: C:\Users\WONG Tsun Ming\Desktop\欧莱雅黑客松\worktrees\covenia-batch-04-retry-2
+Command: & "C:\Users\WONG Tsun Ming\Desktop\欧莱雅黑客松\run\b04v4\venv\Scripts\python.exe" -m pip check
+CWD: C:\Users\WONG Tsun Ming\Desktop\欧莱雅黑客松\worktrees\covenia-batch-04-evidence-repair-1
+Interpreter: C:\Users\WONG Tsun Ming\Desktop\欧莱雅黑客松\run\b04v4\venv\Scripts\python.exe
+RUN_DIR: C:\Users\WONG Tsun Ming\Desktop\欧莱雅黑客松\run\b04v4
+Preflight: PASS; RUN_DIR length=48; longest venv path length=185 (<250);
+include-system-site-packages=false; PYTHONPATH=UNSET.
 Exit code: 0
-Duration seconds: 0.546
+Duration seconds: 0.454
 
 No broken requirements found.
