@@ -1,10 +1,23 @@
+source_path=backend/requirements-dev.lock
 base_commit=ff4f2a99caeb4d820749c2d0ae6fa5431dafef4d
-sha256_before=088E3DEF0F1F4ECED2D3B0A5B50DBA4065A86E01286497517D3FF13E79682C7F
-sha256_after=CDB27CCBBA8F541A07615F7ACD0D19EDE115852CFCD9FE018AABA1F11129D9C8
+after_commit=6a726b8e6c781dfd723aa5d542e2ce1bad324494
 diff_characterization=additions_only
 
+sha256_git_blob_lf_before=A35011CDECBC6ED34EEB2CD7130650BDE531F902BF8839890FB3A02A6421CA55
+sha256_git_blob_lf_after=177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04
+sha256_worktree_crlf_before=088E3DEF0F1F4ECED2D3B0A5B50DBA4065A86E01286497517D3FF13E79682C7F
+sha256_worktree_crlf_after=886A9FC311F16DA186158EFF8478F3058FF8E0AEFA00091830BBF87863CD0C5D
+
+hash_scope_sha256_git_blob_lf=SHA-256 of the raw bytes emitted by `git cat-file blob <commit>:backend/requirements-dev.lock`; Git blobs contain LF bytes (before=569 bytes, after=676 bytes).
+hash_scope_sha256_worktree_crlf=SHA-256 of the Windows checkout representation with every blob LF represented as CRLF (before=595 bytes, after=707 bytes). The after value was read directly from the current worktree, whose Git eol record is `i/lf w/crlf`; the before value is the deterministic CRLF representation of the exact base blob under the same checkout rule. Both blobs contain no CR bytes.
+calculation_method=Raw Git blob bytes were streamed into SHA-256 without text decoding. The CRLF representation was hashed as bytes after replacing each LF byte with CRLF; it was not derived from a Git object ID.
+single_sha256_after=NOT_APPLICABLE: there is no unqualified sha256_after because the LF Git-blob bytes and CRLF Windows-worktree bytes are distinct byte sequences. Consumers must use one of the explicitly named fields above.
+
+diff_facts=The base has 24 pinned dependency lines. The after commit adds exactly five pinned lines and removes none:
 +attrs==26.1.0
 +jsonschema==4.25.0
 +jsonschema-specifications==2025.9.1
 +referencing==0.37.0
 +rpds-py==2026.6.3
+
+test_execution_for_this_evidence_repair=NOT_RUN; no business, contract, or dependency test was rerun because this change only corrects byte-level evidence and report references.
