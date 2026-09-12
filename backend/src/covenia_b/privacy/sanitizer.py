@@ -11,6 +11,7 @@ from __future__ import annotations
 import re
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
+from dataclasses import field as dataclass_field
 from enum import StrEnum
 from typing import Final
 
@@ -46,14 +47,27 @@ _SHIPPING_ADDRESS_PATTERN: Final[re.Pattern[str]] = re.compile(
     r"(?:收货(?:地址|地)?|shipping\s+address)\s*[:：=]\s*[^。；;\n]+",
     re.IGNORECASE,
 )
+_PERSONAL_HEALTH_SUBJECT: Final[str] = (
+    r"(?:消费者|顾客|用户|客户|买家|本人|我|她|他|患者|consumer|customer|user|patient|i|she|he|they)"
+)
+_HEALTH_EXPERIENCE_CUE: Final[str] = (
+    r"(?:出现|发生|感到|感觉|反馈|表示|自述|诉称|经历|伴有|导致|引发|产生|有|使用后|使用时|服用后|涂抹后|"
+    r"reported|experienced|developed|suffered|has|with|after\s+use|on\s+use)"
+)
+_ADVERSE_SYMPTOM: Final[str] = (
+    r"(?<!抗)(?:过敏(?:反应)?|红(?:肿|疹)|瘙痒|刺痛|灼(?:痛|烧)|呼吸困难|allergic\s+reaction|rash)"
+)
 _ADVERSE_REACTION_PATTERN: Final[re.Pattern[str]] = re.compile(
-    r"(?:不良反应|过敏(?:反应)?|红(?:肿|疹)|瘙痒|刺痛|灼(?:痛|烧)|"
-    r"呼吸困难|adverse\s+reaction|allergic\s+reaction|rash)",
+    rf"(?:不良反应|adverse\s+reaction|"
+    rf"(?:{_PERSONAL_HEALTH_SUBJECT}.{{0,24}}?(?:{_HEALTH_EXPERIENCE_CUE}).{{0,8}}?"
+    rf"|{_PERSONAL_HEALTH_SUBJECT}.{{0,24}}?"
+    rf"|(?:{_HEALTH_EXPERIENCE_CUE}).{{0,8}}?){_ADVERSE_SYMPTOM})",
     re.IGNORECASE,
 )
 _MEDICAL_CONTEXT_PATTERN: Final[re.Pattern[str]] = re.compile(
-    r"(?:就医|医院|医生|诊断|治疗|处方|病历|medical\s+treatment|"
-    r"hospital|doctor|diagnosis)",
+    rf"(?:就医|就诊|诊断|治疗|处方|病历|medical\s+(?:treatment|record)|diagnosis|prescription|"
+    rf"{_PERSONAL_HEALTH_SUBJECT}.{{0,24}}?(?:前往|去|到|看|咨询|接受|went\s+to|visited|saw).{{0,8}}?"
+    rf"(?:医院|医生|hospital|doctor))",
     re.IGNORECASE,
 )
 _SENTENCE_BOUNDARY: Final[re.Pattern[str]] = re.compile(r"(?<=[。！？!?；;\n])")
@@ -89,6 +103,51 @@ class RedactedText:
 
 
 @dataclass(frozen=True, slots=True)
+class _GeneratedSanitizedProjection:
+    """Private record tying a result to its safe, generated model projection."""
+
+    model_input: SanitizedModelInput
+    case_id: str
+    redacted_text: str
+    images: tuple[ResolvedImage, ...]
+    source_ids: tuple[str, ...]
+    pii_masked_count: int
+    masked_categories: tuple[PrivacyCategory, ...]
+    adverse_risk_candidate: bool
+
+    @classmethod
+    def from_result(
+        cls, result: SanitizationResult
+    ) -> _GeneratedSanitizedProjection:
+        model_input = result.model_input
+        return cls(
+            model_input=model_input,
+            case_id=model_input.case_id,
+            redacted_text=model_input.redacted_text,
+            images=model_input.images,
+            source_ids=model_input.source_ids,
+            pii_masked_count=result.pii_masked_count,
+            masked_categories=result.masked_categories,
+            adverse_risk_candidate=result.adverse_risk_candidate,
+        )
+
+    def matches(self, result: SanitizationResult) -> bool:
+        """Reject copied or altered inputs, including opaque field-value bypasses."""
+
+        model_input = result.model_input
+        return (
+            self.model_input is model_input
+            and self.case_id == model_input.case_id
+            and self.redacted_text == model_input.redacted_text
+            and self.images == model_input.images
+            and self.source_ids == model_input.source_ids
+            and self.pii_masked_count == result.pii_masked_count
+            and self.masked_categories == result.masked_categories
+            and self.adverse_risk_candidate == result.adverse_risk_candidate
+        )
+
+
+@dataclass(frozen=True, slots=True)
 class SanitizationResult:
     """The only privacy result handed to a model boundary and governance caller."""
 
@@ -96,6 +155,12 @@ class SanitizationResult:
     pii_masked_count: int
     masked_categories: tuple[PrivacyCategory, ...]
     adverse_risk_candidate: bool
+    _generated_projection: _GeneratedSanitizedProjection | None = dataclass_field(
+        default=None,
+        init=False,
+        repr=False,
+        compare=False,
+    )
 
     def __post_init__(self) -> None:
         if self.pii_masked_count != len(self.masked_categories):
@@ -104,6 +169,14 @@ class SanitizationResult:
             PrivacyCategory.ADVERSE_REACTION in self.masked_categories
         ):
             raise ValueError("adverse risk must be derived from redaction categories")
+
+    def _has_generated_projection(self) -> bool:
+        """Return whether this exact safe projection came from this sanitizer."""
+
+        return (
+            self._generated_projection is not None
+            and self._generated_projection.matches(self)
+        )
 
 
 def redact_text(value: str) -> RedactedText:
@@ -196,12 +269,18 @@ def sanitize_case_input(
         images=images,
         source_ids=unique_source_ids,
     )
-    return SanitizationResult(
+    result = SanitizationResult(
         model_input=model_input,
         pii_masked_count=len(category_tuple),
         masked_categories=category_tuple,
         adverse_risk_candidate=PrivacyCategory.ADVERSE_REACTION in category_tuple,
     )
+    object.__setattr__(
+        result,
+        "_generated_projection",
+        _GeneratedSanitizedProjection.from_result(result),
+    )
+    return result
 
 
 def _redact_sensitive_sentences(
