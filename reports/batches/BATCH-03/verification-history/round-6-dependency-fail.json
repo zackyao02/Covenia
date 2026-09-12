@@ -1,0 +1,85 @@
+{
+  "batch_id": "BATCH-03",
+  "result": "FAIL",
+  "verification_type": "INDEPENDENT",
+  "summary": "Independent verification reproduced the isolated environment and both required commands successfully, and found no implementation scope violation or lock-content defect. The result is nevertheless FAIL because the implementation evidence is not mutually consistent: lock-diff.txt records a sha256_after value that matches neither the verified implementation blob nor the checked-out file.",
+  "commit_verified": {
+    "base_commit": "ff4f2a99caeb4d820749c2d0ae6fa5431dafef4d",
+    "implementation_commit": "6a726b8e6c781dfd723aa5d542e2ce1bad324494"
+  },
+  "commands_run": [
+    {
+      "command": "git diff --name-status ff4f2a99caeb4d820749c2d0ae6fa5431dafef4d 6a726b8e6c781dfd723aa5d542e2ce1bad324494",
+      "exit_code": 0,
+      "evidence": "reports/batches/BATCH-03/verification-evidence/scope-and-lock-audit.json"
+    },
+    {
+      "command": "D:\\python\\python.exe -m venv reports/batches/BATCH-03/runtime/venv",
+      "exit_code": 0,
+      "evidence": "reports/batches/BATCH-03/verification-evidence/independent-venv-info.json"
+    },
+    {
+      "command": "<absolute verify venv python> -m pip install -r backend/requirements-dev.lock",
+      "exit_code": 0,
+      "evidence": "reports/batches/BATCH-03/verification-evidence/independent-venv-info.json"
+    },
+    {
+      "command": "<absolute verify venv python> -m pip install --no-deps -e backend",
+      "exit_code": 0,
+      "evidence": "reports/batches/BATCH-03/verification-evidence/independent-venv-info.json"
+    },
+    {
+      "command": "<absolute verify venv python> -m pip check",
+      "exit_code": 0,
+      "evidence": "reports/batches/BATCH-03/verification-evidence/pip-check-and-versions.txt"
+    },
+    {
+      "command": "<absolute verify venv python> tools/contracts/check_contracts.py --strict",
+      "exit_code": 0,
+      "evidence": "reports/batches/BATCH-03/verification-evidence/contract-check.json"
+    },
+    {
+      "command": "<absolute verify venv python> -m pytest backend/tests/contracts -q",
+      "exit_code": 0,
+      "evidence": "reports/batches/BATCH-03/verification-evidence/pytest-contracts.txt"
+    },
+    {
+      "command": "<absolute verify venv python> -m pip freeze --all --exclude covenia-b",
+      "exit_code": 2,
+      "evidence": "reports/batches/BATCH-03/verification-evidence/pip-check-and-versions.txt",
+      "assessment": "Non-gating diagnostic that reproduced the implementation-documented editable metadata failure; the required independent test commands were unaffected."
+    }
+  ],
+  "passed_checks": [
+    "IMPLEMENTATION_REPORT.json and commands.json parse as valid JSON.",
+    "IMPLEMENTATION_REPORT.json lists every implementation diff path, includes backend/requirements-dev.lock and report evidence, declares the dependency and reason, declares additions-only behavior, and states that all 24 original pins are unchanged.",
+    "IMPLEMENTATION_REPORT.json has no recheck_commands field and does not claim independent PASS.",
+    "The implementation diff is limited to backend/requirements-dev.lock and reports/batches/BATCH-03/**; it contains no VERIFICATION_REPORT.json or verification-evidence/**.",
+    "All 24 original lock pins are present verbatim and in their original relative order; no original pin was removed or changed.",
+    "The final lock is fully name==version pinned and alphabetically ordered by package name.",
+    "The only five added pins are attrs==26.1.0, jsonschema==4.25.0, jsonschema-specifications==2025.9.1, referencing==0.37.0, and rpds-py==2026.6.3.",
+    "The implementation freeze-before, freeze-after, freeze-diff, existing-pin comparison, pip-check, venv, contract-check, and pytest evidence otherwise agree on the five-pin dependency closure and successful tests.",
+    "The verifier created a fresh ignored venv in the required verify worktree, used its absolute interpreter for all installs and checks, used --no-deps for the editable backend install, and used neither --user, global installation, PYTHONPATH, nor system site packages.",
+    "Independent python -m pip check exited 0 with no broken requirements.",
+    "Independent strict contract check exited 0 and validated 14 schemas and 18 vectors.",
+    "Independent contract pytest exited 0 with 16 passed in 1.34 seconds.",
+    "The withdrawn leap-second F-B03-006 item was not treated as a blocker, and no checker, schema, vector, or test was modified."
+  ],
+  "failed_checks": [
+    {
+      "check": "Implementation dependency/test evidence is mutually consistent.",
+      "reason": "reports/batches/BATCH-03/evidence/lock-diff.txt records sha256_after=CDB27CCBBA8F541A07615F7ACD0D19EDE115852CFCD9FE018AABA1F11129D9C8. The verified implementation Git blob SHA-256 is 177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04 (LF bytes), while the verify worktree file SHA-256 is 886A9FC311F16DA186158EFF8478F3058FF8E0AEFA00091830BBF87863CD0C5D (CRLF bytes). The recorded value matches neither representation.",
+      "evidence": "reports/batches/BATCH-03/verification-evidence/implementation-evidence-consistency.json"
+    }
+  ],
+  "scope_violations": [],
+  "regression_risks": [
+    "The checked-out MASTER_PLAN.md and batches.json hashes are 81A22727C179E5A4628C84D7412210EAE32317B378B4051DA2B91FE7A2B1E183 and CBB7929A82453197BCA637F7D4470538DA909097B4A47C1BD6DB0A52406487D6, differing from the scheduler-supplied authoritative hashes. This pre-existed the implementation diff, is recorded only as provenance risk, and did not cause this FAIL or authorize plan edits.",
+    "The frozen closure was measured on CPython 3.13.5/Windows; compatibility on other interpreter/platform combinations was not part of this verification.",
+    "Stock pip freeze inspects the editable package before applying --exclude and fails on stale historical Git worktree metadata. The implementation records a temporary ignored-venv metadata workaround; future evidence generation should preserve an explicit, reproducible record of that step."
+  ],
+  "minimal_fix_request": {
+    "required": true,
+    "request": "Create a new implementation/report-only remediation commit that regenerates reports/batches/BATCH-03/evidence/lock-diff.txt from the exact committed backend/requirements-dev.lock bytes, explicitly labels the newline convention or records both Git-blob LF and working-copy CRLF SHA-256 values, and updates any implementation report references needed for internal consistency. Do not change backend/requirements-dev.lock, checker, schema, vector, test, contract lock, plan, approval, or business files. Submit the new implementation commit for fresh independent verification."
+  }
+}

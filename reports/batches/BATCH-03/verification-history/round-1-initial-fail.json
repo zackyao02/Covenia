@@ -1,0 +1,392 @@
+{
+  "report_version": "1.0",
+  "batch_id": "BATCH-03",
+  "verdict": "FAIL",
+  "reviewed_base_sha": "8314c76502cbc9d47d8432b7fe53f7d9fb82de82",
+  "reviewed_sha": "04aabbec3590e7fd1e5a1e9dc742f381f2d7ce4d",
+  "reviewed_code_commits": [
+    "2e0437c8ea99491c4601e429c30d8a1910cb1d52"
+  ],
+  "reviewed_report_commits": [
+    "04aabbec3590e7fd1e5a1e9dc742f381f2d7ce4d"
+  ],
+  "implementation_commits": [
+    {
+      "sha": "2e0437c8ea99491c4601e429c30d8a1910cb1d52",
+      "role": "contract, schema, vector, checker, and contract-test implementation"
+    },
+    {
+      "sha": "04aabbec3590e7fd1e5a1e9dc742f381f2d7ce4d",
+      "role": "implementation report and implementation evidence"
+    }
+  ],
+  "contract_version": "8314c76502cbc9d47d8432b7fe53f7d9fb82de82 / BATCH-03 contract-lock-v1",
+  "plan_sha256": {
+    "MASTER_PLAN.md": "ECE161441703962D9D7C0E1650497D2C2BEED560FC3D2239564B4E9E1D4A75E4",
+    "batches.json": "E78AE0E223B6D5D5A8F427630225D572E1A7D9E844F99CEA82503CC87EEB1693"
+  },
+  "verified_at": "2026-09-11T17:31:48.3999045+08:00",
+  "independent_context": true,
+  "environment": {
+    "python": "CPython 3.13.5",
+    "node": "v25.2.1 (NOT_REQUIRED)",
+    "run_dir": "C:\\Users\\WONG Tsun Ming\\covenia-orchestration\\runs\\covenia-b-20260910-01\\verification\\BATCH-03-rerun-1",
+    "command_cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-03",
+    "run_dir_materialized": false,
+    "note": "All verification operations were read-only except this report and verification-evidence. The requested external run directory was not materialized because the explicit write boundary permits only these two repository output locations."
+  },
+  "dependency_checks": [
+    {
+      "batch_id": "BATCH-01",
+      "result": "PASS",
+      "verification_report_sha256": "F2A922207E7CF7203983B44FDA550EE1A17B77DC0079EA4457F25F0D2283E5C9",
+      "reviewed_sha": "3f951e4b746e44a864bcd77c0c9e55438cd83347",
+      "integration_status": "SUCCESS",
+      "integration_commit": "3f951e4b746e44a864bcd77c0c9e55438cd83347",
+      "evidence": [
+        "reports/batches/BATCH-03/verification-evidence/preflight.json"
+      ]
+    },
+    {
+      "batch_id": "BATCH-02",
+      "result": "PASS",
+      "verification_report_sha256": "29F592D55C05734F81A5632B9FE915AC30ED5FE52A9577ECA4AA2AEBC7E67FFF",
+      "reviewed_sha": "8314c76502cbc9d47d8432b7fe53f7d9fb82de82",
+      "integration_status": "SUCCESS",
+      "integration_commit": "8314c76502cbc9d47d8432b7fe53f7d9fb82de82",
+      "evidence": [
+        "reports/batches/BATCH-03/verification-evidence/preflight.json"
+      ]
+    }
+  ],
+  "external_gate_checks": [
+    {
+      "gate": "X-FREEZE",
+      "result": "PASS",
+      "status": "ACCEPTED",
+      "approved_by": "Zack",
+      "approved_at": "2026-09-10T23:59:00+08:00",
+      "artifact": "docs/approvals/b-decisions.json",
+      "canonical_sha256": "3ACAD4A113EB595BCED29025AF884A4C5EA2835E90E38D0E897298F91DB371DA",
+      "producer_commit": "cf065228b311dc7f57275a57e325fb0fb9934879",
+      "git_blob_preserved": "26207b5f453e92bf352fe5119ce729eeaa40a81a",
+      "evidence": [
+        "reports/batches/BATCH-03/verification-evidence/preflight.json"
+      ]
+    }
+  ],
+  "scope_audit": {
+    "passed": true,
+    "changed_file_count": 29,
+    "changed_files": [
+      "backend/tests/contracts/test_contracts.py",
+      "docs/03-firewall-rules.md",
+      "docs/04-responsibility-loop.md",
+      "docs/05-api-and-ui.md",
+      "docs/08-idempotency-and-ordering.md",
+      "docs/contracts/b-contract-lock.json",
+      "docs/contracts/b-transport.md",
+      "reports/batches/BATCH-03/IMPLEMENTATION_REPORT.json",
+      "reports/batches/BATCH-03/IMPLEMENTATION_REPORT.md",
+      "reports/batches/BATCH-03/commands.json",
+      "reports/batches/BATCH-03/evidence/contract-check.json",
+      "reports/batches/BATCH-03/evidence/contract-lock-json.txt",
+      "reports/batches/BATCH-03/evidence/git-diff-check.txt",
+      "reports/batches/BATCH-03/evidence/git-status-pre-report.json",
+      "reports/batches/BATCH-03/evidence/preflight.json",
+      "reports/batches/BATCH-03/evidence/pytest-contracts.txt",
+      "schemas/analyze-case-response.schema.json",
+      "schemas/api-envelope.schema.json",
+      "schemas/approve-resolution-response.schema.json",
+      "schemas/evaluate-action-request.schema.json",
+      "schemas/extracted-journey.schema.json",
+      "schemas/prepared-action.schema.json",
+      "schemas/shipment-event-response.schema.json",
+      "tests/contract-vectors/analyze.json",
+      "tests/contract-vectors/approve.json",
+      "tests/contract-vectors/evaluate.json",
+      "tests/contract-vectors/manifest.json",
+      "tests/contract-vectors/shipment.json",
+      "tools/contracts/check_contracts.py"
+    ],
+    "violations": [],
+    "forbidden_changes": [],
+    "endpoint_count": 4,
+    "new_endpoints": [],
+    "evidence": [
+      "reports/batches/BATCH-03/verification-evidence/scope-audit.json"
+    ]
+  },
+  "criteria": [
+    {
+      "criterion": "全部 $ref 可离线解析，Draft 2020-12 与 date-time 格式实际校验；正例通过、负例拒绝。",
+      "result": "PASS",
+      "evidence": [
+        "reports/batches/BATCH-03/verification-evidence/contract-check.txt",
+        "reports/batches/BATCH-03/verification-evidence/pytest-contracts.txt",
+        "reports/batches/BATCH-03/verification-evidence/negative-controls.json"
+      ],
+      "note": "14 schemas and 18 vectors passed strict validation; independent probes rejected an unresolved offline reference and a date-time without a timezone."
+    },
+    {
+      "criterion": "A34、P0/E1 冲突、A29 动作表达、服务端时间、通知确认、HTTP 错误与缓存可见性均无未裁决影响项。",
+      "result": "FAIL",
+      "evidence": [
+        "docs/approvals/b-decisions.json:46",
+        "docs/03-firewall-rules.md:53",
+        "tests/contract-vectors/evaluate.json:281",
+        "tests/contract-vectors/evaluate.json:286",
+        "tests/contract-vectors/evaluate.json:308",
+        "reports/batches/BATCH-03/verification-evidence/decision-audit.json",
+        "reports/batches/BATCH-03/verification-evidence/negative-controls.json"
+      ],
+      "note": "D03 is implemented in the opposite direction: same-scope ASK_EVIDENCE is encoded as P0/400 although the approved decision requires E1/300/HTTP 200 and keeps ASK_SAME_EVIDENCE display-only."
+    },
+    {
+      "criterion": "模型不产生最终激活/证据/责任/决策；新增响应 Schema 不等于新增业务接口。",
+      "result": "PASS",
+      "evidence": [
+        "docs/contracts/b-contract-lock.json:76",
+        "docs/contracts/b-contract-lock.json:77",
+        "docs/contracts/b-transport.md",
+        "reports/batches/BATCH-03/verification-evidence/scope-audit.json"
+      ]
+    },
+    {
+      "criterion": "C/A 待同步的准确文件/向量已交付；未同步的外部门继续阻塞集成。",
+      "result": "PASS",
+      "evidence": [
+        "docs/contracts/b-contract-lock.json",
+        "docs/contracts/b-transport.md",
+        "tests/contract-vectors/manifest.json"
+      ],
+      "note": "The exact C files and four vector sources, plus the A-owned fixture paths, are listed. No C/A file was modified. X-A-FIXTURES and X-A-IMAGES are recorded as A-line handoffs, not as BATCH-03 external gates."
+    },
+    {
+      "criterion": "批准输入 docs/approvals/b-decisions.json 的生产者为 BATCH-01，已落入其 allowed_paths/required_outputs，文件哈希与 X-FREEZE 一致；BATCH-03 只读，不反向改批准或替 A 修改 fixtures/**。",
+      "result": "PASS",
+      "evidence": [
+        "reports/batches/BATCH-03/verification-evidence/preflight.json",
+        "reports/batches/BATCH-03/verification-evidence/scope-audit.json"
+      ]
+    }
+  ],
+  "commands": [
+    {
+      "command": "python tools/contracts/check_contracts.py --strict",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-03",
+      "exit_code": 0,
+      "mode": "CONTRACT",
+      "output": "reports/batches/BATCH-03/verification-evidence/contract-check.txt",
+      "summary": "14 schemas and 18 vectors validated; strict=true"
+    },
+    {
+      "command": "python -m pytest backend/tests/contracts -q",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-03",
+      "exit_code": 1,
+      "mode": "UNIT_ENVIRONMENT_PREFLIGHT",
+      "runner": "D:\\python\\python.exe",
+      "output": "reports/batches/BATCH-03/verification-evidence/pytest-default-environment.txt",
+      "summary": "No module named pytest"
+    },
+    {
+      "command": "python -m pytest backend/tests/contracts -q",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-03",
+      "exit_code": 0,
+      "mode": "UNIT",
+      "runner": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-02\\reports\\batches\\BATCH-02\\runtime\\venv\\Scripts\\python.exe",
+      "environment_override": "PYTHONPATH=D:\\python\\Lib\\site-packages",
+      "output": "reports/batches/BATCH-03/verification-evidence/pytest-contracts.txt",
+      "summary": "3 passed in 0.34s"
+    },
+    {
+      "command": "python -m json.tool docs/contracts/b-contract-lock.json",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-03",
+      "exit_code": 0,
+      "mode": "FORMAT",
+      "output": "reports/batches/BATCH-03/verification-evidence/contract-lock-json.txt"
+    },
+    {
+      "command": "git diff --check",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-03",
+      "exit_code": 0,
+      "mode": "GIT",
+      "output": "reports/batches/BATCH-03/verification-evidence/git-diff-check.txt"
+    },
+    {
+      "command": "git status --short",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-03",
+      "exit_code": 0,
+      "mode": "GIT",
+      "output": "reports/batches/BATCH-03/verification-evidence/preflight.json#/initial_git_status_short",
+      "summary": "empty before verifier outputs"
+    },
+    {
+      "command": "git diff --check 8314c76502cbc9d47d8432b7fe53f7d9fb82de82 04aabbec3590e7fd1e5a1e9dc742f381f2d7ce4d",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-03",
+      "exit_code": 0,
+      "mode": "GIT_REVIEW_RANGE",
+      "output": "reports/batches/BATCH-03/verification-evidence/review-diff-check.txt"
+    },
+    {
+      "command": "python -X utf8 reports/batches/BATCH-03/verification-evidence/run_independent_probes.py",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-03",
+      "exit_code": 1,
+      "mode": "NEGATIVE_CONTROL_AND_DECISION_AUDIT",
+      "output": "reports/batches/BATCH-03/verification-evidence/negative-controls.json",
+      "summary": "13 probes passed; the D03 approval-conformance probe failed as designed to expose the defect"
+    }
+  ],
+  "artifact_hashes": {
+    "docs/approvals/b-decisions.json": "3ACAD4A113EB595BCED29025AF884A4C5EA2835E90E38D0E897298F91DB371DA",
+    "docs/contracts/b-contract-lock.json": "02FBF8C13CEFB739A9311FB6EAE7ADB0140BA339082F33B63B6D412F2679A470",
+    "docs/contracts/b-transport.md": "D2444888F06F239A356C3F1DC5B07F8249E73A0934F4475D9F5FC252CFC61252",
+    "reports/batches/BATCH-03/IMPLEMENTATION_REPORT.json": "9F762F09BC3B412A7DD2A79CFC915FFA70486211A29A22D728701408EE955377",
+    "tests/contract-vectors/manifest.json": "12C3F78C70B1A3300F33EAA4CAEBF3DF2409D113DC1DBE5A4458C0DC3E7A13D3",
+    "tools/contracts/check_contracts.py": "85461837B42375F5D55340C32B0C7F9ABD5019CD9A5F82AB9A2B8C8C5DBA4763"
+  },
+  "negative_controls": [
+    {
+      "control": "date-time without timezone",
+      "result": "PASS",
+      "expected": "rejected",
+      "actual": "rejected"
+    },
+    {
+      "control": "disabled Challenge with malformed override",
+      "result": "PASS",
+      "expected": "accepted and ignored",
+      "actual": "accepted"
+    },
+    {
+      "control": "enabled Challenge with malformed override",
+      "result": "PASS",
+      "expected": "rejected",
+      "actual": "rejected"
+    },
+    {
+      "control": "unresolved offline $ref",
+      "result": "PASS",
+      "expected": "rejected",
+      "actual": "Unresolvable"
+    },
+    {
+      "control": "mutated locked-file SHA-256",
+      "result": "PASS",
+      "expected": "rejected",
+      "actual": "rejected"
+    },
+    {
+      "control": "mutated response rule priority",
+      "result": "PASS",
+      "expected": "rejected",
+      "actual": "rejected"
+    },
+    {
+      "control": "divergent cache projections",
+      "result": "PASS",
+      "expected": "rejected",
+      "actual": "rejected"
+    },
+    {
+      "control": "notification approval bypass",
+      "result": "PASS",
+      "expected": "rejected",
+      "actual": "rejected"
+    }
+  ],
+  "findings": [
+    {
+      "id": "F-B03-001",
+      "severity": "HIGH",
+      "blocking": true,
+      "category": "APPROVED_CONTRACT_MISMATCH",
+      "title": "D03 repeated-evidence semantics are reversed",
+      "expected": "Per approved D03, a repeated same-scope ASK_EVIDENCE returns HTTP 200 DecisionResult with INTERVENE/E1/300; ASK_SAME_EVIDENCE is display-only and does not independently trigger P0.",
+      "actual": "docs/03-firewall-rules.md maps ASK_SAME_EVIDENCE to same-scope ASK_EVIDENCE under P0. The evaluate-p0-precedes-e1 vector and its response/expected fields both encode 400/P0_PROHIBITED_ACTION.",
+      "reproduction": [
+        "Read docs/approvals/b-decisions.json:44-46.",
+        "Read docs/03-firewall-rules.md:45-56.",
+        "Read tests/contract-vectors/evaluate.json:281-308.",
+        "Run python tools/contracts/check_contracts.py --strict; it incorrectly passes because the static expected and response payloads agree with each other, not with authoritative D03.",
+        "Run python -X utf8 reports/batches/BATCH-03/verification-evidence/run_independent_probes.py; d03_approved_repeat_evidence_semantics fails."
+      ],
+      "impact": "The locked contract would direct BATCH-15/BATCH-22 to return a P0 error for the Hero repeated-evidence path instead of the approved E1 intervention.",
+      "evidence": [
+        "reports/batches/BATCH-03/verification-evidence/decision-audit.json",
+        "reports/batches/BATCH-03/verification-evidence/negative-controls.json"
+      ],
+      "responsibility_batch": "BATCH-03 repair"
+    },
+    {
+      "id": "F-B03-002",
+      "severity": "MEDIUM",
+      "blocking": true,
+      "category": "REPRODUCIBILITY",
+      "title": "The required Python checks have no single declared locked environment",
+      "expected": "Both required Python commands run from a clean environment installed from the repository lock, without borrowing packages from another interpreter.",
+      "actual": "backend/requirements-dev.lock contains pytest but not jsonschema/referencing. The locked BATCH-02 venv fails check_contracts.py with ModuleNotFoundError, while the default interpreter has jsonschema but no pytest. The passing pytest rerun required PYTHONPATH to D:\\python\\Lib\\site-packages.",
+      "reproduction": [
+        "Run the BATCH-02 locked venv python against tools/contracts/check_contracts.py --strict; exit 1, No module named jsonschema.",
+        "Run default python -m pytest backend/tests/contracts -q; exit 1, No module named pytest.",
+        "Inspect backend/requirements-dev.lock; jsonschema and referencing are absent."
+      ],
+      "impact": "A clean verifier cannot reproduce the mandatory command set from repository-declared dependencies.",
+      "evidence": [
+        "reports/batches/BATCH-03/verification-evidence/dependency-environment.json",
+        "reports/batches/BATCH-03/verification-evidence/isolated-lock-environment-check.txt",
+        "reports/batches/BATCH-03/verification-evidence/pytest-default-environment.txt"
+      ],
+      "responsibility_batch": "Coordinator-authorized dependency repair; backend/requirements-dev.lock is outside the current BATCH-03 allowlist"
+    },
+    {
+      "id": "OBS-B03-001",
+      "severity": "OBSERVATION",
+      "blocking": false,
+      "category": "OUT_OF_BATCH_OWNERSHIP",
+      "title": "D05 wording conflict remains in docs/02-ai-extraction.md",
+      "actual": "docs/02-ai-extraction.md:39 still says the model distinguishes commitment classes, while D05 assigns derived classification to server enrichment.",
+      "disposition": "Do not change in this verification. The path is outside BATCH-03 allowed_paths; coordinator/planning authority must assign an authorized later batch.",
+      "evidence": [
+        "reports/batches/BATCH-03/verification-evidence/decision-audit.json"
+      ]
+    }
+  ],
+  "minimal_fix_list": [
+    {
+      "finding": "F-B03-001",
+      "files": [
+        "docs/03-firewall-rules.md",
+        "docs/contracts/b-contract-lock.json",
+        "tests/contract-vectors/evaluate.json",
+        "tools/contracts/check_contracts.py",
+        "backend/tests/contracts/test_contracts.py"
+      ],
+      "fix": "Restore approved D03: keep ASK_SAME_EVIDENCE display-only; make repeated same-scope ASK_EVIDENCE an E1/300/INTERVENE HTTP 200 DecisionResult. Replace the self-consistent wrong P0/E1 vector, add a direct authoritative D03 assertion, retain P0 precedence coverage using a genuinely prohibited action, and refresh affected lock hashes.",
+      "expected_recheck": "The independent D03 probe passes and the strict checker fails if a future vector remaps repeated evidence to P0."
+    },
+    {
+      "finding": "F-B03-002",
+      "files": [
+        "backend/requirements-dev.lock or a coordinator-approved BATCH-03-specific dependency lock"
+      ],
+      "fix": "With planning authorization, pin jsonschema and its required runtime dependencies in the declared verification environment. Build a clean venv from that lock and run both required Python commands without PYTHONPATH or global site packages.",
+      "expected_recheck": "The same clean interpreter reports pytest, jsonschema, and referencing available and both required Python commands exit 0."
+    }
+  ],
+  "blockers": [],
+  "recheck_commands": [
+    "python tools/contracts/check_contracts.py --strict",
+    "python -m pytest backend/tests/contracts -q",
+    "python -m json.tool docs/contracts/b-contract-lock.json",
+    "git diff --check",
+    "git status --short",
+    "python -X utf8 reports/batches/BATCH-03/verification-evidence/run_independent_probes.py"
+  ],
+  "rollback_review": {
+    "passed": true,
+    "notes": "The documented rollback is scoped to reverting the BATCH-03 report commit and contract/vector commit as a unit. It does not edit the approval archive, force-reset a branch, or claim to undo human or runtime facts. No business/runtime state was created."
+  },
+  "code_modified": false,
+  "next_batch_started": false
+}

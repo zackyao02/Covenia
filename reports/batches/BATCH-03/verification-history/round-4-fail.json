@@ -1,0 +1,426 @@
+{
+  "report_version": "1.0",
+  "batch_id": "BATCH-03",
+  "result": "FAIL",
+  "verdict": "FAIL",
+  "commit_verified": true,
+  "reviewed_base_sha": "8314c76502cbc9d47d8432b7fe53f7d9fb82de82",
+  "round3_pre_fix_baseline_sha": "27f9a4916eca39dd1191b9e572e83e050d9a42e6",
+  "reviewed_sha": "761043db460b77799ed089c53bb468e347cc6668",
+  "final_code_repair_sha": "85ac5f215bfd7a1c778b22502875a7c46f2f4ec5",
+  "reviewed_code_commits": [
+    "2e0437c8ea99491c4601e429c30d8a1910cb1d52",
+    "e5cda914877321a2424627be5cc885ac59a00975",
+    "4891e27e3bbf2818864b24e2ae0575fa1d5e75e0",
+    "85ac5f215bfd7a1c778b22502875a7c46f2f4ec5"
+  ],
+  "reviewed_report_commits": [
+    "04aabbec3590e7fd1e5a1e9dc742f381f2d7ce4d",
+    "ba9baa741e7fd6913a739569a164f120df2ff6e0",
+    "27f9a4916eca39dd1191b9e572e83e050d9a42e6",
+    "761043db460b77799ed089c53bb468e347cc6668"
+  ],
+  "contract_version": "8314c76502cbc9d47d8432b7fe53f7d9fb82de82 / BATCH-03 contract-lock-v1",
+  "plan_sha256": {
+    "MASTER_PLAN.md": "ECE161441703962D9D7C0E1650497D2C2BEED560FC3D2239564B4E9E1D4A75E4",
+    "batches.json": "E78AE0E223B6D5D5A8F427630225D572E1A7D9E844F99CEA82503CC87EEB1693"
+  },
+  "verified_at": "2026-09-12T03:18:08.813137+08:00",
+  "independent_context": true,
+  "independent_context_details": {
+    "fresh_verification_task": true,
+    "implementation_report_treated_as_untrusted_input": true,
+    "prior_batch_03_verification_reports_read_or_reused": false,
+    "implementation_modified": false,
+    "integration_performed": false,
+    "next_batch_started": false
+  },
+  "environment": {
+    "python": "CPython 3.13.5",
+    "pytest": "8.3.4",
+    "jsonschema": "4.25.0",
+    "referencing": "0.36.2",
+    "run_dir": "C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\covenia-batch-03-verify-3-01a091d3",
+    "isolated_venv": true,
+    "user_site_enabled": false,
+    "pythonpath": null,
+    "bytecode_writes_disabled": true,
+    "pytest_cache_provider": "disabled",
+    "dependency_note": "backend/requirements-dev.lock does not contain jsonschema or referencing. The verifier installed exact top-level jsonschema==4.25.0 and referencing==0.36.2 into the fresh venv and recorded resolved transitive versions; this is an environment reproducibility risk, not used to conceal the confirmed implementation failures.",
+    "evidence": "verification-evidence/environment.json"
+  },
+  "dependency_checks": [
+    {
+      "dependency": "BATCH-01",
+      "result": "PASS",
+      "verification_verdict": "PASS",
+      "reviewed_sha": "3f951e4b746e44a864bcd77c0c9e55438cd83347",
+      "integration_status": "SUCCESS",
+      "integration_commit": "3f951e4b746e44a864bcd77c0c9e55438cd83347",
+      "integration_commit_is_reviewed_sha_ancestor": true,
+      "verification_report_sha256": "F2A922207E7CF7203983B44FDA550EE1A17B77DC0079EA4457F25F0D2283E5C9",
+      "integration_receipt_sha256": "37CA3D919E8EAB8D4D2D3147D9781C3CDF0D8C608BFA38BAE4054857A3D34683",
+      "evidence": [
+        "verification-evidence/independent-probes.json"
+      ]
+    },
+    {
+      "dependency": "BATCH-02",
+      "result": "PASS",
+      "verification_verdict": "PASS",
+      "reviewed_sha": "8314c76502cbc9d47d8432b7fe53f7d9fb82de82",
+      "integration_status": "SUCCESS",
+      "integration_commit": "8314c76502cbc9d47d8432b7fe53f7d9fb82de82",
+      "integration_commit_is_reviewed_sha_ancestor": true,
+      "verification_report_sha256": "29F592D55C05734F81A5632B9FE915AC30ED5FE52A9577ECA4AA2AEBC7E67FFF",
+      "integration_receipt_sha256": "B87AD2CF2FA5F37B48349E1CD3394E512152F2044BB018F4FF18B69D63FA72D0",
+      "evidence": [
+        "verification-evidence/independent-probes.json"
+      ]
+    }
+  ],
+  "external_gate_checks": [
+    {
+      "gate": "X-FREEZE",
+      "result": "PASS",
+      "status": "ACCEPTED",
+      "approved_by": "Zack",
+      "approved_at": "2026-09-10T23:59:00+08:00",
+      "artifact": "docs/approvals/b-decisions.json",
+      "source_and_review_blob_byte_equal": true,
+      "sha256": "3ACAD4A113EB595BCED29025AF884A4C5EA2835E90E38D0E897298F91DB371DA",
+      "access": "READ_ONLY",
+      "evidence": [
+        "verification-evidence/independent-probes.json"
+      ]
+    }
+  ],
+  "scope_audit": {
+    "passed": true,
+    "base_to_review_changed_file_count": 30,
+    "round3_code_commit_changed_files": [
+      "backend/tests/contracts/test_contracts.py",
+      "docs/contracts/b-contract-lock.json",
+      "tools/contracts/check_contracts.py"
+    ],
+    "round3_report_commit_changed_files": [
+      "reports/batches/BATCH-03/IMPLEMENTATION_REPORT.json",
+      "reports/batches/BATCH-03/IMPLEMENTATION_REPORT.md",
+      "reports/batches/BATCH-03/commands.json",
+      "reports/batches/BATCH-03/evidence/contract-check.json",
+      "reports/batches/BATCH-03/evidence/contract-lock-json.txt",
+      "reports/batches/BATCH-03/evidence/git-diff-check.txt",
+      "reports/batches/BATCH-03/evidence/git-status-pre-report.json",
+      "reports/batches/BATCH-03/evidence/preflight.json",
+      "reports/batches/BATCH-03/evidence/pytest-contracts.txt"
+    ],
+    "schema_vector_product_doc_changes_in_round3": [],
+    "forbidden_paths_changed": [],
+    "outside_allowed_paths": [],
+    "lock_change": {
+      "declaration_present": "本次仅机械性哈希刷新，无语义变更。",
+      "changed_locked_file_entries": [
+        {
+          "path": "tools/contracts/check_contracts.py",
+          "before": "D60E7645E6473A9DC047187A6564784EA96E401832561725251E0D72A151E867",
+          "after": "99FC675BE873DFF3B8458C0A073BA13ADA73830C60B26036D3DE481442DDC6CC"
+        },
+        {
+          "path": "backend/tests/contracts/test_contracts.py",
+          "before": "CC2DA2F86EBA8DFE6CA15FE66658DD2EDAD3C73BE94167B468D3CCD2F95DFC3F",
+          "after": "A7D9A448CCD4DE3E489F7B54B56736E896BA22AB23EF8D54589119D9F54DA37B"
+        }
+      ],
+      "decision_bindings_unchanged": true,
+      "semantic_lock_unchanged": true,
+      "endpoints_unchanged": true,
+      "handoff_unchanged": true,
+      "change_control_unchanged": true,
+      "approved_input_unchanged": true,
+      "hash_method_unchanged": true,
+      "all_locked_file_hashes_match": true
+    },
+    "evidence": [
+      "verification-evidence/independent-probes.json",
+      "verification-evidence/git-diff-check.txt",
+      "verification-evidence/round3-diff-check.txt"
+    ]
+  },
+  "criteria": [
+    {
+      "criterion": "Fixed REVIEW_SHA, authoritative plan inputs, dependency PASS receipts, and X-FREEZE approval are present and mutually consistent.",
+      "result": "PASS",
+      "evidence": [
+        "verification-evidence/independent-probes.json"
+      ]
+    },
+    {
+      "criterion": "All schema references resolve offline, every schema declares Draft 2020-12, and vectors cover exactly the four approved POST endpoints.",
+      "result": "PASS",
+      "evidence": [
+        "verification-evidence/strict-contract-check.txt",
+        "verification-evidence/independent-probes.json"
+      ]
+    },
+    {
+      "criterion": "The required strict checker, isolated contract pytest, lock JSON parse, diff check, and clean pre-output status complete successfully without skip/xfail or trivial-assert markers.",
+      "result": "PASS",
+      "evidence": [
+        "verification-evidence/required-commands.json",
+        "verification-evidence/pytest-contracts.txt",
+        "verification-evidence/static-test-audit.json"
+      ]
+    },
+    {
+      "criterion": "Draft 2020-12/RFC 3339 date-time format is semantically enforced for valid and invalid boundaries.",
+      "result": "FAIL",
+      "evidence": [
+        "verification-evidence/independent-probes.json",
+        "verification-evidence/standards-sources.json"
+      ]
+    },
+    {
+      "criterion": "P0_PROHIBITED_ACTION/400 cannot be successful DecisionResult data, and A29 remains HTTP 400 with data=null.",
+      "result": "PASS",
+      "evidence": [
+        "verification-evidence/independent-probes.json"
+      ]
+    },
+    {
+      "criterion": "D03 repeat evidence remains HTTP 200 / INTERVENE / E1 / 300 and active_promise_count matches active_commitments cardinality.",
+      "result": "PASS",
+      "evidence": [
+        "verification-evidence/independent-probes.json"
+      ]
+    },
+    {
+      "criterion": "D08 Hero example remains the approved 10:30 and A32 notification text contains the exact 11:00 commits_next_update_at instant.",
+      "result": "PASS",
+      "evidence": [
+        "verification-evidence/independent-probes.json"
+      ]
+    },
+    {
+      "criterion": "Model authority, HTTP error mapping, cache visibility, endpoint count, handoff, and change control did not regress.",
+      "result": "PASS",
+      "evidence": [
+        "verification-evidence/independent-probes.json"
+      ]
+    },
+    {
+      "criterion": "Round-3 diff stays within its extra guard and the contract lock changes only the two actual source/test hashes.",
+      "result": "PASS",
+      "evidence": [
+        "verification-evidence/independent-probes.json",
+        "verification-evidence/round3-diff-check.txt"
+      ]
+    },
+    {
+      "criterion": "Implementation report, commands, and every implementation-evidence artifact consistently anchor final code repair SHA 85ac5f215bfd7a1c778b22502875a7c46f2f4ec5.",
+      "result": "PASS",
+      "evidence": [
+        "verification-evidence/independent-probes.json",
+        "verification-evidence/implementation-report-input.json"
+      ]
+    },
+    {
+      "criterion": "Target IMPLEMENTATION_REPORT.json provides recheck_commands for the independent verifier.",
+      "result": "FAIL",
+      "evidence": [
+        "verification-evidence/implementation-report-input.json",
+        "verification-evidence/independent-probes.json"
+      ]
+    },
+    {
+      "criterion": "docs/02-ai-extraction.md O-B03-001 remains a non-BATCH observation and is not modified in round 3.",
+      "result": "PASS",
+      "evidence": [
+        "verification-evidence/independent-probes.json"
+      ],
+      "note": "No change was requested or made to docs/02-ai-extraction.md."
+    }
+  ],
+  "commands_run": [
+    "python tools/contracts/check_contracts.py --strict",
+    "python -m pytest backend/tests/contracts -q",
+    "python -m json.tool docs/contracts/b-contract-lock.json",
+    "git diff --check 8314c76502cbc9d47d8432b7fe53f7d9fb82de82..761043db460b77799ed089c53bb468e347cc6668",
+    "git status --short",
+    "git diff --check 27f9a4916eca39dd1191b9e572e83e050d9a42e6..761043db460b77799ed089c53bb468e347cc6668",
+    "independent RFC3339, schema-reference, endpoint, trust-boundary, P0, D03, D08/A32, HTTP/cache, lock, scope, dependency, and evidence-anchor probes"
+  ],
+  "commands": [
+    {
+      "command": "python tools/contracts/check_contracts.py --strict",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-03-verify-3",
+      "exit_code": 0,
+      "mode": "CONTRACT",
+      "summary": "14 schemas and 18 vectors validated.",
+      "output": "verification-evidence/strict-contract-check.txt"
+    },
+    {
+      "command": "python -m pytest backend/tests/contracts -q",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-03-verify-3",
+      "exit_code": 0,
+      "mode": "UNIT",
+      "summary": "16 passed in 1.14s in the fresh isolated venv; no PYTHONPATH, no user site, no bytecode/cache writes.",
+      "output": "verification-evidence/pytest-contracts.txt"
+    },
+    {
+      "command": "python -m json.tool docs/contracts/b-contract-lock.json",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-03-verify-3",
+      "exit_code": 0,
+      "mode": "FORMAT",
+      "output": "verification-evidence/contract-lock-json.txt"
+    },
+    {
+      "command": "git diff --check 8314c76502cbc9d47d8432b7fe53f7d9fb82de82..761043db460b77799ed089c53bb468e347cc6668",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-03-verify-3",
+      "exit_code": 0,
+      "mode": "GIT",
+      "output": "verification-evidence/git-diff-check.txt"
+    },
+    {
+      "command": "git status --short",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-03-verify-3",
+      "exit_code": 0,
+      "mode": "GIT",
+      "summary": "Clean before writing verifier-owned outputs.",
+      "output": "verification-evidence/git-status-pre-output.txt"
+    },
+    {
+      "command": "git diff --check 27f9a4916eca39dd1191b9e572e83e050d9a42e6..761043db460b77799ed089c53bb468e347cc6668",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-03-verify-3",
+      "exit_code": 0,
+      "mode": "GIT",
+      "output": "verification-evidence/round3-diff-check.txt"
+    },
+    {
+      "command": "independent RFC3339, semantic, lock, scope, dependency, and evidence-anchor probes",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-03-verify-3",
+      "exit_code": 1,
+      "mode": "NEGATIVE_AND_POSITIVE_CONTROL",
+      "summary": "Expected nonzero verification verdict: three invalid leap-second timestamps were accepted and IMPLEMENTATION_REPORT.json lacks recheck_commands; all other independent controls passed.",
+      "output": "verification-evidence/independent-probes.json"
+    }
+  ],
+  "passed_checks": [
+    "Worktree was detached, clean, and exactly at REVIEW_SHA before verifier outputs; BASE_SHA, all BATCH-03 commits, round-3 baseline, and final code repair SHA are reachable in one linear ancestry.",
+    "Current MASTER_PLAN.md and batches.json hashes match the supplied authoritative values.",
+    "BATCH-01 and BATCH-02 external independent PASS reports and integration receipts match their reviewed/integration SHAs, and both are ancestors of REVIEW_SHA.",
+    "The approved X-FREEZE source bytes equal the committed approval blob and retain SHA256 3ACAD4A113EB595BCED29025AF884A4C5EA2835E90E38D0E897298F91DB371DA.",
+    "Every BASE_SHA..REVIEW_SHA path is allowed for BATCH-03; no forbidden path changed.",
+    "The round-3 code commit changes only the checker, contract test, and lock; the report commit changes only BATCH-03 reports/evidence.",
+    "Schema, contract vectors, semantic/product documents, docs/02-ai-extraction.md, frontend, fixtures, approvals, and backend/src are unchanged from 27f9a4916eca39dd1191b9e572e83e050d9a42e6 to REVIEW_SHA.",
+    "Only the checker and contract-test locked hashes changed; decision_bindings, semantic_lock, endpoints, handoff, change_control, approved_input, and hash_method are byte-equivalent as parsed JSON, and every locked hash matches.",
+    "Strict checker passed: 14 schemas and 18 vectors; all 13 $ref occurrences resolve offline and vector groups cover exactly four endpoints.",
+    "Isolated contract pytest passed: 16 passed in 1.14s with no skips/xfails detected by static audit.",
+    "Timezone-less, space-separated, missing-seconds, invalid hour/minute, invalid date, comma fraction, offset-seconds, fractional-offset, and other tested non-RFC3339 forms were rejected; all listed valid controls passed.",
+    "DecisionResult rejects P0_PROHIBITED_ACTION/400 success data; A29 remains HTTP 400 with data=null.",
+    "D03 remains HTTP 200 / INTERVENE / E1 / 300 with active_promise_count equal to active_commitments length.",
+    "D08 Hero remains 10:30; A32 uses the same exact 11:00 instant in all three machine fields and notification text.",
+    "Model trust boundary, HTTP error mapping, and visible cached_result true/false vectors did not regress.",
+    "All implementation report/command/evidence files consistently reference code repair SHA 85ac5f215bfd7a1c778b22502875a7c46f2f4ec5."
+  ],
+  "failed_checks": [
+    {
+      "id": "F-B03-V3-001",
+      "severity": "HIGH",
+      "title": "RFC 3339 leap-second restrictions are not enforced",
+      "location": "tools/contracts/check_contracts.py:82",
+      "test_gap_location": "backend/tests/contracts/test_contracts.py:57",
+      "expected": "A second value of 60 is accepted only at a real leap-second instant, with non-Z local time shifted by its numeric offset; impossible positions are rejected.",
+      "actual": "The regex accepts :60 at every otherwise well-formed date, time, and offset. 2030-01-01T12:34:60Z, 1990-12-31T12:00:60Z, and 1990-12-31T23:59:60-08:00 all validate successfully.",
+      "reproduction": "Run the independent date-time controls recorded in verification-evidence/independent-probes.json. Each named invalid leap-second case has actual=false for rejection, meaning the schema validator accepted it.",
+      "impact": "The custom FormatChecker is shared by every format: date-time field, so impossible instants can pass all BATCH-03 schemas despite the claimed RFC 3339 semantic lock.",
+      "authority": "RFC 3339 sections 5.6-5.8; JSON Schema Draft 2020-12 validation section 7.3.1.",
+      "evidence": [
+        "verification-evidence/independent-probes.json",
+        "verification-evidence/standards-sources.json"
+      ]
+    },
+    {
+      "id": "F-B03-V3-002",
+      "severity": "MEDIUM",
+      "title": "IMPLEMENTATION_REPORT.json omits recheck_commands",
+      "location": "reports/batches/BATCH-03/IMPLEMENTATION_REPORT.json",
+      "expected": "A non-empty recheck_commands list in the target-commit implementation report, usable as the verifier's explicit rerun input.",
+      "actual": "The field is absent. The verifier independently used the current plan acceptance_commands and the explicit dispatcher commands, rather than inventing an implementation-report field.",
+      "evidence": [
+        "verification-evidence/implementation-report-input.json",
+        "verification-evidence/independent-probes.json"
+      ]
+    }
+  ],
+  "scope_violations": [],
+  "regression_risks": [
+    "Because one global custom FormatChecker serves every format: date-time schema field, F-B03-V3-001 is broader than the shipment probe used to reproduce it.",
+    "The repository dependency lock omits jsonschema/referencing; a fresh verifier cannot reproduce the checker from that lock alone. This run used isolated exact top-level supplemental installs and records resolved transitive versions.",
+    "The green strict-checker and 16/16 pytest results do not cover impossible leap-second placement, so they cannot be promoted to acceptance.",
+    "No Schema, vector, product document, decision binding, semantic lock, endpoint, handoff, change-control, approved input, or hash method should be altered to fix this failure."
+  ],
+  "minimal_fix_request": [
+    {
+      "finding": "F-B03-V3-001",
+      "owner": "BATCH-03",
+      "files": [
+        "tools/contracts/check_contracts.py",
+        "backend/tests/contracts/test_contracts.py",
+        "docs/contracts/b-contract-lock.json"
+      ],
+      "request": "Tighten only the custom date-time checker so second=60 is validated against RFC 3339 section 5.7, including the numeric-offset projection. Preserve the existing legal 1990 UTC and -08:00 examples. Add negative assertions for 2030-01-01T12:34:60Z, 1990-12-31T12:00:60Z, and 1990-12-31T23:59:60-08:00. Mechanically refresh only the checker and test hashes in locked_files and retain every other lock field unchanged.",
+      "must_not_do": [
+        "Do not change Schema or tests/contract-vectors/**.",
+        "Do not relax the checker or delete existing assertions.",
+        "Do not change decision_bindings, semantic_lock, endpoints, handoff, change_control, approved_input, or hash_method."
+      ]
+    },
+    {
+      "finding": "F-B03-V3-002",
+      "owner": "BATCH-03 reporting",
+      "files": [
+        "reports/batches/BATCH-03/IMPLEMENTATION_REPORT.json",
+        "reports/batches/BATCH-03/IMPLEMENTATION_REPORT.md",
+        "reports/batches/BATCH-03/commands.json",
+        "reports/batches/BATCH-03/evidence/**"
+      ],
+      "request": "Add the actual non-empty recheck_commands list to IMPLEMENTATION_REPORT.json. After the code fix, regenerate reports, commands, and evidence so every artifact consistently anchors the new exact code-repair SHA and includes the two mechanical hash before-to-after values plus the declaration 本次仅机械性哈希刷新，无语义变更。"
+    }
+  ],
+  "minimal_fix_list": [
+    "Enforce RFC 3339 section 5.7 leap-second position and numeric-offset projection in tools/contracts/check_contracts.py without changing Schema or vectors.",
+    "Add positive and negative leap-second tests in backend/tests/contracts/test_contracts.py; preserve every existing assertion.",
+    "Mechanically refresh only the two corresponding locked_files hashes.",
+    "Add IMPLEMENTATION_REPORT.json.recheck_commands and regenerate consistent report/command/evidence anchors for the new code SHA."
+  ],
+  "blockers": [],
+  "recheck_commands": [
+    "python tools/contracts/check_contracts.py --strict",
+    "python -m pytest backend/tests/contracts -q",
+    "python -m json.tool docs/contracts/b-contract-lock.json",
+    "git diff --check 8314c76502cbc9d47d8432b7fe53f7d9fb82de82..<NEW_REVIEW_SHA>",
+    "git status --short",
+    "Independently assert valid 1990-12-31T23:59:60Z and 1990-12-31T15:59:60-08:00 pass while 2030-01-01T12:34:60Z, 1990-12-31T12:00:60Z, and 1990-12-31T23:59:60-08:00 fail.",
+    "Compare the next repair baseline to <NEW_REVIEW_SHA>: no Schema/vector/product-doc semantic change; lock changes only the two actual checker/test hashes; all reports/commands/evidence anchor one new code SHA."
+  ],
+  "artifact_hashes": {
+    "docs/approvals/b-decisions.json_normalized_lf": "3ACAD4A113EB595BCED29025AF884A4C5EA2835E90E38D0E897298F91DB371DA",
+    "docs/contracts/b-contract-lock.json_normalized_lf": "2314AAB47CE59CB37C1112AF1EFA55E1AA6209E908E1E6FD045070D795378947",
+    "tools/contracts/check_contracts.py_normalized_lf": "99FC675BE873DFF3B8458C0A073BA13ADA73830C60B26036D3DE481442DDC6CC",
+    "backend/tests/contracts/test_contracts.py_normalized_lf": "A7D9A448CCD4DE3E489F7B54B56736E896BA22AB23EF8D54589119D9F54DA37B",
+    "reports/batches/BATCH-03/IMPLEMENTATION_REPORT.json_normalized_lf": "605E612B3653DD3DB62E3621E17224A6320EAF7412EC03903C2C54FF47FEF321",
+    "reports/batches/BATCH-03/IMPLEMENTATION_REPORT.md_normalized_lf": "91A361F80358DB77B0521EE5A6DFFE226B6B219D1B31238C4FFA889CB11E4F76",
+    "reports/batches/BATCH-03/commands.json_normalized_lf": "8286902573D50BF7FE0082DB4AE0A033B67A6E06FAD86E01486CA471EBDA2AFE",
+    "verification_evidence_manifest": "verification-evidence/artifact-hashes.json"
+  },
+  "standards_sources": [
+    "https://json-schema.org/draft/2020-12/json-schema-validation#section-7.3.1",
+    "https://www.rfc-editor.org/rfc/rfc3339.html#section-5.7"
+  ],
+  "rollback_review": {
+    "passed": true,
+    "notes": "No rollback was executed. If the coordinator elects to discard only round 3, preserve failure evidence and revert 761043db460b77799ed089c53bb468e347cc6668 before 85ac5f215bfd7a1c778b22502875a7c46f2f4ec5; do not reset branches, alter approved inputs, or partially rewrite locked Schema/vectors. A corrective BATCH-03 repair is the minimal path."
+  },
+  "code_modified": false,
+  "next_batch_started": false
+}

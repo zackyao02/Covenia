@@ -1,0 +1,114 @@
+{
+  "report_version": "1.0",
+  "batch_id": "BATCH-03",
+  "result": "PASS",
+  "commit_verified": {
+    "review_base_commit": "6a726b8e6c781dfd723aa5d542e2ce1bad324494",
+    "implementation_commit": "2fbbc9d88348e4088332d574051de81d7ec1af15",
+    "implementation_parent_commit": "6a726b8e6c781dfd723aa5d542e2ce1bad324494",
+    "head_at_verification": "2fbbc9d88348e4088332d574051de81d7ec1af15",
+    "lock_evidence_base_commit": "ff4f2a99caeb4d820749c2d0ae6fa5431dafef4d",
+    "lock_evidence_after_commit": "6a726b8e6c781dfd723aa5d542e2ce1bad324494"
+  },
+  "verified_at": "2026-09-12T14:15:53+08:00",
+  "independent_context": true,
+  "verification_statement": "This report is an independent acceptance record for the one-time BATCH-03 evidence correction. It is not implementer self-certification and does not authorize integration, push, main-branch changes, or another Batch.",
+  "authoritative_current_plan_sha256": {
+    "MASTER_PLAN.md": "C64E1335BE25CBB7A17ECA7AE2D97A88B0266692CD63C26230F6B14761F8B146",
+    "batches.json": "B3458689DBD1DA4332D580BE628F025A0AFE1720B23D3896A83C003C1C592A28",
+    "source": "Product-owner verification delegation"
+  },
+  "review_worktree_observed_plan_sha256": {
+    "MASTER_PLAN.md": "81A22727C179E5A4628C84D7412210EAE32317B378B4051DA2B91FE7A2B1E183",
+    "batches.json": "CBB7929A82453197BCA637F7D4470538DA909097B4A47C1BD6DB0A52406487D6",
+    "scope_effect": "Recorded as provenance context only. The evidence-repair commit does not change either plan file, and the delegated PASS rule is limited to the four byte hashes, aligned references, exact three-file scope, and unchanged lock file."
+  },
+  "commands_run": [
+    {
+      "command": "git status --short --branch; git rev-parse HEAD; git rev-list --parents -n 1 2fbbc9d88348e4088332d574051de81d7ec1af15",
+      "exit_code": 0,
+      "purpose": "Pin clean detached verification worktree, HEAD, and implementation parent",
+      "evidence": "reports/batches/BATCH-03/verification-evidence/git-state-and-scope.txt"
+    },
+    {
+      "command": "git diff --name-status 6a726b8e6c781dfd723aa5d542e2ce1bad324494 2fbbc9d88348e4088332d574051de81d7ec1af15",
+      "exit_code": 0,
+      "purpose": "Verify the exact three-file approved change scope",
+      "evidence": "reports/batches/BATCH-03/verification-evidence/git-state-and-scope.txt"
+    },
+    {
+      "command": "git diff --exit-code 6a726b8e6c781dfd723aa5d542e2ce1bad324494 2fbbc9d88348e4088332d574051de81d7ec1af15 -- backend/requirements-dev.lock",
+      "exit_code": 0,
+      "purpose": "Verify backend/requirements-dev.lock is unchanged by the evidence repair",
+      "evidence": "reports/batches/BATCH-03/verification-evidence/git-state-and-scope.txt"
+    },
+    {
+      "command": "git cat-file blob <commit>:backend/requirements-dev.lock; git cat-file --filters --path=backend/requirements-dev.lock <commit>:backend/requirements-dev.lock; SHA-256 over emitted bytes; direct SHA-256 over current worktree bytes",
+      "exit_code": 0,
+      "purpose": "Independently recalculate the two raw Git blob LF hashes and two Windows checkout CRLF hashes without treating Git object IDs as SHA-256",
+      "evidence": "reports/batches/BATCH-03/verification-evidence/lock-byte-hashes.json"
+    },
+    {
+      "command": "Parse IMPLEMENTATION_REPORT.json; review full three-file patch; git grep for the prior stale hash and an unqualified sha256_after assignment",
+      "exit_code": 0,
+      "purpose": "Verify JSON validity, report-template preservation, exact reference alignment, independent-PASS disclaimer, and removal of the stale unqualified hash",
+      "evidence": "reports/batches/BATCH-03/verification-evidence/implementation-report-audit.json"
+    }
+  ],
+  "passed_checks": [
+    {
+      "check": "implementation_report_integrity",
+      "summary": "IMPLEMENTATION_REPORT.json parses successfully; all pre-existing top-level fields and values remain intact; only the authorized scope_check.lock_diff reference object was added. Markdown adds only the authorized byte-evidence reference paragraph. Both reports continue to say independent verification was not run by the implementer and do not claim an independent PASS.",
+      "evidence": ["reports/batches/BATCH-03/verification-evidence/implementation-report-audit.json"]
+    },
+    {
+      "check": "four_byte_hashes",
+      "summary": "Both raw Git blob LF SHA-256 values and both Windows checkout CRLF SHA-256 values exactly match independent byte-level recalculation. The current worktree bytes match the after-commit filtered checkout bytes.",
+      "evidence": ["reports/batches/BATCH-03/verification-evidence/lock-byte-hashes.json"]
+    },
+    {
+      "check": "reference_alignment_and_stale_hash_removal",
+      "summary": "lock-diff.txt, IMPLEMENTATION_REPORT.json, and IMPLEMENTATION_REPORT.md agree on commits, byte representations, and all four hashes. The prior stale unqualified value and an unqualified sha256_after assignment are absent.",
+      "evidence": ["reports/batches/BATCH-03/verification-evidence/implementation-report-audit.json"]
+    },
+    {
+      "check": "exact_scope_and_unchanged_lock",
+      "summary": "The review diff contains exactly lock-diff.txt, IMPLEMENTATION_REPORT.json, and IMPLEMENTATION_REPORT.md. backend/requirements-dev.lock has no diff and no forbidden output is present.",
+      "evidence": ["reports/batches/BATCH-03/verification-evidence/git-state-and-scope.txt"]
+    }
+  ],
+  "failed_checks": [],
+  "scope_violations": [],
+  "regression_risks": [
+    {
+      "risk": "Business, dependency, and contract tests were not rerun in this evidence-only verification round.",
+      "disposition": "Accepted scope limitation, not a failure. The product owner explicitly prohibited rerunning them and supplied the prior independent substantive results: pip check passed, strict checker validated 14 schemas and 18 vectors, pytest reported 16 passed, and the 24 existing plus 5 new pins were already checked."
+    },
+    {
+      "risk": "The detached review worktree contains older plan-file bytes than the separately supplied authoritative current plan hashes.",
+      "disposition": "Recorded without blocking this narrowly defined acceptance. Neither plan file changed in the reviewed commit, and plan reconciliation is outside the one-time evidence-correction allowlist."
+    },
+    {
+      "risk": "F-B03-006 leap-second behavior remains an observation item.",
+      "disposition": "Non-blocking by explicit acceptance instruction; this evidence-only repair neither changes nor re-evaluates that behavior."
+    }
+  ],
+  "minimal_fix_request": [],
+  "test_execution_this_round": {
+    "status": "NOT_RUN",
+    "reason": "No business, contract, dependency, or acceptance test was rerun because the authorized review scope was limited to evidence bytes, report references, and commit scope."
+  },
+  "artifact_hashes": {
+    "implementation_commit_git_blob_sha256": {
+      "reports/batches/BATCH-03/IMPLEMENTATION_REPORT.json": "8D2063DA124B0F8D25AB72B56D1501B3C5DF796CCEFF193E8197499BE75DF618",
+      "reports/batches/BATCH-03/IMPLEMENTATION_REPORT.md": "9690193EC76A859794BB8B8C7DBA21688A2517DCDE2FAD5DF62F9300D518D84D",
+      "reports/batches/BATCH-03/evidence/lock-diff.txt": "A6D894AB3CB7018E828D00BB2DE3173988C7E0175D24F528EEEFE64CC97A4F38"
+    }
+  },
+  "code_modified": false,
+  "implementation_files_modified_by_verifier": false,
+  "next_batch_started": false,
+  "integration_performed": false,
+  "push_performed": false,
+  "main_modified": false
+}

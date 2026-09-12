@@ -1,0 +1,70 @@
+{
+  "batch_id": "BATCH-03",
+  "result": "PASS",
+  "verification_role": "独立验收，不是实现方自证",
+  "commit_verified": {
+    "review_commit": "ff4f2a99caeb4d820749c2d0ae6fa5431dafef4d",
+    "code_commit": "85ac5f215bfd7a1c778b22502875a7c46f2f4ec5",
+    "report_repair_base": "761043db460b77799ed089c53bb468e347cc6668",
+    "review_commit_parent": "761043db460b77799ed089c53bb468e347cc6668",
+    "code_commit_is_ancestor_of_review_commit": true
+  },
+  "commands_run": [
+    {
+      "check_id": "A",
+      "command": "Read BATCH_PROMPT_TEMPLATE.md:67-100; parse reports/batches/BATCH-03/IMPLEMENTATION_REPORT.json with ConvertFrom-Json; compare top-level keys and changed_files; verify declared artifact hashes against committed Git blobs",
+      "exit_code": 0,
+      "evidence": "reports/batches/BATCH-03/verification-evidence/fourth-round-narrow-checks.txt"
+    },
+    {
+      "check_id": "B1",
+      "command": "git diff --name-status 85ac5f215bfd7a1c778b22502875a7c46f2f4ec5 ff4f2a99caeb4d820749c2d0ae6fa5431dafef4d -- tools schemas tests docs",
+      "exit_code": 0,
+      "evidence": "reports/batches/BATCH-03/verification-evidence/fourth-round-narrow-checks.txt"
+    },
+    {
+      "check_id": "B2",
+      "command": "git diff --name-status 761043db460b77799ed089c53bb468e347cc6668 ff4f2a99caeb4d820749c2d0ae6fa5431dafef4d",
+      "exit_code": 0,
+      "evidence": "reports/batches/BATCH-03/verification-evidence/fourth-round-narrow-checks.txt"
+    },
+    {
+      "check_id": "B3",
+      "command": "git diff --name-only 761043db460b77799ed089c53bb468e347cc6668 ff4f2a99caeb4d820749c2d0ae6fa5431dafef4d -- :(glob)**/VERIFICATION_REPORT.json :(glob)**/verification-evidence/**",
+      "exit_code": 0,
+      "evidence": "reports/batches/BATCH-03/verification-evidence/fourth-round-narrow-checks.txt"
+    }
+  ],
+  "passed_checks": [
+    {
+      "check_id": "A",
+      "name": "Implementation report template coverage and fourth-round consistency",
+      "result": "PASS",
+      "details": "BATCH_PROMPT_TEMPLATE.md:67-100 has 23 top-level required keys. IMPLEMENTATION_REPORT.json:2-210 contains all 23 plus additive status, for 24 top-level keys total; missing=0; JSON is valid; recheck_commands is absent. The report records the supplied plan hashes, report-repair base, code commit, nine changed files, and eight committed artifact hashes consistently."
+    },
+    {
+      "check_id": "B1",
+      "name": "Code directories unchanged from code_commit to review_commit",
+      "result": "PASS",
+      "details": "The scoped Git diff for tools/, schemas/, tests/, and docs/ is empty between 85ac5f215bfd7a1c778b22502875a7c46f2f4ec5 and ff4f2a99caeb4d820749c2d0ae6fa5431dafef4d."
+    },
+    {
+      "check_id": "B2",
+      "name": "Fourth-round implementation allowlist",
+      "result": "PASS",
+      "details": "The Git diff from 761043db460b77799ed089c53bb468e347cc6668 to ff4f2a99caeb4d820749c2d0ae6fa5431dafef4d contains exactly nine modified files, all under reports/batches/BATCH-03/**."
+    },
+    {
+      "check_id": "B3",
+      "name": "Verifier-owned artifacts excluded from implementation commit",
+      "result": "PASS",
+      "details": "The fourth-round implementation diff contains neither VERIFICATION_REPORT.json nor verification-evidence/**."
+    }
+  ],
+  "failed_checks": [],
+  "scope_violations": [],
+  "regression_risks": [
+    "This PASS is intentionally limited to implementation-report structure/consistency and Git code/scope invariants. Prior schema, vector, pytest, contract-lock, and semantic checks were not re-run in this fourth-round verification."
+  ],
+  "minimal_fix_request": "NONE"
+}

@@ -1,0 +1,390 @@
+{
+  "report_version": "1.0",
+  "batch_id": "BATCH-03",
+  "result": "FAIL",
+  "verdict": "FAIL",
+  "commit_verified": true,
+  "reviewed_base_sha": "8314c76502cbc9d47d8432b7fe53f7d9fb82de82",
+  "reviewed_sha": "27f9a4916eca39dd1191b9e572e83e050d9a42e6",
+  "reviewed_code_commits": [
+    "2e0437c8ea99491c4601e429c30d8a1910cb1d52",
+    "e5cda914877321a2424627be5cc885ac59a00975",
+    "4891e27e3bbf2818864b24e2ae0575fa1d5e75e0"
+  ],
+  "reviewed_report_commits": [
+    "04aabbec3590e7fd1e5a1e9dc742f381f2d7ce4d",
+    "ba9baa741e7fd6913a739569a164f120df2ff6e0",
+    "27f9a4916eca39dd1191b9e572e83e050d9a42e6"
+  ],
+  "contract_version": "8314c76502cbc9d47d8432b7fe53f7d9fb82de82 / BATCH-03 contract-lock-v1",
+  "plan_sha256": {
+    "MASTER_PLAN.md": "ECE161441703962D9D7C0E1650497D2C2BEED560FC3D2239564B4E9E1D4A75E4",
+    "batches.json": "E78AE0E223B6D5D5A8F427630225D572E1A7D9E844F99CEA82503CC87EEB1693"
+  },
+  "verified_at": "2026-09-11T22:26:01.6265127+08:00",
+  "independent_context": true,
+  "environment": {
+    "python": "CPython 3.13.5",
+    "pytest": "8.3.4",
+    "jsonschema": "4.25.0",
+    "referencing": "0.36.2",
+    "run_dir": "C:/Users/WONG Tsun Ming/Documents/Codex/2026-09-11/covenia-batch-03-verify-2/work",
+    "review_snapshot": "C:/Users/WONG Tsun Ming/Documents/Codex/2026-09-11/covenia-batch-03-verify-2/work/review",
+    "review_snapshot_head": "27f9a4916eca39dd1191b9e572e83e050d9a42e6",
+    "venv": "C:/Users/WONG Tsun Ming/Documents/Codex/2026-09-11/covenia-batch-03-verify-2/work/isolated-venv",
+    "pythonpath_present": false,
+    "user_site_enabled": false,
+    "global_site_packages_inherited": false,
+    "dependency_note": "backend/requirements-dev.lock installed successfully but does not declare jsonschema/referencing. Exact supplemental pins attrs 25.3.0, jsonschema 4.25.0, jsonschema-specifications 2025.4.1, referencing 0.36.2, and rpds-py 0.27.0 were installed only in the verifier venv and recorded."
+  },
+  "dependency_checks": [
+    {
+      "batch_id": "BATCH-01",
+      "result": "PASS",
+      "verification_report_sha256": "F2A922207E7CF7203983B44FDA550EE1A17B77DC0079EA4457F25F0D2283E5C9",
+      "verification_reviewed_sha": "3f951e4b746e44a864bcd77c0c9e55438cd83347",
+      "integration_receipt_sha256": "37CA3D919E8EAB8D4D2D3147D9781C3CDF0D8C608BFA38BAE4054857A3D34683",
+      "integration_status": "SUCCESS",
+      "integration_commit": "3f951e4b746e44a864bcd77c0c9e55438cd83347",
+      "evidence": [
+        "verification-evidence/baseline-scope-dependencies.json"
+      ]
+    },
+    {
+      "batch_id": "BATCH-02",
+      "result": "PASS",
+      "verification_report_sha256": "29F592D55C05734F81A5632B9FE915AC30ED5FE52A9577ECA4AA2AEBC7E67FFF",
+      "verification_reviewed_sha": "8314c76502cbc9d47d8432b7fe53f7d9fb82de82",
+      "integration_receipt_sha256": "B87AD2CF2FA5F37B48349E1CD3394E512152F2044BB018F4FF18B69D63FA72D0",
+      "integration_status": "SUCCESS",
+      "integration_commit": "8314c76502cbc9d47d8432b7fe53f7d9fb82de82",
+      "evidence": [
+        "verification-evidence/baseline-scope-dependencies.json"
+      ]
+    }
+  ],
+  "external_gate_checks": [
+    {
+      "gate": "X-FREEZE",
+      "result": "PASS",
+      "status": "ACCEPTED",
+      "approved_by": "Zack",
+      "approved_at": "2026-09-10T23:59:00+08:00",
+      "approved_record_git_blob_sha256": "3ACAD4A113EB595BCED29025AF884A4C5EA2835E90E38D0E897298F91DB371DA",
+      "modified_by_batch_03": false,
+      "evidence": [
+        "verification-evidence/baseline-scope-dependencies.json",
+        "verification-evidence/independent-probes.json"
+      ]
+    },
+    {
+      "gate": "X-C-CONTRACT / X-C-UI / X-A-FIXTURES / X-A-IMAGES",
+      "result": "PASS",
+      "status": "NOT_ACCEPTED",
+      "interpretation": "They remain accurately listed as external downstream handoffs. BATCH-03 did not alter frontend/** or fixtures/** and did not claim these gates were accepted."
+    }
+  ],
+  "scope_audit": {
+    "passed": true,
+    "changed_file_count": 30,
+    "changed_files": [
+      "backend/tests/contracts/test_contracts.py",
+      "docs/03-firewall-rules.md",
+      "docs/04-responsibility-loop.md",
+      "docs/05-api-and-ui.md",
+      "docs/08-idempotency-and-ordering.md",
+      "docs/contracts/b-contract-lock.json",
+      "docs/contracts/b-transport.md",
+      "reports/batches/BATCH-03/IMPLEMENTATION_REPORT.json",
+      "reports/batches/BATCH-03/IMPLEMENTATION_REPORT.md",
+      "reports/batches/BATCH-03/commands.json",
+      "reports/batches/BATCH-03/evidence/contract-check.json",
+      "reports/batches/BATCH-03/evidence/contract-lock-json.txt",
+      "reports/batches/BATCH-03/evidence/git-diff-check.txt",
+      "reports/batches/BATCH-03/evidence/git-status-pre-report.json",
+      "reports/batches/BATCH-03/evidence/preflight.json",
+      "reports/batches/BATCH-03/evidence/pytest-contracts.txt",
+      "schemas/analyze-case-response.schema.json",
+      "schemas/api-envelope.schema.json",
+      "schemas/approve-resolution-response.schema.json",
+      "schemas/decision-result.schema.json",
+      "schemas/evaluate-action-request.schema.json",
+      "schemas/extracted-journey.schema.json",
+      "schemas/prepared-action.schema.json",
+      "schemas/shipment-event-response.schema.json",
+      "tests/contract-vectors/analyze.json",
+      "tests/contract-vectors/approve.json",
+      "tests/contract-vectors/evaluate.json",
+      "tests/contract-vectors/manifest.json",
+      "tests/contract-vectors/shipment.json",
+      "tools/contracts/check_contracts.py"
+    ],
+    "violations": [],
+    "forbidden_paths_changed": false,
+    "pre_output_worktree_clean": true,
+    "evidence": "verification-evidence/baseline-scope-dependencies.json"
+  },
+  "criteria": [
+    {
+      "criterion": "全部 $ref 可离线解析，Draft 2020-12 与 date-time 格式实际校验；正例通过、负例拒绝。",
+      "result": "FAIL",
+      "evidence": [
+        "verification-evidence/independent-probes.json",
+        "verification-evidence/command-results.json"
+      ],
+      "detail": "All 13 refs and all current vectors pass, but the repository date-time checker accepts non-RFC-3339 values with missing seconds, an ISO week date, and a comma fractional separator."
+    },
+    {
+      "criterion": "A34、P0/E1 冲突、A29 动作表达、服务端时间、通知确认、HTTP 错误与缓存可见性均无未裁决影响项。",
+      "result": "PASS",
+      "evidence": [
+        "verification-evidence/independent-probes.json"
+      ]
+    },
+    {
+      "criterion": "模型不产生最终激活/证据/责任/决策；新增响应 Schema 不等于新增业务接口。",
+      "result": "PASS",
+      "evidence": [
+        "verification-evidence/independent-probes.json"
+      ]
+    },
+    {
+      "criterion": "C/A 待同步的准确文件/向量已交付；未同步的外部门继续阻塞集成。",
+      "result": "PASS",
+      "evidence": [
+        "verification-evidence/baseline-scope-dependencies.json"
+      ]
+    },
+    {
+      "criterion": "批准输入由 BATCH-01 生产且同哈希；BATCH-03 只读，不反向修改批准或 fixtures/**。",
+      "result": "PASS",
+      "evidence": [
+        "verification-evidence/baseline-scope-dependencies.json",
+        "verification-evidence/independent-probes.json"
+      ]
+    },
+    {
+      "criterion": "必需实现报告、命令记录和测试证据与 REVIEW_SHA 及当前修复提交一致。",
+      "result": "FAIL",
+      "evidence": [
+        "verification-evidence/baseline-scope-dependencies.json"
+      ],
+      "detail": "The current JSON report points at 4891e27 and claims an isolated six-test pass, while IMPLEMENTATION_REPORT.md, commands.json and pytest-contracts.txt still point at e5cda91 / repair-1 / F-B03-001 and three tests."
+    }
+  ],
+  "commands_run": [
+    "python tools/contracts/check_contracts.py --strict",
+    "python -m pytest backend/tests/contracts -q",
+    "python -m json.tool docs/contracts/b-contract-lock.json",
+    "git diff --check 8314c76502cbc9d47d8432b7fe53f7d9fb82de82..27f9a4916eca39dd1191b9e572e83e050d9a42e6",
+    "git status --short",
+    "git diff --name-status 8314c76502cbc9d47d8432b7fe53f7d9fb82de82..27f9a4916eca39dd1191b9e572e83e050d9a42e6",
+    "git diff --quiet BASE_SHA..REVIEW_SHA -- <forbidden path groups>",
+    "independent_contract_probe.py --repo <clean detached review snapshot>",
+    "independent date-time edge negative control",
+    "implementation artifact freshness audit"
+  ],
+  "commands": [
+    {
+      "command": "python tools/contracts/check_contracts.py --strict",
+      "cwd": "clean detached review snapshot",
+      "exit_code": 0,
+      "mode": "CONTRACT",
+      "output": "verification-evidence/command-results.json",
+      "summary": "14 schemas and 18 vectors validated."
+    },
+    {
+      "command": "python -m pytest backend/tests/contracts -q",
+      "cwd": "clean detached review snapshot",
+      "exit_code": 0,
+      "mode": "UNIT",
+      "output": "verification-evidence/command-results.json",
+      "summary": "6 passed in 0.54s."
+    },
+    {
+      "command": "python -m json.tool docs/contracts/b-contract-lock.json",
+      "cwd": "clean detached review snapshot",
+      "exit_code": 0,
+      "mode": "FORMAT",
+      "output": "verification-evidence/command-results.json"
+    },
+    {
+      "command": "git diff --check BASE_SHA..REVIEW_SHA",
+      "cwd": "supplied worktree",
+      "exit_code": 0,
+      "mode": "GIT",
+      "output": "verification-evidence/command-results.json"
+    },
+    {
+      "command": "git status --short",
+      "cwd": "supplied worktree before verifier outputs",
+      "exit_code": 0,
+      "mode": "GIT",
+      "output": "verification-evidence/command-results.json",
+      "summary": "Empty."
+    },
+    {
+      "command": "independent date-time edge negative control",
+      "cwd": "clean detached review snapshot",
+      "exit_code": 1,
+      "mode": "NEGATIVE_CONTROL_FAILURE",
+      "output": "verification-evidence/independent-probes.json",
+      "summary": "The repository checker incorrectly accepted three non-RFC-3339 values."
+    }
+  ],
+  "passed_checks": [
+    "The supplied detached HEAD, BASE_SHA ancestry, six reviewed commits, authoritative plan hashes, and dependency receipts were independently fixed and verified.",
+    "All 30 BASE_SHA..REVIEW_SHA paths are allowed; frontend/**, fixtures/**, reference/**, PRODUCT-FREEZE.md, plan files, docs/planning/b/**, backend domain/ports, and verifier-owned outputs were absent from the implementation diff.",
+    "The approved decision record's committed blob and canonical worktree content both match SHA256 3ACAD4A113EB595BCED29025AF884A4C5EA2835E90E38D0E897298F91DB371DA.",
+    "The strict checker reports 14 schemas and 18 vectors, all 13 offline refs resolve, every endpoint has positive and negative vectors, and the endpoint set is exactly the four approved POST interfaces.",
+    "P0_PROHIBITED_ACTION/400 is rejected as DecisionResult success data; the real A29 P0 vector is HTTP 400 with error.code=P0_PROHIBITED_ACTION and data=null.",
+    "The Hero service-progress receipt contains the approved 10:30 time; the old 10:27 line is absent.",
+    "The A32 shipment vector uses 2030-01-01T11:00:00+00:00 for all three projections, includes that exact value in text, requires human approval, and a text mutation to 11:30 is rejected.",
+    "D03 remains HTTP 200 / INTERVENE / E1 / 300; active_promise_count=0 equals the returned active_commitments cardinality 0, and a mutation to 1 is rejected.",
+    "All non-200 vectors have data=null; cache visibility and outer/journey metadata equality are enforced; the lock keeps activation, evidence, responsibility, decision, approval and audit server-owned.",
+    "The required strict checker, isolated pytest, JSON parse, diff check, and pre-output status commands completed successfully in the fixed detached snapshot."
+  ],
+  "failed_checks": [
+    {
+      "code": "F-B03-006",
+      "check": "Draft 2020-12 date-time assertion",
+      "expected": "format: date-time rejects values outside the RFC-3339 date-time shape.",
+      "actual": "tools/contracts/check_contracts.py accepted 2030-01-01T11:00+00:00, 2030-W01-1T11:00:00+00:00, and 2030-01-01T11:00:00,5+00:00.",
+      "evidence": "verification-evidence/independent-probes.json"
+    },
+    {
+      "code": "F-B03-007",
+      "check": "Required implementation evidence freshness and consistency",
+      "expected": "IMPLEMENTATION_REPORT.md, commands.json and recorded command outputs identify the current 4891e27 repair tested for REVIEW_SHA 27f9a491.",
+      "actual": "They still identify e5cda91 / covenia-batch-03-repair-1 / F-B03-001 and retain a three-test output, while the current JSON report claims the later repair and six tests.",
+      "evidence": "verification-evidence/baseline-scope-dependencies.json"
+    }
+  ],
+  "scope_violations": [],
+  "negative_controls": [
+    {
+      "name": "P0 cannot be successful DecisionResult data",
+      "result": "PASS",
+      "mutation": "Set decision/rule_id/rule_priority to INTERVENE/P0_PROHIBITED_ACTION/400 on a valid D03 success body.",
+      "observed": "Rejected by rule_id and rule_priority enums."
+    },
+    {
+      "name": "P0 error envelope cannot carry data",
+      "result": "PASS",
+      "mutation": "Put valid DecisionResult data into the A29 P0 error envelope.",
+      "observed": "Rejected by ApiEnvelope oneOf."
+    },
+    {
+      "name": "D03 mapping and count",
+      "result": "PASS",
+      "mutation": "Change HTTP 200 to 400 and active_promise_count from 0 to 1.",
+      "observed": "Repository semantic checks reject both mutations; current mapping remains INTERVENE/E1/300 and 0=0."
+    },
+    {
+      "name": "D08 Hero receipt",
+      "result": "PASS",
+      "mutation": "Look for the former 10:27 Hero receipt line and independently require the approved 10:30 line.",
+      "observed": "10:30 is present and the old 10:27 receipt line is absent."
+    },
+    {
+      "name": "A32 notification text",
+      "result": "PASS",
+      "mutation": "Replace the text's 11:00 instant with 11:30 while leaving commits_next_update_at unchanged.",
+      "observed": "Repository semantic check rejects the mutated text."
+    },
+    {
+      "name": "Cache visibility",
+      "result": "PASS",
+      "mutation": "Flip only the outer cached_result projection.",
+      "observed": "Independent equality check detects the mismatch."
+    },
+    {
+      "name": "Draft date-time edge cases",
+      "result": "FAIL",
+      "mutation": "Use a timestamp without seconds, an ISO week-date timestamp, and a comma fractional separator.",
+      "observed": "The repository checker accepts all three."
+    }
+  ],
+  "findings": [
+    {
+      "id": "F-B03-006",
+      "severity": "P1",
+      "title": "The date-time checker is broader than Draft 2020-12 date-time",
+      "files": [
+        "tools/contracts/check_contracts.py:84",
+        "backend/tests/contracts/test_contracts.py:23"
+      ],
+      "detail": "datetime.fromisoformat checks parseability and timezone presence but does not enforce the RFC-3339 lexical shape used by JSON Schema date-time. The only committed test uses 'not-a-date-time', so malformed but parseable ISO variants escape the executable contract.",
+      "reproduction": "Run the verifier edge probe recorded in verification-evidence/independent-probes.json; all three listed invalid strings produce no validation messages.",
+      "responsible_batch": "BATCH-03"
+    },
+    {
+      "id": "F-B03-007",
+      "severity": "P1",
+      "title": "Required implementation evidence still describes the previous repair",
+      "files": [
+        "reports/batches/BATCH-03/IMPLEMENTATION_REPORT.md:1",
+        "reports/batches/BATCH-03/commands.json:1",
+        "reports/batches/BATCH-03/evidence/pytest-contracts.txt:1",
+        "reports/batches/BATCH-03/IMPLEMENTATION_REPORT.json:1"
+      ],
+      "detail": "The JSON report at REVIEW_SHA names 4891e27 and an isolated six-test pass, but the other required report/command artifacts identify e5cda91 and the first D03-only repair, with recorded pytest evidence of three tests. This is not evidence for the current repair snapshot.",
+      "reproduction": "Compare the four fields summarized in verification-evidence/baseline-scope-dependencies.json.",
+      "responsible_batch": "BATCH-03"
+    },
+    {
+      "id": "O-B03-001",
+      "severity": "INFO",
+      "title": "docs/02-ai-extraction.md was not changed or treated as repair scope",
+      "detail": "Any historical docs/02 trust-boundary wording remains a non-batch observation. The current BATCH-03 lock and b-transport contract independently preserve the approved server-only authority boundary."
+    }
+  ],
+  "artifact_hashes": {
+    "docs/approvals/b-decisions.json_git_blob": "3ACAD4A113EB595BCED29025AF884A4C5EA2835E90E38D0E897298F91DB371DA",
+    "docs/contracts/b-contract-lock.json_raw": "897C7228395E574AD3F30CF6A94F4865BA477D9AFE440C7C70F9FB50F37E6C77",
+    "tests/contract-vectors/manifest.json_raw": "86F922962AEC85FD42779D30E13F3AE97B0B313AA5FA01731CCE2539DDA9A4BD",
+    "tools/contracts/check_contracts.py_raw": "7F097BDB62A18664735B6D6A46B97EDB96E2F89AFA3AE258184D376C657597F2",
+    "backend/tests/contracts/test_contracts.py_raw": "0AE740984F47D0A6D44BD2DF03F864C2AB7C1C0C21C14A6068D8A279ECF99073",
+    "reports/batches/BATCH-03/IMPLEMENTATION_REPORT.json_raw": "94E9BF17D6E92F37D9566476E98DCCDABBF93E826E73F84607E8F6FBE4208911",
+    "reports/batches/BATCH-03/IMPLEMENTATION_REPORT.md_raw": "2E39ADB3919AE0B0F4F7BAA4001318B75531748B271647D0912FC58879CF1128",
+    "reports/batches/BATCH-03/commands.json_raw": "49713FFE2D7FEC2309090D520437A53CEF6AAA7DE7B934248442C68E2B3248CF",
+    "verification-evidence/baseline-scope-dependencies.json": "D1FE329DFA3514791105FED365E5E36AE6EE4459C7868A9FBFBE90920A5F25DB",
+    "verification-evidence/command-results.json": "7B7325759F5FFA9813C753A64DAE3AA77808F0A1F72E8F7DA95C259607778CEF",
+    "verification-evidence/independent-probes.json": "74803BD9B0C0D1CB59460BC348D308BEC824B2BBB67F79BBF94F974EB05597B2"
+  },
+  "regression_risks": [
+    "The contract checker imports jsonschema and referencing, but backend/requirements-dev.lock does not declare that stack. The isolated run was reproducible only after a separately recorded exact-pin install; this should remain visible until an authorized dependency declaration exists.",
+    "The direct supplied worktree's pytest cache-provider finalization did not terminate after six pass dots; the identical exact command completed in 0.54s in a fresh detached no-local clone. Preserve the clean-clone path for recheck rather than relying on ignored worktree cache state.",
+    "X-C-CONTRACT, X-C-UI, X-A-FIXTURES and X-A-IMAGES remain downstream external gates. This FAIL neither accepts them nor authorizes B to edit their files."
+  ],
+  "minimal_fix_request": [
+    {
+      "finding": "F-B03-006",
+      "request": "In tools/contracts/check_contracts.py, enforce the JSON Schema date-time RFC-3339 lexical shape in addition to timezone-aware calendar parsing. Add committed negative assertions for at least missing seconds, ISO week date, comma fractional separator, missing timezone, and impossible calendar dates; update the contract-lock hashes without changing approved business values or endpoints."
+    },
+    {
+      "finding": "F-B03-007",
+      "request": "Regenerate IMPLEMENTATION_REPORT.md, commands.json and the BATCH-03 implementation evidence from the final repaired code commit. They must name 4891e27 or its minimal successor, record the clean isolated environment and actual six-test result, and agree with IMPLEMENTATION_REPORT.json. Do not edit frontend/**, fixtures/**, plans, approvals, backend domain/ports, or verifier-owned outputs."
+    }
+  ],
+  "minimal_fix_list": [
+    "Tighten the BATCH-03 date-time checker and add edge negative tests.",
+    "Refresh the required BATCH-03 implementation report, commands and evidence as one consistent final snapshot."
+  ],
+  "blockers": [],
+  "recheck_commands": [
+    "python tools/contracts/check_contracts.py --strict",
+    "python -m pytest backend/tests/contracts -q",
+    "python -m json.tool docs/contracts/b-contract-lock.json",
+    "git diff --check 8314c76502cbc9d47d8432b7fe53f7d9fb82de82..<NEW_REVIEW_SHA>",
+    "git status --short",
+    "rerun the independent P0/D03/D08/A32/cache/date-time probes from a fresh detached snapshot",
+    "compare IMPLEMENTATION_REPORT.json, IMPLEMENTATION_REPORT.md, commands.json and implementation evidence against the final code commit"
+  ],
+  "rollback_review": {
+    "passed": true,
+    "notes": "The documented rollback is batch-scoped: revert the BATCH-03 contract/vector/report commits as a unit and restore the prior contract lock. Do not reset integration/covenia-b, alter approvals, or touch A/C artifacts."
+  },
+  "code_modified": false,
+  "next_batch_started": false
+}
