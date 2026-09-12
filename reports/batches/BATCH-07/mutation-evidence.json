@@ -1,0 +1,19 @@
+{
+  "artifact_version": "1.0",
+  "batch_id": "BATCH-07",
+  "classification": "MUTATION_TEST_EVIDENCE_NO_RAW_PII",
+  "test_id": "test_mutation_bypass_is_rejected_before_the_provider_can_capture_raw_pii",
+  "command": "C:\\cov-run\\batch-07\\venv\\Scripts\\python.exe -m pytest backend/tests/privacy -q -m mutation",
+  "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-07",
+  "mode": "MUTATION",
+  "mutant": "An in-memory dataclasses.replace operation substitutes a synthetic raw phone-shaped string for redacted_text and clears masking metadata.",
+  "expected_inner_failure": "UnsafeModelInputError is raised by the privacy boundary before ModelProvider.extract is invoked.",
+  "outer_driver": "pytest.raises asserts the expected failure, then asserts the capturing protocol double received zero requests.",
+  "result": "EXPECTED_FAILURE_DETECTED",
+  "exit_code": 0,
+  "duration_seconds": 0.564,
+  "tests_passed": 1,
+  "tests_deselected": 5,
+  "raw_sensitive_values_written": false,
+  "source_restoration": "The mutation is local to the test object and is discarded when the test exits; no source file, cache, log, or report receives the synthetic raw value."
+}

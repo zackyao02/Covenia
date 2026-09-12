@@ -1,0 +1,32 @@
+{
+  "artifact_version": "1.0",
+  "batch_id": "BATCH-07",
+  "classification": "REDACTED_SYNTHETIC_EXAMPLE",
+  "model_input": {
+    "case_id": "case-safe-001",
+    "redacted_text": "case_id=case-safe-001\norder_id=order-safe-001\ncurrent_issue_sku_id=sku-safe-001\n[message_id=message-safe-001 timestamp=2026-09-13T09:32:00+00:00 speaker=CONSUMER] phone: [PHONE_REDACTED]; [SHIPPING_ADDRESS_REDACTED]; [ALIPAY_ACCOUNT_REDACTED]\n[message_id=message-safe-002 timestamp=2026-09-13T09:33:00+00:00 speaker=AGENT] We promise an update within 48 hours.\n[message_id=message-safe-003 timestamp=2026-09-13T09:34:00+00:00 speaker=CONSUMER] [ADVERSE_REACTION_RISK]\n[message_id=message-safe-004 timestamp=2026-09-13T09:35:00+00:00 speaker=AGENT] [MEDICAL_CONTEXT_REDACTED]",
+    "images": [],
+    "source_ids": [
+      "order-safe-001",
+      "message-safe-001",
+      "message-safe-002",
+      "message-safe-003",
+      "message-safe-004"
+    ]
+  },
+  "pii_masked_count": 5,
+  "masked_categories": [
+    "phone",
+    "shipping_address",
+    "alipay_account",
+    "adverse_reaction",
+    "medical_context"
+  ],
+  "adverse_risk_candidate": true,
+  "raw_sensitive_values_present": false,
+  "preserved_safe_semantics": {
+    "case_order_and_message_ids": true,
+    "message_timestamps": true,
+    "commitment_text": "We promise an update within 48 hours."
+  }
+}

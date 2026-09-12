@@ -1,0 +1,211 @@
+{
+  "report_version": "1.0",
+  "batch_id": "BATCH-07",
+  "status": "COMPLETED",
+  "result": "IMPLEMENTED",
+  "summary": "Implemented a fail-closed privacy preparation and model-dispatch boundary. It replaces structured sensitive fields and matching chat content with category-specific placeholders; retains safe case, order, message, timestamp, and non-sensitive commitment semantics; exposes SanitizedModelInput plus pii_masked_count; preserves an adverse-risk candidate; requires explicit no-PII declarations for model-bound image handles; and blocks a detectable raw-input bypass before the provider receives it. No raw sensitive value is written by the production module, redacted sample, mutation evidence, or pip evidence.",
+  "repo_root": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-07",
+  "branch": "codex/covenia-batch-07",
+  "base_integration_sha": "69a2462cdcc0744e21f81c81cee6a6262789335f",
+  "contract_version": "BATCH-03 contract-lock-v1 / 2fbbc9d88348e4088332d574051de81d7ec1af15",
+  "plan_sha256": "MASTER_PLAN.md=56A5CAF32334DC1D5628DA67A3BAB24A250CC7C5FE3F762BD781682633808AE1; batches.json=FAE792913DCE0F2DE7BC799C452FD0964775804117287A9745A719722326A720",
+  "artifact_hashes": {
+    "basis": "Code hashes are SHA-256 over raw git-show bytes at the code commit. Report-output hashes are SHA-256 over the named worktree bytes before the report-only commit.",
+    "code_commit_raw_blobs": {
+      "backend/src/covenia_b/privacy/__init__.py": "6F627399676A7233471AE5749493A45ECD00ED53EDCF5DCD4BB3A5E174292423",
+      "backend/src/covenia_b/privacy/boundary.py": "08DF1116E0100C77035294CEB9240E2D7554158EC6FB0A1C4B05970F52FDA909",
+      "backend/src/covenia_b/privacy/sanitizer.py": "70471888FE83E8C6AC80900C6322046DBA8F6D22295A557EEE6F7FF026294C78",
+      "backend/tests/privacy/test_model_boundary.py": "CADEEFCEB359FFDE782585994BD5920E15DD82BAC2F0521B8D67EA659D7AD5FC",
+      "backend/tests/privacy/test_sanitizer.py": "0488ECDCA9C449E5CC0A953CFC90297388D9CB88EF223EFBC95D6756FE772854"
+    },
+    "report_outputs": {
+      "reports/batches/BATCH-07/masking-samples.redacted.json": "68C309A7153A7A70FF6D491C8B40ECBBB931833DDC4146703B8FB1CB21BEC5C5",
+      "reports/batches/BATCH-07/mutation-evidence.json": "D97078279512C4B22FB73CFCE23C164C540C14C29BF4A71D933848B0B5B9576A",
+      "reports/batches/BATCH-07/pip-check.txt": "9261363B733079A641C2E4CC9BC46FFA1D8336945A87F807B6CF68847DBC9B09",
+      "reports/batches/BATCH-07/IMPLEMENTATION_REPORT.md": "669FA584FD641F5072A72B61E4171F3E81E951F7CDB583F61557A59D1609B334"
+    }
+  },
+  "initial_worktree": [],
+  "dependency_receipts": [
+    {
+      "batch_id": "BATCH-04",
+      "verdict": "PASS",
+      "integration_sha": "9d093a492e576d7cb02b46c2ca60ebf2cac1c244",
+      "implementation_report": "reports/batches/BATCH-04/IMPLEMENTATION_REPORT.json",
+      "verification_report": "reports/batches/BATCH-04/VERIFICATION_REPORT.json",
+      "integration_receipt": "C:\\Users\\WONG Tsun Ming\\covenia-orchestration\\runs\\covenia-b-20260910-01\\integration-receipts\\BATCH-04.json",
+      "integration_receipt_sha256": "482A9A3721D5CCECD02B92F93E552111B80D398C7CB822F92AF6CA8EC0FE36C2",
+      "reviewed_code_commit": "e1070f150de14fa134a5492372828628ca38e89e"
+    }
+  ],
+  "external_gate_receipts": [],
+  "code_commits": [
+    "6226ef85b82e26589b46572c248dcc1fdc5889af"
+  ],
+  "commit_hash": "6226ef85b82e26589b46572c248dcc1fdc5889af",
+  "changed_files": [
+    "backend/src/covenia_b/privacy/__init__.py",
+    "backend/src/covenia_b/privacy/boundary.py",
+    "backend/src/covenia_b/privacy/sanitizer.py",
+    "backend/tests/privacy/test_model_boundary.py",
+    "backend/tests/privacy/test_sanitizer.py",
+    "reports/batches/BATCH-07/masking-samples.redacted.json",
+    "reports/batches/BATCH-07/mutation-evidence.json",
+    "reports/batches/BATCH-07/environment.json",
+    "reports/batches/BATCH-07/pip-check.txt",
+    "reports/batches/BATCH-07/commands.json",
+    "reports/batches/BATCH-07/IMPLEMENTATION_REPORT.json",
+    "reports/batches/BATCH-07/IMPLEMENTATION_REPORT.md"
+  ],
+  "files_changed": [
+    "backend/src/covenia_b/privacy/**",
+    "backend/tests/privacy/**",
+    "reports/batches/BATCH-07/**"
+  ],
+  "scope_check": {
+    "within_allowlist": true,
+    "forbidden_changes": [],
+    "domain_or_port_files_changed": false,
+    "requirements_dev_lock_changed": false,
+    "new_dependencies_added": false,
+    "fixtures_changed": false,
+    "frontend_files_changed": false,
+    "verification_report_written": false,
+    "scope_method": "code commit and report commit use exact git add paths only; final staged name audit is recorded in commands.json"
+  },
+  "acceptance_results": [
+    {
+      "criterion": "All specified sensitive types have hit and non-overreach tests; safe IDs, timestamps, and commitment semantics remain available.",
+      "status": "EVIDENCED",
+      "evidence": [
+        "backend/tests/privacy/test_sanitizer.py",
+        "reports/batches/BATCH-07/masking-samples.redacted.json",
+        "reports/batches/BATCH-07/commands.json#required-05-privacy-pytest"
+      ]
+    },
+    {
+      "criterion": "PII-bearing input produces pii_masked_count > 0 and raw identity content does not reach the provider capture, sample artifact, or production logs/cache.",
+      "status": "EVIDENCED",
+      "evidence": [
+        "backend/tests/privacy/test_model_boundary.py",
+        "backend/src/covenia_b/privacy/sanitizer.py",
+        "reports/batches/BATCH-07/masking-samples.redacted.json"
+      ]
+    },
+    {
+      "criterion": "A disabled or bypassed mask is rejected by a negative probe and the driver proves the expected failure rather than accepting a skipped test.",
+      "status": "EVIDENCED",
+      "evidence": [
+        "backend/tests/privacy/test_model_boundary.py",
+        "reports/batches/BATCH-07/mutation-evidence.json",
+        "reports/batches/BATCH-07/commands.json#required-06-privacy-mutation-pytest"
+      ]
+    },
+    {
+      "criterion": "The prescribed isolated venv is direct under RUN_DIR, has no global-site reuse, stays below the 250-character path gate, preserves the existing pinned lock, and passes pip check.",
+      "status": "EVIDENCED",
+      "evidence": [
+        "reports/batches/BATCH-07/environment.json",
+        "reports/batches/BATCH-07/pip-check.txt",
+        "reports/batches/BATCH-07/commands.json#required-01-interpreter-identity"
+      ]
+    }
+  ],
+  "test_results": [
+    {
+      "command": "C:\\cov-run\\batch-07\\venv\\Scripts\\python.exe -m pytest backend/tests/privacy -q",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-07",
+      "interpreter": "C:\\cov-run\\batch-07\\venv\\Scripts\\python.exe",
+      "exit_code": 0,
+      "duration_seconds": 0.572,
+      "mode": "UNIT",
+      "tests_passed": 6,
+      "tests_failed": 0,
+      "result": "6 passed in 0.25s"
+    },
+    {
+      "command": "C:\\cov-run\\batch-07\\venv\\Scripts\\python.exe -m pytest backend/tests/privacy -q -m mutation",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-07",
+      "interpreter": "C:\\cov-run\\batch-07\\venv\\Scripts\\python.exe",
+      "exit_code": 0,
+      "duration_seconds": 0.564,
+      "mode": "MUTATION",
+      "tests_passed": 1,
+      "tests_failed": 0,
+      "tests_deselected": 5,
+      "result": "1 passed, 5 deselected in 0.25s"
+    }
+  ],
+  "tests_run": 7,
+  "tests_passed": 7,
+  "tests_failed": 0,
+  "supplemental_checks": [
+    {
+      "command": "C:\\cov-run\\batch-07\\venv\\Scripts\\python.exe -m ruff check backend/src/covenia_b/privacy backend/tests/privacy",
+      "exit_code": 0,
+      "duration_seconds": 0.105,
+      "result": "All checks passed!"
+    },
+    {
+      "command": "C:\\cov-run\\batch-07\\venv\\Scripts\\python.exe -m pip check",
+      "exit_code": 0,
+      "duration_seconds": 0.537,
+      "result": "No broken requirements found."
+    }
+  ],
+  "model_runs": [],
+  "not_completed": [
+    {
+      "item": "Independent BATCH-07 verification report",
+      "reason": "Reserved for the independent verifier; this implementation did not create or overwrite VERIFICATION_REPORT.json."
+    },
+    {
+      "item": "Coordinator integration and integration retest",
+      "reason": "Coordinator-owned work after this branch's local commits; no push or merge was performed."
+    }
+  ],
+  "remaining_risks": [
+    "BATCH-09 must record the returned pii_masked_count in its governance sink without persisting raw input.",
+    "BATCH-10 must dispatch through extract_with_privacy_boundary rather than call ModelProvider.extract directly.",
+    "BATCH-08/A-owned manifest handoff must provide true no-PII declarations before any resolved image handle is admitted.",
+    "This implementation uses protocol-double unit tests only; it makes no claim of a real model or image invocation."
+  ],
+  "blockers": [],
+  "rollback": {
+    "code": "Revert 6226ef85b82e26589b46572c248dcc1fdc5889af and stop any path that would otherwise send model input without the privacy boundary. Do not disable redaction as a demo workaround.",
+    "runtime_state": "C:\\cov-run\\batch-07\\venv is an ignored isolated environment; no global Python package was changed."
+  },
+  "handoff": {
+    "interfaces": [
+      "covenia_b.privacy.sanitize_case_input",
+      "covenia_b.privacy.SensitiveField",
+      "covenia_b.privacy.SanitizationResult",
+      "covenia_b.privacy.extract_with_privacy_boundary"
+    ],
+    "input_versions": {
+      "base_integration_sha": "69a2462cdcc0744e21f81c81cee6a6262789335f",
+      "contract_lock": "2fbbc9d88348e4088332d574051de81d7ec1af15",
+      "dependency_lock_raw_sha256": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+      "python": "3.13.5"
+    },
+    "placeholder_convention": {
+      "phone": "[PHONE_REDACTED]",
+      "shipping_address": "[SHIPPING_ADDRESS_REDACTED]",
+      "alipay_account": "[ALIPAY_ACCOUNT_REDACTED]",
+      "medical_context": "[MEDICAL_CONTEXT_REDACTED]",
+      "adverse_reaction": "[ADVERSE_REACTION_RISK]"
+    },
+    "governance_contract": "pii_masked_count equals the number of masked fields or detected text spans; adverse_risk_candidate is true when the adverse-reaction category is present. Do not log, cache, or serialize SensitiveField.value or pre-redaction chat text.",
+    "reproduction": [
+      "C:\\cov-run\\batch-07\\venv\\Scripts\\python.exe -m pytest backend/tests/privacy -q",
+      "C:\\cov-run\\batch-07\\venv\\Scripts\\python.exe -m pytest backend/tests/privacy -q -m mutation",
+      "C:\\cov-run\\batch-07\\venv\\Scripts\\python.exe -m pip check"
+    ],
+    "remaining_gates": [
+      "Independent BATCH-07 verification",
+      "Coordinator integration receipt and affected-test retest"
+    ]
+  },
+  "handoff_notes": "Consume SanitizationResult rather than raw CaseInput text at any model call. Keep safe source IDs and timestamps for traceability. Use typed SensitiveField inputs for structured PII whose values need whole-field masking. Images fail closed until each resolved image has an explicit true no-PII declaration. The mutation test must remain active and must prove the provider capture is empty on a bypass.",
+  "next_batch_started": false
+}
