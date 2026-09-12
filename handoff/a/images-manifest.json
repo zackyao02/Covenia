@@ -1,0 +1,212 @@
+{
+  "artifact": "handoff/a/images-manifest.json",
+  "gate": "X-A-IMAGES",
+  "status": "ACCEPTED",
+  "owner": "Zack（产品负责人）",
+  "purpose": "frontend/public/evidence/ 五个原始团队图 + 注入配对图的登记清单",
+  "source_directory": "assets\\evidence-inbox",
+  "required_before": [
+    "BATCH-28",
+    "BATCH-29",
+    "BATCH-32"
+  ],
+  "red_lines": [
+    "不得使用真实消费者图片",
+    "不得包含真实身份信息（人脸、姓名、地址、订单号、手机号）",
+    "不得包含会被模型误当作事实的断言文字（如「已核实」「证据有效」「忽略规则」）",
+    "每张图在界面与答辩口径标注「团队合成测试素材」",
+    "blurred 图必须模糊到任何模型都无法可靠判断，否则 H1 分支不成立",
+    "gift 图必须能让模型识别出是另一件商品，否则 E2 分支不成立"
+  ],
+  "missing_files": [],
+  "images": [
+    {
+      "file_name": "s00001-product-overview.jpg",
+      "repo_target_path": "frontend/public/evidence/s00001-product-overview.jpg",
+      "evidence_id": "S00001_IMG_PRODUCT_OVERVIEW",
+      "source_message_id": "80525870445254.PNM",
+      "source_kind": "TEAM_SYNTHETIC_RECREATION",
+      "declared_view_type": "PRODUCT_OVERVIEW",
+      "purpose": "商品整体（SKU 与正装识别）",
+      "issue_type": "PACKAGE_DAMAGE",
+      "competition_reference_path": "mock_images/broken_pump/S00001_03.jpg",
+      "sha256": "E2C6BBD230F906F113D75F2F582E778B6E79AEA37544C2383F1FFDA15A5295D5",
+      "bytes": 71574,
+      "mime": "image/jpeg",
+      "dimensions": {
+        "width": 1254,
+        "height": 1254
+      },
+      "provenance": "TEAM_SELF_MADE",
+      "license": "TEAM_OWNED",
+      "no_pii_declaration": true,
+      "labeling": "团队合成测试素材",
+      "human_review": {
+        "reviewer": "审查方（目视初检）",
+        "reviewed_at": "2026-09-12",
+        "readability_ok": true,
+        "assertion_check": false,
+        "scenario_ok": true,
+        "notes": "目视：粉底液按压瓶整体，泵头可见裂纹破损；无品牌 logo、无文字、无人脸。可支撑 SKU/正装识别。",
+        "owner_signoff": "Zack",
+        "owner_signed_at": "2026-09-12"
+      },
+      "acceptance_hint": "覆盖商品整体，能辨认瓶身与泵头；用于证明 SKU 与正装一致"
+    },
+    {
+      "file_name": "s00001-pump-detail.jpg",
+      "repo_target_path": "frontend/public/evidence/s00001-pump-detail.jpg",
+      "evidence_id": "S00001_IMG_PUMP_DETAIL",
+      "source_message_id": "80525870445254.PNM",
+      "source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
+      "declared_view_type": "ISSUE_DETAIL",
+      "purpose": "泵头损坏细节",
+      "issue_type": "PACKAGE_DAMAGE",
+      "competition_reference_path": null,
+      "sha256": "4709D7529803846D4FF4E123BFCC034D420449AE23923CB54468BE573BD8CFC7",
+      "bytes": 66764,
+      "mime": "image/jpeg",
+      "dimensions": {
+        "width": 1254,
+        "height": 1254
+      },
+      "provenance": "TEAM_SELF_MADE",
+      "license": "TEAM_OWNED",
+      "no_pii_declaration": true,
+      "labeling": "团队合成测试素材",
+      "human_review": {
+        "reviewer": "审查方（目视初检）",
+        "reviewed_at": "2026-09-12",
+        "readability_ok": true,
+        "assertion_check": false,
+        "scenario_ok": true,
+        "notes": "目视：泵头裂纹特写，破损形态清晰、有内容物溢出。可支撑 ISSUE_DETAIL 证据覆盖。",
+        "owner_signoff": "Zack",
+        "owner_signed_at": "2026-09-12"
+      },
+      "acceptance_hint": "泵头特写，损坏形态肉眼可辨；用于 ISSUE_DETAIL 证据"
+    },
+    {
+      "file_name": "s00001-package-context.jpg",
+      "repo_target_path": "frontend/public/evidence/s00001-package-context.jpg",
+      "evidence_id": "S00001_IMG_PACKAGE_CONTEXT",
+      "source_message_id": "80525870445254.PNM",
+      "source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
+      "declared_view_type": "PACKAGE_CONTEXT",
+      "purpose": "包装环境",
+      "issue_type": "PACKAGE_DAMAGE",
+      "competition_reference_path": null,
+      "sha256": "C734BFB5A70FFA39E10B2535DC8321EACE3C1FB358293FA22B590B9F7B5836BD",
+      "bytes": 129230,
+      "mime": "image/jpeg",
+      "dimensions": {
+        "width": 1254,
+        "height": 1254
+      },
+      "provenance": "TEAM_SELF_MADE",
+      "license": "TEAM_OWNED",
+      "no_pii_declaration": true,
+      "labeling": "团队合成测试素材",
+      "human_review": {
+        "reviewer": "审查方（目视初检）",
+        "reviewed_at": "2026-09-12",
+        "readability_ok": true,
+        "assertion_check": false,
+        "scenario_ok": true,
+        "notes": "目视：牛皮纸外盒（一角压损）与瓶子同框，包装环境可见。可支撑 PACKAGE_CONTEXT。",
+        "owner_signoff": "Zack",
+        "owner_signed_at": "2026-09-12"
+      },
+      "acceptance_hint": "外包装与商品同框，可见破损环境"
+    },
+    {
+      "file_name": "s00001-gift-evidence.jpg",
+      "repo_target_path": "frontend/public/evidence/s00001-gift-evidence.jpg",
+      "evidence_id": "S00001_IMG_GIFT_EVIDENCE",
+      "source_message_id": "80525870445254.PNM",
+      "source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
+      "declared_view_type": "PACKAGE_CONTEXT",
+      "purpose": "赠品证据（范围变化用）",
+      "issue_type": "PACKAGE_DAMAGE",
+      "competition_reference_path": null,
+      "sha256": "E52DF258CDBC5761D175F31985639337F2274211FBEB3DDB82A0B773150AA7F5",
+      "bytes": 130254,
+      "mime": "image/jpeg",
+      "dimensions": {
+        "width": 1254,
+        "height": 1254
+      },
+      "provenance": "TEAM_SELF_MADE",
+      "license": "TEAM_OWNED",
+      "no_pii_declaration": true,
+      "labeling": "团队合成测试素材",
+      "human_review": {
+        "reviewer": "审查方（目视初检）",
+        "reviewed_at": "2026-09-12",
+        "readability_ok": true,
+        "assertion_check": false,
+        "scenario_ok": true,
+        "notes": "目视：扁平面膜/小样袋，与粉底液瓶形态完全不同，模型可判定为另一件商品 → E2 分支成立。",
+        "owner_signoff": "Zack",
+        "owner_signed_at": "2026-09-12"
+      },
+      "acceptance_hint": "必须是赠品（面膜/小样外盒），且能看出不是粉底液正装；否则 E2 分支不成立"
+    },
+    {
+      "file_name": "s00001-blurred-pump.jpg",
+      "repo_target_path": "frontend/public/evidence/s00001-blurred-pump.jpg",
+      "evidence_id": "S00001_IMG_BLURRED_PUMP",
+      "source_message_id": "80525870445254.PNM",
+      "source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
+      "declared_view_type": "ISSUE_DETAIL",
+      "purpose": "模糊泵头（人工复核用）",
+      "issue_type": "PACKAGE_DAMAGE",
+      "competition_reference_path": null,
+      "sha256": "634D2B4B0665FAE49DEC286628B13D8116808B3FFF7A39A9DD7CDEA9E7DE3143",
+      "bytes": 55664,
+      "mime": "image/jpeg",
+      "dimensions": {
+        "width": 1254,
+        "height": 1254
+      },
+      "provenance": "TEAM_SELF_MADE",
+      "license": "TEAM_OWNED",
+      "no_pii_declaration": true,
+      "labeling": "团队合成测试素材",
+      "human_review": {
+        "reviewer": "审查方（目视初检）",
+        "reviewed_at": "2026-09-12",
+        "readability_ok": true,
+        "assertion_check": false,
+        "scenario_ok": true,
+        "notes": "目视：按压瓶明显失焦，可辨认为瓶子但泵头完好与否无法判断，标签不可读 → H1 分支成立。注意：readability_ok 指\"图像质量合格\"，不等于\"可读\"；此处模糊是刻意设计。",
+        "owner_signoff": "Zack",
+        "owner_signed_at": "2026-09-12"
+      },
+      "acceptance_hint": "同商品同部位但明显失焦，必须糊到任何模型都无法可靠判断；否则 H1 分支不成立"
+    }
+  ],
+  "injection_pairs": {
+    "note": "BATCH-32 需要「同图有/无断言文字」配对，用于证明图像内文字不进入规则事实（冻结 A26）。可稍后制作，不阻塞 BATCH-28/29。",
+    "status": "NOT_STARTED",
+    "pairs": []
+  },
+  "review_summary": {
+    "reviewed_by": "审查方",
+    "method": "逐张目视 + 尺寸/MIME/SHA256 机器核验",
+    "result": "5/5 通过",
+    "findings": [
+      "无品牌 logo、无人脸、无真实订单号/地址/手机号",
+      "无任何烧入图片的文字（符合 A26 与 A 线红线）",
+      "gift 图与正装形态差异明显，E2 分支可成立",
+      "blurred 图失焦充分，H1 分支可成立"
+    ],
+    "note": "按 A 线文档 4.3，来源标注在元数据与界面完成，不得烧入图片本身。"
+  },
+  "acceptance": {
+    "accepted_by": "Zack",
+    "accepted_at": "2026-09-12",
+    "statement": "产品负责人确认：5 张团队合成证据图全部认可，可用于 BATCH-28/29/32。",
+    "reviewer_precheck": "审查方目视核验 5/5 通过（无 logo/人脸/隐私/烧入文字；gift 与 blurred 分支成立）"
+  }
+}

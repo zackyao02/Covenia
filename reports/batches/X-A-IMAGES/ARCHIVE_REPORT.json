@@ -1,0 +1,88 @@
+{
+  "archive_id": "X-A-IMAGES",
+  "status": "COMPLETED",
+  "source_target_mappings": [
+    {
+      "source": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/assets/evidence-inbox/s00001-product-overview.jpg",
+      "target": "frontend/public/evidence/s00001-product-overview.jpg",
+      "expected_sha256": "E2C6BBD230F906F113D75F2F582E778B6E79AEA37544C2383F1FFDA15A5295D5",
+      "source_sha256": "E2C6BBD230F906F113D75F2F582E778B6E79AEA37544C2383F1FFDA15A5295D5",
+      "archive_commit_blob_sha256": "E2C6BBD230F906F113D75F2F582E778B6E79AEA37544C2383F1FFDA15A5295D5",
+      "byte_length": 71574,
+      "copy_mode": "COPY_VERBATIM"
+    },
+    {
+      "source": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/assets/evidence-inbox/s00001-pump-detail.jpg",
+      "target": "frontend/public/evidence/s00001-pump-detail.jpg",
+      "expected_sha256": "4709D7529803846D4FF4E123BFCC034D420449AE23923CB54468BE573BD8CFC7",
+      "source_sha256": "4709D7529803846D4FF4E123BFCC034D420449AE23923CB54468BE573BD8CFC7",
+      "archive_commit_blob_sha256": "4709D7529803846D4FF4E123BFCC034D420449AE23923CB54468BE573BD8CFC7",
+      "byte_length": 66764,
+      "copy_mode": "COPY_VERBATIM"
+    },
+    {
+      "source": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/assets/evidence-inbox/s00001-package-context.jpg",
+      "target": "frontend/public/evidence/s00001-package-context.jpg",
+      "expected_sha256": "C734BFB5A70FFA39E10B2535DC8321EACE3C1FB358293FA22B590B9F7B5836BD",
+      "source_sha256": "C734BFB5A70FFA39E10B2535DC8321EACE3C1FB358293FA22B590B9F7B5836BD",
+      "archive_commit_blob_sha256": "C734BFB5A70FFA39E10B2535DC8321EACE3C1FB358293FA22B590B9F7B5836BD",
+      "byte_length": 129230,
+      "copy_mode": "COPY_VERBATIM"
+    },
+    {
+      "source": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/assets/evidence-inbox/s00001-gift-evidence.jpg",
+      "target": "frontend/public/evidence/s00001-gift-evidence.jpg",
+      "expected_sha256": "E52DF258CDBC5761D175F31985639337F2274211FBEB3DDB82A0B773150AA7F5",
+      "source_sha256": "E52DF258CDBC5761D175F31985639337F2274211FBEB3DDB82A0B773150AA7F5",
+      "archive_commit_blob_sha256": "E52DF258CDBC5761D175F31985639337F2274211FBEB3DDB82A0B773150AA7F5",
+      "byte_length": 130254,
+      "copy_mode": "COPY_VERBATIM"
+    },
+    {
+      "source": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/assets/evidence-inbox/s00001-blurred-pump.jpg",
+      "target": "frontend/public/evidence/s00001-blurred-pump.jpg",
+      "expected_sha256": "634D2B4B0665FAE49DEC286628B13D8116808B3FFF7A39A9DD7CDEA9E7DE3143",
+      "source_sha256": "634D2B4B0665FAE49DEC286628B13D8116808B3FFF7A39A9DD7CDEA9E7DE3143",
+      "archive_commit_blob_sha256": "634D2B4B0665FAE49DEC286628B13D8116808B3FFF7A39A9DD7CDEA9E7DE3143",
+      "byte_length": 55664,
+      "copy_mode": "COPY_VERBATIM"
+    },
+    {
+      "source": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/handoff/a/images-manifest.json",
+      "target": "handoff/a/images-manifest.json",
+      "expected_sha256": "4D596C87F3483166915E25A0F250292FA9CCE1A654463C09DBFC0EF97310352E",
+      "source_sha256": "4D596C87F3483166915E25A0F250292FA9CCE1A654463C09DBFC0EF97310352E",
+      "archive_commit_blob_sha256": "4D596C87F3483166915E25A0F250292FA9CCE1A654463C09DBFC0EF97310352E",
+      "byte_length": 9233,
+      "copy_mode": "COPY_VERBATIM"
+    }
+  ],
+  "hash_method": {
+    "source": "SHA-256 over raw source-file bytes.",
+    "archive_commit_blob": "SHA-256 over raw bytes emitted by git show <archive_sha>:<target>; no text decoding, re-encoding, formatting, or newline normalization."
+  },
+  "scope_audit": {
+    "changed_files": [
+      "frontend/public/evidence/s00001-product-overview.jpg",
+      "frontend/public/evidence/s00001-pump-detail.jpg",
+      "frontend/public/evidence/s00001-package-context.jpg",
+      "frontend/public/evidence/s00001-gift-evidence.jpg",
+      "frontend/public/evidence/s00001-blurred-pump.jpg",
+      "handoff/a/images-manifest.json",
+      "reports/batches/X-A-IMAGES/ARCHIVE_REPORT.json",
+      "reports/batches/X-A-IMAGES/ARCHIVE_REPORT.md"
+    ],
+    "violations": []
+  },
+  "gate_status": "ACCEPTED",
+  "injection_pairs": "NOT_STARTED",
+  "injection_pairs_manifest_field": "unchanged",
+  "delivered_by": "Zack",
+  "delivered_at": "2026-09-12",
+  "blockers": [],
+  "handoff_notes": [
+    "All five signed-off images and the manifest were copied using COPY_VERBATIM.",
+    "Each target was compared byte-for-byte with its source before commit. The final hash evidence is the post-commit raw-blob check described above.",
+    "No BATCH was started or modified."
+  ]
+}
