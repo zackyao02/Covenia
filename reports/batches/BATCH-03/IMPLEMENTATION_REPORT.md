@@ -1,46 +1,22 @@
-# BATCH-03 F-B03-007 implementation-report snapshot
+# BATCH-03 dependency remediation implementation report
 
-Status: `COMPLETED` — F-B03-007 report accounting only. This is implementation
-documentation, not independent verification or an acceptance verdict.
+Status: `COMPLETED` for the authorized dependency repair. This is an implementation record, not independent verification or an acceptance PASS.
 
-Final code repair SHA: `85ac5f215bfd7a1c778b22502875a7c46f2f4ec5`
+The BATCH-03 strict checker imports `jsonschema` and `referencing`, while the 24-line `backend/requirements-dev.lock` did not pin that dependency closure. In a new, isolated BATCH-03 venv, `jsonschema==4.25.0` added exactly five freeze-measured pins:
 
-Report-snapshot baseline: `761043db460b77799ed089c53bb468e347cc6668`
+- `attrs==26.1.0`
+- `jsonschema==4.25.0`
+- `jsonschema-specifications==2025.9.1`
+- `referencing==0.37.0`
+- `rpds-py==2026.6.3`
 
-This round changes only the BATCH-03 implementation report, command record,
-and implementation-evidence files. It does not modify or re-run code, tools,
-schemas, tests, contract files, approvals, verifier artifacts, or product
-semantics. Every implementation snapshot artifact identifies the final code
-repair SHA above; none uses an earlier repair SHA as this round's final anchor.
+They were appended in alphabetical order. All 24 original pins are text-identical; the lock diff is additions only. `pip check` reports no broken requirements. The venv information and before/after freeze evidence are in `reports/batches/BATCH-03/evidence/`.
 
-## Carried-forward third-round checks
+No tools, schemas, vectors, tests, assertions, business files, third-party business semantics, plans, contracts, or verifier-owned artifacts changed. `VERIFICATION_REPORT.json` and `verification-evidence/**` remain untouched.
 
-The following are recorded third-round results for the final code repair SHA,
-not fresh executions in this F-B03-007 report repair:
+The live `MASTER_PLAN.md` and `batches.json` SHA-256 values observed at the delegated base differ from the historical values supplied in the delegation; this remediation neither changes nor resolves that provenance discrepancy.
 
-- Strict contract check: 14 schemas and 18 vectors passed.
-- Isolated contract pytest: 16 passed, 0 failed, in 1.23s.
-- Contract-lock JSON parse and the baseline-to-final-code diff check passed.
+The same venv re-ran the strict contract checker successfully (14 schemas, 18
+vectors) and contract pytest successfully (16 progress markers, exit 0).
 
-## Mechanical lock-hash record
-
-本次仅报告快照记账；不改锁文件，也不添加或改写任何锁语义字段。
-
-| Locked file | Before | After |
-| --- | --- | --- |
-| `tools/contracts/check_contracts.py` | `D60E7645E6473A9DC047187A6564784EA96E401832561725251E0D72A151E867` | `99FC675BE873DFF3B8458C0A073BA13ADA73830C60B26036D3DE481442DDC6CC` |
-| `backend/tests/contracts/test_contracts.py` | `CC2DA2F86EBA8DFE6CA15FE66658DD2EDAD3C73BE94167B468D3CCD2F95DFC3F` | `A7D9A448CCD4DE3E489F7B54B56736E896BA22AB23EF8D54589119D9F54DA37B` |
-
-The two values above remain the complete third-round `locked_files` mechanical
-hash refresh. `decision_bindings`, `semantic_lock`, `endpoints`, `handoff`,
-`change_control`, `approved_input`, and `hash_method` remain untouched.
-
-## Non-blocking observation and remaining gate
-
-F-B03-006's leap-second discovery is a product-owner-classified P3 technical-
-debt observation. It is non-blocking for F-B03-007, and this round makes no
-checker change in response to it.
-
-Independent BATCH-03 verification remains `NOT_RUN`. Verifier-owned
-`VERIFICATION_REPORT.json` and `verification-evidence/**` were not written or
-changed. This report must not be treated as independent acceptance or a PASS.
+Remaining gate: independent BATCH-03 verification is still `NOT_RUN`.

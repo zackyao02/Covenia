@@ -1,211 +1,90 @@
 {
-  "report_version": "1.0",
+  "report_version": "1.1",
   "batch_id": "BATCH-03",
   "result": "IMPLEMENTED",
   "status": "COMPLETED",
-  "repo_root": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-03-repair-4",
-  "branch": "codex/covenia-batch-03-repair-4",
-  "base_integration_sha": "761043db460b77799ed089c53bb468e347cc6668",
-  "contract_version": "BATCH-03 final code snapshot 85ac5f215bfd7a1c778b22502875a7c46f2f4ec5; this F-B03-007 record repair starts from reporting baseline 761043db460b77799ed089c53bb468e347cc6668.",
-  "plan_sha256": "MASTER_PLAN.md=ECE161441703962D9D7C0E1650497D2C2BEED560FC3D2239564B4E9E1D4A75E4; batches.json=E78AE0E223B6D5D5A8F427630225D572E1A7D9E844F99CEA82503CC87EEB1693.",
-  "initial_worktree": [
-    {
-      "head": "761043db460b77799ed089c53bb468e347cc6668",
-      "branch": "codex/covenia-batch-03-repair-4",
-      "status_short": "",
-      "scope": "F-B03-007 reporting snapshot only under reports/batches/BATCH-03/**"
-    }
-  ],
-  "dependency_receipts": [
-    {
-      "batch_id": "BATCH-03 prior implementation record",
-      "verdict": "RECORDED_NOT_REVERIFIED",
-      "integration_sha": "85ac5f215bfd7a1c778b22502875a7c46f2f4ec5",
-      "artifact_hashes": {
-        "final_code_repair_sha": "85ac5f215bfd7a1c778b22502875a7c46f2f4ec5",
-        "report_snapshot_baseline": "761043db460b77799ed089c53bb468e347cc6668"
-      },
-      "note": "This narrow accounting repair carries forward prior implementation evidence only; it does not re-evaluate BATCH-01, BATCH-02, or independent verification."
-    }
-  ],
-  "external_gate_receipts": [
-    {
-      "gate_id": "Independent BATCH-03 verification",
-      "verdict": "NOT_RUN",
-      "owner": "Independent verifier",
-      "evidence": "Verifier-owned reports/batches/BATCH-03/VERIFICATION_REPORT.json and verification-evidence/** were neither written nor modified in this round."
-    }
-  ],
-  "code_commits": [
-    "85ac5f215bfd7a1c778b22502875a7c46f2f4ec5"
-  ],
+  "summary": "Dependency-only remediation for the BATCH-03 strict checker: the jsonschema==4.25.0 closure was measured in an isolated venv and appended without changing any of the 24 pre-existing pins or contract/business semantics.",
+  "repo_root": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-03-dependency-repair-1",
+  "branch": "codex/covenia-batch-03-dependency-repair-1",
+  "base_integration_sha": "ff4f2a99caeb4d820749c2d0ae6fa5431dafef4d",
+  "contract_version": "BATCH-03 implementation contract remains unchanged; this round adds only the dependency closure required by tools/contracts/check_contracts.py imports of jsonschema and referencing.",
+  "plan_sha256": {
+    "delegated_expected": {
+      "MASTER_PLAN.md": "ECE161441703962D9D7C0E1650497D2C2BEED560FC3D2239564B4E9E1D4A75E4",
+      "batches.json": "E78AE0E223B6D5D5A8F427630225D572E1A7D9E844F99CEA82503CC87EEB1693"
+    },
+    "observed_at_base": {
+      "MASTER_PLAN.md": "81A22727C179E5A4628C84D7412210EAE32317B378B4051DA2B91FE7A2B1E183",
+      "batches.json": "CBB7929A82453197BCA637F7D4470538DA909097B4A47C1BD6DB0A52406487D6"
+    },
+    "note": "Observed source hashes differ from the delegated historical values. No plan, batches file, or contract lock was changed in this dependency-only remediation."
+  },
+  "initial_worktree": [{
+    "head": "ff4f2a99caeb4d820749c2d0ae6fa5431dafef4d",
+    "branch": "codex/covenia-batch-03-dependency-repair-1",
+    "status_short": "",
+    "scope": "Authorized whitelist: backend/requirements-dev.lock additions plus reports/batches/BATCH-03/** implementation evidence only."
+  }],
+  "dependency_receipts": [{
+    "dependency": "jsonschema==4.25.0",
+    "reason": "tools/contracts/check_contracts.py imports jsonschema and referencing.",
+    "closure_measured_by": "isolated venv pip freeze before/after difference",
+    "new_pins": ["attrs==26.1.0", "jsonschema==4.25.0", "jsonschema-specifications==2025.9.1", "referencing==0.37.0", "rpds-py==2026.6.3"],
+    "evidence": "reports/batches/BATCH-03/evidence/pip-freeze-diff.txt"
+  }],
+  "external_gate_receipts": [{
+    "gate_id": "Independent BATCH-03 verification",
+    "verdict": "NOT_RUN",
+    "owner": "Independent verifier",
+    "evidence": "VERIFICATION_REPORT.json and verification-evidence/** were not modified by this round."
+  }],
+  "code_commits": ["ff4f2a99caeb4d820749c2d0ae6fa5431dafef4d (base integration commit)"],
   "changed_files": [
+    "backend/requirements-dev.lock",
     "reports/batches/BATCH-03/IMPLEMENTATION_REPORT.json",
     "reports/batches/BATCH-03/IMPLEMENTATION_REPORT.md",
     "reports/batches/BATCH-03/commands.json",
-    "reports/batches/BATCH-03/evidence/contract-check.json",
-    "reports/batches/BATCH-03/evidence/contract-lock-json.txt",
-    "reports/batches/BATCH-03/evidence/git-diff-check.txt",
-    "reports/batches/BATCH-03/evidence/git-status-pre-report.json",
-    "reports/batches/BATCH-03/evidence/preflight.json",
-    "reports/batches/BATCH-03/evidence/pytest-contracts.txt"
+    "reports/batches/BATCH-03/evidence/requirements-dev-lock-before.txt",
+    "reports/batches/BATCH-03/evidence/pip-freeze-before.txt",
+    "reports/batches/BATCH-03/evidence/pip-freeze-after.txt",
+    "reports/batches/BATCH-03/evidence/pip-freeze-diff.txt",
+    "reports/batches/BATCH-03/evidence/existing-lock-pins-before-after.txt",
+    "reports/batches/BATCH-03/evidence/pip-check.txt",
+    "reports/batches/BATCH-03/evidence/venv-info.json",
+    "reports/batches/BATCH-03/evidence/lock-diff.txt",
+    "reports/batches/BATCH-03/evidence/contract-check-current.json",
+    "reports/batches/BATCH-03/evidence/pytest-contracts-current.txt",
+    "reports/batches/BATCH-03/evidence/git-diff-check-current.txt",
+    "reports/batches/BATCH-03/evidence/git-status-pre-commit.txt"
   ],
   "scope_check": {
     "within_allowlist": true,
-    "forbidden_changes": [
-      "None; this round changes only the nine F-B03-007 implementation-report snapshot files listed in changed_files."
-    ],
-    "checked_against": "761043db460b77799ed089c53bb468e347cc6668",
-    "note": "No tools, schemas, tests, contracts, approvals, verification artifacts, or product semantics are changed by this report repair."
+    "authorized_exception": "backend/requirements-dev.lock is the product-owner-approved dependency whitelist exception for this remediation.",
+    "added_dependency_closure": "jsonschema==4.25.0 plus the five-line, freeze-measured closure listed in dependency_receipts.",
+    "existing_pins": "All 24 pre-existing pin lines remain text-identical; see existing-lock-pins-before-after.txt.",
+    "semantic_changes": "None. No third-party business semantics, checker, schema, vector, assertion, test, contract, approval, plan, or verifier artifact changed.",
+    "evidence": ["reports/batches/BATCH-03/evidence/requirements-dev-lock-before.txt", "reports/batches/BATCH-03/evidence/existing-lock-pins-before-after.txt", "reports/batches/BATCH-03/evidence/lock-diff.txt"]
   },
   "acceptance_results": [
-    {
-      "criterion": "F-B03-007: the implementation report, Markdown summary, command record, and implementation-evidence files use one final code anchor.",
-      "status": "EVIDENCED",
-      "evidence": [
-        "reports/batches/BATCH-03/IMPLEMENTATION_REPORT.json",
-        "reports/batches/BATCH-03/IMPLEMENTATION_REPORT.md",
-        "reports/batches/BATCH-03/commands.json",
-        "reports/batches/BATCH-03/evidence/**",
-        "final_code_repair_sha=85ac5f215bfd7a1c778b22502875a7c46f2f4ec5"
-      ]
-    },
-    {
-      "criterion": "Prior third-round strict contract check recorded 14 schemas and 18 vectors against the final code repair SHA.",
-      "status": "EVIDENCED",
-      "evidence": [
-        "reports/batches/BATCH-03/evidence/contract-check.json",
-        "execution_this_round=false"
-      ]
-    },
-    {
-      "criterion": "Prior third-round isolated contract pytest recorded 16 passed and 0 failed against the final code repair SHA.",
-      "status": "EVIDENCED",
-      "evidence": [
-        "reports/batches/BATCH-03/evidence/pytest-contracts.txt",
-        "execution_this_round=false"
-      ]
-    },
-    {
-      "criterion": "The third-round lock refresh remains limited to its two documented locked_files hash values; no lock semantic field is edited in this round.",
-      "status": "EVIDENCED",
-      "evidence": [
-        "reports/batches/BATCH-03/evidence/contract-lock-json.txt",
-        "reports/batches/BATCH-03/evidence/preflight.json"
-      ]
-    },
-    {
-      "criterion": "Independent BATCH-03 verification and acceptance verdict.",
-      "status": "BLOCKED",
-      "evidence": [
-        "Verifier-owned verification artifacts remain untouched; this implementation report is not an independent PASS."
-      ]
-    }
+    {"criterion": "jsonschema/referencing import dependency is reproducibly pinned from a measured isolated-venv closure.", "status": "EVIDENCED", "evidence": ["reports/batches/BATCH-03/evidence/pip-freeze-before.txt", "reports/batches/BATCH-03/evidence/pip-freeze-after.txt", "reports/batches/BATCH-03/evidence/pip-freeze-diff.txt", "reports/batches/BATCH-03/evidence/venv-info.json"]},
+    {"criterion": "All 24 pre-existing requirements-dev.lock pins are unchanged; the lock diff is additions only.", "status": "EVIDENCED", "evidence": ["reports/batches/BATCH-03/evidence/existing-lock-pins-before-after.txt", "reports/batches/BATCH-03/evidence/lock-diff.txt"]},
+    {"criterion": "Installed dependency graph has no broken requirements.", "status": "EVIDENCED", "evidence": ["reports/batches/BATCH-03/evidence/pip-check.txt"]},
+    {"criterion": "Strict contract checker and contract pytest are re-run in the same isolated venv.", "status": "EVIDENCED", "evidence": ["reports/batches/BATCH-03/evidence/contract-check-current.json", "reports/batches/BATCH-03/evidence/pytest-contracts-current.txt"]},
+    {"criterion": "Independent BATCH-03 verification and acceptance verdict.", "status": "BLOCKED", "evidence": ["Verifier-owned verification artifacts remain untouched; this implementation report is not an independent PASS."]}
   ],
   "test_results": [
-    {
-      "command": "python -m pytest -p no:cacheprovider backend/tests/contracts -q",
-      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-03-repair-4",
-      "exit_code": 0,
-      "duration_seconds": 1.23,
-      "mode": "UNIT",
-      "evidence": "reports/batches/BATCH-03/evidence/pytest-contracts.txt",
-      "recorded_from": "third-round implementation evidence",
-      "executed_this_round": false,
-      "result": "16 passed, 0 failed; recorded only, not re-run for F-B03-007."
-    }
+    {"command": "python -m pip check", "exit_code": 0, "mode": "UNIT", "evidence": "reports/batches/BATCH-03/evidence/pip-check.txt", "result": "No broken requirements found."},
+    {"command": "python tools/contracts/check_contracts.py --strict", "exit_code": 0, "mode": "UNIT", "evidence": "reports/batches/BATCH-03/evidence/contract-check-current.json", "result": "14 schemas and 18 vectors validated."},
+    {"command": "python -m pytest backend/tests/contracts -q", "exit_code": 0, "mode": "UNIT", "evidence": "reports/batches/BATCH-03/evidence/pytest-contracts-current.txt", "result": "16 progress markers reached 100%; exit code 0."}
   ],
-  "artifacts": [
-    {
-      "path": "reports/batches/BATCH-03/IMPLEMENTATION_REPORT.md",
-      "sha256": "6DFCC5AF3189A84359E50DEFBB7F1DD87A2F3191D3E444B4D8F0BEFF594289B8",
-      "classification": "IMPLEMENTATION_REPORT_SNAPSHOT"
-    },
-    {
-      "path": "reports/batches/BATCH-03/commands.json",
-      "sha256": "43A41FB67D27D1373EBE329345AF6B282AEAEC30B6B0CF73EABF101DBBD7B713",
-      "classification": "IMPLEMENTATION_COMMAND_RECORD"
-    },
-    {
-      "path": "reports/batches/BATCH-03/evidence/contract-check.json",
-      "sha256": "BD892737765143E1EEE03FC8A19F3194A7B164932697B06A53C1C5380518026F",
-      "classification": "IMPLEMENTATION_EVIDENCE"
-    },
-    {
-      "path": "reports/batches/BATCH-03/evidence/contract-lock-json.txt",
-      "sha256": "8619BEE5DF80F233FE7851F7A7904DA0DA27DBCB743FC2074DB79261BA114250",
-      "classification": "IMPLEMENTATION_EVIDENCE"
-    },
-    {
-      "path": "reports/batches/BATCH-03/evidence/git-diff-check.txt",
-      "sha256": "1027359AFAD082E1ED1091EEF956FA6880F3637F270995AE1169653DBBA8E875",
-      "classification": "IMPLEMENTATION_EVIDENCE"
-    },
-    {
-      "path": "reports/batches/BATCH-03/evidence/git-status-pre-report.json",
-      "sha256": "4D395FCD298FE9843A84F223E569036430047A3D0E1E2DEF6825D7E3528EB147",
-      "classification": "IMPLEMENTATION_EVIDENCE"
-    },
-    {
-      "path": "reports/batches/BATCH-03/evidence/preflight.json",
-      "sha256": "9C3493F468208737721D5428961385B73A147827D15D60A9378BD04A934DF8EC",
-      "classification": "IMPLEMENTATION_EVIDENCE"
-    },
-    {
-      "path": "reports/batches/BATCH-03/evidence/pytest-contracts.txt",
-      "sha256": "D929593E02D6FC174F22A68DE70F582851604842A6736042A2A359C34BC3A484",
-      "classification": "IMPLEMENTATION_EVIDENCE"
-    }
-  ],
-  "model_runs": [
-    {
-      "status": "NOT_APPLICABLE",
-      "reason": "F-B03-007 is a documentation-only snapshot repair and invokes no model."
-    }
-  ],
-  "not_completed": [
-    {
-      "item": "Independent BATCH-03 verification",
-      "status": "NOT_RUN",
-      "reason": "Verifier-owned artifacts are out of scope and untouched."
-    },
-    {
-      "item": "F-B03-006 leap-second follow-up",
-      "status": "DEFERRED_NON_BLOCKING_P3",
-      "reason": "The product owner ruled the discovery non-blocking; it is recorded as a P3 technical-debt observation and no checker change is made in this round."
-    }
-  ],
+  "artifacts": [{"path": "backend/requirements-dev.lock", "classification": "DEPENDENCY_LOCK"}, {"path": "reports/batches/BATCH-03/evidence/pip-freeze-diff.txt", "classification": "IMPLEMENTATION_EVIDENCE"}, {"path": "reports/batches/BATCH-03/evidence/venv-info.json", "classification": "IMPLEMENTATION_EVIDENCE"}],
+  "model_runs": [{"status": "NOT_APPLICABLE", "reason": "This dependency-only remediation invokes no model."}],
+  "not_completed": [{"item": "Independent BATCH-03 verification", "status": "NOT_RUN", "reason": "Verifier-owned artifacts are out of scope and untouched."}],
   "risks": [
-    {
-      "risk": "The carried-forward checks have not been re-executed in this reporting-only round.",
-      "mitigation": "An independent verifier must validate final code SHA 85ac5f215bfd7a1c778b22502875a7c46f2f4ec5 in a clean snapshot before issuing any acceptance verdict."
-    },
-    {
-      "risk": "F-B03-006 remains a non-blocking P3 technical-debt observation.",
-      "mitigation": "Do not modify the checker under this repair; schedule any future change through approved scope and independent re-verification."
-    }
+    {"risk": "The measured closure uses current package-index versions satisfying jsonschema==4.25.0 on CPython 3.13.5/Windows.", "mitigation": "All observed closure versions are pinned in requirements-dev.lock; other interpreter/platform combinations require their own compatibility check."},
+    {"risk": "Observed plan-file hashes differ from the historical hashes supplied with the delegation.", "mitigation": "No plan or contract-lock file was changed; resolve plan provenance separately if it is a gate concern."}
   ],
-  "rollback": {
-    "code": "Revert only this documentation commit to restore the prior report snapshot; no production code, checker, schema, contract lock semantics, or runtime behavior was changed by F-B03-007.",
-    "runtime_state": "NOT_APPLICABLE; this round changes no runtime state."
-  },
-  "handoff": {
-    "interfaces": [
-      "No interface change; consumers must use final code SHA 85ac5f215bfd7a1c778b22502875a7c46f2f4ec5 as the implementation anchor."
-    ],
-    "input_versions": {
-      "final_code_repair_sha": "85ac5f215bfd7a1c778b22502875a7c46f2f4ec5",
-      "report_snapshot_baseline": "761043db460b77799ed089c53bb468e347cc6668",
-      "plan_hashes": "MASTER_PLAN.md=ECE161441703962D9D7C0E1650497D2C2BEED560FC3D2239564B4E9E1D4A75E4; batches.json=E78AE0E223B6D5D5A8F427630225D572E1A7D9E844F99CEA82503CC87EEB1693"
-    },
-    "reproduction": [
-      "Treat the 14-schema/18-vector check and 16/16 pytest result as recorded third-round evidence, not a fresh F-B03-007 execution.",
-      "A verifier may independently re-run the strict checker, isolated contract pytest, lock JSON parse, diff/scope audit, and RFC 3339 edge probes against final code SHA 85ac5f215bfd7a1c778b22502875a7c46f2f4ec5."
-    ],
-    "remaining_gates": [
-      "Independent BATCH-03 verification remains required; this report does not claim PASS.",
-      "F-B03-006 is a product-owner-classified P3 non-blocking observation, not a blocker for this report repair."
-    ]
-  },
+  "rollback": {"code": "Revert this dependency-remediation commit to remove only the five added lock pins and the BATCH-03 implementation evidence; no contract or business behavior change is bundled.", "runtime_state": "The isolated reports/batches/BATCH-03/runtime/venv is ignored and may be recreated from the lock."},
+  "handoff": {"interfaces": ["No API, schema, vector, or third-party business-semantic change."], "reproduction": ["Create the isolated BATCH-03 venv with D:\\python\\python.exe -m venv.", "Install backend/requirements-dev.lock, install backend editable with --no-deps, then run the strict checker and contract pytest with that venv's absolute python.exe."], "remaining_gates": ["Independent BATCH-03 verification remains required and is not claimed here."]},
   "next_batch_started": false
 }

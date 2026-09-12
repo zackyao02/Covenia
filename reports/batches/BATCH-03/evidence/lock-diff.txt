@@ -1,0 +1,10 @@
+base_commit=ff4f2a99caeb4d820749c2d0ae6fa5431dafef4d
+sha256_before=088E3DEF0F1F4ECED2D3B0A5B50DBA4065A86E01286497517D3FF13E79682C7F
+sha256_after=CDB27CCBBA8F541A07615F7ACD0D19EDE115852CFCD9FE018AABA1F11129D9C8
+diff_characterization=additions_only
+
++attrs==26.1.0
++jsonschema==4.25.0
++jsonschema-specifications==2025.9.1
++referencing==0.37.0
++rpds-py==2026.6.3

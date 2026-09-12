@@ -1,0 +1,17 @@
+command=git status --short
+exit_code=0
+
+ M backend/requirements-dev.lock
+ M reports/batches/BATCH-03/IMPLEMENTATION_REPORT.json
+ M reports/batches/BATCH-03/IMPLEMENTATION_REPORT.md
+ M reports/batches/BATCH-03/commands.json
+?? reports/batches/BATCH-03/evidence/contract-check-current.json
+?? reports/batches/BATCH-03/evidence/existing-lock-pins-before-after.txt
+?? reports/batches/BATCH-03/evidence/lock-diff.txt
+?? reports/batches/BATCH-03/evidence/pip-check.txt
+?? reports/batches/BATCH-03/evidence/pip-freeze-after.txt
+?? reports/batches/BATCH-03/evidence/pip-freeze-before.txt
+?? reports/batches/BATCH-03/evidence/pip-freeze-diff.txt
+?? reports/batches/BATCH-03/evidence/pytest-contracts-current.txt
+?? reports/batches/BATCH-03/evidence/requirements-dev-lock-before.txt
+?? reports/batches/BATCH-03/evidence/venv-info.json

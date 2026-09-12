@@ -1,0 +1,10 @@
+{
+  "command": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-03-dependency-repair-1\\reports\\batches\\BATCH-03\\runtime\\venv\\Scripts\\python.exe tools/contracts/check_contracts.py --strict",
+  "exit_code": 0,
+  "output": {
+    "lock": "docs/contracts/b-contract-lock.json",
+    "schemas_validated": 14,
+    "strict": true,
+    "vectors_validated": 18
+  }
+}

@@ -1,7 +1,7 @@
 {
-  "report_version": "1.3",
+  "report_version": "1.4",
   "batch_id": "BATCH-03",
-  "snapshot_scope": "F-B03-007 report accounting only; no command was re-run in this round.",
+  "snapshot_scope": "Preserves F-B03-007 historical command accounting and adds the current dependency-only remediation commands below.",
   "report_snapshot_base_commit": "761043db460b77799ed089c53bb468e347cc6668",
   "report_snapshot_branch": "codex/covenia-batch-03-repair-4",
   "tested_code_commit": "85ac5f215bfd7a1c778b22502875a7c46f2f4ec5",
@@ -18,6 +18,23 @@
     "pythonpath": null,
     "user_site_enabled": false,
     "evidence_status": "Carried forward from third-round execution; not re-run for F-B03-007."
+  },
+  "dependency_remediation_2026_09_12": {
+    "base_integration_sha": "ff4f2a99caeb4d820749c2d0ae6fa5431dafef4d",
+    "environment": "isolated reports/batches/BATCH-03/runtime/venv; absolute venv python; PYTHONPATH unset; PYTHONNOUSERSITE=1; no D:\\python global installation",
+    "commands": [
+      {"command": "D:\\python\\python.exe -m venv reports/batches/BATCH-03/runtime/venv", "exit_code": 0, "evidence": "reports/batches/BATCH-03/evidence/venv-info.json"},
+      {"command": "python -m pip install -r backend/requirements-dev.lock", "exit_code": 0, "evidence": "reports/batches/BATCH-03/evidence/pip-freeze-before.txt"},
+      {"command": "python -m pip install --no-deps -e backend", "exit_code": 0, "evidence": "reports/batches/BATCH-03/evidence/pip-freeze-before.txt"},
+      {"command": "python -m pip freeze --all --exclude covenia-b", "exit_code": 0, "evidence": "reports/batches/BATCH-03/evidence/pip-freeze-before.txt", "note": "The editable direct_url metadata was temporarily moved only inside the ignored venv and immediately restored because stock pip freeze crashes on its historical worktree metadata."},
+      {"command": "python -m pip install jsonschema==4.25.0", "exit_code": 0, "evidence": "reports/batches/BATCH-03/evidence/pip-freeze-after.txt"},
+      {"command": "python -m pip freeze --all --exclude covenia-b", "exit_code": 0, "evidence": "reports/batches/BATCH-03/evidence/pip-freeze-after.txt"},
+      {"command": "python -m pip check", "exit_code": 0, "evidence": "reports/batches/BATCH-03/evidence/pip-check.txt"},
+      {"command": "python tools/contracts/check_contracts.py --strict", "exit_code": 0, "evidence": "reports/batches/BATCH-03/evidence/contract-check-current.json"},
+      {"command": "python -m pytest backend/tests/contracts -q", "exit_code": 0, "evidence": "reports/batches/BATCH-03/evidence/pytest-contracts-current.txt"},
+      {"command": "git diff --check", "exit_code": 0, "evidence": "reports/batches/BATCH-03/evidence/git-diff-check-current.txt"},
+      {"command": "git status --short", "exit_code": 0, "evidence": "reports/batches/BATCH-03/evidence/git-status-pre-commit.txt"}
+    ]
   },
   "recorded_commands": [
     {
