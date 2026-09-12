@@ -1,9 +1,12 @@
-BATCH-03 implementation evidence
-tested_code_commit: 85ac5f215bfd7a1c778b22502875a7c46f2f4ec5
-command: python -m json.tool docs/contracts/b-contract-lock.json
+BATCH-03 F-B03-007 implementation-evidence snapshot
+final_code_repair_sha: 85ac5f215bfd7a1c778b22502875a7c46f2f4ec5
+report_snapshot_base_commit: 761043db460b77799ed089c53bb468e347cc6668
+report_snapshot_branch: codex/covenia-batch-03-repair-4
+execution_this_round: false
+recorded_command: python -m json.tool docs/contracts/b-contract-lock.json
 runner: isolated CPython 3.13.5 virtual environment
 exit_code: 0
-result: PASS — docs/contracts/b-contract-lock.json parsed as JSON in a read-only check.
+result: RECORDED_PASS_NOT_RERUN — the lock parsed as JSON in the third-round read-only check.
 
 Mechanical refresh only; no lock semantics changed:
 - tools/contracts/check_contracts.py
@@ -13,4 +16,4 @@ Mechanical refresh only; no lock semantics changed:
   CC2DA2F86EBA8DFE6CA15FE66658DD2EDAD3C73BE94167B468D3CCD2F95DFC3F
   -> A7D9A448CCD4DE3E489F7B54B56736E896BA22AB23EF8D54589119D9F54DA37B
 
-本次仅机械性哈希刷新，无语义变更。
+本次仅报告快照记账；不改锁文件，也不添加或改写任何语义字段。

@@ -1,16 +1,24 @@
 {
   "batch_id": "BATCH-03",
-  "base_commit": "27f9a4916eca39dd1191b9e572e83e050d9a42e6",
-  "tested_code_commit": "85ac5f215bfd7a1c778b22502875a7c46f2f4ec5",
-  "branch": "codex/covenia-batch-03-repair-3",
+  "snapshot_scope": "F-B03-007 report accounting only",
+  "report_snapshot_base_commit": "761043db460b77799ed089c53bb468e347cc6668",
+  "report_snapshot_branch": "codex/covenia-batch-03-repair-4",
+  "final_code_repair_sha": "85ac5f215bfd7a1c778b22502875a7c46f2f4ec5",
+  "execution_this_round": false,
   "authoritative_plan_sha256": {
     "MASTER_PLAN.md": "ECE161441703962D9D7C0E1650497D2C2BEED560FC3D2239564B4E9E1D4A75E4",
     "batches.json": "E78AE0E223B6D5D5A8F427630225D572E1A7D9E844F99CEA82503CC87EEB1693"
   },
-  "code_commit_paths": [
+  "recorded_code_commit_paths": [
     "tools/contracts/check_contracts.py",
     "backend/tests/contracts/test_contracts.py",
     "docs/contracts/b-contract-lock.json"
+  ],
+  "report_snapshot_paths": [
+    "reports/batches/BATCH-03/IMPLEMENTATION_REPORT.json",
+    "reports/batches/BATCH-03/IMPLEMENTATION_REPORT.md",
+    "reports/batches/BATCH-03/commands.json",
+    "reports/batches/BATCH-03/evidence/**"
   ],
   "mechanical_lock_hash_refresh": {
     "declaration": "本次仅机械性哈希刷新，无语义变更。",
@@ -27,6 +35,10 @@
       }
     ],
     "non_hash_lock_fields_unchanged": true
+  },
+  "f_b03_006": {
+    "status": "NON_BLOCKING_P3_TECH_DEBT",
+    "action_this_round": "No checker modification; observation only."
   },
   "independent_verification": "NOT_RUN"
 }

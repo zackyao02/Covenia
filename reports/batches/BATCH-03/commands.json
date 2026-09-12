@@ -1,58 +1,90 @@
 {
-  "report_version": "1.2",
+  "report_version": "1.3",
   "batch_id": "BATCH-03",
+  "snapshot_scope": "F-B03-007 report accounting only; no command was re-run in this round.",
+  "report_snapshot_base_commit": "761043db460b77799ed089c53bb468e347cc6668",
+  "report_snapshot_branch": "codex/covenia-batch-03-repair-4",
   "tested_code_commit": "85ac5f215bfd7a1c778b22502875a7c46f2f4ec5",
-  "base_commit": "27f9a4916eca39dd1191b9e572e83e050d9a42e6",
-  "branch": "codex/covenia-batch-03-repair-3",
+  "final_code_repair_sha": "85ac5f215bfd7a1c778b22502875a7c46f2f4ec5",
+  "normative_plan_sha256": {
+    "MASTER_PLAN.md": "ECE161441703962D9D7C0E1650497D2C2BEED560FC3D2239564B4E9E1D4A75E4",
+    "batches.json": "E78AE0E223B6D5D5A8F427630225D572E1A7D9E844F99CEA82503CC87EEB1693"
+  },
   "environment": {
     "runner": "isolated CPython 3.13.5 virtual environment",
     "pytest": "8.3.4",
     "jsonschema": "4.25.0",
     "referencing": "0.36.2",
     "pythonpath": null,
-    "user_site_enabled": false
+    "user_site_enabled": false,
+    "evidence_status": "Carried forward from third-round execution; not re-run for F-B03-007."
   },
-  "acceptance_commands": [
+  "recorded_commands": [
     {
       "command": "python tools/contracts/check_contracts.py --strict",
       "exit_code": 0,
-      "mode": "CONTRACT",
-      "summary": "PASS: 14 schemas and 18 vectors validated against final code repair SHA 85ac5f215bfd7a1c778b22502875a7c46f2f4ec5."
+      "mode": "UNIT",
+      "executed_this_round": false,
+      "summary": "Recorded third-round PASS for final code repair SHA 85ac5f215bfd7a1c778b22502875a7c46f2f4ec5: 14 schemas and 18 vectors validated.",
+      "evidence": "reports/batches/BATCH-03/evidence/contract-check.json"
     },
     {
       "requested_command": "python -m pytest backend/tests/contracts -q",
       "executed_command": "python -m pytest -p no:cacheprovider backend/tests/contracts -q",
       "exit_code": 0,
       "mode": "UNIT",
-      "summary": "PASS: 16 passed in 1.23s. The isolated runner had no PYTHONPATH or user site; only pytest's on-disk cache provider was disabled because the supplied worktree is not writable by the test runner."
+      "executed_this_round": false,
+      "summary": "Recorded third-round PASS for final code repair SHA 85ac5f215bfd7a1c778b22502875a7c46f2f4ec5: 16 passed in 1.23s; no PYTHONPATH or user site, with only pytest's on-disk cache provider disabled.",
+      "evidence": "reports/batches/BATCH-03/evidence/pytest-contracts.txt"
     },
     {
       "command": "python -m json.tool docs/contracts/b-contract-lock.json",
       "exit_code": 0,
-      "mode": "FORMAT",
-      "summary": "PASS: read-only JSON parse of the lock for final code repair SHA 85ac5f215bfd7a1c778b22502875a7c46f2f4ec5."
+      "mode": "UNIT",
+      "executed_this_round": false,
+      "summary": "Recorded third-round PASS: read-only JSON parse of the lock associated with final code repair SHA 85ac5f215bfd7a1c778b22502875a7c46f2f4ec5.",
+      "evidence": "reports/batches/BATCH-03/evidence/contract-lock-json.txt"
     },
     {
-      "command": "git diff --check 27f9a4916eca39dd1191b9e572e83e050d9a42e6..85ac5f215bfd7a1c778b22502875a7c46f2f4ec5",
+      "command": "third-round baseline-to-final-code git diff --check",
       "exit_code": 0,
-      "mode": "GIT",
-      "summary": "PASS: no whitespace errors."
+      "mode": "UNIT",
+      "executed_this_round": false,
+      "summary": "Recorded third-round PASS: no whitespace errors in the final code repair diff anchored to 85ac5f215bfd7a1c778b22502875a7c46f2f4ec5.",
+      "evidence": "reports/batches/BATCH-03/evidence/git-diff-check.txt"
     },
     {
       "command": "git status --short",
       "exit_code": 0,
-      "mode": "GIT",
-      "summary": "PASS: empty after the final code repair commit and before writing implementation-report artifacts."
-    },
-    {
-      "command": "git diff --name-status 27f9a4916eca39dd1191b9e572e83e050d9a42e6..85ac5f215bfd7a1c778b22502875a7c46f2f4ec5",
-      "exit_code": 0,
-      "mode": "SCOPE",
-      "summary": "PASS: only tools/contracts/check_contracts.py, backend/tests/contracts/test_contracts.py, and the authorized mechanical lock-hash refresh changed."
+      "mode": "UNIT",
+      "executed_this_round": false,
+      "summary": "Recorded clean pre-report state at reporting baseline 761043db460b77799ed089c53bb468e347cc6668.",
+      "evidence": "reports/batches/BATCH-03/evidence/git-status-pre-report.json"
     }
   ],
+  "mechanical_lock_hash_refresh": {
+    "declaration": "本次仅机械性哈希刷新，无语义变更。",
+    "before_to_after": [
+      {
+        "path": "tools/contracts/check_contracts.py",
+        "before": "D60E7645E6473A9DC047187A6564784EA96E401832561725251E0D72A151E867",
+        "after": "99FC675BE873DFF3B8458C0A073BA13ADA73830C60B26036D3DE481442DDC6CC"
+      },
+      {
+        "path": "backend/tests/contracts/test_contracts.py",
+        "before": "CC2DA2F86EBA8DFE6CA15FE66658DD2EDAD3C73BE94167B468D3CCD2F95DFC3F",
+        "after": "A7D9A448CCD4DE3E489F7B54B56736E896BA22AB23EF8D54589119D9F54DA37B"
+      }
+    ],
+    "non_hash_lock_fields_changed": false
+  },
+  "p3_observation": {
+    "id": "F-B03-006",
+    "status": "NON_BLOCKING_P3_TECH_DEBT",
+    "summary": "Leap-second discovery is not a blocker and does not authorize a checker change in this report-only round."
+  },
   "independent_verification": {
     "status": "NOT_RUN",
-    "reason": "VERIFICATION_REPORT.json and verification-evidence/** are verifier-owned and were not written or modified."
+    "reason": "VERIFICATION_REPORT.json and verification-evidence/** are verifier-owned and remain untouched."
   }
 }

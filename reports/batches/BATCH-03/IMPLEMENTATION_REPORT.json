@@ -1,14 +1,45 @@
 {
+  "report_version": "1.0",
   "batch_id": "BATCH-03",
+  "result": "IMPLEMENTED",
   "status": "COMPLETED",
-  "summary": "Completed only F-B03-006 and F-B03-007. The contract checker now enforces the Draft 2020-12/RFC 3339 date-time ABNF rather than Python's broader ISO parser, and contract tests cover parseable-but-invalid boundary forms while preserving legal RFC 3339 forms. All implementation reports, commands, and implementation evidence are anchored to the final code repair SHA below. This is implementation evidence only, not independent verification or acceptance.",
-  "commit_hash": "85ac5f215bfd7a1c778b22502875a7c46f2f4ec5",
-  "final_code_repair_sha": "85ac5f215bfd7a1c778b22502875a7c46f2f4ec5",
-  "base_commit": "27f9a4916eca39dd1191b9e572e83e050d9a42e6",
-  "files_changed": [
-    "tools/contracts/check_contracts.py",
-    "backend/tests/contracts/test_contracts.py",
-    "docs/contracts/b-contract-lock.json",
+  "repo_root": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-03-repair-4",
+  "branch": "codex/covenia-batch-03-repair-4",
+  "base_integration_sha": "761043db460b77799ed089c53bb468e347cc6668",
+  "contract_version": "BATCH-03 final code snapshot 85ac5f215bfd7a1c778b22502875a7c46f2f4ec5; this F-B03-007 record repair starts from reporting baseline 761043db460b77799ed089c53bb468e347cc6668.",
+  "plan_sha256": "MASTER_PLAN.md=ECE161441703962D9D7C0E1650497D2C2BEED560FC3D2239564B4E9E1D4A75E4; batches.json=E78AE0E223B6D5D5A8F427630225D572E1A7D9E844F99CEA82503CC87EEB1693.",
+  "initial_worktree": [
+    {
+      "head": "761043db460b77799ed089c53bb468e347cc6668",
+      "branch": "codex/covenia-batch-03-repair-4",
+      "status_short": "",
+      "scope": "F-B03-007 reporting snapshot only under reports/batches/BATCH-03/**"
+    }
+  ],
+  "dependency_receipts": [
+    {
+      "batch_id": "BATCH-03 prior implementation record",
+      "verdict": "RECORDED_NOT_REVERIFIED",
+      "integration_sha": "85ac5f215bfd7a1c778b22502875a7c46f2f4ec5",
+      "artifact_hashes": {
+        "final_code_repair_sha": "85ac5f215bfd7a1c778b22502875a7c46f2f4ec5",
+        "report_snapshot_baseline": "761043db460b77799ed089c53bb468e347cc6668"
+      },
+      "note": "This narrow accounting repair carries forward prior implementation evidence only; it does not re-evaluate BATCH-01, BATCH-02, or independent verification."
+    }
+  ],
+  "external_gate_receipts": [
+    {
+      "gate_id": "Independent BATCH-03 verification",
+      "verdict": "NOT_RUN",
+      "owner": "Independent verifier",
+      "evidence": "Verifier-owned reports/batches/BATCH-03/VERIFICATION_REPORT.json and verification-evidence/** were neither written nor modified in this round."
+    }
+  ],
+  "code_commits": [
+    "85ac5f215bfd7a1c778b22502875a7c46f2f4ec5"
+  ],
+  "changed_files": [
     "reports/batches/BATCH-03/IMPLEMENTATION_REPORT.json",
     "reports/batches/BATCH-03/IMPLEMENTATION_REPORT.md",
     "reports/batches/BATCH-03/commands.json",
@@ -19,74 +50,162 @@
     "reports/batches/BATCH-03/evidence/preflight.json",
     "reports/batches/BATCH-03/evidence/pytest-contracts.txt"
   ],
-  "tests_run": 16,
-  "tests_passed": 16,
-  "tests_failed": 0,
-  "environment": {
-    "python": "CPython 3.13.5",
-    "pytest": "8.3.4",
-    "jsonschema": "4.25.0",
-    "referencing": "0.36.2",
-    "isolated_venv": true,
-    "user_site_enabled": false,
-    "pythonpath": null,
-    "pytest_cache_provider": "disabled for the command because this supplied worktree is not writable by the test runner"
+  "scope_check": {
+    "within_allowlist": true,
+    "forbidden_changes": [
+      "None; this round changes only the nine F-B03-007 implementation-report snapshot files listed in changed_files."
+    ],
+    "checked_against": "761043db460b77799ed089c53bb468e347cc6668",
+    "note": "No tools, schemas, tests, contracts, approvals, verification artifacts, or product semantics are changed by this report repair."
   },
   "acceptance_results": [
     {
-      "criterion": "F-B03-006: format: date-time rejects timezone-less, space-separated, missing-seconds, ISO-week-date, comma-fraction, and fractional/seconds-bearing offset forms that CPython parses but RFC 3339 does not permit.",
-      "result": "IMPLEMENTATION_CHECK_PASS",
-      "evidence": "backend/tests/contracts/test_contracts.py; evidence/pytest-contracts.txt"
+      "criterion": "F-B03-007: the implementation report, Markdown summary, command record, and implementation-evidence files use one final code anchor.",
+      "status": "EVIDENCED",
+      "evidence": [
+        "reports/batches/BATCH-03/IMPLEMENTATION_REPORT.json",
+        "reports/batches/BATCH-03/IMPLEMENTATION_REPORT.md",
+        "reports/batches/BATCH-03/commands.json",
+        "reports/batches/BATCH-03/evidence/**",
+        "final_code_repair_sha=85ac5f215bfd7a1c778b22502875a7c46f2f4ec5"
+      ]
     },
     {
-      "criterion": "F-B03-006: legal RFC 3339 uppercase/lowercase T/Z, arbitrary fractional-second precision, -00:00, leap-day, and documented leap-second forms remain accepted.",
-      "result": "IMPLEMENTATION_CHECK_PASS",
-      "evidence": "backend/tests/contracts/test_contracts.py; evidence/pytest-contracts.txt"
+      "criterion": "Prior third-round strict contract check recorded 14 schemas and 18 vectors against the final code repair SHA.",
+      "status": "EVIDENCED",
+      "evidence": [
+        "reports/batches/BATCH-03/evidence/contract-check.json",
+        "execution_this_round=false"
+      ]
     },
     {
-      "criterion": "Authorized lock update: only the two hashes corresponding to the actual checker and contract-test edits changed; all lock semantics stayed byte-equivalent at the JSON-field level.",
-      "result": "IMPLEMENTATION_CHECK_PASS",
-      "evidence": "evidence/preflight.json; evidence/contract-lock-json.txt"
+      "criterion": "Prior third-round isolated contract pytest recorded 16 passed and 0 failed against the final code repair SHA.",
+      "status": "EVIDENCED",
+      "evidence": [
+        "reports/batches/BATCH-03/evidence/pytest-contracts.txt",
+        "execution_this_round=false"
+      ]
     },
     {
-      "criterion": "F-B03-007: required reports, command record, and implementation evidence identify one final code repair SHA.",
-      "result": "IMPLEMENTATION_CHECK_PASS",
-      "evidence": "reports/batches/BATCH-03/**; final_code_repair_sha=85ac5f215bfd7a1c778b22502875a7c46f2f4ec5"
+      "criterion": "The third-round lock refresh remains limited to its two documented locked_files hash values; no lock semantic field is edited in this round.",
+      "status": "EVIDENCED",
+      "evidence": [
+        "reports/batches/BATCH-03/evidence/contract-lock-json.txt",
+        "reports/batches/BATCH-03/evidence/preflight.json"
+      ]
     },
     {
-      "criterion": "Independent BATCH-03 verification",
-      "result": "NOT_RUN",
-      "evidence": "Verifier-owned VERIFICATION_REPORT.json and verification-evidence/** were not written or changed."
+      "criterion": "Independent BATCH-03 verification and acceptance verdict.",
+      "status": "BLOCKED",
+      "evidence": [
+        "Verifier-owned verification artifacts remain untouched; this implementation report is not an independent PASS."
+      ]
     }
   ],
-  "mechanical_lock_hash_refresh": {
-    "declaration": "本次仅机械性哈希刷新，无语义变更。",
-    "before_to_after": [
-      {
-        "path": "tools/contracts/check_contracts.py",
-        "before": "D60E7645E6473A9DC047187A6564784EA96E401832561725251E0D72A151E867",
-        "after": "99FC675BE873DFF3B8458C0A073BA13ADA73830C60B26036D3DE481442DDC6CC"
-      },
-      {
-        "path": "backend/tests/contracts/test_contracts.py",
-        "before": "CC2DA2F86EBA8DFE6CA15FE66658DD2EDAD3C73BE94167B468D3CCD2F95DFC3F",
-        "after": "A7D9A448CCD4DE3E489F7B54B56736E896BA22AB23EF8D54589119D9F54DA37B"
-      }
+  "test_results": [
+    {
+      "command": "python -m pytest -p no:cacheprovider backend/tests/contracts -q",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-03-repair-4",
+      "exit_code": 0,
+      "duration_seconds": 1.23,
+      "mode": "UNIT",
+      "evidence": "reports/batches/BATCH-03/evidence/pytest-contracts.txt",
+      "recorded_from": "third-round implementation evidence",
+      "executed_this_round": false,
+      "result": "16 passed, 0 failed; recorded only, not re-run for F-B03-007."
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "reports/batches/BATCH-03/IMPLEMENTATION_REPORT.md",
+      "sha256": "6DFCC5AF3189A84359E50DEFBB7F1DD87A2F3191D3E444B4D8F0BEFF594289B8",
+      "classification": "IMPLEMENTATION_REPORT_SNAPSHOT"
+    },
+    {
+      "path": "reports/batches/BATCH-03/commands.json",
+      "sha256": "43A41FB67D27D1373EBE329345AF6B282AEAEC30B6B0CF73EABF101DBBD7B713",
+      "classification": "IMPLEMENTATION_COMMAND_RECORD"
+    },
+    {
+      "path": "reports/batches/BATCH-03/evidence/contract-check.json",
+      "sha256": "BD892737765143E1EEE03FC8A19F3194A7B164932697B06A53C1C5380518026F",
+      "classification": "IMPLEMENTATION_EVIDENCE"
+    },
+    {
+      "path": "reports/batches/BATCH-03/evidence/contract-lock-json.txt",
+      "sha256": "8619BEE5DF80F233FE7851F7A7904DA0DA27DBCB743FC2074DB79261BA114250",
+      "classification": "IMPLEMENTATION_EVIDENCE"
+    },
+    {
+      "path": "reports/batches/BATCH-03/evidence/git-diff-check.txt",
+      "sha256": "1027359AFAD082E1ED1091EEF956FA6880F3637F270995AE1169653DBBA8E875",
+      "classification": "IMPLEMENTATION_EVIDENCE"
+    },
+    {
+      "path": "reports/batches/BATCH-03/evidence/git-status-pre-report.json",
+      "sha256": "4D395FCD298FE9843A84F223E569036430047A3D0E1E2DEF6825D7E3528EB147",
+      "classification": "IMPLEMENTATION_EVIDENCE"
+    },
+    {
+      "path": "reports/batches/BATCH-03/evidence/preflight.json",
+      "sha256": "9C3493F468208737721D5428961385B73A147827D15D60A9378BD04A934DF8EC",
+      "classification": "IMPLEMENTATION_EVIDENCE"
+    },
+    {
+      "path": "reports/batches/BATCH-03/evidence/pytest-contracts.txt",
+      "sha256": "D929593E02D6FC174F22A68DE70F582851604842A6736042A2A359C34BC3A484",
+      "classification": "IMPLEMENTATION_EVIDENCE"
+    }
+  ],
+  "model_runs": [
+    {
+      "status": "NOT_APPLICABLE",
+      "reason": "F-B03-007 is a documentation-only snapshot repair and invokes no model."
+    }
+  ],
+  "not_completed": [
+    {
+      "item": "Independent BATCH-03 verification",
+      "status": "NOT_RUN",
+      "reason": "Verifier-owned artifacts are out of scope and untouched."
+    },
+    {
+      "item": "F-B03-006 leap-second follow-up",
+      "status": "DEFERRED_NON_BLOCKING_P3",
+      "reason": "The product owner ruled the discovery non-blocking; it is recorded as a P3 technical-debt observation and no checker change is made in this round."
+    }
+  ],
+  "risks": [
+    {
+      "risk": "The carried-forward checks have not been re-executed in this reporting-only round.",
+      "mitigation": "An independent verifier must validate final code SHA 85ac5f215bfd7a1c778b22502875a7c46f2f4ec5 in a clean snapshot before issuing any acceptance verdict."
+    },
+    {
+      "risk": "F-B03-006 remains a non-blocking P3 technical-debt observation.",
+      "mitigation": "Do not modify the checker under this repair; schedule any future change through approved scope and independent re-verification."
+    }
+  ],
+  "rollback": {
+    "code": "Revert only this documentation commit to restore the prior report snapshot; no production code, checker, schema, contract lock semantics, or runtime behavior was changed by F-B03-007.",
+    "runtime_state": "NOT_APPLICABLE; this round changes no runtime state."
+  },
+  "handoff": {
+    "interfaces": [
+      "No interface change; consumers must use final code SHA 85ac5f215bfd7a1c778b22502875a7c46f2f4ec5 as the implementation anchor."
     ],
-    "unchanged_lock_fields": [
-      "decision_bindings",
-      "semantic_lock",
-      "endpoints",
-      "handoff",
-      "change_control",
-      "approved_input",
-      "hash_method"
+    "input_versions": {
+      "final_code_repair_sha": "85ac5f215bfd7a1c778b22502875a7c46f2f4ec5",
+      "report_snapshot_baseline": "761043db460b77799ed089c53bb468e347cc6668",
+      "plan_hashes": "MASTER_PLAN.md=ECE161441703962D9D7C0E1650497D2C2BEED560FC3D2239564B4E9E1D4A75E4; batches.json=E78AE0E223B6D5D5A8F427630225D572E1A7D9E844F99CEA82503CC87EEB1693"
+    },
+    "reproduction": [
+      "Treat the 14-schema/18-vector check and 16/16 pytest result as recorded third-round evidence, not a fresh F-B03-007 execution.",
+      "A verifier may independently re-run the strict checker, isolated contract pytest, lock JSON parse, diff/scope audit, and RFC 3339 edge probes against final code SHA 85ac5f215bfd7a1c778b22502875a7c46f2f4ec5."
+    ],
+    "remaining_gates": [
+      "Independent BATCH-03 verification remains required; this report does not claim PASS.",
+      "F-B03-006 is a product-owner-classified P3 non-blocking observation, not a blocker for this report repair."
     ]
   },
-  "remaining_risks": [
-    "A new independent verifier must validate the final code repair SHA in a clean snapshot and issue any acceptance verdict.",
-    "No Schema, contract vector, fixture, frontend, backend/src, approval, or product-semantic artifact was changed."
-  ],
-  "blockers": [],
-  "handoff_notes": "Independently re-verify final code repair SHA 85ac5f215bfd7a1c778b22502875a7c46f2f4ec5 with the strict checker, isolated contract pytest, lock JSON parse, diff/scope audit, and RFC 3339 edge probes. Do not treat this implementation report as independent acceptance."
+  "next_batch_started": false
 }

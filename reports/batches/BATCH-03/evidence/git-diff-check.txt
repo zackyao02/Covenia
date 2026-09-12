@@ -1,11 +1,15 @@
-BATCH-03 implementation evidence
-tested_code_commit: 85ac5f215bfd7a1c778b22502875a7c46f2f4ec5
-base_commit: 27f9a4916eca39dd1191b9e572e83e050d9a42e6
-command: git diff --check 27f9a4916eca39dd1191b9e572e83e050d9a42e6..85ac5f215bfd7a1c778b22502875a7c46f2f4ec5
+BATCH-03 F-B03-007 implementation-evidence snapshot
+final_code_repair_sha: 85ac5f215bfd7a1c778b22502875a7c46f2f4ec5
+report_snapshot_base_commit: 761043db460b77799ed089c53bb468e347cc6668
+report_snapshot_branch: codex/covenia-batch-03-repair-4
+execution_this_round: false
+recorded_activity: third-round baseline-to-final-code git diff --check
 exit_code: 0
-result: PASS — no output; no whitespace errors.
+result: RECORDED_PASS_NOT_RERUN — no whitespace errors were recorded for the final code repair diff.
 
-Code-commit scope:
+Recorded code-commit scope (not changed in this report-only round):
 M backend/tests/contracts/test_contracts.py
 M docs/contracts/b-contract-lock.json
 M tools/contracts/check_contracts.py
+
+F-B03-007 changes only report artifacts under reports/batches/BATCH-03/**.
