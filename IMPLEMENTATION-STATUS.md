@@ -23,7 +23,7 @@
 
 | 范围 | 未完成内容 | 原因 | 下一步 |
 |---|---|---|---|
-| B/C 联调 | 真实后端四端点联调 | B 端实现不在本 C 线分支范围 | B 端可用后设置 `VITE_API_MODE=http` 执行联调 |
+| B/C 联调 | 浏览器端 HTTP 联调录屏 | B 线四端点已实现，本次尚未启动双服务完成浏览器录屏 | 设置 `VITE_API_MODE=http` 后启动 `backend/` 与 `frontend/`，执行主链、挑战链和物流链 |
 | 真实证据图 | `public/evidence/` 内的团队压力测试图片二进制文件 | 当前未在 C 工作区提供 | 图片就位后按 README 的固定文件名放入；当前 UI 有明确占位回退 |
 | 独立验收 | `QA-ACCEPTANCE.md` 对全部 P0 标记通过 | 本次为 G3 后的有限修复；尚未重新独立验收 | 修复提交后启动 Claude 只读复验 |
 
@@ -35,10 +35,20 @@
 | TypeScript 与生产构建 | `npm run build` | 通过；Vite 生成 `dist/`，JS 230.13 kB（gzip 67.36 kB） | `frontend/package.json`（2026-09-10） |
 | JSON 与决策 Schema | Python JSON + Draft 2020-12 校验 | 17 个 JSON 文件可解析；3 个 `DecisionResult` 示例通过 | `schemas/decision-result.schema.json`（2026-09-10） |
 
+## B 线实现状态（2026-09-13）
+
+| 范围 | 状态 | 实现位置 | 验证 |
+|---|---|---|---|
+| 四个 HTTP 接口 | 已完成 | `backend/main.py` | Pytest 覆盖响应外壳、挑战门控、审批、物流 |
+| 规则与责任状态 | 已完成 | `backend/main.py` | P0(400) → H1(350) → E1(300) → E2(100) → E0(0) |
+| 挑战/伪造输入防护 | 已完成 | `backend/main.py` | 未开启挑战模式时忽略覆盖与伪造状态字段 |
+| 幂等与事件时序 | 已完成 | `backend/main.py` | 重放返回首次响应；同键不同体冲突；先揽收后送达 |
+| 本地启动说明 | 已完成 | `backend/README.md` | 前端可设为 HTTP 模式 |
+
 ## 技术阻塞与事实证据
 
 - C 线当前无独立技术阻塞。
-- 切换真实 HTTP 模式需要 B 端四端点可访问，但不影响本地可点击 Demo。
+- B 端服务已具备本地联调条件；仍需启动双服务完成浏览器端 HTTP 联调。
 
 ## 已知风险与灾备
 
