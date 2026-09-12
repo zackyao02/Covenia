@@ -1,17 +1,19 @@
 {
-  "artifact_version": "1.0",
+  "artifact_version": "1.1",
   "batch_id": "BATCH-07",
   "classification": "REDACTED_SYNTHETIC_EXAMPLE",
+  "repair_of_verification_report": "0749b1f",
   "model_input": {
     "case_id": "case-safe-001",
-    "redacted_text": "case_id=case-safe-001\norder_id=order-safe-001\ncurrent_issue_sku_id=sku-safe-001\n[message_id=message-safe-001 timestamp=2026-09-13T09:32:00+00:00 speaker=CONSUMER] phone: [PHONE_REDACTED]; [SHIPPING_ADDRESS_REDACTED]; [ALIPAY_ACCOUNT_REDACTED]\n[message_id=message-safe-002 timestamp=2026-09-13T09:33:00+00:00 speaker=AGENT] We promise an update within 48 hours.\n[message_id=message-safe-003 timestamp=2026-09-13T09:34:00+00:00 speaker=CONSUMER] [ADVERSE_REACTION_RISK]\n[message_id=message-safe-004 timestamp=2026-09-13T09:35:00+00:00 speaker=AGENT] [MEDICAL_CONTEXT_REDACTED]",
+    "redacted_text": "case_id=case-safe-001\norder_id=order-safe-001\ncurrent_issue_sku_id=sku-safe-001\n[message_id=message-safe-001 timestamp=2026-09-13T09:32:00+00:00 speaker=CONSUMER] [PHONE_REDACTED]；[SHIPPING_ADDRESS_REDACTED]；[ALIPAY_ACCOUNT_REDACTED]\n[message_id=message-safe-002 timestamp=2026-09-13T09:33:00+00:00 speaker=AGENT] 客服承诺在医院附近的自提点安排换货。\n[message_id=message-safe-003 timestamp=2026-09-13T09:34:00+00:00 speaker=AGENT] 客服承诺寄送抗过敏产品。\n[message_id=message-safe-004 timestamp=2026-09-13T09:35:00+00:00 speaker=CONSUMER] [ADVERSE_REACTION_RISK]\n[message_id=message-safe-005 timestamp=2026-09-13T09:36:00+00:00 speaker=CONSUMER] [MEDICAL_CONTEXT_REDACTED]",
     "images": [],
     "source_ids": [
       "order-safe-001",
       "message-safe-001",
       "message-safe-002",
       "message-safe-003",
-      "message-safe-004"
+      "message-safe-004",
+      "message-safe-005"
     ]
   },
   "pii_masked_count": 5,
@@ -27,6 +29,7 @@
   "preserved_safe_semantics": {
     "case_order_and_message_ids": true,
     "message_timestamps": true,
-    "commitment_text": "We promise an update within 48 hours."
+    "hospital_location_commitment": "客服承诺在医院附近的自提点安排换货。",
+    "anti_allergy_product_commitment": "客服承诺寄送抗过敏产品。"
   }
 }

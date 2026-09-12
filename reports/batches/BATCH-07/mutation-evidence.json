@@ -1,19 +1,41 @@
 {
-  "artifact_version": "1.0",
+  "artifact_version": "1.1",
   "batch_id": "BATCH-07",
   "classification": "MUTATION_TEST_EVIDENCE_NO_RAW_PII",
-  "test_id": "test_mutation_bypass_is_rejected_before_the_provider_can_capture_raw_pii",
-  "command": "C:\\cov-run\\batch-07\\venv\\Scripts\\python.exe -m pytest backend/tests/privacy -q -m mutation",
-  "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-07",
+  "repair_of_verification_report": "0749b1f",
+  "command": "C:\\cov-run\\batch-07-repair-1\\venv\\Scripts\\python.exe -m pytest backend/tests/privacy -q -m mutation",
+  "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-07-repair-1",
   "mode": "MUTATION",
-  "mutant": "An in-memory dataclasses.replace operation substitutes a synthetic raw phone-shaped string for redacted_text and clears masking metadata.",
-  "expected_inner_failure": "UnsafeModelInputError is raised by the privacy boundary before ModelProvider.extract is invoked.",
-  "outer_driver": "pytest.raises asserts the expected failure, then asserts the capturing protocol double received zero requests.",
+  "mutations": [
+    {
+      "test_id": "test_mutation_replacing_a_generated_projection_is_rejected_before_provider_capture",
+      "categories": [
+        "phone",
+        "shipping_address",
+        "alipay_account",
+        "medical_context",
+        "adverse_reaction"
+      ],
+      "mutant": "A local dataclasses.replace substitutes an opaque synthetic typed-field value into redacted_text while retaining outward metadata.",
+      "expected_inner_failure": "UnsafeModelInputError before ModelProvider.extract.",
+      "outer_driver": "pytest.raises verifies the failure and then asserts the capturing protocol double received zero requests."
+    },
+    {
+      "test_id": "test_mutation_replacing_generated_projection_provenance_is_rejected_before_capture",
+      "mutant": "A local dataclasses.replace substitutes untrusted source IDs on an otherwise safe-looking projection.",
+      "expected_inner_failure": "UnsafeModelInputError before ModelProvider.extract."
+    },
+    {
+      "test_id": "test_directly_constructed_result_is_rejected_before_provider_capture",
+      "mutant": "A manually constructed SanitizationResult lacks sanitizer-generated projection provenance.",
+      "expected_inner_failure": "UnsafeModelInputError before ModelProvider.extract."
+    }
+  ],
   "result": "EXPECTED_FAILURE_DETECTED",
   "exit_code": 0,
-  "duration_seconds": 0.564,
-  "tests_passed": 1,
-  "tests_deselected": 5,
+  "duration_seconds": 0.702,
+  "tests_passed": 7,
+  "tests_deselected": 17,
   "raw_sensitive_values_written": false,
-  "source_restoration": "The mutation is local to the test object and is discarded when the test exits; no source file, cache, log, or report receives the synthetic raw value."
+  "source_restoration": "Every mutation is in-memory and discarded when its test exits; no source file, cache, log, request capture, or report receives a raw sensitive value."
 }

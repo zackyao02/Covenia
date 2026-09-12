@@ -1,101 +1,111 @@
 {
-  "artifact_version": "1.0",
+  "artifact_version": "1.1",
   "batch_id": "BATCH-07",
-  "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-07",
-  "interpreter": "C:\\cov-run\\batch-07\\venv\\Scripts\\python.exe",
+  "repair_of_verification_report": "0749b1f",
+  "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-07-repair-1",
+  "interpreter": "C:\\cov-run\\batch-07-repair-1\\venv\\Scripts\\python.exe",
   "commands": [
     {
       "id": "required-01-interpreter-identity",
-      "command": "C:\\cov-run\\batch-07\\venv\\Scripts\\python.exe -c \\\"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\\\" C:\\cov-run\\batch-07\\venv\\Scripts\\python.exe",
+      "command": "& \"C:\\cov-run\\batch-07-repair-1\\venv\\Scripts\\python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"C:\\cov-run\\batch-07-repair-1\\venv\\Scripts\\python.exe\"",
       "exit_code": 0,
-      "duration_seconds": 0.063,
+      "duration_seconds": 0.179,
+      "actual_interpreter": "C:\\cov-run\\batch-07-repair-1\\venv\\Scripts\\python.exe",
       "stdout_summary": "isolated interpreter identity matched; CPython 3.13.5"
     },
     {
       "id": "required-02-install-locked-requirements",
-      "command": "C:\\cov-run\\batch-07\\venv\\Scripts\\python.exe -m pip install --no-deps -r backend/requirements-dev.lock",
+      "command": "& \"C:\\cov-run\\batch-07-repair-1\\venv\\Scripts\\python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
       "exit_code": 0,
-      "duration_seconds": 25.2,
-      "stdout_summary": "all existing exact pins installed into the isolated venv"
+      "duration_seconds": 1.864,
+      "actual_interpreter": "C:\\cov-run\\batch-07-repair-1\\venv\\Scripts\\python.exe",
+      "stdout_summary": "all exact lock pins were already satisfied in the isolated venv"
     },
     {
       "id": "required-03-editable-install",
-      "command": "C:\\cov-run\\batch-07\\venv\\Scripts\\python.exe -m pip install --no-deps --no-build-isolation -e backend",
+      "command": "& \"C:\\cov-run\\batch-07-repair-1\\venv\\Scripts\\python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
       "exit_code": 0,
-      "duration_seconds": 5.3,
-      "stdout_summary": "covenia-b 0.0.0 installed editable from this worktree"
+      "duration_seconds": 3.051,
+      "actual_interpreter": "C:\\cov-run\\batch-07-repair-1\\venv\\Scripts\\python.exe",
+      "stdout_summary": "covenia-b 0.0.0 rebuilt and installed editable from this repair worktree"
     },
     {
       "id": "required-04-import-check",
-      "command": "C:\\cov-run\\batch-07\\venv\\Scripts\\python.exe -c \\\"import pytest, jsonschema; print('pytest/jsonschema import OK')\\\"",
+      "command": "& \"C:\\cov-run\\batch-07-repair-1\\venv\\Scripts\\python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
       "exit_code": 0,
-      "duration_seconds": 0.27,
+      "duration_seconds": 0.372,
+      "actual_interpreter": "C:\\cov-run\\batch-07-repair-1\\venv\\Scripts\\python.exe",
       "stdout_summary": "pytest/jsonschema import OK"
     },
     {
       "id": "required-05-privacy-pytest",
-      "command": "C:\\cov-run\\batch-07\\venv\\Scripts\\python.exe -m pytest backend/tests/privacy -q",
+      "command": "& \"C:\\cov-run\\batch-07-repair-1\\venv\\Scripts\\python.exe\" -m pytest backend/tests/privacy -q",
       "mode": "UNIT",
       "exit_code": 0,
-      "duration_seconds": 0.572,
-      "tests_passed": 6,
+      "duration_seconds": 0.774,
+      "actual_interpreter": "C:\\cov-run\\batch-07-repair-1\\venv\\Scripts\\python.exe",
+      "tests_passed": 24,
       "tests_failed": 0,
-      "stdout_summary": "6 passed in 0.25s"
+      "stdout_summary": "24 passed in 0.30s"
     },
     {
       "id": "required-06-privacy-mutation-pytest",
-      "command": "C:\\cov-run\\batch-07\\venv\\Scripts\\python.exe -m pytest backend/tests/privacy -q -m mutation",
+      "command": "& \"C:\\cov-run\\batch-07-repair-1\\venv\\Scripts\\python.exe\" -m pytest backend/tests/privacy -q -m mutation",
       "mode": "MUTATION",
       "exit_code": 0,
-      "duration_seconds": 0.564,
-      "tests_passed": 1,
+      "duration_seconds": 0.702,
+      "actual_interpreter": "C:\\cov-run\\batch-07-repair-1\\venv\\Scripts\\python.exe",
+      "tests_passed": 7,
       "tests_failed": 0,
-      "tests_deselected": 5,
-      "stdout_summary": "1 passed, 5 deselected in 0.25s",
+      "tests_deselected": 17,
+      "stdout_summary": "7 passed, 17 deselected in 0.25s",
       "evidence": "reports/batches/BATCH-07/mutation-evidence.json"
     },
     {
       "id": "supplemental-ruff",
-      "command": "C:\\cov-run\\batch-07\\venv\\Scripts\\python.exe -m ruff check backend/src/covenia_b/privacy backend/tests/privacy",
+      "command": "& \"C:\\cov-run\\batch-07-repair-1\\venv\\Scripts\\python.exe\" -m ruff check backend/src/covenia_b/privacy backend/tests/privacy",
       "exit_code": 0,
-      "duration_seconds": 0.105,
+      "duration_seconds": 0.224,
+      "actual_interpreter": "C:\\cov-run\\batch-07-repair-1\\venv\\Scripts\\python.exe",
       "stdout_summary": "All checks passed!"
     },
     {
       "id": "required-07-pip-list",
-      "command": "C:\\cov-run\\batch-07\\venv\\Scripts\\python.exe -m pip list --format=json",
+      "command": "& \"C:\\cov-run\\batch-07-repair-1\\venv\\Scripts\\python.exe\" -m pip list --format=json",
       "exit_code": 0,
-      "duration_seconds": 0.466,
-      "stdout_summary": "31 packages, including editable covenia-b"
+      "duration_seconds": 0.575,
+      "actual_interpreter": "C:\\cov-run\\batch-07-repair-1\\venv\\Scripts\\python.exe",
+      "stdout_summary": "31 packages, including editable covenia-b from this repair worktree"
     },
     {
       "id": "required-08-pip-check",
-      "command": "C:\\cov-run\\batch-07\\venv\\Scripts\\python.exe -m pip check",
+      "command": "& \"C:\\cov-run\\batch-07-repair-1\\venv\\Scripts\\python.exe\" -m pip check",
       "exit_code": 0,
-      "duration_seconds": 0.537,
+      "duration_seconds": 0.616,
+      "actual_interpreter": "C:\\cov-run\\batch-07-repair-1\\venv\\Scripts\\python.exe",
       "stdout_summary": "No broken requirements found.",
       "evidence": "reports/batches/BATCH-07/pip-check.txt"
+    },
+    {
+      "id": "preflight-final-venv-path",
+      "command": "Get-ChildItem C:\\cov-run\\batch-07-repair-1\\venv -Recurse -File | select longest absolute path",
+      "exit_code": 0,
+      "duration_seconds": 0.464,
+      "stdout_summary": "longest venv file path length is 165, below the exclusive 250-character gate; PYTHONPATH is unset"
     },
     {
       "id": "required-09-git-diff-check",
       "command": "git diff --check",
       "exit_code": 0,
-      "duration_seconds": 0.058,
-      "stdout_summary": "no whitespace errors"
-    },
-    {
-      "id": "supplemental-git-diff-cached-check",
-      "command": "git diff --cached --check",
-      "exit_code": 0,
-      "duration_seconds": 0.052,
-      "stdout_summary": "no whitespace errors in the exact staged report paths"
+      "duration_seconds": 0.215,
+      "stdout_summary": "no whitespace errors; Git emitted only expected LF-to-CRLF working-tree notices"
     },
     {
       "id": "required-10-git-status",
       "command": "git status --short",
       "exit_code": 0,
-      "duration_seconds": 0.054,
-      "stdout_summary": "seven allowed BATCH-07 report artifacts staged; no other paths present"
+      "duration_seconds": 0.202,
+      "stdout_summary": "exactly six implementation-owned BATCH-07 report artifacts were modified before the report commit; no other paths were present"
     }
   ]
 }
