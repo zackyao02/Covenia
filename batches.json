@@ -106,8 +106,27 @@
     },
     {
       "id": "X-A-IMAGES",
-      "owner": "A",
-      "status": "MISSING",
+      "owner": "产品负责人",
+      "status": "ACCEPTED",
+      "archive_commit": "e54ffa5fd74b50ca2cca6d4f28a31b88ce9ea842",
+      "delivered_by": "Zack",
+      "signed_off_by": "Zack",
+      "accepted_at": "2026-09-12",
+      "accepted_evidence_blob_sha256": {
+        "frontend/public/evidence/s00001-product-overview.jpg": "E2C6BBD230F906F113D75F2F582E778B6E79AEA37544C2383F1FFDA15A5295D5",
+        "frontend/public/evidence/s00001-pump-detail.jpg": "4709D7529803846D4FF4E123BFCC034D420449AE23923CB54468BE573BD8CFC7",
+        "frontend/public/evidence/s00001-package-context.jpg": "C734BFB5A70FFA39E10B2535DC8321EACE3C1FB358293FA22B590B9F7B5836BD",
+        "frontend/public/evidence/s00001-gift-evidence.jpg": "E52DF258CDBC5761D175F31985639337F2274211FBEB3DDB82A0B773150AA7F5",
+        "frontend/public/evidence/s00001-blurred-pump.jpg": "634D2B4B0665FAE49DEC286628B13D8116808B3FFF7A39A9DD7CDEA9E7DE3143",
+        "handoff/a/images-manifest.json": "4D596C87F3483166915E25A0F250292FA9CCE1A654463C09DBFC0EF97310352E"
+      },
+      "injection_pairs": {
+        "status": "NOT_STARTED",
+        "does_not_block": [
+          "BATCH-28",
+          "BATCH-29"
+        ]
+      },
       "required_before": [
         "BATCH-28",
         "BATCH-29",
