@@ -128,11 +128,11 @@ function initialKnownFacts(caseId: string) {
   ];
 }
 
-function prohibitedCopy(decision: Decision | undefined, caseId: string) {
-  if (decision === "ALLOW" || caseId === "DEMO_002") {
+function prohibitedCopy(caseId: string) {
+  if (caseId === "DEMO_002") {
     return "不要把赠品图片当作正装泵头证据";
   }
-  if (decision === "HUMAN_REVIEW" || caseId === "DEMO_003") {
+  if (caseId === "DEMO_003") {
     return "不要基于模糊图片直接判断责任";
   }
   return "不要再次索取相同的破损图片";
@@ -293,7 +293,8 @@ function App() {
       action_type: "CHECK_REPLACEMENT_PROGRESS",
       requires_human_approval: true,
     };
-    const result = decision ?? (await evaluateAction(queryAction));
+    // 查询补发进度必须按当前动作重新评估，不能复用上一次“发送消息”的判断。
+    const result = await evaluateAction(queryAction);
     if (!result) return;
     setPhase("resolution");
     setApprovalReply(result.resolution_path.consumer_reply_draft);
@@ -330,6 +331,15 @@ function App() {
     setDraft(result.resolution_path.consumer_reply_draft);
     setApprovalReply(result.resolution_path.consumer_reply_draft);
     setToast("解决回复已放入输入框，确认后发送");
+  }
+
+  function handleSelectCase(caseId: string) {
+    // 案例切换后的分析是异步的；先同步清除旧决策，避免旧案例短暂影响新案例的操作路径。
+    setSelectedId(caseId);
+    setDecision(null);
+    setPhase("overview");
+    setLoading(true);
+    setRuntimeMetrics(null);
   }
 
   async function handleApprove() {
@@ -439,7 +449,7 @@ function App() {
         <ConversationRail
           cases={demoCases}
           selectedId={selectedId}
-          onSelect={setSelectedId}
+          onSelect={handleSelectCase}
         />
         <ChatWorkspace
           demoCase={selectedCase}
@@ -888,7 +898,7 @@ function CoveniaPlugin({
                 <span className="answer-label">现在不能做什么</span>
                 <div className="stop-message">
                   <AlertTriangle size={17} />
-                  <strong>{prohibitedCopy(decisionType, demoCase.id)}</strong>
+                  <strong>{prohibitedCopy(demoCase.id)}</strong>
                 </div>
               </div>
             </section>
@@ -896,7 +906,14 @@ function CoveniaPlugin({
               <div className="section-number">03</div>
               <div className="section-content">
                 <span className="answer-label">下一步做什么</span>
-                {decisionType === "ALLOW" ? (
+                {phase === "resolution" ? (
+                  <>
+                    <button className="primary-action" onClick={onApprove} disabled={acting || loading}>
+                      <ClipboardCheck size={16} /> 人工确认解决路径 <ChevronRight size={16} />
+                    </button>
+                    <p className="action-hint">沿用已有工单，确认后由品牌持续跟进至送达</p>
+                  </>
+                ) : decisionType === "ALLOW" ? (
                   <>
                     <button className="primary-action allow-action" onClick={onGenerate} disabled={acting}>
                       生成精准索证回复 <ChevronRight size={16} />
@@ -919,17 +936,12 @@ function CoveniaPlugin({
                     <button className="secondary-action" onClick={onGenerate} disabled={acting}>
                       <WandSparkles size={15} /> 生成解决回复
                     </button>
-                    {phase === "resolution" ? (
-                      <button className="conditional-action" onClick={onApprove}>
-                        <ClipboardCheck size={15} /> 人工确认解决路径
-                      </button>
-                    ) : null}
                   </div>
                 )}
               </div>
             </section>
 
-            {phase === "resolution" && decision?.decision === "INTERVENE" ? (
+            {phase === "resolution" && decision ? (
               <ResolutionPreview decision={decision} onApprove={onApprove} />
             ) : null}
 

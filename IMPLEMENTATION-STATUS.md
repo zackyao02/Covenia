@@ -23,7 +23,7 @@
 
 | 范围 | 未完成内容 | 原因 | 下一步 |
 |---|---|---|---|
-| B/C 联调 | 浏览器端 HTTP 联调录屏 | B 线四端点已实现，本次尚未启动双服务完成浏览器录屏 | 设置 `VITE_API_MODE=http` 后启动 `backend/` 与 `frontend/`，执行主链、挑战链和物流链 |
+| B/C 联调 | 浏览器端 HTTP 联调 | 已完成本地双服务主链、挑战链和物流链 | 交由 D 线按验收清单独立复测 |
 | 真实证据图 | `public/evidence/` 内的团队压力测试图片二进制文件 | 当前未在 C 工作区提供 | 图片就位后按 README 的固定文件名放入；当前 UI 有明确占位回退 |
 | 独立验收 | `QA-ACCEPTANCE.md` 对全部 P0 标记通过 | 本次为 G3 后的有限修复；尚未重新独立验收 | 修复提交后启动 Claude 只读复验 |
 
@@ -34,6 +34,8 @@
 | C 端契约与主流程 | `npm test -- --run` | 1 个测试文件、11 项测试全部通过 | `frontend/src/mockApi.test.ts`（2026-09-10） |
 | TypeScript 与生产构建 | `npm run build` | 通过；Vite 生成 `dist/`，JS 230.13 kB（gzip 67.36 kB） | `frontend/package.json`（2026-09-10） |
 | JSON 与决策 Schema | Python JSON + Draft 2020-12 校验 | 17 个 JSON 文件可解析；3 个 `DecisionResult` 示例通过 | `schemas/decision-result.schema.json`（2026-09-10） |
+| B 端 API | `python -m pytest backend/tests -q` | 5 项测试全部通过 | `backend/tests/test_api.py`（2026-09-13） |
+| B/C 浏览器 HTTP 联调 | `VITE_API_MODE=http` 启动前后端 | 主案例 E1 拦截、赠品 E2 放行、模糊图 H1 人工复核；查询→确认→揽收→送达闭环通过 | `backend/main.py` 与 `frontend/src/App.tsx`（2026-09-13） |
 
 ## B 线实现状态（2026-09-13）
 
