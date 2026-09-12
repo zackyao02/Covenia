@@ -1,0 +1,68 @@
+{
+  "batch_id": "BATCH-04",
+  "reviewed_sha": "3db29f343ee176b69a24a9b23568dbb0987823e9",
+  "hash_method": "SHA-256 over raw bytes streamed from git cat-file blob for the stated commit:path. No default working-copy digest is used for Git artifact integrity.",
+  "requirements_dev_lock": {
+    "path": "backend/requirements-dev.lock",
+    "source_command": "git show 3db29f343ee176b69a24a9b23568dbb0987823e9:backend/requirements-dev.lock",
+    "source_commit": "3db29f343ee176b69a24a9b23568dbb0987823e9",
+    "git_blob_oid": "4c3f8019eda3a683a5cf424eaa5dbc69b0cf91ef",
+    "sha256_raw_git_blob": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+    "byte_length": 676,
+    "eol_basis": {
+      "lf_count": 31,
+      "crlf_pair_count": 0,
+      "ends_with_lf": true
+    },
+    "comparison": [
+      {
+        "commit": "e1070f150de14fa134a5492372828628ca38e89e",
+        "sha256_raw_git_blob": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+        "byte_length": 676
+      },
+      {
+        "commit": "f4769280d453ef6d7e13fc8634bdc723d75029e8",
+        "sha256_raw_git_blob": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+        "byte_length": 676
+      },
+      {
+        "commit": "3db29f343ee176b69a24a9b23568dbb0987823e9",
+        "sha256_raw_git_blob": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+        "byte_length": 676
+      }
+    ],
+    "unchanged": true
+  },
+  "reviewed_implementation_report_files": [
+    {
+      "path": "reports/batches/BATCH-04/IMPLEMENTATION_REPORT.json",
+      "git_blob_oid": "78b59650ef33f9c2a2e43d67ea2fe4b01d91e1b3",
+      "sha256_raw_git_blob": "9A5D5B2E20864A715F6ACB33AF7DE13759F7056355B728E82C15C69F8F222391",
+      "byte_length": 10137
+    },
+    {
+      "path": "reports/batches/BATCH-04/IMPLEMENTATION_REPORT.md",
+      "git_blob_oid": "4b3da3c212f6716978a0988ea5fef4dfb8d44f20",
+      "sha256_raw_git_blob": "444EA2117D6DF2D4DEFD5981B3A1DD1F650E6B3A78CB9255C8ECB4688F201CA9",
+      "byte_length": 2497
+    },
+    {
+      "path": "reports/batches/BATCH-04/commands.json",
+      "git_blob_oid": "41e8b9a089d1bf491a55df9711f58618e2f2ca74",
+      "sha256_raw_git_blob": "01EBBBF7472A558E65242CA7301696446AFCC8C80DAFF30EF3DDC7115029A7BD",
+      "byte_length": 8084
+    },
+    {
+      "path": "reports/batches/BATCH-04/environment.json",
+      "git_blob_oid": "2abbaa2b1f73722d82bf7903826b48cff86c470e",
+      "sha256_raw_git_blob": "BC6676F2F1507C68C985555DDF1976C3E821A062007F8919A48C8B6806F54050",
+      "byte_length": 5659
+    },
+    {
+      "path": "reports/batches/BATCH-04/pip-check.txt",
+      "git_blob_oid": "974f3398bba2ea1e622b3b9269f1cef963b33412",
+      "sha256_raw_git_blob": "773A2A4D602237BA8B25156996C75727DA4852392D81CB7BF3507FD4D76D1E02",
+      "byte_length": 575
+    }
+  ]
+}

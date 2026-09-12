@@ -1,0 +1,33 @@
+{
+  "batch_id": "BATCH-04",
+  "reviewed_sha": "3db29f343ee176b69a24a9b23568dbb0987823e9",
+  "interpreter": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b04v5\\venv\\Scripts\\python.exe",
+  "command_kind": "Independent read-only type, contract, clock, error-hierarchy, and AST-import probe",
+  "exit_code": 0,
+  "schema_entry_points": 14,
+  "schema_names_match_locked_inventory": true,
+  "valid_vector_requests_round_tripped": 14,
+  "invalid_vector_requests_rejected": 4,
+  "success_responses_round_tripped": 8,
+  "error_envelopes_round_tripped": 10,
+  "negative_controls": {
+    "numeric_event_id_rejected": true,
+    "numeric_nested_order_id_rejected": true,
+    "offsetless_timestamp_rejected": true,
+    "naive_demo_clock_rejected": true,
+    "port_error_classes_extend_port_error": true
+  },
+  "pure_module_forbidden_imports": [],
+  "imported_modules_by_file": {
+    "backend/src/covenia_b/domain/__init__.py": ["covenia_b.domain.types"],
+    "backend/src/covenia_b/domain/time.py": ["__future__", "datetime", "jsonschema", "pydantic", "re", "typing"],
+    "backend/src/covenia_b/domain/types.py": ["__future__", "covenia_b.domain.time", "covenia_b.domain.validation", "dataclasses", "pydantic", "typing"],
+    "backend/src/covenia_b/domain/validation.py": ["__future__", "covenia_b.domain.time", "functools", "json", "jsonschema", "pathlib", "referencing", "typing"],
+    "backend/src/covenia_b/ports/__init__.py": ["covenia_b.ports.clock", "covenia_b.ports.contracts", "covenia_b.ports.wiring"],
+    "backend/src/covenia_b/ports/clock.py": ["__future__", "covenia_b.domain.time", "covenia_b.ports.errors", "dataclasses", "datetime"],
+    "backend/src/covenia_b/ports/contracts.py": ["__future__", "collections.abc", "covenia_b.domain.types", "covenia_b.ports.errors", "datetime", "typing"],
+    "backend/src/covenia_b/ports/errors.py": ["__future__"],
+    "backend/src/covenia_b/ports/wiring.py": ["__future__", "covenia_b.ports.contracts", "dataclasses"]
+  },
+  "result": "PASS"
+}

@@ -1,0 +1,71 @@
+{
+  "batch_id": "BATCH-04",
+  "reviewed_base_sha": "853f1bcb746050f0ee421cd499e1836843176894",
+  "reviewed_sha": "3db29f343ee176b69a24a9b23568dbb0987823e9",
+  "original_code_commit": "e1070f150de14fa134a5492372828628ca38e89e",
+  "report_only_base_commit": "f4769280d453ef6d7e13fc8634bdc723d75029e8",
+  "checks": [
+    {
+      "command": "git diff --name-status 853f1bcb746050f0ee421cd499e1836843176894..e1070f150de14fa134a5492372828628ca38e89e",
+      "result": "PASS",
+      "changed_paths": [
+        "backend/src/covenia_b/domain/__init__.py",
+        "backend/src/covenia_b/domain/time.py",
+        "backend/src/covenia_b/domain/types.py",
+        "backend/src/covenia_b/domain/validation.py",
+        "backend/src/covenia_b/ports/__init__.py",
+        "backend/src/covenia_b/ports/clock.py",
+        "backend/src/covenia_b/ports/contracts.py",
+        "backend/src/covenia_b/ports/errors.py",
+        "backend/src/covenia_b/ports/wiring.py",
+        "backend/tests/domain/test_ports_and_clock.py",
+        "backend/tests/domain/test_schema_backed_types.py",
+        "docs/contracts/b-module-ports.md"
+      ],
+      "violations": []
+    },
+    {
+      "command": "git diff --name-status 853f1bcb746050f0ee421cd499e1836843176894..3db29f343ee176b69a24a9b23568dbb0987823e9",
+      "result": "PASS",
+      "changed_path_count": 17,
+      "details": "The tree contains the 12 allowed original implementation paths plus the five expected report-only implementation-evidence paths; no schema, contract lock, plan, approval, fixture, frontend, verifier artifact, or lockfile change is present.",
+      "violations": []
+    },
+    {
+      "command": "git diff --name-status e1070f150de14fa134a5492372828628ca38e89e..3db29f343ee176b69a24a9b23568dbb0987823e9",
+      "result": "PASS",
+      "changed_paths": [
+        "reports/batches/BATCH-04/IMPLEMENTATION_REPORT.json",
+        "reports/batches/BATCH-04/IMPLEMENTATION_REPORT.md",
+        "reports/batches/BATCH-04/commands.json",
+        "reports/batches/BATCH-04/environment.json",
+        "reports/batches/BATCH-04/pip-check.txt"
+      ],
+      "expected_exactly_five_files": true,
+      "code_lock_schema_contract_plan_approval_fixture_frontend_or_verifier_change": false
+    },
+    {
+      "command": "git diff --exit-code e1070f150de14fa134a5492372828628ca38e89e 3db29f343ee176b69a24a9b23568dbb0987823e9 -- backend/src/covenia_b/domain backend/src/covenia_b/ports backend/tests/domain docs/contracts/b-module-ports.md backend/requirements-dev.lock",
+      "result": "PASS",
+      "exit_code": 0,
+      "details": "Zero code/document/lock difference between the original implementation and the reviewed report-only snapshot."
+    },
+    {
+      "command": "git rev-parse 3db29f343ee176b69a24a9b23568dbb0987823e9^1",
+      "result": "PASS",
+      "stdout": "f4769280d453ef6d7e13fc8634bdc723d75029e8",
+      "details": "The reviewed report-only commit is directly based on its declared report snapshot base."
+    }
+  ],
+  "implementation_evidence_consistency": {
+    "implementation_report_original_code_commit_matches": true,
+    "commands_tested_code_commit_matches": true,
+    "all_three_json_evidence_snapshot_ids_match": true,
+    "implementation_report_commands_environment_run_dir_match": true,
+    "commands_environment_interpreter_match": true,
+    "pip_check_mentions_same_interpreter": true,
+    "implementation_report_changed_files_match_exact_reviewed_snapshot": true,
+    "report_does_not_claim_independent_pass": true
+  },
+  "violations": []
+}
