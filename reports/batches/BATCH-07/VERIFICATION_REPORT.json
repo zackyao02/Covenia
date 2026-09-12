@@ -1,0 +1,541 @@
+{
+  "report_version": "2.0",
+  "batch_id": "BATCH-07",
+  "result": "PASS",
+  "commit_verified": {
+    "base_sha": "f8fad9c1f6b8f128d3215971b33780cb3080378b",
+    "review_sha": "d7be49e23e0bc041a7ee6dfbefa7b43870a96f0b",
+    "current_code_commit": "ddf9a32fe1e765e7a3a4a47aebabcb77ddcbf8c3",
+    "base_is_ancestor_of_review": true,
+    "current_code_is_ancestor_of_review": true,
+    "verification_report_absent_at_review": true,
+    "evidence_paths": [
+      "git log --oneline --decorate --graph -8",
+      "git merge-base --is-ancestor BASE_SHA REVIEW_SHA",
+      "git merge-base --is-ancestor CURRENT_CODE_COMMIT REVIEW_SHA",
+      "git cat-file -e REVIEW_SHA:reports/batches/BATCH-07/VERIFICATION_REPORT.json"
+    ]
+  },
+  "plan_sha256": {
+    "authoritative_root_worktree": {
+      "MASTER_PLAN.md": "56A5CAF32334DC1D5628DA67A3BAB24A250CC7C5FE3F762BD781682633808AE1",
+      "batches.json": "FAE792913DCE0F2DE7BC799C452FD0964775804117287A9745A719722326A720",
+      "basis": "The current authoritative root-plan byte hashes supplied in the acceptance instruction."
+    },
+    "review_git_blobs": {
+      "MASTER_PLAN.md": {
+        "sha256": "CB6799483EA98648894C3E00B45971C4AFAAA549572CA249C137E65C7D6C2939",
+        "source": "git show d7be49e23e0bc041a7ee6dfbefa7b43870a96f0b:MASTER_PLAN.md",
+        "bytes": 209786,
+        "eol": "LF-only, 3928 LF, 0 CRLF pairs"
+      },
+      "batches.json": {
+        "sha256": "7047986E3B702BC28AE5FB855C4B629FB068424DD9F66BEC3173E6539CCD608C",
+        "source": "git show d7be49e23e0bc041a7ee6dfbefa7b43870a96f0b:batches.json",
+        "bytes": 200987,
+        "eol": "LF-only, 4489 LF, 0 CRLF pairs"
+      },
+      "note": "The review worktree checkout is CRLF-normalized; no controlled working-copy digest was used as Git-blob evidence."
+    }
+  },
+  "dependency_checks": [
+    {
+      "batch_id": "BATCH-03",
+      "verification_result": "PASS",
+      "integration_commit": "2fbbc9d88348e4088332d574051de81d7ec1af15",
+      "integration_status": "SUCCESS",
+      "evidence_paths": [
+        "reports/batches/BATCH-03/VERIFICATION_REPORT.json",
+        "C:\\Users\\WONG Tsun Ming\\covenia-orchestration\\runs\\covenia-b-20260910-01\\integration-receipts\\BATCH-03.json"
+      ]
+    },
+    {
+      "batch_id": "BATCH-04",
+      "verification_result": "PASS",
+      "integration_commit": "9d093a492e576d7cb02b46c2ca60ebf2cac1c244",
+      "integration_status": "SUCCESS",
+      "evidence_paths": [
+        "reports/batches/BATCH-04/VERIFICATION_REPORT.json",
+        "C:\\Users\\WONG Tsun Ming\\covenia-orchestration\\runs\\covenia-b-20260910-01\\integration-receipts\\BATCH-04.json"
+      ]
+    }
+  ],
+  "environment": {
+    "run_dir": "C:\\cov-run\\batch-07-verify-2",
+    "venv": "C:\\cov-run\\batch-07-verify-2\\venv",
+    "venv_direct_child_of_run_dir": true,
+    "interpreter": "C:\\cov-run\\batch-07-verify-2\\venv\\Scripts\\python.exe",
+    "sys_prefix": "C:\\cov-run\\batch-07-verify-2\\venv",
+    "sys_base_prefix": "D:\\python",
+    "python_version": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]",
+    "pythonpath": "UNSET",
+    "user_site_enabled": false,
+    "system_site_packages": false,
+    "longest_venv_path_before_install": 135,
+    "longest_venv_path_after_install": 165,
+    "longest_path_limit_exclusive": 250,
+    "path_preflight": "PASS",
+    "pip_check": {
+      "exit_code": 0,
+      "stdout": "No broken requirements found."
+    },
+    "pip_list_exit_code": 0,
+    "pip_list_package_count": 31,
+    "pip_list": [
+      "annotated-types==0.7.0",
+      "anyio==4.8.0",
+      "attrs==26.1.0",
+      "build==1.2.2.post1",
+      "click==8.1.8",
+      "colorama==0.4.6",
+      "covenia-b==0.0.0 (editable)",
+      "fastapi==0.115.6",
+      "h11==0.14.0",
+      "idna==3.10",
+      "iniconfig==2.0.0",
+      "jsonschema==4.25.0",
+      "jsonschema-specifications==2025.9.1",
+      "packaging==24.2",
+      "pip==25.1.1",
+      "pluggy==1.5.0",
+      "pydantic==2.10.5",
+      "pydantic_core==2.27.2",
+      "pydantic-settings==2.7.1",
+      "pyproject_hooks==1.2.0",
+      "pytest==8.3.4",
+      "python-dotenv==1.0.1",
+      "referencing==0.37.0",
+      "rpds-py==2026.6.3",
+      "ruff==0.8.4",
+      "setuptools==75.8.0",
+      "sniffio==1.3.1",
+      "starlette==0.41.3",
+      "typing_extensions==4.12.2",
+      "uvicorn==0.34.0",
+      "wheel==0.45.1"
+    ],
+    "evidence_paths": [
+      "C:\\cov-run\\batch-07-verify-2\\venv\\Scripts\\python.exe",
+      "MASTER_PLAN.md: BATCH-07 必须执行的测试命令与环境门",
+      "batches.json: BATCH-07 acceptance_commands/acceptance_criteria"
+    ]
+  },
+  "commands_run": [
+    {
+      "id": "venv-identity-and-preflight",
+      "command": "& \"C:\\cov-run\\batch-07-verify-2\\venv\\Scripts\\python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"C:\\cov-run\\batch-07-verify-2\\venv\\Scripts\\python.exe\"",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-07-verify-2",
+      "interpreter": "C:\\cov-run\\batch-07-verify-2\\venv\\Scripts\\python.exe",
+      "exit_code": 0,
+      "output_summary": "Identity matched; CPython 3.13.5. Longest path was 135 before install and 165 after install; both are below 250.",
+      "evidence_paths": [
+        "MASTER_PLAN.md: BATCH-07 必须执行的测试命令",
+        "batches.json: BATCH-07 acceptance_commands"
+      ]
+    },
+    {
+      "id": "locked-install",
+      "command": "& \"C:\\cov-run\\batch-07-verify-2\\venv\\Scripts\\python.exe\" -m pip install -r backend/requirements-dev.lock --no-deps",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-07-verify-2",
+      "interpreter": "C:\\cov-run\\batch-07-verify-2\\venv\\Scripts\\python.exe",
+      "exit_code": 0,
+      "output_summary": "All exact lock pins were already satisfied in the isolated venv on the final rerun.",
+      "evidence_paths": [
+        "backend/requirements-dev.lock",
+        "reports/batches/BATCH-07/pip-check.txt"
+      ]
+    },
+    {
+      "id": "editable-install",
+      "command": "& \"C:\\cov-run\\batch-07-verify-2\\venv\\Scripts\\python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-07-verify-2",
+      "interpreter": "C:\\cov-run\\batch-07-verify-2\\venv\\Scripts\\python.exe",
+      "exit_code": 0,
+      "output_summary": "Editable covenia-b 0.0.0 was built and installed from the fixed review worktree.",
+      "evidence_paths": [
+        "backend/pyproject.toml",
+        "C:\\cov-run\\batch-07-verify-2\\venv\\Scripts\\python.exe"
+      ]
+    },
+    {
+      "id": "import-check",
+      "command": "& \"C:\\cov-run\\batch-07-verify-2\\venv\\Scripts\\python.exe\" -c \"import pytest,jsonschema; print('pytest/jsonschema import OK')\"",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-07-verify-2",
+      "interpreter": "C:\\cov-run\\batch-07-verify-2\\venv\\Scripts\\python.exe",
+      "exit_code": 0,
+      "output_summary": "pytest/jsonschema import OK.",
+      "evidence_paths": [
+        "backend/requirements-dev.lock"
+      ]
+    },
+    {
+      "id": "privacy-pytest",
+      "command": "& \"C:\\cov-run\\batch-07-verify-2\\venv\\Scripts\\python.exe\" -m pytest backend/tests/privacy -q",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-07-verify-2",
+      "interpreter": "C:\\cov-run\\batch-07-verify-2\\venv\\Scripts\\python.exe",
+      "exit_code": 0,
+      "tests_passed": 24,
+      "tests_failed": 0,
+      "tests_skipped": 0,
+      "output_summary": "24 passed in 0.43s.",
+      "evidence_paths": [
+        "backend/tests/privacy/test_sanitizer.py",
+        "backend/tests/privacy/test_model_boundary.py"
+      ]
+    },
+    {
+      "id": "privacy-mutation-pytest",
+      "command": "& \"C:\\cov-run\\batch-07-verify-2\\venv\\Scripts\\python.exe\" -m pytest backend/tests/privacy -q -m mutation",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-07-verify-2",
+      "interpreter": "C:\\cov-run\\batch-07-verify-2\\venv\\Scripts\\python.exe",
+      "exit_code": 0,
+      "tests_passed": 7,
+      "tests_deselected": 17,
+      "tests_failed": 0,
+      "tests_skipped": 0,
+      "output_summary": "7 passed, 17 deselected in 0.25s; no skip/xfail.",
+      "evidence_paths": [
+        "backend/tests/privacy/test_model_boundary.py:52-118",
+        "reports/batches/BATCH-07/mutation-evidence.json"
+      ]
+    },
+    {
+      "id": "pip-list",
+      "command": "& \"C:\\cov-run\\batch-07-verify-2\\venv\\Scripts\\python.exe\" -m pip list --format=json",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-07-verify-2",
+      "interpreter": "C:\\cov-run\\batch-07-verify-2\\venv\\Scripts\\python.exe",
+      "exit_code": 0,
+      "output_summary": "31 packages listed, including editable covenia-b from the fixed worktree.",
+      "evidence_paths": [
+        "backend/requirements-dev.lock",
+        "reports/batches/BATCH-07/environment.json"
+      ]
+    },
+    {
+      "id": "pip-check",
+      "command": "& \"C:\\cov-run\\batch-07-verify-2\\venv\\Scripts\\python.exe\" -m pip check",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-07-verify-2",
+      "interpreter": "C:\\cov-run\\batch-07-verify-2\\venv\\Scripts\\python.exe",
+      "exit_code": 0,
+      "output_summary": "No broken requirements found.",
+      "evidence_paths": [
+        "reports/batches/BATCH-07/pip-check.txt",
+        "reports/batches/BATCH-04/VERIFICATION_REPORT.json"
+      ]
+    },
+    {
+      "id": "git-diff-check",
+      "command": "git diff --check",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-07-verify-2",
+      "interpreter": null,
+      "exit_code": 0,
+      "output_summary": "No whitespace errors.",
+      "evidence_paths": [
+        "MASTER_PLAN.md: BATCH-07 必须执行的测试命令",
+        "batches.json: BATCH-07 acceptance_commands"
+      ]
+    },
+    {
+      "id": "git-status",
+      "command": "git status --short --untracked-files=all",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-07-verify-2",
+      "interpreter": null,
+      "exit_code": 0,
+      "output_summary": "Clean before verifier report creation; only the verifier-owned report is expected to appear afterward.",
+      "evidence_paths": [
+        "git status --short --untracked-files=all"
+      ]
+    },
+    {
+      "id": "independent-provider-capture-provenance-probe",
+      "command": "Inline read-only probe executed with C:\\cov-run\\batch-07-verify-2\\venv\\Scripts\\python.exe -",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-07-verify-2",
+      "interpreter": "C:\\cov-run\\batch-07-verify-2\\venv\\Scripts\\python.exe",
+      "exit_code": 0,
+      "output_summary": "PASS: all five structured bypass mutations were blocked before provider capture; normal capture contained no raw probe values; direct forged result was rejected.",
+      "evidence_paths": [
+        "backend/src/covenia_b/privacy/sanitizer.py:106-180",
+        "backend/src/covenia_b/privacy/boundary.py:14-39",
+        "backend/tests/privacy/test_model_boundary.py:52-118"
+      ]
+    },
+    {
+      "id": "independent-promise-and-image-probe",
+      "command": "Inline read-only probe executed with C:\\cov-run\\batch-07-verify-2\\venv\\Scripts\\python.exe -",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-07-verify-2",
+      "interpreter": "C:\\cov-run\\batch-07-verify-2\\venv\\Scripts\\python.exe",
+      "exit_code": 0,
+      "output_summary": "PASS: all five non-PII commitment probes preserved exact text; hospital-location and anti-allergy counterexamples were not masked; image declaration control rejected missing/false and accepted true.",
+      "evidence_paths": [
+        "backend/src/covenia_b/privacy/sanitizer.py:33-78",
+        "backend/src/covenia_b/privacy/sanitizer.py:182-315",
+        "backend/tests/privacy/test_sanitizer.py:140-200",
+        "reports/batches/BATCH-07/masking-samples.redacted.json"
+      ]
+    },
+    {
+      "id": "scope-and-blob-audit",
+      "command": "git diff --name-status BASE_SHA REVIEW_SHA; git diff --check BASE_SHA REVIEW_SHA; Python subprocess git show blob hash audit",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-07-verify-2",
+      "interpreter": "C:\\cov-run\\batch-07-verify-2\\venv\\Scripts\\python.exe",
+      "exit_code": 0,
+      "output_summary": "10 changed paths, all within the authoritative allowlist; raw Git blob hashes were computed from git show bytes and all reviewed blobs were LF-only.",
+      "evidence_paths": [
+        "batches.json: BATCH-07 allowed_paths/forbidden_paths",
+        "MASTER_PLAN.md: BATCH-07 允许修改的文件或目录",
+        "backend/requirements-dev.lock"
+      ]
+    },
+    {
+      "id": "report-redaction-scan",
+      "command": "rg -n \"known synthetic raw-value patterns\" reports/batches/BATCH-07",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-07-verify-2",
+      "interpreter": null,
+      "exit_code": 1,
+      "normalized_result": "PASS_NO_MATCHES",
+      "output_summary": "No known raw synthetic probe values found in BATCH-07 report artifacts.",
+      "evidence_paths": [
+        "reports/batches/BATCH-07/masking-samples.redacted.json",
+        "reports/batches/BATCH-07/mutation-evidence.json",
+        "reports/batches/BATCH-07/IMPLEMENTATION_REPORT.json"
+      ]
+    }
+  ],
+  "independent_probes": {
+    "provider_capture_and_provenance": {
+      "result": "PASS",
+      "structured_bypass": [
+        {
+          "category": "phone",
+          "blocked_before_capture": true,
+          "provider_capture_count": 0
+        },
+        {
+          "category": "shipping_address",
+          "blocked_before_capture": true,
+          "provider_capture_count": 0
+        },
+        {
+          "category": "alipay_account",
+          "blocked_before_capture": true,
+          "provider_capture_count": 0
+        },
+        {
+          "category": "medical_context",
+          "blocked_before_capture": true,
+          "provider_capture_count": 0
+        },
+        {
+          "category": "adverse_reaction",
+          "blocked_before_capture": true,
+          "provider_capture_count": 0
+        }
+      ],
+      "normal_path": {
+        "masked_count_positive": true,
+        "captured_once": true,
+        "raw_values_absent_from_capture": true,
+        "safe_metadata_preserved": true,
+        "adverse_risk_preserved": true
+      },
+      "directly_constructed_result_rejected": true,
+      "evidence_paths": [
+        "backend/src/covenia_b/privacy/sanitizer.py:106-180",
+        "backend/src/covenia_b/privacy/boundary.py:29-39",
+        "backend/tests/privacy/test_model_boundary.py:52-118"
+      ]
+    },
+    "promise_false_positive_and_image_control": {
+      "result": "PASS",
+      "false_positive_cases": [
+        {
+          "category": "phone",
+          "masked_count": 0,
+          "text_preserved": true
+        },
+        {
+          "category": "shipping_address",
+          "masked_count": 0,
+          "text_preserved": true
+        },
+        {
+          "category": "alipay_account",
+          "masked_count": 0,
+          "text_preserved": true
+        },
+        {
+          "category": "medical_context",
+          "masked_count": 0,
+          "text_preserved": true
+        },
+        {
+          "category": "adverse_reaction",
+          "masked_count": 0,
+          "text_preserved": true
+        }
+      ],
+      "counterexamples_preserved": [
+        "hospital-location commitment",
+        "anti-allergy-product commitment"
+      ],
+      "image_control": {
+        "missing_declaration_rejected": true,
+        "false_declaration_rejected": true,
+        "true_declaration_accepted": true
+      },
+      "evidence_paths": [
+        "backend/src/covenia_b/privacy/sanitizer.py:33-78",
+        "backend/src/covenia_b/privacy/sanitizer.py:286-315",
+        "backend/tests/privacy/test_sanitizer.py:140-200",
+        "reports/batches/BATCH-07/masking-samples.redacted.json"
+      ]
+    }
+  },
+  "artifact_hashes": {
+    "method": "SHA-256 over raw bytes streamed from git show REVIEW_SHA:path; controlled working-copy EOL was not used as hash evidence.",
+    "review_git_blobs": {
+      "backend/src/covenia_b/privacy/boundary.py": "E065373FAC1A61B85545D0900334024D050B40723245ED0274F5615D8A47095B",
+      "backend/src/covenia_b/privacy/sanitizer.py": "549B63B9C3E3734854112E586A7D3634D63F2ECCAE8F24E32FF85AD3D99CC9CA",
+      "backend/tests/privacy/test_model_boundary.py": "E6378810D99F6D0B1962B3EABD2CFD2708312FB0C74E1FB05D505588ECEDCA63",
+      "backend/tests/privacy/test_sanitizer.py": "BA52CC1F8024C7B328C0D80165E694B052526802A61BC91FD630C1643FEC2CE7",
+      "reports/batches/BATCH-07/IMPLEMENTATION_REPORT.json": "E1C3DDF080E09652427FB2B763275FD4489E1C18BC0F029D1A123F26444E54F3",
+      "reports/batches/BATCH-07/IMPLEMENTATION_REPORT.md": "0317924D5F585217E5B30EE010D79675EDC3B7EA96C5BF8E7181C828059F6AF4",
+      "reports/batches/BATCH-07/commands.json": "99ECA288E7A7A29167F2DD14DDDB7DC9142332A41BB242948D7B4728C25D864B",
+      "reports/batches/BATCH-07/environment.json": "3C1F94D4C69FD1B0C4846DE64561A1D9A78629E7855FC85A78D89DD0947B8AD8",
+      "reports/batches/BATCH-07/masking-samples.redacted.json": "D882E550DCCC9732CE9D6C1CC54DE2D23B03E898001037064A3A1805FC3CCFD2",
+      "reports/batches/BATCH-07/mutation-evidence.json": "27770E3B71209E62F10F0E3E4AE884823874DFD0B86CE92E2ACB140C4E9D9A61",
+      "backend/requirements-dev.lock": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04"
+    },
+    "requirements_lock": {
+      "base_sha256": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+      "review_sha256": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+      "unchanged": true,
+      "eol": "LF-only, 676 bytes, 31 LF, 0 CRLF pairs",
+      "evidence_paths": [
+        "git show f8fad9c1f6b8f128d3215971b33780cb3080378b:backend/requirements-dev.lock",
+        "git show d7be49e23e0bc041a7ee6dfbefa7b43870a96f0b:backend/requirements-dev.lock"
+      ]
+    }
+  },
+  "passed_checks": [
+    {
+      "id": "scope",
+      "conclusion": "The BASE_SHA..REVIEW_SHA diff contains exactly 10 paths, all in the BATCH-07 allowlist; no forbidden path, verification report, or verification-evidence directory was modified by the implementation.",
+      "evidence_paths": [
+        "batches.json: BATCH-07 allowed_paths/forbidden_paths",
+        "git diff --name-status BASE_SHA REVIEW_SHA",
+        "reports/batches/BATCH-07/IMPLEMENTATION_REPORT.json#/scope_check"
+      ]
+    },
+    {
+      "id": "required_commands",
+      "conclusion": "All required installation, import, privacy test, mutation test, pip list, pip check, diff, and status commands exited 0; mutation output had 7 passed and no skipped tests.",
+      "evidence_paths": [
+        "commands_run",
+        "reports/batches/BATCH-07/commands.json",
+        "reports/batches/BATCH-07/pip-check.txt"
+      ]
+    },
+    {
+      "id": "specified_pii_categories",
+      "conclusion": "Phone, shipping address, Alipay account, medical context, and adverse reaction chat inputs each hit exactly one redaction category in the submitted tests and independent normal-path probe; masked_count was positive and adverse risk remained true.",
+      "evidence_paths": [
+        "backend/tests/privacy/test_sanitizer.py:107-138",
+        "backend/src/covenia_b/privacy/sanitizer.py:182-284",
+        "independent_probes.provider_capture_and_provenance.normal_path"
+      ]
+    },
+    {
+      "id": "structured_provenance_boundary",
+      "conclusion": "The generated projection identity/provenance check is evaluated before ModelProvider.extract. All five opaque structured-field mutations failed closed with zero provider captures.",
+      "evidence_paths": [
+        "backend/src/covenia_b/privacy/sanitizer.py:106-180",
+        "backend/src/covenia_b/privacy/boundary.py:14-39",
+        "backend/tests/privacy/test_model_boundary.py:52-118",
+        "independent_probes.provider_capture_and_provenance.structured_bypass"
+      ]
+    },
+    {
+      "id": "promise_semantics",
+      "conclusion": "All five non-PII commitment probes preserved exact text. The hospital-location and anti-allergy-product counterexamples from the prior FAIL report were not masked.",
+      "evidence_paths": [
+        "backend/src/covenia_b/privacy/sanitizer.py:33-78",
+        "backend/tests/privacy/test_sanitizer.py:140-180",
+        "reports/batches/BATCH-07/masking-samples.redacted.json",
+        "independent_probes.promise_false_positive_and_image_control"
+      ]
+    },
+    {
+      "id": "capture_and_artifact_hygiene",
+      "conclusion": "Normal provider capture contained no raw probe values; known raw synthetic-value scan found no matches in BATCH-07 report artifacts; privacy runtime has no logging or cache write path.",
+      "evidence_paths": [
+        "backend/src/covenia_b/privacy/sanitizer.py:1-8",
+        "independent_probes.provider_capture_and_provenance.normal_path",
+        "commands_run#report-redaction-scan",
+        "reports/batches/BATCH-07/masking-samples.redacted.json",
+        "reports/batches/BATCH-07/mutation-evidence.json"
+      ]
+    },
+    {
+      "id": "image_control",
+      "conclusion": "Image ingress requires an explicit true no-PII declaration; missing and false declarations were rejected and true was accepted.",
+      "evidence_paths": [
+        "backend/src/covenia_b/privacy/sanitizer.py:218-235",
+        "backend/src/covenia_b/privacy/sanitizer.py:305-315",
+        "backend/tests/privacy/test_sanitizer.py:182-200",
+        "independent_probes.promise_false_positive_and_image_control.image_control"
+      ]
+    },
+    {
+      "id": "dependency_and_lock_integrity",
+      "conclusion": "BATCH-03 and BATCH-04 dependency verification/integration receipts are PASS/SUCCESS; BATCH-07 requirements-dev.lock is unchanged and has identical raw Git blob SHA-256 at BASE_SHA and REVIEW_SHA.",
+      "evidence_paths": [
+        "reports/batches/BATCH-03/VERIFICATION_REPORT.json",
+        "reports/batches/BATCH-04/VERIFICATION_REPORT.json",
+        "C:\\Users\\WONG Tsun Ming\\covenia-orchestration\\runs\\covenia-b-20260910-01\\integration-receipts\\BATCH-03.json",
+        "C:\\Users\\WONG Tsun Ming\\covenia-orchestration\\runs\\covenia-b-20260910-01\\integration-receipts\\BATCH-04.json",
+        "artifact_hashes.requirements_lock"
+      ]
+    }
+  ],
+  "failed_checks": [],
+  "scope_violations": [],
+  "regression_risks": [
+    {
+      "id": "R-B07-001",
+      "status": "DISCLOSED",
+      "risk": "This PASS covers the privacy module, its provider seam, local mutation controls, and declaration gate. No live model or image service was invoked; later live paths must continue to call extract_with_privacy_boundary.",
+      "evidence_paths": [
+        "reports/batches/BATCH-07/IMPLEMENTATION_REPORT.json#/remaining_risks",
+        "MASTER_PLAN.md: BATCH-07 goal and no external gate",
+        "backend/src/covenia_b/privacy/boundary.py:14-26"
+      ]
+    },
+    {
+      "id": "R-B07-002",
+      "status": "HANDOFF",
+      "risk": "Downstream observability must record only pii_masked_count, and downstream model callers must not bypass the privacy boundary.",
+      "evidence_paths": [
+        "reports/batches/BATCH-07/IMPLEMENTATION_REPORT.json#/remaining_risks",
+        "batches.json: BATCH-07 handoff_to_next_batch",
+        "backend/src/covenia_b/privacy/sanitizer.py:1-8"
+      ]
+    },
+    {
+      "id": "R-B07-003",
+      "status": "DISCLOSED",
+      "risk": "The authoritative current plan hashes refer to the current root-plan bytes supplied for this acceptance, while the reviewed historical commit contains older LF-only plan blobs; both are recorded and the review never used CRLF working-copy bytes for blob hashes.",
+      "evidence_paths": [
+        "plan_sha256.authoritative_root_worktree",
+        "plan_sha256.review_git_blobs",
+        "MASTER_PLAN.md: BATCH-07",
+        "batches.json: BATCH-07"
+      ]
+    }
+  ],
+  "minimal_fix_request": null,
+  "implementation_evidence_not_independent_acceptance": true,
+  "next_batch_started": false,
+  "code_modified_by_verifier": false,
+  "push_or_merge_performed": false
+}
