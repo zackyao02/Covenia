@@ -1,0 +1,69 @@
+{
+  "archive_id": "X-A-FIXTURES",
+  "status": "COMPLETED",
+  "delivered_by": "产品负责人",
+  "delivered_at": "2026-09-13",
+  "gate_status": "ACCEPTED",
+  "fixture_archive_commit_hash": "2deba092bd8ec894964763a93ca5594241bd3e74",
+  "base": {
+    "ref": "integration/covenia-b",
+    "commit": "dbedd4e9f985911cc89b140d1a129586a09fbdf4"
+  },
+  "blob_checks": [
+    {
+      "source": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\handoff\\a\\fixtures\\demo-cases.json",
+      "target": "fixtures/demo-cases.json",
+      "expected_size_bytes": 10588,
+      "expected_sha256": "AE06EC6EF7D2DB344B8F57820B2D549CACE662EEFCD2F31BFF0C65D74E658707",
+      "actual_git_blob_size_bytes": 10588,
+      "actual_git_blob_sha256": "AE06EC6EF7D2DB344B8F57820B2D549CACE662EEFCD2F31BFF0C65D74E658707",
+      "match": true
+    },
+    {
+      "source": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\handoff\\a\\fixtures\\ground-truth.json",
+      "target": "fixtures/ground-truth.json",
+      "expected_size_bytes": 3312,
+      "expected_sha256": "0E6E8170FC7B113EE700087289B027FE93D412AA18C2F39D64D80D01C57C3311",
+      "actual_git_blob_size_bytes": 3312,
+      "actual_git_blob_sha256": "0E6E8170FC7B113EE700087289B027FE93D412AA18C2F39D64D80D01C57C3311",
+      "match": true
+    },
+    {
+      "source": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\handoff\\a\\cases-manifest.json",
+      "target": "handoff/a/cases-manifest.json",
+      "expected_size_bytes": 11957,
+      "expected_sha256": "4169EFF9CF424271381046A32B36B5617A015C03BDB847F704C55CAA0E1641F6",
+      "actual_git_blob_size_bytes": 11957,
+      "actual_git_blob_sha256": "4169EFF9CF424271381046A32B36B5617A015C03BDB847F704C55CAA0E1641F6",
+      "match": true
+    }
+  ],
+  "manifest_applied_fixes_record": [
+    "F1: DEMO_001.case_input.evaluation_time aligned from 11:00 to 09:40.",
+    "F2: DEMO_001 second incoming-message timestamp aligned from 10:45 to 09:32.",
+    "F3: DEMO_001 conversation restored message 94357468399952.PNM.",
+    "F4: DEMO_001 ground-truth action_impacts removed RAISE_PRIORITY."
+  ],
+  "commands_run": [
+    "git worktree add -b codex/covenia-x-a-fixtures-archive-1 <worktree> integration/covenia-b",
+    "Copy-Item -LiteralPath <source> -Destination <target> (raw file copy for each of three artifacts)",
+    "git add -- fixtures/demo-cases.json fixtures/ground-truth.json handoff/a/cases-manifest.json",
+    "git commit -m archive: preserve X-A fixture handoff bytes",
+    "git show <fixture_archive_commit>:<path> streamed as bytes and SHA-256 calculated; git cat-file -s <fixture_archive_commit>:<path> used for blob size"
+  ],
+  "scope_check": {
+    "fixture_commit_paths": [
+      "fixtures/demo-cases.json",
+      "fixtures/ground-truth.json",
+      "handoff/a/cases-manifest.json"
+    ],
+    "allowed": true,
+    "note": "The reporting files are separately permitted under reports/batches/X-A-FIXTURES/."
+  },
+  "remaining_risks": [
+    "This is an archive-branch delivery only; it has not been integrated into integration/covenia-b.",
+    "No semantic validation or business-code implementation was performed by design."
+  ],
+  "blockers": [],
+  "handoff_notes": "All three source byte streams match the committed Git blobs. The four fixtures.applied_fixes entries above are recorded from the manifest only; the manifest was not edited."
+}
