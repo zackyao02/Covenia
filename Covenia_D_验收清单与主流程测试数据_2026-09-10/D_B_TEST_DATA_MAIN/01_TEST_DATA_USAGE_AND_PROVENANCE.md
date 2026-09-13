@@ -32,7 +32,7 @@
 
 | 文件 | 内容 | 谁用 |
 |---|---|---|
-| `data/00_赛事原始事实基线.json` | `S00001` 全部原始事实 + 导入计数基线 | D 验门 1；B 核对导入 |
+| `data/00_original_fact_baseline.json` | `S00001` 全部原始事实 + 导入计数基线 | D 验门 1；B 核对导入 |
 | `data/01_analyze-requests.json` | `POST /api/cases/analyze` 的请求 | B 跑分析 |
 | `data/02_evaluate-action-requests.json` | `POST /api/actions/evaluate` 的请求 | B 跑防线 |
 | `data/03_approve-resolution-requests.json` | `POST /api/resolutions/approve` 的请求 | B 跑人工确认 |
