@@ -1,0 +1,131 @@
+{
+  "evidence_version": "1.0",
+  "execution_cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-12-verify-2",
+  "isolated_interpreter": "C:\\cov-run\\batch-12-verify-2\\venv\\Scripts\\python.exe",
+  "commands": [
+    {
+      "id": "interpreter-preflight",
+      "command": "C:\\cov-run\\batch-12-verify-2\\venv\\Scripts\\python.exe -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version); print(sys.prefix); print(sys.base_prefix)\" \"C:\\cov-run\\batch-12-verify-2\\venv\\Scripts\\python.exe\"",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-12-verify-2",
+      "exit_code": 0,
+      "duration_seconds": 0.3642522,
+      "mode": "ENVIRONMENT",
+      "output_path": "reports/batches/BATCH-12/verification-evidence/command-outputs/interpreter-preflight.txt"
+    },
+    {
+      "id": "install-pinned-lock",
+      "command": "C:\\cov-run\\batch-12-verify-2\\venv\\Scripts\\python.exe -m pip install --no-deps -r backend/requirements-dev.lock",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-12-verify-2",
+      "exit_code": 0,
+      "duration_seconds": 20.5885243,
+      "mode": "DEPENDENCY_INSTALL",
+      "output_path": "reports/batches/BATCH-12/verification-evidence/command-outputs/pip-install-lock.txt"
+    },
+    {
+      "id": "install-editable-backend",
+      "command": "C:\\cov-run\\batch-12-verify-2\\venv\\Scripts\\python.exe -m pip install --no-deps --no-build-isolation -e backend",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-12-verify-2",
+      "exit_code": 0,
+      "duration_seconds": 3.3993103,
+      "mode": "DEPENDENCY_INSTALL",
+      "output_path": "reports/batches/BATCH-12/verification-evidence/command-outputs/editable-install.txt"
+    },
+    {
+      "id": "required-imports",
+      "command": "C:\\cov-run\\batch-12-verify-2\\venv\\Scripts\\python.exe -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-12-verify-2",
+      "exit_code": 0,
+      "duration_seconds": 0.7738005,
+      "mode": "DEPENDENCY_IMPORT",
+      "output_path": "reports/batches/BATCH-12/verification-evidence/command-outputs/imports.txt"
+    },
+    {
+      "id": "pytest-evidence",
+      "command": "C:\\cov-run\\batch-12-verify-2\\venv\\Scripts\\python.exe -m pytest backend/tests/evidence -q --basetemp C:\\cov-run\\batch-12-verify-2-tmp\\pytest-evidence",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-12-verify-2",
+      "exit_code": 0,
+      "duration_seconds": 1.0791357,
+      "mode": "UNIT",
+      "output_path": "reports/batches/BATCH-12/verification-evidence/command-outputs/pytest-evidence.txt"
+    },
+    {
+      "id": "pip-list",
+      "command": "C:\\cov-run\\batch-12-verify-2\\venv\\Scripts\\python.exe -m pip list --format=json",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-12-verify-2",
+      "exit_code": 0,
+      "duration_seconds": 0.6546898,
+      "mode": "DEPENDENCY_INVENTORY",
+      "output_path": "reports/batches/BATCH-12/verification-evidence/command-outputs/pip-list.json"
+    },
+    {
+      "id": "pip-check",
+      "command": "C:\\cov-run\\batch-12-verify-2\\venv\\Scripts\\python.exe -m pip check",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-12-verify-2",
+      "exit_code": 0,
+      "duration_seconds": 0.9895676,
+      "mode": "DEPENDENCY_CHECK",
+      "output_path": "reports/batches/BATCH-12/verification-evidence/command-outputs/pip-check.txt"
+    },
+    {
+      "id": "ruff-evidence",
+      "command": "C:\\cov-run\\batch-12-verify-2\\venv\\Scripts\\python.exe -m ruff check backend/src/covenia_b/evidence backend/tests/evidence",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-12-verify-2",
+      "exit_code": 0,
+      "duration_seconds": 0.5747711,
+      "mode": "STATIC_ANALYSIS",
+      "output_path": "reports/batches/BATCH-12/verification-evidence/command-outputs/ruff.txt"
+    },
+    {
+      "id": "independent-boundary-probe",
+      "command": "C:\\cov-run\\batch-12-verify-2\\venv\\Scripts\\python.exe -c <ephemeral independent probe>",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-12-verify-2",
+      "exit_code": 0,
+      "duration_seconds": 0.6831899,
+      "mode": "INDEPENDENT_PROBE",
+      "output_path": "reports/batches/BATCH-12/verification-evidence/independent-probe.json"
+    },
+    {
+      "id": "ast-static-audit",
+      "command": "C:\\cov-run\\batch-12-verify-2\\venv\\Scripts\\python.exe -c <AST-level static audit>",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-12-verify-2",
+      "exit_code": 0,
+      "duration_seconds": 0.3458472,
+      "mode": "STATIC_ANALYSIS",
+      "output_path": "reports/batches/BATCH-12/verification-evidence/static-audit.json"
+    },
+    {
+      "id": "git-diff-check-base-review",
+      "command": "git -C C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-12-verify-2 diff --check 958916aaca0d3ade2db54e03f75c0577396ca3d6 fc7497f8d52f151a133837b3b5ee103d3b3ee6c3",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-12-verify-2",
+      "exit_code": 0,
+      "duration_seconds": 0.0,
+      "mode": "SCOPE_STATIC",
+      "output_path": "reports/batches/BATCH-12/verification-evidence/command-outputs/git-diff-check-base-review.txt"
+    },
+    {
+      "id": "git-diff-check-worktree-before-verifier-output",
+      "command": "git -C C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-12-verify-2 diff --check",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-12-verify-2",
+      "exit_code": 0,
+      "duration_seconds": 0.0,
+      "mode": "WORKTREE_STATIC",
+      "output_path": "reports/batches/BATCH-12/verification-evidence/command-outputs/git-diff-check-worktree-before-verifier-output.txt"
+    },
+    {
+      "id": "git-status-at-start",
+      "command": "git -C C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-12-verify-2 status --short",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-12-verify-2",
+      "exit_code": 0,
+      "duration_seconds": 0.3391362,
+      "mode": "WORKTREE_STATE",
+      "output_path": "reports/batches/BATCH-12/verification-evidence/command-outputs/git-status-at-start.txt"
+    }
+  ],
+  "non_gate_diagnostic": {
+    "id": "raw-literal-prefilter-v1",
+    "exit_code": 1,
+    "classification": "FALSE_POSITIVE_IN_AUDIT_HARNESS",
+    "disposition": "The prefilter matched explanatory docstrings only. It was not used as a product failure or a substitute for the successful AST audit."
+  },
+  "all_required_command_exit_codes_zero": true
+}

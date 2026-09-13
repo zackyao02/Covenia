@@ -1,0 +1,74 @@
+{
+  "evidence_version": "1.0",
+  "independent_context": true,
+  "previous_b12_verification_context_used": false,
+  "review": {
+    "batch_id": "BATCH-12",
+    "base_sha": "958916aaca0d3ade2db54e03f75c0577396ca3d6",
+    "review_sha": "fc7497f8d52f151a133837b3b5ee103d3b3ee6c3",
+    "head_at_start": "fc7497f8d52f151a133837b3b5ee103d3b3ee6c3",
+    "head_matches_review_sha": true,
+    "detached_head": true,
+    "base_is_ancestor_of_review": true,
+    "git_status_short_at_start": "",
+    "working_tree_clean_at_start": true
+  },
+  "commit_chain": {
+    "actual_code_and_test_commit": "5b150e669c089aff0c410adabf16f16aaa82b20c",
+    "actual_code_and_test_parent": "958916aaca0d3ade2db54e03f75c0577396ca3d6",
+    "report_and_artifact_commit": "fc7497f8d52f151a133837b3b5ee103d3b3ee6c3",
+    "report_and_artifact_parent": "5b150e669c089aff0c410adabf16f16aaa82b20c",
+    "review_range_commits_newest_first": [
+      "fc7497f8d52f151a133837b3b5ee103d3b3ee6c3",
+      "5b150e669c089aff0c410adabf16f16aaa82b20c"
+    ]
+  },
+  "provided_commit_correction": {
+    "original_transcribed_code_commit": "5b150e669c089aff0c410adabf16f16aaa82b20c3",
+    "original_length": 41,
+    "resolved_in_review_worktree": false,
+    "corrected_code_commit": "5b150e669c089aff0c410adabf16f16aaa82b20c",
+    "correction_source": "Follow-up acceptance instruction from the delegator",
+    "classification": "INPUT_TRANSCRIPTION_CORRECTION_NOT_IMPLEMENTATION_CHANGE"
+  },
+  "scope_audit": {
+    "git_diff_name_status_base_to_review_exit_code": 0,
+    "git_diff_check_base_to_review_exit_code": 0,
+    "changed_file_count": 10,
+    "changed_files": [
+      "backend/src/covenia_b/evidence/__init__.py",
+      "backend/src/covenia_b/evidence/aggregation.py",
+      "backend/tests/evidence/test_aggregation.py",
+      "reports/batches/BATCH-12/IMPLEMENTATION_REPORT.json",
+      "reports/batches/BATCH-12/IMPLEMENTATION_REPORT.md",
+      "reports/batches/BATCH-12/commands.json",
+      "reports/batches/BATCH-12/environment.json",
+      "reports/batches/BATCH-12/evidence-truth-table.json",
+      "reports/batches/BATCH-12/pip-check.txt",
+      "reports/batches/BATCH-12/scope-traces.json"
+    ],
+    "allowlist_match": true,
+    "requirements_dev_lock_changed": false,
+    "forbidden_prefixes_touched": [],
+    "scope_violations": [],
+    "verifier_owned_files_at_review_sha": [],
+    "result": "PASS"
+  },
+  "contract": {
+    "contract_version": "8314c76502cbc9d47d8432b7fe53f7d9fb82de82 / BATCH-03 contract-lock-v1",
+    "contract_commit_resolves": true,
+    "batch_03_verification_result": "PASS",
+    "batch_04_verification_contract_version_matches": true
+  },
+  "dependency_receipt": {
+    "batch_id": "BATCH-04",
+    "implementation_report": "reports/batches/BATCH-04/IMPLEMENTATION_REPORT.json",
+    "verification_report": "reports/batches/BATCH-04/VERIFICATION_REPORT.json",
+    "verification_result": "PASS",
+    "integration_receipt": "C:\\Users\\WONG Tsun Ming\\covenia-orchestration\\runs\\covenia-b-20260910-01\\integration-receipts\\BATCH-04.json",
+    "integration_sha": "9d093a492e576d7cb02b46c2ca60ebf2cac1c244",
+    "integration_sha_is_ancestor_of_base_sha": true
+  },
+  "external_gate_receipts": [],
+  "result": "PASS"
+}

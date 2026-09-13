@@ -1,0 +1,8 @@
+Sanitized actual output summary
+
+Exit code: 0
+Interpreter: C:\cov-run\batch-12-verify-2\venv\Scripts\python.exe
+Command installed the exact fully pinned backend/requirements-dev.lock with --no-deps.
+Pip reported successful installation of all listed pinned packages, including pytest==8.3.4, jsonschema==4.25.0, pydantic==2.10.5, ruff==0.8.4, and their pinned direct lock entries.
+No --user flag, global interpreter, or global PYTHONPATH was used.
+No secret values were present in the captured output.

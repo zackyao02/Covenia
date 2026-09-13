@@ -1,0 +1,81 @@
+{
+  "evidence_version": "1.0",
+  "review_sha": "fc7497f8d52f151a133837b3b5ee103d3b3ee6c3",
+  "method": "SHA-256 over raw stdout bytes streamed from git show REVIEW_SHA:path with a process BaseStream. No working-tree file bytes, decoded text, or newline normalization were used.",
+  "plan_sha256": {
+    "MASTER_PLAN.md": "DAAE3CCF0A11710BFE5B48098AC9668CBD0AFBFEA63C66B74EDFF57C94885A5A",
+    "batches.json": "1E711436F72BD9946052ABE9D120E13B199028FFA9D3795C1382308B8247EEB6",
+    "matches_delegated_values": true
+  },
+  "artifacts": [
+    {
+      "path": "backend/requirements-dev.lock",
+      "sha256": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+      "implementation_report_declared_sha256": null,
+      "note": "Unchanged in BASE_SHA..REVIEW_SHA; independently recorded from the REVIEW_SHA blob."
+    },
+    {
+      "path": "backend/src/covenia_b/evidence/__init__.py",
+      "sha256": "33F190990A0EDC5CA88F4BB581268F6D8A26CF597A7CEDB8731409797C770802",
+      "implementation_report_declared_sha256": "33F190990A0EDC5CA88F4BB581268F6D8A26CF597A7CEDB8731409797C770802",
+      "matches_implementation_report": true
+    },
+    {
+      "path": "backend/src/covenia_b/evidence/aggregation.py",
+      "sha256": "014DC78D3CFC93BEB64CD01B495795E3CDC9EE4EFD5408A8334FF2EBE650C314",
+      "implementation_report_declared_sha256": "014DC78D3CFC93BEB64CD01B495795E3CDC9EE4EFD5408A8334FF2EBE650C314",
+      "matches_implementation_report": true
+    },
+    {
+      "path": "backend/tests/evidence/test_aggregation.py",
+      "sha256": "F4CA6449370FCDAB6A66D0DCB047AC20A11C6F888A207ADE651FB0413609FC1F",
+      "implementation_report_declared_sha256": "F4CA6449370FCDAB6A66D0DCB047AC20A11C6F888A207ADE651FB0413609FC1F",
+      "matches_implementation_report": true
+    },
+    {
+      "path": "reports/batches/BATCH-12/IMPLEMENTATION_REPORT.json",
+      "sha256": "85DC38A0DE01EA50451D1D9470173F4403B060D4C9B672A77F34BE4BDD738597",
+      "implementation_report_declared_sha256": null,
+      "note": "The report itself has no self-declared digest; this verifier recorded its REVIEW_SHA blob digest."
+    },
+    {
+      "path": "reports/batches/BATCH-12/IMPLEMENTATION_REPORT.md",
+      "sha256": "52B3AC00580ACB00C1E7A3719F0B65B9178D6B65515A38AB05CAC53BA6407D03",
+      "implementation_report_declared_sha256": null,
+      "note": "The Markdown report has no self-declared digest; this verifier recorded its REVIEW_SHA blob digest."
+    },
+    {
+      "path": "reports/batches/BATCH-12/commands.json",
+      "sha256": "DA35349375786D6E9A4746EE8AE15F0361ED4C0F0C56133B34F152409E6838D6",
+      "implementation_report_declared_sha256": "DA35349375786D6E9A4746EE8AE15F0361ED4C0F0C56133B34F152409E6838D6",
+      "matches_implementation_report": true
+    },
+    {
+      "path": "reports/batches/BATCH-12/environment.json",
+      "sha256": "104A9EC0A1B317747844E04B8FF01205EC5D83F346F47FA1069FCE65FC3BABD9",
+      "implementation_report_declared_sha256": "104A9EC0A1B317747844E04B8FF01205EC5D83F346F47FA1069FCE65FC3BABD9",
+      "matches_implementation_report": true
+    },
+    {
+      "path": "reports/batches/BATCH-12/evidence-truth-table.json",
+      "sha256": "77B0D84151269C7513175E82D5B7CD1589E8A0BEBD43CC6185DA1F8211A69257",
+      "implementation_report_declared_sha256": "77B0D84151269C7513175E82D5B7CD1589E8A0BEBD43CC6185DA1F8211A69257",
+      "matches_implementation_report": true
+    },
+    {
+      "path": "reports/batches/BATCH-12/pip-check.txt",
+      "sha256": "9261363B733079A641C2E4CC9BC46FFA1D8336945A87F807B6CF68847DBC9B09",
+      "implementation_report_declared_sha256": null,
+      "note": "The implementation report references this file but does not declare a separate digest; this verifier recorded its REVIEW_SHA blob digest."
+    },
+    {
+      "path": "reports/batches/BATCH-12/scope-traces.json",
+      "sha256": "3554F13C6D5DA5187ABA922CF972551917A8F86CF3FC2E5E91961F4F1AFA6830",
+      "implementation_report_declared_sha256": "3554F13C6D5DA5187ABA922CF972551917A8F86CF3FC2E5E91961F4F1AFA6830",
+      "matches_implementation_report": true
+    }
+  ],
+  "all_required_review_sha_blobs_resolved": true,
+  "all_implementation_declared_artifact_hashes_matched": true,
+  "result": "PASS"
+}

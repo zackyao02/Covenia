@@ -1,0 +1,30 @@
+{
+  "audit_version": "1.1",
+  "source": "backend/src/covenia_b/evidence/aggregation.py",
+  "test": "backend/tests/evidence/test_aggregation.py",
+  "method": "AST-level inspection of executable reads and calls, plus test-structure inspection. Explanatory docstrings are not treated as executable decision logic.",
+  "aggregate_candidate_field_reads": {
+    "candidate_id": false,
+    "declared_evidence_valid": false,
+    "confidence": false,
+    "hygiene_risk_signal": false
+  },
+  "aggregate_prohibited_identifier_reads": {
+    "case_id": false,
+    "file_name": false,
+    "filename": false,
+    "ground_truth": false
+  },
+  "aggregate_model_or_file_io_calls": [],
+  "test_function_count": 13,
+  "assert_count": 32,
+  "test_try_statement_count": 0,
+  "pytest_skip_or_xfail_calls": [],
+  "test_snapshot_or_file_calls": [],
+  "literal_prefilter_v1": {
+    "exit_code": 1,
+    "classification": "NON_GATE_FALSE_POSITIVE_IN_AUDIT_HARNESS",
+    "detail": "A raw string-constant prefilter found only the module docstring's explanatory references to confidence and diagnosis. It did not identify an executable decision read. The corrected AST audit above was the acceptance evidence."
+  },
+  "result": "PASS"
+}

@@ -1,0 +1,275 @@
+{
+  "report_version": "1.0",
+  "batch_id": "BATCH-12",
+  "verdict": "PASS",
+  "reviewed_base_sha": "958916aaca0d3ade2db54e03f75c0577396ca3d6",
+  "reviewed_sha": "fc7497f8d52f151a133837b3b5ee103d3b3ee6c3",
+  "reviewed_code_commits": [
+    "5b150e669c089aff0c410adabf16f16aaa82b20c"
+  ],
+  "reviewed_report_commit": "fc7497f8d52f151a133837b3b5ee103d3b3ee6c3",
+  "commit_verified": {
+    "head_matches_review_sha": true,
+    "detached_head": true,
+    "base_is_ancestor_of_review": true,
+    "review_commit_parent": "5b150e669c089aff0c410adabf16f16aaa82b20c",
+    "corrected_code_commit_input": "5b150e669c089aff0c410adabf16f16aaa82b20c",
+    "input_transcription_correction_recorded": true
+  },
+  "contract_version": "8314c76502cbc9d47d8432b7fe53f7d9fb82de82 / BATCH-03 contract-lock-v1",
+  "plan_sha256": {
+    "method": "SHA-256 over raw stdout bytes streamed from git show REVIEW_SHA:path; no working-tree bytes or newline normalization used.",
+    "MASTER_PLAN.md": "DAAE3CCF0A11710BFE5B48098AC9668CBD0AFBFEA63C66B74EDFF57C94885A5A",
+    "batches.json": "1E711436F72BD9946052ABE9D120E13B199028FFA9D3795C1382308B8247EEB6",
+    "matches_delegated_values": true
+  },
+  "verified_at": "2026-09-14T01:52:55.9957443+08:00",
+  "independent_context": true,
+  "environment": {
+    "run_dir": "C:\\cov-run\\batch-12-verify-2",
+    "venv": "C:\\cov-run\\batch-12-verify-2\\venv",
+    "interpreter": "C:\\cov-run\\batch-12-verify-2\\venv\\Scripts\\python.exe",
+    "python": "3.13.5",
+    "sys_prefix": "C:\\cov-run\\batch-12-verify-2\\venv",
+    "sys_base_prefix": "D:\\python",
+    "include_system_site_packages": false,
+    "longest_venv_file_length": 165,
+    "longest_venv_path_lt_250": true,
+    "evidence": "reports/batches/BATCH-12/verification-evidence/environment.json"
+  },
+  "dependency_checks": [
+    {
+      "check": "isolated_venv_creation",
+      "result": "PASS",
+      "evidence": [
+        "reports/batches/BATCH-12/verification-evidence/environment.json",
+        "reports/batches/BATCH-12/verification-evidence/command-outputs/interpreter-preflight.txt"
+      ]
+    },
+    {
+      "check": "pinned_lock_install_and_editable_install",
+      "result": "PASS",
+      "evidence": [
+        "reports/batches/BATCH-12/verification-evidence/command-outputs/pip-install-lock.txt",
+        "reports/batches/BATCH-12/verification-evidence/command-outputs/editable-install.txt",
+        "reports/batches/BATCH-12/verification-evidence/command-outputs/pip-list.json"
+      ]
+    },
+    {
+      "check": "required_imports_and_pip_check",
+      "result": "PASS",
+      "evidence": [
+        "reports/batches/BATCH-12/verification-evidence/command-outputs/imports.txt",
+        "reports/batches/BATCH-12/verification-evidence/command-outputs/pip-check.txt"
+      ]
+    },
+    {
+      "check": "requirements_dev_lock_unchanged",
+      "result": "PASS",
+      "evidence": [
+        "reports/batches/BATCH-12/verification-evidence/baseline-and-scope.json",
+        "reports/batches/BATCH-12/verification-evidence/artifact-hashes.json"
+      ]
+    }
+  ],
+  "external_gate_checks": [
+    {
+      "check": "BATCH-04_independent_dependency",
+      "result": "PASS",
+      "implementation_report": "reports/batches/BATCH-04/IMPLEMENTATION_REPORT.json",
+      "verification_report": "reports/batches/BATCH-04/VERIFICATION_REPORT.json",
+      "integration_receipt": "C:\\Users\\WONG Tsun Ming\\covenia-orchestration\\runs\\covenia-b-20260910-01\\integration-receipts\\BATCH-04.json",
+      "integration_sha": "9d093a492e576d7cb02b46c2ca60ebf2cac1c244",
+      "integration_sha_is_ancestor_of_review_base": true
+    },
+    {
+      "check": "BATCH-12_external_gate_receipts",
+      "result": "NOT_REQUIRED",
+      "receipts": []
+    }
+  ],
+  "scope_audit": {
+    "passed": true,
+    "changed_files": [
+      "backend/src/covenia_b/evidence/__init__.py",
+      "backend/src/covenia_b/evidence/aggregation.py",
+      "backend/tests/evidence/test_aggregation.py",
+      "reports/batches/BATCH-12/IMPLEMENTATION_REPORT.json",
+      "reports/batches/BATCH-12/IMPLEMENTATION_REPORT.md",
+      "reports/batches/BATCH-12/commands.json",
+      "reports/batches/BATCH-12/environment.json",
+      "reports/batches/BATCH-12/evidence-truth-table.json",
+      "reports/batches/BATCH-12/pip-check.txt",
+      "reports/batches/BATCH-12/scope-traces.json"
+    ],
+    "violations": [],
+    "requirements_dev_lock_changed": false,
+    "verifier_owned_files_absent_at_review_sha": true,
+    "evidence": "reports/batches/BATCH-12/verification-evidence/baseline-and-scope.json"
+  },
+  "criteria": [
+    {
+      "criterion": "Same input is deterministic; changing order_id, sku_id, fulfillment_item_id, and issue_type produces MISMATCHED with the corresponding ordered scope reason; compatible and incomplete/conflicting observations exercise all three statuses.",
+      "result": "PASS",
+      "evidence": [
+        "reports/batches/BATCH-12/verification-evidence/command-outputs/pytest-evidence.txt",
+        "reports/batches/BATCH-12/verification-evidence/independent-probe.json"
+      ]
+    },
+    {
+      "criterion": "Adding an evidence-valid declaration, changing candidate ID including DEMO/S00001-shaped text, and changing confidence do not change the aggregation; image-text assertion is not accepted as an observation fact.",
+      "result": "PASS",
+      "evidence": [
+        "reports/batches/BATCH-12/verification-evidence/independent-probe.json",
+        "reports/batches/BATCH-12/verification-evidence/static-audit.json"
+      ]
+    },
+    {
+      "criterion": "No executable confidence threshold, case-ID/DEMO mapping, filename/ground-truth shortcut, image file I/O, model call, diagnostic conclusion, skip, xfail, swallowed exception, or snapshot/file assertion is present in the reviewed aggregation path and its tests.",
+      "result": "PASS",
+      "evidence": [
+        "reports/batches/BATCH-12/verification-evidence/static-audit.json",
+        "reports/batches/BATCH-12/verification-evidence/command-outputs/ruff.txt"
+      ]
+    },
+    {
+      "criterion": "Aggregation follows order_id -> sku_id -> fulfillment_item_id -> issue_type; separates trusted current component from coverage; routes missing/conflicting facts to NEED_HUMAN_REVIEW; distinguishes primary/gift; and leaves ADVERSE_REACTION as a scope fact rather than a medical diagnosis.",
+      "result": "PASS",
+      "evidence": [
+        "reports/batches/BATCH-12/evidence-truth-table.json",
+        "reports/batches/BATCH-12/verification-evidence/independent-probe.json",
+        "reports/batches/BATCH-12/verification-evidence/static-audit.json"
+      ]
+    },
+    {
+      "criterion": "The verifier used a new isolated direct-child venv, pip check passed, required imports succeeded, and longest venv path is less than 250 characters.",
+      "result": "PASS",
+      "evidence": [
+        "reports/batches/BATCH-12/verification-evidence/environment.json",
+        "reports/batches/BATCH-12/verification-evidence/acceptance-commands.json"
+      ]
+    }
+  ],
+  "commands": [
+    {
+      "id": "pytest-evidence",
+      "result": "PASS",
+      "exit_code": 0,
+      "output": "reports/batches/BATCH-12/verification-evidence/command-outputs/pytest-evidence.txt"
+    },
+    {
+      "id": "independent-boundary-probe",
+      "result": "PASS",
+      "exit_code": 0,
+      "output": "reports/batches/BATCH-12/verification-evidence/independent-probe.json"
+    },
+    {
+      "id": "ast-static-audit",
+      "result": "PASS",
+      "exit_code": 0,
+      "output": "reports/batches/BATCH-12/verification-evidence/static-audit.json"
+    },
+    {
+      "id": "pip-check",
+      "result": "PASS",
+      "exit_code": 0,
+      "output": "reports/batches/BATCH-12/verification-evidence/command-outputs/pip-check.txt"
+    },
+    {
+      "id": "git-diff-check-base-review",
+      "result": "PASS",
+      "exit_code": 0,
+      "output": "reports/batches/BATCH-12/verification-evidence/command-outputs/git-diff-check-base-review.txt"
+    },
+    {
+      "id": "git-status-at-start",
+      "result": "PASS",
+      "exit_code": 0,
+      "output": "reports/batches/BATCH-12/verification-evidence/command-outputs/git-status-at-start.txt"
+    }
+  ],
+  "artifact_hashes": {
+    "evidence": "reports/batches/BATCH-12/verification-evidence/artifact-hashes.json",
+    "all_required_review_sha_blobs_resolved": true,
+    "all_implementation_declared_artifact_hashes_matched": true
+  },
+  "negative_controls": [
+    {
+      "control": "Changing each scope component independently",
+      "expected": "MISMATCHED with the exact SCOPE_MISMATCH level",
+      "result": "PASS"
+    },
+    {
+      "control": "Primary and gift observations together, duplicate evidence IDs, missing coverage, and absent current component",
+      "expected": "NEED_HUMAN_REVIEW",
+      "result": "PASS"
+    },
+    {
+      "control": "Candidate ID, evidence-valid declaration, confidence, and image-text assertion",
+      "expected": "No conclusion shortcut",
+      "result": "PASS"
+    }
+  ],
+  "findings": [
+    {
+      "id": "F-B12-VERIFY-001",
+      "severity": "INFO",
+      "finding": "The initial delegation transcribed the code/test commit as a non-resolving 41-character string. A follow-up instruction corrected it to the review commit's actual 40-character parent.",
+      "disposition": "Recorded as input provenance correction; no reviewed implementation file or scope changed."
+    },
+    {
+      "id": "F-B12-VERIFY-002",
+      "severity": "INFO",
+      "finding": "The first raw-literal static prefilter matched explanatory docstrings containing the words confidence and diagnosis.",
+      "disposition": "It was not an executable shortcut. The successful AST audit is the acceptance evidence and is retained with the prefilter note."
+    },
+    {
+      "id": "F-B12-VERIFY-003",
+      "severity": "INFO",
+      "finding": "BATCH-12 is a pure aggregation boundary over structured observations; it does not establish truthfulness of a future image extractor or replace the later H1 adverse-reaction safety route.",
+      "disposition": "Expected batch boundary, not a defect in this batch; retained as a downstream integration risk."
+    }
+  ],
+  "minimal_fix_list": [
+    {
+      "status": "NONE_REQUIRED",
+      "basis": "No reproducible BATCH-12 implementation, test, artifact, scope, or environment defect was found in this independent review."
+    }
+  ],
+  "blockers": [
+    {
+      "status": "NONE",
+      "basis": "The required BATCH-04 PASS/integration receipt was readable and valid; BATCH-12 declares no external gate receipt."
+    }
+  ],
+  "recheck_commands": [
+    "C:\\cov-run\\batch-12-verify-2\\venv\\Scripts\\python.exe -m pytest backend/tests/evidence -q --basetemp C:\\cov-run\\batch-12-verify-2-tmp\\pytest-evidence",
+    "C:\\cov-run\\batch-12-verify-2\\venv\\Scripts\\python.exe -m pip check",
+    "C:\\cov-run\\batch-12-verify-2\\venv\\Scripts\\python.exe -m ruff check backend/src/covenia_b/evidence backend/tests/evidence",
+    "git -C C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-12-verify-2 diff --check"
+  ],
+  "rollback_review": {
+    "passed": true,
+    "notes": "A rollback of this acceptance artifact is limited to the verifier commit created after this report. No implementation code, main branch, integration branch, external resource, or business state was changed by the verifier."
+  },
+  "regression_risks": [
+    {
+      "risk": "A later image-extraction adapter could supply inaccurate structured observations.",
+      "disposition": "Outside BATCH-12; preserve source IDs and do not convert model conclusions into server facts."
+    },
+    {
+      "risk": "A later decision layer could misinterpret VALID aggregation for ADVERSE_REACTION as a medical conclusion.",
+      "disposition": "Outside BATCH-12; retain the BATCH-03/H1 HUMAN_REVIEW safety route."
+    },
+    {
+      "risk": "This verification does not perform coordinator integration.",
+      "disposition": "Expected workflow boundary; downstream consumers require a separate integration receipt."
+    }
+  ],
+  "code_modified": false,
+  "implementation_files_modified_by_verifier": false,
+  "next_batch_started": false,
+  "integration_performed": false,
+  "push_performed": false,
+  "main_modified": false
+}

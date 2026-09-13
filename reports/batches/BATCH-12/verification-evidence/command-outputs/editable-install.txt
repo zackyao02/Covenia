@@ -1,0 +1,6 @@
+Obtaining file:///C:/Users/WONG%20Tsun%20Ming/Desktop/%E6%AC%A7%E8%8E%B1%E9%9B%85%E9%BB%91%E5%AE%A2%E6%9D%BE/worktrees/covenia-batch-12-verify-2/backend
+Checking if build backend supports build_editable: finished with status 'done'
+Preparing editable metadata (pyproject.toml): finished with status 'done'
+Building editable for covenia-b (pyproject.toml): finished with status 'done'
+Successfully built covenia-b
+Successfully installed covenia-b-0.0.0

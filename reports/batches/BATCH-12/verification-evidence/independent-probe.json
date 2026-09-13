@@ -1,0 +1,97 @@
+{
+  "probe_version": "1.0",
+  "execution_mode": "ephemeral venv Python probe; no source or test file was created or modified",
+  "all_assertions_passed": true,
+  "checks": [
+    {
+      "name": "same_input_repeated_is_identical",
+      "expected": "VALID and equal results",
+      "actual_status": "VALID",
+      "reason_codes": []
+    },
+    {
+      "name": "multi_image_order_is_deterministic",
+      "expected": "VALID and equal results after reversing inputs",
+      "actual_status": "VALID",
+      "reason_codes": []
+    },
+    {
+      "name": "scope_change_order_id",
+      "expected": "MISMATCHED with SCOPE_MISMATCH at order_id",
+      "actual_status": "MISMATCHED",
+      "reason_codes": ["SCOPE_MISMATCH"]
+    },
+    {
+      "name": "scope_change_sku_id",
+      "expected": "MISMATCHED with SCOPE_MISMATCH at sku_id",
+      "actual_status": "MISMATCHED",
+      "reason_codes": ["SCOPE_MISMATCH"]
+    },
+    {
+      "name": "scope_change_fulfillment_item_id",
+      "expected": "MISMATCHED with SCOPE_MISMATCH at fulfillment_item_id",
+      "actual_status": "MISMATCHED",
+      "reason_codes": ["SCOPE_MISMATCH"]
+    },
+    {
+      "name": "scope_change_issue_type",
+      "expected": "MISMATCHED with SCOPE_MISMATCH at issue_type",
+      "actual_status": "MISMATCHED",
+      "reason_codes": ["SCOPE_MISMATCH"]
+    },
+    {
+      "name": "current_component_missing",
+      "expected": "NEED_HUMAN_REVIEW",
+      "actual_status": "NEED_HUMAN_REVIEW",
+      "reason_codes": ["CURRENT_COMPONENT_UNKNOWN", "REQUIRED_COVERAGE_MISSING"]
+    },
+    {
+      "name": "coverage_missing",
+      "expected": "NEED_HUMAN_REVIEW",
+      "actual_status": "NEED_HUMAN_REVIEW",
+      "reason_codes": ["REQUIRED_COVERAGE_MISSING"]
+    },
+    {
+      "name": "reliable_primary_gift_conflict",
+      "expected": "NEED_HUMAN_REVIEW",
+      "actual_status": "NEED_HUMAN_REVIEW",
+      "reason_codes": ["PRODUCT_ROLE_MISMATCH", "CONFLICTING_SOURCE_FACTS"]
+    },
+    {
+      "name": "gift_instead_of_primary",
+      "expected": "MISMATCHED",
+      "actual_status": "MISMATCHED",
+      "reason_codes": ["PRODUCT_ROLE_MISMATCH", "REQUIRED_COVERAGE_MISSING"]
+    },
+    {
+      "name": "duplicate_evidence_id",
+      "expected": "NEED_HUMAN_REVIEW",
+      "actual_status": "NEED_HUMAN_REVIEW",
+      "reason_codes": ["DUPLICATE_EVIDENCE_ID"]
+    },
+    {
+      "name": "complete_coverage_with_unreadable_extra",
+      "expected": "VALID while retaining the unreadable source as missing",
+      "actual_status": "VALID",
+      "reason_codes": ["READABILITY_NOT_HIGH"]
+    },
+    {
+      "name": "candidate_id_declaration_confidence_ignored",
+      "expected": "same aggregation as baseline after candidate ID rename, declared-evidence-valid addition, and confidence change",
+      "actual_status": "VALID",
+      "reason_codes": []
+    },
+    {
+      "name": "adverse_reaction_not_diagnosed",
+      "expected": "VALID aggregation without diagnostic reason; later H1 remains responsible for safety routing",
+      "actual_status": "VALID",
+      "reason_codes": []
+    },
+    {
+      "name": "image_text_assertion_is_not_a_fact_field",
+      "expected": "extra image-text assertion is rejected before aggregation",
+      "actual": "ValidationError"
+    }
+  ],
+  "result": "PASS"
+}
