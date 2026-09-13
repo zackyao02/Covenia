@@ -1,0 +1,193 @@
+{
+  "report_version": "1.0",
+  "batch_id": "BATCH-13",
+  "result": "IMPLEMENTED",
+  "status": "COMPLETED",
+  "summary": "Implemented a pure, server-owned commitment compiler. It derives ACTIVE only from trusted AGENT text plus approved policy and an open replacement ticket, derives deadlines from source timestamps and supported durations, ignores model activation recommendations, and never executes fulfillment, refunds, or compensation.",
+  "repo_root": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-13",
+  "branch": "codex/covenia-batch-13",
+  "base_integration_sha": "23b072b9f094b89dc5ca2e947285f289a86c368d",
+  "contract_version": "8314c76502cbc9d47d8432b7fe53f7d9fb82de82 / BATCH-03 contract-lock-v1",
+  "plan_sha256": {
+    "MASTER_PLAN.md": "DAAE3CCF0A11710BFE5B48098AC9668CBD0AFBFEA63C66B74EDFF57C94885A5A",
+    "batches.json": "1E711436F72BD9946052ABE9D120E13B199028FFA9D3795C1382308B8247EEB6",
+    "hash_method": "SHA-256 over original raw Git blob bytes streamed from git show HEAD:<path> before implementation changes"
+  },
+  "initial_worktree": [],
+  "dependency_receipts": [
+    {
+      "batch_id": "BATCH-04",
+      "implementation_report": "reports/batches/BATCH-04/IMPLEMENTATION_REPORT.json",
+      "verification_report": "reports/batches/BATCH-04/VERIFICATION_REPORT.json",
+      "verdict": "PASS",
+      "integration_sha": "9d093a492e576d7cb02b46c2ca60ebf2cac1c244",
+      "integration_receipt": "C:\\Users\\WONG Tsun Ming\\covenia-orchestration\\runs\\covenia-b-20260910-01\\integration-receipts\\BATCH-04.json",
+      "receipt_status": "SUCCESS",
+      "reviewed_code_commit": "e1070f150de14fa134a5492372828628ca38e89e"
+    }
+  ],
+  "external_gate_receipts": [],
+  "code_commits": [
+    "130dd195fc25f1be7ddfe8f93473aeae7868cf2c"
+  ],
+  "changed_files": [
+    "backend/src/covenia_b/commitments/__init__.py",
+    "backend/src/covenia_b/commitments/compiler.py",
+    "backend/src/covenia_b/commitments/models.py",
+    "backend/tests/commitments/test_compiler.py",
+    "reports/batches/BATCH-13/compiled-promises.json",
+    "reports/batches/BATCH-13/time-boundaries.json",
+    "reports/batches/BATCH-13/environment.json",
+    "reports/batches/BATCH-13/pip-check.txt",
+    "reports/batches/BATCH-13/commands.json",
+    "reports/batches/BATCH-13/IMPLEMENTATION_REPORT.md",
+    "reports/batches/BATCH-13/IMPLEMENTATION_REPORT.json"
+  ],
+  "scope_check": {
+    "within_allowlist": true,
+    "allowed_paths": [
+      "backend/src/covenia_b/commitments/**",
+      "backend/tests/commitments/**",
+      "reports/batches/BATCH-13/**"
+    ],
+    "forbidden_changes": [],
+    "verifier_owned_paths_written": [],
+    "requirements_dev_lock": {
+      "changed": false,
+      "new_dependencies": [],
+      "existing_pinned_line_count": 29,
+      "existing_pins_unchanged": true,
+      "raw_git_blob_sha256_before": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+      "raw_git_blob_sha256_after_code_commit": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+      "reason": "No third-party dependency was needed."
+    }
+  },
+  "acceptance_results": [
+    {
+      "criterion": "模型把消费者或高风险文本标为 ACTIVE 也不能生效。",
+      "status": "EVIDENCED",
+      "evidence": [
+        "backend/tests/commitments/test_compiler.py::test_consumer_forged_active_recommendation_is_ignored",
+        "backend/tests/commitments/test_compiler.py::test_high_risk_refund_or_compensation_never_auto_activates"
+      ]
+    },
+    {
+      "criterion": "标准且有支撑的承诺才可 ACTIVE；其他类别无批准时没有 ACTIVE 或确定期限。",
+      "status": "EVIDENCED",
+      "evidence": [
+        "backend/tests/commitments/test_compiler.py::test_standard_supported_agent_promise_activates_with_traceable_deadline",
+        "backend/tests/commitments/test_compiler.py::test_standard_text_without_policy_and_ticket_support_requires_approval",
+        "backend/tests/commitments/test_compiler.py::test_ambiguous_and_conditional_text_never_manufacture_a_deadline"
+      ]
+    },
+    {
+      "criterion": "改文本为尽快、改起始时间、改时长会改变编译结果；运行机器日期不影响固定测试。",
+      "status": "EVIDENCED",
+      "evidence": [
+        "backend/tests/commitments/test_compiler.py::test_deadline_tracks_original_time_and_duration_not_machine_date",
+        "backend/tests/commitments/test_compiler.py::test_future_message_is_rejected_but_exact_clock_boundary_is_allowed",
+        "reports/batches/BATCH-13/time-boundaries.json"
+      ]
+    },
+    {
+      "criterion": "按环境约定使用本批绝对隔离 venv；新增依赖只增不改、版本钉死并留证；pip check=0。",
+      "status": "EVIDENCED",
+      "evidence": [
+        "reports/batches/BATCH-13/environment.json",
+        "reports/batches/BATCH-13/commands.json",
+        "reports/batches/BATCH-13/pip-check.txt"
+      ]
+    }
+  ],
+  "test_results": [
+    {
+      "command": "C:\\cov-run\\batch-13\\venv\\Scripts\\python.exe -m pytest backend/tests/commitments -q",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-13",
+      "interpreter": "C:\\cov-run\\batch-13\\venv\\Scripts\\python.exe",
+      "exit_code": 0,
+      "duration_seconds": 31.0,
+      "mode": "UNIT",
+      "tests_passed": 12,
+      "tests_failed": 0,
+      "result": "12 passed",
+      "evidence": "reports/batches/BATCH-13/commands.json#required-05-commitments-pytest"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "reports/batches/BATCH-13/compiled-promises.json",
+      "sha256": "BB069593C985DD2240366507DCDFC02D8A37B96467A3DB1EA46657D650CDB143",
+      "classification": "REDACTED_SYNTHETIC"
+    },
+    {
+      "path": "reports/batches/BATCH-13/time-boundaries.json",
+      "sha256": "65C412CF89ADEBD87DCA4B0DED5C94EF60D02137840D1D27ADD3A4D5FDB703B2",
+      "classification": "REDACTED_UNIT_TEST_BOUNDARIES"
+    },
+    {
+      "path": "reports/batches/BATCH-13/environment.json",
+      "sha256": "3CFF08554CB0284FC8E1C21EC45A203C02422744A1CA370534797DE71A350473",
+      "classification": "ENVIRONMENT_EVIDENCE"
+    },
+    {
+      "path": "reports/batches/BATCH-13/pip-check.txt",
+      "sha256": "9261363B733079A641C2E4CC9BC46FFA1D8336945A87F807B6CF68847DBC9B09",
+      "classification": "ENVIRONMENT_EVIDENCE"
+    },
+    {
+      "path": "reports/batches/BATCH-13/commands.json",
+      "sha256": "6ECBAAD13F5CEF2B558BB0AB25916B33DF59C80632F0381F85BD1B519330B6F8",
+      "classification": "IMPLEMENTATION_EVIDENCE"
+    }
+  ],
+  "model_runs": [],
+  "not_completed": [
+    {
+      "item": "Independent BATCH-13 verification",
+      "status": "PENDING",
+      "reason": "Verifier-owned VERIFICATION_REPORT.json and verification-evidence are deliberately not created by this implementation task."
+    },
+    {
+      "item": "Any fulfillment, refund, compensation, notification, persistence, API, or later-Batch work",
+      "status": "NOT_STARTED",
+      "reason": "Out of scope; the compiler is intentionally pure and side-effect free."
+    }
+  ],
+  "risks": [
+    {
+      "risk": "Implementation evidence is not an independent acceptance PASS or a downstream release gate.",
+      "mitigation": "Require a fresh independent verifier run and coordinator integration receipt before BATCH-14 consumes the result."
+    },
+    {
+      "risk": "Policy facts must be supplied by a trusted composition layer; changing policy vocabulary or next-check semantics requires approved contract change control.",
+      "mitigation": "The compiler accepts explicit CommitmentPolicy and CommitmentFacts inputs rather than embedding case IDs or a fixed wall-clock schedule."
+    }
+  ],
+  "rollback": {
+    "code": "Revert 130dd195fc25f1be7ddfe8f93473aeae7868cf2c to remove only the BATCH-13 source and tests; revert this report-artifact commit separately.",
+    "runtime_state": "NOT_APPLICABLE: the module has no persistence, HTTP, notification, model, ticket, fulfillment, refund, or compensation side effect. C:\\cov-run\\batch-13\\venv is an untracked isolated environment."
+  },
+  "handoff": {
+    "interfaces": [
+      "covenia_b.commitments.compile_commitments(messages, facts, policy, clock, model_hints=())",
+      "covenia_b.commitments.compile_case_input(case_input, policy, clock, model_hints=())",
+      "CompiledPromise separates promise_issuance_status from service_delivery_status and fixes automatic_execution=false."
+    ],
+    "input_versions": {
+      "contract_version": "8314c76502cbc9d47d8432b7fe53f7d9fb82de82 / BATCH-03 contract-lock-v1",
+      "BATCH-04_integration_sha": "9d093a492e576d7cb02b46c2ca60ebf2cac1c244",
+      "next_check_policy": "D08_FIRST_POST_DEADLINE_CHECK_V1"
+    },
+    "reproduction": [
+      "C:\\cov-run\\batch-13\\venv\\Scripts\\python.exe -m pytest backend/tests/commitments -q",
+      "C:\\cov-run\\batch-13\\venv\\Scripts\\python.exe -m ruff check --no-cache backend/src/covenia_b/commitments backend/tests/commitments",
+      "C:\\cov-run\\batch-13\\venv\\Scripts\\python.exe -m pip check"
+    ],
+    "remaining_gates": [
+      "Independent BATCH-13 verification",
+      "Coordinator integration receipt",
+      "No downstream Batch is unlocked by this implementation report alone."
+    ]
+  },
+  "next_batch_started": false
+}

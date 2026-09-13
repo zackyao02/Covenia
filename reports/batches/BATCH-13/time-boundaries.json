@@ -1,0 +1,41 @@
+{
+  "artifact_version": "1.0",
+  "batch_id": "BATCH-13",
+  "classification": "REDACTED_UNIT_TEST_BOUNDARIES",
+  "approved_next_check_policy": {
+    "decision": "D08",
+    "policy_id": "D08_FIRST_POST_DEADLINE_CHECK_V1",
+    "formula": "next_check_at = deadline + PT2M23S",
+    "contains_fixed_date_or_case_id": false
+  },
+  "boundaries": [
+    {
+      "control": "48_hour_original_message",
+      "source_message_at": "2026-05-05T10:27:37+08:00",
+      "duration": "PT48H",
+      "expected_deadline": "2026-05-07T10:27:37+08:00",
+      "expected_next_check_at": "2026-05-07T10:30:00+08:00",
+      "evidence": "backend/tests/commitments/test_compiler.py::test_standard_supported_agent_promise_activates_with_traceable_deadline"
+    },
+    {
+      "control": "exact_clock_boundary",
+      "rule": "message.sent_at == trusted_clock.now() is accepted; only a later source message is rejected",
+      "evidence": "backend/tests/commitments/test_compiler.py::test_future_message_is_rejected_but_exact_clock_boundary_is_allowed"
+    },
+    {
+      "control": "future_source_message",
+      "rule": "message.sent_at > trusted_clock.now() yields ERRONEOUS_OR_UNAUTHORIZED/BLOCKED with deadline=null",
+      "evidence": "backend/tests/commitments/test_compiler.py::test_future_message_is_rejected_but_exact_clock_boundary_is_allowed"
+    },
+    {
+      "control": "naive_time_rejection",
+      "rule": "source timestamps and the trusted clock must be timezone-aware before calculation",
+      "evidence": "backend/tests/commitments/test_compiler.py::test_naive_source_or_clock_is_rejected_before_deadline_calculation"
+    },
+    {
+      "control": "input_causality",
+      "rule": "Changing duration or original source time changes the deadline; changing the fixed clock after the source does not",
+      "evidence": "backend/tests/commitments/test_compiler.py::test_deadline_tracks_original_time_and_duration_not_machine_date"
+    }
+  ]
+}

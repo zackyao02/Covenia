@@ -1,0 +1,30 @@
+{
+  "artifact_version": "1.0",
+  "batch_id": "BATCH-13",
+  "classification": "REDACTED_DETERMINISTIC_COMPILER_SAMPLE",
+  "source_notice": "Synthetic, non-PII compiler input. No model was invoked and no fixture or consumer transcript was copied into this artifact.",
+  "compiled_at": "2026-05-07T09:40:00+08:00",
+  "policy_id": "PACKAGE_DAMAGE_REPLACEMENT_V1",
+  "next_check_policy_id": "D08_FIRST_POST_DEADLINE_CHECK_V1",
+  "promises": [
+    {
+      "source_message_id": "agent-message-demo-redacted",
+      "raw_text": "换货单已创建，48小时内发出",
+      "action": "REPLACEMENT_DISPATCH",
+      "commitment_class": "STANDARD_APPROVED",
+      "activation_status": "ACTIVE",
+      "deadline": "2026-05-07T10:27:37+08:00",
+      "next_check_at": "2026-05-07T10:30:00+08:00",
+      "promise_issuance_status": "ISSUED",
+      "service_delivery_status": "PENDING_DELIVERY",
+      "policy_id": "PACKAGE_DAMAGE_REPLACEMENT_V1",
+      "supporting_ticket_ids": [
+        "ticket-demo-redacted"
+      ],
+      "reasons": [
+        "AUTHORIZED_STANDARD"
+      ],
+      "automatic_execution": false
+    }
+  ]
+}
