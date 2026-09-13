@@ -1,0 +1,251 @@
+{
+  "report_version": "1.0",
+  "batch_id": "BATCH-12",
+  "status": "COMPLETED",
+  "result": "IMPLEMENTED",
+  "summary": "Implemented a pure, server-owned multi-image evidence aggregator with fact traces and structured unit coverage. This is implementation evidence only; it is not an independent verification PASS.",
+  "repo_root": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-12",
+  "branch": "codex/covenia-batch-12",
+  "base_integration_sha": "958916aaca0d3ade2db54e03f75c0577396ca3d6",
+  "contract_version": "8314c76502cbc9d47d8432b7fe53f7d9fb82de82",
+  "plan_sha256": {
+    "basis": "SHA-256 over raw bytes emitted by git show 958916aaca0d3ade2db54e03f75c0577396ca3d6:<path>",
+    "MASTER_PLAN.md": "DAAE3CCF0A11710BFE5B48098AC9668CBD0AFBFEA63C66B74EDFF57C94885A5A",
+    "batches.json": "1E711436F72BD9946052ABE9D120E13B199028FFA9D3795C1382308B8247EEB6"
+  },
+  "initial_worktree": [
+    {
+      "head": "958916aaca0d3ade2db54e03f75c0577396ca3d6",
+      "branch": "codex/covenia-batch-12",
+      "status_short": "",
+      "note": "Clean before BATCH-12 changes."
+    }
+  ],
+  "dependency_receipts": [
+    {
+      "batch_id": "BATCH-04",
+      "implementation_report": "reports/batches/BATCH-04/IMPLEMENTATION_REPORT.json",
+      "verification_report": "reports/batches/BATCH-04/VERIFICATION_REPORT.json",
+      "independent_verification_result": "PASS",
+      "integration_receipt": "C:\\Users\\WONG Tsun Ming\\covenia-orchestration\\runs\\covenia-b-20260910-01\\integration-receipts\\BATCH-04.json",
+      "integration_sha": "9d093a492e576d7cb02b46c2ca60ebf2cac1c244",
+      "reviewed_code_commit": "e1070f150de14fa134a5492372828628ca38e89e",
+      "verified_candidate_sha": "3db29f343ee176b69a24a9b23568dbb0987823e9",
+      "base_ancestor_check": "PASS: integration SHA is an ancestor of the BATCH-12 base integration SHA."
+    }
+  ],
+  "external_gate_receipts": [],
+  "code_commits": [
+    "5b150e669c089aff0c410adabf16f16aaa82b20c"
+  ],
+  "changed_files": [
+    "backend/src/covenia_b/evidence/__init__.py",
+    "backend/src/covenia_b/evidence/aggregation.py",
+    "backend/tests/evidence/test_aggregation.py",
+    "reports/batches/BATCH-12/evidence-truth-table.json",
+    "reports/batches/BATCH-12/scope-traces.json",
+    "reports/batches/BATCH-12/IMPLEMENTATION_REPORT.json",
+    "reports/batches/BATCH-12/IMPLEMENTATION_REPORT.md",
+    "reports/batches/BATCH-12/commands.json",
+    "reports/batches/BATCH-12/environment.json",
+    "reports/batches/BATCH-12/pip-check.txt"
+  ],
+  "scope_check": {
+    "within_allowlist": true,
+    "allowed_paths_used": [
+      "backend/src/covenia_b/evidence/**",
+      "backend/tests/evidence/**",
+      "reports/batches/BATCH-12/**"
+    ],
+    "forbidden_changes": [],
+    "requirements_dev_lock_changed": false,
+    "new_dependencies": [],
+    "model_calls": false,
+    "rules_do_not_read": [
+      "candidate_id",
+      "declared_evidence_valid",
+      "image file name",
+      "confidence",
+      "hygiene_risk_signal",
+      "case_id"
+    ],
+    "evidence": [
+      "reports/batches/BATCH-12/commands.json#supplemental-ruff",
+      "reports/batches/BATCH-12/evidence-truth-table.json"
+    ]
+  },
+  "acceptance_results": [
+    {
+      "criterion": "Same input is deterministic; real scope and observation changes can produce all three statuses.",
+      "status": "EVIDENCED",
+      "evidence": [
+        "backend/tests/evidence/test_aggregation.py::test_repeated_calls_and_observation_order_are_deterministic",
+        "backend/tests/evidence/test_aggregation.py::test_scope_changes_are_mismatched_in_frozen_comparison_order",
+        "backend/tests/evidence/test_aggregation.py::test_conflicting_good_sources_go_to_human_review",
+        "backend/tests/evidence/test_aggregation.py::test_aggregate_evidence_combines_reliable_multi_image_coverage"
+      ]
+    },
+    {
+      "criterion": "An evidence-valid declaration does not change status and renaming a candidate does not change the aggregation.",
+      "status": "EVIDENCED",
+      "evidence": [
+        "backend/tests/evidence/test_aggregation.py::test_candidate_id_and_evidence_valid_declaration_do_not_change_result",
+        "backend/tests/evidence/test_aggregation.py::test_confidence_and_image_text_assertion_do_not_change_result"
+      ]
+    },
+    {
+      "criterion": "No unapproved confidence threshold, case-ID mapping, filename branch, or diagnostic conclusion is introduced.",
+      "status": "EVIDENCED",
+      "evidence": [
+        "reports/batches/BATCH-12/evidence-truth-table.json#ignored_for_status",
+        "reports/batches/BATCH-12/commands.json#supplemental-ruff"
+      ]
+    },
+    {
+      "criterion": "The batch uses its required isolated absolute venv; no dependency was added; pip check succeeds.",
+      "status": "EVIDENCED",
+      "evidence": [
+        "reports/batches/BATCH-12/environment.json",
+        "reports/batches/BATCH-12/pip-check.txt",
+        "reports/batches/BATCH-12/commands.json"
+      ]
+    },
+    {
+      "criterion": "Verifier-owned acceptance artifacts remain untouched.",
+      "status": "EVIDENCED",
+      "evidence": [
+        "reports/batches/BATCH-12/IMPLEMENTATION_REPORT.json#not_completed"
+      ]
+    }
+  ],
+  "test_results": [
+    {
+      "command": "C:\\cov-run\\batch-12\\venv\\Scripts\\python.exe -m pytest backend/tests/evidence -q",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-12",
+      "exit_code": 0,
+      "duration_seconds": 1.308,
+      "mode": "UNIT",
+      "tests_passed": 16,
+      "tests_failed": 0,
+      "result": "16 passed in 0.51s",
+      "evidence": "reports/batches/BATCH-12/commands.json#required-05-evidence-tests"
+    },
+    {
+      "command": "C:\\cov-run\\batch-12\\venv\\Scripts\\python.exe -m ruff check backend/src/covenia_b/evidence backend/tests/evidence",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-12",
+      "exit_code": 0,
+      "duration_seconds": 0.704,
+      "mode": "STATIC_ANALYSIS",
+      "result": "All checks passed!",
+      "evidence": "reports/batches/BATCH-12/commands.json#supplemental-ruff"
+    },
+    {
+      "command": "C:\\cov-run\\batch-12\\venv\\Scripts\\python.exe -m pip check",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-12",
+      "exit_code": 0,
+      "duration_seconds": 0.001,
+      "mode": "UNIT",
+      "result": "No broken requirements found.",
+      "evidence": "reports/batches/BATCH-12/pip-check.txt"
+    },
+    {
+      "command": "git diff --check",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-12",
+      "exit_code": 0,
+      "duration_seconds": 0.32,
+      "mode": "STATIC_ANALYSIS",
+      "result": "No whitespace errors before report artifacts were written.",
+      "evidence": "reports/batches/BATCH-12/commands.json#required-08-diff-check-pre-report"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "backend/src/covenia_b/evidence/__init__.py",
+      "sha256": "33F190990A0EDC5CA88F4BB581268F6D8A26CF597A7CEDB8731409797C770802",
+      "classification": "SOURCE_GIT_BLOB"
+    },
+    {
+      "path": "backend/src/covenia_b/evidence/aggregation.py",
+      "sha256": "014DC78D3CFC93BEB64CD01B495795E3CDC9EE4EFD5408A8334FF2EBE650C314",
+      "classification": "SOURCE_GIT_BLOB"
+    },
+    {
+      "path": "backend/tests/evidence/test_aggregation.py",
+      "sha256": "F4CA6449370FCDAB6A66D0DCB047AC20A11C6F888A207ADE651FB0413609FC1F",
+      "classification": "TEST_GIT_BLOB"
+    },
+    {
+      "path": "reports/batches/BATCH-12/evidence-truth-table.json",
+      "sha256": "77B0D84151269C7513175E82D5B7CD1589E8A0BEBD43CC6185DA1F8211A69257",
+      "classification": "IMPLEMENTATION_ARTIFACT"
+    },
+    {
+      "path": "reports/batches/BATCH-12/scope-traces.json",
+      "sha256": "3554F13C6D5DA5187ABA922CF972551917A8F86CF3FC2E5E91961F4F1AFA6830",
+      "classification": "IMPLEMENTATION_ARTIFACT"
+    },
+    {
+      "path": "reports/batches/BATCH-12/environment.json",
+      "sha256": "104A9EC0A1B317747844E04B8FF01205EC5D83F346F47FA1069FCE65FC3BABD9",
+      "classification": "ENVIRONMENT_EVIDENCE"
+    },
+    {
+      "path": "reports/batches/BATCH-12/commands.json",
+      "sha256": "DA35349375786D6E9A4746EE8AE15F0361ED4C0F0C56133B34F152409E6838D6",
+      "classification": "COMMAND_EVIDENCE"
+    }
+  ],
+  "model_runs": [],
+  "not_completed": [
+    {
+      "item": "Independent BATCH-12 verification",
+      "status": "PENDING",
+      "reason": "Verifier-owned VERIFICATION_REPORT.json and verification-evidence/** are deliberately absent and untouched by this implementation task."
+    },
+    {
+      "item": "Any later batch or integration action",
+      "status": "NOT_STARTED",
+      "reason": "Out of scope; next_batch_started is false."
+    }
+  ],
+  "risks": [
+    {
+      "risk": "The aggregator only evaluates structured candidate observations; it does not prove that a real image extractor supplied truthful observations.",
+      "mitigation": "A later extraction/integration path must preserve source identifiers and submit its observations to this pure function without converting model conclusions into facts."
+    },
+    {
+      "risk": "A valid aggregation for ADVERSE_REACTION is not a medical conclusion and must still be routed by the later H1 rule.",
+      "mitigation": "The scope trace preserves issue_type and the decision table explicitly excludes hygiene signals from status derivation."
+    },
+    {
+      "risk": "This is implementation evidence, not independent acceptance or integration evidence.",
+      "mitigation": "Require a separate verifier to create its own verifier-owned artifacts and then require coordinator integration/retest evidence before a consumer treats this as a dependency."
+    }
+  ],
+  "rollback": {
+    "code": "Revert 5b150e669c089aff0c410adabf16f16aaa82b20c to remove only the BATCH-12 evidence module and its tests; revert the subsequent BATCH-12 report commit separately if its implementation artifacts must also be removed.",
+    "runtime_state": "No model, API, database, notification, or external business state was created. C:\\cov-run\\batch-12\\venv is an untracked isolated environment and can be recreated from the unchanged lock."
+  },
+  "handoff": {
+    "interfaces": [
+      "CurrentEvidenceContext(scope, item_role, affected_component)",
+      "CandidateEvidence(candidate_id, extracted_scope, image_observations, declared_evidence_valid)",
+      "aggregate_evidence(current, candidate) -> EvidenceAggregation"
+    ],
+    "input_versions": {
+      "contract_version": "8314c76502cbc9d47d8432b7fe53f7d9fb82de82",
+      "direct_dependency_integration_sha": "9d093a492e576d7cb02b46c2ca60ebf2cac1c244",
+      "truth_table": "reports/batches/BATCH-12/evidence-truth-table.json"
+    },
+    "reproduction": [
+      "Create C:\\cov-run\\batch-12\\venv from D:\\python\\python.exe.",
+      "Use only C:\\cov-run\\batch-12\\venv\\Scripts\\python.exe to install the unchanged lock, editable backend, and run backend/tests/evidence.",
+      "Review scope-traces.json together with the pure function before wiring a later state builder."
+    ],
+    "remaining_gates": [
+      "Independent BATCH-12 verification is required and is not claimed by this report.",
+      "Coordinator integration and an integration retest are required before BATCH-14 or any other consumer treats this code as an accepted dependency."
+    ]
+  },
+  "next_batch_started": false
+}

@@ -1,0 +1,87 @@
+{
+  "trace_version": "1.0",
+  "function": "covenia_b.evidence.aggregate_evidence",
+  "comparison_order": [
+    "order_id",
+    "sku_id",
+    "fulfillment_item_id",
+    "issue_type"
+  ],
+  "examples": [
+    {
+      "name": "same_scope_multi_image_complete_coverage",
+      "current_scope": {
+        "order_id": "order-a",
+        "sku_id": "sku-primary",
+        "fulfillment_item_id": "item-primary",
+        "issue_type": "PACKAGE_DAMAGE"
+      },
+      "candidate_scope": {
+        "order_id": "order-a",
+        "sku_id": "sku-primary",
+        "fulfillment_item_id": "item-primary",
+        "issue_type": "PACKAGE_DAMAGE"
+      },
+      "scope_trace": [
+        {"level": "order_id", "matches": true},
+        {"level": "sku_id", "matches": true},
+        {"level": "fulfillment_item_id", "matches": true},
+        {"level": "issue_type", "matches": true}
+      ],
+      "matching_source_ids": ["damage-detail", "identity-and-component"],
+      "missing_source_ids": [],
+      "conflicting_source_ids": [],
+      "status": "VALID"
+    },
+    {
+      "name": "sku_scope_change",
+      "current_scope": {
+        "order_id": "order-a",
+        "sku_id": "sku-primary",
+        "fulfillment_item_id": "item-primary",
+        "issue_type": "PACKAGE_DAMAGE"
+      },
+      "candidate_scope": {
+        "order_id": "order-a",
+        "sku_id": "sku-gift",
+        "fulfillment_item_id": "item-primary",
+        "issue_type": "PACKAGE_DAMAGE"
+      },
+      "scope_trace": [
+        {"level": "order_id", "matches": true},
+        {"level": "sku_id", "matches": false},
+        {"level": "fulfillment_item_id", "matches": true},
+        {"level": "issue_type", "matches": true}
+      ],
+      "matching_source_ids": ["complete"],
+      "missing_source_ids": [],
+      "conflicting_source_ids": [],
+      "status": "MISMATCHED",
+      "reason": "scope changed at sku_id"
+    },
+    {
+      "name": "primary_and_gift_source_conflict",
+      "matching_source_ids": ["primary"],
+      "mismatched_source_ids": ["gift"],
+      "missing_source_ids": [],
+      "conflicting_source_ids": ["gift", "primary"],
+      "status": "NEED_HUMAN_REVIEW",
+      "reason": "sources disagree about role"
+    },
+    {
+      "name": "only_unreadable_source",
+      "matching_source_ids": [],
+      "mismatched_source_ids": [],
+      "missing_source_ids": ["unreadable"],
+      "conflicting_source_ids": [],
+      "missing_coverage": [
+        "PRODUCT_IDENTITY",
+        "AFFECTED_COMPONENT",
+        "DAMAGE_DETAIL"
+      ],
+      "status": "NEED_HUMAN_REVIEW",
+      "reason": "source readability is not HIGH"
+    }
+  ],
+  "note": "All identifiers are synthetic structural examples. No image filename, case identifier, ground truth, or model conclusion is an aggregation input."
+}

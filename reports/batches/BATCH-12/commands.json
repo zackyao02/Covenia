@@ -1,0 +1,127 @@
+{
+  "commands_version": "1.0",
+  "repo_root": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-12",
+  "interpreter": "C:\\cov-run\\batch-12\\venv\\Scripts\\python.exe",
+  "commands": [
+    {
+      "id": "environment-create-venv",
+      "command": "D:\\python\\python.exe -m venv C:\\cov-run\\batch-12\\venv",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-12",
+      "exit_code": 0,
+      "duration_seconds": 6.679,
+      "evidence": "reports/batches/BATCH-12/environment.json"
+    },
+    {
+      "id": "required-01-venv-identity",
+      "command": "C:\\cov-run\\batch-12\\venv\\Scripts\\python.exe -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version); print(sys.prefix); print(sys.base_prefix)\" C:\\cov-run\\batch-12\\venv\\Scripts\\python.exe",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-12",
+      "exit_code": 0,
+      "duration_seconds": 0.001,
+      "stdout": "C:\\cov-run\\batch-12\\venv\\Scripts\\python.exe | 3.13.5 | C:\\cov-run\\batch-12\\venv | D:\\python",
+      "evidence": "reports/batches/BATCH-12/environment.json"
+    },
+    {
+      "id": "required-02-lock-install",
+      "command": "C:\\cov-run\\batch-12\\venv\\Scripts\\python.exe -m pip install --no-deps -r backend/requirements-dev.lock",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-12",
+      "exit_code": 0,
+      "duration_seconds": 29.353,
+      "stdout_summary": "All 29 lock-file packages installed successfully in the isolated venv.",
+      "evidence": "reports/batches/BATCH-12/environment.json"
+    },
+    {
+      "id": "required-03-editable-install",
+      "command": "C:\\cov-run\\batch-12\\venv\\Scripts\\python.exe -m pip install --no-deps --no-build-isolation -e backend",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-12",
+      "exit_code": 0,
+      "duration_seconds": 3.66,
+      "stdout_summary": "Successfully installed covenia-b-0.0.0 editable from backend.",
+      "evidence": "reports/batches/BATCH-12/environment.json"
+    },
+    {
+      "id": "required-04-import-check",
+      "command": "C:\\cov-run\\batch-12\\venv\\Scripts\\python.exe -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-12",
+      "exit_code": 0,
+      "duration_seconds": 0.636,
+      "stdout": "pytest/jsonschema import OK",
+      "evidence": "reports/batches/BATCH-12/commands.json#required-04-import-check"
+    },
+    {
+      "id": "required-05-evidence-tests",
+      "command": "C:\\cov-run\\batch-12\\venv\\Scripts\\python.exe -m pytest backend/tests/evidence -q",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-12",
+      "exit_code": 0,
+      "duration_seconds": 1.308,
+      "mode": "UNIT",
+      "tests_passed": 16,
+      "tests_failed": 0,
+      "stdout": "16 passed in 0.51s",
+      "evidence": "reports/batches/BATCH-12/commands.json#required-05-evidence-tests"
+    },
+    {
+      "id": "required-06-pip-list",
+      "command": "C:\\cov-run\\batch-12\\venv\\Scripts\\python.exe -m pip list --format=json",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-12",
+      "exit_code": 0,
+      "duration_seconds": 0.001,
+      "stdout_summary": "31 installed packages; covenia-b is editable from the target backend.",
+      "evidence": "reports/batches/BATCH-12/environment.json"
+    },
+    {
+      "id": "required-07-pip-check",
+      "command": "C:\\cov-run\\batch-12\\venv\\Scripts\\python.exe -m pip check",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-12",
+      "exit_code": 0,
+      "duration_seconds": 0.001,
+      "stdout": "No broken requirements found.",
+      "evidence": "reports/batches/BATCH-12/pip-check.txt"
+    },
+    {
+      "id": "required-08-diff-check-pre-report",
+      "command": "git diff --check",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-12",
+      "exit_code": 0,
+      "duration_seconds": 0.32,
+      "stdout": "",
+      "evidence": "reports/batches/BATCH-12/commands.json#required-08-diff-check-pre-report"
+    },
+    {
+      "id": "required-09-status-pre-report",
+      "command": "git status --short",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-12",
+      "exit_code": 0,
+      "duration_seconds": 0.32,
+      "stdout": "",
+      "stdout_interpretation": "Clean after the code/test commit and before implementation-report artifacts were created.",
+      "evidence": "reports/batches/BATCH-12/commands.json#required-09-status-pre-report"
+    },
+    {
+      "id": "supplemental-ruff",
+      "command": "C:\\cov-run\\batch-12\\venv\\Scripts\\python.exe -m ruff check backend/src/covenia_b/evidence backend/tests/evidence",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-12",
+      "exit_code": 0,
+      "duration_seconds": 0.704,
+      "stdout": "All checks passed!",
+      "evidence": "reports/batches/BATCH-12/commands.json#supplemental-ruff"
+    },
+    {
+      "id": "supplemental-plan-git-blob-hashes",
+      "command": "C:\\cov-run\\batch-12\\venv\\Scripts\\python.exe -c <hashlib over raw bytes from git show 958916a...:MASTER_PLAN.md and batches.json>",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-12",
+      "exit_code": 0,
+      "duration_seconds": 0.001,
+      "stdout": "MASTER_PLAN.md=DAAE3CCF0A11710BFE5B48098AC9668CBD0AFBFEA63C66B74EDFF57C94885A5A; batches.json=1E711436F72BD9946052ABE9D120E13B199028FFA9D3795C1382308B8247EEB6",
+      "evidence": "reports/batches/BATCH-12/IMPLEMENTATION_REPORT.json#plan_sha256"
+    },
+    {
+      "id": "supplemental-short-path-preflight",
+      "command": "Get-ChildItem C:\\cov-run\\batch-12\\venv -Recurse -File | longest FullName length",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-12",
+      "exit_code": 0,
+      "duration_seconds": 0.501,
+      "stdout_summary": "Longest venv file path length is 156, which is below 250.",
+      "evidence": "reports/batches/BATCH-12/environment.json"
+    }
+  ]
+}

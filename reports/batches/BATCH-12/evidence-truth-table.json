@@ -1,0 +1,76 @@
+{
+  "table_version": "1.0",
+  "owner": "covenia_b.evidence.aggregate_evidence",
+  "contract_basis": [
+    "BATCH-03 contract-lock-v1: server, not model, owns evidence status.",
+    "PRODUCT-FREEZE.md P0-1: scope comparison order is order_id -> sku_id -> fulfillment_item_id -> issue_type.",
+    "docs/03-firewall-rules.md: unknown or conflicting evidence routes to NEED_HUMAN_REVIEW; scope changes explain E2.",
+    "PRODUCT-FREEZE.md A26: image text asserting evidence validity is not a rule fact."
+  ],
+  "scope_order": [
+    "order_id",
+    "sku_id",
+    "fulfillment_item_id",
+    "issue_type"
+  ],
+  "required_coverage": [
+    "PRODUCT_IDENTITY",
+    "AFFECTED_COMPONENT",
+    "DAMAGE_DETAIL"
+  ],
+  "source_reliability": {
+    "usable_source": [
+      "readability is HIGH",
+      "product_identifiable is true",
+      "sku_match is MATCH",
+      "product_role equals the current item role",
+      "integrity_concern is false"
+    ],
+    "component_coverage": [
+      "the current affected component is known",
+      "issue_visible is true",
+      "observed affected_component equals the current affected component"
+    ],
+    "self_conflicts": [
+      "PRODUCT_IDENTITY coverage with product_identifiable=false",
+      "AFFECTED_COMPONENT coverage with affected_component=UNKNOWN",
+      "DAMAGE_DETAIL coverage with issue_visible=false"
+    ]
+  },
+  "decision_precedence": [
+    {
+      "when": "one or more scope fields differ",
+      "status": "MISMATCHED",
+      "reason": "Report every changed scope level in the frozen comparison order."
+    },
+    {
+      "when": "reliable sources conflict, a source is internally inconsistent, an integrity concern exists, or an evidence identifier is duplicated",
+      "status": "NEED_HUMAN_REVIEW",
+      "reason": "Do not infer a fact from conflicting observations."
+    },
+    {
+      "when": "a reliable source explicitly mismatches SKU, item role, or affected component",
+      "status": "MISMATCHED",
+      "reason": "The evidence concerns another product or component."
+    },
+    {
+      "when": "no observations, an unknown current component, or any required coverage fact is absent",
+      "status": "NEED_HUMAN_REVIEW",
+      "reason": "The server lacks enough deterministic facts."
+    },
+    {
+      "when": "scope matches and compatible reliable sources jointly satisfy all required coverage",
+      "status": "VALID",
+      "reason": "No declaration or confidence value can replace these facts."
+    }
+  ],
+  "ignored_for_status": [
+    "candidate_id",
+    "declared_evidence_valid",
+    "image file name",
+    "confidence",
+    "hygiene_risk_signal"
+  ],
+  "adverse_reaction_boundary": "The aggregator does not diagnose or classify an adverse reaction. issue_type remains a scope fact; the later H1 rule independently routes ADVERSE_REACTION to HUMAN_REVIEW even when this aggregation is VALID.",
+  "model_calls": "NOT_APPLICABLE"
+}
