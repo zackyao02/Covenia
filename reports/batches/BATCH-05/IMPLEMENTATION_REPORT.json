@@ -1,0 +1,224 @@
+{
+  "report_version": "1.0",
+  "batch_id": "BATCH-05",
+  "status": "COMPLETED",
+  "result": "IMPLEMENTED",
+  "summary": "Implemented a standard-library OOXML workbook adapter, normalization and deterministic import CLI for the seven business sheets. The CLI computes measured counts from source rows and writes only the declared BATCH-05 import artifacts.",
+  "repo_root": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-05",
+  "branch": "codex/covenia-batch-05",
+  "base_integration_sha": "90c83590ad4955e24d6d859c1281b42f53686785",
+  "contract_version": "BATCH-04 integrated at 9d093a492e576d7cb02b46c2ca60ebf2cac1c244",
+  "plan_sha256": {
+    "MASTER_PLAN.md": "56A5CAF32334DC1D5628DA67A3BAB24A250CC7C5FE3F762BD781682633808AE1",
+    "batches.json": "FAE792913DCE0F2DE7BC799C452FD0964775804117287A9745A719722326A720"
+  },
+  "initial_worktree": [],
+  "dependency_receipts": [
+    {
+      "batch_id": "BATCH-04",
+      "verdict": "PASS",
+      "implementation_report": "reports/batches/BATCH-04/IMPLEMENTATION_REPORT.json",
+      "verification_report": "reports/batches/BATCH-04/VERIFICATION_REPORT.json",
+      "integration_receipt": "C:\\Users\\WONG Tsun Ming\\covenia-orchestration\\runs\\covenia-b-20260910-01\\integration-receipts\\BATCH-04.json",
+      "integration_sha": "9d093a492e576d7cb02b46c2ca60ebf2cac1c244"
+    }
+  ],
+  "external_gate_receipts": [
+    {
+      "gate": "X-A-MAPPING",
+      "verdict": "ACCEPTED",
+      "archive_report": "reports/batches/X-A-MAPPING/ARCHIVE_REPORT.json",
+      "archive_record_commit": "90c83590ad4955e24d6d859c1281b42f53686785",
+      "mapping_path": "handoff/a/data-mapping.json",
+      "raw_git_blob_sha256": "8D76EEAD5757D5618B57107B3725FCF5543D96F0C9FECF6EDEA5FDDD210B5538",
+      "raw_git_blob_bytes": 74175,
+      "eol_basis": "2284 CRLF pairs, no final LF",
+      "governance_note": "The dispatch and archived receipt mark the gate ACCEPTED. The external-gate registry text in the supplied root plan and batches.json still says MISSING; this static registry discrepancy is preserved as a remaining risk rather than silently rewritten."
+    }
+  ],
+  "code_commits": [
+    "fb1e8f3b042adf57abc697a91bfa9cbe0183b337"
+  ],
+  "commit_hash": "fb1e8f3b042adf57abc697a91bfa9cbe0183b337",
+  "files_changed": [
+    "backend/src/covenia_b/importing/workbook.py",
+    "backend/src/covenia_b/importing/normalization.py",
+    "backend/src/covenia_b/importing/cli.py",
+    "backend/tests/importing/test_workbook.py",
+    "backend/tests/importing/test_normalization.py",
+    "reports/batches/BATCH-05/import/counts.json",
+    "reports/batches/BATCH-05/import/provenance.json",
+    "reports/batches/BATCH-05/import/input-hashes.json",
+    "reports/batches/BATCH-05/IMPLEMENTATION_REPORT.json",
+    "reports/batches/BATCH-05/IMPLEMENTATION_REPORT.md",
+    "reports/batches/BATCH-05/commands.json",
+    "reports/batches/BATCH-05/environment.json",
+    "reports/batches/BATCH-05/pip-check.txt"
+  ],
+  "changed_files": [
+    {
+      "path": "backend/src/covenia_b/importing/workbook.py",
+      "purpose": "Raw OOXML cell reader preserving sheet, row, coordinate, XML type, value and formula metadata."
+    },
+    {
+      "path": "backend/src/covenia_b/importing/normalization.py",
+      "purpose": "Canonical fields, null and +08:00 time normalization, ID/association validation, counts and redacted provenance."
+    },
+    {
+      "path": "backend/src/covenia_b/importing/cli.py",
+      "purpose": "Deterministic read-only import CLI and declared JSON artifacts."
+    },
+    {
+      "path": "backend/tests/importing/test_workbook.py",
+      "purpose": "Real-sheet coordinate/type and long-ID source-cell tests."
+    },
+    {
+      "path": "backend/tests/importing/test_normalization.py",
+      "purpose": "Real counts, determinism, input-byte protection and controlled malformed-workbook tests."
+    }
+  ],
+  "scope_check": {
+    "within_allowlist": true,
+    "forbidden_changes": [],
+    "base_to_code_changed_file_count": 5,
+    "base_to_code_changed_paths": [
+      "backend/src/covenia_b/importing/cli.py",
+      "backend/src/covenia_b/importing/normalization.py",
+      "backend/src/covenia_b/importing/workbook.py",
+      "backend/tests/importing/test_normalization.py",
+      "backend/tests/importing/test_workbook.py"
+    ],
+    "dependency_changes": {
+      "new_third_party_dependencies": [],
+      "reason": "Standard-library zipfile and xml.etree parsing made an Excel dependency unnecessary.",
+      "requirements_dev_lock_change_type": "UNCHANGED",
+      "requirements_dev_lock_raw_git_blob_sha256": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+      "requirements_dev_lock_raw_git_blob_bytes": 676,
+      "requirements_dev_lock_eol": "31 LF, 0 CRLF pairs, final LF"
+    },
+    "input_hash_evidence": {
+      "path": "data/tianchi-track1-mock-data.xlsx",
+      "raw_git_blob_sha256": "B5AC027E863C5580DAB39C8F459E4698D65E9FBEC29832C9915448F2087307B7",
+      "raw_git_blob_bytes": 171212,
+      "runtime_before_after_match": true,
+      "evidence": "reports/batches/BATCH-05/import/input-hashes.json"
+    }
+  },
+  "tests_run": [
+    "backend/tests/importing/test_workbook.py",
+    "backend/tests/importing/test_normalization.py"
+  ],
+  "tests_passed": [
+    "7 passed in 2.32s"
+  ],
+  "tests_failed": [],
+  "test_results": [
+    {
+      "command": "C:\\cov-run\\batch-05\\venv\\Scripts\\python.exe -m pytest backend/tests/importing/test_workbook.py backend/tests/importing/test_normalization.py -q",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-05",
+      "exit_code": 0,
+      "duration_seconds": 2.32,
+      "mode": "UNIT",
+      "evidence": "reports/batches/BATCH-05/commands.json#/commands/4"
+    },
+    {
+      "command": "C:\\cov-run\\batch-05\\venv\\Scripts\\python.exe -m ruff check backend/src/covenia_b/importing backend/tests/importing",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-05",
+      "exit_code": 0,
+      "mode": "STATIC_ANALYSIS",
+      "evidence": "reports/batches/BATCH-05/commands.json#/commands/8"
+    }
+  ],
+  "acceptance_results": [
+    {
+      "criterion": "Actual workbook produces 138 conversations, 998 messages, 113 orders, 29 image messages, 80 tickets, and 24/13/15/10/18 ticket-sheet counts.",
+      "status": "EVIDENCED",
+      "evidence": [
+        "reports/batches/BATCH-05/import/counts.json",
+        "reports/batches/BATCH-05/commands.json#/commands/5"
+      ]
+    },
+    {
+      "criterion": "Long IDs remain character-for-character strings; numeric long IDs, blank primary IDs and invalid associations are detected without float-to-string repair.",
+      "status": "EVIDENCED",
+      "evidence": [
+        "backend/tests/importing/test_workbook.py",
+        "backend/tests/importing/test_normalization.py",
+        "reports/batches/BATCH-05/commands.json#/commands/4"
+      ]
+    },
+    {
+      "criterion": "Counts are derived from source rows, row deletion/addition changes a count, repeated imports are deterministic, and the original workbook bytes remain unchanged.",
+      "status": "EVIDENCED",
+      "evidence": [
+        "backend/tests/importing/test_normalization.py",
+        "reports/batches/BATCH-05/import/input-hashes.json"
+      ]
+    },
+    {
+      "criterion": "The implementation uses the required direct-child isolated venv, leaves the lock unchanged, and passes pip check.",
+      "status": "EVIDENCED",
+      "evidence": [
+        "reports/batches/BATCH-05/environment.json",
+        "reports/batches/BATCH-05/pip-check.txt",
+        "reports/batches/BATCH-05/commands.json"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "reports/batches/BATCH-05/import/counts.json",
+      "classification": "REDACTED",
+      "hash_status": "Resolve SHA-256 from raw git show <final-report-commit>:reports/batches/BATCH-05/import/counts.json after this report commit."
+    },
+    {
+      "path": "reports/batches/BATCH-05/import/provenance.json",
+      "classification": "REDACTED_SOURCE_INDEX",
+      "hash_status": "Resolve SHA-256 from raw git show <final-report-commit>:reports/batches/BATCH-05/import/provenance.json after this report commit."
+    },
+    {
+      "path": "reports/batches/BATCH-05/import/input-hashes.json",
+      "classification": "REDACTED",
+      "hash_status": "Resolve SHA-256 from raw git show <final-report-commit>:reports/batches/BATCH-05/import/input-hashes.json after this report commit."
+    }
+  ],
+  "model_runs": [],
+  "not_completed": [],
+  "remaining_risks": [
+    "The static X-A-MAPPING entries in the supplied root MASTER_PLAN.md and batches.json still state MISSING, while the dispatched package and archive report state ACCEPTED. This implementation consumed the archived accepted blob without editing governance files; the coordinator should reconcile the registry before scheduling a dependent batch."
+  ],
+  "risks": [
+    "Three source payment-time cells carry a preserved （定金） annotation after the timestamp. The normalized time uses the exact timestamp prefix at +08:00 and retains the annotation in-memory/provenance rather than discarding it."
+  ],
+  "blockers": [],
+  "rollback": {
+    "code": "git revert fb1e8f3b042adf57abc697a91bfa9cbe0183b337, then rerun this batch's importing tests in a new BATCH-05 RUN_DIR.",
+    "runtime_state": "NOT_APPLICABLE: the CLI reads the workbook and writes only replaceable BATCH-05 report artifacts."
+  },
+  "handoff": {
+    "interfaces": [
+      "CompetitionWorkbook(path).sheet_names()/read_rows(sheet_name)",
+      "normalize_workbook(CompetitionWorkbook(path))",
+      "python -m covenia_b.importing.cli --workbook <xlsx> --output <directory>"
+    ],
+    "input_versions": {
+      "workbook_sha256": "B5AC027E863C5580DAB39C8F459E4698D65E9FBEC29832C9915448F2087307B7",
+      "workbook_bytes": 171212,
+      "mapping_blob_sha256": "8D76EEAD5757D5618B57107B3725FCF5543D96F0C9FECF6EDEA5FDDD210B5538",
+      "mapping_blob_bytes": 74175
+    },
+    "reproduction": [
+      "C:\\cov-run\\batch-05\\venv\\Scripts\\python.exe -m pytest backend/tests/importing/test_workbook.py backend/tests/importing/test_normalization.py -q",
+      "C:\\cov-run\\batch-05\\venv\\Scripts\\python.exe -m covenia_b.importing.cli --workbook data/tianchi-track1-mock-data.xlsx --output reports/batches/BATCH-05/import"
+    ],
+    "remaining_gates": [
+      "Independent BATCH-05 verification and integration are still required before a dependent batch may consume this work."
+    ]
+  },
+  "handoff_notes": [
+    "The importer does not use buyer nickname as a join key.",
+    "provenance.json deliberately indexes only source coordinates and identifiers; it does not dump message text, buyer alias, payment account or address values.",
+    "No next batch was started."
+  ],
+  "next_batch_started": false
+}

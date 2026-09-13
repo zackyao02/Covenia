@@ -1,0 +1,5 @@
+command: C:\cov-run\batch-05\venv\Scripts\python.exe -m pip check
+cwd: C:\Users\WONG Tsun Ming\Desktop\欧莱雅黑客松\worktrees\covenia-batch-05
+exit_code: 0
+stdout:
+No broken requirements found.

@@ -1,0 +1,10 @@
+{
+  "schema_version": "covenia-b-import-input-hashes-v1",
+  "workbook": {
+    "file_name": "tianchi-track1-mock-data.xlsx",
+    "hash_method": "sha256 over raw input bytes",
+    "sha256": "B5AC027E863C5580DAB39C8F459E4698D65E9FBEC29832C9915448F2087307B7",
+    "size_bytes": 171212,
+    "unchanged_after_import": true
+  }
+}

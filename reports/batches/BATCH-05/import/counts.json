@@ -1,0 +1,17 @@
+{
+  "counts": {
+    "conversation_count": 138,
+    "image_message_count": 29,
+    "message_count": 998,
+    "order_count": 113,
+    "ticket_count_by_sheet": {
+      "不良反应工单": 10,
+      "售后退货工单": 18,
+      "物流工单": 15,
+      "线下打款工单": 13,
+      "补发换货工单": 24
+    },
+    "ticket_count_total": 80
+  },
+  "schema_version": "covenia-b-import-counts-v1"
+}
