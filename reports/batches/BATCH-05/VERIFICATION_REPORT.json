@@ -1,0 +1,367 @@
+{
+  "report_version": "1.0",
+  "batch_id": "BATCH-05",
+  "result": "PASS",
+  "verdict": "PASS",
+  "reviewed_base_sha": "90c83590ad4955e24d6d859c1281b42f53686785",
+  "reviewed_sha": "cf3e6ebe968943be32775acd135a1b2f4f767c44",
+  "reviewed_code_commits": [
+    "fb1e8f3b042adf57abc697a91bfa9cbe0183b337"
+  ],
+  "commit_verified": {
+    "head_before_verification_report": "cf3e6ebe968943be32775acd135a1b2f4f767c44",
+    "review_sha_resolves_to_commit": true,
+    "code_sha_resolves_to_commit": true,
+    "code_sha_is_ancestor_of_review_sha": true,
+    "integration_base_is_ancestor_of_review_sha": true,
+    "verification_method": "git cat-file -t; git merge-base --is-ancestor; git rev-parse HEAD"
+  },
+  "contract_version": "integration/covenia-b@90c83590ad4955e24d6d859c1281b42f53686785 with accepted X-A-MAPPING artifact",
+  "plan_sha256": "56A5CAF32334DC1D5628DA67A3BAB24A250CC7C5FE3F762BD781682633808AE1",
+  "batches_sha256": "FAE792913DCE0F2DE7BC799C452FD0964775804117287A9745A719722326A720",
+  "verified_at": "2026-09-13T09:03:02+08:00",
+  "independent_context": true,
+  "environment": {
+    "repo_root": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-05-verify-1",
+    "run_dir": "C:\\cov-run\\batch-05-verify-1",
+    "venv": "C:\\cov-run\\batch-05-verify-1\\venv",
+    "interpreter": "C:\\cov-run\\batch-05-verify-1\\venv\\Scripts\\python.exe",
+    "sys_prefix": "C:\\cov-run\\batch-05-verify-1\\venv",
+    "sys_base_prefix": "D:\\python",
+    "python_version": "3.13.5",
+    "venv_direct_child_of_run_dir": true,
+    "include_system_site_packages": false,
+    "pythonpath": "UNSET",
+    "long_paths_enabled": false,
+    "longest_venv_file": "C:\\cov-run\\batch-05-verify-1\\venv\\Lib\\site-packages\\pkg_resources\\tests\\data\\my-test-package_unpacked-egg\\my_test_package-1.0-py3.7.egg\\EGG-INFO\\dependency_links.txt",
+    "longest_venv_path_length": 165,
+    "longest_venv_path_lt_250": true,
+    "pip_check": "No broken requirements found.",
+    "pip_list_package_count": 31,
+    "editable_project_location": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-05-verify-1\\backend"
+  },
+  "dependency_checks": [
+    {
+      "batch_id": "BATCH-04",
+      "receipt": "C:\\Users\\WONG Tsun Ming\\covenia-orchestration\\runs\\covenia-b-20260910-01\\integration-receipts\\BATCH-04.json",
+      "receipt_status": "SUCCESS",
+      "receipt_integration_commit": "9d093a492e576d7cb02b46c2ca60ebf2cac1c244",
+      "receipt_commit_is_ancestor_of_review_base": true,
+      "result": "PASS"
+    }
+  ],
+  "external_gate_checks": [
+    {
+      "gate_id": "X-A-MAPPING",
+      "archive_report": "reports/batches/X-A-MAPPING/ARCHIVE_REPORT.json",
+      "archive_gate_status": "ACCEPTED",
+      "artifact": "handoff/a/data-mapping.json",
+      "source_commit": "90c83590ad4955e24d6d859c1281b42f53686785",
+      "raw_git_blob_bytes": 74175,
+      "raw_git_blob_sha256": "8D76EEAD5757D5618B57107B3725FCF5543D96F0C9FECF6EDEA5FDDD210B5538",
+      "result": "PASS",
+      "note": "The root planning snapshot still says MISSING; dispatch instruction identifies that as known governance-accounting lag. The accepted archive and integrated raw blob were independently verified and govern this acceptance."
+    }
+  ],
+  "scope_audit": {
+    "passed": true,
+    "base": "90c83590ad4955e24d6d859c1281b42f53686785",
+    "review": "cf3e6ebe968943be32775acd135a1b2f4f767c44",
+    "method": "git diff --name-status 90c83590ad4955e24d6d859c1281b42f53686785 cf3e6ebe968943be32775acd135a1b2f4f767c44; git diff --check",
+    "changed_files": [
+      "backend/src/covenia_b/importing/cli.py",
+      "backend/src/covenia_b/importing/normalization.py",
+      "backend/src/covenia_b/importing/workbook.py",
+      "backend/tests/importing/test_normalization.py",
+      "backend/tests/importing/test_workbook.py",
+      "reports/batches/BATCH-05/IMPLEMENTATION_REPORT.json",
+      "reports/batches/BATCH-05/IMPLEMENTATION_REPORT.md",
+      "reports/batches/BATCH-05/commands.json",
+      "reports/batches/BATCH-05/environment.json",
+      "reports/batches/BATCH-05/import/counts.json",
+      "reports/batches/BATCH-05/import/input-hashes.json",
+      "reports/batches/BATCH-05/import/provenance.json",
+      "reports/batches/BATCH-05/pip-check.txt"
+    ],
+    "code_to_review_changed_files": [
+      "reports/batches/BATCH-05/IMPLEMENTATION_REPORT.json",
+      "reports/batches/BATCH-05/IMPLEMENTATION_REPORT.md",
+      "reports/batches/BATCH-05/commands.json",
+      "reports/batches/BATCH-05/environment.json",
+      "reports/batches/BATCH-05/import/counts.json",
+      "reports/batches/BATCH-05/import/input-hashes.json",
+      "reports/batches/BATCH-05/import/provenance.json",
+      "reports/batches/BATCH-05/pip-check.txt"
+    ],
+    "requirements_dev_lock_changed": false,
+    "requirements_dev_lock_raw_git_blob_sha256": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+    "requirements_dev_lock_raw_git_blob_bytes": 676,
+    "violations": []
+  },
+  "commands_run": [
+    {
+      "id": "required-01-interpreter-identity",
+      "command": "C:\\cov-run\\batch-05-verify-1\\venv\\Scripts\\python.exe -c import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version) C:\\cov-run\\batch-05-verify-1\\venv\\Scripts\\python.exe",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-05-verify-1",
+      "exit_code": 0,
+      "mode": "ENVIRONMENT",
+      "output_summary": "Exact isolated interpreter printed; CPython 3.13.5."
+    },
+    {
+      "id": "required-02-locked-install",
+      "command": "C:\\cov-run\\batch-05-verify-1\\venv\\Scripts\\python.exe -m pip install --no-deps -r backend/requirements-dev.lock",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-05-verify-1",
+      "exit_code": 0,
+      "mode": "ENVIRONMENT",
+      "retry_history": "Initial sandbox socket-policy attempt exited 1; identical isolated-venv command reran with approved network and installed the 29 exact pins."
+    },
+    {
+      "id": "required-03-editable-install",
+      "command": "C:\\cov-run\\batch-05-verify-1\\venv\\Scripts\\python.exe -m pip install --no-deps --no-build-isolation -e backend",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-05-verify-1",
+      "exit_code": 0,
+      "mode": "ENVIRONMENT",
+      "retry_history": "Initial sandbox filesystem-policy attempt could not write the venv .pth file; identical isolated-venv command reran with approved filesystem access and installed covenia-b==0.0.0 editable."
+    },
+    {
+      "id": "required-04-import-check",
+      "command": "C:\\cov-run\\batch-05-verify-1\\venv\\Scripts\\python.exe -c import pytest, jsonschema; print('pytest/jsonschema import OK')",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-05-verify-1",
+      "exit_code": 0,
+      "mode": "ENVIRONMENT",
+      "output_summary": "pytest/jsonschema import OK"
+    },
+    {
+      "id": "required-05-importing-pytest",
+      "command": "C:\\cov-run\\batch-05-verify-1\\venv\\Scripts\\python.exe -m pytest backend/tests/importing/test_workbook.py backend/tests/importing/test_normalization.py -q",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-05-verify-1",
+      "exit_code": 0,
+      "mode": "UNIT",
+      "output_summary": "7 passed in 2.29s"
+    },
+    {
+      "id": "required-06-import-cli",
+      "command": "C:\\cov-run\\batch-05-verify-1\\venv\\Scripts\\python.exe -m covenia_b.importing.cli --workbook data/tianchi-track1-mock-data.xlsx --output reports/batches/BATCH-05/import",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-05-verify-1",
+      "exit_code": 0,
+      "duration_seconds": 0.505,
+      "mode": "UNIT",
+      "output_summary": "CLI reported 138/998/113/29/80. The regenerated raw bytes match all three REVIEW_SHA output blobs exactly."
+    },
+    {
+      "id": "required-07-pip-list",
+      "command": "C:\\cov-run\\batch-05-verify-1\\venv\\Scripts\\python.exe -m pip list --format=json",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-05-verify-1",
+      "exit_code": 0,
+      "mode": "ENVIRONMENT",
+      "output_summary": "31 packages; covenia-b==0.0.0 points editable to the reviewed worktree."
+    },
+    {
+      "id": "required-08-pip-check",
+      "command": "C:\\cov-run\\batch-05-verify-1\\venv\\Scripts\\python.exe -m pip check",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-05-verify-1",
+      "exit_code": 0,
+      "mode": "ENVIRONMENT",
+      "output_summary": "No broken requirements found."
+    },
+    {
+      "id": "required-09-git-diff-check",
+      "command": "git diff --check",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-05-verify-1",
+      "exit_code": 0,
+      "mode": "VCS_SCOPE"
+    },
+    {
+      "id": "required-10-git-status",
+      "command": "git status --short",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-05-verify-1",
+      "exit_code": 0,
+      "mode": "VCS_SCOPE",
+      "output_summary": "CLEAN before the independent report was added."
+    },
+    {
+      "id": "independent-probes",
+      "command": "C:\\cov-run\\batch-05-verify-1\\venv\\Scripts\\python.exe - (independent stdin probe; temporary copies only under C:\\cov-run\\batch-05-verify-1\\independent-probes-2)",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-05-verify-1",
+      "exit_code": 0,
+      "mode": "NEGATIVE_CONTROL",
+      "output_summary": "Row deletion/addition, determinism, long-ID preservation, bad input rejection, redaction, nickname non-key behavior, CLI output containment, and source-byte protection all passed."
+    },
+    {
+      "id": "raw-git-blob-audit",
+      "command": "git show <sha>:<path> streamed as raw stdout bytes into SHA-256 comparison",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-05-verify-1",
+      "exit_code": 0,
+      "mode": "INTEGRITY",
+      "output_summary": "Input, X-A mapping, changed files, and deterministic CLI outputs were checked without working-copy hashing."
+    }
+  ],
+  "commands": [
+    {
+      "command": "See commands_run required-01 through required-10; all required final exit codes are 0.",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-05-verify-1",
+      "exit_code": 0,
+      "mode": "SUMMARY",
+      "output": "All mandated commands completed; retry context is explicitly recorded above."
+    }
+  ],
+  "passed_checks": [
+    "REVIEW_SHA is HEAD, CODE_SHA is its ancestor, and integration base is its ancestor.",
+    "BATCH-04 SUCCESS receipt is on the integration-base ancestry chain.",
+    "X-A-MAPPING is ACCEPTED and its 74175-byte integrated raw Git blob has the required SHA-256.",
+    "All 13 REVIEW_SHA changes are within the BATCH-05 whitelist; no dependency-lock change or forbidden path change exists.",
+    "Actual workbook measured 138 conversations, 998 messages, 113 orders, 29 image messages, and 80 tickets with 24/13/15/10/18 source-sheet ticket counts.",
+    "Order 6920185815517983396 remains a source string at A45 and is character-for-character identical after normalization.",
+    "Independent temporary workbook deletion and addition changed message count to 997 and 999 respectively; repeated imports produced three byte-identical artifacts.",
+    "Numeric long ID, blank primary ID, and wrong ticket-order association were rejected with IdentifierPrecisionError, RequiredIdentifierMissing, and AssociationIntegrityError respectively, each carrying source-coordinate context.",
+    "Seven business sheets retain source sheet/row/identifier coordinates, null handling, +08:00 timestamps, and five ticket categories; data description is excluded and a changed buyer nickname does not alter valid associations.",
+    "Provenance record payloads contain no raw content fields or sampled sensitive source value; CLI success writes only counts.json, provenance.json, and input-hashes.json in the specified directory, while invalid CLI input exits nonzero without output or source modification.",
+    "Specified venv is isolated, direct-child, under the 250-character longest-path limit, has no PYTHONPATH, and passes pip check."
+  ],
+  "failed_checks": [],
+  "scope_violations": [],
+  "criteria": [
+    {
+      "criterion": "Actual workbook produces 138 conversations, 998 messages, 113 orders, 29 image messages, 80 tickets, and 24/13/15/10/18 ticket-sheet counts; data description is not business input.",
+      "result": "PASS",
+      "evidence": [
+        "independent-probes result: actual_counts",
+        "reports/batches/BATCH-05/import/counts.json raw Git blob"
+      ]
+    },
+    {
+      "criterion": "Long IDs are character-for-character preserved, while numeric long IDs, blank primary IDs, and bad associations are detected without float-to-string repair.",
+      "result": "PASS",
+      "evidence": [
+        "independent-probes result: long_id and negative_controls"
+      ]
+    },
+    {
+      "criterion": "Counts derive from input rows, original input bytes do not change, and repeated import is deterministic.",
+      "result": "PASS",
+      "evidence": [
+        "independent-probes result: count_derivation, determinism, source_unchanged"
+      ]
+    },
+    {
+      "criterion": "Source coordinates, canonical field/null/timezone rules, five ticket source sheets, and non-nickname association behavior are preserved.",
+      "result": "PASS",
+      "evidence": [
+        "independent-probes result: source_coordinates_and_normalization and nickname_not_unique_key"
+      ]
+    },
+    {
+      "criterion": "CLI writes only its requested output directory, explains malformed input, and does not modify source input.",
+      "result": "PASS",
+      "evidence": [
+        "independent-probes result: cli and source_unchanged"
+      ]
+    },
+    {
+      "criterion": "Environment evidence is complete and conflict-free.",
+      "result": "PASS",
+      "evidence": [
+        "environment",
+        "commands_run required-01, required-02, required-03, required-04, required-07, required-08"
+      ]
+    }
+  ],
+  "artifact_hashes": {
+    "method": "SHA-256 over raw stdout bytes from git show <commit>:<path>. EOL convention is git_blob raw bytes with no checkout conversion; XLSX is binary and has no text-EOL convention.",
+    "review_commit_raw_git_blobs": [
+      {"path": "backend/src/covenia_b/importing/cli.py", "bytes": 3029, "sha256": "54D1A123F65AEFDC3C60A25EDF9DA9342DB273A875C54E4EEB026FD0F3B359DD"},
+      {"path": "backend/src/covenia_b/importing/normalization.py", "bytes": 19728, "sha256": "C114F13EA47EA806615737117275F9C0F747DE0A0E9D3EF77D9CA111AEF0DA3E"},
+      {"path": "backend/src/covenia_b/importing/workbook.py", "bytes": 9791, "sha256": "6D30982990942910189CE545AD596C8B5A6B8F8D72B3FA1C4A58331236F7D3E5"},
+      {"path": "backend/tests/importing/test_normalization.py", "bytes": 7073, "sha256": "7A734CB2225FE6FDD5E2232A5D7E3BD658E77B3F5624212D1FA8CD61DE0E86DC"},
+      {"path": "backend/tests/importing/test_workbook.py", "bytes": 1559, "sha256": "C81CEF98BAA8F347B3442619954C69990C25D7F9A8B84E6C9481A68FBF26E668"},
+      {"path": "reports/batches/BATCH-05/IMPLEMENTATION_REPORT.json", "bytes": 10839, "sha256": "D8DF8097CF730D72F6698336E2DA558CFB04B467C79237CFE909FEA666B75107"},
+      {"path": "reports/batches/BATCH-05/IMPLEMENTATION_REPORT.md", "bytes": 1869, "sha256": "DC18DBC9EB9C60E0D98EE5F5F72BEA9D72E34D20743F20150107D3E64042B5BB"},
+      {"path": "reports/batches/BATCH-05/commands.json", "bytes": 5676, "sha256": "E0CA7CFEDADCB91C980B188A9F272CE98DBA70BB75C89F633611031CC035AE61"},
+      {"path": "reports/batches/BATCH-05/environment.json", "bytes": 2743, "sha256": "C29FF983C3519D34F5F1B946E318D77178583C69D3D61524734A61F225F9099C"},
+      {"path": "reports/batches/BATCH-05/import/counts.json", "bytes": 404, "sha256": "8052F6CD11109014259EEBBE0FB8E40DA6800A680BE1FB24CCF53C8423B9FD3E"},
+      {"path": "reports/batches/BATCH-05/import/input-hashes.json", "bytes": 323, "sha256": "43D14BEEFD488EC2141A980F521E5CBF48BBE3FBD76E17530D8D174EEFEFE419"},
+      {"path": "reports/batches/BATCH-05/import/provenance.json", "bytes": 544949, "sha256": "DD8F575770DFDFE51D4466CF1BA5790694BF28933490EE9A62B07F6B4D486EAE"},
+      {"path": "reports/batches/BATCH-05/pip-check.txt", "bytes": 200, "sha256": "636E0403EBCDC88A460616C56B5DB7440B6B176D68EC00810E20554EBFA873B0"}
+    ],
+    "input_workbook": {
+      "path": "data/tianchi-track1-mock-data.xlsx",
+      "bytes": 171212,
+      "sha256": "B5AC027E863C5580DAB39C8F459E4698D65E9FBEC29832C9915448F2087307B7",
+      "verified_unchanged_before_after_import": true
+    },
+    "x_a_mapping": {
+      "path": "handoff/a/data-mapping.json",
+      "bytes": 74175,
+      "sha256": "8D76EEAD5757D5618B57107B3725FCF5543D96F0C9FECF6EDEA5FDDD210B5538"
+    },
+    "deterministic_cli_output_matches_review_raw_blob": {
+      "counts.json": true,
+      "input-hashes.json": true,
+      "provenance.json": true
+    }
+  },
+  "negative_controls": [
+    {
+      "control": "Delete a message row from an isolated temporary workbook copy belonging to a multi-message session.",
+      "result": "PASS",
+      "observed_message_count": 997
+    },
+    {
+      "control": "Add an isolated temporary message row with a unique message_id.",
+      "result": "PASS",
+      "observed_message_count": 999
+    },
+    {
+      "control": "Rewrite the known 19-digit order ID source cell as numeric XML.",
+      "result": "PASS",
+      "observed_exception": "IdentifierPrecisionError with source coordinate"
+    },
+    {
+      "control": "Blank a required message_id source cell.",
+      "result": "PASS",
+      "observed_exception": "RequiredIdentifierMissing with source coordinate"
+    },
+    {
+      "control": "Point a ticket at an order belonging to another valid session.",
+      "result": "PASS",
+      "observed_exception": "AssociationIntegrityError with source coordinate"
+    },
+    {
+      "control": "Change an order buyer nickname only.",
+      "result": "PASS",
+      "observed": "Import remains valid and counts unchanged; nickname is not a join key."
+    },
+    {
+      "control": "Run the actual CLI against numeric-long-ID workbook copy.",
+      "result": "PASS",
+      "observed": "Exit 1, IdentifierPrecisionError contains A45, and requested output directory was not created."
+    }
+  ],
+  "findings": [
+    {
+      "severity": "INFO",
+      "finding": "The required direct CLI command generated byte-identical raw artifacts, but its LF writes make Git show EOL-only changes in this Windows checkout. git diff --ignore-space-at-eol exited 0; the three known generated files were restored exactly from HEAD after pre-command cleanliness was confirmed. Final report commit has no such carry-over change."
+    }
+  ],
+  "regression_risks": [
+    "On this core.autocrlf checkout, directly regenerating the tracked import JSON directory can leave EOL-only worktree changes even when generated raw bytes equal the committed artifacts. Future automation should use a temporary output directory for verification or restore the exact tracked files after comparison.",
+    "This acceptance executed the scoped importing tests and independent probes, not later BATCH-06 consumer integration; downstream consumers still require their own scoped acceptance.",
+    "The root planning snapshot retains the known X-A-MAPPING MISSING bookkeeping value; coordination should reconcile the registry separately, without changing this accepted implementation."
+  ],
+  "minimal_fix_request": [],
+  "minimal_fix_list": [],
+  "blockers": [],
+  "recheck_commands": [
+    "C:\\cov-run\\batch-05-verify-1\\venv\\Scripts\\python.exe -m pytest backend/tests/importing/test_workbook.py backend/tests/importing/test_normalization.py -q",
+    "C:\\cov-run\\batch-05-verify-1\\venv\\Scripts\\python.exe -m covenia_b.importing.cli --workbook data/tianchi-track1-mock-data.xlsx --output <fresh-temporary-output-directory>",
+    "C:\\cov-run\\batch-05-verify-1\\venv\\Scripts\\python.exe -m pip check",
+    "git diff --check",
+    "git status --short"
+  ],
+  "rollback_review": {
+    "passed": true,
+    "notes": "If a future defect is found, revert implementation commit fb1e8f3b042adf57abc697a91bfa9cbe0183b337 and regenerate only BATCH-05 output artifacts; never alter the source workbook."
+  },
+  "code_modified": false,
+  "next_batch_started": false
+}
