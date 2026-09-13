@@ -6,11 +6,24 @@
   "summary": "Implemented a data-driven CaseCatalog and CaseAssembler that join normalized competition chat, order, and five-ticket-sheet facts by source_session_id before validating declared order/ticket IDs. The implementation emits only schema-valid CaseInput payloads or explicit non-fabricating diagnostics, with deterministic redacted case and association artifacts.",
   "repo_root": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\work\\repo2",
   "branch": "codex/batch-06-case-input",
-  "base_integration_sha": "948bc416788a698d364f916c895f692489e45f99",
-  "contract_version": "integration/covenia-b@948bc416788a698d364f916c895f692489e45f99; schemas/case-input.schema.json read-only",
+  "base_integration_sha": "78f7754233ed430254043f8548ccb2e08eebbd13",
+  "contract_version": "integration/covenia-b@78f7754233ed430254043f8548ccb2e08eebbd13; schemas/case-input.schema.json read-only",
   "plan_sha256": {
-    "MASTER_PLAN.md": "56A5CAF32334DC1D5628DA67A3BAB24A250CC7C5FE3F762BD781682633808AE1",
-    "batches.json": "FAE792913DCE0F2DE7BC799C452FD0964775804117287A9745A719722326A720"
+    "MASTER_PLAN.md": "DAAE3CCF0A11710BFE5B48098AC9668CBD0AFBFEA63C66B74EDFF57C94885A5A",
+    "batches.json": "1E711436F72BD9946052ABE9D120E13B199028FFA9D3795C1382308B8247EEB6",
+    "source": {
+      "integration_commit": "78f7754233ed430254043f8548ccb2e08eebbd13",
+      "method": "SHA-256 over raw Git blobs emitted by git show <review SHA>:<path>; never working-copy bytes.",
+      "review_tree_inheritance": "The repair review tree inherits these two plan blobs unchanged from the integration baseline."
+    }
+  },
+  "provenance_repair": {
+    "repair_attempt": 1,
+    "scope": "Report evidence only; business code, tests, schemas, fixtures, locks, plan records, and verifier-owned artifacts are unchanged by this repair.",
+    "original_code_commit": "652994839aedf6416b0919473a105d1049e2044d",
+    "original_implementation_report_commit": "8959d7dc6d2e66ba51d25ec1f8fe8d287bffd501",
+    "base_integration_commit": "78f7754233ed430254043f8548ccb2e08eebbd13",
+    "code_unchanged": true
   },
   "initial_worktree": [],
   "dependency_receipts": [
@@ -28,7 +41,16 @@
     {
       "gate": "X-A-FIXTURES",
       "verdict": "ACCEPTED",
-      "receipt_source": "Product-owner clarification supplied to this Batch executor; archive commit 948bc416788a698d364f916c895f692489e45f99",
+      "receipt_source": "reports/batches/X-A-FIXTURES/GATE_ACCEPTANCE_RECEIPT.json at integration/covenia-b@78f7754233ed430254043f8548ccb2e08eebbd13; sourceable product-owner acceptance record",
+      "receipt_metadata": {
+        "status": "ACCEPTED",
+        "accepted_by": "产品负责人",
+        "accepted_at": "2026-09-13",
+        "recorded_in_integration_commit": "78f7754233ed430254043f8548ccb2e08eebbd13",
+        "verification_method": "git show <review SHA>:<path> raw Git blob bytes, never worktree",
+        "verified_artifact_base_commit": "948bc416788a698d364f916c895f692489e45f99",
+        "artifact_unchanged": true
+      },
       "read_only_inputs": [
         {
           "path": "fixtures/demo-cases.json",
@@ -49,6 +71,13 @@
           "consumed_as": "source-session alias and 09:32/09:40 provenance validation"
         }
       ],
+      "prior_registration_error": {
+        "path": "fixtures/ground-truth.json",
+        "previous_receiver_registration": "0E6E817FC7... (63 characters; one 0 omitted)",
+        "corrected_git_blob_sha256": "0E6E8170FC7B113EE700087289B027FE93D412AA18C2F39D64D80D01C57C3311",
+        "classification": "receiver-side registration transcription error; delivered artifact unchanged",
+        "delivered_artifact_changed": false
+      },
       "read_only_scope_confirmed": true
     }
   ],
@@ -97,6 +126,15 @@
       "new_third_party_dependencies": [],
       "canonical_git_blob_sha256": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
       "reason": "The implementation uses the standard library plus existing locked dependencies; no new dependency was needed."
+    },
+    "provenance_repair": {
+      "repair_only_paths": [
+        "reports/batches/BATCH-06/IMPLEMENTATION_REPORT.json",
+        "reports/batches/BATCH-06/IMPLEMENTATION_REPORT.md"
+      ],
+      "code_unchanged": true,
+      "verification_report_or_evidence_unchanged": true,
+      "fixtures_plans_gates_schemas_tests_and_locks_unchanged": true
     }
   },
   "acceptance_results": [
@@ -202,7 +240,8 @@
   "model_runs": [],
   "not_completed": [
     "Independent BATCH-06 verification was not performed by this implementation executor.",
-    "Integration of BATCH-06 and every later Batch remain outside this task."
+    "Integration of BATCH-06 and every later Batch remain outside this task.",
+    "This provenance-only repair does not rerun the original tests or verifier probes; a fresh independent verifier must audit the new review SHA."
   ],
   "remaining_risks": [
     "The three accepted catalog cases are all grounded in S00001; the other 137 source sessions intentionally remain diagnostics until approved catalog metadata exists.",
