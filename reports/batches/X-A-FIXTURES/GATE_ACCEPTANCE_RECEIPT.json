@@ -1,0 +1,48 @@
+{
+  "receipt_type": "external_gate_acceptance_coordination_record",
+  "gate_id": "X-A-FIXTURES",
+  "status": "ACCEPTED",
+  "product_owner_clarification": "X-A-FIXTURES is accepted. Delivery contents require no change; the prior receiving registration for the ground-truth SHA omitted one 0.",
+  "accepted_by": "产品负责人",
+  "accepted_at": "2026-09-13",
+  "verification": {
+    "method": "git show <sha>:<path> raw Git blob bytes, never worktree",
+    "verified_base_commit": "948bc416788a698d364f916c895f692489e45f99",
+    "artifact_unchanged": true,
+    "targets": [
+      {
+        "path": "fixtures/demo-cases.json",
+        "git_blob_size_bytes": 10588,
+        "git_blob_sha256": "AE06EC6EF7D2DB344B8F57820B2D549CACE662EEFCD2F31BFF0C65D74E658707"
+      },
+      {
+        "path": "fixtures/ground-truth.json",
+        "git_blob_size_bytes": 3312,
+        "git_blob_sha256": "0E6E8170FC7B113EE700087289B027FE93D412AA18C2F39D64D80D01C57C3311"
+      },
+      {
+        "path": "handoff/a/cases-manifest.json",
+        "git_blob_size_bytes": 11957,
+        "git_blob_sha256": "4169EFF9CF424271381046A32B36B5617A015C03BDB847F704C55CAA0E1641F6"
+      }
+    ]
+  },
+  "prior_registration_error": {
+    "path": "fixtures/ground-truth.json",
+    "previously_registered_sha": "0E6E817FC7...",
+    "corrected_sha256": "0E6E8170FC7B113EE700087289B027FE93D412AA18C2F39D64D80D01C57C3311",
+    "classification": "registration transcription error",
+    "delivered_artifact_changed": false
+  },
+  "downstream_unblocked": [
+    "BATCH-06"
+  ],
+  "scope": {
+    "fixture_change": false,
+    "code_change": false,
+    "schema_change": false,
+    "lock_change": false,
+    "not_independent_batch_acceptance": true
+  },
+  "remaining_conditions": "This receipt satisfies only the X-A-FIXTURES external gate for BATCH-06. It does not implement, verify, or integrate BATCH-06 and does not satisfy its normal predecessor, integration, lock, or scheduler checks."
+}

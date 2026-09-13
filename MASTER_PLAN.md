@@ -65,7 +65,7 @@ C Mock 只可参考 UI 传输和占位设计，不可复制成 B 实现：它从
 | D04 | docs/03 的重复说明/责任倒流动作、A29 没有 PreparedAction 的明确表达；Schema 仅四种 action_type | 需批准最小可审计动作编码或受限字段；不要让 Prompt、前端文案或 action_id 暗中决定动作。仅实现已有防线要求，不新增业务场景/接口 | 03/15/22/X-C |
 | D05 | ExtractedJourney 要求 commitment_class/activation_recommendation/deadline 等，docs/02 有“由模型区分”；用户要求 AI 不负责激活或最终责任 | 建议内部 CandidateExtraction 仅原文/来源/时间表达/条件/观察；公开 ExtractedJourney 的必需派生字段由服务端富化，或保留建议但绝不采信。必须锁定两层 Schema/归属，不能模型输出直接入账 | 03/04/11/13/19 |
 | D06 | docs/08 把 P0_PROHIBITED_ACTION 列 HTTP400 错误，而规则/DecisionResult 需要完整 INTERVENE；docs/05 又把 E0 列错误 | E0 已明确是成功。建议 P0 也为成功业务评估 200 + DecisionResult，传输/输入失败才 error；需批准并与 C 同步，不能丢失 resolution_path/fact_trace | 03/15/22/31 |
-| D07 | 根 fixtures/demo-cases.json 仍是二次进线10:45、evaluation11:00；冻结/C 示例是09:32/09:40。GT Hero action_impacts 仍含 RAISE_PRIORITY | 以新冻结同步 A 的 fixture；GT 风险/优先级必须由 A 按冻结规则重新核对。B 不修改原始赛事时间或标签求通过 | 03/X-A-FIXTURES/06/29 |
+| D07 | 历史记录：根 fixtures/demo-cases.json 曾是二次进线10:45、evaluation11:00；冻结/C 示例是09:32/09:40，GT Hero action_impacts 曾含 RAISE_PRIORITY。2026-09-13 产品负责人澄清并接收 X-A-FIXTURES：三项交付 Git blob 已按回执核验，先前 GT SHA 登记漏写一个 0，交付物未变。 | 原始 D07 语义保留：fixture/GT 风险与优先级由 A 按冻结规则核对；B 不修改原始赛事时间或标签求通过。X-A-FIXTURES 已 ACCEPTED（产品负责人 2026-09-13 回执），仅满足 BATCH-06 的该外部门；不替代其他前置、集成、锁或调度检查。 | 03/X-A-FIXTURES/06/29 |
 | D08 | 冻结 next_check_at=10:30 晚于发出截止10:27:37；docs/04 要截止前预警、回执例是10:27 | 10:30 是现有明确批准值，不能偷偷改早。需澄清其为到期后检查并同步描述，或由 Zack 修改冻结；下一次检查算法和完成态时间也要明确，不新增后台调度服务 | 03/13/17/25 |
 | D09 | approved_at 用服务端时钟；历史 Demo 事件都在5月，真实机器现为9月；脚本“未揽收→送达”违反状态机，UI 后续揽收按钮10:10又早于11:35 | 采用可信注入 DemoClock 与真实 SystemClock；明确 evaluation_time 与持久事件高水位关系。两条分支隔离：09:42批准→10:10揽收→送达；09:42批准→11:35未揽收→更晚揽收→送达。风险路线不得倒退到10:10 | 03/13/25/27/X-C-UI |
 | D10 | 人工批准“激活承诺”与 A9/A20 分析时承诺已 ACTIVE；揽收承诺完成但义务仍在途；PROMISE_FULFILLED 不在外部 shipment/audit 枚举 | 区分已存在且合法的客服承诺与新建履约义务；后者需本次批准。PROMISE_FULFILLED 建议是内部派生事实，不增加第四物流输入/第五接口；是否独立审计事件须按现有字段表达锁定 | 03/13/14/23/25 |
@@ -175,7 +175,7 @@ reports/batches/BATCH-xx/     各批报告与脱敏证据
 |---|---|---|---|---|
 | X-FREEZE | Zack；B/C 联签接口，A 联签事实 | MISSING | BATCH-03 | docs/approvals/b-decisions.json + 已批准 PRODUCT-FREEZE.md 的提交；覆盖 D01–D16 中影响实现的全部项，逐项有批准人、时间、原文/来源、最终选择和受影响文件。；只沿用已批准 H1=350/四接口等不需要重复裁决；新增缺口不能由执行者伪造批准。 |
 | X-A-MAPPING | A | MISSING | BATCH-05 | handoff/a/data-mapping.json（约定的新交付路径）；工作簿 SHA256、8 表/7 业务表名称、列映射、主外键、ID 存储类型、时间与空值解释；五类工单及预期计数来源。 |
-| X-A-FIXTURES | A；Zack 审批语义变化 | MISSING | BATCH-06 | handoff/a/cases-manifest.json + A 已验收 fixtures 提交；Hero 09:32 二次进线/09:40 评估、原始消息与扩充来源、别名→会话映射、正装/赠品与图片来源对应。；根 fixtures 与批准契约一致；不让 B 改原文或 GT 为实现背书。 |
+| X-A-FIXTURES | A；Zack 审批语义变化 | ACCEPTED | BATCH-06 | 产品负责人于 2026-09-13 接收；回执 `reports/batches/X-A-FIXTURES/GATE_ACCEPTANCE_RECEIPT.json`。三项 Git blob 已按原始字节核验；先前 ground-truth SHA 登记 `0E6E817FC7...` 漏写一个 0，正确值为 `0E6E8170FC7B113EE700087289B027FE93D412AA18C2F39D64D80D01C57C3311`，交付物未变。保留 D07 边界：B 不改 fixtures。 |
 | X-A-IMAGES | 产品负责人 | ACCEPTED | BATCH-28、BATCH-29、BATCH-32 | handoff/a/images-manifest.json + frontend/public/evidence/ 中五个原始团队图；归档提交 e54ffa5fd74b50ca2cca6d4f28a31b88ce9ea842，交付/签认 Zack（产品负责人），2026-09-12。提交内 blob SHA256：s00001-product-overview.jpg=E2C6BBD230F906F113D75F2F582E778B6E79AEA37544C2383F1FFDA15A5295D5；s00001-pump-detail.jpg=4709D7529803846D4FF4E123BFCC034D420449AE23923CB54468BE573BD8CFC7；s00001-package-context.jpg=C734BFB5A70FFA39E10B2535DC8321EACE3C1FB358293FA22B590B9F7B5836BD；s00001-gift-evidence.jpg=E52DF258CDBC5761D175F31985639337F2274211FBEB3DDB82A0B773150AA7F5；s00001-blurred-pump.jpg=634D2B4B0665FAE49DEC286628B13D8116808B3FFF7A39A9DD7CDEA9E7DE3143；handoff/a/images-manifest.json=4D596C87F3483166915E25A0F250292FA9CCE1A654463C09DBFC0EF97310352E。injection_pairs=NOT_STARTED，仅 BATCH-32 后续需要，不阻塞 BATCH-28/BATCH-29。 |
 | X-MODEL | B 与团队算力负责人；Zack 批准费用/换模型 | UNVERIFIED | BATCH-28 | handoff/model/service-manifest.redacted.json（密钥只在环境）；实际 Qwen/Qwen2-VL-2B-Instruct revision、服务地址与调用协议、usage、区域/设备/依赖/许可证登记、可用性与预热记录。；API 密钥、GPU/租用资源、权限、网络若需开通由团队提供；不购买、不换模型掩盖阻塞。 |
 | X-A-TRUTH | A 编写，D 接收，Zack 批准政策含义 | PARTIAL | BATCH-29 | fixtures/ground-truth.json + handoff/a/evaluation-manifest.json；三个 Demo 真值完成冲突同步，20 开发样本的来源/输入/预期/评测口径与 hash 就绪。；10 留出样本另交 D；20/10 是评测样本划分，不等于新增 30 个产品场景。 |
@@ -274,7 +274,7 @@ live 命令默认需要已登记模型与图片；http/e2e 命令要启动真实
 | BATCH-03 | 把已裁决语义收敛为机器契约 | 01、02 | X-FREEZE | 否 | M，4–6 小时；审批不算执行时间；超出时回主规划拆批 |
 | BATCH-04 | 领域类型、模块端口和时钟接口 | 03 | 无 | 否 | M，3–5 小时 |
 | BATCH-05 | 赛事 Excel 无损导入 | 04 | X-A-MAPPING | 允许，受资源锁限制 | M，3–5 小时 |
-| BATCH-06 | 关联真实数据并组装 CaseInput | 05 | X-A-FIXTURES | 允许，受资源锁限制 | M，2–4 小时 |
+| BATCH-06 | 关联真实数据并组装 CaseInput | 05 | X-A-FIXTURES（ACCEPTED；产品负责人 2026-09-13 回执，已满足该外部门） | 允许，受资源锁限制 | M，2–4 小时 |
 | BATCH-07 | 模型输入前 PII 掩码 | 04 | 无 | 允许，受资源锁限制 | M，2–4 小时 |
 | BATCH-08 | 图片清单校验与 ImageResolver | 04 | 无 | 允许，受资源锁限制 | M，2–4 小时 |
 | BATCH-09 | runtime_metrics 与脱敏治理日志 | 04、07 | 无 | 允许，受资源锁限制 | M，2–3 小时 |

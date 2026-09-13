@@ -79,7 +79,7 @@
     {
       "id": "X-A-FIXTURES",
       "owner": "A; Zack approves semantic changes",
-      "status": "MISSING",
+      "status": "ACCEPTED",
       "required_before": ["BATCH-06"],
       "required_artifact": "handoff/a/cases-manifest.json plus an A-accepted fixtures commit",
       "required_evidence": [
@@ -87,8 +87,27 @@
         "Product/gift/image-source associations and root fixture alignment to approved contract."
       ],
       "observed_path": "handoff/a/cases-manifest.json",
-      "observed_in_reviewed_base": false,
-      "receipt": null
+      "observed_in_reviewed_base": true,
+      "receipt": {
+        "accepted_by": "产品负责人",
+        "accepted_at": "2026-09-13",
+        "source": "Product-owner clarification: X-A-FIXTURES accepted; the prior ground-truth SHA registration omitted one 0, while the delivered artifacts were unchanged.",
+        "verification_method": "git show <sha>:<path> raw Git blob bytes, never worktree",
+        "verified_base_commit": "948bc416788a698d364f916c895f692489e45f99",
+        "artifact_unchanged": true,
+        "accepted_git_blobs": [
+          {"path": "fixtures/demo-cases.json", "size_bytes": 10588, "sha256": "AE06EC6EF7D2DB344B8F57820B2D549CACE662EEFCD2F31BFF0C65D74E658707"},
+          {"path": "fixtures/ground-truth.json", "size_bytes": 3312, "sha256": "0E6E8170FC7B113EE700087289B027FE93D412AA18C2F39D64D80D01C57C3311"},
+          {"path": "handoff/a/cases-manifest.json", "size_bytes": 11957, "sha256": "4169EFF9CF424271381046A32B36B5617A015C03BDB847F704C55CAA0E1641F6"}
+        ],
+        "prior_registration_error": {
+          "path": "fixtures/ground-truth.json",
+          "prior_registered_value": "0E6E817FC7...",
+          "corrected_value": "0E6E8170FC7B113EE700087289B027FE93D412AA18C2F39D64D80D01C57C3311",
+          "classification": "registration transcription error; delivered artifact unchanged"
+        },
+        "receipt_path": "reports/batches/X-A-FIXTURES/GATE_ACCEPTANCE_RECEIPT.json"
+      }
     },
     {
       "id": "X-A-IMAGES",
@@ -194,7 +213,7 @@
     "BATCH-02": "No external gate is required, but it may only consume the locked base for a non-business skeleton after normal integration receipt.",
     "BATCH-03": "BLOCKED by X-FREEZE.",
     "BATCH-05": "BLOCKED by X-A-MAPPING.",
-    "BATCH-06": "BLOCKED by X-A-FIXTURES.",
+    "BATCH-06": "X-A-FIXTURES is ACCEPTED (product-owner receipt 2026-09-13); this external-gate requirement is satisfied. BATCH-06 remains subject to its normal predecessor, integration, lock, and scheduling checks.",
     "BATCH-28": "BLOCKED by X-A-IMAGES and X-MODEL.",
     "BATCH-29": "BLOCKED by X-A-IMAGES and X-A-TRUTH.",
     "BATCH-31": "BLOCKED by X-C-CONTRACT.",

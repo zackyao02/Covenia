@@ -94,7 +94,19 @@
     {
       "id": "X-A-FIXTURES",
       "owner": "A；Zack 审批语义变化",
-      "status": "MISSING",
+      "status": "ACCEPTED",
+      "accepted_by": "产品负责人",
+      "accepted_at": "2026-09-13",
+      "receipt": "reports/batches/X-A-FIXTURES/GATE_ACCEPTANCE_RECEIPT.json",
+      "verification_method": "git show <sha>:<path> raw Git blob bytes, never worktree",
+      "artifact_unchanged": true,
+      "accepted_git_blobs": {
+        "fixtures/demo-cases.json": {"size_bytes": 10588, "sha256": "AE06EC6EF7D2DB344B8F57820B2D549CACE662EEFCD2F31BFF0C65D74E658707"},
+        "fixtures/ground-truth.json": {"size_bytes": 3312, "sha256": "0E6E8170FC7B113EE700087289B027FE93D412AA18C2F39D64D80D01C57C3311"},
+        "handoff/a/cases-manifest.json": {"size_bytes": 11957, "sha256": "4169EFF9CF424271381046A32B36B5617A015C03BDB847F704C55CAA0E1641F6"}
+      },
+      "prior_registration_error": "fixtures/ground-truth.json was previously registered as 0E6E817FC7...; corrected to 0E6E8170FC7B113EE700087289B027FE93D412AA18C2F39D64D80D01C57C3311. This was a registration transcription error; the delivered artifact was unchanged.",
+      "downstream_unblocked": ["BATCH-06"],
       "required_before": [
         "BATCH-06"
       ],
