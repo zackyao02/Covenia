@@ -1,0 +1,68 @@
+{
+  "archive_id": "X-A-MAPPING",
+  "status": "COMPLETED",
+  "source_path": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\handoff\\a\\data-mapping.json",
+  "target_path": "handoff/a/data-mapping.json",
+  "size_bytes": 74175,
+  "expected_sha256": "8D76EEAD5757D5618B57107B3725FCF5543D96F0C9FECF6EDEA5FDDD210B5538",
+  "source_sha256": "8D76EEAD5757D5618B57107B3725FCF5543D96F0C9FECF6EDEA5FDDD210B5538",
+  "target_content_commit": "b2ec0f72a7a44d29c270c3149547eaf403763635",
+  "report_commit": {
+    "ref": "refs/heads/codex/covenia-x-a-mapping-archive-2",
+    "sha": "PENDING_REPORT_COMMIT_SELF_REFERENCE",
+    "resolution": "Resolve the ref after this report commit is created; a literal self commit SHA cannot be embedded in the bytes that determine that commit SHA."
+  },
+  "final_archive_commit": {
+    "ref": "refs/heads/codex/covenia-x-a-mapping-archive-2",
+    "sha": "PENDING_REPORT_COMMIT_SELF_REFERENCE",
+    "resolution": "The report commit is the final delivery tree and inherits handoff/a/data-mapping.json from target_content_commit."
+  },
+  "blob_sha256": "8D76EEAD5757D5618B57107B3725FCF5543D96F0C9FECF6EDEA5FDDD210B5538",
+  "hash_method": "git_show_blob_raw_bytes",
+  "eol_convention": "git_blob (raw bytes)",
+  "composition": "MERGED_DELIVERY",
+  "gate_status": "ACCEPTED",
+  "delivery_owner": "产品负责人",
+  "delivery_date": "2026-09-13",
+  "injection_pairs": "NOT_STARTED",
+  "files_changed": [
+    "handoff/a/data-mapping.json",
+    "reports/batches/X-A-MAPPING/ARCHIVE_REPORT.json",
+    "reports/batches/X-A-MAPPING/ARCHIVE_REPORT.md"
+  ],
+  "scope_check": "PASS",
+  "blockers": [],
+  "handoff_notes": "source_payload 为原始 A 线映射表，按源 raw bytes 逐字节保留；审查方机器核验字段只作为验证信息记录，不重写源内容。",
+  "verification": {
+    "source_raw_byte_precheck": {
+      "size_bytes": 74175,
+      "sha256": "8D76EEAD5757D5618B57107B3725FCF5543D96F0C9FECF6EDEA5FDDD210B5538"
+    },
+    "raw_byte_staging": {
+      "method": "git hash-object -w --no-filters followed by git update-index --add --cacheinfo",
+      "path": "handoff/a/data-mapping.json",
+      "result": "INDEX_CONTAINS_SOURCE_RAW_BLOB"
+    },
+    "target_content_commit_git_show": {
+      "commit": "b2ec0f72a7a44d29c270c3149547eaf403763635",
+      "path": "handoff/a/data-mapping.json",
+      "size_bytes": 74175,
+      "sha256": "8D76EEAD5757D5618B57107B3725FCF5543D96F0C9FECF6EDEA5FDDD210B5538",
+      "hash_method": "git_show_blob_raw_bytes"
+    },
+    "final_archive_commit_git_show": {
+      "commit_ref": "refs/heads/codex/covenia-x-a-mapping-archive-2",
+      "path": "handoff/a/data-mapping.json",
+      "required_size_bytes": 74175,
+      "required_sha256": "8D76EEAD5757D5618B57107B3725FCF5543D96F0C9FECF6EDEA5FDDD210B5538",
+      "hash_method": "git_show_blob_raw_bytes",
+      "verification_status": "RESOLVE_REF_AFTER_REPORT_COMMIT"
+    },
+    "git_diff_check": {
+      "command": "git diff --check abaad9ae9228432ea514a45817c2fc166b27bad3 b2ec0f72a7a44d29c270c3149547eaf403763635",
+      "exit_code": 2,
+      "result": "RAW_CRLF_DIAGNOSTIC",
+      "detail": "The source contains 2284 CRLF line endings and zero bare LF line endings. Git's default whitespace check reports each required CRLF terminator as trailing whitespace. No source byte was changed because changing EOL bytes would violate the required committed blob SHA-256."
+    }
+  }
+}
