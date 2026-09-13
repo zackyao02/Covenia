@@ -13,7 +13,7 @@
           "不新增赛事原始记录中不存在的真实业务结论"
         ]
       },
-      "evaluation_time": "2026-05-07T11:00:00+08:00",
+      "evaluation_time": "2026-05-07T09:40:00+08:00",
       "conversation": [
         {
           "message_id": "20974795108539.PNM",
@@ -44,6 +44,13 @@
           "source_kind": "COMPETITION_MOCK"
         },
         {
+          "message_id": "94357468399952.PNM",
+          "timestamp": "2026-05-05T10:25:13+08:00",
+          "speaker": "CONSUMER",
+          "text": "行，那尽快哈",
+          "source_kind": "COMPETITION_MOCK"
+        },
+        {
           "message_id": "36199788469718.PNM",
           "timestamp": "2026-05-05T10:27:37+08:00",
           "speaker": "AGENT",
@@ -52,7 +59,7 @@
         },
         {
           "message_id": "DEMO_AUG_MSG_001",
-          "timestamp": "2026-05-07T10:45:00+08:00",
+          "timestamp": "2026-05-07T09:32:00+08:00",
           "speaker": "CONSUMER",
           "text": "我前天图片都发过了，换货到底有没有发？怎么还要我重新说明？",
           "source_kind": "DEMO_AUGMENTATION"
@@ -149,7 +156,9 @@
       "data_provenance": {
         "source_dataset": "TIANCHI_LOREAL_TRACK1_MOCK",
         "source_session_id": "S00001",
-        "augmentation_notes": ["赠品损坏图片为团队构建的范围变化测试"]
+        "augmentation_notes": [
+          "赠品损坏图片为团队构建的范围变化测试"
+        ]
       },
       "evaluation_time": "2026-05-05T11:00:00+08:00",
       "conversation": [
@@ -222,7 +231,9 @@
       "data_provenance": {
         "source_dataset": "TIANCHI_LOREAL_TRACK1_MOCK",
         "source_session_id": "S00001",
-        "augmentation_notes": ["模糊泵头图片为团队构建的不确定性测试"]
+        "augmentation_notes": [
+          "模糊泵头图片为团队构建的不确定性测试"
+        ]
       },
       "evaluation_time": "2026-05-05T11:00:00+08:00",
       "conversation": [

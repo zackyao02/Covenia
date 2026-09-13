@@ -21,7 +21,11 @@
       "cooperation_willingness": "DECLINING",
       "action_impact": "阻止重复索证，优先查询已有换货和物流状态"
     },
-    "expected_action_impacts": ["BLOCK_REPEAT_EVIDENCE", "RAISE_PRIORITY", "CHECK_EXISTING_FULFILLMENT", "START_PROACTIVE_UPDATE"],
+    "expected_action_impacts": [
+      "BLOCK_REPEAT_EVIDENCE",
+      "CHECK_EXISTING_FULFILLMENT",
+      "START_PROACTIVE_UPDATE"
+    ],
     "rationale": "团队测试图片覆盖同一订单、正装粉底液、泵头损坏与包装环境；赛事聊天和换货工单共同支撑已有证据与48小时承诺。"
   },
   {
@@ -40,7 +44,9 @@
       "cooperation_willingness": "STABLE",
       "action_impact": "放行针对正装泵头的最小必要索证"
     },
-    "expected_action_impacts": ["REQUEST_MISSING_INPUT"],
+    "expected_action_impacts": [
+      "REQUEST_MISSING_INPUT"
+    ],
     "rationale": "赠品面膜包装图片与正装粉底液泵头问题的商品范围不一致。"
   },
   {
@@ -59,7 +65,9 @@
       "cooperation_willingness": "STABLE",
       "action_impact": "进入人工复核，不让模型直接作出证据结论"
     },
-    "expected_action_impacts": ["ROUTE_TO_HUMAN"],
+    "expected_action_impacts": [
+      "ROUTE_TO_HUMAN"
+    ],
     "rationale": "同一商品范围下图片模糊，无法可靠确认泵头损坏和证据覆盖。"
   }
 ]

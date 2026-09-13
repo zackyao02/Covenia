@@ -1,0 +1,348 @@
+{
+  "artifact": "handoff/a/cases-manifest.json",
+  "gate": "X-A-FIXTURES",
+  "status": "READY_FOR_ACCEPTANCE",
+  "owner": "A（数据与调研）；本轮由产品负责人确认",
+  "generated_at": "2026-09-13T00:30:57",
+  "purpose": "三个 Demo 案例的时间线、消息来源、别名映射与证据图对应关系的登记清单，供 B 线导入与 D 线验收直接消费",
+  "hero_timeline": {
+    "source": "PRODUCT-FREEZE.md 附录 P0-4（已批准）",
+    "second_contact": "2026-05-07T09:32:00+08:00",
+    "evaluation_time": "2026-05-07T09:40:00+08:00",
+    "approved_at": "2026-05-07T09:42:00+08:00",
+    "pickup": "2026-05-07T10:10:00+08:00",
+    "not_picked_up": "2026-05-07T11:35:00+08:00",
+    "promise_deadline": "2026-05-07T10:27:37+08:00",
+    "invariant": "evaluation_time(09:40) < promise_deadline(10:27:37) —— 承诺在评估时仍有效"
+  },
+  "fixtures": {
+    "base_ref": "integration/covenia-b",
+    "base_demo_cases_sha256": "DC47A26282319A77A8C8E3C6CFFF81D94D3DC34E9733A039E2C1B1E233A41635",
+    "base_ground_truth_sha256": "FA34A06CE9615D2DB2A3AD344EBBA02D08510C24EA50253680D3DC99D0C2F4DA",
+    "corrected": [
+      {
+        "path": "fixtures/demo-cases.json",
+        "bytes": 10588,
+        "sha256": "AE06EC6EF7D2DB344B8F57820B2D549CACE662EEFCD2F31BFF0C65D74E658707",
+        "staged_at": "handoff/a/fixtures/demo-cases.json"
+      },
+      {
+        "path": "fixtures/ground-truth.json",
+        "bytes": 3312,
+        "sha256": "0E6E8170FC7B113EE700087289B027FE93D412AA18C2F39D64D80D01C57C3311",
+        "staged_at": "handoff/a/fixtures/ground-truth.json"
+      }
+    ],
+    "applied_fixes": [
+      {
+        "id": "F1",
+        "field": "DEMO_001.case_input.evaluation_time",
+        "before": "2026-05-07T11:00:00+08:00",
+        "after": "2026-05-07T09:40:00+08:00",
+        "reason": "违反已批准冻结 P0-4；且 11:00 已晚于承诺截止 10:27:37，与真值措辞「即将到期」自相矛盾，导致 A9 必然失败"
+      },
+      {
+        "id": "F2",
+        "field": "DEMO_001 二次进线消息时间戳",
+        "before": "2026-05-07T10:45:00+08:00",
+        "after": "2026-05-07T09:32:00+08:00",
+        "reason": "对齐冻结 P0-4"
+      },
+      {
+        "id": "F3",
+        "field": "DEMO_001 会话消息",
+        "before": "缺失",
+        "after": "补回 94357468399952.PNM（消费者 10:25:13「行，那尽快哈」）",
+        "reason": "违反团队验收门槛第 1 条「原始聊天必须进入同一案例链路」；该消息亦为「尽快」类模糊表达的对照语料"
+      },
+      {
+        "id": "F4",
+        "field": "DEMO_001 真值 action_impacts",
+        "before": "含 RAISE_PRIORITY",
+        "after": "已移除",
+        "reason": "冻结 P0-4 明确要求去除"
+      }
+    ],
+    "constraints": "除上述四处外，其余内容与基线逐字节一致；A/B 不得以改夹具方式为任何实现背书"
+  },
+  "message_provenance": {
+    "note": "每条消息标注来源；赛事 Mock 原始记录与团队压力测试扩充严格分离",
+    "DEMO_001": [
+      {
+        "message_id": "20974795108539.PNM",
+        "timestamp": "2026-05-05T10:18:45+08:00",
+        "speaker": "CONSUMER",
+        "source_kind": "COMPETITION_MOCK",
+        "text": "你好，收到的粉底液泵头是坏的，按不出来东西，急",
+        "origin": "赛事 Mock 原始记录"
+      },
+      {
+        "message_id": "51831669257761.PNM",
+        "timestamp": "2026-05-05T10:20:59+08:00",
+        "speaker": "AGENT",
+        "source_kind": "COMPETITION_MOCK",
+        "text": "亲亲抱歉！麻烦拍下破损部位的照片发给测试客服，为您核实换货哈~",
+        "origin": "赛事 Mock 原始记录"
+      },
+      {
+        "message_id": "80525870445254.PNM",
+        "timestamp": "2026-05-05T10:21:38+08:00",
+        "speaker": "CONSUMER",
+        "source_kind": "COMPETITION_MOCK",
+        "text": "喏，图发你了",
+        "origin": "赛事 Mock 原始记录"
+      },
+      {
+        "message_id": "22703823958720.PNM",
+        "timestamp": "2026-05-05T10:24:13+08:00",
+        "speaker": "AGENT",
+        "source_kind": "COMPETITION_MOCK",
+        "text": "收到亲，确认属包装破损，为您登记换货：先给您发全新的，收到后用包裹里的面单把坏的寄回就好，运费我们出~",
+        "origin": "赛事 Mock 原始记录"
+      },
+      {
+        "message_id": "94357468399952.PNM",
+        "timestamp": "2026-05-05T10:25:13+08:00",
+        "speaker": "CONSUMER",
+        "source_kind": "COMPETITION_MOCK",
+        "text": "行，那尽快哈",
+        "origin": "赛事 Mock 原始记录"
+      },
+      {
+        "message_id": "36199788469718.PNM",
+        "timestamp": "2026-05-05T10:27:37+08:00",
+        "speaker": "AGENT",
+        "source_kind": "COMPETITION_MOCK",
+        "text": "换货单已创建，48小时内发出，给您带来不便啦~",
+        "origin": "赛事 Mock 原始记录"
+      },
+      {
+        "message_id": "DEMO_AUG_MSG_001",
+        "timestamp": "2026-05-07T09:32:00+08:00",
+        "speaker": "CONSUMER",
+        "source_kind": "DEMO_AUGMENTATION",
+        "text": "我前天图片都发过了，换货到底有没有发？怎么还要我重新说明？",
+        "origin": "团队压力测试扩充"
+      }
+    ],
+    "counts": {
+      "COMPETITION_MOCK": 6,
+      "DEMO_AUGMENTATION": 1
+    },
+    "other_cases": "DEMO_002 / DEMO_003 为 Challenge Mode 案例，全为 DEMO_AUGMENTATION"
+  },
+  "alias_to_session": {
+    "note": "买家昵称仅用于辅助核对，不作为唯一主键；会话ID 为主键",
+    "hero": {
+      "session_id": "S00001",
+      "buyer_alias": "邓e**",
+      "order_id": "6920185815517983396"
+    },
+    "total_sessions": 138,
+    "mapping": {
+      "S00001": "邓e**",
+      "S00002": "冯h**",
+      "S00003": "周h**",
+      "S00004": "徐**",
+      "S00005": "魏h**",
+      "S00006": "孔**",
+      "S00007": "李c**",
+      "S00008": "卢b**",
+      "S00009": "杨c**",
+      "S00010": "喵e**",
+      "S00011": "熊g**",
+      "S00012": "喵g**",
+      "S00013": "孙**",
+      "S00014": "陆**",
+      "S00015": "芝g**",
+      "S00016": "龙d**",
+      "S00017": "不e**",
+      "S00018": "胡**",
+      "S00019": "梁**",
+      "S00020": "张a**",
+      "S00021": "蒋**",
+      "S00022": "夏**",
+      "S00023": "孙a**",
+      "S00024": "王**",
+      "S00025": "张a**",
+      "S00026": "深**",
+      "S00027": "崔**",
+      "S00028": "胡b**",
+      "S00029": "雷**",
+      "S00030": "郭h**",
+      "S00031": "兔f**",
+      "S00032": "郑f**",
+      "S00033": "曹**",
+      "S00034": "王h**",
+      "S00035": "山c**",
+      "S00036": "薛**",
+      "S00037": "爱h**",
+      "S00038": "郭a**",
+      "S00039": "钱**",
+      "S00040": "邵g**",
+      "S00041": "杨b**",
+      "S00042": "萧g**",
+      "S00043": "侯e**",
+      "S00044": "me**",
+      "S00045": "熊g**",
+      "S00046": "易**",
+      "S00047": "秦h**",
+      "S00048": "秦h**",
+      "S00049": "冯e**",
+      "S00050": "杨d**",
+      "S00051": "邱**",
+      "S00052": "顾**",
+      "S00053": "赖**",
+      "S00054": "兔e**",
+      "S00055": "韩**",
+      "S00056": "深f**",
+      "S00057": "赵a**",
+      "S00058": "钟c**",
+      "S00059": "魏h**",
+      "S00060": "冯**",
+      "S00061": "me**",
+      "S00062": "杜a**",
+      "S00063": "蔡**",
+      "S00064": "彭**",
+      "S00065": "魏e**",
+      "S00066": "姚b**",
+      "S00067": "桃b**",
+      "S00068": "李f**",
+      "S00069": "罗g**",
+      "S00070": "程d**",
+      "S00071": "刘e**",
+      "S00072": "苏b**",
+      "S00073": "邵**",
+      "S00074": "田g**",
+      "S00075": "不**",
+      "S00076": "贺**",
+      "S00077": "草**",
+      "S00078": "苏d**",
+      "S00079": "不**",
+      "S00080": "杜a**",
+      "S00081": "彭g**",
+      "S00082": "方b**",
+      "S00083": "毛**",
+      "S00084": "一g**",
+      "S00085": "高**",
+      "S00086": "侯e**",
+      "S00087": "一e**",
+      "S00088": "周a**",
+      "S00089": "袁**",
+      "S00090": "廖**",
+      "S00091": "戴d**",
+      "S00092": "黎**",
+      "S00093": "吕**",
+      "S00095": "罗g**",
+      "S00097": "刘**",
+      "S00098": "半**",
+      "S00099": "魏h**",
+      "S00102": "高**",
+      "S00103": "半a**",
+      "S00106": "雾c**",
+      "S00107": "朱**",
+      "S00108": "ma**",
+      "S00109": "芝b**",
+      "S00113": "唐**",
+      "S00115": "雾b**",
+      "S00117": "钟**",
+      "S00130": "刘**",
+      "S00132": "王h**",
+      "S00134": "林**",
+      "S00137": "杨b**",
+      "S00140": "周**",
+      "S00141": "段**",
+      "S00146": "雷**",
+      "S00151": "方**",
+      "S00153": "md**",
+      "S00154": "蒋a**",
+      "S00156": "邹**",
+      "S00158": "芝h**",
+      "S00159": "姚b**",
+      "S00161": "曹**",
+      "S00162": "兔d**",
+      "S00169": "姜**",
+      "S00183": "不e**",
+      "S00200": "韩**",
+      "S00203": "爱h**",
+      "S00223": "卢d**",
+      "S00226": "不h**",
+      "S00232": "魏e**",
+      "S00268": "半d**",
+      "S00277": "周h**",
+      "S00285": "彭g**",
+      "S00303": "邵**",
+      "S00322": "熊a**",
+      "S00336": "邓b**",
+      "S00362": "姚b**",
+      "S00364": "万**",
+      "S00381": "郭a**",
+      "S00474": "爱**"
+    }
+  },
+  "evidence_mapping": {
+    "note": "正装/赠品与证据图的对应关系；图片本体登记见 handoff/a/images-manifest.json",
+    "order_items": [
+      {
+        "sku_id": "XC33003",
+        "item_role": "PRIMARY",
+        "product_name": "测试轻透粉底液30ml #N02自然色"
+      },
+      {
+        "sku_id": "GIFT-B5-MASK-2",
+        "item_role": "GIFT",
+        "product_name": "测试B5面膜体验装2片"
+      }
+    ],
+    "current_issue": {
+      "fulfillment_item_id": "6920185815517983396-XC33003",
+      "sku_id": "XC33003",
+      "issue_type": "PACKAGE_DAMAGE",
+      "affected_component": "PUMP"
+    },
+    "images": [
+      {
+        "file_name": "s00001-product-overview.jpg",
+        "declared_view_type": "PRODUCT_OVERVIEW",
+        "source_kind": "TEAM_SYNTHETIC_RECREATION",
+        "source_message_id": "80525870445254.PNM",
+        "competition_reference_path": "mock_images/broken_pump/S00001_03.jpg",
+        "sha256": "E2C6BBD230F906F113D75F2F582E778B6E79AEA37544C2383F1FFDA15A5295D5",
+        "covers": "PRIMARY / XC33003 / PUMP / PACKAGE_DAMAGE"
+      },
+      {
+        "file_name": "s00001-pump-detail.jpg",
+        "declared_view_type": "ISSUE_DETAIL",
+        "source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
+        "source_message_id": "80525870445254.PNM",
+        "competition_reference_path": null,
+        "sha256": "4709D7529803846D4FF4E123BFCC034D420449AE23923CB54468BE573BD8CFC7",
+        "covers": "PRIMARY / XC33003 / PUMP / PACKAGE_DAMAGE"
+      },
+      {
+        "file_name": "s00001-package-context.jpg",
+        "declared_view_type": "PACKAGE_CONTEXT",
+        "source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
+        "source_message_id": "80525870445254.PNM",
+        "competition_reference_path": null,
+        "sha256": "C734BFB5A70FFA39E10B2535DC8321EACE3C1FB358293FA22B590B9F7B5836BD",
+        "covers": "PRIMARY / XC33003 / PUMP / PACKAGE_DAMAGE"
+      }
+    ],
+    "range_change_case": {
+      "demo_case_id": "DEMO_002",
+      "why": "赠品图（GIFT-B5-MASK-2）不能证明正装（XC33003）泵头问题 → MISMATCHED → E2/ALLOW"
+    },
+    "blur_case": {
+      "demo_case_id": "DEMO_003",
+      "why": "同商品同部位但失焦不可判 → NEED_HUMAN_REVIEW → H1/350"
+    }
+  },
+  "acceptance_coverage": {
+    "Hero 09:32 二次进线 / 09:40 评估": "hero_timeline + F1/F2",
+    "原始消息与扩充来源": "message_provenance",
+    "别名→会话映射": "alias_to_session",
+    "正装/赠品与图片来源对应": "evidence_mapping",
+    "根 fixtures 与批准契约一致": "fixtures.applied_fixes（四项修正后与冻结 P0-4 一致）"
+  }
+}
