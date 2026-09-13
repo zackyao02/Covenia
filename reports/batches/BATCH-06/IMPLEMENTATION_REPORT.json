@@ -1,0 +1,248 @@
+{
+  "report_version": "1.0",
+  "batch_id": "BATCH-06",
+  "status": "COMPLETED",
+  "result": "IMPLEMENTED",
+  "summary": "Implemented a data-driven CaseCatalog and CaseAssembler that join normalized competition chat, order, and five-ticket-sheet facts by source_session_id before validating declared order/ticket IDs. The implementation emits only schema-valid CaseInput payloads or explicit non-fabricating diagnostics, with deterministic redacted case and association artifacts.",
+  "repo_root": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\work\\repo2",
+  "branch": "codex/batch-06-case-input",
+  "base_integration_sha": "948bc416788a698d364f916c895f692489e45f99",
+  "contract_version": "integration/covenia-b@948bc416788a698d364f916c895f692489e45f99; schemas/case-input.schema.json read-only",
+  "plan_sha256": {
+    "MASTER_PLAN.md": "56A5CAF32334DC1D5628DA67A3BAB24A250CC7C5FE3F762BD781682633808AE1",
+    "batches.json": "FAE792913DCE0F2DE7BC799C452FD0964775804117287A9745A719722326A720"
+  },
+  "initial_worktree": [],
+  "dependency_receipts": [
+    {
+      "batch_id": "BATCH-05",
+      "verdict": "PASS",
+      "implementation_report": "reports/batches/BATCH-05/IMPLEMENTATION_REPORT.json",
+      "verification_report": "reports/batches/BATCH-05/VERIFICATION_REPORT.json",
+      "reviewed_code_sha": "cf3e6ebe968943be32775acd135a1b2f4f767c44",
+      "integration_sha": "dbedd4e9f985911cc89b140d1a129586a09fbdf",
+      "consumed_interface": "CompetitionWorkbook + normalize_workbook + NormalizedDataset"
+    }
+  ],
+  "external_gate_receipts": [
+    {
+      "gate": "X-A-FIXTURES",
+      "verdict": "ACCEPTED",
+      "receipt_source": "Product-owner clarification supplied to this Batch executor; archive commit 948bc416788a698d364f916c895f692489e45f99",
+      "read_only_inputs": [
+        {
+          "path": "fixtures/demo-cases.json",
+          "git_blob_bytes": 10588,
+          "git_blob_sha256": "AE06EC6EF7D2DB344B8F57820B2D549CACE662EEFCD2F31BFF0C65D74E658707",
+          "consumed_as": "catalog, augmentation, image, and scope metadata only"
+        },
+        {
+          "path": "fixtures/ground-truth.json",
+          "git_blob_bytes": 3312,
+          "git_blob_sha256": "0E6E8170FC7B113EE700087289B027FE93D412AA18C2F39D64D80D01C57C3311",
+          "consumed_as": "read-only and intentionally not loaded by BATCH-06 implementation"
+        },
+        {
+          "path": "handoff/a/cases-manifest.json",
+          "git_blob_bytes": 11957,
+          "git_blob_sha256": "4169EFF9CF424271381046A32B36B5617A015C03BDB847F704C55CAA0E1641F6",
+          "consumed_as": "source-session alias and 09:32/09:40 provenance validation"
+        }
+      ],
+      "read_only_scope_confirmed": true
+    }
+  ],
+  "code_commits": [
+    "652994839aedf6416b0919473a105d1049e2044d"
+  ],
+  "commit_hash": "652994839aedf6416b0919473a105d1049e2044d",
+  "files_changed": [
+    "backend/src/covenia_b/importing/case_assembler.py",
+    "backend/src/covenia_b/importing/case_catalog.py",
+    "backend/tests/importing/test_case_assembler.py",
+    "reports/batches/BATCH-06/case-input.redacted.json",
+    "reports/batches/BATCH-06/association-trace.json",
+    "reports/batches/BATCH-06/commands.json",
+    "reports/batches/BATCH-06/environment.json",
+    "reports/batches/BATCH-06/pip-check.txt",
+    "reports/batches/BATCH-06/IMPLEMENTATION_REPORT.json",
+    "reports/batches/BATCH-06/IMPLEMENTATION_REPORT.md"
+  ],
+  "changed_files": [
+    {
+      "path": "backend/src/covenia_b/importing/case_catalog.py",
+      "purpose": "Data-driven case directory, display-alias support, accepted-input integrity checks, and separated augmentation metadata."
+    },
+    {
+      "path": "backend/src/covenia_b/importing/case_assembler.py",
+      "purpose": "Session-first source joins, reverse-association rejection, temporal filtering, CaseInput schema validation, diagnostics, and redacted artifact emission."
+    },
+    {
+      "path": "backend/tests/importing/test_case_assembler.py",
+      "purpose": "Real-workbook hero, alias, tamper, future-leakage, five-ticket, 138-session diagnostic, and artifact tests."
+    },
+    {
+      "path": "reports/batches/BATCH-06/**",
+      "purpose": "Required implementation evidence only; no verifier-owned artifact was created."
+    }
+  ],
+  "scope_check": {
+    "within_allowlist": true,
+    "forbidden_changes": [],
+    "fixtures_and_handoff_a_read_only": true,
+    "frontend_or_ground_truth_used_as_backend_facts": false,
+    "verification_report_created_or_overwritten": false,
+    "requirements_dev_lock": {
+      "change_type": "UNCHANGED",
+      "new_third_party_dependencies": [],
+      "canonical_git_blob_sha256": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+      "reason": "The implementation uses the standard library plus existing locked dependencies; no new dependency was needed."
+    }
+  },
+  "acceptance_results": [
+    {
+      "criterion": "S00001 associates the real conversation, order 6920185815517983396, and replacement ticket BH919209358357.",
+      "status": "EVIDENCED",
+      "evidence": [
+        "backend/tests/importing/test_case_assembler.py",
+        "reports/batches/BATCH-06/association-trace.json",
+        "reports/batches/BATCH-06/case-input.redacted.json"
+      ]
+    },
+    {
+      "criterion": "A display alias resolves to the same source facts, while reversed order or ticket relations fail rather than silently joining.",
+      "status": "EVIDENCED",
+      "evidence": [
+        "backend/tests/importing/test_case_assembler.py",
+        "reports/batches/BATCH-06/commands.json#/commands/C05b"
+      ]
+    },
+    {
+      "criterion": "Facts after evaluation_time are excluded; the accepted 09:32 second contact and 09:40 evaluation remain synchronized with A-line metadata.",
+      "status": "EVIDENCED",
+      "evidence": [
+        "backend/tests/importing/test_case_assembler.py",
+        "reports/batches/BATCH-06/association-trace.json"
+      ]
+    },
+    {
+      "criterion": "All 138 sessions are diagnosed without inventing P0 inputs; only source-backed, catalog-backed inputs are emitted through the locked CaseInput Schema.",
+      "status": "EVIDENCED",
+      "evidence": [
+        "backend/tests/importing/test_case_assembler.py",
+        "reports/batches/BATCH-06/case-input.redacted.json",
+        "reports/batches/BATCH-06/association-trace.json"
+      ]
+    }
+  ],
+  "tests_run": [
+    "backend/tests/importing/test_case_assembler.py",
+    "backend/tests"
+  ],
+  "tests_passed": [
+    "7 passed in 1.29s",
+    "81 passed in 4.28s"
+  ],
+  "tests_failed": [],
+  "test_results": [
+    {
+      "command": "C:\\cov-run\\batch-06\\venv\\Scripts\\python.exe -m pytest backend/tests/importing/test_case_assembler.py -q",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\work\\repo2",
+      "exit_code": 0,
+      "duration_seconds": 1.29,
+      "mode": "UNIT",
+      "evidence": "reports/batches/BATCH-06/commands.json#/commands/C05b"
+    },
+    {
+      "command": "C:\\cov-run\\batch-06\\venv\\Scripts\\python.exe -m pytest backend/tests -q",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\work\\repo2",
+      "exit_code": 0,
+      "duration_seconds": 4.28,
+      "mode": "UNIT",
+      "evidence": "reports/batches/BATCH-06/commands.json#/commands/C06"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "reports/batches/BATCH-06/case-input.redacted.json",
+      "sha256": "78743ADF9850B48060120DEEE7BC525580B39B1D4574791382259694A40CFE0E",
+      "classification": "REDACTED_CASE_INPUT"
+    },
+    {
+      "path": "reports/batches/BATCH-06/association-trace.json",
+      "sha256": "04ED06F73E75557BF61590BCE85A5488CC40F536F54CBEA7860D49D4E14E493C",
+      "classification": "REDACTED_ASSOCIATION_TRACE"
+    },
+    {
+      "path": "reports/batches/BATCH-06/commands.json",
+      "classification": "REDACTED_EXECUTION_LOG",
+      "hash_status": "sealed by the report-artifact commit"
+    },
+    {
+      "path": "reports/batches/BATCH-06/environment.json",
+      "classification": "EXECUTION_METADATA",
+      "hash_status": "sealed by the report-artifact commit"
+    },
+    {
+      "path": "reports/batches/BATCH-06/pip-check.txt",
+      "classification": "EXECUTION_METADATA",
+      "hash_status": "sealed by the report-artifact commit"
+    },
+    {
+      "path": "reports/batches/BATCH-06/IMPLEMENTATION_REPORT.json",
+      "classification": "IMPLEMENTATION_REPORT",
+      "hash_status": "sealed by the report-artifact commit"
+    },
+    {
+      "path": "reports/batches/BATCH-06/IMPLEMENTATION_REPORT.md",
+      "classification": "IMPLEMENTATION_REPORT",
+      "hash_status": "sealed by the report-artifact commit"
+    }
+  ],
+  "model_runs": [],
+  "not_completed": [
+    "Independent BATCH-06 verification was not performed by this implementation executor.",
+    "Integration of BATCH-06 and every later Batch remain outside this task."
+  ],
+  "remaining_risks": [
+    "The three accepted catalog cases are all grounded in S00001; the other 137 source sessions intentionally remain diagnostics until approved catalog metadata exists.",
+    "The report is implementation evidence, not an independent acceptance or integration receipt."
+  ],
+  "risks": [
+    "Windows CRLF checkout bytes differ from the accepted LF Git-blob bytes; catalog integrity verifies canonical LF content and records both the accepted hash and read-only input boundary.",
+    "Future-dated source rows are deliberately excluded from CaseInput, so later workflow modules must supply later evaluation times explicitly rather than assuming a current-state payload."
+  ],
+  "blockers": [],
+  "rollback": {
+    "code": "git revert 652994839aedf6416b0919473a105d1049e2044d, then remove only the BATCH-06 report-artifact commit in a follow-up revert if required.",
+    "runtime_state": "NOT_APPLICABLE: assembly reads immutable inputs and writes replaceable BATCH-06 report artifacts only."
+  },
+  "handoff": {
+    "interfaces": [
+      "CaseCatalog.from_accepted_materials(demo_cases_path, manifest_path)",
+      "CaseAssembler.from_paths(workbook_path, demo_cases_path, manifest_path)",
+      "CaseAssembler.assemble(case_reference)",
+      "CaseAssembler.diagnose_importability()",
+      "CaseAssembler.write_redacted_artifacts(output_dir)"
+    ],
+    "input_versions": {
+      "workbook_sha256": "B5AC027E863C5580DAB39C8F459E4698D65E9FBEC29832C9915448F2087307B7",
+      "accepted_demo_cases_git_blob_sha256": "AE06EC6EF7D2DB344B8F57820B2D549CACE662EEFCD2F31BFF0C65D74E658707",
+      "accepted_cases_manifest_git_blob_sha256": "4169EFF9CF424271381046A32B36B5617A015C03BDB847F704C55CAA0E1641F6"
+    },
+    "reproduction": [
+      "C:\\cov-run\\batch-06\\venv\\Scripts\\python.exe -m pytest backend/tests/importing/test_case_assembler.py -q",
+      "C:\\cov-run\\batch-06\\venv\\Scripts\\python.exe -m pytest backend/tests -q"
+    ],
+    "remaining_gates": [
+      "Independent BATCH-06 verification must produce verifier-owned evidence before integration.",
+      "No BATCH-07 or later work was started."
+    ]
+  },
+  "handoff_notes": [
+    "Case IDs and display aliases select source data only; no case-ID decision branch exists.",
+    "The implementation never reads frontend examples or ground truth as CaseInput facts.",
+    "A-line augmentation, gift/SKU, and image metadata retain source_kind in the trace while competition records are joined from the workbook."
+  ],
+  "next_batch_started": false
+}

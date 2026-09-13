@@ -1,0 +1,378 @@
+{
+  "case_inputs": [
+    {
+      "case_id": "DEMO_001",
+      "case_input": {
+        "case_id": "DEMO_001",
+        "conversation": [
+          {
+            "message_id": "20974795108539.PNM",
+            "source_kind": "COMPETITION_MOCK",
+            "speaker": "CONSUMER",
+            "text": "[REDACTED COMPETITION_MOCK MESSAGE]",
+            "timestamp": "2026-05-05T10:18:45+08:00"
+          },
+          {
+            "message_id": "51831669257761.PNM",
+            "source_kind": "COMPETITION_MOCK",
+            "speaker": "AGENT",
+            "text": "[REDACTED COMPETITION_MOCK MESSAGE]",
+            "timestamp": "2026-05-05T10:20:59+08:00"
+          },
+          {
+            "message_id": "80525870445254.PNM",
+            "source_kind": "COMPETITION_MOCK",
+            "speaker": "CONSUMER",
+            "text": "[REDACTED COMPETITION_MOCK MESSAGE]",
+            "timestamp": "2026-05-05T10:21:38+08:00"
+          },
+          {
+            "message_id": "22703823958720.PNM",
+            "source_kind": "COMPETITION_MOCK",
+            "speaker": "AGENT",
+            "text": "[REDACTED COMPETITION_MOCK MESSAGE]",
+            "timestamp": "2026-05-05T10:24:13+08:00"
+          },
+          {
+            "message_id": "94357468399952.PNM",
+            "source_kind": "COMPETITION_MOCK",
+            "speaker": "CONSUMER",
+            "text": "[REDACTED COMPETITION_MOCK MESSAGE]",
+            "timestamp": "2026-05-05T10:25:13+08:00"
+          },
+          {
+            "message_id": "36199788469718.PNM",
+            "source_kind": "COMPETITION_MOCK",
+            "speaker": "AGENT",
+            "text": "[REDACTED COMPETITION_MOCK MESSAGE]",
+            "timestamp": "2026-05-05T10:27:37+08:00"
+          },
+          {
+            "message_id": "DEMO_AUG_MSG_001",
+            "source_kind": "DEMO_AUGMENTATION",
+            "speaker": "CONSUMER",
+            "text": "[REDACTED DEMO_AUGMENTATION MESSAGE]",
+            "timestamp": "2026-05-07T09:32:00+08:00"
+          }
+        ],
+        "current_issue": {
+          "affected_component": "PUMP",
+          "fulfillment_item_id": "6920185815517983396-XC33003",
+          "issue_type": "PACKAGE_DAMAGE",
+          "sku_id": "XC33003"
+        },
+        "data_provenance": {
+          "augmentation_notes": [
+            "赛事记录只有一条图片路径引用，三张可运行图片为团队合成素材",
+            "第二次进线和评估时间为团队压力测试扩充",
+            "不新增赛事原始记录中不存在的真实业务结论"
+          ],
+          "source_dataset": "TIANCHI_LOREAL_TRACK1_MOCK",
+          "source_session_id": "S00001"
+        },
+        "evaluation_time": "2026-05-07T09:40:00+08:00",
+        "evidence_images": [
+          {
+            "competition_reference_path": "mock_images/broken_pump/S00001_03.jpg",
+            "declared_view_type": "PRODUCT_OVERVIEW",
+            "evidence_id": "S00001_IMG_OVERVIEW",
+            "file_name": "s00001-product-overview.jpg",
+            "source_kind": "TEAM_SYNTHETIC_RECREATION",
+            "source_message_id": "80525870445254.PNM",
+            "submitted_at": "2026-05-05T10:21:38+08:00"
+          },
+          {
+            "competition_reference_path": null,
+            "declared_view_type": "ISSUE_DETAIL",
+            "evidence_id": "S00001_IMG_PUMP",
+            "file_name": "s00001-pump-detail.jpg",
+            "source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
+            "source_message_id": "80525870445254.PNM",
+            "submitted_at": "2026-05-05T10:21:38+08:00"
+          },
+          {
+            "competition_reference_path": null,
+            "declared_view_type": "PACKAGE_CONTEXT",
+            "evidence_id": "S00001_IMG_PACKAGE",
+            "file_name": "s00001-package-context.jpg",
+            "source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
+            "source_message_id": "80525870445254.PNM",
+            "submitted_at": "2026-05-05T10:21:38+08:00"
+          }
+        ],
+        "order": {
+          "channel": "TIANCHI_MOCK_QIANNIU",
+          "items": [
+            {
+              "batch_code": null,
+              "fulfillment_item_id": "6920185815517983396-XC33003",
+              "item_role": "PRIMARY",
+              "product_name": "测试轻透粉底液30ml #N02自然色",
+              "sku_id": "XC33003"
+            },
+            {
+              "batch_code": null,
+              "fulfillment_item_id": "6920185815517983396-GIFT-01",
+              "item_role": "GIFT",
+              "product_name": "测试B5面膜体验装2片",
+              "sku_id": "GIFT-B5-MASK-2"
+            }
+          ],
+          "order_id": "6920185815517983396",
+          "original_logistics_number": "773478190943155"
+        },
+        "policy_requirement_id": "DEMO_POLICY_PACKAGE_DAMAGE_V1",
+        "service_tickets": [
+          {
+            "assignee_id": "G003",
+            "completed_at": null,
+            "created_at": "2026-05-05T10:29:45+08:00",
+            "executor_name": "测试美妆分销中心",
+            "replacement_logistics_number": "YT7667875838478",
+            "source_sheet": "补发换货工单",
+            "status": "进行中",
+            "ticket_id": "BH919209358357",
+            "ticket_type": "REPLACEMENT"
+          }
+        ]
+      },
+      "diagnostics": [],
+      "source_session_id": "S00001",
+      "status": "ASSEMBLED"
+    },
+    {
+      "case_id": "DEMO_002",
+      "case_input": {
+        "case_id": "DEMO_002",
+        "conversation": [
+          {
+            "message_id": "20974795108539.PNM",
+            "source_kind": "COMPETITION_MOCK",
+            "speaker": "CONSUMER",
+            "text": "[REDACTED COMPETITION_MOCK MESSAGE]",
+            "timestamp": "2026-05-05T10:18:45+08:00"
+          },
+          {
+            "message_id": "51831669257761.PNM",
+            "source_kind": "COMPETITION_MOCK",
+            "speaker": "AGENT",
+            "text": "[REDACTED COMPETITION_MOCK MESSAGE]",
+            "timestamp": "2026-05-05T10:20:59+08:00"
+          },
+          {
+            "message_id": "80525870445254.PNM",
+            "source_kind": "COMPETITION_MOCK",
+            "speaker": "CONSUMER",
+            "text": "[REDACTED COMPETITION_MOCK MESSAGE]",
+            "timestamp": "2026-05-05T10:21:38+08:00"
+          },
+          {
+            "message_id": "22703823958720.PNM",
+            "source_kind": "COMPETITION_MOCK",
+            "speaker": "AGENT",
+            "text": "[REDACTED COMPETITION_MOCK MESSAGE]",
+            "timestamp": "2026-05-05T10:24:13+08:00"
+          },
+          {
+            "message_id": "94357468399952.PNM",
+            "source_kind": "COMPETITION_MOCK",
+            "speaker": "CONSUMER",
+            "text": "[REDACTED COMPETITION_MOCK MESSAGE]",
+            "timestamp": "2026-05-05T10:25:13+08:00"
+          },
+          {
+            "message_id": "36199788469718.PNM",
+            "source_kind": "COMPETITION_MOCK",
+            "speaker": "AGENT",
+            "text": "[REDACTED COMPETITION_MOCK MESSAGE]",
+            "timestamp": "2026-05-05T10:27:37+08:00"
+          },
+          {
+            "message_id": "DEMO_AUG_MSG_002",
+            "source_kind": "DEMO_AUGMENTATION",
+            "speaker": "CONSUMER",
+            "text": "[REDACTED DEMO_AUGMENTATION MESSAGE]",
+            "timestamp": "2026-05-05T10:58:00+08:00"
+          }
+        ],
+        "current_issue": {
+          "affected_component": "PUMP",
+          "fulfillment_item_id": "6920185815517983396-XC33003",
+          "issue_type": "PACKAGE_DAMAGE",
+          "sku_id": "XC33003"
+        },
+        "data_provenance": {
+          "augmentation_notes": [
+            "赠品损坏图片为团队构建的范围变化测试"
+          ],
+          "source_dataset": "TIANCHI_LOREAL_TRACK1_MOCK",
+          "source_session_id": "S00001"
+        },
+        "evaluation_time": "2026-05-05T11:00:00+08:00",
+        "evidence_images": [
+          {
+            "competition_reference_path": null,
+            "declared_view_type": "PACKAGE_CONTEXT",
+            "evidence_id": "S00001_GIFT_IMG",
+            "file_name": "s00001-gift-evidence.jpg",
+            "source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
+            "source_message_id": "DEMO_AUG_IMG_GIFT",
+            "submitted_at": "2026-05-05T10:55:00+08:00"
+          }
+        ],
+        "order": {
+          "channel": "TIANCHI_MOCK_QIANNIU",
+          "items": [
+            {
+              "batch_code": null,
+              "fulfillment_item_id": "6920185815517983396-XC33003",
+              "item_role": "PRIMARY",
+              "product_name": "测试轻透粉底液30ml #N02自然色",
+              "sku_id": "XC33003"
+            },
+            {
+              "batch_code": null,
+              "fulfillment_item_id": "6920185815517983396-GIFT-01",
+              "item_role": "GIFT",
+              "product_name": "测试B5面膜体验装2片",
+              "sku_id": "GIFT-B5-MASK-2"
+            }
+          ],
+          "order_id": "6920185815517983396",
+          "original_logistics_number": "773478190943155"
+        },
+        "policy_requirement_id": "DEMO_POLICY_PACKAGE_DAMAGE_V1",
+        "service_tickets": [
+          {
+            "assignee_id": "G003",
+            "completed_at": null,
+            "created_at": "2026-05-05T10:29:45+08:00",
+            "executor_name": "测试美妆分销中心",
+            "replacement_logistics_number": "YT7667875838478",
+            "source_sheet": "补发换货工单",
+            "status": "进行中",
+            "ticket_id": "BH919209358357",
+            "ticket_type": "REPLACEMENT"
+          }
+        ]
+      },
+      "diagnostics": [],
+      "source_session_id": "S00001",
+      "status": "ASSEMBLED"
+    },
+    {
+      "case_id": "DEMO_003",
+      "case_input": {
+        "case_id": "DEMO_003",
+        "conversation": [
+          {
+            "message_id": "20974795108539.PNM",
+            "source_kind": "COMPETITION_MOCK",
+            "speaker": "CONSUMER",
+            "text": "[REDACTED COMPETITION_MOCK MESSAGE]",
+            "timestamp": "2026-05-05T10:18:45+08:00"
+          },
+          {
+            "message_id": "51831669257761.PNM",
+            "source_kind": "COMPETITION_MOCK",
+            "speaker": "AGENT",
+            "text": "[REDACTED COMPETITION_MOCK MESSAGE]",
+            "timestamp": "2026-05-05T10:20:59+08:00"
+          },
+          {
+            "message_id": "80525870445254.PNM",
+            "source_kind": "COMPETITION_MOCK",
+            "speaker": "CONSUMER",
+            "text": "[REDACTED COMPETITION_MOCK MESSAGE]",
+            "timestamp": "2026-05-05T10:21:38+08:00"
+          },
+          {
+            "message_id": "22703823958720.PNM",
+            "source_kind": "COMPETITION_MOCK",
+            "speaker": "AGENT",
+            "text": "[REDACTED COMPETITION_MOCK MESSAGE]",
+            "timestamp": "2026-05-05T10:24:13+08:00"
+          },
+          {
+            "message_id": "94357468399952.PNM",
+            "source_kind": "COMPETITION_MOCK",
+            "speaker": "CONSUMER",
+            "text": "[REDACTED COMPETITION_MOCK MESSAGE]",
+            "timestamp": "2026-05-05T10:25:13+08:00"
+          },
+          {
+            "message_id": "36199788469718.PNM",
+            "source_kind": "COMPETITION_MOCK",
+            "speaker": "AGENT",
+            "text": "[REDACTED COMPETITION_MOCK MESSAGE]",
+            "timestamp": "2026-05-05T10:27:37+08:00"
+          },
+          {
+            "message_id": "DEMO_AUG_MSG_003",
+            "source_kind": "DEMO_AUGMENTATION",
+            "speaker": "CONSUMER",
+            "text": "[REDACTED DEMO_AUGMENTATION MESSAGE]",
+            "timestamp": "2026-05-05T10:58:00+08:00"
+          }
+        ],
+        "current_issue": {
+          "affected_component": "PUMP",
+          "fulfillment_item_id": "6920185815517983396-XC33003",
+          "issue_type": "PACKAGE_DAMAGE",
+          "sku_id": "XC33003"
+        },
+        "data_provenance": {
+          "augmentation_notes": [
+            "模糊泵头图片为团队构建的不确定性测试"
+          ],
+          "source_dataset": "TIANCHI_LOREAL_TRACK1_MOCK",
+          "source_session_id": "S00001"
+        },
+        "evaluation_time": "2026-05-05T11:00:00+08:00",
+        "evidence_images": [
+          {
+            "competition_reference_path": null,
+            "declared_view_type": "ISSUE_DETAIL",
+            "evidence_id": "S00001_BLURRED_IMG",
+            "file_name": "s00001-blurred-pump.jpg",
+            "source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
+            "source_message_id": "DEMO_AUG_IMG_BLURRED",
+            "submitted_at": "2026-05-05T10:59:00+08:00"
+          }
+        ],
+        "order": {
+          "channel": "TIANCHI_MOCK_QIANNIU",
+          "items": [
+            {
+              "batch_code": null,
+              "fulfillment_item_id": "6920185815517983396-XC33003",
+              "item_role": "PRIMARY",
+              "product_name": "测试轻透粉底液30ml #N02自然色",
+              "sku_id": "XC33003"
+            }
+          ],
+          "order_id": "6920185815517983396",
+          "original_logistics_number": "773478190943155"
+        },
+        "policy_requirement_id": "DEMO_POLICY_PACKAGE_DAMAGE_V1",
+        "service_tickets": [
+          {
+            "assignee_id": "G003",
+            "completed_at": null,
+            "created_at": "2026-05-05T10:29:45+08:00",
+            "executor_name": "测试美妆分销中心",
+            "replacement_logistics_number": "YT7667875838478",
+            "source_sheet": "补发换货工单",
+            "status": "进行中",
+            "ticket_id": "BH919209358357",
+            "ticket_type": "REPLACEMENT"
+          }
+        ]
+      },
+      "diagnostics": [],
+      "source_session_id": "S00001",
+      "status": "ASSEMBLED"
+    }
+  ],
+  "schema_version": "covenia-b-case-input-redacted-v1"
+}

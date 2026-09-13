@@ -1,0 +1,151 @@
+{
+  "schema_version": "covenia-b-command-log-v1",
+  "batch_id": "BATCH-06",
+  "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\work\\repo2",
+  "commands": [
+    {
+      "id": "C01",
+      "command": "C:\\cov-run\\batch-06\\venv\\Scripts\\python.exe -c <interpreter identity assertion>",
+      "exit_code": 0,
+      "duration_seconds": 1.2,
+      "outcome": "PASS",
+      "evidence": "Executable and sys.prefix both resolve to C:\\cov-run\\batch-06\\venv; sys.prefix differs from sys.base_prefix.",
+      "redacted": true
+    },
+    {
+      "id": "C02a",
+      "command": "C:\\cov-run\\batch-06\\venv\\Scripts\\python.exe -m pip install --no-deps -r backend/requirements-dev.lock",
+      "exit_code": 1,
+      "duration_seconds": 10.9,
+      "outcome": "RETRIED",
+      "evidence": "Sandbox network socket permission prevented package-index access; no substitute result was used.",
+      "redacted": true
+    },
+    {
+      "id": "C02b",
+      "command": "C:\\cov-run\\batch-06\\venv\\Scripts\\python.exe -m pip install --no-deps -r backend/requirements-dev.lock",
+      "exit_code": 0,
+      "duration_seconds": 28.5,
+      "outcome": "PASS",
+      "evidence": "Approved retry installed exactly the pinned lock entries.",
+      "redacted": true
+    },
+    {
+      "id": "C03a",
+      "command": "C:\\cov-run\\batch-06\\venv\\Scripts\\python.exe -m pip install --no-deps --no-build-isolation -e backend",
+      "exit_code": 1,
+      "duration_seconds": 4.4,
+      "outcome": "RETRIED",
+      "evidence": "Sandbox filesystem permission denied writing the editable .pth file; no substitute result was used.",
+      "redacted": true
+    },
+    {
+      "id": "C03b",
+      "command": "C:\\cov-run\\batch-06\\venv\\Scripts\\python.exe -m pip install --no-deps --no-build-isolation -e backend",
+      "exit_code": 0,
+      "duration_seconds": 7.6,
+      "outcome": "PASS",
+      "evidence": "Approved retry installed covenia-b as an editable package from backend.",
+      "redacted": true
+    },
+    {
+      "id": "C04",
+      "command": "C:\\cov-run\\batch-06\\venv\\Scripts\\python.exe -c \"import pytest, jsonschema\"",
+      "exit_code": 0,
+      "duration_seconds": 1.6,
+      "outcome": "PASS",
+      "evidence": "pytest/jsonschema import OK",
+      "redacted": true
+    },
+    {
+      "id": "C05a",
+      "command": "C:\\cov-run\\batch-06\\venv\\Scripts\\python.exe -m pytest backend/tests/importing/test_case_assembler.py -q",
+      "exit_code": 1,
+      "duration_seconds": 2.9,
+      "outcome": "FIXED_AND_RERUN",
+      "evidence": "One test's expected error-text pattern did not match the deliberately earlier ticket-integrity failure; implementation behavior was a failure as required.",
+      "redacted": true
+    },
+    {
+      "id": "C05b",
+      "command": "C:\\cov-run\\batch-06\\venv\\Scripts\\python.exe -m pytest backend/tests/importing/test_case_assembler.py -q",
+      "exit_code": 0,
+      "duration_seconds": 1.29,
+      "outcome": "PASS",
+      "evidence": "7 passed",
+      "redacted": true
+    },
+    {
+      "id": "C06",
+      "command": "C:\\cov-run\\batch-06\\venv\\Scripts\\python.exe -m pytest backend/tests -q",
+      "exit_code": 0,
+      "duration_seconds": 4.28,
+      "outcome": "PASS",
+      "evidence": "81 passed",
+      "redacted": true
+    },
+    {
+      "id": "C07",
+      "command": "C:\\cov-run\\batch-06\\venv\\Scripts\\python.exe -m ruff check backend/src/covenia_b/importing/case_assembler.py backend/src/covenia_b/importing/case_catalog.py backend/tests/importing/test_case_assembler.py",
+      "exit_code": 0,
+      "duration_seconds": 1.2,
+      "outcome": "PASS",
+      "evidence": "All checks passed.",
+      "redacted": true
+    },
+    {
+      "id": "C08",
+      "command": "C:\\cov-run\\batch-06\\venv\\Scripts\\python.exe -m pip list --format=json",
+      "exit_code": 0,
+      "duration_seconds": 1.8,
+      "outcome": "PASS",
+      "evidence": "31 installed packages; covenia-b editable location is the target backend.",
+      "redacted": true
+    },
+    {
+      "id": "C09",
+      "command": "C:\\cov-run\\batch-06\\venv\\Scripts\\python.exe -m pip check",
+      "exit_code": 0,
+      "duration_seconds": 2.1,
+      "outcome": "PASS",
+      "evidence": "No broken requirements found.",
+      "redacted": true
+    },
+    {
+      "id": "C10",
+      "command": "C:\\cov-run\\batch-06\\venv\\Scripts\\python.exe -c <longest venv path preflight>",
+      "exit_code": 0,
+      "duration_seconds": 1.6,
+      "outcome": "PASS",
+      "evidence": "Longest venv path is 156 characters, below the 250-character limit.",
+      "redacted": true
+    },
+    {
+      "id": "C11",
+      "command": "git diff --cached --check; git diff --check; git status --short",
+      "exit_code": 0,
+      "duration_seconds": 1.4,
+      "outcome": "PASS",
+      "evidence": "Implementation-file staging passed whitespace checks; the only remaining untracked paths at that point were this Batch's report directory.",
+      "redacted": true
+    },
+    {
+      "id": "C12",
+      "command": "C:\\cov-run\\batch-06\\venv\\Scripts\\python.exe -c <generate redacted artifacts>",
+      "exit_code": 0,
+      "duration_seconds": 1.6,
+      "outcome": "PASS",
+      "evidence": "Wrote case-input.redacted.json and association-trace.json for three catalog cases and 138 source-session diagnostics.",
+      "redacted": true
+    },
+    {
+      "id": "C13",
+      "command": "C:\\cov-run\\batch-06\\venv\\Scripts\\python.exe -c <validate committed redacted artifacts>",
+      "exit_code": 0,
+      "duration_seconds": 1.5,
+      "outcome": "PASS",
+      "evidence": "3 redacted CaseInputs schema-valid; 138 diagnostics; 1 P0-ready.",
+      "redacted": true
+    }
+  ]
+}

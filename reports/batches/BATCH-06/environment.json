@@ -1,0 +1,32 @@
+{
+  "batch_id": "BATCH-06",
+  "repo_root": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\work\\repo2",
+  "run_dir": "C:\\cov-run\\batch-06",
+  "venv": "C:\\cov-run\\batch-06\\venv",
+  "interpreter": "C:\\cov-run\\batch-06\\venv\\Scripts\\python.exe",
+  "python_version": "3.13.5",
+  "sys_prefix": "C:\\cov-run\\batch-06\\venv",
+  "sys_base_prefix": "D:\\python",
+  "venv_direct_child_of_run_dir": true,
+  "include_system_site_packages": false,
+  "pythonpath": "UNSET",
+  "longest_venv_file": "C:\\cov-run\\batch-06\\venv\\Lib\\site-packages\\pkg_resources\\tests\\data\\my-test-package_unpacked-egg\\my_test_package-1.0-py3.7.egg\\EGG-INFO\\dependency_links.txt",
+  "longest_venv_path_length": 156,
+  "longest_venv_path_lt_250": true,
+  "pip_list_package_count": 31,
+  "editable_project_location": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\work\\repo2\\backend",
+  "requirements_dev_lock": {
+    "change_type": "UNCHANGED",
+    "new_third_party_dependencies": [],
+    "canonical_git_blob_bytes": 676,
+    "canonical_git_blob_sha256": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+    "working_checkout_note": "The Windows checkout materializes CRLF; its canonical LF bytes match the unchanged Git blob."
+  },
+  "pip_check": "No broken requirements found.",
+  "dependency_installation": {
+    "first_locked_install": "BLOCKED_BY_SANDBOX_NETWORK",
+    "locked_install_approved_retry": "SUCCESS",
+    "first_editable_install": "BLOCKED_BY_SANDBOX_FILESYSTEM",
+    "editable_install_approved_retry": "SUCCESS"
+  }
+}

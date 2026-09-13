@@ -1,0 +1,1860 @@
+{
+  "cases": [
+    {
+      "augmentation_messages": [
+        {
+          "message_id": "DEMO_AUG_MSG_001",
+          "source_kind": "DEMO_AUGMENTATION",
+          "timestamp": "2026-05-07T09:32:00+08:00"
+        }
+      ],
+      "case_id": "DEMO_001",
+      "competition_messages": [
+        {
+          "message_id": "20974795108539.PNM",
+          "source_coordinates": {
+            "message_id": "C2",
+            "order_id": "Q2",
+            "sent_at": "D2",
+            "session_id": "A2",
+            "ticket_id": "R2"
+          },
+          "source_kind": "COMPETITION_MOCK",
+          "source_row": 2,
+          "source_sheet": "聊天记录",
+          "timestamp": "2026-05-05T10:18:45+08:00"
+        },
+        {
+          "message_id": "51831669257761.PNM",
+          "source_coordinates": {
+            "message_id": "C3",
+            "order_id": "Q3",
+            "sent_at": "D3",
+            "session_id": "A3",
+            "ticket_id": "R3"
+          },
+          "source_kind": "COMPETITION_MOCK",
+          "source_row": 3,
+          "source_sheet": "聊天记录",
+          "timestamp": "2026-05-05T10:20:59+08:00"
+        },
+        {
+          "message_id": "80525870445254.PNM",
+          "source_coordinates": {
+            "message_id": "C4",
+            "order_id": "Q4",
+            "sent_at": "D4",
+            "session_id": "A4",
+            "ticket_id": "R4"
+          },
+          "source_kind": "COMPETITION_MOCK",
+          "source_row": 4,
+          "source_sheet": "聊天记录",
+          "timestamp": "2026-05-05T10:21:38+08:00"
+        },
+        {
+          "message_id": "22703823958720.PNM",
+          "source_coordinates": {
+            "message_id": "C5",
+            "order_id": "Q5",
+            "sent_at": "D5",
+            "session_id": "A5",
+            "ticket_id": "R5"
+          },
+          "source_kind": "COMPETITION_MOCK",
+          "source_row": 5,
+          "source_sheet": "聊天记录",
+          "timestamp": "2026-05-05T10:24:13+08:00"
+        },
+        {
+          "message_id": "94357468399952.PNM",
+          "source_coordinates": {
+            "message_id": "C6",
+            "order_id": "Q6",
+            "sent_at": "D6",
+            "session_id": "A6",
+            "ticket_id": "R6"
+          },
+          "source_kind": "COMPETITION_MOCK",
+          "source_row": 6,
+          "source_sheet": "聊天记录",
+          "timestamp": "2026-05-05T10:25:13+08:00"
+        },
+        {
+          "message_id": "36199788469718.PNM",
+          "source_coordinates": {
+            "message_id": "C7",
+            "order_id": "Q7",
+            "sent_at": "D7",
+            "session_id": "A7",
+            "ticket_id": "R7"
+          },
+          "source_kind": "COMPETITION_MOCK",
+          "source_row": 7,
+          "source_sheet": "聊天记录",
+          "timestamp": "2026-05-05T10:27:37+08:00"
+        }
+      ],
+      "display_aliases": [
+        "DEMO_001",
+        "S00001 压力测试：已有泵头证据与换货承诺，拦截重复索证"
+      ],
+      "evaluation_time": "2026-05-07T09:40:00+08:00",
+      "evidence_images": [
+        {
+          "competition_reference_path": "mock_images/broken_pump/S00001_03.jpg",
+          "evidence_id": "S00001_IMG_OVERVIEW",
+          "file_name": "s00001-product-overview.jpg",
+          "source_kind": "TEAM_SYNTHETIC_RECREATION",
+          "source_message_id": "80525870445254.PNM",
+          "submitted_at": "2026-05-05T10:21:38+08:00"
+        },
+        {
+          "competition_reference_path": null,
+          "evidence_id": "S00001_IMG_PUMP",
+          "file_name": "s00001-pump-detail.jpg",
+          "source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
+          "source_message_id": "80525870445254.PNM",
+          "submitted_at": "2026-05-05T10:21:38+08:00"
+        },
+        {
+          "competition_reference_path": null,
+          "evidence_id": "S00001_IMG_PACKAGE",
+          "file_name": "s00001-package-context.jpg",
+          "source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
+          "source_message_id": "80525870445254.PNM",
+          "submitted_at": "2026-05-05T10:21:38+08:00"
+        }
+      ],
+      "future_facts_excluded": {
+        "augmentation_messages": 0,
+        "competition_messages": 0,
+        "evidence_images": 0,
+        "ticket_completions_after_evaluation": 0,
+        "tickets_created_after_evaluation": 0
+      },
+      "items": [
+        {
+          "fulfillment_item_id": "6920185815517983396-XC33003",
+          "item_role": "PRIMARY",
+          "sku_id": "XC33003",
+          "source_coordinates": {
+            "order_id": "A45",
+            "product_name": "F45",
+            "product_sku": "E45"
+          },
+          "source_kind": "COMPETITION_MOCK",
+          "source_row": 45,
+          "source_sheet": "订单"
+        },
+        {
+          "fulfillment_item_id": "6920185815517983396-GIFT-01",
+          "item_role": "GIFT",
+          "sku_id": "GIFT-B5-MASK-2",
+          "source_coordinates": {
+            "gift": "R45"
+          },
+          "source_kind": "DEMO_AUGMENTATION",
+          "source_row": 45,
+          "source_sheet": "订单"
+        }
+      ],
+      "join_checks": [
+        {
+          "check": "session_to_competition_messages",
+          "source_session_id": "S00001",
+          "status": "PASS"
+        },
+        {
+          "check": "session_to_order_then_catalog_order_id",
+          "order_id": "6920185815517983396",
+          "status": "PASS"
+        },
+        {
+          "check": "session_to_ticket_then_order_id",
+          "status": "PASS",
+          "ticket_ids": [
+            "BH919209358357"
+          ]
+        },
+        {
+          "check": "catalog_evidence_to_source_image_path",
+          "evidence_ids": [
+            "S00001_IMG_OVERVIEW",
+            "S00001_IMG_PUMP",
+            "S00001_IMG_PACKAGE"
+          ],
+          "status": "PASS"
+        }
+      ],
+      "order": {
+        "order_id": "6920185815517983396",
+        "source_coordinates": {
+          "gift": "R45",
+          "order_id": "A45",
+          "product_sku": "E45",
+          "session_id": "B45",
+          "tracking_id": "O45"
+        },
+        "source_kind": "COMPETITION_MOCK",
+        "source_row": 45,
+        "source_sheet": "订单"
+      },
+      "requested_case_reference": "DEMO_001",
+      "source_session_id": "S00001",
+      "status": "ASSEMBLED",
+      "tickets": [
+        {
+          "order_id": "6920185815517983396",
+          "source_coordinates": {
+            "completed_at": "S10",
+            "created_at": "R10",
+            "order_id": "C10",
+            "session_id": "B10",
+            "ticket_id": "A10"
+          },
+          "source_kind": "COMPETITION_MOCK",
+          "source_row": 10,
+          "source_sheet": "补发换货工单",
+          "ticket_id": "BH919209358357"
+        }
+      ]
+    },
+    {
+      "augmentation_messages": [
+        {
+          "message_id": "DEMO_AUG_MSG_002",
+          "source_kind": "DEMO_AUGMENTATION",
+          "timestamp": "2026-05-05T10:58:00+08:00"
+        }
+      ],
+      "case_id": "DEMO_002",
+      "competition_messages": [
+        {
+          "message_id": "20974795108539.PNM",
+          "source_coordinates": {
+            "message_id": "C2",
+            "order_id": "Q2",
+            "sent_at": "D2",
+            "session_id": "A2",
+            "ticket_id": "R2"
+          },
+          "source_kind": "COMPETITION_MOCK",
+          "source_row": 2,
+          "source_sheet": "聊天记录",
+          "timestamp": "2026-05-05T10:18:45+08:00"
+        },
+        {
+          "message_id": "51831669257761.PNM",
+          "source_coordinates": {
+            "message_id": "C3",
+            "order_id": "Q3",
+            "sent_at": "D3",
+            "session_id": "A3",
+            "ticket_id": "R3"
+          },
+          "source_kind": "COMPETITION_MOCK",
+          "source_row": 3,
+          "source_sheet": "聊天记录",
+          "timestamp": "2026-05-05T10:20:59+08:00"
+        },
+        {
+          "message_id": "80525870445254.PNM",
+          "source_coordinates": {
+            "message_id": "C4",
+            "order_id": "Q4",
+            "sent_at": "D4",
+            "session_id": "A4",
+            "ticket_id": "R4"
+          },
+          "source_kind": "COMPETITION_MOCK",
+          "source_row": 4,
+          "source_sheet": "聊天记录",
+          "timestamp": "2026-05-05T10:21:38+08:00"
+        },
+        {
+          "message_id": "22703823958720.PNM",
+          "source_coordinates": {
+            "message_id": "C5",
+            "order_id": "Q5",
+            "sent_at": "D5",
+            "session_id": "A5",
+            "ticket_id": "R5"
+          },
+          "source_kind": "COMPETITION_MOCK",
+          "source_row": 5,
+          "source_sheet": "聊天记录",
+          "timestamp": "2026-05-05T10:24:13+08:00"
+        },
+        {
+          "message_id": "94357468399952.PNM",
+          "source_coordinates": {
+            "message_id": "C6",
+            "order_id": "Q6",
+            "sent_at": "D6",
+            "session_id": "A6",
+            "ticket_id": "R6"
+          },
+          "source_kind": "COMPETITION_MOCK",
+          "source_row": 6,
+          "source_sheet": "聊天记录",
+          "timestamp": "2026-05-05T10:25:13+08:00"
+        },
+        {
+          "message_id": "36199788469718.PNM",
+          "source_coordinates": {
+            "message_id": "C7",
+            "order_id": "Q7",
+            "sent_at": "D7",
+            "session_id": "A7",
+            "ticket_id": "R7"
+          },
+          "source_kind": "COMPETITION_MOCK",
+          "source_row": 7,
+          "source_sheet": "聊天记录",
+          "timestamp": "2026-05-05T10:27:37+08:00"
+        }
+      ],
+      "display_aliases": [
+        "DEMO_002",
+        "S00001 范围变化：赠品图片不能覆盖正装泵头问题"
+      ],
+      "evaluation_time": "2026-05-05T11:00:00+08:00",
+      "evidence_images": [
+        {
+          "competition_reference_path": null,
+          "evidence_id": "S00001_GIFT_IMG",
+          "file_name": "s00001-gift-evidence.jpg",
+          "source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
+          "source_message_id": "DEMO_AUG_IMG_GIFT",
+          "submitted_at": "2026-05-05T10:55:00+08:00"
+        }
+      ],
+      "future_facts_excluded": {
+        "augmentation_messages": 0,
+        "competition_messages": 0,
+        "evidence_images": 0,
+        "ticket_completions_after_evaluation": 0,
+        "tickets_created_after_evaluation": 0
+      },
+      "items": [
+        {
+          "fulfillment_item_id": "6920185815517983396-XC33003",
+          "item_role": "PRIMARY",
+          "sku_id": "XC33003",
+          "source_coordinates": {
+            "order_id": "A45",
+            "product_name": "F45",
+            "product_sku": "E45"
+          },
+          "source_kind": "COMPETITION_MOCK",
+          "source_row": 45,
+          "source_sheet": "订单"
+        },
+        {
+          "fulfillment_item_id": "6920185815517983396-GIFT-01",
+          "item_role": "GIFT",
+          "sku_id": "GIFT-B5-MASK-2",
+          "source_coordinates": {
+            "gift": "R45"
+          },
+          "source_kind": "DEMO_AUGMENTATION",
+          "source_row": 45,
+          "source_sheet": "订单"
+        }
+      ],
+      "join_checks": [
+        {
+          "check": "session_to_competition_messages",
+          "source_session_id": "S00001",
+          "status": "PASS"
+        },
+        {
+          "check": "session_to_order_then_catalog_order_id",
+          "order_id": "6920185815517983396",
+          "status": "PASS"
+        },
+        {
+          "check": "session_to_ticket_then_order_id",
+          "status": "PASS",
+          "ticket_ids": [
+            "BH919209358357"
+          ]
+        },
+        {
+          "check": "catalog_evidence_to_source_image_path",
+          "evidence_ids": [
+            "S00001_GIFT_IMG"
+          ],
+          "status": "PASS"
+        }
+      ],
+      "order": {
+        "order_id": "6920185815517983396",
+        "source_coordinates": {
+          "gift": "R45",
+          "order_id": "A45",
+          "product_sku": "E45",
+          "session_id": "B45",
+          "tracking_id": "O45"
+        },
+        "source_kind": "COMPETITION_MOCK",
+        "source_row": 45,
+        "source_sheet": "订单"
+      },
+      "requested_case_reference": "DEMO_002",
+      "source_session_id": "S00001",
+      "status": "ASSEMBLED",
+      "tickets": [
+        {
+          "order_id": "6920185815517983396",
+          "source_coordinates": {
+            "completed_at": "S10",
+            "created_at": "R10",
+            "order_id": "C10",
+            "session_id": "B10",
+            "ticket_id": "A10"
+          },
+          "source_kind": "COMPETITION_MOCK",
+          "source_row": 10,
+          "source_sheet": "补发换货工单",
+          "ticket_id": "BH919209358357"
+        }
+      ]
+    },
+    {
+      "augmentation_messages": [
+        {
+          "message_id": "DEMO_AUG_MSG_003",
+          "source_kind": "DEMO_AUGMENTATION",
+          "timestamp": "2026-05-05T10:58:00+08:00"
+        }
+      ],
+      "case_id": "DEMO_003",
+      "competition_messages": [
+        {
+          "message_id": "20974795108539.PNM",
+          "source_coordinates": {
+            "message_id": "C2",
+            "order_id": "Q2",
+            "sent_at": "D2",
+            "session_id": "A2",
+            "ticket_id": "R2"
+          },
+          "source_kind": "COMPETITION_MOCK",
+          "source_row": 2,
+          "source_sheet": "聊天记录",
+          "timestamp": "2026-05-05T10:18:45+08:00"
+        },
+        {
+          "message_id": "51831669257761.PNM",
+          "source_coordinates": {
+            "message_id": "C3",
+            "order_id": "Q3",
+            "sent_at": "D3",
+            "session_id": "A3",
+            "ticket_id": "R3"
+          },
+          "source_kind": "COMPETITION_MOCK",
+          "source_row": 3,
+          "source_sheet": "聊天记录",
+          "timestamp": "2026-05-05T10:20:59+08:00"
+        },
+        {
+          "message_id": "80525870445254.PNM",
+          "source_coordinates": {
+            "message_id": "C4",
+            "order_id": "Q4",
+            "sent_at": "D4",
+            "session_id": "A4",
+            "ticket_id": "R4"
+          },
+          "source_kind": "COMPETITION_MOCK",
+          "source_row": 4,
+          "source_sheet": "聊天记录",
+          "timestamp": "2026-05-05T10:21:38+08:00"
+        },
+        {
+          "message_id": "22703823958720.PNM",
+          "source_coordinates": {
+            "message_id": "C5",
+            "order_id": "Q5",
+            "sent_at": "D5",
+            "session_id": "A5",
+            "ticket_id": "R5"
+          },
+          "source_kind": "COMPETITION_MOCK",
+          "source_row": 5,
+          "source_sheet": "聊天记录",
+          "timestamp": "2026-05-05T10:24:13+08:00"
+        },
+        {
+          "message_id": "94357468399952.PNM",
+          "source_coordinates": {
+            "message_id": "C6",
+            "order_id": "Q6",
+            "sent_at": "D6",
+            "session_id": "A6",
+            "ticket_id": "R6"
+          },
+          "source_kind": "COMPETITION_MOCK",
+          "source_row": 6,
+          "source_sheet": "聊天记录",
+          "timestamp": "2026-05-05T10:25:13+08:00"
+        },
+        {
+          "message_id": "36199788469718.PNM",
+          "source_coordinates": {
+            "message_id": "C7",
+            "order_id": "Q7",
+            "sent_at": "D7",
+            "session_id": "A7",
+            "ticket_id": "R7"
+          },
+          "source_kind": "COMPETITION_MOCK",
+          "source_row": 7,
+          "source_sheet": "聊天记录",
+          "timestamp": "2026-05-05T10:27:37+08:00"
+        }
+      ],
+      "display_aliases": [
+        "DEMO_003",
+        "S00001 不确定性：同一泵头图片模糊，进入人工复核"
+      ],
+      "evaluation_time": "2026-05-05T11:00:00+08:00",
+      "evidence_images": [
+        {
+          "competition_reference_path": null,
+          "evidence_id": "S00001_BLURRED_IMG",
+          "file_name": "s00001-blurred-pump.jpg",
+          "source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
+          "source_message_id": "DEMO_AUG_IMG_BLURRED",
+          "submitted_at": "2026-05-05T10:59:00+08:00"
+        }
+      ],
+      "future_facts_excluded": {
+        "augmentation_messages": 0,
+        "competition_messages": 0,
+        "evidence_images": 0,
+        "ticket_completions_after_evaluation": 0,
+        "tickets_created_after_evaluation": 0
+      },
+      "items": [
+        {
+          "fulfillment_item_id": "6920185815517983396-XC33003",
+          "item_role": "PRIMARY",
+          "sku_id": "XC33003",
+          "source_coordinates": {
+            "order_id": "A45",
+            "product_name": "F45",
+            "product_sku": "E45"
+          },
+          "source_kind": "COMPETITION_MOCK",
+          "source_row": 45,
+          "source_sheet": "订单"
+        }
+      ],
+      "join_checks": [
+        {
+          "check": "session_to_competition_messages",
+          "source_session_id": "S00001",
+          "status": "PASS"
+        },
+        {
+          "check": "session_to_order_then_catalog_order_id",
+          "order_id": "6920185815517983396",
+          "status": "PASS"
+        },
+        {
+          "check": "session_to_ticket_then_order_id",
+          "status": "PASS",
+          "ticket_ids": [
+            "BH919209358357"
+          ]
+        },
+        {
+          "check": "catalog_evidence_to_source_image_path",
+          "evidence_ids": [
+            "S00001_BLURRED_IMG"
+          ],
+          "status": "PASS"
+        }
+      ],
+      "order": {
+        "order_id": "6920185815517983396",
+        "source_coordinates": {
+          "gift": "R45",
+          "order_id": "A45",
+          "product_sku": "E45",
+          "session_id": "B45",
+          "tracking_id": "O45"
+        },
+        "source_kind": "COMPETITION_MOCK",
+        "source_row": 45,
+        "source_sheet": "订单"
+      },
+      "requested_case_reference": "DEMO_003",
+      "source_session_id": "S00001",
+      "status": "ASSEMBLED",
+      "tickets": [
+        {
+          "order_id": "6920185815517983396",
+          "source_coordinates": {
+            "completed_at": "S10",
+            "created_at": "R10",
+            "order_id": "C10",
+            "session_id": "B10",
+            "ticket_id": "A10"
+          },
+          "source_kind": "COMPETITION_MOCK",
+          "source_row": 10,
+          "source_sheet": "补发换货工单",
+          "ticket_id": "BH919209358357"
+        }
+      ]
+    }
+  ],
+  "dataset_importability": [
+    {
+      "catalog_case_ids": [
+        "DEMO_001",
+        "DEMO_002",
+        "DEMO_003"
+      ],
+      "diagnostic_codes": [],
+      "p0_ready": true,
+      "source_session_id": "S00001"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_ORDER",
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00002"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00003"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00004"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00005"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00006"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00007"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00008"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00009"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00010"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00011"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00012"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_ORDER",
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00013"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00014"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00015"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00016"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00017"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00018"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_ORDER",
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00019"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00020"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00021"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_ORDER",
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00022"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00023"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00024"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_ORDER",
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00025"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00026"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00027"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00028"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00029"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00030"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00031"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00032"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00033"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00034"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00035"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_ORDER",
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00036"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00037"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00038"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00039"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00040"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_ORDER",
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00041"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00042"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00043"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00044"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00045"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00046"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00047"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00048"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00049"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00050"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00051"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00052"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00053"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00054"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00055"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00056"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00057"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00058"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00059"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00060"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00061"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00062"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00063"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00064"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00065"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00066"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_ORDER",
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00067"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00068"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_ORDER",
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00069"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00070"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00071"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00072"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_ORDER",
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00073"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00074"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00075"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00076"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00077"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00078"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00079"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_ORDER",
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00080"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00081"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00082"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_ORDER",
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00083"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00084"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00085"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_ORDER",
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00086"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00087"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00088"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00089"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00090"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_ORDER",
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00091"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_ORDER",
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00092"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00093"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_ORDER",
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00095"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00097"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00098"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00099"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00102"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00103"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00106"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00107"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00108"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00109"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_ORDER",
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00113"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00115"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00117"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00130"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00132"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_ORDER",
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00134"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00137"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_ORDER",
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00140"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00141"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00146"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_ORDER",
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00151"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00153"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00154"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00156"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00158"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00159"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00161"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00162"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_ORDER",
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00169"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00183"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00200"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00203"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00223"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00226"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00232"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00268"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00277"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00285"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_ORDER",
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00303"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_ORDER",
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00322"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00336"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00362"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_ORDER",
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00364"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00381"
+    },
+    {
+      "catalog_case_ids": [],
+      "diagnostic_codes": [
+        "MISSING_ORDER",
+        "MISSING_IMAGE_REFERENCE",
+        "NO_CASE_CATALOG_ENTRY"
+      ],
+      "p0_ready": false,
+      "source_session_id": "S00474"
+    }
+  ],
+  "schema_version": "covenia-b-association-trace-v1"
+}
