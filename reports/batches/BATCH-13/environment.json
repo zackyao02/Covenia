@@ -1,49 +1,30 @@
 {
-  "artifact_version": "1.0",
+  "artifact_version": "1.1",
   "batch_id": "BATCH-13",
-  "run_dir": "C:\\cov-run\\batch-13",
-  "venv": "C:\\cov-run\\batch-13\\venv",
+  "repair_attempt": 1,
+  "run_dir": "C:\\cov-run\\batch-13-repair-1",
+  "venv": "C:\\cov-run\\batch-13-repair-1\\venv",
   "venv_direct_child_of_run_dir": true,
-  "interpreter": "C:\\cov-run\\batch-13\\venv\\Scripts\\python.exe",
-  "python_version": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]",
-  "sys_executable": "C:\\cov-run\\batch-13\\venv\\Scripts\\python.exe",
-  "sys_prefix": "C:\\cov-run\\batch-13\\venv",
-  "sys_base_prefix": "D:\\python",
-  "interpreter_identity_check": {
-    "command": "C:\\cov-run\\batch-13\\venv\\Scripts\\python.exe -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version); print(sys.prefix); print(sys.base_prefix)\" \"C:\\cov-run\\batch-13\\venv\\Scripts\\python.exe\"",
-    "exit_code": 0,
-    "result": "PASS"
+  "interpreter": "C:\\cov-run\\batch-13-repair-1\\venv\\Scripts\\python.exe",
+  "evidence_origin": "Confirmed actual results from the completed repair task; this report-only closeout did not rerun tests or reinstall dependencies.",
+  "code_commit": {
+    "sha": "5af1ff0a0d59023d41aea357fcf65ea0ae243d1a",
+    "parent_sha": "cfe1b476f9da26614c0d8f861620c80ae56225e3",
+    "hash_convention": "Git commit object identity; file hashes below use SHA-256 over raw blob bytes emitted by git show <sha>:<path>, never working-copy bytes."
   },
-  "isolation": {
-    "include_system_site_packages": false,
-    "pythonpath_state": "UNSET",
-    "user_site_enabled": false
-  },
-  "longest_venv_file": "C:\\cov-run\\batch-13\\venv\\Lib\\site-packages\\pkg_resources\\tests\\data\\my-test-package_unpacked-egg\\my_test_package-1.0-py3.7.egg\\EGG-INFO\\dependency_links.txt",
-  "longest_venv_file_length": 156,
-  "maximum_allowed_exclusive": 250,
-  "venv_longest_path_lt_250": true,
   "requirements_dev_lock": {
     "path": "backend/requirements-dev.lock",
+    "changed": false,
     "new_dependencies": [],
-    "existing_pinned_line_count": 29,
     "existing_pins_unchanged": true,
-    "raw_git_blob_sha256_before_code_commit": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
-    "raw_git_blob_sha256_after_code_commit": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
-    "hash_method": "SHA-256 over raw bytes streamed from git show <commit>:backend/requirements-dev.lock",
-    "reason": "The implementation uses only the standard library and already-locked backend dependencies."
+    "raw_git_blob_sha256": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+    "blob_source": "git show 5af1ff0a0d59023d41aea357fcf65ea0ae243d1a:backend/requirements-dev.lock",
+    "hash_convention": "SHA-256 over raw Git blob bytes from git show <sha>:<path>."
   },
-  "package_versions": {
-    "covenia-b": "0.0.0 (editable)",
-    "pytest": "8.3.4",
-    "jsonschema": "4.25.0",
-    "pydantic": "2.10.5",
-    "ruff": "0.8.4"
-  },
-  "pip_check": {
-    "command": "C:\\cov-run\\batch-13\\venv\\Scripts\\python.exe -m pip check",
-    "exit_code": 0,
-    "raw_output_path": "reports/batches/BATCH-13/pip-check.txt",
-    "raw_output": "No broken requirements found."
+  "confirmed_checks": {
+    "targeted_pytest": "15 passed",
+    "ruff": "All checks passed!",
+    "pip_check": "No broken requirements found.",
+    "git_diff_check": "PASS"
   }
 }

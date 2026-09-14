@@ -1,6 +1,8 @@
 {
-  "artifact_version": "1.0",
+  "artifact_version": "1.1",
   "batch_id": "BATCH-13",
+  "repair_attempt": 1,
+  "code_commit_hash": "5af1ff0a0d59023d41aea357fcf65ea0ae243d1a",
   "classification": "REDACTED_UNIT_TEST_BOUNDARIES",
   "approved_next_check_policy": {
     "decision": "D08",
@@ -10,27 +12,35 @@
   },
   "boundaries": [
     {
-      "control": "48_hour_original_message",
+      "control": "conditional_inventory_clause",
+      "raw_text": "如库存充足，48小时内发出",
+      "expected_activation_status": "NOT_ACTIVE",
+      "expected_deadline": null,
+      "expected_next_check_at": null,
+      "evidence": "backend/tests/commitments/test_compiler.py::test_conditional_or_indeterminate_duration_never_auto_activates"
+    },
+    {
+      "control": "indeterminate_dispatch_wording",
+      "raw_text": "可能48小时内发出",
+      "expected_activation_status": "NOT_ACTIVE",
+      "expected_deadline": null,
+      "expected_next_check_at": null,
+      "evidence": "backend/tests/commitments/test_compiler.py::test_conditional_or_indeterminate_duration_never_auto_activates"
+    },
+    {
+      "control": "supported_replacement_dispatch",
+      "raw_text": "换货单已创建，48小时内发出",
       "source_message_at": "2026-05-05T10:27:37+08:00",
       "duration": "PT48H",
+      "expected_activation_status": "ACTIVE",
       "expected_deadline": "2026-05-07T10:27:37+08:00",
       "expected_next_check_at": "2026-05-07T10:30:00+08:00",
       "evidence": "backend/tests/commitments/test_compiler.py::test_standard_supported_agent_promise_activates_with_traceable_deadline"
     },
     {
-      "control": "exact_clock_boundary",
-      "rule": "message.sent_at == trusted_clock.now() is accepted; only a later source message is rejected",
-      "evidence": "backend/tests/commitments/test_compiler.py::test_future_message_is_rejected_but_exact_clock_boundary_is_allowed"
-    },
-    {
       "control": "future_source_message",
       "rule": "message.sent_at > trusted_clock.now() yields ERRONEOUS_OR_UNAUTHORIZED/BLOCKED with deadline=null",
       "evidence": "backend/tests/commitments/test_compiler.py::test_future_message_is_rejected_but_exact_clock_boundary_is_allowed"
-    },
-    {
-      "control": "naive_time_rejection",
-      "rule": "source timestamps and the trusted clock must be timezone-aware before calculation",
-      "evidence": "backend/tests/commitments/test_compiler.py::test_naive_source_or_clock_is_rejected_before_deadline_calculation"
     },
     {
       "control": "input_causality",

@@ -1,1 +1,4 @@
-No broken requirements found.
+Command: C:\cov-run\batch-13-repair-1\venv\Scripts\python.exe -m pip check
+Exit code: 0
+Output: No broken requirements found.
+Evidence origin: confirmed actual repair-task result; not rerun during report-only closeout.

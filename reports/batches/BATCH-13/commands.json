@@ -1,142 +1,58 @@
 {
-  "artifact_version": "1.0",
+  "artifact_version": "1.1",
   "batch_id": "BATCH-13",
-  "repo_root": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-13",
-  "run_dir": "C:\\cov-run\\batch-13",
-  "interpreter": "C:\\cov-run\\batch-13\\venv\\Scripts\\python.exe",
-  "interpreter_version": "3.13.5",
+  "repair_attempt": 1,
+  "repo_root": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-13-repair-1-evidence-2",
+  "run_dir": "C:\\cov-run\\batch-13-repair-1",
+  "interpreter": "C:\\cov-run\\batch-13-repair-1\\venv\\Scripts\\python.exe",
+  "evidence_origin": "Actual results confirmed by the completed repair task and transcribed during this report-only closeout; commands were not rerun here.",
   "commands": [
     {
-      "id": "bootstrap-venv",
-      "command": "D:\\python\\python.exe -m venv C:\\cov-run\\batch-13\\venv",
-      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-13",
+      "id": "repair-01-commitments-pytest",
+      "command": "C:\\cov-run\\batch-13-repair-1\\venv\\Scripts\\python.exe -m pytest backend/tests/commitments -q",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-13-repair-1-evidence-2",
+      "interpreter": "C:\\cov-run\\batch-13-repair-1\\venv\\Scripts\\python.exe",
       "exit_code": 0,
-      "duration_seconds": 14.4,
-      "evidence": "reports/batches/BATCH-13/environment.json"
+      "duration_seconds": null,
+      "duration_note": "Not supplied by the completed repair task; not reconstructed.",
+      "mode": "UNIT",
+      "output_summary": "15 passed",
+      "tests_passed": 15,
+      "tests_failed": 0,
+      "regressions_confirmed": [
+        "如库存充足，48小时内发出 => non-ACTIVE, deadline=null, next_check_at=null",
+        "可能48小时内发出 => non-ACTIVE, deadline=null, next_check_at=null",
+        "换货单已创建，48小时内发出 => ACTIVE with deterministic deadline retained"
+      ],
+      "evidence": ["reports/batches/BATCH-13/compiled-promises.json", "reports/batches/BATCH-13/time-boundaries.json"]
     },
     {
-      "id": "required-01-interpreter-identity",
-      "command": "C:\\cov-run\\batch-13\\venv\\Scripts\\python.exe -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version); print(sys.prefix); print(sys.base_prefix)\" \"C:\\cov-run\\batch-13\\venv\\Scripts\\python.exe\"",
-      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-13",
-      "interpreter": "C:\\cov-run\\batch-13\\venv\\Scripts\\python.exe",
+      "id": "repair-02-ruff-no-cache",
+      "command": "C:\\cov-run\\batch-13-repair-1\\venv\\Scripts\\python.exe -m ruff check --no-cache backend/src/covenia_b/commitments backend/tests/commitments",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-13-repair-1-evidence-2",
+      "interpreter": "C:\\cov-run\\batch-13-repair-1\\venv\\Scripts\\python.exe",
       "exit_code": 0,
-      "duration_seconds": 1.3,
-      "output_summary": "sys.executable and sys.prefix identify C:\\cov-run\\batch-13\\venv; sys.base_prefix is D:\\python.",
-      "evidence": "reports/batches/BATCH-13/environment.json"
+      "duration_seconds": null,
+      "output_summary": "All checks passed!"
     },
     {
-      "id": "required-02-locked-install-sandbox-attempt",
-      "command": "C:\\cov-run\\batch-13\\venv\\Scripts\\python.exe -m pip install --no-deps -r backend/requirements-dev.lock",
-      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-13",
-      "interpreter": "C:\\cov-run\\batch-13\\venv\\Scripts\\python.exe",
-      "exit_code": 1,
-      "duration_seconds": 11.0,
-      "result": "SANDBOX_NETWORK_DENIED",
-      "output_summary": "Initial package-index socket access was denied by the sandbox; no global or user-site install was used."
-    },
-    {
-      "id": "required-02-locked-install-retry",
-      "command": "C:\\cov-run\\batch-13\\venv\\Scripts\\python.exe -m pip install --no-deps -r backend/requirements-dev.lock",
-      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-13",
-      "interpreter": "C:\\cov-run\\batch-13\\venv\\Scripts\\python.exe",
+      "id": "repair-03-pip-check",
+      "command": "C:\\cov-run\\batch-13-repair-1\\venv\\Scripts\\python.exe -m pip check",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-13-repair-1-evidence-2",
+      "interpreter": "C:\\cov-run\\batch-13-repair-1\\venv\\Scripts\\python.exe",
       "exit_code": 0,
-      "duration_seconds": 29.8,
-      "output_summary": "All 29 existing pinned lock entries installed into the isolated venv."
-    },
-    {
-      "id": "required-03-editable-install-sandbox-attempt",
-      "command": "C:\\cov-run\\batch-13\\venv\\Scripts\\python.exe -m pip install --no-deps --no-build-isolation -e backend",
-      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-13",
-      "interpreter": "C:\\cov-run\\batch-13\\venv\\Scripts\\python.exe",
-      "exit_code": 1,
-      "duration_seconds": 4.5,
-      "result": "SANDBOX_WRITE_DENIED",
-      "output_summary": "Sandbox denied writing the editable .pth inside the external RUN_DIR venv."
-    },
-    {
-      "id": "required-03-editable-install-retry",
-      "command": "C:\\cov-run\\batch-13\\venv\\Scripts\\python.exe -m pip install --no-deps --no-build-isolation -e backend",
-      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-13",
-      "interpreter": "C:\\cov-run\\batch-13\\venv\\Scripts\\python.exe",
-      "exit_code": 0,
-      "duration_seconds": 6.9,
-      "output_summary": "covenia-b==0.0.0 installed editable from this checkout."
-    },
-    {
-      "id": "required-04-import-check",
-      "command": "C:\\cov-run\\batch-13\\venv\\Scripts\\python.exe -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
-      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-13",
-      "interpreter": "C:\\cov-run\\batch-13\\venv\\Scripts\\python.exe",
-      "exit_code": 0,
-      "duration_seconds": 1.7,
-      "output_summary": "pytest/jsonschema import OK"
-    },
-    {
-      "id": "required-05-commitments-pytest",
-      "command": "C:\\cov-run\\batch-13\\venv\\Scripts\\python.exe -m pytest backend/tests/commitments -q",
-      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-13",
-      "interpreter": "C:\\cov-run\\batch-13\\venv\\Scripts\\python.exe",
-      "exit_code": 0,
-      "duration_seconds": 31.0,
-      "output_summary": "12 passed",
-      "tests_passed": 12,
-      "tests_failed": 0
-    },
-    {
-      "id": "supplemental-ruff-no-cache",
-      "command": "C:\\cov-run\\batch-13\\venv\\Scripts\\python.exe -m ruff check --no-cache backend/src/covenia_b/commitments backend/tests/commitments",
-      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-13",
-      "interpreter": "C:\\cov-run\\batch-13\\venv\\Scripts\\python.exe",
-      "exit_code": 0,
-      "duration_seconds": 1.8,
-      "output_summary": "All checks passed!",
-      "note": "The initial cached ruff invocation could not create .ruff_cache under sandbox restrictions; rerun with --no-cache completed against the same sources."
-    },
-    {
-      "id": "required-06-pip-list",
-      "command": "C:\\cov-run\\batch-13\\venv\\Scripts\\python.exe -m pip list --format=json",
-      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-13",
-      "interpreter": "C:\\cov-run\\batch-13\\venv\\Scripts\\python.exe",
-      "exit_code": 0,
-      "duration_seconds": 2.5,
-      "output_summary": "31 installed distributions; covenia-b editable, pytest 8.3.4, jsonschema 4.25.0.",
-      "evidence": "reports/batches/BATCH-13/environment.json#package_versions"
-    },
-    {
-      "id": "required-07-pip-check",
-      "command": "C:\\cov-run\\batch-13\\venv\\Scripts\\python.exe -m pip check",
-      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-13",
-      "interpreter": "C:\\cov-run\\batch-13\\venv\\Scripts\\python.exe",
-      "exit_code": 0,
-      "duration_seconds": 2.9,
+      "duration_seconds": null,
       "output_summary": "No broken requirements found.",
       "evidence": "reports/batches/BATCH-13/pip-check.txt"
     },
     {
-      "id": "supplemental-redacted-compiler-sample",
-      "command": "C:\\cov-run\\batch-13\\venv\\Scripts\\python.exe -c <redacted deterministic compiler sample>",
-      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-13",
-      "interpreter": "C:\\cov-run\\batch-13\\venv\\Scripts\\python.exe",
-      "exit_code": 0,
-      "duration_seconds": 2.5,
-      "output_summary": "STANDARD_APPROVED/ACTIVE with deadline 2026-05-07T10:27:37+08:00 and next_check_at 2026-05-07T10:30:00+08:00.",
-      "evidence": "reports/batches/BATCH-13/compiled-promises.json"
-    },
-    {
-      "id": "required-08-git-diff-check",
+      "id": "repair-04-git-diff-check",
       "command": "git diff --check",
-      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-13",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-13-repair-1-evidence-2",
       "exit_code": 0,
-      "duration_seconds": 1.8,
+      "duration_seconds": null,
       "output_summary": "No whitespace errors."
-    },
-    {
-      "id": "required-09-git-status-pre-report-commit",
-      "command": "git status --short",
-      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-13",
-      "exit_code": 0,
-      "duration_seconds": 1.8,
-      "output_summary": "?? reports/batches/BATCH-13/ (the implementation-owned artifacts awaiting their required report commit)."
     }
-  ]
+  ],
+  "not_run": ["Complete backend test suite"]
 }
