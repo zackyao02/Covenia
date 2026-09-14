@@ -45,6 +45,18 @@ _CONDITIONAL_MARKERS = ("如果", "若", "视情况", "视库存", "满足条件
 _REFUND_MARKERS = ("退款", "返款")
 _COMPENSATION_MARKERS = ("赔偿", "补偿")
 _REPLACEMENT_MARKERS = ("换货", "补发", "发出", "寄出")
+_CONDITIONAL_PATTERNS = (
+    re.compile(r"(?:如果|如若|若|倘若|假如|一旦|除非|只有|前提是|取决于)"),
+    re.compile(r"(?:视(?:情况|库存|审核|结果)|待(?:审核|确认))"),
+    re.compile(r"如(?!期)"),
+)
+_INDETERMINATE_PATTERNS = (
+    re.compile(r"(?:可能|也许|或许|大概|大约|预计|估计|大致|差不多|左右|应该|未必|不确定|待定)"),
+)
+_NEGATED_REPLACEMENT_PATTERNS = (
+    re.compile(r"(?:不|未|无|没有|无法|不能|不会|尚未|暂不|未能).{0,12}?(?:换货|补发|发出|寄出)"),
+    re.compile(r"(?:换货|补发|发出|寄出).{0,8}?(?:不了|不能|不可以|未能|失败)"),
+)
 
 
 def compile_commitments(
@@ -183,7 +195,7 @@ def _compile_message(
             issuance_status=issued,
             reasons=(CompilationReason.HIGH_RISK_FINANCIAL_ACTION,),
         )
-    if _contains_any(message.text, _CONDITIONAL_MARKERS):
+    if _has_conditional_language(message.text):
         return _non_active(
             message,
             action=action,
@@ -192,15 +204,28 @@ def _compile_message(
             issuance_status=issued,
             reasons=(CompilationReason.CONDITIONAL_LANGUAGE,),
         )
+    if _has_negated_replacement_action(message.text):
+        return _non_active(
+            message,
+            action=action,
+            commitment_class=CommitmentClass.ERRONEOUS_OR_UNAUTHORIZED,
+            activation_status=ActivationStatus.BLOCKED,
+            issuance_status=issued,
+            reasons=(CompilationReason.NEGATED_COMMITMENT,),
+        )
     duration = _duration_from_text(message.text)
-    if _contains_any(message.text, _AMBIGUOUS_MARKERS) or duration is None:
+    if _has_indeterminate_language(message.text) or duration is None:
         return _non_active(
             message,
             action=action,
             commitment_class=CommitmentClass.AMBIGUOUS,
             activation_status=ActivationStatus.IGNORED,
             issuance_status=issued,
-            reasons=(CompilationReason.AMBIGUOUS_TIME_EXPRESSION,),
+            reasons=(
+                CompilationReason.INDETERMINATE_LANGUAGE
+                if _has_indeterminate_language(message.text)
+                else CompilationReason.AMBIGUOUS_TIME_EXPRESSION,
+            ),
         )
     if action is not PromiseAction.REPLACEMENT_DISPATCH:
         return _non_active(
@@ -303,6 +328,22 @@ def _duration_from_text(text: str) -> timedelta | None:
 
 def _contains_any(text: str, markers: Sequence[str]) -> bool:
     return any(marker in text for marker in markers)
+
+
+def _matches_any(text: str, patterns: Sequence[re.Pattern[str]]) -> bool:
+    return any(pattern.search(text) is not None for pattern in patterns)
+
+
+def _has_conditional_language(text: str) -> bool:
+    return _contains_any(text, _CONDITIONAL_MARKERS) or _matches_any(text, _CONDITIONAL_PATTERNS)
+
+
+def _has_indeterminate_language(text: str) -> bool:
+    return _contains_any(text, _AMBIGUOUS_MARKERS) or _matches_any(text, _INDETERMINATE_PATTERNS)
+
+
+def _has_negated_replacement_action(text: str) -> bool:
+    return _matches_any(text, _NEGATED_REPLACEMENT_PATTERNS)
 
 
 def _open_supporting_ticket_ids(

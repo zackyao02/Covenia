@@ -176,6 +176,59 @@ def test_ambiguous_and_conditional_text_never_manufacture_a_deadline(
 
 
 @pytest.mark.parametrize(
+    ("text", "expected_class", "expected_status", "expected_reason"),
+    [
+        (
+            "如库存充足，48小时内发出",
+            CommitmentClass.CONDITIONAL,
+            ActivationStatus.PENDING_APPROVAL,
+            CompilationReason.CONDITIONAL_LANGUAGE,
+        ),
+        (
+            "可能48小时内发出",
+            CommitmentClass.AMBIGUOUS,
+            ActivationStatus.IGNORED,
+            CompilationReason.INDETERMINATE_LANGUAGE,
+        ),
+    ],
+)
+def test_conditional_or_indeterminate_duration_never_auto_activates(
+    text: str,
+    expected_class: CommitmentClass,
+    expected_status: ActivationStatus,
+    expected_reason: CompilationReason,
+    supported_facts: CommitmentFacts,
+    approved_policy: CommitmentPolicy,
+) -> None:
+    promise = _compile([_message(text)], supported_facts, approved_policy).promises[0]
+
+    assert promise.commitment_class is expected_class
+    assert promise.activation_status is expected_status
+    assert promise.deadline is None
+    assert promise.next_check_at is None
+    assert promise.service_delivery_status is ServiceDeliveryStatus.NOT_CREATED
+    assert promise.reasons == (expected_reason,)
+
+
+def test_negated_dispatch_never_auto_activates(
+    supported_facts: CommitmentFacts,
+    approved_policy: CommitmentPolicy,
+) -> None:
+    promise = _compile(
+        [_message("换货单未创建，48小时内不发出")],
+        supported_facts,
+        approved_policy,
+    ).promises[0]
+
+    assert promise.commitment_class is CommitmentClass.ERRONEOUS_OR_UNAUTHORIZED
+    assert promise.activation_status is ActivationStatus.BLOCKED
+    assert promise.deadline is None
+    assert promise.next_check_at is None
+    assert promise.service_delivery_status is ServiceDeliveryStatus.NOT_CREATED
+    assert promise.reasons == (CompilationReason.NEGATED_COMMITMENT,)
+
+
+@pytest.mark.parametrize(
     "facts",
     [
         CommitmentFacts(
