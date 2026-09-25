@@ -96,3 +96,12 @@
 - 颜色不作为唯一状态表达。
 - 默认不展示 JSON、置信度小数或内部责任人姓名。
 - “赛事 Mock 数据＋团队压力测试扩充”固定可见一次。
+
+## 11. V1.1 Data Empathizer 扩展
+
+V1.1 在不改变四个核心动作接口职责的前提下，增加 `GET /api/risk/cases` 只读聚合接口，并将前端组织为两个连续页面：
+
+- `Covenia Copilot` 继续作为客服侧窄栏，补充 Consumer Story、Emotion Journey、Customer Effort、Don't Ask Again、Next Best Action 与基于状态的共情回复。
+- `Covenia Risk Radar` 面向主管和运营，展示风险排序、风险驱动因素、Journey Timeline 与闭环状态。
+
+Emotion、Effort 和 Risk 均属于可解释的比赛推导结果，不写入消费者可见回执，不用于自动认定责任，也不单独触发退款、赔付或补发。Risk Radar 的只读聚合不替代原有审批和事件接口；所有状态变化仍只能通过四个核心动作接口发生。

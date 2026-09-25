@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Covenia Customer Continuity Engine competition MVP" />
+    <title>Covenia · Operational Empathy</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2226%22 fill=%22%230f6b4f%22/><text x=%2250%22 y=%2268%22 text-anchor=%22middle%22 font-size=%2260%22 fill=%22white%22 font-family=%22serif%22>C</text></svg>" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">C</div>
+        <div>
+          <strong>Covenia</strong>
+          <span>Operational Empathy Engine</span>
+        </div>
+      </div>
+      <nav class="tabs" aria-label="产品页面">
+        <button class="tab active" data-view="copilot">Covenia Copilot</button>
+        <button class="tab" data-view="radar">Risk Radar</button>
+      </nav>
+      <div class="top-actions">
+        <span class="data-badge">赛事 Mock 数据 · 团队压力测试扩充</span>
+        <span class="health"><i></i> 服务在线</span>
+      </div>
+    </header>
+
+    <main>
+      <section id="copilot-view" class="view active" aria-label="客服副驾">
+        <div class="workspace-shell">
+          <aside class="conversation-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">当前会话</p>
+                <h2>消费者服务窗口</h2>
+              </div>
+              <span class="channel">千牛模拟</span>
+            </div>
+            <div id="conversation" class="conversation"></div>
+            <div class="composer">
+              <textarea aria-label="回复内容" placeholder="输入回复，或采用 Covenia 建议…"></textarea>
+              <div><span>⌘ Enter 发送</span><button>发送</button></div>
+            </div>
+          </aside>
+
+          <section class="copilot-panel">
+            <div class="panel-heading sticky">
+              <div>
+                <p class="eyebrow">AI SERVICE DECISION SYSTEM</p>
+                <h2>Covenia Copilot</h2>
+              </div>
+              <select id="case-select" aria-label="选择演示案例"></select>
+            </div>
+
+            <div id="copilot-loading" class="loading">正在恢复 Customer State…</div>
+            <div id="copilot-content" class="hidden">
+              <div class="hero-status">
+                <div>
+                  <p class="eyebrow">CONSUMER STORY</p>
+                  <h1 id="story-title"></h1>
+                  <p id="story-latest" class="story-latest"></p>
+                </div>
+                <div id="risk-orb" class="risk-orb"><span id="risk-score"></span><small>Risk</small></div>
+              </div>
+
+              <div class="signal-grid">
+                <article class="signal-card">
+                  <span>Emotion Journey</span>
+                  <strong id="emotion-value"></strong>
+                  <small id="emotion-causes"></small>
+                </article>
+                <article class="signal-card">
+                  <span>Customer Effort</span>
+                  <strong id="effort-value"></strong>
+                  <small id="effort-detail"></small>
+                </article>
+                <article class="signal-card">
+                  <span>Promise</span>
+                  <strong id="promise-value"></strong>
+                  <small id="promise-detail"></small>
+                </article>
+              </div>
+
+              <article class="card">
+                <div class="card-title"><h3>已经知道什么</h3><span>来源可追溯</span></div>
+                <div id="known-facts" class="facts"></div>
+              </article>
+
+              <article class="card warning-card">
+                <div class="card-title"><h3>现在最不能做什么</h3><span>Experience Firewall</span></div>
+                <div id="do-not-ask" class="guardrails"></div>
+              </article>
+
+              <article class="card action-card">
+                <div class="card-title"><h3>下一步直接做什么</h3><span>Next Best Action</span></div>
+                <div class="nba-row">
+                  <div><strong id="nba-label"></strong><p id="nba-reason"></p></div>
+                  <button id="evaluate-button" class="secondary-button">验证动作</button>
+                </div>
+              </article>
+
+              <article class="card reply-card">
+                <div class="card-title"><h3>基于状态的共情回复</h3><span>Context-grounded</span></div>
+                <blockquote id="suggested-reply"></blockquote>
+                <div class="reply-actions">
+                  <button id="copy-reply" class="secondary-button">复制回复</button>
+                  <button id="approve-button" class="primary-button">批准并创建责任</button>
+                </div>
+              </article>
+
+              <article id="obligation-card" class="card hidden">
+                <div class="card-title"><h3>Promise-to-Action</h3><span id="obligation-status"></span></div>
+                <div id="obligation-detail" class="obligation-detail"></div>
+                <div class="event-actions">
+                  <button data-event="SHIPMENT_PICKED_UP">模拟已揽收</button>
+                  <button data-event="SHIPMENT_NOT_PICKED_UP">模拟未揽收</button>
+                  <button data-event="SHIPMENT_DELIVERED">模拟已送达</button>
+                </div>
+              </article>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section id="radar-view" class="view" aria-label="风险雷达">
+        <div class="radar-page">
+          <div class="page-heading">
+            <div><p class="eyebrow">CONSUMER RISK RADAR</p><h1>哪些消费者正在变成风险？</h1><p>按可解释风险排序，并持续追踪是否真正解决。</p></div>
+            <button id="refresh-radar" class="secondary-button">刷新风险状态</button>
+          </div>
+          <div class="summary-grid">
+            <article><span>风险案件</span><strong id="summary-total">—</strong><small>当前样例</small></article>
+            <article><span>Critical</span><strong id="summary-critical">—</strong><small>需要立即介入</small></article>
+            <article><span>承诺超时</span><strong id="summary-overdue">—</strong><small>Promise overdue</small></article>
+            <article><span>平均 Effort</span><strong id="summary-effort">—</strong><small>0–100</small></article>
+          </div>
+          <div class="radar-layout">
+            <article class="table-card">
+              <div class="card-title"><h3>Consumer Risk Ranking</h3><span>点击查看 Why</span></div>
+              <div class="table-wrap"><table><thead><tr><th>案例</th><th>Risk</th><th>Emotion</th><th>Effort</th><th>Promise</th><th>下一动作</th></tr></thead><tbody id="risk-table"></tbody></table></div>
+            </article>
+            <aside id="risk-detail" class="risk-detail">
+              <p class="eyebrow">WHY THIS RISK</p>
+              <h2 id="detail-title">选择一个案例</h2>
+              <div id="risk-factors" class="risk-factors"></div>
+              <div class="detail-section"><h3>Journey Timeline</h3><div id="timeline" class="timeline"></div></div>
+              <div class="detail-section"><h3>Closed-loop status</h3><div id="resolution-status"></div></div>
+            </aside>
+          </div>
+        </div>
+      </section>
+    </main>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

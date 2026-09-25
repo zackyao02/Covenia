@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "risk-case.schema.json",
+  "title": "RiskCase",
+  "type": "object",
+  "required": ["case_id", "consumer", "product", "risk", "emotion", "effort", "promise", "resolution", "next_best_action"],
+  "properties": {
+    "case_id": {"type": "string"},
+    "consumer": {"type": "string"},
+    "product": {"type": "string"},
+    "risk": {"type": "object"},
+    "emotion": {"type": "object"},
+    "effort": {"type": "object"},
+    "promise": {"type": "object"},
+    "resolution": {"type": "object"},
+    "next_best_action": {"type": "object"}
+  }
+}

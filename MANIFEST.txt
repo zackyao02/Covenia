@@ -26,6 +26,18 @@ docs/05-api-and-ui.md
 docs/06-evaluation-and-research.md
 docs/07-demo-and-delivery.md
 docs/08-idempotency-and-ordering.md
+docs/09-running-application.md
+
+## 可运行应用
+
+package.json
+server/domain.js
+server/service.js
+server/index.js
+web/index.html
+web/styles.css
+web/app.js
+tests/service.test.js
 
 ## 机器可校验契约与样例
 
@@ -39,6 +51,8 @@ schemas/case-input.schema.json
 schemas/decision-result.schema.json
 schemas/extracted-journey.schema.json
 schemas/prepared-action.schema.json
+schemas/customer-state.schema.json
+schemas/risk-case.schema.json
 fixtures/README.md
 fixtures/demo-cases.json
 fixtures/ground-truth.json

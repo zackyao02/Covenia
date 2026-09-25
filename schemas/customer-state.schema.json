@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "customer-state.schema.json",
+  "title": "CustomerState",
+  "type": "object",
+  "required": ["case_id", "version", "updated_at", "facts", "evidence", "intent", "emotion", "effort", "actions", "promises", "risk", "resolution"],
+  "properties": {
+    "case_id": {"type": "string"},
+    "version": {"type": "integer", "minimum": 1},
+    "updated_at": {"type": "string", "format": "date-time"},
+    "facts": {"type": "object"},
+    "evidence": {"type": "object"},
+    "intent": {"type": "object"},
+    "emotion": {
+      "type": "object",
+      "required": ["current", "intensity", "trend", "causes", "events", "confidence"],
+      "properties": {
+        "current": {"enum": ["CALM", "CONCERNED", "FRUSTRATED", "ANGRY"]},
+        "intensity": {"type": "integer", "minimum": 1, "maximum": 4},
+        "trend": {"enum": ["STABLE", "ESCALATING", "IMPROVING"]},
+        "causes": {"type": "array", "items": {"type": "string"}},
+        "events": {"type": "array"},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1}
+      }
+    },
+    "effort": {
+      "type": "object",
+      "required": ["level", "score", "contact_count", "repeated_contact", "repeated_explanation", "repeated_upload", "waiting_hours", "promise_overdue_hours"],
+      "properties": {
+        "level": {"enum": ["LOW", "MEDIUM", "HIGH"]},
+        "score": {"type": "integer", "minimum": 0, "maximum": 100}
+      }
+    },
+    "actions": {"type": "object"},
+    "promises": {"type": "object"},
+    "risk": {
+      "type": "object",
+      "required": ["score", "level", "factors", "policy_version"],
+      "properties": {
+        "score": {"type": "integer", "minimum": 0, "maximum": 100},
+        "level": {"enum": ["NORMAL", "ATTENTION", "HIGH", "CRITICAL"]},
+        "factors": {"type": "array"},
+        "policy_version": {"type": "string"}
+      }
+    },
+    "resolution": {"type": "object"}
+  }
+}
