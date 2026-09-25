@@ -3,6 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   addHours,
+  buildMultiSourceFusion,
   buildTimeline,
   clone,
   deriveEffort,
@@ -11,12 +12,14 @@ import {
   deriveIntent,
   derivePromise,
   deriveRisk,
+  detectEmergingIssues,
   idempotencyFingerprint,
   requestId,
 } from "./domain.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const fixturesPath = path.resolve(__dirname, "../fixtures/demo-cases.json");
+const emergingSignalsPath = path.resolve(__dirname, "../fixtures/emerging-issue-signals.json");
 
 export class ServiceError extends Error {
   constructor(code, message, status = 400, retryable = false) {
@@ -28,8 +31,9 @@ export class ServiceError extends Error {
 }
 
 export class CoveniaService {
-  constructor(fixtures = JSON.parse(fs.readFileSync(fixturesPath, "utf8"))) {
+  constructor(fixtures = JSON.parse(fs.readFileSync(fixturesPath, "utf8")), emergingSignals = JSON.parse(fs.readFileSync(emergingSignalsPath, "utf8"))) {
     this.fixtures = new Map(fixtures.map((item) => [item.demo_case_id, clone(item)]));
+    this.emergingSignals = clone(emergingSignals);
     this.runtime = new Map();
     this.idempotency = new Map();
   }
@@ -73,6 +77,7 @@ export class CoveniaService {
     if (evidenceStatus === "VALID") prohibitedActions.push("ASK_SAME_EVIDENCE", "ASK_REPEAT_EXPLANATION");
     if (intent.current_goal === "CHECK_REPLACEMENT_STATUS") prohibitedActions.push("SHIFT_FOLLOW_UP_TO_CONSUMER");
     if (runtime.case_status !== "RESOLVED") prohibitedActions.push("CLOSE_BEFORE_RESOLUTION");
+    const multiSourceFusion = buildMultiSourceFusion(caseInput);
     const knownFacts = [
       { label: "订单", value: order.order_id, source: "order" },
       { label: "商品", value: `${primary.product_name} · ${primary.sku_id}`, source: "order.items" },
@@ -91,7 +96,16 @@ export class CoveniaService {
       emotion,
       effort,
       actions: { attempted: runtime.attempted_actions ?? [], next_best_action: suggestedAction },
-      promises: { active: activeCommitments, raw: promise },
+      promises: {
+        active: activeCommitments,
+        raw: promise,
+        monitoring: runtime.deadline_monitor ?? {
+          status: promise ? "NOT_ACTIVATED" : "NO_MONITORED_PROMISE",
+          last_checked_at: null,
+          next_check_at: null,
+          escalation_reason: null,
+        },
+      },
       risk,
       resolution: { status: runtime.case_status ?? (caseInput.service_tickets.length ? "AT_RISK" : "READY_FOR_BRAND"), completion_condition: "REPLACEMENT_DELIVERED", owner: "BRAND" },
     };
@@ -119,7 +133,7 @@ export class CoveniaService {
       audit_trail: runtime.audit_trail ?? [],
     };
     const timeline = buildTimeline(caseInput, emotion, promise, runtime);
-    return { fixture, caseInput, runtime, customerState, accountabilityState, knownFacts, timeline, suggestedAction };
+    return { fixture, caseInput, runtime, customerState, accountabilityState, knownFacts, timeline, suggestedAction, multiSourceFusion };
   }
 
   nextBestAction({ evidenceStatus, intent, risk, runtime, caseInput }) {
@@ -155,13 +169,19 @@ export class CoveniaService {
       },
       handoff_package: {
         summary: latestConsumer,
+        what_we_know: snapshot.knownFacts,
+        what_has_been_tried: snapshot.caseInput.service_tickets.map((ticket) => ({ ticket_id: ticket.ticket_id, type: ticket.ticket_type, status: ticket.status })),
+        current_intent: snapshot.customerState.intent,
         emotion: snapshot.customerState.emotion,
         effort: snapshot.customerState.effort,
         promise: snapshot.customerState.promises,
         risk: snapshot.customerState.risk,
+        do_not_ask_again: doNotAsk,
+        next_best_action: snapshot.suggestedAction,
         unresolved_questions: snapshot.customerState.evidence.status === "VALID" ? [] : ["当前证据是否覆盖问题范围"],
       },
       timeline: snapshot.timeline,
+      multi_source_fusion: snapshot.multiSourceFusion,
       model_metadata: { provider: "DETERMINISTIC_DEMO_ENGINE", model: "covenia-rules-v1.1", cached_result: false, pii_masked_count: 0 },
       cost_metrics: { latency_ms: 8, token_usage: 0, rules_applied: snapshot.customerState.risk.factors.length },
     };
@@ -261,6 +281,12 @@ export class CoveniaService {
         milestone: "AWAITING_CARRIER_PICKUP",
         resolution_condition: "REPLACEMENT_DELIVERED",
       };
+      runtime.deadline_monitor = {
+        status: "SCHEDULED",
+        last_checked_at: null,
+        next_check_at: nextCheck,
+        escalation_reason: null,
+      };
       runtime.service_progress_receipt = {
         receipt_id: `receipt_${body.case_id}_${runtime.version}`,
         status: "ACTIVE",
@@ -307,6 +333,7 @@ export class CoveniaService {
         runtime.commitment_status = "COMPLETED";
         runtime.service_progress_receipt.status = "COMPLETED";
         runtime.service_progress_receipt.brand_action = "换货商品已送达，服务责任已完成";
+        runtime.deadline_monitor = { ...(runtime.deadline_monitor ?? {}), status: "CLOSED", last_checked_at: body.event_time, next_check_at: null, escalation_reason: null };
         action = "SHIPMENT_DELIVERED";
       }
       runtime.service_progress_receipt.latest_update_at = body.event_time;
@@ -323,6 +350,72 @@ export class CoveniaService {
         proactive_notification_draft: deadlinePassed ? { text: `换货仍未揽收，品牌已升级处理；下次更新时间 ${runtime.open_obligation.next_check_at}`, commits_next_update_at: runtime.open_obligation.next_check_at, requires_human_approval: true, channel: "ORIGINAL_CHAT" } : null,
       };
     });
+  }
+
+  monitorPromiseDeadlines(now = new Date().toISOString()) {
+    const checkedAt = new Date(now).toISOString();
+    const escalated = [];
+    const monitored = [];
+    for (const [caseId, currentRuntime] of this.runtime.entries()) {
+      const runtime = clone(currentRuntime);
+      const obligation = runtime.open_obligation;
+      if (!obligation || obligation.status === "COMPLETED" || runtime.case_status === "RESOLVED") continue;
+      const overdue = new Date(checkedAt) > new Date(obligation.deadline);
+      runtime.deadline_monitor = {
+        status: overdue ? "ESCALATED" : "SCHEDULED",
+        last_checked_at: checkedAt,
+        next_check_at: overdue ? null : obligation.next_check_at,
+        escalation_reason: overdue ? "PROMISE_OVERDUE" : null,
+      };
+      if (overdue && obligation.status !== "AT_RISK") {
+        obligation.status = "AT_RISK";
+        runtime.case_status = "AT_RISK";
+        runtime.commitment_status = "AT_RISK";
+        if (runtime.service_progress_receipt) {
+          runtime.service_progress_receipt.status = "AT_RISK";
+          runtime.service_progress_receipt.latest_update_at = checkedAt;
+          runtime.service_progress_receipt.brand_action = "承诺已超时，系统已自动升级主管并生成催办候选";
+        }
+        runtime.audit_trail = [...(runtime.audit_trail ?? []), {
+          at: checkedAt,
+          actor: "DEADLINE_MONITOR",
+          action: "PROMISE_DEADLINE_ESCALATED",
+          changed_fields: ["case_status", "commitment_status", "open_obligation.status", "deadline_monitor"],
+          request_id: requestId(),
+        }];
+        runtime.version = (runtime.version ?? 1) + 1;
+        escalated.push({ case_id: caseId, deadline: obligation.deadline, status: "AT_RISK", reason: "PROMISE_OVERDUE" });
+      }
+      this.runtime.set(caseId, runtime);
+      monitored.push({ case_id: caseId, deadline: obligation.deadline, ...runtime.deadline_monitor });
+    }
+    return { checked_at: checkedAt, checked_count: monitored.length, escalated_count: escalated.length, escalated, monitored };
+  }
+
+  deadlineMonitoringStatus() {
+    const cases = [];
+    for (const [caseId, runtime] of this.runtime.entries()) {
+      if (!runtime.open_obligation) continue;
+      cases.push({
+        case_id: caseId,
+        deadline: runtime.open_obligation.deadline,
+        obligation_status: runtime.open_obligation.status,
+        case_status: runtime.case_status,
+        monitor: runtime.deadline_monitor ?? null,
+      });
+    }
+    return { cases };
+  }
+
+  emergingIssues(options = {}) {
+    const issues = detectEmergingIssues(this.emergingSignals, options);
+    return {
+      generated_at: options.now ?? new Date(Math.max(...this.emergingSignals.map((item) => new Date(item.occurred_at).getTime())) + 3_600_000).toISOString(),
+      threshold: options.threshold ?? 3,
+      window_hours: options.windowHours ?? 24,
+      issues,
+      disclosure: "团队构建的 P1 模式检测测试数据，仅用于验证跨消费者聚类，不代表真实市场发生率。",
+    };
   }
 
   riskCases() {

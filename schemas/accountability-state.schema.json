@@ -134,7 +134,7 @@
         "properties": {
           "at": {"type": "string", "format": "date-time"},
           "actor": {"type": "string", "minLength": 1},
-          "action": {"enum": ["ANALYZED", "RESOLUTION_APPROVED", "SHIPMENT_PICKED_UP", "SHIPMENT_NOT_PICKED_UP", "SHIPMENT_DELIVERED"]},
+          "action": {"enum": ["ANALYZED", "RESOLUTION_APPROVED", "SHIPMENT_PICKED_UP", "SHIPMENT_NOT_PICKED_UP", "SHIPMENT_DELIVERED", "PROMISE_DEADLINE_ESCALATED"]},
           "changed_fields": {"type": "array", "items": {"type": "string"}},
           "request_id": {"type": "string", "minLength": 1}
         }

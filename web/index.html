@@ -94,6 +94,12 @@
                 <div id="known-facts" class="facts"></div>
               </article>
 
+              <article class="card fusion-card">
+                <div class="card-title"><h3>Multi-source Fusion</h3><span id="fusion-status">—</span></div>
+                <div id="fusion-sources" class="fusion-sources"></div>
+                <div id="fusion-joins" class="fusion-joins"></div>
+              </article>
+
               <article class="card warning-card">
                 <div class="card-title"><h3>现在最不能做什么</h3><span>Experience Firewall</span></div>
                 <div id="do-not-ask" class="guardrails"></div>
@@ -116,9 +122,15 @@
                 </div>
               </article>
 
+              <details class="card handoff-card">
+                <summary><strong>AI → 人工 Handoff Package</strong><span>完整上下文</span></summary>
+                <div id="handoff-package" class="handoff-package"></div>
+              </details>
+
               <article id="obligation-card" class="card hidden">
                 <div class="card-title"><h3>Promise-to-Action</h3><span id="obligation-status"></span></div>
                 <div id="obligation-detail" class="obligation-detail"></div>
+                <div id="deadline-monitor" class="deadline-monitor"></div>
                 <div class="event-actions">
                   <button data-event="SHIPMENT_PICKED_UP">模拟已揽收</button>
                   <button data-event="SHIPMENT_NOT_PICKED_UP">模拟未揽收</button>
@@ -141,7 +153,13 @@
             <article><span>Critical</span><strong id="summary-critical">—</strong><small>需要立即介入</small></article>
             <article><span>承诺超时</span><strong id="summary-overdue">—</strong><small>Promise overdue</small></article>
             <article><span>平均 Effort</span><strong id="summary-effort">—</strong><small>0–100</small></article>
+            <article><span>Emerging</span><strong id="summary-emerging">—</strong><small>待人工确认</small></article>
           </div>
+          <article class="emerging-card">
+            <div class="card-title"><h3>Emerging Issue Detection</h3><span>跨消费者模式 · 非预测</span></div>
+            <div id="emerging-issues" class="emerging-issues"></div>
+            <small id="emerging-disclosure" class="disclosure"></small>
+          </article>
           <div class="radar-layout">
             <article class="table-card">
               <div class="card-title"><h3>Consumer Risk Ranking</h3><span>点击查看 Why</span></div>

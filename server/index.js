@@ -8,7 +8,11 @@ import { requestId } from "./domain.js";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const webRoot = path.resolve(__dirname, "../web");
 const port = Number(process.env.PORT ?? 4173);
+const host = process.env.HOST ?? "127.0.0.1";
 const service = new CoveniaService();
+const monitorIntervalMs = Number(process.env.MONITOR_INTERVAL_MS ?? 10_000);
+const deadlineMonitor = setInterval(() => service.monitorPromiseDeadlines(), monitorIntervalMs);
+deadlineMonitor.unref();
 
 const mimeTypes = {
   ".html": "text/html; charset=utf-8",
@@ -73,11 +77,18 @@ const server = http.createServer(async (request, response) => {
         average_effort: Math.round(cases.reduce((sum, item) => sum + item.effort.score, 0) / Math.max(1, cases.length)),
       } }, null, id));
     }
+    if (request.method === "GET" && url.pathname === "/api/emerging-issues") {
+      return sendJson(response, 200, envelope(service.emergingIssues(), null, id));
+    }
+    if (request.method === "GET" && url.pathname === "/api/monitor/deadlines") {
+      return sendJson(response, 200, envelope(service.deadlineMonitoringStatus(), null, id));
+    }
     const routes = new Map([
       ["/api/cases/analyze", (body) => service.analyze(body)],
       ["/api/actions/evaluate", (body) => service.evaluate(body)],
       ["/api/resolutions/approve", (body) => service.approve(body)],
       ["/api/events/shipment", (body) => service.shipment(body)],
+      ["/api/monitor/deadlines/run", (body) => service.monitorPromiseDeadlines(body.now)],
     ]);
     if (request.method === "POST" && routes.has(url.pathname)) {
       const body = await readJson(request);
@@ -98,8 +109,9 @@ const server = http.createServer(async (request, response) => {
   }
 });
 
-server.listen(port, "127.0.0.1", () => {
-  console.log(`Covenia is running at http://127.0.0.1:${port}`);
+server.listen(port, host, () => {
+  const displayHost = host === "0.0.0.0" ? "<server-ip>" : host;
+  console.log(`Covenia is running at http://${displayHost}:${port}`);
 });
 
 export { server, service };

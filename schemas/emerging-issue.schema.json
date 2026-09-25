@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "emerging-issue.schema.json",
+  "title": "EmergingIssue",
+  "type": "object",
+  "required": ["issue_id", "fingerprint", "status", "window", "unique_consumer_count", "signal_count", "source_coverage", "supporting_signal_ids", "requires_human_confirmation", "prediction", "explanation", "data_provenance"],
+  "properties": {
+    "issue_id": {"type": "string"},
+    "fingerprint": {"type": "object"},
+    "status": {"const": "EMERGING_CANDIDATE"},
+    "window": {"type": "object"},
+    "unique_consumer_count": {"type": "integer", "minimum": 3},
+    "signal_count": {"type": "integer", "minimum": 3},
+    "source_coverage": {"type": "array", "items": {"enum": ["CONVERSATION", "IMAGE", "ORDER", "TICKET"]}},
+    "supporting_signal_ids": {"type": "array", "items": {"type": "string"}},
+    "requires_human_confirmation": {"const": true},
+    "prediction": {"const": false},
+    "explanation": {"type": "string"},
+    "data_provenance": {"type": "array", "items": {"type": "string"}}
+  }
+}

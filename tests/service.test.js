@@ -29,6 +29,40 @@ test("emotion inference changes do not change operational risk score", () => {
   assert.equal(result.customer_state.risk.context_signals[0].used_for_score, false);
 });
 
+test("multi-source fusion joins conversation, image, order and ticket into one timeline", () => {
+  const service = new CoveniaService();
+  const result = service.analyze({ case_id: "DEMO_001" });
+  assert.equal(result.multi_source_fusion.status, "COMPLETE");
+  assert.deepEqual(result.multi_source_fusion.sources.map((source) => source.type), ["CONVERSATION", "IMAGE", "ORDER", "TICKET"]);
+  const timelineSources = new Set(result.timeline.map((item) => item.source_type));
+  for (const source of ["CONVERSATION", "IMAGE", "ORDER", "TICKET"]) assert.ok(timelineSources.has(source));
+  assert.ok(result.timeline.every((item) => item.source_ids.length > 0));
+});
+
+test("deadline monitor escalates an overdue promise once", () => {
+  const service = new CoveniaService();
+  service.approve({ case_id: "DEMO_001", candidate_type: "CHECK_REPLACEMENT_FULFILLMENT", approver_id: "tester", idempotency_key: "approve-monitor-001", human_edits: { executor: "WAREHOUSE" } });
+  const first = service.monitorPromiseDeadlines("2026-09-25T12:00:00+08:00");
+  const second = service.monitorPromiseDeadlines("2026-09-25T12:05:00+08:00");
+  assert.equal(first.escalated_count, 1);
+  assert.equal(second.escalated_count, 0);
+  const status = service.deadlineMonitoringStatus().cases[0];
+  assert.equal(status.monitor.status, "ESCALATED");
+  assert.equal(status.case_status, "AT_RISK");
+  const audit = service.analyze({ case_id: "DEMO_001" }).accountability_state.audit_trail.filter((item) => item.action === "PROMISE_DEADLINE_ESCALATED");
+  assert.equal(audit.length, 1);
+});
+
+test("emerging issue detection requires multiple unique consumers and stays non-predictive", () => {
+  const service = new CoveniaService();
+  const result = service.emergingIssues();
+  assert.equal(result.issues.length, 1);
+  assert.equal(result.issues[0].unique_consumer_count, 3);
+  assert.equal(result.issues[0].requires_human_confirmation, true);
+  assert.equal(result.issues[0].prediction, false);
+  assert.deepEqual(result.issues[0].source_coverage, ["CONVERSATION", "IMAGE", "ORDER", "TICKET"]);
+});
+
 test("firewall blocks repeated evidence request from server-derived state", () => {
   const service = new CoveniaService();
   const fixture = service.getFixture("DEMO_001");

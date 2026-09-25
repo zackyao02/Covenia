@@ -1,4 +1,4 @@
-const state = { cases: [], selectedCaseId: null, analysis: null };
+const state = { cases: [], selectedCaseId: null, analysis: null, emergingIssues: [], monitorStatus: null };
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
@@ -24,12 +24,16 @@ function riskClass(level) { return level.toLowerCase(); }
 function emotionLabel(emotion) { return ({ CALM: "平静", CONCERNED: "担忧", FRUSTRATED: "受挫", ANGRY: "愤怒" })[emotion] ?? emotion; }
 
 async function loadRadar(selectFirst = false) {
-  const data = await api("/api/risk/cases");
+  const [data, emerging] = await Promise.all([api("/api/risk/cases"), api("/api/emerging-issues")]);
   state.cases = data.cases;
+  state.emergingIssues = emerging.issues;
   $("#summary-total").textContent = data.summary.total;
   $("#summary-critical").textContent = data.summary.critical;
   $("#summary-overdue").textContent = data.summary.overdue;
   $("#summary-effort").textContent = data.summary.average_effort;
+  $("#summary-emerging").textContent = emerging.issues.length;
+  $("#emerging-issues").innerHTML = emerging.issues.map((issue) => `<div class="emerging-issue"><div><strong>${escapeHtml(issue.fingerprint.product_name)} · ${escapeHtml(issue.fingerprint.affected_component)}</strong><p>${escapeHtml(issue.explanation)} ${issue.growth_percent === null ? "无前序基线" : `较前一窗口 ${issue.growth_percent >= 0 ? "+" : ""}${issue.growth_percent}%`} · ${escapeHtml(issue.source_coverage.join(" + "))}</p></div><div class="issue-count">${issue.unique_consumer_count}<small>独立消费者</small></div></div>`).join("") || '<p class="story-latest">当前窗口未达到聚类阈值。</p>';
+  $("#emerging-disclosure").textContent = emerging.disclosure;
   const select = $("#case-select");
   select.innerHTML = state.cases.map((item) => `<option value="${escapeHtml(item.case_id)}">${escapeHtml(item.case_id)} · Risk ${item.risk.score}</option>`).join("");
   if (!state.selectedCaseId || !state.cases.some((item) => item.case_id === state.selectedCaseId)) state.selectedCaseId = state.cases[0]?.case_id;
@@ -90,16 +94,34 @@ function renderCopilot() {
   $("#emotion-evidence").innerHTML = cs.emotion.events.slice(-3).map((item) => `<div class="emotion-source"><q>${escapeHtml(item.quote)}</q><small>${escapeHtml(item.source_id)} · ${formatTime(item.at)} · 线索：${escapeHtml(item.observed_cues.join("、") || "无显式词语")}</small><span class="inference-badge">推断：${escapeHtml(emotionLabel(item.inference.label))} · ${Math.round(item.inference.confidence * 100)}%</span></div>`).join("");
   $("#emotion-actions").innerHTML = cs.emotion.action_support.map((item) => `<div class="emotion-action">${escapeHtml(item.suggestion)}</div>`).join("") || '<div class="emotion-action">保持正常服务，不因情绪标签改变规则或权限。</div>';
   $("#known-facts").innerHTML = data.consumer_story.what_we_know.map((item) => `<div class="fact-row"><span>${escapeHtml(item.label)}</span><strong>${escapeHtml(item.value)}</strong></div>`).join("");
+  const fusion = data.multi_source_fusion;
+  $("#fusion-status").textContent = `${fusion.status} · ${Math.round(fusion.completeness * 100)}%`;
+  $("#fusion-sources").innerHTML = fusion.sources.map((source) => `<div class="fusion-source"><strong>${escapeHtml(source.type)}</strong><span>${source.count}</span><small title="${escapeHtml(source.source_ids.join(" · "))}">${escapeHtml(source.authority)}</small></div>`).join("");
+  $("#fusion-joins").innerHTML = fusion.joins.map((join) => `<span class="fusion-join">${escapeHtml(join.from)} → ${escapeHtml(join.to)} · ${escapeHtml(join.status)}</span>`).join("");
   $("#do-not-ask").innerHTML = data.consumer_story.do_not_ask_again.map((item) => `<span class="guardrail">× ${escapeHtml(item.label)}</span>`).join("") || '<span class="guardrail">当前无禁止动作</span>';
   $("#nba-label").textContent = data.consumer_story.next_best_action.label;
   $("#nba-reason").textContent = data.consumer_story.next_best_action.reason;
   $("#suggested-reply").textContent = data.consumer_story.suggested_response;
+  const handoff = data.handoff_package;
+  const handoffRows = [
+    ["当前诉求", handoff.current_intent.current_goal],
+    ["已知事实", handoff.what_we_know.map((item) => `${item.label}：${item.value}`).join("；")],
+    ["已尝试", handoff.what_has_been_tried.map((item) => `${item.type} ${item.status}`).join("；") || "无"],
+    ["Emotion", `${emotionLabel(handoff.emotion.current)} ${handoff.emotion.trend}`],
+    ["Effort", `${handoff.effort.level} · ${handoff.effort.score}`],
+    ["Promise", handoff.promise.raw?.raw_text ?? "无"],
+    ["不要再问", handoff.do_not_ask_again.map((item) => item.label).join("；") || "无"],
+    ["建议动作", handoff.next_best_action.label],
+  ];
+  $("#handoff-package").innerHTML = handoffRows.map(([label, value]) => `<div class="handoff-row"><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></div>`).join("");
   const obligation = data.accountability_state.open_obligation;
   $("#obligation-card").classList.toggle("hidden", !obligation);
   $("#approve-button").disabled = Boolean(obligation) || cs.resolution.status === "RESOLVED";
   if (obligation) {
     $("#obligation-status").textContent = `${obligation.status} · ${obligation.milestone}`;
     $("#obligation-detail").innerHTML = `执行方：<strong>${escapeHtml(obligation.executor)}</strong><br>截止时间：${formatTime(obligation.deadline)}<br>完成条件：${escapeHtml(obligation.resolution_condition)}`;
+    const monitor = cs.promises.monitoring;
+    $("#deadline-monitor").textContent = `Deadline Monitor：${monitor.status}${monitor.last_checked_at ? ` · 最近检查 ${formatTime(monitor.last_checked_at)}` : " · 等待首次检查"}${monitor.escalation_reason ? ` · ${monitor.escalation_reason}` : ""}`;
   }
   renderConversation();
 }
@@ -109,7 +131,7 @@ function renderDetail() {
   if (!data) return;
   $("#detail-title").textContent = `${data.case_id} · Risk ${data.customer_state.risk.score}`;
   $("#risk-factors").innerHTML = data.customer_state.risk.factors.map((factor) => `<div class="factor"><strong>${escapeHtml(factor.label)}</strong><span>+${factor.weight}</span><small>${escapeHtml(factor.evidence ?? "")}</small></div>`).join("") || '<p class="story-latest">当前无明显风险驱动因素。</p>';
-  $("#timeline").innerHTML = data.timeline.slice(-8).reverse().map((item) => `<div class="timeline-item"><strong>${escapeHtml(item.title)}</strong><p>${escapeHtml(item.detail)}</p><time>${formatTime(item.at)}</time></div>`).join("");
+  $("#timeline").innerHTML = data.timeline.slice(-10).reverse().map((item) => `<div class="timeline-item"><strong>${escapeHtml(item.title)}<span class="timeline-source">${escapeHtml(item.source_type)}</span></strong><p>${escapeHtml(item.detail)}</p><time>${formatTime(item.at)} · ${escapeHtml(item.source_ids.join("、"))}</time></div>`).join("");
   const resolution = data.customer_state.resolution;
   $("#resolution-status").innerHTML = `<div class="resolution-box"><strong>${escapeHtml(resolution.status)}</strong><p>责任方：${escapeHtml(resolution.owner)}<br>完成条件：${escapeHtml(resolution.completion_condition)}</p><span class="status-pill risk-pill ${riskClass(data.customer_state.risk.level)}">${escapeHtml(data.customer_state.risk.level)}</span></div>`;
 }
@@ -140,6 +162,23 @@ async function shipment(eventType) {
   } catch (error) { toast(error.message); }
 }
 
+async function pollDeadlineMonitor() {
+  if (!state.analysis?.accountability_state.open_obligation) return;
+  try {
+    const data = await api("/api/monitor/deadlines");
+    const current = data.cases.find((item) => item.case_id === state.selectedCaseId);
+    if (!current?.monitor) return;
+    const fingerprint = `${current.monitor.status}:${current.monitor.last_checked_at}`;
+    if (state.monitorStatus && state.monitorStatus !== fingerprint && current.monitor.status === "ESCALATED") {
+      toast("承诺已超时，Deadline Monitor 已自动升级风险");
+      await selectCase(state.selectedCaseId);
+      await loadRadar();
+    }
+    state.monitorStatus = fingerprint;
+    if (!$("#deadline-monitor").classList.contains("hidden")) $("#deadline-monitor").textContent = `Deadline Monitor：${current.monitor.status}${current.monitor.last_checked_at ? ` · 最近检查 ${formatTime(current.monitor.last_checked_at)}` : ""}${current.monitor.escalation_reason ? ` · ${current.monitor.escalation_reason}` : ""}`;
+  } catch { /* 后台轮询失败不打断客服输入 */ }
+}
+
 function switchView(view) {
   $$(".tab").forEach((tab) => tab.classList.toggle("active", tab.dataset.view === view));
   $$(".view").forEach((node) => node.classList.toggle("active", node.id === `${view}-view`));
@@ -154,3 +193,4 @@ $("#refresh-radar").addEventListener("click", async () => { await loadRadar(); t
 $$('[data-event]').forEach((button) => button.addEventListener("click", () => shipment(button.dataset.event)));
 
 loadRadar(true).catch((error) => toast(error.message));
+setInterval(pollDeadlineMonitor, 5_000);

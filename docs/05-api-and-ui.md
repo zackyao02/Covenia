@@ -107,3 +107,5 @@ V1.1 在不改变四个核心动作接口职责的前提下，增加 `GET /api/r
 Emotion、Effort 和 Risk 均属于可解释的比赛推导结果，不写入消费者可见回执，不用于自动认定责任，也不单独触发退款、赔付或补发。Risk Radar 的只读聚合不替代原有审批和事件接口；所有状态变化仍只能通过四个核心动作接口发生。
 
 情绪信息必须展示原文、消息 ID、时间、显式线索、推断标签和置信度。它只辅助客服确认用户经历与调整表达，不参与 Risk Score，不覆盖体验防线，也不被表述为投诉、流失或舆情预测。具体字段和验收要求见 `docs/10-emotion-evidence-and-action-boundary.md`。
+
+P1 增加三个辅助接口：`GET /api/emerging-issues`、`GET /api/monitor/deadlines` 和 `POST /api/monitor/deadlines/run`。它们分别用于只读异常聚类、监控状态读取和演示性检查；不替代四个核心业务动作接口。具体定义见 `docs/11-p1-continuity-intelligence.md`。

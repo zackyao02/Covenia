@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "multi-source-fusion.schema.json",
+  "title": "MultiSourceFusion",
+  "type": "object",
+  "required": ["status", "completeness", "sources", "joins", "entity_keys", "conflicts", "provenance_policy"],
+  "properties": {
+    "status": {"enum": ["COMPLETE", "PARTIAL", "CONFLICT"]},
+    "completeness": {"type": "number", "minimum": 0, "maximum": 1},
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type", "present", "count", "source_ids", "authority"],
+        "properties": {
+          "type": {"enum": ["CONVERSATION", "IMAGE", "ORDER", "TICKET"]},
+          "present": {"type": "boolean"},
+          "count": {"type": "integer", "minimum": 0},
+          "source_ids": {"type": "array", "items": {"type": "string"}},
+          "authority": {"type": "string"}
+        }
+      }
+    },
+    "joins": {"type": "array"},
+    "entity_keys": {"type": "object"},
+    "conflicts": {"type": "array"},
+    "provenance_policy": {"type": "string"}
+  }
+}

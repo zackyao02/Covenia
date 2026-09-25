@@ -28,6 +28,8 @@ docs/07-demo-and-delivery.md
 docs/08-idempotency-and-ordering.md
 docs/09-running-application.md
 docs/10-emotion-evidence-and-action-boundary.md
+docs/11-p1-continuity-intelligence.md
+docs/12-remote-acceptance-guide.md
 
 ## 可运行应用
 
@@ -54,10 +56,13 @@ schemas/extracted-journey.schema.json
 schemas/prepared-action.schema.json
 schemas/customer-state.schema.json
 schemas/risk-case.schema.json
+schemas/multi-source-fusion.schema.json
+schemas/emerging-issue.schema.json
 fixtures/README.md
 fixtures/demo-cases.json
 fixtures/ground-truth.json
 fixtures/synthetic-pattern-card.json
+fixtures/emerging-issue-signals.json
 
 ## 数据、参考资料与交接模板
 

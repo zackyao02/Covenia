@@ -174,18 +174,103 @@ export function deriveRisk({ emotion, effort, promise, evaluationTime, hasFailed
   };
 }
 
+export function buildMultiSourceFusion(caseInput) {
+  const conversationIds = caseInput.conversation.map((item) => item.message_id);
+  const imageIds = caseInput.evidence_images.map((item) => item.evidence_id);
+  const orderIds = caseInput.order?.order_id ? [caseInput.order.order_id] : [];
+  const ticketIds = caseInput.service_tickets.map((item) => item.ticket_id);
+  const sources = [
+    { type: "CONVERSATION", present: conversationIds.length > 0, count: conversationIds.length, source_ids: conversationIds, authority: "CONSUMER_AND_AGENT_STATEMENTS" },
+    { type: "IMAGE", present: imageIds.length > 0, count: imageIds.length, source_ids: imageIds, authority: "OBSERVATIONAL_EVIDENCE" },
+    { type: "ORDER", present: orderIds.length > 0, count: orderIds.length, source_ids: orderIds, authority: "SYSTEM_OF_RECORD" },
+    { type: "TICKET", present: ticketIds.length > 0, count: ticketIds.length, source_ids: ticketIds, authority: "SYSTEM_OF_RECORD" },
+  ];
+  const presentCount = sources.filter((source) => source.present).length;
+  const issue = caseInput.current_issue;
+  const conflicts = [];
+  if (caseInput.order && !caseInput.order.items.some((item) => item.sku_id === issue.sku_id)) {
+    conflicts.push({ code: "ISSUE_SKU_NOT_IN_ORDER", fields: ["current_issue.sku_id", "order.items[].sku_id"], requires_human_review: true });
+  }
+  return {
+    status: conflicts.length ? "CONFLICT" : presentCount === sources.length ? "COMPLETE" : "PARTIAL",
+    completeness: presentCount / sources.length,
+    sources,
+    joins: [
+      { from: "CONVERSATION", to: "ORDER", key: "source_session_id → order_id", status: orderIds.length ? "LINKED" : "MISSING" },
+      { from: "CONVERSATION", to: "IMAGE", key: "message_id → source_message_id", status: imageIds.length ? "LINKED" : "MISSING" },
+      { from: "ORDER", to: "TICKET", key: "order_id / case_id", status: ticketIds.length ? "LINKED" : "MISSING" },
+    ],
+    entity_keys: {
+      source_session_id: caseInput.data_provenance?.source_session_id ?? null,
+      order_id: caseInput.order?.order_id ?? null,
+      sku_id: issue?.sku_id ?? null,
+      ticket_ids: ticketIds,
+    },
+    conflicts,
+    provenance_policy: "SYSTEM_FACTS_OVER_HUMAN_EDITS_OVER_RULES_OVER_MODEL_INFERENCE",
+  };
+}
+
+export function detectEmergingIssues(signals, options = {}) {
+  if (!signals.length) return [];
+  const threshold = options.threshold ?? 3;
+  const windowHours = options.windowHours ?? 24;
+  const latest = options.now ? new Date(options.now) : new Date(Math.max(...signals.map((item) => new Date(item.occurred_at).getTime())) + 3_600_000);
+  const currentStart = new Date(latest.getTime() - windowHours * 3_600_000);
+  const previousStart = new Date(currentStart.getTime() - windowHours * 3_600_000);
+  const fingerprint = (item) => [item.sku_id, item.affected_component, item.issue_type].join("::");
+  const groups = new Map();
+  for (const signal of signals) {
+    const key = fingerprint(signal);
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(signal);
+  }
+  const issues = [];
+  for (const [key, items] of groups) {
+    const current = items.filter((item) => new Date(item.occurred_at) > currentStart && new Date(item.occurred_at) <= latest);
+    const previous = items.filter((item) => new Date(item.occurred_at) > previousStart && new Date(item.occurred_at) <= currentStart);
+    const uniqueCustomers = new Set(current.map((item) => item.customer_key));
+    if (uniqueCustomers.size < threshold) continue;
+    const exemplar = current[0];
+    const previousUnique = new Set(previous.map((item) => item.customer_key)).size;
+    const growthPercent = previousUnique === 0 ? null : Math.round(((uniqueCustomers.size - previousUnique) / previousUnique) * 100);
+    issues.push({
+      issue_id: `emerging_${key.replaceAll("::", "_").toLowerCase()}`,
+      fingerprint: { sku_id: exemplar.sku_id, product_name: exemplar.product_name, affected_component: exemplar.affected_component, issue_type: exemplar.issue_type },
+      status: "EMERGING_CANDIDATE",
+      window: { start: currentStart.toISOString(), end: latest.toISOString(), hours: windowHours },
+      unique_consumer_count: uniqueCustomers.size,
+      signal_count: current.length,
+      previous_unique_consumer_count: previousUnique,
+      growth_percent: growthPercent,
+      source_coverage: [...new Set(current.flatMap((item) => item.source_types))].sort(),
+      supporting_signal_ids: current.map((item) => item.signal_id),
+      severity: uniqueCustomers.size >= 5 ? "HIGH" : "ATTENTION",
+      requires_human_confirmation: true,
+      prediction: false,
+      explanation: `${windowHours} 小时内 ${uniqueCustomers.size} 个独立消费者出现相同 SKU、组件与问题类型。`,
+      data_provenance: [...new Set(current.map((item) => item.data_provenance))],
+    });
+  }
+  return issues.sort((a, b) => b.unique_consumer_count - a.unique_consumer_count);
+}
+
 export function buildTimeline(caseInput, emotion, promise, runtime) {
   const items = caseInput.conversation.map((message) => ({
     at: message.timestamp,
     type: message.speaker === "CONSUMER" ? "CONTACT" : "SERVICE",
+    source_type: "CONVERSATION",
+    source_ids: [message.message_id],
     title: message.speaker === "CONSUMER" ? "消费者联系" : "客服回复",
     detail: message.text,
     emotion: emotion.events.find((event) => event.source_id === message.message_id)?.inference.label ?? null,
   }));
-  for (const evidence of caseInput.evidence_images) items.push({ at: evidence.submitted_at, type: "EVIDENCE", title: "证据已提交", detail: evidence.file_name });
-  for (const ticket of caseInput.service_tickets) items.push({ at: ticket.created_at, type: "TICKET", title: `${ticket.ticket_type} 工单`, detail: `${ticket.ticket_id} · ${ticket.status}` });
-  if (promise) items.push({ at: promise.deadline, type: "PROMISE", title: "承诺截止时间", detail: promise.raw_text });
-  for (const audit of runtime?.audit_trail ?? []) items.push({ at: audit.at, type: "ACTION", title: audit.action, detail: audit.changed_fields.join("、") });
+  const firstObservedAt = caseInput.conversation[0]?.timestamp ?? caseInput.evaluation_time;
+  if (caseInput.order?.order_id) items.push({ at: firstObservedAt, type: "ORDER", source_type: "ORDER", source_ids: [caseInput.order.order_id], title: "订单已关联", detail: `${caseInput.order.order_id} · ${caseInput.order.items.length} 个商品`, derived_time: true });
+  for (const evidence of caseInput.evidence_images) items.push({ at: evidence.submitted_at, type: "EVIDENCE", source_type: "IMAGE", source_ids: [evidence.evidence_id, evidence.source_message_id].filter(Boolean), title: "证据已提交", detail: evidence.file_name });
+  for (const ticket of caseInput.service_tickets) items.push({ at: ticket.created_at, type: "TICKET", source_type: "TICKET", source_ids: [ticket.ticket_id], title: `${ticket.ticket_type} 工单`, detail: `${ticket.ticket_id} · ${ticket.status}` });
+  if (promise) items.push({ at: promise.deadline, type: "PROMISE", source_type: "CONVERSATION", source_ids: promise.source_ids, title: "承诺截止时间", detail: promise.raw_text });
+  for (const audit of runtime?.audit_trail ?? []) items.push({ at: audit.at, type: "ACTION", source_type: "SYSTEM_EVENT", source_ids: [audit.request_id], title: audit.action, detail: audit.changed_fields.join("、") });
   return items.sort((a, b) => new Date(a.at) - new Date(b.at));
 }
 

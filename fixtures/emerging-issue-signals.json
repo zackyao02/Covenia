@@ -1,0 +1,62 @@
+[
+  {
+    "signal_id": "P1_BASELINE_001",
+    "customer_key": "anon_baseline_01",
+    "source_session_id": "P1S000",
+    "occurred_at": "2026-09-24T08:20:00+08:00",
+    "sku_id": "XC33003",
+    "product_name": "测试轻透粉底液30ml #N02自然色",
+    "affected_component": "PUMP",
+    "issue_type": "PACKAGE_DAMAGE",
+    "source_types": ["CONVERSATION", "ORDER"],
+    "data_provenance": "TEAM_SYNTHETIC_P1_PATTERN_TEST"
+  },
+  {
+    "signal_id": "P1_CURRENT_001",
+    "customer_key": "anon_consumer_01",
+    "source_session_id": "P1S101",
+    "occurred_at": "2026-09-25T02:10:00+08:00",
+    "sku_id": "XC33003",
+    "product_name": "测试轻透粉底液30ml #N02自然色",
+    "affected_component": "PUMP",
+    "issue_type": "PACKAGE_DAMAGE",
+    "source_types": ["CONVERSATION", "IMAGE", "ORDER", "TICKET"],
+    "data_provenance": "TEAM_SYNTHETIC_P1_PATTERN_TEST"
+  },
+  {
+    "signal_id": "P1_CURRENT_002",
+    "customer_key": "anon_consumer_02",
+    "source_session_id": "P1S102",
+    "occurred_at": "2026-09-25T05:45:00+08:00",
+    "sku_id": "XC33003",
+    "product_name": "测试轻透粉底液30ml #N02自然色",
+    "affected_component": "PUMP",
+    "issue_type": "PACKAGE_DAMAGE",
+    "source_types": ["CONVERSATION", "IMAGE", "ORDER"],
+    "data_provenance": "TEAM_SYNTHETIC_P1_PATTERN_TEST"
+  },
+  {
+    "signal_id": "P1_CURRENT_003",
+    "customer_key": "anon_consumer_03",
+    "source_session_id": "P1S103",
+    "occurred_at": "2026-09-25T09:30:00+08:00",
+    "sku_id": "XC33003",
+    "product_name": "测试轻透粉底液30ml #N02自然色",
+    "affected_component": "PUMP",
+    "issue_type": "PACKAGE_DAMAGE",
+    "source_types": ["CONVERSATION", "ORDER", "TICKET"],
+    "data_provenance": "TEAM_SYNTHETIC_P1_PATTERN_TEST"
+  },
+  {
+    "signal_id": "P1_CURRENT_OTHER_001",
+    "customer_key": "anon_consumer_04",
+    "source_session_id": "P1S104",
+    "occurred_at": "2026-09-25T10:15:00+08:00",
+    "sku_id": "XC33003",
+    "product_name": "测试轻透粉底液30ml #N02自然色",
+    "affected_component": "CAP",
+    "issue_type": "PACKAGE_DAMAGE",
+    "source_types": ["CONVERSATION", "IMAGE", "ORDER"],
+    "data_provenance": "TEAM_SYNTHETIC_P1_PATTERN_TEST"
+  }
+]

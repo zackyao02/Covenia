@@ -19,6 +19,14 @@ npm start
 
 打开 `http://127.0.0.1:4173`。
 
+默认只监听本机回环地址。需要在受控局域网内让其他设备访问时，可显式运行：
+
+```bash
+HOST=0.0.0.0 PORT=4173 npm start
+```
+
+然后在另一台设备打开 `http://<运行服务的设备IP>:4173`。当前 Demo 没有登录、HTTPS 或访问控制，不应把该端口直接暴露到公网。远程服务器验收优先使用 SSH 端口转发，完整步骤见 `docs/12-remote-acceptance-guide.md`。
+
 运行测试：
 
 ```bash
@@ -37,6 +45,9 @@ npm test
 比赛 V1.1 增加一个只读接口：
 
 - `GET /api/risk/cases`
+- `GET /api/emerging-issues`
+- `GET /api/monitor/deadlines`
+- `POST /api/monitor/deadlines/run`
 
 另有 `GET /api/health` 用于运行状态检查。
 
@@ -48,3 +59,4 @@ npm test
 - 不自动退款、赔付、补发或认定责任；需要审批的动作保留人工确认。
 - 不接入千牛、CRM、仓库或物流生产系统；页面为真实接口驱动的比赛演示壳。
 - 模型调用暂由 `DETERMINISTIC_DEMO_ENGINE` 代替，接口保留 `model_metadata`，后续可接入受治理的模型 Provider。
+- P1 Journey Timeline、Multi-source Fusion、Deadline Monitor 与 Emerging Issue 的设计和验收见 `docs/11-p1-continuity-intelligence.md`。
