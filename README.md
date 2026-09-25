@@ -68,6 +68,7 @@ Covenia 是嵌入千牛客服工作台右侧的消费者体验责任副驾。它
 - [演示与交付](docs/07-demo-and-delivery.md)
 - [模型治理](MODEL_GOVERNANCE.md)
 - [可运行前后端与启动说明](docs/09-running-application.md)
+- [情绪判断依据、推断标识与行动边界](docs/10-emotion-evidence-and-action-boundary.md)
 - [数据与模拟声明](SIMULATION_DISCLOSURE.md)
 - [多角度评审与修订记录](MULTI-ANGLE-REVIEW-v0.8.0.md)
 

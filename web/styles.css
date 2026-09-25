@@ -68,6 +68,15 @@ button { cursor: pointer; }
 .signal-card { background: white; border: 1px solid var(--line); border-radius: 12px; padding: 11px; min-width: 0; }
 .signal-card span, .signal-card small { display: block; color: var(--muted); font-size: 10px; }
 .signal-card strong { display: block; margin: 7px 0 5px; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.emotion-evidence-card { border-left: 3px solid #59786c; }
+.emotion-evidence { display: grid; gap: 8px; }
+.emotion-source { background: #f5f8f6; border-radius: 9px; padding: 9px 10px; font-size: 11px; line-height: 1.5; }
+.emotion-source q { display: block; color: var(--ink); margin-bottom: 4px; }
+.emotion-source small { color: var(--muted); }
+.inference-badge { display: inline-block; color: #4e655b; background: #e5eee9; border-radius: 999px; padding: 2px 6px; font-size: 9px; margin-left: 5px; }
+.emotion-actions { display: grid; gap: 6px; margin-top: 9px; }
+.emotion-action { color: var(--green-dark); font-size: 11px; padding-left: 16px; position: relative; }
+.emotion-action::before { content: "→"; position: absolute; left: 0; }
 .card, .table-card, .risk-detail { background: white; border: 1px solid var(--line); border-radius: 14px; padding: 15px; }
 .card-title { display: flex; justify-content: space-between; gap: 12px; align-items: center; margin-bottom: 11px; }
 .card-title h3, .detail-section h3 { margin: 0; font-size: 14px; }
@@ -111,6 +120,7 @@ tbody tr:hover, tbody tr.selected { background: #f0f7f4; }
 .risk-pill.normal { background: var(--mint); color: var(--green); }
 .risk-detail { position: sticky; top: 88px; max-height: calc(100vh - 110px); overflow: auto; }
 .risk-detail h2 { margin: 7px 0 14px; font-size: 19px; }
+.advisory-note { background: #eef4f1; color: #506259; border-radius: 8px; padding: 8px 10px; font-size: 10px; line-height: 1.5; margin: -4px 0 12px; }
 .risk-factors { display: grid; gap: 8px; }
 .factor { border-left: 3px solid var(--red); background: #fbf5f4; border-radius: 0 8px 8px 0; padding: 9px 10px; display: grid; grid-template-columns: 1fr auto; gap: 4px; }
 .factor strong { font-size: 12px; }

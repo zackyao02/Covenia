@@ -27,6 +27,7 @@ docs/06-evaluation-and-research.md
 docs/07-demo-and-delivery.md
 docs/08-idempotency-and-ordering.md
 docs/09-running-application.md
+docs/10-emotion-evidence-and-action-boundary.md
 
 ## 可运行应用
 

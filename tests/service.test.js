@@ -10,7 +10,23 @@ test("analyze builds Customer State with emotion, effort and explainable risk", 
   assert.equal(result.customer_state.effort.contact_count, 2);
   assert.ok(result.customer_state.risk.score >= 61);
   assert.ok(result.customer_state.risk.factors.some((factor) => factor.code === "REPEATED_EVIDENCE"));
+  assert.ok(result.customer_state.emotion.events.every((event) => event.source_id && event.quote && event.inference.is_inference));
+  assert.equal(result.customer_state.emotion.governance.included_in_risk_score, false);
+  assert.equal(result.customer_state.emotion.governance.overrides_existing_rules, false);
+  assert.equal(result.customer_state.risk.prediction, false);
+  assert.ok(!result.customer_state.risk.factors.some((factor) => factor.code.includes("EMOTION")));
   assert.ok(result.consumer_story.do_not_ask_again.some((item) => item.code === "ASK_SAME_EVIDENCE"));
+});
+
+test("emotion inference changes do not change operational risk score", () => {
+  const service = new CoveniaService();
+  const baseline = service.analyze({ case_id: "DEMO_001" });
+  const variant = service.getFixture("DEMO_001").case_input;
+  variant.conversation.at(-1).text = "我现在真的气死了，请给我明确答复。";
+  const result = service.analyze({ case_id: "DEMO_001", challenge_mode: true, case_input: variant });
+  assert.equal(result.customer_state.emotion.current, "ANGRY");
+  assert.equal(result.customer_state.risk.score, baseline.customer_state.risk.score);
+  assert.equal(result.customer_state.risk.context_signals[0].used_for_score, false);
 });
 
 test("firewall blocks repeated evidence request from server-derived state", () => {

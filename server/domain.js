@@ -26,29 +26,72 @@ export function derivePromise(caseInput) {
 }
 
 function emotionFor(text) {
-  if (/投诉|曝光|12315|气死|愤怒/.test(text)) return { emotion: "ANGRY", intensity: 4 };
-  if (/已经|到底|怎么还|又要|重新|等了|前天/.test(text)) return { emotion: "FRUSTRATED", intensity: 3 };
-  if (/急|不行|坏|没有/.test(text)) return { emotion: "CONCERNED", intensity: 2 };
-  return { emotion: "CALM", intensity: 1 };
+  const cueSets = [
+    { emotion: "ANGRY", intensity: 4, patterns: ["投诉", "曝光", "12315", "气死", "愤怒"] },
+    { emotion: "FRUSTRATED", intensity: 3, patterns: ["已经", "到底", "怎么还", "又要", "重新", "等了", "前天"] },
+    { emotion: "CONCERNED", intensity: 2, patterns: ["急", "不行", "坏", "没有"] },
+  ];
+  for (const set of cueSets) {
+    const matched_cues = set.patterns.filter((cue) => text.includes(cue));
+    if (matched_cues.length) return { emotion: set.emotion, intensity: set.intensity, matched_cues };
+  }
+  return { emotion: "CALM", intensity: 1, matched_cues: [] };
 }
 
 export function deriveEmotion(caseInput) {
   const events = caseInput.conversation
     .filter((message) => message.speaker === "CONSUMER")
-    .map((message) => ({
-      at: message.timestamp,
-      source_id: message.message_id,
-      text: message.text,
-      ...emotionFor(message.text),
-    }));
-  const current = events.at(-1) ?? { emotion: "CALM", intensity: 1 };
-  const first = events[0] ?? current;
+    .map((message) => {
+      const inferred = emotionFor(message.text);
+      return {
+        at: message.timestamp,
+        source_type: "CONVERSATION",
+        source_id: message.message_id,
+        quote: message.text,
+        observed_cues: inferred.matched_cues,
+        inference: {
+          label: inferred.emotion,
+          intensity: inferred.intensity,
+          confidence: inferred.matched_cues.length ? 0.82 : 0.55,
+          method: "LEXICAL_CUE_DEMO_RULE",
+          is_inference: true,
+        },
+      };
+    });
+  const current = events.at(-1)?.inference ?? { label: "CALM", intensity: 1, confidence: 0.5 };
+  const first = events[0]?.inference ?? current;
   const trend = current.intensity > first.intensity ? "ESCALATING" : current.intensity < first.intensity ? "IMPROVING" : "STABLE";
   const causes = [];
   const allText = caseInput.conversation.map((message) => message.text).join(" ");
   if (/重新|发过|又要|怎么还要/.test(allText)) causes.push("REPEATED_REQUEST");
   if (/前天|等了|到底有没有发/.test(allText)) causes.push("WAITING_WITHOUT_UPDATE");
-  return { current: current.emotion, intensity: current.intensity, trend, causes, events, confidence: 0.88 };
+  const sourceIds = events.map((event) => event.source_id);
+  const inferences = [
+    { field: "current", value: current.label, confidence: current.confidence, derived_from: events.at(-1) ? [events.at(-1).source_id] : [], is_inference: true },
+    { field: "trend", value: trend, confidence: events.length > 1 ? 0.78 : 0.5, derived_from: sourceIds, is_inference: true },
+    { field: "causes", value: causes, confidence: 0.72, derived_from: sourceIds, is_inference: true },
+  ];
+  const actionSupport = [];
+  if (causes.includes("REPEATED_REQUEST")) actionSupport.push({ type: "ACKNOWLEDGE_REPETITION", suggestion: "先确认用户已经说明或提交过的信息，再继续处理。", source_ids: sourceIds });
+  if (causes.includes("WAITING_WITHOUT_UPDATE")) actionSupport.push({ type: "GIVE_CONCRETE_UPDATE", suggestion: "说明当前进度、责任方和下一次更新时间，避免只做泛化道歉。", source_ids: sourceIds });
+  if (trend === "ESCALATING") actionSupport.push({ type: "USE_CALM_DIRECT_TONE", suggestion: "使用简短、直接、承担责任的表达；是否升级仍由事实规则决定。", source_ids: sourceIds });
+  return {
+    current: current.label,
+    intensity: current.intensity,
+    trend,
+    causes,
+    events,
+    inferences,
+    action_support: actionSupport,
+    confidence: current.confidence,
+    governance: {
+      advisory_only: true,
+      overrides_existing_rules: false,
+      included_in_risk_score: false,
+      prediction: false,
+      disclaimer: "情绪字段来自对话线索的推断，仅辅助客服理解与表达，不改变体验防线、权限或责任结论。",
+    },
+  };
 }
 
 export function deriveIntent(caseInput) {
@@ -101,8 +144,6 @@ export function deriveEffort(caseInput, evidenceStatus, promise) {
 export function deriveRisk({ emotion, effort, promise, evaluationTime, hasFailedResolution = false, text = "" }) {
   const factors = [];
   const add = (code, label, weight, evidence) => factors.push({ code, label, weight, evidence });
-  if (["FRUSTRATED", "ANGRY"].includes(emotion.current)) add("NEGATIVE_EMOTION", "当前负面情绪", 10, emotion.current);
-  if (emotion.trend === "ESCALATING") add("EMOTION_ESCALATING", "情绪持续升级", 20, `${emotion.events[0]?.emotion} → ${emotion.current}`);
   if (effort.contact_count >= 3) add("THIRD_CONTACT", "同一问题第三次及以上联系", 20, `Contact ×${effort.contact_count}`);
   else if (effort.contact_count >= 2) add("SECOND_CONTACT", "同一问题第二次联系", 10, `Contact ×${effort.contact_count}`);
   if (effort.repeated_evidence_request) add("REPEATED_EVIDENCE", "已有证据仍被再次索要", 15, "ASK_EVIDENCE + VALID");
@@ -115,7 +156,22 @@ export function deriveRisk({ emotion, effort, promise, evaluationTime, hasFailed
   if (/投诉|曝光|12315/.test(text)) add("ESCALATION_KEYWORD", "出现投诉或曝光信号", 30, text.match(/投诉|曝光|12315/)?.[0]);
   const score = Math.min(100, factors.reduce((sum, item) => sum + item.weight, 0));
   const level = score >= 81 ? "CRITICAL" : score >= 61 ? "HIGH" : score >= 31 ? "ATTENTION" : "NORMAL";
-  return { score, level, factors, policy_version: "competition-v1.1" };
+  return {
+    score,
+    level,
+    factors,
+    context_signals: [{
+      code: "EMOTION_CONTEXT",
+      label: `情绪推断 ${emotion.current} / ${emotion.trend}`,
+      weight: 0,
+      used_for_score: false,
+      source_ids: emotion.inferences.flatMap((item) => item.derived_from),
+      purpose: "仅辅助客服表达和人工判断",
+    }],
+    policy_version: "competition-v1.2-emotion-advisory",
+    prediction: false,
+    purpose: "OPERATIONAL_TRIAGE",
+  };
 }
 
 export function buildTimeline(caseInput, emotion, promise, runtime) {
@@ -124,7 +180,7 @@ export function buildTimeline(caseInput, emotion, promise, runtime) {
     type: message.speaker === "CONSUMER" ? "CONTACT" : "SERVICE",
     title: message.speaker === "CONSUMER" ? "消费者联系" : "客服回复",
     detail: message.text,
-    emotion: emotion.events.find((event) => event.source_id === message.message_id)?.emotion ?? null,
+    emotion: emotion.events.find((event) => event.source_id === message.message_id)?.inference.label ?? null,
   }));
   for (const evidence of caseInput.evidence_images) items.push({ at: evidence.submitted_at, type: "EVIDENCE", title: "证据已提交", detail: evidence.file_name });
   for (const ticket of caseInput.service_tickets) items.push({ at: ticket.created_at, type: "TICKET", title: `${ticket.ticket_type} 工单`, detail: `${ticket.ticket_id} · ${ticket.status}` });

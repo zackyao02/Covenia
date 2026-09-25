@@ -13,13 +13,32 @@
     "intent": {"type": "object"},
     "emotion": {
       "type": "object",
-      "required": ["current", "intensity", "trend", "causes", "events", "confidence"],
+      "required": ["current", "intensity", "trend", "causes", "events", "inferences", "action_support", "confidence", "governance"],
       "properties": {
         "current": {"enum": ["CALM", "CONCERNED", "FRUSTRATED", "ANGRY"]},
         "intensity": {"type": "integer", "minimum": 1, "maximum": 4},
         "trend": {"enum": ["STABLE", "ESCALATING", "IMPROVING"]},
         "causes": {"type": "array", "items": {"type": "string"}},
-        "events": {"type": "array"},
+        "events": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["at", "source_type", "source_id", "quote", "observed_cues", "inference"]
+          }
+        },
+        "inferences": {"type": "array"},
+        "action_support": {"type": "array"},
+        "governance": {
+          "type": "object",
+          "required": ["advisory_only", "overrides_existing_rules", "included_in_risk_score", "prediction", "disclaimer"],
+          "properties": {
+            "advisory_only": {"const": true},
+            "overrides_existing_rules": {"const": false},
+            "included_in_risk_score": {"const": false},
+            "prediction": {"const": false},
+            "disclaimer": {"type": "string"}
+          }
+        },
         "confidence": {"type": "number", "minimum": 0, "maximum": 1}
       }
     },
@@ -35,12 +54,15 @@
     "promises": {"type": "object"},
     "risk": {
       "type": "object",
-      "required": ["score", "level", "factors", "policy_version"],
+      "required": ["score", "level", "factors", "context_signals", "policy_version", "prediction", "purpose"],
       "properties": {
         "score": {"type": "integer", "minimum": 0, "maximum": 100},
         "level": {"enum": ["NORMAL", "ATTENTION", "HIGH", "CRITICAL"]},
         "factors": {"type": "array"},
-        "policy_version": {"type": "string"}
+        "policy_version": {"type": "string"},
+        "prediction": {"const": false},
+        "purpose": {"const": "OPERATIONAL_TRIAGE"},
+        "context_signals": {"type": "array"}
       }
     },
     "resolution": {"type": "object"}

@@ -62,7 +62,7 @@ export class CoveniaService {
       text: allText,
     });
     if (runtime.case_status === "RESOLVED") {
-      risk = { score: 0, level: "NORMAL", factors: [], policy_version: "competition-v1.1", resolved_from_score: risk.score };
+      risk = { ...risk, score: 0, level: "NORMAL", factors: [], resolved_from_score: risk.score };
     }
     const issue = caseInput.current_issue;
     const order = caseInput.order;

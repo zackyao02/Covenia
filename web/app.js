@@ -80,13 +80,15 @@ function renderCopilot() {
   $("#story-latest").textContent = `“${data.consumer_story.latest_message}”`;
   $("#risk-score").textContent = cs.risk.score;
   $("#risk-orb").title = cs.risk.level;
-  const journey = cs.emotion.events.map((item) => emotionLabel(item.emotion)).join(" → ");
+  const journey = cs.emotion.events.map((item) => emotionLabel(item.inference.label)).join(" → ");
   $("#emotion-value").textContent = `${journey || emotionLabel(cs.emotion.current)} ${cs.emotion.trend === "ESCALATING" ? "↑" : ""}`;
   $("#emotion-causes").textContent = cs.emotion.causes.join(" · ") || "无明显升级原因";
   $("#effort-value").textContent = `${cs.effort.level} · ${cs.effort.score}`;
   $("#effort-detail").textContent = `${cs.effort.contact_count} 次联系 · 等待 ${cs.effort.waiting_hours}h`;
   $("#promise-value").textContent = cs.effort.promise_overdue_hours > 0 ? `已超时 ${cs.effort.promise_overdue_hours}h` : cs.promises.active.length ? "进行中" : "无有效承诺";
   $("#promise-detail").textContent = cs.promises.raw?.raw_text ?? "—";
+  $("#emotion-evidence").innerHTML = cs.emotion.events.slice(-3).map((item) => `<div class="emotion-source"><q>${escapeHtml(item.quote)}</q><small>${escapeHtml(item.source_id)} · ${formatTime(item.at)} · 线索：${escapeHtml(item.observed_cues.join("、") || "无显式词语")}</small><span class="inference-badge">推断：${escapeHtml(emotionLabel(item.inference.label))} · ${Math.round(item.inference.confidence * 100)}%</span></div>`).join("");
+  $("#emotion-actions").innerHTML = cs.emotion.action_support.map((item) => `<div class="emotion-action">${escapeHtml(item.suggestion)}</div>`).join("") || '<div class="emotion-action">保持正常服务，不因情绪标签改变规则或权限。</div>';
   $("#known-facts").innerHTML = data.consumer_story.what_we_know.map((item) => `<div class="fact-row"><span>${escapeHtml(item.label)}</span><strong>${escapeHtml(item.value)}</strong></div>`).join("");
   $("#do-not-ask").innerHTML = data.consumer_story.do_not_ask_again.map((item) => `<span class="guardrail">× ${escapeHtml(item.label)}</span>`).join("") || '<span class="guardrail">当前无禁止动作</span>';
   $("#nba-label").textContent = data.consumer_story.next_best_action.label;
