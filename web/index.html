@@ -51,7 +51,33 @@
                 <p class="eyebrow">AI SERVICE DECISION SYSTEM</p>
                 <h2>Covenia Copilot</h2>
               </div>
-              <select id="case-select" aria-label="选择演示案例"></select>
+              <div class="case-toolbar" aria-label="消费者切换与优先级队列">
+                <div class="consumer-switcher">
+                  <button id="prev-case" type="button" aria-label="上一位消费者">←</button>
+                  <div>
+                    <strong id="case-position">—</strong>
+                    <select id="case-select" aria-label="选择演示案例"></select>
+                  </div>
+                  <button id="next-case" type="button" aria-label="下一位消费者">→</button>
+                </div>
+                <div class="priority-widget">
+                  <button id="priority-toggle" class="priority-toggle" type="button" aria-expanded="false">
+                    <span>⚡ Priority</span>
+                    <small id="priority-counts">—</small>
+                  </button>
+                  <button id="priority-refresh" class="icon-button" type="button" aria-label="刷新 Priority Queue">↻</button>
+                  <div id="priority-panel" class="priority-panel hidden">
+                    <div class="priority-panel-head">
+                      <div>
+                        <p class="eyebrow">Priority Queue</p>
+                        <h3 id="priority-mode-label">消息顺序</h3>
+                      </div>
+                      <small>Risk + Urgency + Promise + Waiting</small>
+                    </div>
+                    <div id="priority-list" class="priority-list"></div>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div id="copilot-loading" class="loading">正在恢复 Customer State…</div>
@@ -61,43 +87,28 @@
                   <p class="eyebrow">CONSUMER STORY</p>
                   <h1 id="story-title"></h1>
                   <p id="story-latest" class="story-latest"></p>
+                  <div id="story-tags" class="story-tags"></div>
                 </div>
-                <div id="risk-orb" class="risk-orb"><span id="risk-score"></span><small>Risk</small></div>
+                <div id="risk-orb" class="risk-orb"><span id="risk-score"></span><small>High Risk</small></div>
               </div>
 
-              <div class="signal-grid">
-                <article class="signal-card">
-                  <span>Emotion Journey</span>
-                  <strong id="emotion-value"></strong>
-                  <small id="emotion-causes"></small>
-                </article>
-                <article class="signal-card">
-                  <span>Customer Effort</span>
-                  <strong id="effort-value"></strong>
-                  <small id="effort-detail"></small>
-                </article>
-                <article class="signal-card">
-                  <span>Promise</span>
-                  <strong id="promise-value"></strong>
-                  <small id="promise-detail"></small>
-                </article>
-              </div>
+              <section id="focus-view" class="focus-view hidden" aria-live="polite">
+                <button id="focus-back" class="focus-back" type="button">← 返回 Customer Snapshot</button>
+                <p id="focus-eyebrow" class="eyebrow"></p>
+                <h2 id="focus-title"></h2>
+                <div id="focus-points" class="focus-points"></div>
+              </section>
 
-              <article class="card emotion-evidence-card">
-                <div class="card-title"><h3>情绪判断依据与使用边界</h3><span>辅助信息 · 不参与 Risk Score</span></div>
-                <div id="emotion-evidence" class="emotion-evidence"></div>
-                <div id="emotion-actions" class="emotion-actions"></div>
-              </article>
+              <div class="state-slider" aria-label="Emotion 到 Effort 的状态小卡">
+                <button id="state-prev" class="state-slide-button" type="button" aria-label="向左滑动状态小卡">‹</button>
+                <div id="story-deck" class="state-tiles" aria-label="当前消费者状态入口"></div>
+                <button id="state-next" class="state-slide-button" type="button" aria-label="向右滑动状态小卡">›</button>
+              </div>
 
               <article class="card jev-card">
                 <div class="card-title"><h3>JEV Decision Signals</h3><span id="jev-status">加载中</span></div>
                 <div id="jev-signals" class="jev-signals"></div>
                 <div id="jev-governance" class="jev-governance"></div>
-              </article>
-
-              <article class="card">
-                <div class="card-title"><h3>已经知道什么</h3><span>来源可追溯</span></div>
-                <div id="known-facts" class="facts"></div>
               </article>
 
               <article class="card fusion-card">
@@ -111,7 +122,7 @@
                 <div id="do-not-ask" class="guardrails"></div>
               </article>
 
-              <article class="card action-card">
+              <article class="card action-card story-action-card">
                 <div class="card-title"><h3>下一步直接做什么</h3><span>Next Best Action</span></div>
                 <div class="nba-row">
                   <div><strong id="nba-label"></strong><p id="nba-reason"></p></div>

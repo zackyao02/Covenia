@@ -1,4 +1,4 @@
-const state = { cases: [], selectedCaseId: null, analysis: null, jev: null, emergingIssues: [], monitorStatus: null };
+const state = { cases: [], selectedCaseId: null, analysis: null, jev: null, emergingIssues: [], monitorStatus: null, focusCardKey: null, storyCards: [], priorityMode: false, priorityOpen: false, conversationHistoryOpen: false };
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
@@ -22,6 +22,84 @@ function toast(message) {
 
 function riskClass(level) { return level.toLowerCase(); }
 function emotionLabel(emotion) { return ({ CALM: "平静", CONCERNED: "担忧", FRUSTRATED: "受挫", ANGRY: "愤怒" })[emotion] ?? emotion; }
+function compactDateRange(items) {
+  if (!items.length) return "此前";
+  return `${formatTime(items[0].at)}–${formatTime(items.at(-1).at)}`;
+}
+
+function priorityScore(item) {
+  const emotionBoost = item.emotion.trend === "ESCALATING" ? 8 : 0;
+  const promiseBoost = Math.min((item.effort.promise_overdue_hours ?? 0) * 3, 24);
+  const waitingBoost = Math.min((item.effort.waiting_hours ?? 0) / 3, 18);
+  const contactBoost = Math.min((item.effort.contact_count ?? 0) * 2, 12);
+  const activePromiseBoost = item.promise.active.length ? 6 : 0;
+  return Math.round(item.risk.score + emotionBoost + promiseBoost + waitingBoost + contactBoost + activePromiseBoost);
+}
+
+function priorityBand(item) {
+  const score = priorityScore(item);
+  if (score >= 120 || item.effort.promise_overdue_hours > 0) return "red";
+  if (score >= 95 || item.risk.level === "HIGH") return "orange";
+  return "yellow";
+}
+
+function priorityReasons(item) {
+  const reasons = [];
+  if (item.effort.promise_overdue_hours > 0) reasons.push(`承诺超时 ${item.effort.promise_overdue_hours}h`);
+  if (item.emotion.trend === "ESCALATING") reasons.push("情绪上升");
+  if (item.effort.contact_count >= 3) reasons.push(`重复联系 ${item.effort.contact_count} 次`);
+  if (item.promise.active.length) reasons.push("已有承诺待闭环");
+  if (!reasons.length) reasons.push("风险与等待时间综合靠前");
+  return reasons;
+}
+
+function queueCases() {
+  const items = [...state.cases];
+  if (!state.priorityMode) return items;
+  return items.sort((a, b) => priorityScore(b) - priorityScore(a));
+}
+
+function renderQueueControls() {
+  if (!state.cases.length) return;
+  const ordered = queueCases();
+  const currentIndex = Math.max(0, ordered.findIndex((item) => item.case_id === state.selectedCaseId));
+  const counts = state.cases.reduce((acc, item) => {
+    acc[priorityBand(item)] += 1;
+    return acc;
+  }, { red: 0, orange: 0, yellow: 0 });
+  const selected = ordered[currentIndex] ?? ordered[0];
+  $("#case-position").textContent = selected ? `${state.priorityMode ? "Priority" : "Current"} · ${currentIndex + 1}/${ordered.length}` : "—";
+  $("#priority-counts").textContent = `${counts.red}R / ${counts.orange}O / ${counts.yellow}Y`;
+  $("#priority-toggle").classList.toggle("active", state.priorityMode);
+  $("#priority-toggle").setAttribute("aria-expanded", String(state.priorityOpen));
+  $("#priority-mode-label").textContent = state.priorityMode ? "按 Covenia Priority 排序" : "按当前会话顺序";
+  $("#priority-panel").classList.toggle("hidden", !state.priorityOpen);
+  $("#priority-list").innerHTML = ordered.slice(0, 6).map((item, index) => {
+    const band = priorityBand(item);
+    const selectedClass = item.case_id === state.selectedCaseId ? "selected" : "";
+    const whyLabel = index === 0 ? "Why #1" : "Why";
+    return `<button type="button" class="priority-item ${band} ${selectedClass}" data-case="${escapeHtml(item.case_id)}">
+      <span>${index + 1}</span>
+      <strong>${escapeHtml(item.case_id)} · ${priorityScore(item)}</strong>
+      <small>${escapeHtml(whyLabel)}：${escapeHtml(priorityReasons(item).join(" · "))}</small>
+    </button>`;
+  }).join("");
+  $$("#priority-list [data-case]").forEach((button) => button.addEventListener("click", () => selectCase(button.dataset.case)));
+}
+
+function moveCase(step) {
+  const ordered = queueCases();
+  if (!ordered.length) return;
+  const currentIndex = Math.max(0, ordered.findIndex((item) => item.case_id === state.selectedCaseId));
+  const nextIndex = (currentIndex + step + ordered.length) % ordered.length;
+  selectCase(ordered[nextIndex].case_id);
+}
+
+function scrollStateTiles(direction) {
+  const deck = $("#story-deck");
+  const cardWidth = deck.querySelector(".state-tile")?.getBoundingClientRect().width ?? 220;
+  deck.scrollBy({ left: direction * (cardWidth + 12), behavior: "smooth" });
+}
 
 async function loadRadar(selectFirst = false) {
   const [data, emerging] = await Promise.all([api("/api/risk/cases"), api("/api/emerging-issues")]);
@@ -38,6 +116,7 @@ async function loadRadar(selectFirst = false) {
   select.innerHTML = state.cases.map((item) => `<option value="${escapeHtml(item.case_id)}">${escapeHtml(item.case_id)} · Risk ${item.risk.score}</option>`).join("");
   if (!state.selectedCaseId || !state.cases.some((item) => item.case_id === state.selectedCaseId)) state.selectedCaseId = state.cases[0]?.case_id;
   select.value = state.selectedCaseId;
+  renderQueueControls();
   renderRiskTable();
   if (selectFirst && state.selectedCaseId) await selectCase(state.selectedCaseId);
 }
@@ -59,7 +138,10 @@ function renderRiskTable() {
 
 async function selectCase(caseId) {
   state.selectedCaseId = caseId;
+  state.focusCardKey = null;
+  state.conversationHistoryOpen = false;
   $("#case-select").value = caseId;
+  renderQueueControls();
   $("#copilot-loading").classList.remove("hidden");
   $("#copilot-content").classList.add("hidden");
   try {
@@ -73,6 +155,7 @@ async function selectCase(caseId) {
     renderCopilot();
     renderDetail();
     renderRiskTable();
+    renderQueueControls();
   } catch (error) { toast(error.message); }
   finally { $("#copilot-loading").classList.add("hidden"); $("#copilot-content").classList.remove("hidden"); }
 }
@@ -100,8 +183,162 @@ function renderJev() {
 
 function renderConversation() {
   const timeline = state.analysis.timeline.filter((item) => ["CONTACT", "SERVICE"].includes(item.type));
-  $("#conversation").innerHTML = timeline.map((item) => `<div class="message ${item.type === "CONTACT" ? "consumer" : "agent"}">${escapeHtml(item.detail)}<time>${formatTime(item.at)}</time></div>`).join("");
-  $("#conversation").scrollTop = $("#conversation").scrollHeight;
+  const history = timeline.slice(0, -1);
+  const today = timeline.slice(-1);
+  $("#conversation").innerHTML = `
+    ${history.length ? `<article class="history-summary">
+      <span>Earlier conversation</span>
+      <strong>${history.length} 条消息已由 Covenia 总结</strong>
+      <p>${compactDateRange(history)} · 已完成问题说明 · 已提交证据 · 已形成服务承诺</p>
+      <button id="history-toggle" type="button" aria-expanded="${state.conversationHistoryOpen}">${state.conversationHistoryOpen ? "收起历史" : "展开历史"}</button>
+    </article>` : ""}
+    ${state.conversationHistoryOpen ? `<div class="history-thread">
+      ${history.map((item) => `<div class="message ${item.type === "CONTACT" ? "consumer" : "agent"}">${escapeHtml(item.detail)}<time>${formatTime(item.at)}</time></div>`).join("")}
+    </div>` : ""}
+    <div class="today-divider"><span>Today</span></div>
+    ${today.map((item) => `<div class="message ${item.type === "CONTACT" ? "consumer" : "agent"}">${escapeHtml(item.detail)}<time>${formatTime(item.at)}</time></div>`).join("")}
+  `;
+  $("#history-toggle")?.addEventListener("click", () => {
+    state.conversationHistoryOpen = !state.conversationHistoryOpen;
+    renderConversation();
+  });
+  $("#conversation").scrollTop = state.conversationHistoryOpen ? 0 : $("#conversation").scrollHeight;
+}
+
+function buildStoryCards(data) {
+  const cs = data.customer_state;
+  const known = data.consumer_story.what_we_know;
+  const emotionJourney = cs.emotion.events.map((item) => emotionLabel(item.inference.label)).join(" → ") || emotionLabel(cs.emotion.current);
+  const promiseText = cs.promises.raw?.raw_text ?? "尚无有效承诺";
+  const evidenceItems = known.map((item) => `${item.label}：${item.value}`);
+  const evidenceSummary = evidenceItems.slice(0, 3);
+  const evidenceStatus = data.accountability_state.evidence_status;
+  const scope = data.accountability_state.current_scope;
+  const missingEvidence = evidenceStatus === "VALID"
+    ? ["暂无待补充证据。"]
+    : evidenceStatus === "MISMATCHED"
+      ? [`只补当前范围缺失材料：${scope.sku_id} · ${scope.issue_type}。不要重复索要已提交证据。`]
+      : ["图片或事实需要人工复核；先转人工判断，不要求消费者重复解释。"];
+  return [
+    {
+      key: "story",
+      eyebrow: "Consumer Story",
+      title: data.consumer_story.what_happened,
+      body: `她正在问：“${data.consumer_story.latest_message}”`,
+      tags: ["历史已总结", `${cs.effort.contact_count} 次联系`, cs.risk.level],
+      focusTitle: "发生了什么",
+      points: [
+        ["01", data.consumer_story.what_happened],
+        ["02", data.consumer_story.latest_message],
+        ["03", data.consumer_story.next_best_action.reason],
+      ],
+    },
+    {
+      key: "emotion",
+      eyebrow: "Emotion & Effort",
+      title: `${emotionJourney}${cs.emotion.trend === "ESCALATING" ? " ↑" : ""}`,
+      body: `当前 effort ${cs.effort.score}，已等待 ${cs.effort.waiting_hours}h。情绪只作为沟通上下文，不参与 Risk Score。`,
+      tags: [cs.effort.level, `${cs.effort.contact_count} 次联系`, "Advisory only"],
+      focusTitle: "为什么体验恶化",
+      points: [
+        ["情绪", cs.emotion.causes.join("；") || "没有明显恶化线索"],
+        ["努力", `${cs.effort.contact_count} 次联系 · 等待 ${cs.effort.waiting_hours}h`],
+        ["边界", "情绪不覆盖体验防线规则，也不单独决定风险分数。"],
+      ],
+    },
+    {
+      key: "evidence",
+      eyebrow: "Evidence",
+      title: `${cs.evidence.count} 项证据 · ${cs.evidence.status}`,
+      body: evidenceStatus === "VALID" ? "已知证据足够，禁止重复索证。" : "只列当前缺口，不让消费者重复提交已有材料。",
+      tags: ["来源可追溯", "避免重复索证", "Raw Chat = Evidence"],
+      focusTitle: "证据状态",
+      knownEvidence: evidenceItems,
+      missingEvidence,
+      doNotAsk: data.consumer_story.do_not_ask_again.map((item) => item.label),
+    },
+    {
+      key: "journey",
+      eyebrow: "Journey",
+      title: `${cs.effort.contact_count} 次联系 · 已等待 ${cs.effort.waiting_hours}h`,
+      body: `当前链路从咨询、举证到服务承诺已经连起来，优先避免让消费者重新解释。`,
+      tags: ["Timeline", `${cs.effort.level} effort`, "不中断上下文"],
+      focusTitle: "服务旅程断点",
+      points: data.timeline.slice(-4).reverse().map((item) => [formatTime(item.at), `${item.title}：${item.detail}`]),
+    },
+    {
+      key: "promise",
+      eyebrow: "Promise",
+      title: cs.effort.promise_overdue_hours > 0 ? `承诺已超时 ${cs.effort.promise_overdue_hours}h` : cs.promises.active.length ? "承诺正在运行" : "承诺需要确认",
+      body: promiseText,
+      tags: [cs.promises.active.length ? "Active" : "No active promise", "Promise-to-Action", cs.resolution.status],
+      focusTitle: "承诺如何运行",
+      points: [
+        ["来源", promiseText],
+        ["状态", `Resolution ${cs.resolution.status} · owner ${cs.resolution.owner}`],
+        ["完成", `完成条件：${cs.resolution.completion_condition}`],
+      ],
+    },
+    {
+      key: "action",
+      eyebrow: "Next Best Action",
+      title: data.consumer_story.next_best_action.label,
+      body: data.consumer_story.next_best_action.reason,
+      tags: ["Decision", "One clear next step", "低打扰"],
+      focusTitle: "现在应该做什么",
+      points: [
+        ["做", data.consumer_story.next_best_action.label],
+        ["不做", data.consumer_story.do_not_ask_again.map((item) => item.label).join("；") || "当前无禁止动作"],
+        ["回复", data.consumer_story.suggested_response],
+      ],
+    },
+  ];
+}
+
+function renderStoryDeck() {
+  const cards = state.storyCards;
+  if (!cards.length) return;
+  const focus = state.focusCardKey ? cards.find((card) => card.key === state.focusCardKey) : null;
+  const deck = $("#story-deck");
+  const slider = deck.closest(".state-slider");
+  const focusView = $("#focus-view");
+  const cardClasses = ["card-story", "card-emotion", "card-evidence", "card-journey", "card-promise", "card-action"];
+  slider.classList.toggle("hidden", Boolean(focus));
+  focusView.classList.toggle("hidden", !focus);
+  focusView.classList.remove(...cardClasses);
+  if (focus) {
+    focusView.classList.add(`card-${focus.key}`);
+    $("#focus-eyebrow").textContent = focus.eyebrow;
+    $("#focus-title").textContent = focus.focusTitle;
+    if (focus.key === "evidence") {
+      $("#focus-points").innerHTML = `
+        <div class="evidence-focus">
+          <section>
+            <h3>已知证据</h3>
+            ${focus.knownEvidence.map((item) => `<p class="evidence-line known">✓ ${escapeHtml(item)}</p>`).join("") || '<p class="evidence-line">暂无已知证据。</p>'}
+          </section>
+          <section>
+            <h3>待补充证据</h3>
+            ${focus.missingEvidence.map((item) => `<p class="evidence-line pending">● ${escapeHtml(item)}</p>`).join("")}
+          </section>
+          <section class="do-not-ask-chart">
+            <h3>❌ 不要再问</h3>
+            ${focus.doNotAsk.map((item) => `<p class="evidence-line blocked">❌ ${escapeHtml(item)}</p>`).join("") || '<p class="evidence-line">暂无禁止动作。</p>'}
+          </section>
+        </div>`;
+    } else {
+      $("#focus-points").innerHTML = focus.points.map(([label, text]) => `<div><span>${escapeHtml(label)}</span><p>${escapeHtml(text)}</p></div>`).join("");
+    }
+    return;
+  }
+  const entryCards = cards.filter((card) => ["emotion", "evidence", "journey", "promise"].includes(card.key));
+  deck.innerHTML = entryCards.map((card) => `<button class="state-tile card-${escapeHtml(card.key)}" type="button" data-focus-key="${escapeHtml(card.key)}">
+    <span>${escapeHtml(card.eyebrow)}</span>
+    <strong>${escapeHtml(card.title)}</strong>
+    <p>${escapeHtml(card.body)}</p>
+    <em>查看判断依据 →</em>
+  </button>`).join("");
+  $$("#story-deck [data-focus-key]").forEach((button) => button.addEventListener("click", () => { state.focusCardKey = button.dataset.focusKey; renderStoryDeck(); }));
 }
 
 function renderCopilot() {
@@ -110,23 +347,16 @@ function renderCopilot() {
   renderJev();
   $("#story-title").textContent = data.consumer_story.what_happened;
   $("#story-latest").textContent = `“${data.consumer_story.latest_message}”`;
+  $("#story-tags").innerHTML = [`${cs.effort.contact_count} 次联系`, cs.effort.promise_overdue_hours > 0 ? `承诺超时 ${cs.effort.promise_overdue_hours}h` : "承诺待跟进", cs.risk.level].map((item) => `<small>${escapeHtml(item)}</small>`).join("");
   $("#risk-score").textContent = cs.risk.score;
   $("#risk-orb").title = cs.risk.level;
-  const journey = cs.emotion.events.map((item) => emotionLabel(item.inference.label)).join(" → ");
-  $("#emotion-value").textContent = `${journey || emotionLabel(cs.emotion.current)} ${cs.emotion.trend === "ESCALATING" ? "↑" : ""}`;
-  $("#emotion-causes").textContent = cs.emotion.causes.join(" · ") || "无明显升级原因";
-  $("#effort-value").textContent = `${cs.effort.level} · ${cs.effort.score}`;
-  $("#effort-detail").textContent = `${cs.effort.contact_count} 次联系 · 等待 ${cs.effort.waiting_hours}h`;
-  $("#promise-value").textContent = cs.effort.promise_overdue_hours > 0 ? `已超时 ${cs.effort.promise_overdue_hours}h` : cs.promises.active.length ? "进行中" : "无有效承诺";
-  $("#promise-detail").textContent = cs.promises.raw?.raw_text ?? "—";
-  $("#emotion-evidence").innerHTML = cs.emotion.events.slice(-3).map((item) => `<div class="emotion-source"><q>${escapeHtml(item.quote)}</q><small>${escapeHtml(item.source_id)} · ${formatTime(item.at)} · 线索：${escapeHtml(item.observed_cues.join("、") || "无显式词语")}</small><span class="inference-badge">推断：${escapeHtml(emotionLabel(item.inference.label))} · ${Math.round(item.inference.confidence * 100)}%</span></div>`).join("");
-  $("#emotion-actions").innerHTML = cs.emotion.action_support.map((item) => `<div class="emotion-action">${escapeHtml(item.suggestion)}</div>`).join("") || '<div class="emotion-action">保持正常服务，不因情绪标签改变规则或权限。</div>';
-  $("#known-facts").innerHTML = data.consumer_story.what_we_know.map((item) => `<div class="fact-row"><span>${escapeHtml(item.label)}</span><strong>${escapeHtml(item.value)}</strong></div>`).join("");
+  state.storyCards = buildStoryCards(data);
+  renderStoryDeck();
   const fusion = data.multi_source_fusion;
   $("#fusion-status").textContent = `${fusion.status} · ${Math.round(fusion.completeness * 100)}%`;
   $("#fusion-sources").innerHTML = fusion.sources.map((source) => `<div class="fusion-source"><strong>${escapeHtml(source.type)}</strong><span>${source.count}</span><small title="${escapeHtml(source.source_ids.join(" · "))}">${escapeHtml(source.authority)}</small></div>`).join("");
   $("#fusion-joins").innerHTML = fusion.joins.map((join) => `<span class="fusion-join">${escapeHtml(join.from)} → ${escapeHtml(join.to)} · ${escapeHtml(join.status)}</span>`).join("");
-  $("#do-not-ask").innerHTML = data.consumer_story.do_not_ask_again.map((item) => `<span class="guardrail">× ${escapeHtml(item.label)}</span>`).join("") || '<span class="guardrail">当前无禁止动作</span>';
+  $("#do-not-ask").innerHTML = data.consumer_story.do_not_ask_again.map((item) => `<span class="guardrail">❌ ${escapeHtml(item.label)}</span>`).join("") || '<span class="guardrail">当前无禁止动作</span>';
   $("#nba-label").textContent = data.consumer_story.next_best_action.label;
   $("#nba-reason").textContent = data.consumer_story.next_best_action.reason;
   $("#suggested-reply").textContent = data.consumer_story.suggested_response;
@@ -218,6 +448,24 @@ $("#evaluate-button").addEventListener("click", evaluateAction);
 $("#approve-button").addEventListener("click", approve);
 $("#copy-reply").addEventListener("click", async () => { await navigator.clipboard.writeText(state.analysis.consumer_story.suggested_response); toast("回复已复制"); });
 $("#refresh-radar").addEventListener("click", async () => { await loadRadar(); toast("风险状态已刷新"); });
+$("#prev-case").addEventListener("click", () => moveCase(-1));
+$("#next-case").addEventListener("click", () => moveCase(1));
+$("#state-prev").addEventListener("click", () => scrollStateTiles(-1));
+$("#state-next").addEventListener("click", () => scrollStateTiles(1));
+$("#priority-toggle").addEventListener("click", () => {
+  const shouldExitPriority = state.priorityMode && state.priorityOpen;
+  state.priorityMode = !shouldExitPriority;
+  state.priorityOpen = !shouldExitPriority;
+  renderQueueControls();
+});
+$("#priority-refresh").addEventListener("click", async () => {
+  await loadRadar();
+  state.priorityMode = true;
+  state.priorityOpen = true;
+  renderQueueControls();
+  toast("Priority Queue 已刷新");
+});
+$("#focus-back").addEventListener("click", () => { state.focusCardKey = null; renderStoryDeck(); });
 $$('[data-event]').forEach((button) => button.addEventListener("click", () => shipment(button.dataset.event)));
 
 loadRadar(true).catch((error) => toast(error.message));
