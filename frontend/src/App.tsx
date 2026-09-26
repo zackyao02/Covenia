@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   AlertCircle,
   AlertTriangle,
@@ -6,6 +6,7 @@ import {
   Check,
   CheckCircle2,
   ChevronDown,
+  ChevronLeft,
   ChevronRight,
   ClipboardCheck,
   Clock3,
@@ -57,6 +58,21 @@ interface AddedMessage {
   text?: string;
   receipt?: ServiceProgressReceipt;
   time: string;
+}
+
+type StoryCardKey = "story" | "emotion" | "evidence" | "journey" | "promise" | "action";
+
+interface StoryCard {
+  key: StoryCardKey;
+  eyebrow: string;
+  title: string;
+  body: string;
+  tags: string[];
+  focusTitle: string;
+  focusPoints: Array<{ label: string; text: string }>;
+  knownEvidence?: string[];
+  missingEvidence?: string[];
+  doNotAsk?: string[];
 }
 
 const decisionIcon = {
@@ -462,6 +478,8 @@ function App() {
         />
         <CoveniaPlugin
           demoCase={selectedCase}
+          selectedId={selectedId}
+          onSelectCase={handleSelectCase}
           accountability={accountability}
           journey={journey}
           decision={decision}
@@ -615,6 +633,36 @@ function ChatWorkspace({
   phase: PluginPhase;
   addedMessages: AddedMessage[];
 }) {
+  const [historyOpen, setHistoryOpen] = useState(false);
+  const historicalMessages = demoCase.input.conversation.slice(0, -1);
+  const todayMessages = demoCase.input.conversation.slice(-1);
+  const historyStart = historicalMessages[0]?.timestamp;
+  const historyEnd = historicalMessages[historicalMessages.length - 1]?.timestamp;
+
+  useEffect(() => {
+    setHistoryOpen(false);
+  }, [demoCase.id]);
+
+  const renderConversationMessage = (message: DemoCase["input"]["conversation"][number], index: number, scope: "history" | "today") => (
+    <div
+      key={message.message_id}
+      className={`message-row ${message.speaker === "AGENT" ? "agent" : "consumer"}`}
+    >
+      {message.speaker === "CONSUMER" ? (
+        <div className="message-avatar">{demoCase.title.slice(0, 1)}</div>
+      ) : null}
+      <div className="message-stack">
+        <div className="message-bubble">{message.text}</div>
+        {demoCase.id === "DEMO_001" && scope === "history" && index === 2 ? <EvidenceGallery /> : null}
+        {demoCase.id !== "DEMO_001" && scope === "today" && index === 0 ? (
+          <EvidenceGallery variant={demoCase.id === "DEMO_002" ? "gift" : "blurred"} />
+        ) : null}
+        <time>{formatClock(message.timestamp)}</time>
+      </div>
+      {message.speaker === "AGENT" ? <div className="message-avatar agent-avatar-chat">周</div> : null}
+    </div>
+  );
+
   return (
     <section className="chat-workspace">
       <header className="chat-header">
@@ -639,27 +687,26 @@ function ChatWorkspace({
         <div className="context-price">¥329.00</div>
         <button>查看订单 <ChevronRight size={14} /></button>
       </div>
-      <div className="messages" key={demoCase.id}>
-        <div className="message-day"><span>5月5日 10:18</span></div>
-        {demoCase.input.conversation.map((message, index) => (
-          <div
-            key={message.message_id}
-            className={`message-row ${message.speaker === "AGENT" ? "agent" : "consumer"}`}
-          >
-            {message.speaker === "CONSUMER" ? (
-              <div className="message-avatar">{demoCase.title.slice(0, 1)}</div>
-            ) : null}
-            <div className="message-stack">
-              <div className="message-bubble">{message.text}</div>
-              {demoCase.id === "DEMO_001" && index === 2 ? <EvidenceGallery /> : null}
-              {demoCase.id !== "DEMO_001" && index === 0 ? (
-                <EvidenceGallery variant={demoCase.id === "DEMO_002" ? "gift" : "blurred"} />
-              ) : null}
-              <time>{formatClock(message.timestamp)}</time>
+      <div className="messages story-messages" key={demoCase.id}>
+        {historicalMessages.length > 0 ? (
+          <section className="history-summary-card">
+            <div>
+              <span>Earlier conversation</span>
+              <strong>{historicalMessages.length} 条消息已由 Covenia 总结</strong>
+              <p>{historyStart ? formatClock(historyStart) : "此前"}–{historyEnd ? formatClock(historyEnd) : "现在"} · 已完成问题说明 · 已提交图片 · 已创建换货单</p>
             </div>
-            {message.speaker === "AGENT" ? <div className="message-avatar agent-avatar-chat">周</div> : null}
+            <button type="button" onClick={() => setHistoryOpen((value) => !value)} aria-expanded={historyOpen}>
+              {historyOpen ? "收起历史" : "展开历史"}
+            </button>
+          </section>
+        ) : null}
+        {historyOpen ? (
+          <div className="history-thread">
+            {historicalMessages.map((message, index) => renderConversationMessage(message, index, "history"))}
           </div>
-        ))}
+        ) : null}
+        <div className="message-day"><span>Today</span></div>
+        {todayMessages.map((message, index) => renderConversationMessage(message, index, "today"))}
         {addedMessages.map((message) => {
           if (message.kind === "receipt" && message.receipt) {
             return <ReceiptMessage key={message.id} receipt={message.receipt} />;
@@ -776,8 +823,486 @@ function ReceiptMessage({ receipt }: { receipt: ServiceProgressReceipt }) {
   );
 }
 
+function buildStoryCards(
+  demoCase: DemoCase,
+  accountability: AccountabilityState,
+  journey: ExtractedJourney | null,
+  decision: DecisionResult | null,
+): StoryCard[] {
+  const commitment = accountability.active_commitments[0];
+  const evidenceCount = journey?.image_observations.length ?? demoCase.input.evidence_images.length;
+  const knownEvidence = initialKnownFacts(demoCase.id);
+  const missingEvidence =
+    demoCase.expectedDecision === "INTERVENE"
+      ? ["暂无待补充证据。"]
+      : demoCase.expectedDecision === "ALLOW"
+        ? ["只补当前范围缺失材料：正装粉底液泵头近照。不要重复索要赠品图片。"]
+        : ["图片需要人工复核；复核前不要要求消费者立刻重传。"];
+  const doNotAsk = [prohibitedCopy(demoCase.id)];
+  const decisionText = decision
+    ? decisionLabels[decision.decision].title
+    : demoCase.expectedDecision === "ALLOW"
+      ? "当前范围需要新证据"
+      : demoCase.expectedDecision === "HUMAN_REVIEW"
+        ? "事实不足，先人工复核"
+        : "优先核查换货进度";
+
+  if (demoCase.id === "DEMO_002") {
+    return [
+      {
+        key: "emotion",
+        eyebrow: "Emotion & Effort",
+        title: "她在纠正问题范围。",
+        body: "当前不是重复投诉，而是消费者把赠品和正装两个问题拆开说明。",
+        tags: ["范围变化", "低打扰", "澄清中"],
+        focusTitle: "为什么体验容易断层",
+        focusPoints: [
+          { label: "情绪", text: "消费者并非拒绝配合，而是在说明“这是另一件商品”。" },
+          { label: "努力", text: "若继续围绕赠品图片处理，会让她重新解释问题。" },
+          { label: "边界", text: "只请求当前正装泵头缺失材料。" },
+        ],
+      },
+      {
+        key: "evidence",
+        eyebrow: "Evidence",
+        title: "已知赠品证据，缺正装证据。",
+        body: "直接列明已知和缺口，避免重复索要赠品材料。",
+        tags: ["SKU 不匹配", "商品角色 GIFT", "允许精准补充"],
+        focusTitle: "证据状态",
+        focusPoints: [],
+        knownEvidence,
+        missingEvidence,
+        doNotAsk,
+      },
+      {
+        key: "journey",
+        eyebrow: "Journey",
+        title: "从赠品转向正装。",
+        body: "旅程断点是商品范围切换，Covenia 需要保护已提交材料不被误用。",
+        tags: ["Scope shift", "SKU 定位", "不中断上下文"],
+        focusTitle: "服务旅程断点",
+        focusPoints: [
+          { label: "已知", text: "赠品外盒图片已经收到。" },
+          { label: "变化", text: "当前诉求转到正装粉底液泵头。" },
+          { label: "下一步", text: decision?.reason ?? "只请求当前范围缺失材料。" },
+        ],
+      },
+      {
+        key: "promise",
+        eyebrow: "Promise",
+        title: "尚无有效承诺。",
+        body: "当前应先补齐正确范围证据，再进入责任闭环。",
+        tags: ["No active promise", "Evidence first", "低打扰"],
+        focusTitle: "承诺状态",
+        focusPoints: [
+          { label: "状态", text: "还没有可执行服务承诺。" },
+          { label: "条件", text: "确认正装泵头问题后才能生成解决路径。" },
+          { label: "边界", text: "不能把赠品证据当作正装责任依据。" },
+        ],
+      },
+    ];
+  }
+
+  if (demoCase.id === "DEMO_003") {
+    return [
+      {
+        key: "emotion",
+        eyebrow: "Emotion & Effort",
+        title: "她已经尝试配合。",
+        body: "当前不应把模糊图片直接变成重复索证，而是先承认已收到。",
+        tags: ["已上传", "事实不足", "先复核"],
+        focusTitle: "为什么先人工复核",
+        focusPoints: [
+          { label: "01", text: "图片未对焦，商品与问题不可确认。" },
+          { label: "02", text: "不能直接判断责任或关闭问题。" },
+          { label: "03", text: "先复核，再决定是否需要补充材料。" },
+        ],
+      },
+      {
+        key: "evidence",
+        eyebrow: "Evidence",
+        title: "已收到图片，但需复核。",
+        body: "列出已知和复核缺口，不立刻要求消费者重传。",
+        tags: ["LOW readability", "SKU UNKNOWN", "HUMAN_REVIEW"],
+        focusTitle: "证据状态",
+        focusPoints: [],
+        knownEvidence,
+        missingEvidence,
+        doNotAsk,
+      },
+      {
+        key: "journey",
+        eyebrow: "Journey",
+        title: "卡在证据可信度。",
+        body: "消费者已进入举证环节，下一步应该是内部复核，而不是立即回退给消费者。",
+        tags: ["Review", "低打扰", "不中断上下文"],
+        focusTitle: "服务旅程断点",
+        focusPoints: [
+          { label: "已知", text: "消费者已提交泵头图片。" },
+          { label: "断点", text: "图片清晰度不足，自动判断会放大误判风险。" },
+          { label: "处理", text: decision?.reason ?? "先提交人工证据复核。" },
+        ],
+      },
+      {
+        key: "promise",
+        eyebrow: "Promise",
+        title: "承诺前先复核。",
+        body: "事实未确认前不创建过度承诺，避免后续再次纠偏。",
+        tags: ["Human Review", "No promise yet", "稳态处理"],
+        focusTitle: "承诺状态",
+        focusPoints: [
+          { label: "状态", text: "还没有可执行服务承诺。" },
+          { label: "条件", text: "人工复核确认责任后，再进入解决路径。" },
+          { label: "体验", text: "复核前先安抚，不要求重复上传。" },
+        ],
+      },
+    ];
+  }
+
+  return [
+    {
+      key: "story",
+      eyebrow: "Consumer Story",
+      title: "她不是第一次来。",
+      body: "消费者已经交过泵头损坏图片，也得到过 48 小时内发出的承诺，现在再次追问进度。",
+      tags: ["第二次进线", "证据已交", "承诺待兑现"],
+      focusTitle: "发生了什么",
+      focusPoints: [
+        { label: "01", text: "消费者已说明粉底液泵头损坏。" },
+        { label: "02", text: `已提交 ${evidenceCount} 张可追踪证据。` },
+        { label: "03", text: "客服已承诺换货单 48 小时内发出。" },
+      ],
+    },
+    {
+      key: "emotion",
+      eyebrow: "Emotion & Effort",
+      title: "耐心正在被消耗。",
+      body: "真正的问题不是再上传图片，而是此前承诺没有变成可见进度。",
+      tags: ["重复沟通", "等待进度", accountability.experience_risk === "HIGH" ? "High Risk" : "Medium Risk"],
+      focusTitle: "为什么体验恶化",
+      focusPoints: [
+        { label: "承诺", text: commitment ? `${commitment.raw_text}，当前状态 ${commitment.status}。` : "已有服务承诺等待确认。" },
+        { label: "打扰", text: "重复索证会让消费者感觉历史材料被忽略。" },
+        { label: "等待", text: accountability.experience_gap_diagnosis.deterioration_cause },
+      ],
+    },
+    {
+      key: "evidence",
+      eyebrow: "Evidence",
+      title: `${evidenceCount} 项证据 · VALID`,
+      body: "直接列明已知事实和无需再问的内容，避免重复索证。",
+      tags: ["订单已匹配", `${evidenceCount} 张图片`, "工单已创建"],
+      focusTitle: "证据状态",
+      focusPoints: [],
+      knownEvidence,
+      missingEvidence,
+      doNotAsk,
+    },
+    {
+      key: "journey",
+      eyebrow: "Journey",
+      title: "已从举证进入追进度。",
+      body: "旅程断点不是事实缺失，而是已承诺事项没有可见进展。",
+      tags: ["Timeline", "换货工单", "等待进度"],
+      focusTitle: "服务旅程断点",
+      focusPoints: [
+        { label: "已完成", text: "消费者已经说明问题并提交图片。" },
+        { label: "已形成", text: "客服已承诺 48 小时内发出换货。" },
+        { label: "当前", text: "消费者再次进线追问是否发出。" },
+      ],
+    },
+    {
+      key: "promise",
+      eyebrow: "Promise",
+      title: commitment ? "承诺已经进入倒计时。" : "承诺需要被激活为责任。",
+      body: commitment ? `${commitment.raw_text} 截止 ${formatClock(commitment.deadline)}，品牌应继续负责。` : "人工确认后，Covenia 会把解决路径写成可跟踪的服务责任。",
+      tags: [commitment?.status ?? "待确认", "品牌负责", "直到送达"],
+      focusTitle: "承诺如何运行",
+      focusPoints: [
+        { label: "来源", text: commitment?.raw_text ?? "来自客服侧承诺与既有换货工单。" },
+        { label: "责任", text: "消费者输入已完整，当前应由品牌侧跟进。" },
+        { label: "完成", text: "不是建单即完成，必须追踪到换货商品送达。" },
+      ],
+    },
+    {
+      key: "action",
+      eyebrow: "Next Best Action",
+      title: decisionText,
+      body: "先核查换货进度，再把可见进展回执给消费者。",
+      tags: [decision?.decision ?? "READY", decision?.rule_id ?? "E1", "无需消费者操作"],
+      focusTitle: "现在应该做什么",
+      focusPoints: [
+        { label: "做", text: "查询既有换货工单和物流揽收状态。" },
+        { label: "不做", text: prohibitedCopy(demoCase.id) },
+        { label: "回复", text: decision?.resolution_path.consumer_reply_draft ?? "告知证据已收到，正在核实换货进度。" },
+      ],
+    },
+  ];
+}
+
+function StoryDeck({
+  demoCase,
+  accountability,
+  journey,
+  decision,
+  phase,
+  acting,
+  loading,
+  onQuery,
+  onGenerate,
+  onApprove,
+  reviewSubmitted,
+}: {
+  demoCase: DemoCase;
+  accountability: AccountabilityState;
+  journey: ExtractedJourney | null;
+  decision: DecisionResult | null;
+  phase: PluginPhase;
+  acting: boolean;
+  loading: boolean;
+  onQuery: () => void;
+  onGenerate: () => void;
+  onApprove: () => void;
+  reviewSubmitted: boolean;
+}) {
+  const cards = useMemo(
+    () => buildStoryCards(demoCase, accountability, journey, decision),
+    [demoCase, accountability, journey, decision],
+  );
+  const [focusKey, setFocusKey] = useState<StoryCardKey | null>(null);
+  const sliderRef = useRef<HTMLDivElement | null>(null);
+  const entryCards = cards.filter((card) => ["emotion", "evidence", "journey", "promise"].includes(card.key));
+
+  useEffect(() => {
+    setFocusKey(null);
+  }, [demoCase.id, phase]);
+
+  const focusCard = focusKey ? cards.find((card) => card.key === focusKey) ?? null : null;
+  const move = (direction: -1 | 1) => {
+    const slider = sliderRef.current;
+    const cardWidth = slider?.querySelector(".story-card")?.getBoundingClientRect().width ?? 220;
+    slider?.scrollBy({ left: direction * (cardWidth + 10), behavior: "smooth" });
+  };
+
+  if (focusCard) {
+    return (
+      <section className="focus-view">
+        <button className="focus-back" onClick={() => setFocusKey(null)} type="button">
+          <ChevronLeft size={15} /> 返回 Customer Snapshot
+        </button>
+        <span className="story-eyebrow">{focusCard.eyebrow}</span>
+        <h2>{focusCard.focusTitle}</h2>
+        {focusCard.key === "evidence" ? (
+          <div className="evidence-focus-grid">
+            <section>
+              <h3>已知证据</h3>
+              {(focusCard.knownEvidence ?? []).map((item) => <p className="evidence-line known" key={item}>✓ {item}</p>)}
+            </section>
+            <section>
+              <h3>待补充证据</h3>
+              {(focusCard.missingEvidence ?? []).map((item) => <p className="evidence-line pending" key={item}>● {item}</p>)}
+            </section>
+            <section className="do-not-ask-chart">
+              <h3>❌ 不要再问</h3>
+              {(focusCard.doNotAsk ?? []).map((item) => <p className="evidence-line blocked" key={item}>❌ {item}</p>)}
+            </section>
+          </div>
+        ) : (
+          <div className="focus-points">
+            {focusCard.focusPoints.map((point) => (
+              <div key={point.label}>
+                <span>{point.label}</span>
+                <p>{point.text}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
+    );
+  }
+
+  return (
+    <section className="story-deck">
+      <div className="story-hero">
+        <span>Customer Snapshot</span>
+        <h2>{cards[0].title}</h2>
+        <p>{cards[0].body}</p>
+        <div>
+          {cards[0].tags.map((tag) => <small key={tag}>{tag}</small>)}
+        </div>
+      </div>
+
+      <div className="card-carousel" aria-label="Customer state cards">
+        <button className="carousel-nav" onClick={() => move(-1)} type="button" aria-label="上一张">
+          <ChevronLeft size={18} />
+        </button>
+        <div className="story-card-strip" ref={sliderRef}>
+          {entryCards.map((card) => (
+            <button className={`story-card card-${card.key}`} key={card.key} onClick={() => setFocusKey(card.key)} type="button">
+              <span>{card.eyebrow}</span>
+              <strong>{card.title}</strong>
+              <p>{card.body}</p>
+              <em>查看判断依据 <ChevronRight size={13} /></em>
+            </button>
+          ))}
+        </div>
+        <button className="carousel-nav" onClick={() => move(1)} type="button" aria-label="下一张">
+          <ChevronRight size={18} />
+        </button>
+      </div>
+
+      <StoryActionPanel
+        demoCase={demoCase}
+        decision={decision}
+        phase={phase}
+        acting={acting}
+        loading={loading}
+        onQuery={onQuery}
+        onGenerate={onGenerate}
+        onApprove={onApprove}
+        reviewSubmitted={reviewSubmitted}
+      />
+    </section>
+  );
+}
+
+function StoryActionPanel({
+  demoCase,
+  decision,
+  phase,
+  acting,
+  loading,
+  onQuery,
+  onGenerate,
+  onApprove,
+  reviewSubmitted,
+}: {
+  demoCase: DemoCase;
+  decision: DecisionResult | null;
+  phase: PluginPhase;
+  acting: boolean;
+  loading: boolean;
+  onQuery: () => void;
+  onGenerate: () => void;
+  onApprove: () => void;
+  reviewSubmitted: boolean;
+}) {
+  const decisionType = decision?.decision;
+  return (
+    <section className="story-action-panel">
+      <span>Next Best Action</span>
+      <h3>{decision ? decisionLabels[decision.decision].title : "优先核查换货进度"}</h3>
+      <p>{decision?.reason ?? "消费者已经交过材料，此刻应该先查进度，而不是重复索证。"}</p>
+      {phase === "resolution" ? (
+        <button className="primary-action" onClick={onApprove} disabled={acting || loading}>
+          <ClipboardCheck size={16} /> 人工确认解决路径 <ChevronRight size={16} />
+        </button>
+      ) : decisionType === "ALLOW" ? (
+        <button className="primary-action allow-action" onClick={onGenerate} disabled={acting}>
+          生成精准索证回复 <ChevronRight size={16} />
+        </button>
+      ) : decisionType === "HUMAN_REVIEW" ? (
+        <button className="primary-action review-action" onClick={onGenerate} disabled={acting || reviewSubmitted}>
+          {reviewSubmitted ? "人工复核已提交" : "提交人工证据复核"} <UserRoundCheck size={16} />
+        </button>
+      ) : (
+        <div className="action-stack">
+          <button className="primary-action" onClick={onQuery} disabled={acting}>
+            {acting ? <Loader2 size={16} className="spin" /> : <Search size={16} />}
+            查询补发进度 <ChevronRight size={16} />
+          </button>
+          <button className="secondary-action" onClick={onGenerate} disabled={acting}>
+            <WandSparkles size={15} /> 生成解决回复
+          </button>
+        </div>
+      )}
+      <small>{prohibitedCopy(demoCase.id)}</small>
+    </section>
+  );
+}
+
+function priorityScore(caseItem: DemoCase) {
+  const base = caseItem.expectedDecision === "INTERVENE" ? 110 : caseItem.expectedDecision === "HUMAN_REVIEW" ? 86 : 72;
+  const contactBoost = Math.min(caseItem.input.conversation.length * 4, 18);
+  const evidenceBoost = Math.min(caseItem.input.evidence_images.length * 5, 15);
+  const ticketBoost = caseItem.input.service_tickets.length ? 8 : 0;
+  return base + contactBoost + evidenceBoost + ticketBoost;
+}
+
+function priorityBand(caseItem: DemoCase) {
+  const score = priorityScore(caseItem);
+  if (score >= 120) return "red";
+  if (score >= 95) return "orange";
+  return "yellow";
+}
+
+function priorityReasons(caseItem: DemoCase) {
+  if (caseItem.expectedDecision === "INTERVENE") return ["承诺待兑现", "重复索证风险", "已有工单未闭环"];
+  if (caseItem.expectedDecision === "HUMAN_REVIEW") return ["证据不确定", "需人工复核", "避免误判"];
+  return ["问题范围变化", "只补当前缺口", "避免重复材料"];
+}
+
+function PriorityQueue({
+  selectedId,
+  onSelectCase,
+}: {
+  selectedId: string;
+  onSelectCase: (caseId: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const ordered = useMemo(() => [...demoCases].sort((a, b) => priorityScore(b) - priorityScore(a)), []);
+  const currentIndex = Math.max(0, ordered.findIndex((item) => item.id === selectedId));
+  const current = ordered[currentIndex] ?? ordered[0];
+  const counts = demoCases.reduce((acc, item) => {
+    acc[priorityBand(item)] += 1;
+    return acc;
+  }, { red: 0, orange: 0, yellow: 0 });
+  const move = (direction: -1 | 1) => {
+    const nextIndex = (currentIndex + direction + ordered.length) % ordered.length;
+    onSelectCase(ordered[nextIndex].id);
+  };
+
+  return (
+    <section className="priority-queue-card">
+      <div className="priority-queue-top">
+        <button type="button" onClick={() => move(-1)} aria-label="上一位消费者"><ChevronLeft size={15} /></button>
+        <div>
+          <span>Priority · {currentIndex + 1}/{ordered.length}</span>
+          <strong>{current?.title ?? "—"}</strong>
+        </div>
+        <button type="button" onClick={() => move(1)} aria-label="下一位消费者"><ChevronRight size={15} /></button>
+        <button className="priority-toggle-button" type="button" onClick={() => setOpen((value) => !value)} aria-expanded={open}>
+          ⚡ Priority <small>{counts.red}R / {counts.orange}O / {counts.yellow}Y</small>
+        </button>
+      </div>
+      {open ? (
+        <div className="priority-list-panel">
+          <div className="priority-list-head">
+            <span>Priority Queue</span>
+            <small>Risk + Urgency + Promise + Waiting</small>
+          </div>
+          {ordered.map((item, index) => (
+            <button
+              type="button"
+              className={`priority-list-item ${priorityBand(item)} ${item.id === selectedId ? "selected" : ""}`}
+              key={item.id}
+              onClick={() => onSelectCase(item.id)}
+            >
+              <b>{index + 1}</b>
+              <strong>{item.title} · {priorityScore(item)}</strong>
+              <small>{index === 0 ? "Why #1" : "Why"}：{priorityReasons(item).join(" · ")}</small>
+            </button>
+          ))}
+        </div>
+      ) : null}
+    </section>
+  );
+}
+
 function CoveniaPlugin({
   demoCase,
+  selectedId,
+  onSelectCase,
   accountability,
   journey,
   decision,
@@ -802,6 +1327,8 @@ function CoveniaPlugin({
   reviewSubmitted,
 }: {
   demoCase: DemoCase;
+  selectedId: string;
+  onSelectCase: (caseId: string) => void;
   accountability: AccountabilityState | null;
   journey: ExtractedJourney | null;
   decision: DecisionResult | null;
@@ -880,70 +1407,20 @@ function CoveniaPlugin({
             {decision && decision.decision !== "ALLOW" ? <DecisionBanner decision={decision} /> : (
               <div className="quiet-status"><Sparkles size={14} /> 已读懂当前服务上下文</div>
             )}
-            <AccountabilitySummary accountability={accountability} />
-            <section className="answer-section known-section">
-              <div className="section-number">01</div>
-              <div className="section-content">
-                <span className="answer-label">已经知道什么</span>
-                <ul>
-                  {initialKnownFacts(demoCase.id).map((fact) => (
-                    <li key={fact}><Check size={14} /> <span>{fact}</span></li>
-                  ))}
-                </ul>
-              </div>
-            </section>
-            <section className={`answer-section stop-section state-${(decisionType ?? demoCase.expectedDecision).toLowerCase()}`}>
-              <div className="section-number">02</div>
-              <div className="section-content">
-                <span className="answer-label">现在不能做什么</span>
-                <div className="stop-message">
-                  <AlertTriangle size={17} />
-                  <strong>{prohibitedCopy(demoCase.id)}</strong>
-                </div>
-              </div>
-            </section>
-            <section className="answer-section next-section">
-              <div className="section-number">03</div>
-              <div className="section-content">
-                <span className="answer-label">下一步做什么</span>
-                {phase === "resolution" ? (
-                  <>
-                    <button className="primary-action" onClick={onApprove} disabled={acting || loading}>
-                      <ClipboardCheck size={16} /> 人工确认解决路径 <ChevronRight size={16} />
-                    </button>
-                    <p className="action-hint">沿用已有工单，确认后由品牌持续跟进至送达</p>
-                  </>
-                ) : decisionType === "ALLOW" ? (
-                  <>
-                    <button className="primary-action allow-action" onClick={onGenerate} disabled={acting}>
-                      生成精准索证回复 <ChevronRight size={16} />
-                    </button>
-                    <p className="action-hint">只请求正装泵头近照，不重复索取赠品材料</p>
-                  </>
-                ) : decisionType === "HUMAN_REVIEW" ? (
-                  <>
-                    <button className="primary-action review-action" onClick={onGenerate} disabled={acting || reviewSubmitted}>
-                      {reviewSubmitted ? "人工复核已提交" : "提交人工证据复核"} <UserRoundCheck size={16} />
-                    </button>
-                    <p className="action-hint">先核实图片，不要求消费者立刻重传</p>
-                  </>
-                ) : (
-                  <div className="action-stack">
-                    <button className="primary-action" onClick={onQuery} disabled={acting}>
-                      {acting ? <Loader2 size={16} className="spin" /> : <Search size={16} />}
-                      查询补发进度 <ChevronRight size={16} />
-                    </button>
-                    <button className="secondary-action" onClick={onGenerate} disabled={acting}>
-                      <WandSparkles size={15} /> 生成解决回复
-                    </button>
-                  </div>
-                )}
-              </div>
-            </section>
-
-            {phase === "resolution" && decision ? (
-              <ResolutionPreview decision={decision} onApprove={onApprove} />
-            ) : null}
+            <PriorityQueue selectedId={selectedId} onSelectCase={onSelectCase} />
+            <StoryDeck
+              demoCase={demoCase}
+              accountability={accountability}
+              journey={journey}
+              decision={decision}
+              phase={phase}
+              acting={acting}
+              loading={loading}
+              onQuery={onQuery}
+              onGenerate={onGenerate}
+              onApprove={onApprove}
+              reviewSubmitted={reviewSubmitted}
+            />
 
             <button className="details-toggle" onClick={onToggleDetails} aria-expanded={detailsOpen}>
               <span><Inbox size={15} /> 诊断与事实依据</span>
