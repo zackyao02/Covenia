@@ -30,16 +30,19 @@ docs/09-running-application.md
 docs/10-emotion-evidence-and-action-boundary.md
 docs/11-p1-continuity-intelligence.md
 docs/12-remote-acceptance-guide.md
+docs/13-jev-integration-todo.md
 
 ## 可运行应用
 
 package.json
 server/domain.js
+server/jev.js
 server/service.js
 server/index.js
 web/index.html
 web/styles.css
 web/app.js
+tests/jev.test.js
 tests/service.test.js
 
 ## 机器可校验契约与样例
@@ -58,6 +61,7 @@ schemas/customer-state.schema.json
 schemas/risk-case.schema.json
 schemas/multi-source-fusion.schema.json
 schemas/emerging-issue.schema.json
+schemas/jev-decision-support.schema.json
 fixtures/README.md
 fixtures/demo-cases.json
 fixtures/ground-truth.json

@@ -16,6 +16,7 @@ import {
   idempotencyFingerprint,
   requestId,
 } from "./domain.js";
+import { JevClient } from "./jev.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const fixturesPath = path.resolve(__dirname, "../fixtures/demo-cases.json");
@@ -31,11 +32,12 @@ export class ServiceError extends Error {
 }
 
 export class CoveniaService {
-  constructor(fixtures = JSON.parse(fs.readFileSync(fixturesPath, "utf8")), emergingSignals = JSON.parse(fs.readFileSync(emergingSignalsPath, "utf8"))) {
+  constructor(fixtures = JSON.parse(fs.readFileSync(fixturesPath, "utf8")), emergingSignals = JSON.parse(fs.readFileSync(emergingSignalsPath, "utf8")), jevClient = new JevClient()) {
     this.fixtures = new Map(fixtures.map((item) => [item.demo_case_id, clone(item)]));
     this.emergingSignals = clone(emergingSignals);
     this.runtime = new Map();
     this.idempotency = new Map();
+    this.jevClient = jevClient;
   }
 
   getFixture(caseId) {
@@ -185,6 +187,42 @@ export class CoveniaService {
       model_metadata: { provider: "DETERMINISTIC_DEMO_ENGINE", model: "covenia-rules-v1.1", cached_result: false, pii_masked_count: 0 },
       cost_metrics: { latency_ms: 8, token_usage: 0, rules_applied: snapshot.customerState.risk.factors.length },
     };
+  }
+
+  async analyzeWithJev(body = {}) {
+    if (!body.case_id) throw new ServiceError("SCHEMA_INVALID", "case_id 必填");
+    if (body.case_input && body.challenge_mode !== true) throw new ServiceError("SCHEMA_INVALID", "case_input 仅可在 challenge_mode 下使用");
+    const snapshot = this.buildSnapshot(body.case_id, { caseInput: body.case_input, evaluationTime: body.evaluation_time });
+    const operationalRiskBefore = clone(snapshot.customerState.risk);
+    try {
+      const jev = await this.jevClient.evaluate(snapshot);
+      return {
+        case_id: body.case_id,
+        jev,
+        operational_risk: operationalRiskBefore,
+        integration_policy: "HARD_RULES_FIRST_JEV_ADVISORY",
+      };
+    } catch (error) {
+      return {
+        case_id: body.case_id,
+        jev: {
+          status: "ERROR",
+          provider: "TYPESAFE_JEV",
+          mode: this.jevClient.mode,
+          model: this.jevClient.model,
+          reason: error.name === "TimeoutError" ? "TIMEOUT" : "PROVIDER_ERROR",
+          signals: null,
+          governance: {
+            advisory_only: true,
+            overrides_existing_rules: false,
+            changes_operational_risk_score: false,
+            requires_human_confirmation: true,
+          },
+        },
+        operational_risk: operationalRiskBefore,
+        integration_policy: "FAIL_OPEN_TO_EXISTING_RULES",
+      };
+    }
   }
 
   suggestedReply(snapshot) {

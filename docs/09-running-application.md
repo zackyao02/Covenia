@@ -48,8 +48,18 @@ npm test
 - `GET /api/emerging-issues`
 - `GET /api/monitor/deadlines`
 - `POST /api/monitor/deadlines/run`
+- `GET /api/jev/status`
+- `POST /api/jev/cases/analyze`
 
 另有 `GET /api/health` 用于运行状态检查。
+
+JEV 默认使用不访问外部网络的契约 Mock。真实调用需要显式配置：
+
+```bash
+JEV_MODE=live TYPESAFE_API_KEY='<key>' JEV_MODEL='jev-latest' npm start
+```
+
+详细治理边界与上线 To-do 见 `docs/13-jev-integration-todo.md`。
 
 ## 实现边界
 
@@ -58,5 +68,5 @@ npm test
 - 数据状态存于进程内存，服务重启后恢复到 fixture 初始状态。
 - 不自动退款、赔付、补发或认定责任；需要审批的动作保留人工确认。
 - 不接入千牛、CRM、仓库或物流生产系统；页面为真实接口驱动的比赛演示壳。
-- 模型调用暂由 `DETERMINISTIC_DEMO_ENGINE` 代替，接口保留 `model_metadata`，后续可接入受治理的模型 Provider。
+- 核心状态推导仍由 `DETERMINISTIC_DEMO_ENGINE` 完成；JEV 仅作为受治理的概率化软信号 Provider，默认使用明确标注的契约 Mock。
 - P1 Journey Timeline、Multi-source Fusion、Deadline Monitor 与 Emerging Issue 的设计和验收见 `docs/11-p1-continuity-intelligence.md`。

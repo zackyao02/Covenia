@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://covenia.local/schemas/jev-decision-support.schema.json",
+  "title": "JEV Decision Support",
+  "type": "object",
+  "required": ["status", "provider", "mode", "model", "signals", "governance"],
+  "properties": {
+    "status": { "enum": ["READY", "UNAVAILABLE", "ERROR"] },
+    "provider": { "enum": ["TYPESAFE_JEV", "JEV_CONTRACT_MOCK"] },
+    "mode": { "enum": ["off", "mock", "live"] },
+    "model": { "type": "string" },
+    "signals": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "required": ["emotion_change", "needs_human_review", "service_urgency"],
+          "properties": {
+            "emotion_change": {
+              "type": "object",
+              "required": ["selected", "confidence", "probabilities", "primitive"],
+              "properties": {
+                "selected": { "enum": ["improving", "stable", "worsening"] },
+                "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+                "probabilities": { "type": "object" },
+                "primitive": { "const": "choice" }
+              }
+            },
+            "needs_human_review": {
+              "type": "object",
+              "required": ["probability", "threshold", "candidate", "primitive"],
+              "properties": {
+                "probability": { "type": "number", "minimum": 0, "maximum": 1 },
+                "threshold": { "type": "number", "minimum": 0, "maximum": 1 },
+                "candidate": { "type": "boolean" },
+                "primitive": { "const": "noul" }
+              }
+            },
+            "service_urgency": {
+              "type": "object",
+              "required": ["score", "confidence", "probabilities", "primitive"],
+              "properties": {
+                "score": { "type": "number", "minimum": 0, "maximum": 3 },
+                "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+                "probabilities": { "type": "object" },
+                "primitive": { "const": "score" }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "governance": {
+      "type": "object",
+      "required": ["advisory_only", "overrides_existing_rules", "changes_operational_risk_score", "requires_human_confirmation"],
+      "properties": {
+        "advisory_only": { "const": true },
+        "overrides_existing_rules": { "const": false },
+        "changes_operational_risk_score": { "const": false },
+        "requires_human_confirmation": { "const": true }
+      }
+    }
+  }
+}

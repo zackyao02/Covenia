@@ -2,13 +2,14 @@
 
 ## 1. 契约基线
 
-四个接口不增加。`schemas/` 中的请求 Schema、领域 Schema 和本文件共同构成唯一实现基线。
+四个核心动作接口保持不变；JEV 作为可选分析 Provider 增加独立只读决策接口。`schemas/` 中的请求 Schema、领域 Schema 和本文件共同构成唯一实现基线。
 
 所有响应使用统一外层：`{data, error, request_id}`。成功时 `error: null`；失败时 `data: null`，并给出机器可读的 `error.code`、面向开发的 `error.message` 与 `error.retryable`。`request_id` 在成功和失败时都必填，用于日志与审计关联。
 
 | 接口 | 请求 Schema | 成功 `data` | 关键错误 |
 |---|---|---|---|
 | `POST /api/cases/analyze` | `analyze-case-request.schema.json` | `ExtractedJourney`、`AccountabilityState`、`model_metadata` | `SCHEMA_INVALID`、`MODEL_UNAVAILABLE`、`MODEL_OUTPUT_INVALID` |
+| `POST /api/jev/cases/analyze` | `case_id` | JEV typed soft signals、原运营 Risk、集成策略 | Provider 失败时返回治理化 ERROR 并保留原规则链 |
 | `POST /api/actions/evaluate` | `evaluate-action-request.schema.json` | `DecisionResult` | `SCHEMA_INVALID`、`E0_NO_RULE_MATCHED` |
 | `POST /api/resolutions/approve` | `approve-resolution-request.schema.json` | 更新后的账本、`approved_resolution`、`audit_trail` | `VALIDATION_ERROR`、`IDEMPOTENCY_CONFLICT` |
 | `POST /api/events/shipment` | `shipment-event-request.schema.json` | 更新后的账本、催办候选、通知草稿 | `INVALID_EVENT_TRANSITION`、`IDEMPOTENCY_CONFLICT` |
@@ -22,6 +23,8 @@
 可信输入为 `{case_id, evaluation_time?, challenge_mode?, case_input?}`。后端按 `case_id` 从赛事数据装载事实；仅在 `challenge_mode: true` 时允许 `case_input` 作为演示变体。承诺候选仅来自 `speaker: AGENT` 的消息，敏感字段先掩码再送入模型。
 
 模型失败时可返回缓存结果，但必须在响应的 `model_metadata.cached_result`、界面角标和治理记录三处同时可见。
+
+JEV 接口将最小化后的 Customer State 作为 `state`，一次并行请求 `choice / noul / score` 三种问题。JEV 输出只进入建议层，不覆盖体验防线、权限、审批或当前运营 Risk Score。完整 To-do 和上线门槛见 `docs/13-jev-integration-todo.md`。
 
 ## 3. 评估动作
 

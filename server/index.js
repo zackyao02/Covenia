@@ -83,8 +83,12 @@ const server = http.createServer(async (request, response) => {
     if (request.method === "GET" && url.pathname === "/api/monitor/deadlines") {
       return sendJson(response, 200, envelope(service.deadlineMonitoringStatus(), null, id));
     }
+    if (request.method === "GET" && url.pathname === "/api/jev/status") {
+      return sendJson(response, 200, envelope(service.jevClient.status(), null, id));
+    }
     const routes = new Map([
       ["/api/cases/analyze", (body) => service.analyze(body)],
+      ["/api/jev/cases/analyze", (body) => service.analyzeWithJev(body)],
       ["/api/actions/evaluate", (body) => service.evaluate(body)],
       ["/api/resolutions/approve", (body) => service.approve(body)],
       ["/api/events/shipment", (body) => service.shipment(body)],
@@ -92,7 +96,7 @@ const server = http.createServer(async (request, response) => {
     ]);
     if (request.method === "POST" && routes.has(url.pathname)) {
       const body = await readJson(request);
-      const data = routes.get(url.pathname)(body);
+      const data = await routes.get(url.pathname)(body);
       return sendJson(response, 200, envelope(data, null, id));
     }
     if (request.method === "GET" && serveStatic(url.pathname, response)) return;

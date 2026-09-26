@@ -77,6 +77,14 @@ button { cursor: pointer; }
 .emotion-actions { display: grid; gap: 6px; margin-top: 9px; }
 .emotion-action { color: var(--green-dark); font-size: 11px; padding-left: 16px; position: relative; }
 .emotion-action::before { content: "→"; position: absolute; left: 0; }
+.jev-card { background: linear-gradient(145deg, #f8fbff, #f5f3ff); border-color: #d9d6fe; }
+.jev-signals { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.jev-signal { padding: 12px; border: 1px solid #dddaf8; border-radius: 12px; background: rgba(255, 255, 255, .82); display: grid; gap: 4px; }
+.jev-signal span { color: var(--muted); font-size: 12px; }
+.jev-signal strong { color: #3730a3; font-size: 22px; }
+.jev-signal small { color: #625f79; line-height: 1.4; }
+.jev-signal.experimental { border-style: dashed; }
+.jev-governance { margin-top: 10px; padding: 10px 12px; border-radius: 10px; background: #ede9fe; color: #4c1d95; font-size: 12px; line-height: 1.5; }
 .card, .table-card, .risk-detail { background: white; border: 1px solid var(--line); border-radius: 14px; padding: 15px; }
 .card-title { display: flex; justify-content: space-between; gap: 12px; align-items: center; margin-bottom: 11px; }
 .card-title h3, .detail-section h3 { margin: 0; font-size: 14px; }

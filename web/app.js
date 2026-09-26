@@ -1,4 +1,4 @@
-const state = { cases: [], selectedCaseId: null, analysis: null, emergingIssues: [], monitorStatus: null };
+const state = { cases: [], selectedCaseId: null, analysis: null, jev: null, emergingIssues: [], monitorStatus: null };
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
@@ -63,12 +63,39 @@ async function selectCase(caseId) {
   $("#copilot-loading").classList.remove("hidden");
   $("#copilot-content").classList.add("hidden");
   try {
-    state.analysis = await api("/api/cases/analyze", { method: "POST", body: JSON.stringify({ case_id: caseId }) });
+    const body = JSON.stringify({ case_id: caseId });
+    const [analysis, jevResult] = await Promise.all([
+      api("/api/cases/analyze", { method: "POST", body }),
+      api("/api/jev/cases/analyze", { method: "POST", body }).catch((error) => ({ jev: { status: "ERROR", reason: error.message, signals: null, governance: { disclaimer: "JEV 暂不可用，现有规则链继续工作。" } } })),
+    ]);
+    state.analysis = analysis;
+    state.jev = jevResult.jev;
     renderCopilot();
     renderDetail();
     renderRiskTable();
   } catch (error) { toast(error.message); }
   finally { $("#copilot-loading").classList.add("hidden"); $("#copilot-content").classList.remove("hidden"); }
+}
+
+function renderJev() {
+  const jev = state.jev;
+  if (!jev || jev.status !== "READY") {
+    $("#jev-status").textContent = jev?.status ?? "UNAVAILABLE";
+    $("#jev-signals").innerHTML = `<p class="story-latest">JEV 信号不可用：${escapeHtml(jev?.reason ?? "未配置")}。Covenia 继续使用现有确定性规则。</p>`;
+    $("#jev-governance").textContent = jev?.governance?.disclaimer ?? "软信号失败不得阻断客服工作流。";
+    return;
+  }
+  const emotion = jev.signals.emotion_change;
+  const human = jev.signals.needs_human_review;
+  const urgency = jev.signals.service_urgency;
+  const preview = jev.decision_support.experimental_formula_preview;
+  $("#jev-status").textContent = `${jev.provider} · ${jev.model}`;
+  $("#jev-signals").innerHTML = `
+    <div class="jev-signal"><span>P(情绪恶化)</span><strong>${Math.round((emotion.probabilities.worsening ?? 0) * 100)}%</strong><small>Choice · ${escapeHtml(emotion.selected)} · confidence ${Math.round(emotion.confidence * 100)}%</small></div>
+    <div class="jev-signal"><span>P(需人工复核)</span><strong>${Math.round(human.probability * 100)}%</strong><small>Noul · 阈值 ${Math.round(human.threshold * 100)}% · ${human.candidate ? "候选" : "未触发"}</small></div>
+    <div class="jev-signal"><span>服务紧迫度</span><strong>${Number(urgency.score).toFixed(1)} / 3</strong><small>Score · confidence ${Math.round(urgency.confidence * 100)}%</small></div>
+    <div class="jev-signal experimental"><span>软信号公式预览</span><strong>${preview.soft_signal_points}</strong><small>${escapeHtml(preview.expression)} · 不计入当前 Risk</small></div>`;
+  $("#jev-governance").innerHTML = `<strong>${jev.mode === "live" ? "LIVE JEV" : "CONTRACT MOCK"}</strong> · ${escapeHtml(jev.governance.disclaimer)}`;
 }
 
 function renderConversation() {
@@ -80,6 +107,7 @@ function renderConversation() {
 function renderCopilot() {
   const data = state.analysis;
   const cs = data.customer_state;
+  renderJev();
   $("#story-title").textContent = data.consumer_story.what_happened;
   $("#story-latest").textContent = `“${data.consumer_story.latest_message}”`;
   $("#risk-score").textContent = cs.risk.score;
