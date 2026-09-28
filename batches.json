@@ -63,7 +63,11 @@
     ],
     "auto_start_next_batch": false,
     "revalidation": "Input/contract/code artifact changes invalidate consuming verification; coordinator reruns affected tests before advancing",
-    "rollback": "Revert exact owned commits in reverse dependency order; preserve audit/event history and verified backups"
+    "rollback": "Revert exact owned commits in reverse dependency order; preserve audit/event history and verified backups",
+    "standing_rules": [
+      "每个任务线程在验收并集成完成后应被归档；调度器不得无限累积线程。每批集成回执记录本批创建的线程数并归档已完成批次的线程。同一逻辑步骤内的收尾工作应在同一线程内完成，不得拆分新建。",
+      "依赖人工动作的阻塞（归档、授权、外部交付）必须在回执中显式标记为“等待人工动作：<具体动作>”，并给出该动作不做时的后果与替代方案。"
+    ]
   },
   "external_gates": [
     {
