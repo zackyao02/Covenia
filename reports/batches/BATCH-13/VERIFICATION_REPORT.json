@@ -1,0 +1,89 @@
+{
+  "report_version": "1.0",
+  "batch_id": "BATCH-13",
+  "verdict": "PASS",
+  "reviewed_base_sha": "cfe1b476f9da26614c0d8f861620c80ae56225e3",
+  "reviewed_sha": "7fef454bd8407a82768f944f5ad6d0a390472665",
+  "reviewed_code_commits": ["5af1ff0a0d59023d41aea357fcf65ea0ae243d1a"],
+  "contract_version": "8314c76502cbc9d47d8432b7fe53f7d9fb82de82 / BATCH-03 contract-lock-v1",
+  "plan_sha256": {
+    "MASTER_PLAN.md": "DAAE3CCF0A11710BFE5B48098AC9668CBD0AFBFEA63C66B74EDFF57C94885A5A",
+    "batches.json": "1E711436F72BD9946052ABE9D120E13B199028FFA9D3795C1382308B8247EEB6",
+    "method": "git show <reviewed_sha>:<path> raw blob bytes; blob/LF, never worktree/CRLF"
+  },
+  "verified_at": "2026-09-15T00:44:46.6579217+08:00",
+  "independent_context": true,
+  "environment": {
+    "python": "C:\\cov-run\\batch-13-repair-1-verify-2\\venv\\Scripts\\python.exe",
+    "python_version": "3.13.5",
+    "sys_prefix": "C:\\cov-run\\batch-13-repair-1-verify-2\\venv",
+    "sys_base_prefix": "D:\\python",
+    "node": "NOT_REQUIRED",
+    "run_dir": "C:\\cov-run\\batch-13-repair-1-verify-2",
+    "venv_longest_file_path_length": 174,
+    "venv_path_length_limit": 250,
+    "global_install": false,
+    "user_install": false,
+    "evidence": "reports/batches/BATCH-13/verification-evidence/environment-and-checks.txt"
+  },
+  "dependency_checks": [
+    {"dependency": "BATCH-04", "result": "PASS", "reviewed_sha": "3db29f343ee176b69a24a9b23568dbb0987823e9", "code_commit": "e1070f150de14fa134a5492372828628ca38e89e", "evidence": "reports/batches/BATCH-04/VERIFICATION_REPORT.json"},
+    {"dependency": "requirements-dev.lock", "result": "PASS", "changed_in_review_range": false, "raw_blob_sha256": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04"}
+  ],
+  "external_gate_checks": [
+    {"gate": "BATCH-13 external gates", "result": "NOT_REQUIRED", "detail": "The locked BATCH-13 plan declares no external gate."},
+    {"gate": "contract lock", "result": "PASS", "detail": "BATCH-03 contract-lock-v1 matches the fixed contract version."}
+  ],
+  "scope_audit": {
+    "passed": true,
+    "changed_files": ["backend/src/covenia_b/commitments/compiler.py", "backend/src/covenia_b/commitments/models.py", "backend/tests/commitments/test_compiler.py", "reports/batches/BATCH-13/IMPLEMENTATION_REPORT.json", "reports/batches/BATCH-13/IMPLEMENTATION_REPORT.md", "reports/batches/BATCH-13/commands.json", "reports/batches/BATCH-13/compiled-promises.json", "reports/batches/BATCH-13/environment.json", "reports/batches/BATCH-13/pip-check.txt", "reports/batches/BATCH-13/time-boundaries.json"],
+    "violations": [],
+    "requirements_lock_changed": false,
+    "implementation_precreated_verifier_output": false,
+    "audit_range": "cfe1b476f9da26614c0d8f861620c80ae56225e3..7fef454bd8407a82768f944f5ad6d0a390472665",
+    "evidence": "reports/batches/BATCH-13/verification-evidence/scope-and-report-audit.txt"
+  },
+  "criteria": [
+    {"criterion": "如库存充足，48小时内发出 is non-ACTIVE with null deadline and next_check_at", "result": "PASS", "evidence": ["reports/batches/BATCH-13/verification-evidence/independent-probe.json#conditional"]},
+    {"criterion": "可能48小时内发出 is non-ACTIVE with null deadline and next_check_at", "result": "PASS", "evidence": ["reports/batches/BATCH-13/verification-evidence/independent-probe.json#indeterminate"]},
+    {"criterion": "换货单已创建，48小时内发出 is ACTIVE and preserves 2026-05-07T10:27:37+08:00", "result": "PASS", "evidence": ["reports/batches/BATCH-13/verification-evidence/independent-probe.json#positive"]},
+    {"criterion": "Consumer text or model ACTIVE suggestion cannot activate; refund or compensation cannot auto-activate", "result": "PASS", "evidence": ["reports/batches/BATCH-13/verification-evidence/independent-probe.json#consumer_model_active", "reports/batches/BATCH-13/verification-evidence/independent-probe.json#refund"]},
+    {"criterion": "No trusted policy or open ticket support, ambiguous, conditional, indeterminate, and negated text do not create deterministic deadlines", "result": "PASS", "evidence": ["reports/batches/BATCH-13/verification-evidence/independent-probe.json#missing_policy", "reports/batches/BATCH-13/verification-evidence/independent-probe.json#missing_ticket", "reports/batches/BATCH-13/verification-evidence/independent-probe.json#ambiguous", "reports/batches/BATCH-13/verification-evidence/independent-probe.json#negated"]},
+    {"criterion": "Original time, duration, and timezone affect output; later fixed clock does not; future message is rejected", "result": "PASS", "evidence": ["reports/batches/BATCH-13/verification-evidence/independent-probe.json#duration_24h", "reports/batches/BATCH-13/verification-evidence/independent-probe.json#timezone_utc", "reports/batches/BATCH-13/verification-evidence/independent-probe.json#later_fixed_clock", "reports/batches/BATCH-13/verification-evidence/independent-probe.json#future"]},
+    {"criterion": "Issued promise remains distinct from pending service delivery and next-check derives from approved offset without a fixed date", "result": "PASS", "evidence": ["reports/batches/BATCH-13/verification-evidence/independent-probe.json#positive", "reports/batches/BATCH-13/verification-evidence/independent-probe.json#approved_offset"]},
+    {"criterion": "All required tests, lint, dependency check, hashes, scope, and implementation-report metadata are independently checked", "result": "PASS", "evidence": ["reports/batches/BATCH-13/verification-evidence/environment-and-checks.txt", "reports/batches/BATCH-13/verification-evidence/raw-blob-hashes.json", "reports/batches/BATCH-13/verification-evidence/scope-and-report-audit.txt"]}
+  ],
+  "commands": [
+    {"command": "C:\\cov-run\\batch-13-repair-1-verify-2\\venv\\Scripts\\python.exe -m pytest backend/tests/commitments -q -p no:cacheprovider", "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-13-repair-1-verify-2", "exit_code": 0, "mode": "UNIT", "output": "reports/batches/BATCH-13/verification-evidence/environment-and-checks.txt", "result": "15 passed"},
+    {"command": "C:\\cov-run\\batch-13-repair-1-verify-2\\venv\\Scripts\\python.exe -m ruff check --no-cache backend/src/covenia_b/commitments backend/tests/commitments", "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-13-repair-1-verify-2", "exit_code": 0, "mode": "LINT", "output": "reports/batches/BATCH-13/verification-evidence/environment-and-checks.txt"},
+    {"command": "C:\\cov-run\\batch-13-repair-1-verify-2\\venv\\Scripts\\python.exe -m pip check", "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-13-repair-1-verify-2", "exit_code": 0, "mode": "DEPENDENCY", "output": "reports/batches/BATCH-13/verification-evidence/environment-and-checks.txt", "result": "No broken requirements found."},
+    {"command": "C:\\cov-run\\batch-13-repair-1-verify-2\\venv\\Scripts\\python.exe -m pytest backend/tests -q -p no:cacheprovider", "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-13-repair-1-verify-2", "exit_code": 0, "mode": "AFFECTED_BACKEND", "output": "reports/batches/BATCH-13/verification-evidence/environment-and-checks.txt", "result": "112 passed"},
+    {"command": "git diff --check cfe1b476f9da26614c0d8f861620c80ae56225e3 7fef454bd8407a82768f944f5ad6d0a390472665", "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-13-repair-1-verify-2", "exit_code": 0, "mode": "SCOPE", "output": "reports/batches/BATCH-13/verification-evidence/environment-and-checks.txt"},
+    {"command": "independent self-contained commitment probe with AUDIT_* identifiers", "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-13-repair-1-verify-2", "exit_code": 0, "mode": "NEGATIVE_AND_POSITIVE_PROBE", "output": "reports/batches/BATCH-13/verification-evidence/independent-probe.json"}
+  ],
+  "artifact_hashes": {
+    "MASTER_PLAN.md": {"sha256": "DAAE3CCF0A11710BFE5B48098AC9668CBD0AFBFEA63C66B74EDFF57C94885A5A", "basis": "reviewed SHA raw git blob/LF"},
+    "batches.json": {"sha256": "1E711436F72BD9946052ABE9D120E13B199028FFA9D3795C1382308B8247EEB6", "basis": "reviewed SHA raw git blob/LF"},
+    "backend/src/covenia_b/commitments/compiler.py": {"sha256": "B45D1A9F58B9B7222B5F8671D169A7CD59661DAFF347B7373EDE989722E7FAE6", "basis": "reviewed SHA raw git blob/LF"},
+    "backend/src/covenia_b/commitments/models.py": {"sha256": "6E7F804CF61DCE90057E2AF6A8E15BBFE9F935413F79C2302F0176BE4443B921", "basis": "reviewed SHA raw git blob/LF"},
+    "backend/tests/commitments/test_compiler.py": {"sha256": "CC074AEBAD9AD98FBF8AE25559A81CE3829B6740A85761E4E05AB0D110065D4A", "basis": "reviewed SHA raw git blob/LF"},
+    "backend/requirements-dev.lock": {"sha256": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04", "basis": "reviewed SHA raw git blob/LF", "changed": false}
+  },
+  "negative_controls": [
+    {"control": "Consumer message plus model ACTIVE recommendation", "result": "PASS", "effect": "IGNORED with null time boundaries."},
+    {"control": "Refund, missing policy, missing ticket, ambiguous, negated, and future source inputs", "result": "PASS", "effect": "No ACTIVE output and no deterministic deadline."},
+    {"control": "Unique AUDIT_* identifiers instead of fixture Demo IDs", "result": "PASS", "effect": "The positive result is fact-driven rather than demo-ID-specific."}
+  ],
+  "findings": [],
+  "minimal_fix_list": [],
+  "blockers": [],
+  "recheck_commands": [
+    "C:\\cov-run\\batch-13-repair-1-verify-2\\venv\\Scripts\\python.exe -m pytest backend/tests/commitments -q -p no:cacheprovider",
+    "C:\\cov-run\\batch-13-repair-1-verify-2\\venv\\Scripts\\python.exe -m ruff check --no-cache backend/src/covenia_b/commitments backend/tests/commitments",
+    "C:\\cov-run\\batch-13-repair-1-verify-2\\venv\\Scripts\\python.exe -m pip check",
+    "git diff --check cfe1b476f9da26614c0d8f861620c80ae56225e3 7fef454bd8407a82768f944f5ad6d0a390472665"
+  ],
+  "rollback_review": {"passed": true, "notes": "The plan specifies reverting the commitments compiler change and clearing only derived snapshots; no original chat, approval history, or branch rewrite is involved. Revert code commit 5af1ff0a0d59023d41aea357fcf65ea0ae243d1a separately from report-only commits if withdrawal is required."},
+  "code_modified": false,
+  "next_batch_started": false
+}
