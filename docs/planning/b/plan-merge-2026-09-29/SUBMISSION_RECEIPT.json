@@ -1,0 +1,53 @@
+{
+  "status": "COMMITTED_AWAITING_INDEPENDENT_REVIEW",
+  "commit": "f4143b7b4957dfa70c3cae882abe0f4c619cc347",
+  "baseline_commit": "69d78e88c5c2ee0f7cd25c7a04c0eaa8223d0f51",
+  "integration_branch": "integration/covenia-b",
+  "hash_method": "SHA256 of git show <commit>:<path> raw stdout bytes",
+  "candidate_plan_sha256": {
+    "MASTER_PLAN.md": "DBE269F06F4BBE3D8C1F915DD8E4A2D78E0E4F021ABB396270C8B846D5FFA74E",
+    "batches.json": "18DA555CE5ADEA5062F680837AEC8214158F58CBC1A918CF6BBC31EF48448E2E"
+  },
+  "root_mirrors_equal_committed_blobs": true,
+  "approval_blob_sha256": "3ACAD4A113EB595BCED29025AF884A4C5EA2835E90E38D0E897298F91DB371DA",
+  "protected_sources_unchanged": [
+    "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\docs\\decisions\\PLAN_MERGE_BASIS.md",
+    "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\docs\\planning\\b\\PLAN_MERGE_CONFIRMATION_2026-09-29.md",
+    "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\docs\\approvals\\b-decisions.json",
+    "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\checks\\verify_merge.py",
+    "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\docs\\decisions\\.plan-merge-baseline.json"
+  ],
+  "changed_files": [
+    "MASTER_PLAN.md",
+    "batches.json",
+    "docs/decisions/PLAN_MERGE_BASIS.md",
+    "docs/planning/b/PLAN_MERGE_CONFIRMATION_2026-09-29.md",
+    "docs/planning/b/RESUME_RECEIPT.template.json",
+    "docs/planning/b/plan-merge-2026-09-29/COMMAND_UNION.json",
+    "docs/planning/b/plan-merge-2026-09-29/MERGE_REPORT.md",
+    "docs/planning/b/plan-merge-2026-09-29/SELFCHECK.json",
+    "docs/planning/b/plan-merge-2026-09-29/WORKSPACE_MASTER_PLAN.before.md",
+    "docs/planning/b/plan-merge-2026-09-29/WORKSPACE_batches.before.json",
+    "reports/batches/X-A-MAPPING/GATE_ACCEPTANCE_RECEIPT.json"
+  ],
+  "commit_range_diff_check": "PASS",
+  "worktree": "CLEAN",
+  "independent_verification": "PENDING",
+  "runtime_hash_registration": "PENDING_INDEPENDENT_REVIEW",
+  "batch_unfreeze_performed": false,
+  "batch_dispatch_performed": false,
+  "pushed": false,
+  "preflight_summary": {
+    "static_selfchecks": "25/25",
+    "powershell_command_syntax": "343/343",
+    "pip_check": "PASS",
+    "independent_verifier_tool_changed": false
+  },
+  "review_instructions": {
+    "review_ref": "f4143b7b4957dfa70c3cae882abe0f4c619cc347",
+    "script": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/checks/verify_merge.py",
+    "command_template": "& \"<VERIFY_RUN_DIR>/venv/Scripts/python.exe\" -X utf8 \"C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/checks/verify_merge.py\" --repo \"C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/work/repo2\" --ref \"f4143b7b4957dfa70c3cae882abe0f4c619cc347\" --root \"C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松\"",
+    "environment": "Use the independent reviewer's own short absolute VERIFY_RUN_DIR with venv immediately below it; expand the placeholder before running and run pip check.",
+    "note": "Candidate hashes are calculated here for cross-check only; independent PASS, runtime hash registration, stale dispatch-package refresh and any unfreeze remain separate coordinator/reviewer work."
+  }
+}
