@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "decision.schema.json",
+  "title": "Decision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["case_id", "decision", "reason", "source_evidence_ids", "next_action"],
+  "properties": {
+    "case_id": {"type": "string"},
+    "decision": {"enum": ["INTERVENE", "ALLOW", "HUMAN_REVIEW"]},
+    "reason": {"type": "string", "minLength": 1},
+    "rule_id": {"enum": ["P0_PROHIBITED_ACTION", "E1", "E2", "H1", "E0_NO_RULE_MATCHED"]},
+    "jev_assessment_id": {"type": ["string", "null"]},
+    "source_evidence_ids": {"type": "array", "items": {"type": "string"}},
+    "next_action": {"type": "string", "minLength": 1},
+    "human_review_required": {"type": "boolean"}
+  }
+}

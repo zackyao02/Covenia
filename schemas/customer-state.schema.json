@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "customer-state.schema.json",
+  "title": "CustomerState",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["case_id", "facts", "evidence", "intent", "emotion", "effort", "actions", "promises", "risk", "decision", "resolution", "source_evidence"],
+  "properties": {
+    "case_id": {"type": "string"},
+    "facts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["fact_id", "statement", "source_evidence_ids"],
+        "properties": {
+          "fact_id": {"type": "string"},
+          "statement": {"type": "string"},
+          "source_evidence_ids": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "known", "missing", "do_not_ask_again"],
+      "properties": {
+        "status": {"enum": ["VALID", "MISMATCHED", "NEED_HUMAN_REVIEW"]},
+        "known": {"type": "array", "items": {"type": "string"}},
+        "missing": {"type": "array", "items": {"type": "string"}},
+        "do_not_ask_again": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "intent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["current_goal", "constraints", "accepted_solutions", "rejected_solutions", "source_evidence_ids"],
+      "properties": {
+        "current_goal": {"type": "string"},
+        "constraints": {"type": "array", "items": {"type": "string"}},
+        "accepted_solutions": {"type": "array", "items": {"type": "string"}},
+        "rejected_solutions": {"type": "array", "items": {"type": "string"}},
+        "source_evidence_ids": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "emotion": {"$ref": "emotion-state.schema.json"},
+    "effort": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["score", "level", "signals"],
+      "properties": {
+        "score": {"type": "integer", "minimum": 0, "maximum": 100},
+        "level": {"enum": ["LOW", "MEDIUM", "HIGH"]},
+        "signals": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "actions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["next_best_action", "blocked_actions", "allowed_actions", "human_review_actions"],
+      "properties": {
+        "next_best_action": {"type": "string"},
+        "blocked_actions": {"type": "array", "items": {"type": "string"}},
+        "allowed_actions": {"type": "array", "items": {"type": "string"}},
+        "human_review_actions": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "promises": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["active", "deadline_state"],
+      "properties": {
+        "active": {"type": "array", "items": {"type": "string"}},
+        "deadline_state": {"$ref": "deadline-state.schema.json"}
+      }
+    },
+    "risk": {"$ref": "risk-state.schema.json"},
+    "decision": {"$ref": "decision.schema.json"},
+    "resolution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "current_path", "consumer_reply_draft", "service_progress_receipt_id"],
+      "properties": {
+        "status": {"enum": ["NOT_STARTED", "DRAFTED", "APPROVED", "IN_PROGRESS", "AT_RISK", "RESOLVED"]},
+        "current_path": {"type": "string"},
+        "consumer_reply_draft": {"type": "string"},
+        "service_progress_receipt_id": {"type": ["string", "null"]}
+      }
+    },
+    "source_evidence": {"type": "array", "items": {"$ref": "source-evidence.schema.json"}}
+  }
+}

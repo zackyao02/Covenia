@@ -1,6 +1,32 @@
 # 01｜数据映射与核心契约
 
-完整产品对外统一使用“消费者体验责任账本（Experience Ledger）”。Competition MVP 保持四个核心契约和一个动作请求，不新增“回执契约”或“承诺 Agent”。
+完整产品对外统一使用“消费者体验责任账本（Experience Ledger）”。v1.1 起，前端和跨线联调用 `CustomerState` 作为 Customer Extension 视图，但它不替代账本：账本保存可追溯事实，Customer State 只新增 Intent、Emotion、Effort、Risk、Decision 和 Deadline。
+
+完整分层：
+
+```text
+BC Core：Raw Sources → Experience Ledger → Evidence / Promise / Firewall / Resolution
+Customer Extension：Intent / Emotion / Effort / RiskState / Decision / DeadlineState
+Aggregate / Operational State：Priority Queue / Emerging Issue / Risk Radar
+Model Governance：JEV Decision / Confidence / Threshold / Fallback / Audit
+```
+
+其中 Raw Sources 包括聊天、图片、订单、工单、物流、人工确认和系统事件。LLM/VLM 负责理解和候选抽取；确定性事实、责任状态、规则决策、Deadline Monitor 和优先级落地由代码/API 负责。
+
+## 0. 对象生产、消费与修改权
+
+| 对象 | 谁生产 | 谁消费 | 谁能修改 |
+|---|---|---|---|
+| Raw Sources | 导入器、业务 API、物流事件、人工确认 | 抽取器、账本构建器 | 原始来源不可改；只能追加人工修正 |
+| SourceEvidence | 导入器、抽取器、规则引擎 | CustomerState、RiskState、Decision、审计 | 只能追加；不得覆盖原 source_id |
+| CustomerState | 服务端状态构建器 | 右侧插件、Handoff | 前端只读；人工确认可通过受限接口追加修正 |
+| EmotionState | LLM 从对话和事件中抽取 | 回复语气、Handoff | 人工可覆盖标签；不得直接改 Risk |
+| RiskState | 规则引擎按等待、承诺、重复沟通、证据冲突计算 | Priority、Risk Radar、主管跟踪 | 代码/API 修改；Jev 只能提供受限模糊判断输入 |
+| Decision | 体验防线服务 | 插件动作按钮、人工确认弹窗 | 规则和人工审批修改；前端不得提交最终决策 |
+| PriorityState | Priority 服务 | Customer Switching、Priority Queue | 独立运营态；服务端按 Risk、Deadline、工单状态重算，不写回核心事实 |
+| EmergingIssue | 聚类服务 | Risk Radar、管理区 | 独立运营态；仅人工确认后可变为 CONFIRMED |
+| DeadlineState | Deadline Monitor | Promise-to-Action、Priority、Escalation | Monitor 和人工修正接口修改 |
+| Resolution | 人工确认与责任闭环服务 | 消费者回复、服务进度回执、物流分支 | 人工确认和物流事件修改 |
 
 ## 1. 赛事数据导入
 
@@ -60,6 +86,23 @@
 
 服务进度回执不显示内部责任人姓名、风险分数、情绪标签或推理过程。
 
+## 4.1 CustomerState
+
+`CustomerState` 是 v1.1 的 Customer Extension 主对象，在不破坏 BC Core 的前提下必须覆盖：
+
+- `Facts`：已经确认的事实，每条有 SourceEvidence。
+- `Evidence`：已知证据、待补充证据、不要再问。
+- `Intent`：当前目标、约束、接受和拒绝的方案。
+- `Emotion`：当前情绪、趋势、原因和沟通建议。
+- `Effort`：重复解释、重复举证、等待、多次进线等消费者成本。
+- `Actions`：下一步动作、禁止动作、允许动作、人工复核动作。
+- `Promises`：有效承诺及其 DeadlineState。
+- `Risk`：单个消费者的 RiskState。
+- `Decision`：当前动作的轻量 Decision 或最近一次 DecisionResult 摘要。
+- `Resolution`：解决路径、回执和闭环状态。
+
+Customer State 只从 Experience Ledger、ExtractedJourney、规则服务、Monitor 和人工确认结果派生。前端不能直接写 Customer State，只能通过 `approve`、`shipment`、人工修正或后续专门接口触发服务端重算。Priority Queue、Emerging Issue 和 Risk Radar 是独立运营态，不作为 CustomerState 的必填子对象。
+
 ## 5. DecisionResult
 
 体验防线输出：
@@ -71,7 +114,17 @@
 - `accountability_state`：服务端按 `case_id` 装载事实后自行计算的责任状态快照，只作为响应字段，不接受前端提交（P0-8）。
 - `challenge_mode`：变体演示回显，仅在 `challenge_overrides` 生效时为 `true`，界面据此显示角标（P0-8）。
 
-## 5.1 三个激活字段对照表
+`Decision` 是 `DecisionResult` 的轻量业务表达，用于 `/decisions`、Handoff 和新版工作区。它必须保留 `source_evidence_ids`，并明确该判断来自规则、Jev 受限判断、人工确认还是兜底人工复核。
+
+## 5.2 Risk、Priority 与 Emerging 的分层
+
+`RiskState` 是单个消费者的 Customer Extension 状态，不是投诉、流失、医学或质量预测。它只能使用确定事实、等待时间、承诺状态、重复沟通、证据冲突和人工复核需求，不直接读取情绪标签作为加分项。
+
+`PriorityState` 属于 Aggregate / Operational State，消费 `RiskState + DeadlineState + 工单状态 + 等待时间`，输出队列排序、优先级带和下一步动作。Priority 不改变事实，只决定先处理谁。
+
+`EmergingIssue` 属于 Aggregate / Operational State，只表示“多个消费者已经出现同一事实指纹”，默认 `requires_human_confirmation: true`、`prediction: false`。同一消费者或同一会话重复上报不能放大独立消费者数。
+
+## 5.3 三个激活字段对照表
 
 三个契约各有一个“激活”字段，含义和取值都不同，不能互相赋值：
 

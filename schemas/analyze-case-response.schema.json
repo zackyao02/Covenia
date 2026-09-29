@@ -8,6 +8,9 @@
   "properties": {
     "extracted_journey": {"$ref": "extracted-journey.schema.json"},
     "accountability_state": {"$ref": "accountability-state.schema.json"},
+    "customer_state": {"$ref": "customer-state.schema.json"},
+    "risk_state": {"$ref": "risk-state.schema.json"},
+    "deadline_state": {"$ref": "deadline-state.schema.json"},
     "model_metadata": {"type": "object"},
     "runtime_metrics": {"$ref": "runtime-metrics.schema.json"}
   }

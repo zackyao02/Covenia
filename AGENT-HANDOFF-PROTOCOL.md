@@ -27,6 +27,36 @@ Claude 复验       → 更新 QA-ACCEPTANCE.md
 | `QA-ACCEPTANCE.md` | 终端重定向 Claude 输出 | 逐项验收、缺陷、证据 | 直接修代码或扩范围 |
 | `FIX-REQUESTS.md` | 产品负责人 | 已确认的有限修复 | 新功能与未批准建议 |
 
+## v1.1 Handoff Package
+
+开发、验收和人工客服交接时，Handoff Package 必须从 CustomerState 和 Experience Ledger 生成，不允许只贴一段聊天总结。最小内容：
+
+```vbnet
+Consumer Story
+Current Intent
+Emotion / Trend
+Effort
+Existing Evidence
+Promises
+Risk
+Don't Ask Again
+Next Best Action
+```
+
+字段说明：
+
+- `Consumer Story`：消费者经历的简短叙事，必须可回到来源。
+- `Current Intent`：当前目标、约束和已拒绝方案。
+- `Emotion / Trend`：情绪表达与变化原因，只用于沟通方式。
+- `Effort`：重复解释、重复举证、等待和多次进线。
+- `Existing Evidence`：已知证据和对应 source_id。
+- `Promises`：有效承诺、DeadlineState 和完成条件。
+- `Risk`：RiskState 及可解释因素，固定说明非预测。
+- `Don't Ask Again`：不得重复询问或不得执行的动作。
+- `Next Best Action`：下一步动作、执行方和是否需要人工确认。
+
+Handoff Package 的目标是让接手者不用重新阅读完整历史，也不会再次要求消费者提交已经存在的材料。
+
 ## 阶段门禁
 
 | 门禁 | 必须满足 | 未满足时禁止 |

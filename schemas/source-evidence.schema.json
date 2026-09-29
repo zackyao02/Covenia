@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "source-evidence.schema.json",
+  "title": "SourceEvidence",
+  "description": "A traceable source used by Customer State, Risk, Decision, Priority, or Resolution.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["source_id", "source_type", "source_label", "observed_at", "claim", "confidence"],
+  "properties": {
+    "source_id": {"type": "string", "minLength": 1},
+    "source_type": {"enum": ["CHAT", "IMAGE", "ORDER", "TICKET", "LOGISTICS", "SYSTEM_EVENT", "HUMAN_EDIT"]},
+    "source_label": {"type": "string", "minLength": 1},
+    "observed_at": {"type": ["string", "null"], "format": "date-time"},
+    "claim": {"type": "string", "minLength": 1},
+    "field_path": {"type": "string"},
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "derived_time": {"type": "boolean", "default": false}
+  }
+}

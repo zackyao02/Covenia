@@ -31,6 +31,50 @@
 
 情绪不会形成独立指数，也不能直接决定换货、退款或赔偿。
 
+### 3.1 Intent extraction
+
+Intent 不等于最后一句话的关键词。模型需要抽取：
+
+- 当前目标：消费者此刻想完成什么。
+- 约束：不能接受什么、还缺什么条件、是否涉及时限。
+- 接受方案：消费者已表达可接受的解决方式。
+- 拒绝方案：消费者明确拒绝或已经被证明无效的做法。
+- 版本关系：当消费者改变诉求时生成新版本，不用旧意图覆盖新意图。
+
+Intent 输出必须带来源消息 ID；消费者要求退款、赔付、不良反应处置等高风险意图只作为理解结果，不能直接生成业务动作。
+
+### 3.2 Emotion、Emotion Trend 与 Emotion Cause
+
+模型可以输出 `EmotionState`：
+
+- `current_label`：当前情绪表达。
+- `trend`：稳定、改善、恶化或未知。
+- `cause`：导致情绪变化的服务事实。
+- `communication_guidance`：对客服措辞的建议。
+- `confidence` 与来源证据。
+
+硬边界：
+
+> 情绪只辅助沟通和交接，不参与 Risk Score，不覆盖体验防线规则，不自动触发赔付、退款或医疗判断。
+
+### 3.3 Consumer Effort
+
+模型可以识别重复解释、重复举证、等待、追问、跨会话上下文断裂等 effort 信号。Effort 的最终分数由确定性代码按次数、等待时间和来源事实计算；模型只提供候选信号和原因。
+
+### 3.4 Multi-source extraction
+
+多源抽取必须分别保留 Conversation、Image、Order、Ticket、Logistics 的来源 ID，再由代码建立关联：
+
+```text
+conversation.source_session_id
+→ order.order_id / sku_id
+→ image.evidence_id / source_message_id
+→ ticket.ticket_id
+→ logistics.event_id
+```
+
+模型不得把多源数据简单拼成一段总结。每个融合结论都必须说明来源覆盖与冲突：例如 SKU 不匹配、图片可读性不足、工单状态与聊天承诺冲突时，输出冲突候选，由确定性规则进入 `MISMATCHED` 或 `HUMAN_REVIEW`。
+
 ## 4. 承诺编译
 
 承诺编译不是把所有带时间的客服话术机械变成倒计时，而是四步：
@@ -62,6 +106,20 @@
 - 消费者输入是否完成。
 - 当前责任方。
 - 体验防线结果。
+
+## 5.1 LLM/VLM 与确定性事实分工
+
+核心原则：
+
+> LLM/VLM 负责理解；确定性事实由代码/API负责。
+
+| 类型 | LLM/VLM 可做 | 代码/API 必须做 |
+|---|---|---|
+| 聊天 | 意图、情绪、承诺候选、体验原因 | 消息顺序、说话人、来源 ID、敏感字段掩码 |
+| 图片 | 商品/组件观察、可读性、覆盖项 | 最终 evidence_status、SKU 订单校验、禁止动作 |
+| 承诺 | 承诺原文、类型建议、置信度 | 是否生效、截止时间、DeadlineState、Monitor |
+| 风险 | 解释候选原因 | RiskState 分数、Priority 排序、升级条件 |
+| 决策 | 生成语言草稿 | INTERVENE / ALLOW / HUMAN_REVIEW 最终结果 |
 
 ## 6. 输出失败处理
 

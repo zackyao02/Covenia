@@ -11,15 +11,47 @@
 ## 一条完整主链
 
 ```text
-多源服务旅程理解
-→ 消费者体验责任账本
-→ 体验防线
-→ 下一解决路径
-→ 责任闭环
-→ 流程风险发现
+Experience Ledger
+→ Customer State
+→ Risk / Decision
+→ Action / Priority
+→ Resolution
 ```
 
-承诺编译与执行贯穿整条链路，不新增第七个产品模块：AI 从聊天中识别承诺，系统校验其类型、条件和权限，把有效承诺写入账本，随后由责任闭环持续执行。
+旧版“多源服务旅程理解、消费者体验责任账本、体验防线、下一解决路径、责任闭环、流程风险发现”不删除，而是按四层拆清边界：
+
+```text
+BC Core（不破坏）
+Experience Ledger / Evidence / Promise / Firewall / Resolution
+
+Customer Extension（新增）
+Intent / Emotion / Effort / Risk / Decision / Deadline
+
+Aggregate / Operational State（独立）
+Priority Queue / Emerging Issue / Risk Radar
+
+Model Governance（独立）
+JEV Decision / Confidence / Threshold / Fallback / Audit
+```
+
+其中 BC Core 是现有纵向链路，不因 v1.1 改名或重写；Customer Extension 只在核心事实之上增加消费者状态理解；Aggregate / Operational State 只做排序、聚合和运营观察，不写回原始事实；Model Governance 只约束模型和 Jev 的使用方式，不成为业务状态本身。
+
+承诺编译与执行贯穿整条链路，不新增孤立的“承诺 Agent”：AI 从聊天中识别承诺，系统校验其类型、条件和权限，把有效承诺写入账本，随后由责任闭环持续执行。
+
+## v1.1 新增 8 项能力
+
+v1.1 将以下能力正式纳入完整产品定义，并在 BC line 中以新版 Customer Workspace 呈现：
+
+| 能力 | 所属主链 | 产品定义 |
+|---|---|---|
+| Customer State | Customer Extension | 在核心事实之上组织 Intent、Emotion、Effort、Risk、Decision、Deadline。 |
+| Emotion State | Customer Extension | 记录情绪表达、趋势和原因，只辅助沟通，不直接决定风险分和业务动作。 |
+| Effort | Customer Extension | 记录消费者重复解释、重复举证、等待和多次进线成本。 |
+| Source Evidence | BC Core | 所有判断必须可回到聊天、图片、订单、工单或物流来源。 |
+| Risk State | Customer Extension | 作为单个消费者的服务风险状态，不输出投诉、流失或市场预测结论。 |
+| Priority State | Aggregate / Operational State | 把风险、承诺、等待和业务紧急度转成队列排序，不写回核心事实。 |
+| Emerging Issue | Aggregate / Operational State | 聚合多个已发生事实模式，必须人工确认，固定标注非预测。 |
+| Deadline State | Customer Extension / Resolution | 把 Promise 接入 Monitor，驱动 Near Due、Overdue、Escalation 和主动回执。 |
 
 ## 1. 多源服务旅程理解
 
@@ -36,7 +68,7 @@
 5. 什么条件才算真正解决。
 6. 下一动作中有哪些行为应被禁止。
 
-代码中的 `AccountabilityState` 只是账本在某一时点的快照，不作为第二套产品概念。
+代码中的 `AccountabilityState` 只是账本在某一时点的快照，不作为第二套产品概念。v1.1 起，`CustomerState` 是面向前端和协作链路的扩展视图，核心事实仍来自 Experience Ledger；新增字段为 `Intent / Emotion / Effort / Risk / Decision / Deadline`，不重写 `Evidence / Promise / Firewall / Resolution` 的核心语义。
 
 ## 3. 体验防线（Experience Firewall）
 

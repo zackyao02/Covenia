@@ -2,7 +2,7 @@
 
 ## 1. 契约基线
 
-四个接口不增加。`schemas/` 中的请求 Schema、领域 Schema 和本文件共同构成唯一实现基线。
+v0.8 BC Core 保留四个写入/评估接口；v1.1 为 Customer Extension 与独立运营态增加六个只读或受控执行 API。`schemas/` 中的请求 Schema、领域 Schema 和本文件共同构成唯一实现基线。
 
 所有响应使用统一外层：`{data, error, request_id}`。成功时 `error: null`；失败时 `data: null`，并给出机器可读的 `error.code`、面向开发的 `error.message` 与 `error.retryable`。`request_id` 在成功和失败时都必填，用于日志与审计关联。
 
@@ -14,6 +14,47 @@
 | `POST /api/events/shipment` | `shipment-event-request.schema.json` | 更新后的账本、催办候选、通知草稿 | `INVALID_EVENT_TRANSITION`、`IDEMPOTENCY_CONFLICT` |
 
 错误、幂等和时序的完整定义见 `docs/08-idempotency-and-ordering.md`。
+
+## 1.1 v1.1 新增 API
+
+新增 API 统一使用 `{data, error, request_id}` 外层，且不得让前端提交最终风险、优先级或决策结论。
+
+| API | 方法 | 返回/作用 | 主要消费者 |
+|---|---:|---|---|
+| `/api/customer-state/:case_id` 或 `/customer-state` | GET | Customer Extension：`CustomerState`，含 Intent/Emotion/Effort/Risk/Decision/Deadline | Customer Workspace、Handoff |
+| `/api/risk` 或 `/risk` | GET | Customer Extension：`RiskState[]`，单个消费者风险状态，非预测 | Risk Radar、Priority |
+| `/api/priority` 或 `/priority` | GET | Aggregate / Operational State：`PriorityState[]` | Priority Queue、Customer Switching |
+| `/api/emerging-issues` 或 `/emerging-issues` | GET | Aggregate / Operational State：`EmergingIssue[]`，固定 `requires_human_confirmation` 与 `prediction:false` | Risk Radar、管理区 |
+| `/api/decisions` 或 `/decisions` | POST | Customer Extension：对动作返回轻量 `Decision` 或完整 `DecisionResult` | 发送前防线、人工确认 |
+| `/api/deadlines` 或 `/deadlines` | GET/POST | Customer Extension：查询 DeadlineState；演示环境可手动触发一次 Monitor | Promise-to-Action、主管跟踪 |
+
+推荐兼容路径为 `/api/*`；文档中的短路径用于产品表达。生产实现应保留鉴权、租户、审计和来源限制，本地比赛 Demo 可使用 Mock。
+
+### `/customer-state`
+
+输入：`case_id`。输出：`CustomerState`。
+
+它消费 Raw Sources、ExtractedJourney、AccountabilityState、RiskState、Decision 和 DeadlineState。前端只读，不允许提交完整 CustomerState。PriorityState、EmergingIssue 和 Risk Radar 不嵌入 CustomerState。
+
+### `/risk`
+
+输出：按 `score` 降序的 `RiskState[]`。情绪标签不进入分数；展示时必须说明“运营分流，非投诉/流失/质量预测”。
+
+### `/priority`
+
+输出：`PriorityState[]`。排序依据为 Risk、Deadline、等待时间、承诺状态和人工复核需求。Priority 只决定先处理谁，不改变业务事实。
+
+### `/emerging-issues`
+
+输出：`EmergingIssue[]`。指纹为 `sku_id + affected_component + issue_type`；同一消费者重复上报不能增加独立消费者数。
+
+### `/decisions`
+
+输入：`case_id + prepared_action`。它可以复用 `POST /api/actions/evaluate` 的实现，也可以返回轻量 `Decision`。最终决策仍由规则、Jev 受限判断和人工确认共同约束，前端不得自行判定。
+
+### `/deadlines`
+
+`GET` 返回当前 DeadlineState；`POST /run` 在演示或测试中触发一次 Deadline Monitor。Monitor 只处理已经人工确认进入运行态的 Promise。
 
 ## 2. 分析案例
 
@@ -51,9 +92,24 @@
 
 接口数量不因服务进度回执增加；回执是账本的派生视图。
 
-## 6. 千牛布局约束
+## 6. UI：Conversation + Customer Workspace
 
-赛事说明中的右侧辅助区是插件目标区域。Competition MVP 按约 360–420px 的窄栏设计，并保留中部聊天区和底部客服输入区。插件不覆盖消费者对话，也不要求客服跳转独立系统。
+赛事说明中的右侧辅助区是插件目标区域。BC line 保留三栏工作台：左侧会话队列、中部 Conversation、右侧 Covenia Customer Workspace。插件不覆盖消费者对话，也不要求客服跳转独立系统。
+
+v1.1 UI 从单一 sidebar 升级为：
+
+```text
+Conversation + Customer Workspace
+Card → Focus View
+Customer Switching
+Priority Queue
+Risk Radar
+```
+
+右侧工作区分两层：
+
+1. 第一屏仍只回答“已经知道什么、现在不能做什么、下一步做什么”。
+2. 新版工作区以明显视觉分区承载四层内容：BC Core 摘要、Customer Extension、Aggregate / Operational State、Model Governance 状态，避免与旧版 BC 区域混淆。
 
 ## 7. 第一屏只回答三个问题
 
@@ -84,6 +140,30 @@
 ### 人工确认后状态
 
 第一屏转为服务进度回执和责任倒计时，继续显示“消费者无需操作”、下次检查时间和异常补救策略。
+
+## 8.1 Card → Focus View
+
+卡片只显示结论、状态和一行动作；点击后进入 Focus View，展示来源、判断依据和边界：
+
+- Evidence Focus：只列“已知证据 / 待补充证据 / 不要再问”，不再用复杂图表让客服重新判断。
+- Emotion Focus：展示趋势、原因和沟通建议，明确不参与风险分。
+- Promise Focus：展示承诺原文、DeadlineState、Monitor 状态和完成条件。
+- Risk Focus：展示因素、权重和来源，不展示不可解释的模型黑箱分数。
+
+## 8.2 Customer Switching 与 Priority Queue
+
+Customer Switching 必须保留当前会话上下文，并在切换时清空上一位消费者的临时决策，防止旧决策短暂作用于新案例。
+
+Priority Queue 展示排序原因，而不只是分数；必须至少包含承诺风险、等待、重复沟通、证据冲突或人工复核需求之一。
+
+## 8.3 Risk Radar
+
+Risk Radar 是内部运营视图：
+
+- 默认按 `RiskState.score` 或 `PriorityState.rank` 排序。
+- 每个风险因素必须显示来源或可解释原因。
+- 情绪只作为沟通上下文，不直接加分。
+- Emerging Issue 固定标明测试数据、人工确认和非预测边界。
 
 ## 9. 消费者端表达与轻量管理区
 

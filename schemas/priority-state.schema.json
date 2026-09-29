@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "priority-state.schema.json",
+  "title": "PriorityState",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["case_id", "rank", "band", "priority_score", "queue_reasons", "next_best_action"],
+  "properties": {
+    "case_id": {"type": "string"},
+    "rank": {"type": "integer", "minimum": 1},
+    "band": {"enum": ["RED", "ORANGE", "YELLOW", "NORMAL"]},
+    "priority_score": {"type": "integer", "minimum": 0},
+    "queue_reasons": {"type": "array", "items": {"type": "string"}},
+    "next_best_action": {"type": "string", "minLength": 1}
+  }
+}

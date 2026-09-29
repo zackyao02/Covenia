@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "risk-state.schema.json",
+  "title": "RiskState",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["case_id", "score", "level", "factors", "prediction", "source_evidence_ids"],
+  "properties": {
+    "case_id": {"type": "string"},
+    "score": {"type": "integer", "minimum": 0, "maximum": 200},
+    "level": {"enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"]},
+    "factors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["factor_type", "weight", "reason", "source_evidence_ids"],
+        "properties": {
+          "factor_type": {"enum": ["PROMISE_OVERDUE", "REPEAT_CONTACT", "EVIDENCE_CONFLICT", "HUMAN_REVIEW_REQUIRED", "FULFILLMENT_STALLED", "EFFORT_HIGH"]},
+          "weight": {"type": "integer"},
+          "reason": {"type": "string"},
+          "source_evidence_ids": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    },
+    "prediction": {"const": false},
+    "source_evidence_ids": {"type": "array", "items": {"type": "string"}}
+  }
+}

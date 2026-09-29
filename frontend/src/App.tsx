@@ -1299,6 +1299,298 @@ function PriorityQueue({
   );
 }
 
+function fusionRows(demoCase: DemoCase, journey: ExtractedJourney | null) {
+  return [
+    {
+      label: "Conversation",
+      count: demoCase.input.conversation.length,
+      ids: demoCase.input.conversation.map((item) => item.message_id),
+    },
+    {
+      label: "Image",
+      count: journey?.image_observations.length ?? demoCase.input.evidence_images.length,
+      ids: (journey?.image_observations ?? []).map((item) => item.evidence_id)
+        .concat(journey ? [] : demoCase.input.evidence_images.map((item) => item.evidence_id)),
+    },
+    {
+      label: "Order",
+      count: 1,
+      ids: [demoCase.input.order.order_id],
+    },
+    {
+      label: "Ticket",
+      count: demoCase.input.service_tickets.length,
+      ids: demoCase.input.service_tickets.map((item) => item.ticket_id),
+    },
+  ];
+}
+
+function timelineRows(demoCase: DemoCase, accountability: AccountabilityState) {
+  const firstMessage = demoCase.input.conversation[0];
+  const firstEvidence = demoCase.input.evidence_images[0];
+  const firstTicket = demoCase.input.service_tickets[0];
+  const commitment = accountability.active_commitments[0];
+  return [
+    {
+      time: firstMessage ? formatClock(firstMessage.timestamp) : "—",
+      source: "CONVERSATION",
+      title: "消费者说明当前诉求",
+      detail: firstMessage?.message_id ?? "暂无消息 ID",
+    },
+    {
+      time: firstEvidence ? formatClock(firstEvidence.submitted_at) : "—",
+      source: "IMAGE",
+      title: "证据进入可追踪状态",
+      detail: firstEvidence?.evidence_id ?? "暂无图片证据",
+    },
+    {
+      time: firstTicket ? formatClock(firstTicket.created_at) : "派生",
+      source: "TICKET",
+      title: firstTicket ? "已有服务工单" : "当前无已建工单",
+      detail: firstTicket?.ticket_id ?? "仅使用当前案例上下文",
+    },
+    {
+      time: commitment ? formatClock(commitment.deadline) : "待定",
+      source: "PROMISE",
+      title: commitment ? "承诺进入责任账本" : "尚未形成可执行承诺",
+      detail: commitment?.raw_text ?? "需先完成人工确认或证据复核",
+    },
+  ];
+}
+
+function riskFactors(demoCase: DemoCase, accountability: AccountabilityState) {
+  const score = priorityScore(demoCase);
+  const factors = [
+    {
+      label: "Experience Risk",
+      value: accountability.experience_risk,
+      weight: accountability.experience_risk === "HIGH" ? "+40" : "+20",
+      evidence: accountability.experience_gap_diagnosis.deterioration_cause,
+    },
+    {
+      label: "Consumer Effort",
+      value: `${demoCase.input.conversation.length} contacts`,
+      weight: `+${Math.min(demoCase.input.conversation.length * 4, 18)}`,
+      evidence: accountability.experience_gap_diagnosis.latent_need,
+    },
+    {
+      label: "Promise",
+      value: accountability.active_commitments[0]?.status ?? "NONE",
+      weight: accountability.active_commitments.length ? "+8" : "+0",
+      evidence: accountability.active_commitments[0]?.raw_text ?? "当前没有可执行服务承诺",
+    },
+  ];
+  return { score, factors };
+}
+
+function V11Workspace({
+  demoCase,
+  selectedId,
+  onSelectCase,
+  accountability,
+  journey,
+  decision,
+  phase,
+}: {
+  demoCase: DemoCase;
+  selectedId: string;
+  onSelectCase: (caseId: string) => void;
+  accountability: AccountabilityState;
+  journey: ExtractedJourney | null;
+  decision: DecisionResult | null;
+  phase: PluginPhase;
+}) {
+  const fusion = fusionRows(demoCase, journey);
+  const timeline = timelineRows(demoCase, accountability);
+  const { score, factors } = riskFactors(demoCase, accountability);
+  const effortScore = Math.min(100, 38 + demoCase.input.conversation.length * 9 + demoCase.input.evidence_images.length * 7);
+  const hasCompleteFusion = fusion.every((item) => item.count > 0);
+  const orderedCases = useMemo(() => [...demoCases].sort((a, b) => priorityScore(b) - priorityScore(a)), []);
+  const commitment = accountability.active_commitments[0];
+  const deadlineStatus =
+    phase === "approved"
+      ? accountability.case_status === "AT_RISK"
+        ? "AT_RISK"
+        : accountability.case_status === "RESOLVED"
+          ? "CLOSED"
+          : "SCHEDULED"
+      : commitment
+        ? "READY_AFTER_APPROVAL"
+        : "NO_ACTIVE_PROMISE";
+  const emergingSignals = demoCases.filter((item) => item.input.current_issue.issue_type === demoCase.input.current_issue.issue_type).length;
+  const coreItems = [
+    { label: "Experience Ledger", value: accountability.case_status },
+    { label: "Evidence", value: accountability.evidence_status },
+    { label: "Promise", value: commitment?.status ?? "NONE" },
+    { label: "Firewall", value: decision?.decision ?? "READY" },
+    { label: "Resolution", value: phase === "approved" ? "RUNNING" : "DRAFT" },
+  ];
+  const extensionItems = [
+    {
+      id: "Intent",
+      title: "Current Intent",
+      status: journey?.journey_understanding.cooperation_willingness ?? "UNKNOWN",
+      text: journey?.journey_understanding.consumer_intent ?? accountability.experience_gap_diagnosis.consumer_expression,
+    },
+    {
+      id: "Emotion",
+      title: "Emotion / Trend",
+      status: journey?.journey_understanding.cooperation_willingness ?? "UNKNOWN",
+      text: journey?.journey_understanding.experience_expression ?? "等待抽取情绪表达与原因。",
+    },
+    {
+      id: "Effort",
+      title: "Consumer Effort",
+      status: `${effortScore}/100`,
+      text: accountability.experience_gap_diagnosis.latent_need,
+    },
+    {
+      id: "Risk",
+      title: "Risk State",
+      status: `${score}`,
+      text: "单个消费者服务风险；不把情绪推断写入风险分。",
+    },
+    {
+      id: "Decision",
+      title: "Decision",
+      status: decision?.decision ?? "READY",
+      text: decision?.reason ?? "先评估动作，避免把责任倒流给消费者。",
+    },
+    {
+      id: "Deadline",
+      title: "Deadline State",
+      status: deadlineStatus,
+      text: commitment ? `${commitment.raw_text} · ${formatClock(commitment.deadline)} 前` : "暂无可监控承诺。",
+    },
+  ];
+
+  return (
+    <section className="v11-workspace" aria-label="V1.1 新版工作区">
+      <div className="v11-workspace-head">
+        <div>
+          <span>V1.1 Workspace</span>
+          <h2>连续服务新版工作区</h2>
+          <p>BC Core 不破坏；新增能力按 Customer Extension、Operational State、Model Governance 分层展示。</p>
+        </div>
+        <b>新版区</b>
+      </div>
+
+      <div className="v11-layer-label">BC Core · 不破坏</div>
+      <div className="v11-core-strip">
+        {coreItems.map((item) => (
+          <div key={item.label}>
+            <span>{item.label}</span>
+            <b>{item.value}</b>
+          </div>
+        ))}
+      </div>
+
+      <div className="v11-layer-label">Customer Extension · 新增</div>
+      <div className="v11-capability-grid">
+        {extensionItems.map((item) => (
+          <article className="v11-capability-card" key={item.id}>
+            <div><span>{item.id}</span><b>{item.status}</b></div>
+            <strong>{item.title}</strong>
+            <p>{item.text}</p>
+          </article>
+        ))}
+      </div>
+
+      <section className="v11-fusion-card">
+        <div className="v11-card-title">
+          <span>Multi-source Fusion</span>
+          <small>{hasCompleteFusion ? "COMPLETE · 100%" : "PARTIAL · 待补齐"}</small>
+        </div>
+        <div className="fusion-source-grid">
+          {fusion.map((item) => (
+            <div key={item.label} title={item.ids.join(" / ") || "暂无来源 ID"}>
+              <b>{item.count}</b>
+              <span>{item.label}</span>
+            </div>
+          ))}
+        </div>
+        <p className="fusion-link-line">Conversation → Order → Image → Ticket 均保留来源 ID；冲突时先进入人工复核。</p>
+      </section>
+
+      <section className="v11-two-column">
+        <div className="v11-card">
+          <div className="v11-card-title"><span>Journey Timeline</span><small>来源可追溯</small></div>
+          <div className="v11-timeline">
+            {timeline.map((item) => (
+              <div key={`${item.source}-${item.title}`}>
+                <b>{item.time}</b>
+                <span>{item.source}</span>
+                <p>{item.title}<small>{item.detail}</small></p>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="v11-card">
+          <div className="v11-card-title"><span>Handoff Package</span><small>人工可接手</small></div>
+          <ul className="handoff-list">
+            <li>当前诉求：{journey?.journey_understanding.consumer_intent ?? "等待恢复"}</li>
+            <li>已知事实：{initialKnownFacts(demoCase.id).slice(0, 2).join("；")}</li>
+            <li>不要再问：{prohibitedCopy(demoCase.id)}</li>
+            <li>建议动作：{decision?.resolution_path.task_prefill.summary ?? "先查询既有责任状态"}</li>
+          </ul>
+        </div>
+      </section>
+
+      <div className="v11-layer-label">Aggregate / Operational State · 独立</div>
+      <section className="v11-risk-card">
+        <div className="v11-card-title">
+          <span>Risk Radar</span>
+          <small>运营分流 · 非预测</small>
+        </div>
+        <div className="risk-score-row">
+          <b>{score}</b>
+          <div>
+            {factors.map((factor) => (
+              <p key={factor.label}><span>{factor.weight}</span>{factor.label} · {factor.value}</p>
+            ))}
+          </div>
+        </div>
+        <div className="risk-list-mini">
+          {orderedCases.map((item, index) => (
+            <button
+              type="button"
+              key={item.id}
+              className={item.id === selectedId ? "selected" : ""}
+              onClick={() => onSelectCase(item.id)}
+            >
+              <b>{index + 1}</b>
+              <span>{item.title}</span>
+              <small>{priorityScore(item)}</small>
+            </button>
+          ))}
+        </div>
+        <p className="risk-footnote">情绪只用于沟通语气；分数来自等待、承诺、重复沟通和工单状态。</p>
+      </section>
+
+      <section className="v11-monitor-row">
+        <div>
+          <span>Priority Queue</span>
+          <strong>{orderedCases.findIndex((item) => item.id === selectedId) + 1}/{orderedCases.length}</strong>
+          <p>按 Risk、Deadline、等待和人工复核需求排序；只决定先处理谁。</p>
+        </div>
+        <div>
+          <span>Emerging Issue</span>
+          <strong>{emergingSignals >= 3 ? "CANDIDATE" : "WATCHING"}</strong>
+          <p>{emergingSignals} 个同类案例信号；固定标注为测试数据，不做质量结论。</p>
+        </div>
+      </section>
+
+      <div className="v11-layer-label">Model Governance · 独立</div>
+      <section className="v11-governance-row">
+        <div><span>JEV Decision</span><b>Typed choices only</b></div>
+        <div><span>Confidence</span><b>解释，不直接动作</b></div>
+        <div><span>Threshold</span><b>低于阈值回退</b></div>
+        <div><span>Fallback / Audit</span><b>Human Review + log</b></div>
+      </section>
+    </section>
+  );
+}
+
 function CoveniaPlugin({
   demoCase,
   selectedId,
@@ -1420,6 +1712,16 @@ function CoveniaPlugin({
               onGenerate={onGenerate}
               onApprove={onApprove}
               reviewSubmitted={reviewSubmitted}
+            />
+
+            <V11Workspace
+              demoCase={demoCase}
+              selectedId={selectedId}
+              onSelectCase={onSelectCase}
+              accountability={accountability}
+              journey={journey}
+              decision={decision}
+              phase={phase}
             />
 
             <button className="details-toggle" onClick={onToggleDetails} aria-expanded={detailsOpen}>

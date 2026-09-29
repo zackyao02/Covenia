@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
 
-from backend.main import app, idempotency, last_event_times, redact_for_model, shipment_stages, states
+from backend.main import app, analyses, deadline_escalations, idempotency, last_event_times, redact_for_model, shipment_stages, states
 
 
 client = TestClient(app)
@@ -8,9 +8,11 @@ client = TestClient(app)
 
 def reset_service() -> None:
     states.clear()
+    analyses.clear()
     shipment_stages.clear()
     last_event_times.clear()
     idempotency.clear()
+    deadline_escalations.clear()
 
 
 def analyze(case_id: str = "DEMO_001") -> dict:
@@ -115,3 +117,52 @@ def test_redacts_pii_before_the_extractor_receives_case_text() -> None:
     assert "13800138000" not in redacted["conversation"][0]["text"]
     assert "[已脱敏]" in redacted["conversation"][0]["text"]
     assert "13800138000" in case["conversation"][0]["text"]
+
+
+def test_v11_customer_state_risk_priority_and_emerging_endpoints() -> None:
+    reset_service()
+    analyze()
+    customer = client.get("/api/customer-state/DEMO_001")
+    assert customer.status_code == 200
+    customer_data = customer.json()["data"]
+    assert customer_data["case_id"] == "DEMO_001"
+    assert customer_data["emotion"]["risk_scoring_allowed"] is False
+    assert customer_data["decision"]["decision"] in ("INTERVENE", "ALLOW", "HUMAN_REVIEW")
+
+    risk = client.get("/api/risk")
+    assert risk.status_code == 200
+    risk_rows = risk.json()["data"]
+    assert len(risk_rows) >= 3
+    assert risk_rows == sorted(risk_rows, key=lambda item: item["score"], reverse=True)
+    assert all(item["prediction"] is False for item in risk_rows)
+
+    priority = client.get("/api/priority")
+    assert priority.status_code == 200
+    priority_rows = priority.json()["data"]
+    assert [item["rank"] for item in priority_rows] == list(range(1, len(priority_rows) + 1))
+
+    emerging = client.get("/api/emerging-issues")
+    assert emerging.status_code == 200
+    assert all(item["requires_human_confirmation"] is True and item["prediction"] is False for item in emerging.json()["data"])
+
+
+def test_v11_decisions_aliases_evaluate_and_deadline_monitor_runs_once() -> None:
+    reset_service()
+    analyze()
+    decision = client.post("/api/decisions", json={"case_id": "DEMO_001", "prepared_action": hero_action()})
+    assert decision.status_code == 200
+    assert decision.json()["data"]["decision_result"]["rule_id"] == "E1"
+
+    payload = {"case_id": "DEMO_001", "candidate_type": "CHECK_REPLACEMENT_FULFILLMENT", "approver_id": "AGENT_ZHOU", "idempotency_key": "approve-deadline", "human_edits": {"executor": "WAREHOUSE"}}
+    client.post("/api/resolutions/approve", json=payload)
+    before = client.get("/api/deadlines").json()["data"]
+    assert any(item["case_id"] == "DEMO_001" and item["status"] == "SCHEDULED" for item in before)
+
+    first = client.post("/api/deadlines/run", json={"case_ids": ["DEMO_001"], "now": "2026-05-07T11:00:00+08:00"}).json()["data"]
+    assert "DEMO_001" in first["escalated_case_ids"]
+    assert first["deadline_states"][0]["status"] == "ESCALATED"
+    audit_count = len(states["DEMO_001"]["audit_trail"])
+
+    second = client.post("/api/deadlines/run", json={"case_ids": ["DEMO_001"], "now": "2026-05-07T12:00:00+08:00"}).json()["data"]
+    assert second["deadline_states"][0]["escalated_once"] is True
+    assert len(states["DEMO_001"]["audit_trail"]) == audit_count

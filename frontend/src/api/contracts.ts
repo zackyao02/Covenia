@@ -344,6 +344,140 @@ export interface RuntimeMetrics {
   inference_latency_ms: number;
   rule_substitution_count: number;
 }
+
+export interface SourceEvidence {
+  source_id: string;
+  source_type: "CHAT" | "IMAGE" | "ORDER" | "TICKET" | "LOGISTICS" | "SYSTEM_EVENT" | "HUMAN_EDIT";
+  source_label: string;
+  observed_at: ISODateTime | null;
+  claim: string;
+  field_path?: string;
+  confidence: number;
+  derived_time?: boolean;
+}
+
+export interface EmotionState {
+  current_label: "CALM" | "ANXIOUS" | "FRUSTRATED" | "CONFUSED" | "URGENT" | "UNKNOWN";
+  trend: "STABLE" | "IMPROVING" | "WORSENING" | "UNKNOWN";
+  cause: string;
+  communication_guidance: string;
+  source_evidence_ids: string[];
+  confidence: number;
+  risk_scoring_allowed: false;
+}
+
+export interface RiskState {
+  case_id: string;
+  score: number;
+  level: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
+  factors: Array<{
+    factor_type: "PROMISE_OVERDUE" | "REPEAT_CONTACT" | "EVIDENCE_CONFLICT" | "HUMAN_REVIEW_REQUIRED" | "FULFILLMENT_STALLED" | "EFFORT_HIGH";
+    weight: number;
+    reason: string;
+    source_evidence_ids: string[];
+  }>;
+  prediction: false;
+  source_evidence_ids: string[];
+}
+
+export interface PriorityState {
+  case_id: string;
+  rank: number;
+  band: "RED" | "ORANGE" | "YELLOW" | "NORMAL";
+  priority_score: number;
+  queue_reasons: string[];
+  next_best_action: string;
+}
+
+export interface EmergingIssue {
+  issue_id: string;
+  fingerprint: {
+    sku_id: string;
+    affected_component: AffectedComponent;
+    issue_type: IssueType;
+  };
+  window: {
+    started_at: ISODateTime;
+    ended_at: ISODateTime;
+  };
+  independent_consumer_count: number;
+  status: "WATCHING" | "EMERGING_CANDIDATE" | "CONFIRMED" | "DISMISSED";
+  requires_human_confirmation: boolean;
+  prediction: false;
+  source_evidence_ids: string[];
+}
+
+export interface DeadlineState {
+  case_id: string;
+  promise_id: string;
+  status: "SCHEDULED" | "NEAR_DUE" | "OVERDUE" | "ESCALATED" | "CLOSED";
+  deadline: ISODateTime;
+  next_check_at: ISODateTime;
+  monitor_status: "WAITING" | "RUNNING" | "FAILED" | "CLOSED";
+  escalated_once: boolean;
+  risk_state_id: string | null;
+  priority_state_id: string | null;
+  audit_event_id: string | null;
+}
+
+export interface CustomerDecision {
+  case_id: string;
+  decision: Decision;
+  reason: string;
+  rule_id?: RuleId;
+  jev_assessment_id?: string | null;
+  source_evidence_ids: string[];
+  next_action: string;
+  human_review_required: boolean;
+}
+
+export interface CustomerState {
+  case_id: string;
+  facts: Array<{
+    fact_id: string;
+    statement: string;
+    source_evidence_ids: string[];
+  }>;
+  evidence: {
+    status: EvidenceStatus;
+    known: string[];
+    missing: string[];
+    do_not_ask_again: string[];
+  };
+  intent: {
+    current_goal: string;
+    constraints: string[];
+    accepted_solutions: string[];
+    rejected_solutions: string[];
+    source_evidence_ids: string[];
+  };
+  emotion: EmotionState;
+  effort: {
+    score: number;
+    level: "LOW" | "MEDIUM" | "HIGH";
+    signals: string[];
+  };
+  actions: {
+    next_best_action: string;
+    blocked_actions: string[];
+    allowed_actions: string[];
+    human_review_actions: string[];
+  };
+  promises: {
+    active: string[];
+    deadline_state: DeadlineState;
+  };
+  risk: RiskState;
+  decision: CustomerDecision;
+  resolution: {
+    status: "NOT_STARTED" | "DRAFTED" | "APPROVED" | "IN_PROGRESS" | "AT_RISK" | "RESOLVED";
+    current_path: string;
+    consumer_reply_draft: string;
+    service_progress_receipt_id: string | null;
+  };
+  source_evidence: SourceEvidence[];
+}
+
 export type ResolutionCandidateType =
   | "CHECK_REPLACEMENT_FULFILLMENT"
   | "ASK_CURRENT_SCOPE_EVIDENCE"
@@ -419,6 +553,9 @@ export interface AnalyzeCaseRequest {
 export interface AnalyzeCaseResponse {
   extracted_journey: ExtractedJourney;
   accountability_state: AccountabilityState;
+  customer_state?: CustomerState;
+  risk_state?: RiskState;
+  deadline_state?: DeadlineState;
   model_metadata: ExtractedJourney["model_metadata"];
   runtime_metrics: RuntimeMetrics;
 }
@@ -540,6 +677,12 @@ export interface CoveniaApi {
   pushShipmentEvent(
     input: ShipmentEventRequest,
   ): Promise<ApiResult<ShipmentEventResponse>>;
+  getCustomerState?(caseId: string): Promise<ApiResult<CustomerState>>;
+  getRiskStates?(): Promise<ApiResult<RiskState[]>>;
+  getPriorityStates?(): Promise<ApiResult<PriorityState[]>>;
+  getEmergingIssues?(): Promise<ApiResult<EmergingIssue[]>>;
+  createDecision?(input: EvaluateActionRequest): Promise<ApiResult<CustomerDecision | DecisionResult>>;
+  getDeadlineStates?(): Promise<ApiResult<DeadlineState[]>>;
 }
 
 /**
@@ -604,6 +747,66 @@ export const API_ENDPOINTS = {
     changesResponsibilityState: true,
     requiresIdempotencyKey: true,
     suggestedTimeoutMs: 10000,
+  },
+  getCustomerState: {
+    method: "GET",
+    path: "/api/customer-state/:case_id",
+    request: "case_id",
+    response: "ApiResult<CustomerState>",
+    uiTrigger: "打开新版 Customer Workspace",
+    changesResponsibilityState: false,
+    requiresIdempotencyKey: false,
+    suggestedTimeoutMs: 5000,
+  },
+  getRiskStates: {
+    method: "GET",
+    path: "/api/risk",
+    request: "none",
+    response: "ApiResult<RiskState[]>",
+    uiTrigger: "Risk Radar 刷新",
+    changesResponsibilityState: false,
+    requiresIdempotencyKey: false,
+    suggestedTimeoutMs: 5000,
+  },
+  getPriorityStates: {
+    method: "GET",
+    path: "/api/priority",
+    request: "none",
+    response: "ApiResult<PriorityState[]>",
+    uiTrigger: "Priority Queue 刷新",
+    changesResponsibilityState: false,
+    requiresIdempotencyKey: false,
+    suggestedTimeoutMs: 5000,
+  },
+  getEmergingIssues: {
+    method: "GET",
+    path: "/api/emerging-issues",
+    request: "none",
+    response: "ApiResult<EmergingIssue[]>",
+    uiTrigger: "流程风险候选刷新",
+    changesResponsibilityState: false,
+    requiresIdempotencyKey: false,
+    suggestedTimeoutMs: 5000,
+  },
+  createDecision: {
+    method: "POST",
+    path: "/api/decisions",
+    request: "EvaluateActionRequest",
+    response: "ApiResult<CustomerDecision | DecisionResult>",
+    uiTrigger: "新版工作区生成轻量决策",
+    changesResponsibilityState: false,
+    requiresIdempotencyKey: false,
+    suggestedTimeoutMs: 10000,
+  },
+  getDeadlines: {
+    method: "GET",
+    path: "/api/deadlines",
+    request: "none",
+    response: "ApiResult<DeadlineState[]>",
+    uiTrigger: "Deadline Monitor 展示",
+    changesResponsibilityState: false,
+    requiresIdempotencyKey: false,
+    suggestedTimeoutMs: 5000,
   },
 } as const;
 

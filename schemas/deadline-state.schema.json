@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "deadline-state.schema.json",
+  "title": "DeadlineState",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["case_id", "promise_id", "status", "deadline", "next_check_at", "monitor_status", "escalated_once"],
+  "properties": {
+    "case_id": {"type": "string"},
+    "promise_id": {"type": "string"},
+    "status": {"enum": ["SCHEDULED", "NEAR_DUE", "OVERDUE", "ESCALATED", "CLOSED"]},
+    "deadline": {"type": "string", "format": "date-time"},
+    "next_check_at": {"type": "string", "format": "date-time"},
+    "monitor_status": {"enum": ["WAITING", "RUNNING", "FAILED", "CLOSED"]},
+    "escalated_once": {"type": "boolean"},
+    "risk_state_id": {"type": ["string", "null"]},
+    "priority_state_id": {"type": ["string", "null"]},
+    "audit_event_id": {"type": ["string", "null"]}
+  }
+}

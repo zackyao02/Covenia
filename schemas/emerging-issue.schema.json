@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "emerging-issue.schema.json",
+  "title": "EmergingIssue",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["issue_id", "fingerprint", "window", "independent_consumer_count", "status", "requires_human_confirmation", "prediction", "source_evidence_ids"],
+  "properties": {
+    "issue_id": {"type": "string"},
+    "fingerprint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sku_id", "affected_component", "issue_type"],
+      "properties": {
+        "sku_id": {"type": "string"},
+        "affected_component": {"enum": ["BOTTLE", "PUMP", "CAP", "SEAL", "OUTER_PACKAGE", "UNKNOWN"]},
+        "issue_type": {"enum": ["PACKAGE_DAMAGE", "LOGISTICS_STALLED", "ADVERSE_REACTION"]}
+      }
+    },
+    "window": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["started_at", "ended_at"],
+      "properties": {
+        "started_at": {"type": "string", "format": "date-time"},
+        "ended_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "independent_consumer_count": {"type": "integer", "minimum": 0},
+    "status": {"enum": ["WATCHING", "EMERGING_CANDIDATE", "CONFIRMED", "DISMISSED"]},
+    "requires_human_confirmation": {"type": "boolean"},
+    "prediction": {"const": false},
+    "source_evidence_ids": {"type": "array", "items": {"type": "string"}}
+  }
+}

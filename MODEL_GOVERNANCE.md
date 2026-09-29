@@ -29,6 +29,63 @@
 - 是否退款、赔偿、补发或医疗处置。
 - 体验防线最终决策。
 
+## JEV Governance
+
+Jev 只能用于“有限选项空间中的模糊判断”，不能替代规则、人工确认或业务系统事实。
+
+核心原则：
+
+> Rule 处理确定事实，Jev 处理有限空间中的模糊判断，LLM 负责理解和语言生成。
+
+### 可交给 Jev 的判断
+
+- 图片或聊天证据的有限分类候选，例如 `readability: HIGH / LOW / UNKNOWN`。
+- 情绪趋势候选，例如 `STABLE / WORSENING / IMPROVING / UNKNOWN`。
+- 证据是否需要人工复核的软信号。
+- Emerging Issue 的人工确认前候选排序。
+
+### 不可交给 Jev 的判断
+
+- 最终业务责任方。
+- 是否退款、赔付、补发、关闭工单。
+- Deadline 是否超时。
+- 物流是否揽收或送达。
+- 体验防线最终 `INTERVENE / ALLOW / HUMAN_REVIEW`。
+
+### Typed choices
+
+所有 Jev 输出必须是 typed choices，不接受自由文本结论：
+
+```json
+{
+  "choice": "NEED_HUMAN_REVIEW",
+  "allowed_choices": ["VALID", "MISMATCHED", "NEED_HUMAN_REVIEW"],
+  "probability": 0.72,
+  "confidence": "MEDIUM",
+  "threshold": 0.8,
+  "fallback": "HUMAN_REVIEW"
+}
+```
+
+### Probability、threshold 与 fallback
+
+- `probability` 低于阈值时，一律走 `fallback`。
+- `confidence` 只能用于解释和调试，不能单独驱动业务动作。
+- 高风险场景默认阈值更高；不良反应、赔付、退款和关单必须人工确认。
+- Jev 不可用、输出非法或超时时，回退到规则或人工复核。
+
+### Human Review 与 audit log
+
+Jev 每次调用必须记录：
+
+- 输入来源 ID，不记录未脱敏原文。
+- allowed choices、choice、probability、threshold、fallback。
+- 是否被规则采纳。
+- 最终人工确认结果。
+- request_id、模型版本、prompt/version 或评估器版本。
+
+人工覆盖 Jev 后，人工事实优先级高于 Jev 输出；后续状态重算以人工事实为准。
+
 ## 数据边界
 
 - 赛事 Excel 是官方提供的全量 Mock 数据。

@@ -18,6 +18,34 @@
 
 内部执行方变化不把责任重新推给消费者。
 
+## 2.1 Promise / Deadline / Monitor 链路
+
+v1.1 将 Deadline Monitor 接入原有 Promise-to-Action。完整链路为：
+
+```text
+Promise
+→ Deadline
+→ Monitor
+→ Near Due
+→ Overdue
+→ Risk
+→ Priority
+→ Escalation
+```
+
+定义：
+
+- `Promise`：从客服原文抽取并经工单、权限和人工确认校验的有效承诺。
+- `Deadline`：承诺编译出的截止时间、下一检查时间和完成条件。
+- `Monitor`：只处理已经人工批准并进入运行态的责任。
+- `Near Due`：接近截止但尚未违约，生成内部预警或提前检查。
+- `Overdue`：超过截止仍未满足完成条件，进入 `AT_RISK`。
+- `Risk`：更新 RiskState，说明风险来自承诺未履行或物流停滞。
+- `Priority`：提升 PriorityState，使该消费者进入更高队列。
+- `Escalation`：生成仓库催办、主管升级候选和消费者主动通知草稿。
+
+同一 Promise 只能被 Monitor 升级一次；重复检查不得重复写审计、重复催办或重复通知。送达结案后 DeadlineState 必须进入 `CLOSED`。
+
 ## 3. 服务进度回执
 
 服务进度回执由责任账本生成并通过原聊天窗口发送，不要求消费者下载新应用或管理新页面。
@@ -68,6 +96,16 @@ P0 支持同一接口下三个事件；所有事件都由后端状态机处理�
 重复的 `idempotency_key` 返回首次结果，不新增审计记录。未列出的转移返回 `INVALID_EVENT_TRANSITION`，前端不得把它渲染为成功。
 
 事件按钮调用后端接口，不允许直接修改前端状态。
+
+## 4.1 Deadline Monitor 状态转移
+
+| 当前 DeadlineState | 条件 | 新状态 | 下游影响 |
+|---|---|---|---|
+| `SCHEDULED` | 未接近截止 | `SCHEDULED` | 不升级 |
+| `SCHEDULED` | 到达预警窗口 | `NEAR_DUE` | 可创建内部预警，不通知消费者 |
+| `SCHEDULED` / `NEAR_DUE` | 超过 deadline 且未送达 | `OVERDUE` → `ESCALATED` | Case `AT_RISK`、Risk 提升、Priority 提升、生成升级候选 |
+| `ESCALATED` | 再次检查仍超时 | `ESCALATED` | 不重复升级 |
+| 任意运行态 | 完成条件满足 | `CLOSED` | Case 可进入 `RESOLVED` |
 
 ## 5. 人工修改
 
