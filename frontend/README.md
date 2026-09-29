@@ -9,7 +9,13 @@ npm install
 npm run dev
 ```
 
-打开 `http://127.0.0.1:4173/`。
+前端默认使用本地 B 端服务。请先在项目根目录另开终端启动后端：
+
+```bash
+python -m uvicorn backend.main:app --app-dir . --host 127.0.0.1 --port 8000
+```
+
+再启动前端并打开 `http://127.0.0.1:4173/`。插件标题显示“本地服务”时，表示当前页面正通过 HTTP 调用本地后端；演示案例仍使用项目内的模拟数据。
 
 验证命令：
 
@@ -36,17 +42,17 @@ npm run build
 
 ## 接口模式
 
-默认使用 `mock`：
-
-```env
-VITE_API_MODE=mock
-```
-
-接入 B 端时复制 `.env.example` 为 `.env.local`，设置：
+默认使用 `http`，配置位于 `.env`：
 
 ```env
 VITE_API_MODE=http
 VITE_API_BASE_URL=http://127.0.0.1:8000
+```
+
+如需单独演示纯前端 Mock，将 `VITE_API_MODE` 改为 `mock`：
+
+```env
+VITE_API_MODE=mock
 ```
 
 页面统一调用 `src/api/client.ts`，组件不直接依赖 Mock。改变责任状态的人工确认和物流事件会按 v0.8 契约在请求体携带 `idempotency_key`。
@@ -89,7 +95,7 @@ VITE_API_BASE_URL=http://127.0.0.1:8000
 - 颜色不作为唯一状态表达。
 - 主操作使用实心按钮；次操作使用描边按钮；催办只在满足条件时出现。
 - 服务回执不展示内部姓名、置信度、情绪标签或规则推理。
-- “模拟数据”标识固定出现在插件标题栏，不重复打断操作。
+- 标题栏显示“本地服务”；案例数据为模拟数据，不代表已接入千牛或欧莱雅生产系统。
 
 ## B 端联调基线
 

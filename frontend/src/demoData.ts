@@ -103,7 +103,7 @@ export const demoCases: DemoCase[] = [
       requested_scope: heroScope,
       requires_human_approval: false,
     },
-    composerText: "麻烦再上传一下粉底液泵头破损的照片，我们重新核实。",
+    composerText: "您之前提交的粉底液泵头损坏照片已经收到，无需重复上传。我先核查换货进度，并会主动向您更新。",
   },
   {
     id: "DEMO_002",

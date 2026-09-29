@@ -851,11 +851,11 @@ function buildStoryCards(
     return [
       {
         key: "emotion",
-        eyebrow: "Emotion & Effort",
-        title: "她在纠正问题范围。",
-        body: "当前不是重复投诉，而是消费者把赠品和正装两个问题拆开说明。",
-        tags: ["范围变化", "低打扰", "澄清中"],
-        focusTitle: "为什么体验容易断层",
+        eyebrow: "沟通状态",
+        title: "她说明这是另一件商品。",
+        body: "赠品和正装需要分开核实。",
+        tags: ["商品范围变化"],
+        focusTitle: "商品范围",
         focusPoints: [
           { label: "情绪", text: "消费者并非拒绝配合，而是在说明“这是另一件商品”。" },
           { label: "努力", text: "若继续围绕赠品图片处理，会让她重新解释问题。" },
@@ -864,10 +864,10 @@ function buildStoryCards(
       },
       {
         key: "evidence",
-        eyebrow: "Evidence",
-        title: "已知赠品证据，缺正装证据。",
-        body: "直接列明已知和缺口，避免重复索要赠品材料。",
-        tags: ["SKU 不匹配", "商品角色 GIFT", "允许精准补充"],
+        eyebrow: "已交材料",
+        title: "赠品照片已收到。",
+        body: "只补正装泵头照片，不重复索取赠品材料。",
+        tags: ["赠品已收到", "正装待补"],
         focusTitle: "证据状态",
         focusPoints: [],
         knownEvidence,
@@ -876,10 +876,10 @@ function buildStoryCards(
       },
       {
         key: "journey",
-        eyebrow: "Journey",
-        title: "从赠品转向正装。",
-        body: "旅程断点是商品范围切换，Covenia 需要保护已提交材料不被误用。",
-        tags: ["Scope shift", "SKU 定位", "不中断上下文"],
+        eyebrow: "当前问题",
+        title: "转为核实正装泵头。",
+        body: "赠品照片不能用于判断正装问题。",
+        tags: ["粉底液正装"],
         focusTitle: "服务旅程断点",
         focusPoints: [
           { label: "已知", text: "赠品外盒图片已经收到。" },
@@ -889,10 +889,10 @@ function buildStoryCards(
       },
       {
         key: "promise",
-        eyebrow: "Promise",
-        title: "尚无有效承诺。",
-        body: "当前应先补齐正确范围证据，再进入责任闭环。",
-        tags: ["No active promise", "Evidence first", "低打扰"],
+        eyebrow: "下一步",
+        title: "等待补充正装照片。",
+        body: "收到后再确认后续处理时间。",
+        tags: ["暂未承诺"],
         focusTitle: "承诺状态",
         focusPoints: [
           { label: "状态", text: "还没有可执行服务承诺。" },
@@ -907,11 +907,11 @@ function buildStoryCards(
     return [
       {
         key: "emotion",
-        eyebrow: "Emotion & Effort",
-        title: "她已经尝试配合。",
-        body: "当前不应把模糊图片直接变成重复索证，而是先承认已收到。",
-        tags: ["已上传", "事实不足", "先复核"],
-        focusTitle: "为什么先人工复核",
+        eyebrow: "沟通状态",
+        title: "图片看不清。",
+        body: "先交人工复核，不要求立即重传。",
+        tags: ["等待人工复核"],
+        focusTitle: "人工复核",
         focusPoints: [
           { label: "01", text: "图片未对焦，商品与问题不可确认。" },
           { label: "02", text: "不能直接判断责任或关闭问题。" },
@@ -920,10 +920,10 @@ function buildStoryCards(
       },
       {
         key: "evidence",
-        eyebrow: "Evidence",
-        title: "已收到图片，但需复核。",
-        body: "列出已知和复核缺口，不立刻要求消费者重传。",
-        tags: ["LOW readability", "SKU UNKNOWN", "HUMAN_REVIEW"],
+        eyebrow: "已交材料",
+        title: "图片已收到，暂不能确认。",
+        body: "内部复核后再决定是否需要补充。",
+        tags: ["需人工确认"],
         focusTitle: "证据状态",
         focusPoints: [],
         knownEvidence,
@@ -932,10 +932,10 @@ function buildStoryCards(
       },
       {
         key: "journey",
-        eyebrow: "Journey",
-        title: "卡在证据可信度。",
-        body: "消费者已进入举证环节，下一步应该是内部复核，而不是立即回退给消费者。",
-        tags: ["Review", "低打扰", "不中断上下文"],
+        eyebrow: "当前问题",
+        title: "照片清晰度不足。",
+        body: "不要直接判定责任或关闭问题。",
+        tags: ["需要复核"],
         focusTitle: "服务旅程断点",
         focusPoints: [
           { label: "已知", text: "消费者已提交泵头图片。" },
@@ -945,10 +945,10 @@ function buildStoryCards(
       },
       {
         key: "promise",
-        eyebrow: "Promise",
-        title: "承诺前先复核。",
-        body: "事实未确认前不创建过度承诺，避免后续再次纠偏。",
-        tags: ["Human Review", "No promise yet", "稳态处理"],
+        eyebrow: "下一步",
+        title: "先由人工复核。",
+        body: "复核后再回复是否需要补充材料。",
+        tags: ["不自动索证"],
         focusTitle: "承诺状态",
         focusPoints: [
           { label: "状态", text: "还没有可执行服务承诺。" },
@@ -962,10 +962,10 @@ function buildStoryCards(
   return [
     {
       key: "story",
-      eyebrow: "Consumer Story",
-      title: "她不是第一次来。",
-      body: "消费者已经交过泵头损坏图片，也得到过 48 小时内发出的承诺，现在再次追问进度。",
-      tags: ["第二次进线", "证据已交", "承诺待兑现"],
+      eyebrow: "案件摘要",
+      title: "她已交过照片，正在等换货进度。",
+      body: "照片已收到 · 48 小时换货承诺待跟进",
+      tags: ["已收到照片", "等待换货"],
       focusTitle: "发生了什么",
       focusPoints: [
         { label: "01", text: "消费者已说明粉底液泵头损坏。" },
@@ -975,10 +975,10 @@ function buildStoryCards(
     },
     {
       key: "emotion",
-      eyebrow: "Emotion & Effort",
-      title: "耐心正在被消耗。",
-      body: "真正的问题不是再上传图片，而是此前承诺没有变成可见进度。",
-      tags: ["重复沟通", "等待进度", accountability.experience_risk === "HIGH" ? "High Risk" : "Medium Risk"],
+      eyebrow: "沟通状态",
+      title: "再次追问换货进度。",
+      body: "先回应进度，避免让她重复说明。",
+      tags: ["多次沟通"],
       focusTitle: "为什么体验恶化",
       focusPoints: [
         { label: "承诺", text: commitment ? `${commitment.raw_text}，当前状态 ${commitment.status}。` : "已有服务承诺等待确认。" },
@@ -988,10 +988,10 @@ function buildStoryCards(
     },
     {
       key: "evidence",
-      eyebrow: "Evidence",
-      title: `${evidenceCount} 项证据 · VALID`,
-      body: "直接列明已知事实和无需再问的内容，避免重复索证。",
-      tags: ["订单已匹配", `${evidenceCount} 张图片`, "工单已创建"],
+      eyebrow: "已交材料",
+      title: `照片已收到（${evidenceCount}）`,
+      body: "查看已收到的照片和仍缺的材料。",
+      tags: [`${evidenceCount} 张照片`],
       focusTitle: "证据状态",
       focusPoints: [],
       knownEvidence,
@@ -1000,10 +1000,10 @@ function buildStoryCards(
     },
     {
       key: "journey",
-      eyebrow: "Journey",
-      title: "已从举证进入追进度。",
-      body: "旅程断点不是事实缺失，而是已承诺事项没有可见进展。",
-      tags: ["Timeline", "换货工单", "等待进度"],
+      eyebrow: "服务进度",
+      title: "换货进度待确认。",
+      body: "已有换货工单，需核查物流状态。",
+      tags: ["已有工单"],
       focusTitle: "服务旅程断点",
       focusPoints: [
         { label: "已完成", text: "消费者已经说明问题并提交图片。" },
@@ -1013,10 +1013,10 @@ function buildStoryCards(
     },
     {
       key: "promise",
-      eyebrow: "Promise",
-      title: commitment ? "承诺已经进入倒计时。" : "承诺需要被激活为责任。",
-      body: commitment ? `${commitment.raw_text} 截止 ${formatClock(commitment.deadline)}，品牌应继续负责。` : "人工确认后，Covenia 会把解决路径写成可跟踪的服务责任。",
-      tags: [commitment?.status ?? "待确认", "品牌负责", "直到送达"],
+      eyebrow: "服务承诺",
+      title: commitment ? "48 小时内换货承诺" : "尚无有效承诺",
+      body: commitment ? `截止 ${formatClock(commitment.deadline)}，由店铺继续跟进。` : "确认责任后再建立服务承诺。",
+      tags: [commitment?.status === "ACTIVE" ? "跟进中" : "待确认"],
       focusTitle: "承诺如何运行",
       focusPoints: [
         { label: "来源", text: commitment?.raw_text ?? "来自客服侧承诺与既有换货工单。" },
@@ -1124,7 +1124,7 @@ function StoryDeck({
   return (
     <section className="story-deck">
       <div className="story-hero">
-        <span>Customer Snapshot</span>
+        <span>案件摘要</span>
         <h2>{cards[0].title}</h2>
         <p>{cards[0].body}</p>
         <div>
@@ -1142,7 +1142,7 @@ function StoryDeck({
               <span>{card.eyebrow}</span>
               <strong>{card.title}</strong>
               <p>{card.body}</p>
-              <em>查看判断依据 <ChevronRight size={13} /></em>
+              <em aria-label="查看详情"><ChevronRight size={13} /></em>
             </button>
           ))}
         </div>
@@ -1190,7 +1190,7 @@ function StoryActionPanel({
   const decisionType = decision?.decision;
   return (
     <section className="story-action-panel">
-      <span>Next Best Action</span>
+      <span>建议下一步</span>
       <h3>{decision ? decisionLabels[decision.decision].title : "优先核查换货进度"}</h3>
       <p>{decision?.reason ?? "消费者已经交过材料，此刻应该先查进度，而不是重复索证。"}</p>
       {phase === "resolution" ? (
@@ -1253,10 +1253,6 @@ function PriorityQueue({
   const ordered = useMemo(() => [...demoCases].sort((a, b) => priorityScore(b) - priorityScore(a)), []);
   const currentIndex = Math.max(0, ordered.findIndex((item) => item.id === selectedId));
   const current = ordered[currentIndex] ?? ordered[0];
-  const counts = demoCases.reduce((acc, item) => {
-    acc[priorityBand(item)] += 1;
-    return acc;
-  }, { red: 0, orange: 0, yellow: 0 });
   const move = (direction: -1 | 1) => {
     const nextIndex = (currentIndex + direction + ordered.length) % ordered.length;
     onSelectCase(ordered[nextIndex].id);
@@ -1267,19 +1263,19 @@ function PriorityQueue({
       <div className="priority-queue-top">
         <button type="button" onClick={() => move(-1)} aria-label="上一位消费者"><ChevronLeft size={15} /></button>
         <div>
-          <span>Priority · {currentIndex + 1}/{ordered.length}</span>
+          <span>优先处理 · {currentIndex + 1}/{ordered.length}</span>
           <strong>{current?.title ?? "—"}</strong>
         </div>
         <button type="button" onClick={() => move(1)} aria-label="下一位消费者"><ChevronRight size={15} /></button>
         <button className="priority-toggle-button" type="button" onClick={() => setOpen((value) => !value)} aria-expanded={open}>
-          ⚡ Priority <small>{counts.red}R / {counts.orange}O / {counts.yellow}Y</small>
+          待处理案件 <small>{ordered.length} 位消费者</small>
         </button>
       </div>
       {open ? (
         <div className="priority-list-panel">
           <div className="priority-list-head">
-            <span>Priority Queue</span>
-            <small>Risk + Urgency + Promise + Waiting</small>
+            <span>待处理案件</span>
+            <small>按紧急程度排序</small>
           </div>
           {ordered.map((item, index) => (
             <button
@@ -1289,8 +1285,8 @@ function PriorityQueue({
               onClick={() => onSelectCase(item.id)}
             >
               <b>{index + 1}</b>
-              <strong>{item.title} · {priorityScore(item)}</strong>
-              <small>{index === 0 ? "Why #1" : "Why"}：{priorityReasons(item).join(" · ")}</small>
+              <strong>{item.title}</strong>
+              <small>主要原因：{priorityReasons(item).slice(0, 2).join("、")}</small>
             </button>
           ))}
         </div>
@@ -1679,7 +1675,7 @@ function CoveniaPlugin({
       <PluginHeader mockMode={mockMode} onMockModeChange={onMockModeChange} />
       <div className="plugin-scroll">
         {decision?.challenge_mode ? (
-          <div className="challenge-notice">Challenge Mode</div>
+          <div className="challenge-notice">挑战案例</div>
         ) : null}
         {phase === "approved" && accountability.service_progress_receipt ? (
           <ProgressView
@@ -1696,9 +1692,6 @@ function CoveniaPlugin({
             {cachedResult ? (
               <div className="cached-notice"><RefreshCw size={13} /> 当前使用缓存抽取结果，后续规则仍实时运行</div>
             ) : null}
-            {decision && decision.decision !== "ALLOW" ? <DecisionBanner decision={decision} /> : (
-              <div className="quiet-status"><Sparkles size={14} /> 已读懂当前服务上下文</div>
-            )}
             <PriorityQueue selectedId={selectedId} onSelectCase={onSelectCase} />
             <StoryDeck
               demoCase={demoCase}
@@ -1714,24 +1707,26 @@ function CoveniaPlugin({
               reviewSubmitted={reviewSubmitted}
             />
 
-            <V11Workspace
-              demoCase={demoCase}
-              selectedId={selectedId}
-              onSelectCase={onSelectCase}
-              accountability={accountability}
-              journey={journey}
-              decision={decision}
-              phase={phase}
-            />
-
             <button className="details-toggle" onClick={onToggleDetails} aria-expanded={detailsOpen}>
-              <span><Inbox size={15} /> 诊断与事实依据</span>
+              <span><Inbox size={15} /> 更多案件信息</span>
               <ChevronDown size={16} className={detailsOpen ? "rotated" : ""} />
             </button>
             {detailsOpen ? (
-              <DiagnosisDetails accountability={accountability} journey={journey} />
+              <>
+                {decision ? <DecisionBanner decision={decision} /> : null}
+                <DiagnosisDetails accountability={accountability} journey={journey} />
+                <V11Workspace
+                  demoCase={demoCase}
+                  selectedId={selectedId}
+                  onSelectCase={onSelectCase}
+                  accountability={accountability}
+                  journey={journey}
+                  decision={decision}
+                  phase={phase}
+                />
+                {runtimeMetrics ? <RuntimeCostBar metrics={runtimeMetrics} /> : null}
+              </>
             ) : null}
-            {runtimeMetrics ? <RuntimeCostBar metrics={runtimeMetrics} /> : null}
           </>
         )}
       </div>
@@ -1761,9 +1756,13 @@ function PluginHeader({
         <strong>Covenia</strong>
         <small>体验责任副驾</small>
       </div>
-      <span className="simulation-badge">赛事 Mock 数据＋团队压力测试扩充</span>
-      <button aria-label="插件设置" onClick={() => setOpen((value) => !value)}><MoreHorizontal size={18} /></button>
-      {open ? (
+      <span className="simulation-badge">
+        {import.meta.env.VITE_API_MODE === "http" ? "本地服务" : "模拟演示"}
+      </span>
+      {import.meta.env.VITE_API_MODE !== "http" ? (
+        <button aria-label="插件设置" onClick={() => setOpen((value) => !value)}><MoreHorizontal size={18} /></button>
+      ) : null}
+      {open && import.meta.env.VITE_API_MODE !== "http" ? (
         <div className="demo-settings">
           <div><span>接口状态演示</span><small>仅影响本地 Mock</small></div>
           {modeOptions.map((option) => (

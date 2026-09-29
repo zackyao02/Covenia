@@ -259,6 +259,7 @@ function decisionFor(state: AccountabilityState, input: EvaluateActionRequest): 
     ...structuredClone(template),
     ...base,
     decision,
+    reason: template.reason,
     rule_id: ruleId,
     rule_priority: priority,
     fact_trace: { ...base.fact_trace, suppressed_rule_ids: suppressed },

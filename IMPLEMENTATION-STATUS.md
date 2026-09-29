@@ -2,7 +2,7 @@
 
 对应冻结文件：`PRODUCT-FREEZE.md`
 对应冻结基线：`4e83f3baeb5f4d6d9ee9b8bfc61c112abc1f55cb` (v0.8)
-更新时间：2026-09-10
+更新时间：2026-09-29
 维护者：Codex
 
 ## C 线 P0 完成情况
@@ -23,7 +23,7 @@
 
 | 范围 | 未完成内容 | 原因 | 下一步 |
 |---|---|---|---|
-| B/C 联调 | 浏览器端 HTTP 联调 | 已完成本地双服务主链、挑战链和物流链 | 交由 D 线按验收清单独立复测 |
+| B/C 联调 | 共享分支合并与 D 线独立浏览器验收 | 当前优化预览已连通本地 B 线服务；四个 HTTP 接口烟测通过，生产构建通过 | 变更仍在本地预览工作区，尚未推送团队分支；合并后由 D 线独立复测 |
 | 真实证据图 | `public/evidence/` 内的团队压力测试图片二进制文件 | 当前未在 C 工作区提供 | 图片就位后按 README 的固定文件名放入；当前 UI 有明确占位回退 |
 | 独立验收 | `QA-ACCEPTANCE.md` 对全部 P0 标记通过 | 本次为 G3 后的有限修复；尚未重新独立验收 | 修复提交后启动 Claude 只读复验 |
 
@@ -36,6 +36,7 @@
 | JSON 与决策 Schema | Python JSON + Draft 2020-12 校验 | 17 个 JSON 文件可解析；3 个 `DecisionResult` 示例通过 | `schemas/decision-result.schema.json`（2026-09-10） |
 | B 端 API | `python -m pytest backend/tests -q` | 5 项测试全部通过 | `backend/tests/test_api.py`（2026-09-13） |
 | B/C 浏览器 HTTP 联调 | `VITE_API_MODE=http` 启动前后端 | 主案例 E1 拦截、赠品 E2 放行、模糊图 H1 人工复核；查询→确认→揽收→送达闭环通过 | `backend/main.py` 与 `frontend/src/App.tsx`（2026-09-13） |
+| 当前优化版后端接入 | 使用本地前端连接 B 线服务，逐一调用 analyze、evaluate、approve、shipment | 四接口烟测通过：`ACTION_REVIEW`、`INTERVENE/E1`、`IN_FULFILLMENT`、`AT_RISK`；`npm run build` 通过。未运行完整测试套件 | `backend/main.py`、`frontend/src/api/client.ts`（2026-09-29） |
 
 ## B 线实现状态（2026-09-13）
 
@@ -50,7 +51,7 @@
 ## 技术阻塞与事实证据
 
 - C 线当前无独立技术阻塞。
-- B 端服务已具备本地联调条件；仍需启动双服务完成浏览器端 HTTP 联调。
+- 2026-09-29：当前优化预览已用 HTTP 模式接入 B 端服务；团队共享分支仍待合并，D 线独立浏览器验收未完成。
 
 ## 已知风险与灾备
 
