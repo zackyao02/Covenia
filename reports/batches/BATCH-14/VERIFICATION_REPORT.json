@@ -1,0 +1,157 @@
+{
+  "report_version": "1.0",
+  "batch_id": "BATCH-14",
+  "verdict": "PASS",
+  "reviewed_base_sha": "190d8c884b912103d799441d50213d192e6b4d78",
+  "reviewed_sha": "673a0a0bd95b43b9f43c31cc833f6d0f974dffe0",
+  "reviewed_code_commits": [
+    "673a0a0bd95b43b9f43c31cc833f6d0f974dffe0"
+  ],
+  "contract_version": "NOT_DECLARED_IN_REVIEWED_BATCH_ENTRY",
+  "plan_sha256": {
+    "MASTER_PLAN.md": "DBE269F06F4BBE3D8C1F915DD8E4A2D78E0E4F021ABB396270C8B846D5FFA74E",
+    "batches.json": "18DA555CE5ADEA5062F680837AEC8214158F58CBC1A918CF6BBC31EF48448E2E",
+    "method": "SHA-256 over raw git show <sha>:<path> bytes"
+  },
+  "verified_at": "2026-09-29T23:46:11+08:00",
+  "independent_context": true,
+  "environment": {
+    "python": "3.13.5",
+    "node": "NOT_REQUIRED",
+    "run_dir": "C:\\cov-run\\verify-batch-14",
+    "interpreter": "C:\\cov-run\\verify-batch-14\\venv\\Scripts\\python.exe",
+    "venv_direct_child_of_run_dir": true,
+    "longest_venv_path_length": 163,
+    "path_limit": 250
+  },
+  "dependency_checks": [],
+  "external_gate_checks": [],
+  "scope_audit": {
+    "passed": true,
+    "changed_files": [
+      "backend/src/covenia_b/state/__init__.py",
+      "backend/src/covenia_b/state/builder.py",
+      "backend/src/covenia_b/state/models.py",
+      "backend/tests/state/test_builder.py"
+    ],
+    "violations": [],
+    "evidence": "reports/batches/BATCH-14/verification-evidence/scope-audit.json"
+  },
+  "criteria": [
+    {
+      "criterion": "同事实同时间同历史得到相同快照，并通过 Schema。",
+      "result": "PASS",
+      "evidence": [
+        "reports/batches/BATCH-14/verification-evidence/independent_probe.py",
+        "reports/batches/BATCH-14/verification-evidence/independent-probe-output.json"
+      ]
+    },
+    {
+      "criterion": "仅揽收快照不 RESOLVED；完成物流不可被新 analyze 的旧聊天状态覆盖。",
+      "result": "PASS",
+      "evidence": [
+        "reports/batches/BATCH-14/verification-evidence/independent-probe-output.json"
+      ]
+    },
+    {
+      "criterion": "正常 Hero 的禁止项与 P0/E1 已批准映射一致；风险不复制模型建议。",
+      "result": "PASS",
+      "evidence": [
+        "reports/batches/BATCH-14/verification-evidence/independent-probe-output.json"
+      ],
+      "notes": "Hero output contains ASK_SAME_EVIDENCE as E1 display-only and ASK_REPEAT_EXPLANATION, SHIFT_FOLLOW_UP_TO_CONSUMER, CLOSE_BEFORE_RESOLUTION as P0 actions. A journey expression explicitly suggesting HIGH still produced server-derived MEDIUM risk while in transit and LOW after delivered."
+    },
+    {
+      "criterion": "使用短路径绝对隔离 venv；锁文件精确钉版本；同解释器 pip check 退出 0。",
+      "result": "PASS",
+      "evidence": [
+        "reports/batches/BATCH-14/verification-evidence/command-results.json",
+        "reports/batches/BATCH-14/verification-evidence/blob-hashes.json"
+      ],
+      "notes": "The venv is the only direct child of C:\\cov-run\\verify-batch-14, longest discovered venv path is 163 (<250), lock blob is unchanged from baseline, and pip check returned 0."
+    }
+  ],
+  "commands": [
+    {
+      "command": "C:\\cov-run\\verify-batch-14\\venv\\Scripts\\python.exe -m pytest backend/tests/state -q",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-14",
+      "exit_code": 0,
+      "mode": "UNIT",
+      "output": "reports/batches/BATCH-14/verification-evidence/command-results.json"
+    },
+    {
+      "command": "C:\\cov-run\\verify-batch-14\\venv\\Scripts\\python.exe -m pip check",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-14",
+      "exit_code": 0,
+      "mode": "ENVIRONMENT",
+      "output": "reports/batches/BATCH-14/verification-evidence/command-results.json"
+    },
+    {
+      "command": "git diff --check 190d8c884b912103d799441d50213d192e6b4d78 673a0a0bd95b43b9f43c31cc833f6d0f974dffe0",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-14",
+      "exit_code": 0,
+      "mode": "SCOPE",
+      "output": "reports/batches/BATCH-14/verification-evidence/command-results.json"
+    },
+    {
+      "command": "C:\\cov-run\\verify-batch-14\\venv\\Scripts\\python.exe reports/batches/BATCH-14/verification-evidence/independent_probe.py",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-14",
+      "exit_code": 0,
+      "mode": "NEGATIVE_CONTROL",
+      "output": "reports/batches/BATCH-14/verification-evidence/independent-probe-output.json"
+    }
+  ],
+  "artifact_hashes": {
+    "backend/src/covenia_b/state/__init__.py": "31C55BEF468919D2D12797219514C4E62A654CA17109D70F69509A21EAF5D13A",
+    "backend/src/covenia_b/state/builder.py": "2468B65238CD1F30D730793D61C94D280661188DCE26A49ED3C7DEA199E4534B",
+    "backend/src/covenia_b/state/models.py": "DE41EBBBFCC68CE220899BCBDC08DB3548843844584F2E51DBCE462421BBA643",
+    "backend/tests/state/test_builder.py": "4A0E9F193B515E407B00677050948899617CAB00185B66D9644E7D91C97FFDA9",
+    "backend/requirements-dev.lock": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+    "reports/batches/BATCH-14/IMPLEMENTATION_REPORT.json@e6b3581": "78422F0CA9129DAC165242EABBBD581F6ACBDD6D22B13E2342B61DD325E88D94",
+    "reports/batches/BATCH-14/state-vectors.json@e6b3581": "CCF325B9220C460CCD7D0C50080310E02E15140C7A8607DB7E4F292418E1B2D3",
+    "reports/batches/BATCH-14/precedence-evidence.json@e6b3581": "C043056671646163040C84034345F21422D85B9C00D75ED0A48BCAC27BE7B599",
+    "reports/batches/BATCH-14/environment.json@e6b3581": "D265305F07BF2560CD02A6F3C85CA3D58C12B63AB73B81EEF11140507F453C70",
+    "reports/batches/BATCH-14/pip-check.txt@e6b3581": "9261363B733079A641C2E4CC9BC46FFA1D8336945A87F807B6CF68847DBC9B09",
+    "method": "raw git show blob bytes; see verification-evidence/blob-hashes.json"
+  },
+  "negative_controls": [
+    {
+      "control": "Pass an uninitialized PersistedLedger to rebuild_accountability_state",
+      "expected": "ValueError; no silent rebuild/initialization",
+      "result": "PASS",
+      "evidence": "reports/batches/BATCH-14/verification-evidence/independent-probe-output.json"
+    },
+    {
+      "control": "Persisted IN_TRANSIT progress with a journey text recommending HIGH risk",
+      "expected": "IN_FULFILLMENT, no premature close, server-derived MEDIUM risk",
+      "result": "PASS",
+      "evidence": "reports/batches/BATCH-14/verification-evidence/independent-probe-output.json"
+    },
+    {
+      "control": "Persisted DELIVERED history rebuilt with an old unresolved chat expression and active compilation",
+      "expected": "RESOLVED/DELIVERED/LOW survives old chat",
+      "result": "PASS",
+      "evidence": "reports/batches/BATCH-14/verification-evidence/independent-probe-output.json"
+    }
+  ],
+  "findings": [
+    {
+      "severity": "INFO",
+      "finding": "The supplied BATCH-14 checkout was at e6b3581cc6af98a64280d6ee8c06be3d50af6c6a, not reviewed_sha. It is a direct artifact-only child of reviewed_sha; the exact code/test tree delta is empty and all artifact hashes were recomputed from committed blobs."
+    }
+  ],
+  "minimal_fix_list": [],
+  "blockers": [],
+  "recheck_commands": [
+    "C:\\cov-run\\verify-batch-14\\venv\\Scripts\\python.exe -m pytest backend/tests/state -q",
+    "C:\\cov-run\\verify-batch-14\\venv\\Scripts\\python.exe reports/batches/BATCH-14/verification-evidence/independent_probe.py",
+    "C:\\cov-run\\verify-batch-14\\venv\\Scripts\\python.exe -m pip check",
+    "git diff --check 190d8c884b912103d799441d50213d192e6b4d78 673a0a0bd95b43b9f43c31cc833f6d0f974dffe0"
+  ],
+  "rollback_review": {
+    "passed": true,
+    "notes": "Reviewed code is one direct child of the integration baseline and changes only state code/tests. The planned rollback is a revert of this builder commit while retaining original events and human records. No rollback was run."
+  },
+  "code_modified": false,
+  "next_batch_started": false
+}

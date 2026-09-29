@@ -1,0 +1,33 @@
+{
+  "command": "C:\\cov-run\\verify-batch-14\\venv\\Scripts\\python.exe reports/batches/BATCH-14/verification-evidence/independent_probe.py",
+  "exit_code": 0,
+  "result": {
+    "determinism_and_schema": "PASS",
+    "negative_control_uninitialized_rebuild_rejected": true,
+    "picked_up": {
+      "case_status": "IN_FULFILLMENT",
+      "milestone": "IN_TRANSIT",
+      "close_before_resolution_prohibited": true
+    },
+    "delivered_old_chat": {
+      "case_status": "RESOLVED",
+      "milestone": "DELIVERED",
+      "experience_risk": "LOW"
+    },
+    "hero_actions": [
+      "ASK_SAME_EVIDENCE",
+      "ASK_REPEAT_EXPLANATION",
+      "SHIFT_FOLLOW_UP_TO_CONSUMER",
+      "MAKE_UNTRACKABLE_PROMISE",
+      "CLOSE_BEFORE_RESOLUTION"
+    ],
+    "mapping_check": {
+      "E1_display_only": "ASK_SAME_EVIDENCE",
+      "P0_actions": [
+        "ASK_REPEAT_EXPLANATION",
+        "SHIFT_FOLLOW_UP_TO_CONSUMER",
+        "CLOSE_BEFORE_RESOLUTION"
+      ]
+    }
+  }
+}

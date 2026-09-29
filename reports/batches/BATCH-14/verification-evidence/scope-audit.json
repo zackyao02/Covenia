@@ -1,0 +1,29 @@
+{
+  "base_sha": "190d8c884b912103d799441d50213d192e6b4d78",
+  "reviewed_sha": "673a0a0bd95b43b9f43c31cc833f6d0f974dffe0",
+  "changed_paths": [
+    "backend/src/covenia_b/state/__init__.py",
+    "backend/src/covenia_b/state/builder.py",
+    "backend/src/covenia_b/state/models.py",
+    "backend/tests/state/test_builder.py"
+  ],
+  "allowed_paths": [
+    "backend/src/covenia_b/state/**",
+    "backend/tests/state/**",
+    "reports/batches/BATCH-14/**",
+    "backend/requirements-dev.lock"
+  ],
+  "passed": true,
+  "violations": [],
+  "implementation_artifact_commit": "e6b3581cc6af98a64280d6ee8c06be3d50af6c6a",
+  "artifact_commit_delta_from_review": [
+    "reports/batches/BATCH-14/IMPLEMENTATION_REPORT.json",
+    "reports/batches/BATCH-14/IMPLEMENTATION_REPORT.md",
+    "reports/batches/BATCH-14/commands.json",
+    "reports/batches/BATCH-14/environment.json",
+    "reports/batches/BATCH-14/pip-check.txt",
+    "reports/batches/BATCH-14/precedence-evidence.json",
+    "reports/batches/BATCH-14/state-vectors.json"
+  ],
+  "note": "The artifact-only commit is a direct descendant of reviewed_sha and changes no BATCH-14 code or tests."
+}

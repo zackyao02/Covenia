@@ -1,0 +1,25 @@
+{
+  "repository": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-14",
+  "run_dir": "C:\\cov-run\\verify-batch-14",
+  "commands": [
+    {"command": "git status --short", "exit_code": 0, "result": "clean before verifier outputs"},
+    {"command": "git rev-parse HEAD", "exit_code": 0, "result": "e6b3581cc6af98a64280d6ee8c06be3d50af6c6a; this contains evidence only after reviewed code 673a0a0"},
+    {"command": "git diff --name-status 190d8c884b912103d799441d50213d192e6b4d78 673a0a0bd95b43b9f43c31cc833f6d0f974dffe0", "exit_code": 0, "result": "4 added paths, all allowlisted"},
+    {"command": "git diff --check 190d8c884b912103d799441d50213d192e6b4d78 673a0a0bd95b43b9f43c31cc833f6d0f974dffe0", "exit_code": 0, "result": "PASS"},
+    {"command": "C:\\cov-run\\verify-batch-14\\venv\\Scripts\\python.exe -c interpreter preflight", "exit_code": 0, "result": "sys.prefix=C:\\cov-run\\verify-batch-14\\venv; sys.base_prefix=D:\\python"},
+    {"command": "C:\\cov-run\\verify-batch-14\\venv\\Scripts\\python.exe -m pip install --no-deps -r backend/requirements-dev.lock", "exit_code": 0, "result": "PASS after an initial sandbox-only WinError 10013 network denial; repeated under approved controlled network"},
+    {"command": "C:\\cov-run\\verify-batch-14\\venv\\Scripts\\python.exe -m pip install --no-deps --no-build-isolation -e backend", "exit_code": 0, "result": "PASS; covenia-b 0.0.0 editable"},
+    {"command": "C:\\cov-run\\verify-batch-14\\venv\\Scripts\\python.exe -c import pytest,jsonschema", "exit_code": 0, "result": "pytest/jsonschema import OK"},
+    {"command": "C:\\cov-run\\verify-batch-14\\venv\\Scripts\\python.exe -m pytest backend/tests/state -q", "exit_code": 0, "result": "4 passed in 0.45s"},
+    {"command": "C:\\cov-run\\verify-batch-14\\venv\\Scripts\\python.exe -m pip list --format=json", "exit_code": 0, "result": "all lock packages and editable covenia-b listed"},
+    {"command": "C:\\cov-run\\verify-batch-14\\venv\\Scripts\\python.exe -m pip check", "exit_code": 0, "result": "No broken requirements found."},
+    {"command": "git diff --check", "exit_code": 0, "result": "PASS before verifier outputs"},
+    {"command": "rg -n -i requests|http|urllib|socket|open\\(|write_|\\.save\\(|subprocess|os\\. backend/src/covenia_b/state", "exit_code": 1, "result": "negative static side-effect scan: no matches"}
+  ],
+  "environment": {
+    "python": "3.13.5",
+    "venv_direct_children": ["venv"],
+    "longest_venv_path_length": 163,
+    "path_limit": 250
+  }
+}
