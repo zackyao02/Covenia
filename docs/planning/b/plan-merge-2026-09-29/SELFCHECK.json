@@ -1,0 +1,192 @@
+{
+  "kind": "IMPLEMENTER_STATIC_SELFCHECK_NOT_INDEPENDENT_VERIFICATION",
+  "baseline_commit": "69d78e88c5c2ee0f7cd25c7a04c0eaa8223d0f51",
+  "python_executable": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\pm0929\\venv\\Scripts\\python.exe",
+  "sys_prefix": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\pm0929\\venv",
+  "longest_venv_path": 156,
+  "checks": [
+    {
+      "check": "batch_ids_and_dependency_graph",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "check": "batch_definitions_equal_approved_workspace",
+      "result": "PASS",
+      "detail": "No batch definition, dependency, path, executable command or status was rewritten."
+    },
+    {
+      "check": "allowed_paths_34",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "check": "forbidden_paths_34",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "check": "root_and_repository_plan_mirrors",
+      "result": "PASS",
+      "detail": "Text equality after CRLF/LF decoding; committed raw blob equality is checked separately after commit, never substituting worktree hashes."
+    },
+    {
+      "check": "environment_policy_and_read_only_reload",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "check": "standing_rules_and_no_autostart",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "check": "sections_5_5_and_5_1_1_preserved",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "check": "fixture_handoff_body_preserved_with_completed_label",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "check": "command_union_all_source_entries",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "check": "source_commands_preserved_workspace",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "check": "source_commands_preserved_repository",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "check": "every_source_maps_to_active_command",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "check": "no_bare_python_in_executable_commands",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "check": "pip_check_in_every_batch",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "check": "markdown_json_executable_commands_match",
+      "result": "PASS",
+      "detail": []
+    },
+    {
+      "check": "four_gate_statuses",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "check": "other_gates_and_image_subconditions_unchanged",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "check": "existing_fixture_acceptance_fields_retained",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "check": "approval_blob_and_working_bytes_unchanged",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "check": "mapping_raw_blob_hash_and_receipt",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "check": "mapping_existing_acceptance_chain",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "check": "repository_text_traceability",
+      "result": "PASS",
+      "detail": {
+        "missing_lines": 0,
+        "historical_archive_not_executable": true
+      }
+    },
+    {
+      "check": "merge_is_pending_independent_acceptance",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "check": "isolated_absolute_interpreter",
+      "result": "PASS",
+      "detail": null
+    }
+  ],
+  "passed": 25,
+  "failed": 0,
+  "business_tests_run": false,
+  "batch_dispatch_performed": false,
+  "checker_script": "import hashlib, json, re, subprocess, sys\nfrom pathlib import Path\nroot=Path.cwd()\nrepo=root/\"worktrees\"/\"covenia-integration\"\nbase=\"69d78e88c5c2ee0f7cd25c7a04c0eaa8223d0f51\"\nevidence=repo/\"docs/planning/b/plan-merge-2026-09-29\"\nload=lambda p: json.loads(p.read_text(encoding=\"utf-8\"))\nblob=lambda ref,p: subprocess.check_output([\"git\",\"-C\",str(repo),\"show\",f\"{ref}:{p}\"])\nm=load(repo/\"batches.json\")\nw=load(evidence/\"WORKSPACE_batches.before.json\")\nr=json.loads(blob(base,\"batches.json\"))\nwm=(evidence/\"WORKSPACE_MASTER_PLAN.before.md\").read_text(encoding=\"utf-8\")\nmd=(repo/\"MASTER_PLAN.md\").read_text(encoding=\"utf-8\")\nrm=blob(base,\"MASTER_PLAN.md\").decode(\"utf-8\")\nrows=[]\ndef ck(name,condition,detail=None):\n    rows.append({\"check\":name,\"result\":\"PASS\" if condition else \"FAIL\",\"detail\":detail})\nmb={b[\"id\"]:b for b in m[\"batches\"]}\nwb={b[\"id\"]:b for b in w[\"batches\"]}\nrb={b[\"id\"]:b for b in r[\"batches\"]}\nck(\"batch_ids_and_dependency_graph\",len(mb)==34 and list(mb)==list(wb)==list(rb) and all(mb[k][\"depends_on\"]==wb[k][\"depends_on\"]==rb[k][\"depends_on\"] for k in mb))\nck(\"batch_definitions_equal_approved_workspace\",m[\"batches\"]==w[\"batches\"],\"No batch definition, dependency, path, executable command or status was rewritten.\")\nck(\"allowed_paths_34\",all(mb[k][\"allowed_paths\"]==wb[k][\"allowed_paths\"] for k in mb))\nck(\"forbidden_paths_34\",all(mb[k][\"forbidden_paths\"]==wb[k][\"forbidden_paths\"] and \"fixtures/**\" in mb[k][\"forbidden_paths\"] for k in mb))\nck(\"root_and_repository_plan_mirrors\",all((root/p).read_text(encoding=\"utf-8\")==(repo/p).read_text(encoding=\"utf-8\") for p in (\"MASTER_PLAN.md\",\"batches.json\")),\"Text equality after CRLF/LF decoding; committed raw blob equality is checked separately after commit, never substituting worktree hashes.\")\nck(\"environment_policy_and_read_only_reload\",m[\"environment_policy\"]==w[\"environment_policy\"] and m[\"scheduling\"][\"plan_reload\"]==w[\"scheduling\"][\"plan_reload\"] and m[\"write_policy\"]==w[\"write_policy\"])\nck(\"standing_rules_and_no_autostart\",m[\"scheduling\"][\"standing_rules\"]==r[\"scheduling\"][\"standing_rules\"] and m[\"scheduling\"][\"auto_start_next_batch\"] is False)\nsec55=lambda t:re.search(r\"^### 5\\.5 .+?(?=^### 5\\.6|^## 6\\.)\",t,re.M|re.S).group(0).strip()\nsec511=lambda t:re.search(r\"^### 5\\.1\\.1 .+?(?=^### 5\\.2)\",t,re.M|re.S).group(0).strip()\nck(\"sections_5_5_and_5_1_1_preserved\",sec55(md)==sec55(wm) and sec511(md)==sec511(rm))\nsec41=lambda t:re.search(r\"^### 4\\.1 .+?(?=^### 4\\.2)\",t,re.M|re.S).group(0).split(\"\\n\",1)[1].strip()\nck(\"fixture_handoff_body_preserved_with_completed_label\",sec41(wm) in sec41(md) and \"已完成 / ACCEPTED（2026-09-13）\" in sec41(md))\nunion=load(evidence/\"COMMAND_UNION.json\")\nck(\"command_union_all_source_entries\",len(union[\"mappings\"])==485 and union[\"counts\"]=={\"workspace\":343,\"repository\":142,\"source_entries\":485,\"merged_executable\":343})\nfor source,bs in ((\"workspace\",wb),(\"repository\",rb)):\n    actual=[(x[\"batch_id\"],x[\"source_index\"],x[\"source_command\"]) for x in union[\"mappings\"] if x[\"source\"]==source]\n    expected=[(k,i+1,c) for k,b in bs.items() for i,c in enumerate(b[\"acceptance_commands\"])]\n    ck(\"source_commands_preserved_\"+source,actual==expected)\nck(\"every_source_maps_to_active_command\",all(mb[x[\"batch_id\"]][\"acceptance_commands\"][x[\"executable_index\"]-1]==x[\"executable_command\"] for x in union[\"mappings\"]))\nprefix='& \"<RUN_DIR>/venv/Scripts/python.exe\"'\ncommands=[c for b in m[\"batches\"] for c in b[\"acceptance_commands\"]]\nck(\"no_bare_python_in_executable_commands\",not any(re.match(r\"^(python(?:3)?|py|pip|pytest|uvicorn)\\b\",c) for c in commands))\nck(\"pip_check_in_every_batch\",all(prefix+\" -m pip check\" in b[\"acceptance_commands\"] for b in m[\"batches\"]))\nblock_errors=[]\nfence=re.escape(chr(96)*3)\nfor bid,b in mb.items():\n    block=re.search(r\"^### \"+re.escape(bid)+r\"｜.+?(?=^### BATCH-|^## 8\\.|\\Z)\",md,re.M|re.S).group(0)\n    blocks=re.findall(r\"^\"+fence+r\"powershell\\n(.*?)^\"+fence,block,re.M|re.S)\n    actual=[ln for ln in blocks[0].splitlines() if ln.strip()] if len(blocks)==1 else []\n    if actual != b[\"acceptance_commands\"]: block_errors.append(bid)\nck(\"markdown_json_executable_commands_match\",not block_errors,block_errors)\ng={v[\"id\"]:v for v in m[\"external_gates\"]}\nwg={v[\"id\"]:v for v in w[\"external_gates\"]}\nrg={v[\"id\"]:v for v in r[\"external_gates\"]}\nck(\"four_gate_statuses\",all(g[k][\"status\"]==\"ACCEPTED\" for k in [\"X-FREEZE\",\"X-A-FIXTURES\",\"X-A-MAPPING\",\"X-A-IMAGES\"]))\nck(\"other_gates_and_image_subconditions_unchanged\",all(g[k]==wg[k] for k in wg if k not in [\"X-A-MAPPING\",\"X-A-FIXTURES\"]) and g[\"X-A-IMAGES\"]==rg[\"X-A-IMAGES\"])\nck(\"existing_fixture_acceptance_fields_retained\",all(g[\"X-A-FIXTURES\"][k]==v for k,v in rg[\"X-A-FIXTURES\"].items() if k!=\"criteria\"))\nap=blob(base,\"docs/approvals/b-decisions.json\")\nck(\"approval_blob_and_working_bytes_unchanged\",hashlib.sha256(ap).hexdigest().upper()==\"3ACAD4A113EB595BCED29025AF884A4C5EA2835E90E38D0E897298F91DB371DA\" and ap==(repo/\"docs/approvals/b-decisions.json\").read_bytes()==(root/\"docs/approvals/b-decisions.json\").read_bytes())\ntarget=blob(base,\"handoff/a/data-mapping.json\")\nreceipt=load(repo/\"reports/batches/X-A-MAPPING/GATE_ACCEPTANCE_RECEIPT.json\")\nck(\"mapping_raw_blob_hash_and_receipt\",len(target)==74175 and hashlib.sha256(target).hexdigest().upper()==receipt[\"artifact\"][\"git_blob_sha256\"] and receipt[\"review_status\"]==\"PENDING_INDEPENDENT_PLAN_MERGE_REVIEW\" and \"accepted_by\" not in receipt)\nold_archive=json.loads(blob(\"90c83590ad4955e24d6d859c1281b42f53686785\",\"reports/batches/X-A-MAPPING/ARCHIVE_REPORT.json\"))\nold_verify=json.loads(blob(base,\"reports/batches/BATCH-05/VERIFICATION_REPORT.json\"))\nck(\"mapping_existing_acceptance_chain\",old_archive[\"gate_status\"]==\"ACCEPTED\" and any(x[\"gate_id\"]==\"X-A-MAPPING\" and x[\"result\"]==\"PASS\" for x in old_verify[\"external_gate_checks\"]))\nold_lines=load(root/\"docs/decisions/.plan-merge-baseline.json\")[\"master_plan_lines\"]\nnew_lines=[s.strip() for s in md.splitlines() if s.strip()]\nmissing=[l for l in old_lines if not any(l==s or l in s for s in new_lines)]\nck(\"repository_text_traceability\",not missing,{\"missing_lines\":len(missing),\"historical_archive_not_executable\":True})\nck(\"merge_is_pending_independent_acceptance\",m[\"plan_merge\"][\"status\"]==\"MERGED_PENDING_INDEPENDENT_REVIEW\")\nlongest=max((len(str(p)) for p in Path(sys.prefix).rglob(\"*\") if p.is_file()),default=0)\nck(\"isolated_absolute_interpreter\",sys.prefix!=sys.base_prefix and Path(sys.prefix).name==\"venv\" and longest<250)\nresult={\"kind\":\"IMPLEMENTER_STATIC_SELFCHECK_NOT_INDEPENDENT_VERIFICATION\",\"baseline_commit\":base,\"python_executable\":sys.executable,\"sys_prefix\":sys.prefix,\"longest_venv_path\":longest,\"checks\":rows,\"passed\":sum(x[\"result\"]==\"PASS\" for x in rows),\"failed\":sum(x[\"result\"]==\"FAIL\" for x in rows),\"business_tests_run\":False,\"batch_dispatch_performed\":False}\nprint(json.dumps(result,ensure_ascii=False,indent=2))\nsys.exit(1 if result[\"failed\"] else 0)",
+  "execution_command": "& \"C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/run/pm0929/venv/Scripts/python.exe\" -X utf8 -c $mergeCheckCode",
+  "execution_cwd": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松",
+  "exit_code": 0,
+  "powershell_parse": {
+    "commands": 343,
+    "errors": 0
+  },
+  "pip_check": {
+    "command": "& \"C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/run/pm0929/venv/Scripts/python.exe\" -X utf8 -m pip check",
+    "stdout": "No broken requirements found.",
+    "exit_code": 0
+  },
+  "git_diff_check": {
+    "exit_code": 0
+  },
+  "first_run_note": "Initial raw-worktree mirror assertion returned 24 PASS / 1 FAIL solely because core.autocrlf=true retains CRLF in the integration worktree while the root plan uses LF. Corrected the mirror assertion to decoded text equality; post-commit raw Git blob equality remains separately required. No Git setting, approved record or business file was changed.",
+  "original_input_hashes": {
+    "recorded_at": "2026-09-29T18:41:18.7825343+08:00",
+    "hashes": [
+      {
+        "Path": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\MASTER_PLAN.md",
+        "Hash": "56A5CAF32334DC1D5628DA67A3BAB24A250CC7C5FE3F762BD781682633808AE1"
+      },
+      {
+        "Path": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\batches.json",
+        "Hash": "FAE792913DCE0F2DE7BC799C452FD0964775804117287A9745A719722326A720"
+      },
+      {
+        "Path": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\docs\\decisions\\PLAN_MERGE_BASIS.md",
+        "Hash": "52A49BDD3A0C1E8806BE8514E871DF105954286023EC8E68A43F5DDEC7A9C72E"
+      },
+      {
+        "Path": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\docs\\planning\\b\\PLAN_MERGE_CONFIRMATION_2026-09-29.md",
+        "Hash": "54C98F04F4A9F061DE5A9988A5797970901825D9DC220DF23955575A6E3A6F82"
+      },
+      {
+        "Path": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\docs\\approvals\\b-decisions.json",
+        "Hash": "3ACAD4A113EB595BCED29025AF884A4C5EA2835E90E38D0E897298F91DB371DA"
+      },
+      {
+        "Path": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\checks\\verify_merge.py",
+        "Hash": "F26ED4BAB7486607C03D4FE7316E978FBE53DC76A35B231C691D180C33E5E8D7"
+      },
+      {
+        "Path": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\docs\\decisions\\.plan-merge-baseline.json",
+        "Hash": "32E7141EEC33F0AF92F687BD482B2495069C8C13DAD9416CFCA3D3F6164D9CAE"
+      }
+    ]
+  },
+  "source_snapshot_encoding": "Workspace before snapshots are UTF-8/LF text copies. Original working-file hashes above are provenance only, not plan_sha256. Repository baseline is identified by its immutable Git commit."
+}

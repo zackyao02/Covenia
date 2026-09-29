@@ -1,0 +1,47 @@
+{
+  "receipt_type": "external_gate_acceptance_coordination_registration",
+  "gate_id": "X-A-MAPPING",
+  "status": "ACCEPTED",
+  "acceptance_basis": "PREEXISTING_ACCEPTANCE_REGISTRATION_ONLY",
+  "recorded_by": "Codex — 本次计划合并执行者（集成协调登记）",
+  "recorded_at": "2026-09-29T18:41:18.7825343+08:00",
+  "authorization": "用户在本任务2026-09-29的执行计划合并指令：由集成协调者补登记；不改写或补签批准。",
+  "source_acceptance_record": {
+    "path": "reports/batches/X-A-MAPPING/ARCHIVE_REPORT.json",
+    "integration_commit": "90c83590ad4955e24d6d859c1281b42f53686785",
+    "gate_status": "ACCEPTED",
+    "delivery_owner": "产品负责人",
+    "delivery_date": "2026-09-13",
+    "note": "delivery_owner按既有记录引用，不转换为新的accepted_by签名。"
+  },
+  "source_acceptance_date": "2026-09-13",
+  "integration_receipt": {
+    "path": "C:/Users/WONG Tsun Ming/covenia-orchestration/runs/covenia-b-20260910-01/integration-receipts/X-A-MAPPING.json",
+    "status": "SUCCESS",
+    "integration_commit": "90c83590ad4955e24d6d859c1281b42f53686785"
+  },
+  "independent_evidence": {
+    "path": "reports/batches/BATCH-05/VERIFICATION_REPORT.json",
+    "integration_commit": "dbedd4e9f985911cc89b140d1a129586a09fbdf4",
+    "result": "PASS",
+    "section": "external_gate_checks: X-A-MAPPING",
+    "note": "引用既有独立核验；本次没有重跑或签发新的独立验收报告。"
+  },
+  "verified_current_base_commit": "69d78e88c5c2ee0f7cd25c7a04c0eaa8223d0f51",
+  "artifact": {
+    "path": "handoff/a/data-mapping.json",
+    "git_blob_size_bytes": 74175,
+    "git_blob_sha256": "8D76EEAD5757D5618B57107B3725FCF5543D96F0C9FECF6EDEA5FDDD210B5538",
+    "hash_method": "git_show_blob_raw_bytes"
+  },
+  "scope": {
+    "new_product_approval": false,
+    "approval_content_changed": false,
+    "artifact_changed": false,
+    "business_code_changed": false,
+    "batch_status_changed": false,
+    "dispatch_authorized": false
+  },
+  "review_status": "PENDING_INDEPENDENT_PLAN_MERGE_REVIEW",
+  "remaining_conditions": "仅纠正X-A-MAPPING计划登记滞后；不替代任何Batch前置、独立验收、集成、资源锁及派发授权。14/17/18的计划漂移阻塞须待合并V1-V5独立复核及新提交blob hash登记后另行解除。"
+}

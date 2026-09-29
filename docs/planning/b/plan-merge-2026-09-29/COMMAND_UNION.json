@@ -1,0 +1,4382 @@
+{
+  "schema": "covenia-plan-command-union/1",
+  "status": "IMPLEMENTER_PROVENANCE_NOT_INDEPENDENT_VERIFICATION",
+  "baseline_commit": "69d78e88c5c2ee0f7cd25c7a04c0eaa8223d0f51",
+  "workspace_input": "WORKSPACE_batches.before.json",
+  "repository_input": "git show 69d78e88c5c2ee0f7cd25c7a04c0eaa8223d0f51:batches.json",
+  "rule": "Keep all source commands. Apply approved absolute venv and locked-install flags, then deduplicate exact executable commands only within the same batch.",
+  "counts": {
+    "workspace": 343,
+    "repository": 142,
+    "source_entries": 485,
+    "merged_executable": 343
+  },
+  "source_commands_executable": false,
+  "mappings": [
+    {
+      "batch_id": "BATCH-01",
+      "source": "workspace",
+      "source_index": 1,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "executable_index": 1,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-01",
+      "source": "workspace",
+      "source_index": 2,
+      "source_command": "git fetch origin --prune",
+      "executable_index": 2,
+      "executable_command": "git fetch origin --prune",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-01",
+      "source": "workspace",
+      "source_index": 3,
+      "source_command": "git ls-remote --heads origin",
+      "executable_index": 3,
+      "executable_command": "git ls-remote --heads origin",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-01",
+      "source": "workspace",
+      "source_index": 4,
+      "source_command": "git log --all --oneline --decorate -10",
+      "executable_index": 4,
+      "executable_command": "git log --all --oneline --decorate -10",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-01",
+      "source": "workspace",
+      "source_index": 5,
+      "source_command": "git rev-list --left-right --count origin/main...origin/feat/c-qianniu-plugin",
+      "executable_index": 5,
+      "executable_command": "git rev-list --left-right --count origin/main...origin/feat/c-qianniu-plugin",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-01",
+      "source": "workspace",
+      "source_index": 6,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m json.tool docs/planning/b/baseline-lock.json",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m json.tool docs/planning/b/baseline-lock.json",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-01",
+      "source": "workspace",
+      "source_index": 7,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m json.tool docs/planning/b/decisions.json",
+      "executable_index": 7,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m json.tool docs/planning/b/decisions.json",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-01",
+      "source": "workspace",
+      "source_index": 8,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m json.tool docs/approvals/b-decisions.json",
+      "executable_index": 8,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m json.tool docs/approvals/b-decisions.json",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-01",
+      "source": "workspace",
+      "source_index": 9,
+      "source_command": "if ((Get-FileHash -LiteralPath 'docs/approvals/b-decisions.json' -Algorithm SHA256).Hash -ne '3ACAD4A113EB595BCED29025AF884A4C5EA2835E90E38D0E897298F91DB371DA') { throw 'Approved record hash mismatch' }",
+      "executable_index": 9,
+      "executable_command": "if ((Get-FileHash -LiteralPath 'docs/approvals/b-decisions.json' -Algorithm SHA256).Hash -ne '3ACAD4A113EB595BCED29025AF884A4C5EA2835E90E38D0E897298F91DB371DA') { throw 'Approved record hash mismatch' }",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-01",
+      "source": "workspace",
+      "source_index": 10,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "executable_index": 10,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-01",
+      "source": "workspace",
+      "source_index": 11,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "executable_index": 11,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-01",
+      "source": "workspace",
+      "source_index": 12,
+      "source_command": "git diff --check",
+      "executable_index": 12,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-01",
+      "source": "workspace",
+      "source_index": 13,
+      "source_command": "git status --short",
+      "executable_index": 13,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-01",
+      "source": "repository",
+      "source_index": 1,
+      "source_command": "git fetch origin --prune",
+      "executable_index": 2,
+      "executable_command": "git fetch origin --prune",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-01",
+      "source": "repository",
+      "source_index": 2,
+      "source_command": "git ls-remote --heads origin",
+      "executable_index": 3,
+      "executable_command": "git ls-remote --heads origin",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-01",
+      "source": "repository",
+      "source_index": 3,
+      "source_command": "git log --all --oneline --decorate -10",
+      "executable_index": 4,
+      "executable_command": "git log --all --oneline --decorate -10",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-01",
+      "source": "repository",
+      "source_index": 4,
+      "source_command": "git rev-list --left-right --count origin/main...origin/feat/c-qianniu-plugin",
+      "executable_index": 5,
+      "executable_command": "git rev-list --left-right --count origin/main...origin/feat/c-qianniu-plugin",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-01",
+      "source": "repository",
+      "source_index": 5,
+      "source_command": "python -m json.tool docs/planning/b/baseline-lock.json",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m json.tool docs/planning/b/baseline-lock.json",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-01",
+      "source": "repository",
+      "source_index": 6,
+      "source_command": "python -m json.tool docs/planning/b/decisions.json",
+      "executable_index": 7,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m json.tool docs/planning/b/decisions.json",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-01",
+      "source": "repository",
+      "source_index": 7,
+      "source_command": "git diff --check",
+      "executable_index": 12,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-01",
+      "source": "repository",
+      "source_index": 8,
+      "source_command": "git status --short",
+      "executable_index": 13,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-02",
+      "source": "workspace",
+      "source_index": 1,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "executable_index": 1,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-02",
+      "source": "workspace",
+      "source_index": 2,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "executable_index": 2,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-02",
+      "source": "workspace",
+      "source_index": 3,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "executable_index": 3,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-02",
+      "source": "workspace",
+      "source_index": 4,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "executable_index": 4,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-02",
+      "source": "workspace",
+      "source_index": 5,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/test_bootstrap.py -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/test_bootstrap.py -q",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-02",
+      "source": "workspace",
+      "source_index": 6,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m ruff check backend/src/covenia_b/main.py backend/src/covenia_b/settings.py backend/src/covenia_b/api/base.py",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m ruff check backend/src/covenia_b/main.py backend/src/covenia_b/settings.py backend/src/covenia_b/api/base.py",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-02",
+      "source": "workspace",
+      "source_index": 7,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m build --no-isolation backend --outdir reports/batches/BATCH-02/build",
+      "executable_index": 7,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m build --no-isolation backend --outdir reports/batches/BATCH-02/build",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-02",
+      "source": "workspace",
+      "source_index": 8,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "executable_index": 8,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-02",
+      "source": "workspace",
+      "source_index": 9,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "executable_index": 9,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-02",
+      "source": "workspace",
+      "source_index": 10,
+      "source_command": "git diff --check",
+      "executable_index": 10,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-02",
+      "source": "workspace",
+      "source_index": 11,
+      "source_command": "git status --short",
+      "executable_index": 11,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-02",
+      "source": "repository",
+      "source_index": 1,
+      "source_command": "python -m pip install -r backend/requirements-dev.lock",
+      "executable_index": 2,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-02",
+      "source": "repository",
+      "source_index": 2,
+      "source_command": "python -m pip install --no-deps -e backend",
+      "executable_index": 3,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-02",
+      "source": "repository",
+      "source_index": 3,
+      "source_command": "python -m pytest backend/tests/test_bootstrap.py -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/test_bootstrap.py -q",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-02",
+      "source": "repository",
+      "source_index": 4,
+      "source_command": "python -m ruff check backend/src/covenia_b/main.py backend/src/covenia_b/settings.py backend/src/covenia_b/api/base.py",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m ruff check backend/src/covenia_b/main.py backend/src/covenia_b/settings.py backend/src/covenia_b/api/base.py",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-02",
+      "source": "repository",
+      "source_index": 5,
+      "source_command": "python -m build backend --outdir reports/batches/BATCH-02/build",
+      "executable_index": 7,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m build --no-isolation backend --outdir reports/batches/BATCH-02/build",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-02",
+      "source": "repository",
+      "source_index": 6,
+      "source_command": "git diff --check",
+      "executable_index": 10,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-02",
+      "source": "repository",
+      "source_index": 7,
+      "source_command": "git status --short",
+      "executable_index": 11,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-03",
+      "source": "workspace",
+      "source_index": 1,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "executable_index": 1,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-03",
+      "source": "workspace",
+      "source_index": 2,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "executable_index": 2,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-03",
+      "source": "workspace",
+      "source_index": 3,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "executable_index": 3,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-03",
+      "source": "workspace",
+      "source_index": 4,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "executable_index": 4,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-03",
+      "source": "workspace",
+      "source_index": 5,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" tools/contracts/check_contracts.py --strict",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" tools/contracts/check_contracts.py --strict",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-03",
+      "source": "workspace",
+      "source_index": 6,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/contracts -q",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/contracts -q",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-03",
+      "source": "workspace",
+      "source_index": 7,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m json.tool docs/contracts/b-contract-lock.json",
+      "executable_index": 7,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m json.tool docs/contracts/b-contract-lock.json",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-03",
+      "source": "workspace",
+      "source_index": 8,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "executable_index": 8,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-03",
+      "source": "workspace",
+      "source_index": 9,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "executable_index": 9,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-03",
+      "source": "workspace",
+      "source_index": 10,
+      "source_command": "git diff --check",
+      "executable_index": 10,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-03",
+      "source": "workspace",
+      "source_index": 11,
+      "source_command": "git status --short",
+      "executable_index": 11,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-03",
+      "source": "repository",
+      "source_index": 1,
+      "source_command": "python tools/contracts/check_contracts.py --strict",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" tools/contracts/check_contracts.py --strict",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-03",
+      "source": "repository",
+      "source_index": 2,
+      "source_command": "python -m pytest backend/tests/contracts -q",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/contracts -q",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-03",
+      "source": "repository",
+      "source_index": 3,
+      "source_command": "python -m json.tool docs/contracts/b-contract-lock.json",
+      "executable_index": 7,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m json.tool docs/contracts/b-contract-lock.json",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-03",
+      "source": "repository",
+      "source_index": 4,
+      "source_command": "git diff --check",
+      "executable_index": 10,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-03",
+      "source": "repository",
+      "source_index": 5,
+      "source_command": "git status --short",
+      "executable_index": 11,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-04",
+      "source": "workspace",
+      "source_index": 1,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "executable_index": 1,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-04",
+      "source": "workspace",
+      "source_index": 2,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "executable_index": 2,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-04",
+      "source": "workspace",
+      "source_index": 3,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "executable_index": 3,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-04",
+      "source": "workspace",
+      "source_index": 4,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "executable_index": 4,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-04",
+      "source": "workspace",
+      "source_index": 5,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/domain backend/tests/contracts -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/domain backend/tests/contracts -q",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-04",
+      "source": "workspace",
+      "source_index": 6,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m ruff check backend/src/covenia_b/domain backend/src/covenia_b/ports",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m ruff check backend/src/covenia_b/domain backend/src/covenia_b/ports",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-04",
+      "source": "workspace",
+      "source_index": 7,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "executable_index": 7,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-04",
+      "source": "workspace",
+      "source_index": 8,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "executable_index": 8,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-04",
+      "source": "workspace",
+      "source_index": 9,
+      "source_command": "git diff --check",
+      "executable_index": 9,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-04",
+      "source": "workspace",
+      "source_index": 10,
+      "source_command": "git status --short",
+      "executable_index": 10,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-04",
+      "source": "repository",
+      "source_index": 1,
+      "source_command": "python -m pytest backend/tests/domain backend/tests/contracts -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/domain backend/tests/contracts -q",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-04",
+      "source": "repository",
+      "source_index": 2,
+      "source_command": "python -m ruff check backend/src/covenia_b/domain backend/src/covenia_b/ports",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m ruff check backend/src/covenia_b/domain backend/src/covenia_b/ports",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-04",
+      "source": "repository",
+      "source_index": 3,
+      "source_command": "git diff --check",
+      "executable_index": 9,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-04",
+      "source": "repository",
+      "source_index": 4,
+      "source_command": "git status --short",
+      "executable_index": 10,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-05",
+      "source": "workspace",
+      "source_index": 1,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "executable_index": 1,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-05",
+      "source": "workspace",
+      "source_index": 2,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "executable_index": 2,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-05",
+      "source": "workspace",
+      "source_index": 3,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "executable_index": 3,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-05",
+      "source": "workspace",
+      "source_index": 4,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "executable_index": 4,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-05",
+      "source": "workspace",
+      "source_index": 5,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/importing/test_workbook.py backend/tests/importing/test_normalization.py -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/importing/test_workbook.py backend/tests/importing/test_normalization.py -q",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-05",
+      "source": "workspace",
+      "source_index": 6,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m covenia_b.importing.cli --workbook data/tianchi-track1-mock-data.xlsx --output reports/batches/BATCH-05/import",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m covenia_b.importing.cli --workbook data/tianchi-track1-mock-data.xlsx --output reports/batches/BATCH-05/import",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-05",
+      "source": "workspace",
+      "source_index": 7,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "executable_index": 7,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-05",
+      "source": "workspace",
+      "source_index": 8,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "executable_index": 8,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-05",
+      "source": "workspace",
+      "source_index": 9,
+      "source_command": "git diff --check",
+      "executable_index": 9,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-05",
+      "source": "workspace",
+      "source_index": 10,
+      "source_command": "git status --short",
+      "executable_index": 10,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-05",
+      "source": "repository",
+      "source_index": 1,
+      "source_command": "python -m pytest backend/tests/importing/test_workbook.py backend/tests/importing/test_normalization.py -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/importing/test_workbook.py backend/tests/importing/test_normalization.py -q",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-05",
+      "source": "repository",
+      "source_index": 2,
+      "source_command": "python -m covenia_b.importing.cli --workbook data/tianchi-track1-mock-data.xlsx --output reports/batches/BATCH-05/import",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m covenia_b.importing.cli --workbook data/tianchi-track1-mock-data.xlsx --output reports/batches/BATCH-05/import",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-05",
+      "source": "repository",
+      "source_index": 3,
+      "source_command": "git diff --check",
+      "executable_index": 9,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-05",
+      "source": "repository",
+      "source_index": 4,
+      "source_command": "git status --short",
+      "executable_index": 10,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-06",
+      "source": "workspace",
+      "source_index": 1,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "executable_index": 1,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-06",
+      "source": "workspace",
+      "source_index": 2,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "executable_index": 2,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-06",
+      "source": "workspace",
+      "source_index": 3,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "executable_index": 3,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-06",
+      "source": "workspace",
+      "source_index": 4,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "executable_index": 4,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-06",
+      "source": "workspace",
+      "source_index": 5,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/importing/test_case_assembler.py -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/importing/test_case_assembler.py -q",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-06",
+      "source": "workspace",
+      "source_index": 6,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-06",
+      "source": "workspace",
+      "source_index": 7,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "executable_index": 7,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-06",
+      "source": "workspace",
+      "source_index": 8,
+      "source_command": "git diff --check",
+      "executable_index": 8,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-06",
+      "source": "workspace",
+      "source_index": 9,
+      "source_command": "git status --short",
+      "executable_index": 9,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-06",
+      "source": "repository",
+      "source_index": 1,
+      "source_command": "python -m pytest backend/tests/importing/test_case_assembler.py -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/importing/test_case_assembler.py -q",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-06",
+      "source": "repository",
+      "source_index": 2,
+      "source_command": "git diff --check",
+      "executable_index": 8,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-06",
+      "source": "repository",
+      "source_index": 3,
+      "source_command": "git status --short",
+      "executable_index": 9,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-07",
+      "source": "workspace",
+      "source_index": 1,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "executable_index": 1,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-07",
+      "source": "workspace",
+      "source_index": 2,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "executable_index": 2,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-07",
+      "source": "workspace",
+      "source_index": 3,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "executable_index": 3,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-07",
+      "source": "workspace",
+      "source_index": 4,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "executable_index": 4,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-07",
+      "source": "workspace",
+      "source_index": 5,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/privacy -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/privacy -q",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-07",
+      "source": "workspace",
+      "source_index": 6,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/privacy -q -m mutation",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/privacy -q -m mutation",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-07",
+      "source": "workspace",
+      "source_index": 7,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "executable_index": 7,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-07",
+      "source": "workspace",
+      "source_index": 8,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "executable_index": 8,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-07",
+      "source": "workspace",
+      "source_index": 9,
+      "source_command": "git diff --check",
+      "executable_index": 9,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-07",
+      "source": "workspace",
+      "source_index": 10,
+      "source_command": "git status --short",
+      "executable_index": 10,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-07",
+      "source": "repository",
+      "source_index": 1,
+      "source_command": "python -m pytest backend/tests/privacy -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/privacy -q",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-07",
+      "source": "repository",
+      "source_index": 2,
+      "source_command": "python -m pytest backend/tests/privacy -q -m mutation",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/privacy -q -m mutation",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-07",
+      "source": "repository",
+      "source_index": 3,
+      "source_command": "git diff --check",
+      "executable_index": 9,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-07",
+      "source": "repository",
+      "source_index": 4,
+      "source_command": "git status --short",
+      "executable_index": 10,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-08",
+      "source": "workspace",
+      "source_index": 1,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "executable_index": 1,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-08",
+      "source": "workspace",
+      "source_index": 2,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "executable_index": 2,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-08",
+      "source": "workspace",
+      "source_index": 3,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "executable_index": 3,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-08",
+      "source": "workspace",
+      "source_index": 4,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "executable_index": 4,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-08",
+      "source": "workspace",
+      "source_index": 5,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/images -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/images -q",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-08",
+      "source": "workspace",
+      "source_index": 6,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-08",
+      "source": "workspace",
+      "source_index": 7,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "executable_index": 7,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-08",
+      "source": "workspace",
+      "source_index": 8,
+      "source_command": "git diff --check",
+      "executable_index": 8,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-08",
+      "source": "workspace",
+      "source_index": 9,
+      "source_command": "git status --short",
+      "executable_index": 9,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-08",
+      "source": "repository",
+      "source_index": 1,
+      "source_command": "python -m pytest backend/tests/images -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/images -q",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-08",
+      "source": "repository",
+      "source_index": 2,
+      "source_command": "git diff --check",
+      "executable_index": 8,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-08",
+      "source": "repository",
+      "source_index": 3,
+      "source_command": "git status --short",
+      "executable_index": 9,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-09",
+      "source": "workspace",
+      "source_index": 1,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "executable_index": 1,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-09",
+      "source": "workspace",
+      "source_index": 2,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "executable_index": 2,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-09",
+      "source": "workspace",
+      "source_index": 3,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "executable_index": 3,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-09",
+      "source": "workspace",
+      "source_index": 4,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "executable_index": 4,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-09",
+      "source": "workspace",
+      "source_index": 5,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/observability -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/observability -q",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-09",
+      "source": "workspace",
+      "source_index": 6,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-09",
+      "source": "workspace",
+      "source_index": 7,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "executable_index": 7,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-09",
+      "source": "workspace",
+      "source_index": 8,
+      "source_command": "git diff --check",
+      "executable_index": 8,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-09",
+      "source": "workspace",
+      "source_index": 9,
+      "source_command": "git status --short",
+      "executable_index": 9,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-09",
+      "source": "repository",
+      "source_index": 1,
+      "source_command": "python -m pytest backend/tests/observability -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/observability -q",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-09",
+      "source": "repository",
+      "source_index": 2,
+      "source_command": "git diff --check",
+      "executable_index": 8,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-09",
+      "source": "repository",
+      "source_index": 3,
+      "source_command": "git status --short",
+      "executable_index": 9,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-10",
+      "source": "workspace",
+      "source_index": 1,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "executable_index": 1,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-10",
+      "source": "workspace",
+      "source_index": 2,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "executable_index": 2,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-10",
+      "source": "workspace",
+      "source_index": 3,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "executable_index": 3,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-10",
+      "source": "workspace",
+      "source_index": 4,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "executable_index": 4,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-10",
+      "source": "workspace",
+      "source_index": 5,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/model/test_qwen_provider.py -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/model/test_qwen_provider.py -q",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-10",
+      "source": "workspace",
+      "source_index": 6,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-10",
+      "source": "workspace",
+      "source_index": 7,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "executable_index": 7,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-10",
+      "source": "workspace",
+      "source_index": 8,
+      "source_command": "git diff --check",
+      "executable_index": 8,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-10",
+      "source": "workspace",
+      "source_index": 9,
+      "source_command": "git status --short",
+      "executable_index": 9,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-10",
+      "source": "repository",
+      "source_index": 1,
+      "source_command": "python -m pytest backend/tests/model/test_qwen_provider.py -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/model/test_qwen_provider.py -q",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-10",
+      "source": "repository",
+      "source_index": 2,
+      "source_command": "git diff --check",
+      "executable_index": 8,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-10",
+      "source": "repository",
+      "source_index": 3,
+      "source_command": "git status --short",
+      "executable_index": 9,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-11",
+      "source": "workspace",
+      "source_index": 1,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "executable_index": 1,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-11",
+      "source": "workspace",
+      "source_index": 2,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "executable_index": 2,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-11",
+      "source": "workspace",
+      "source_index": 3,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "executable_index": 3,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-11",
+      "source": "workspace",
+      "source_index": 4,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "executable_index": 4,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-11",
+      "source": "workspace",
+      "source_index": 5,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/model/test_extraction.py backend/tests/model/test_sources.py -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/model/test_extraction.py backend/tests/model/test_sources.py -q",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-11",
+      "source": "workspace",
+      "source_index": 6,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-11",
+      "source": "workspace",
+      "source_index": 7,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "executable_index": 7,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-11",
+      "source": "workspace",
+      "source_index": 8,
+      "source_command": "git diff --check",
+      "executable_index": 8,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-11",
+      "source": "workspace",
+      "source_index": 9,
+      "source_command": "git status --short",
+      "executable_index": 9,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-11",
+      "source": "repository",
+      "source_index": 1,
+      "source_command": "python -m pytest backend/tests/model/test_extraction.py backend/tests/model/test_sources.py -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/model/test_extraction.py backend/tests/model/test_sources.py -q",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-11",
+      "source": "repository",
+      "source_index": 2,
+      "source_command": "git diff --check",
+      "executable_index": 8,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-11",
+      "source": "repository",
+      "source_index": 3,
+      "source_command": "git status --short",
+      "executable_index": 9,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-12",
+      "source": "workspace",
+      "source_index": 1,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "executable_index": 1,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-12",
+      "source": "workspace",
+      "source_index": 2,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "executable_index": 2,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-12",
+      "source": "workspace",
+      "source_index": 3,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "executable_index": 3,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-12",
+      "source": "workspace",
+      "source_index": 4,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "executable_index": 4,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-12",
+      "source": "workspace",
+      "source_index": 5,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/evidence -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/evidence -q",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-12",
+      "source": "workspace",
+      "source_index": 6,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-12",
+      "source": "workspace",
+      "source_index": 7,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "executable_index": 7,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-12",
+      "source": "workspace",
+      "source_index": 8,
+      "source_command": "git diff --check",
+      "executable_index": 8,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-12",
+      "source": "workspace",
+      "source_index": 9,
+      "source_command": "git status --short",
+      "executable_index": 9,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-12",
+      "source": "repository",
+      "source_index": 1,
+      "source_command": "python -m pytest backend/tests/evidence -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/evidence -q",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-12",
+      "source": "repository",
+      "source_index": 2,
+      "source_command": "git diff --check",
+      "executable_index": 8,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-12",
+      "source": "repository",
+      "source_index": 3,
+      "source_command": "git status --short",
+      "executable_index": 9,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-13",
+      "source": "workspace",
+      "source_index": 1,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "executable_index": 1,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-13",
+      "source": "workspace",
+      "source_index": 2,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "executable_index": 2,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-13",
+      "source": "workspace",
+      "source_index": 3,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "executable_index": 3,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-13",
+      "source": "workspace",
+      "source_index": 4,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "executable_index": 4,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-13",
+      "source": "workspace",
+      "source_index": 5,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/commitments -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/commitments -q",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-13",
+      "source": "workspace",
+      "source_index": 6,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-13",
+      "source": "workspace",
+      "source_index": 7,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "executable_index": 7,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-13",
+      "source": "workspace",
+      "source_index": 8,
+      "source_command": "git diff --check",
+      "executable_index": 8,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-13",
+      "source": "workspace",
+      "source_index": 9,
+      "source_command": "git status --short",
+      "executable_index": 9,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-13",
+      "source": "repository",
+      "source_index": 1,
+      "source_command": "python -m pytest backend/tests/commitments -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/commitments -q",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-13",
+      "source": "repository",
+      "source_index": 2,
+      "source_command": "git diff --check",
+      "executable_index": 8,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-13",
+      "source": "repository",
+      "source_index": 3,
+      "source_command": "git status --short",
+      "executable_index": 9,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-14",
+      "source": "workspace",
+      "source_index": 1,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "executable_index": 1,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-14",
+      "source": "workspace",
+      "source_index": 2,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "executable_index": 2,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-14",
+      "source": "workspace",
+      "source_index": 3,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "executable_index": 3,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-14",
+      "source": "workspace",
+      "source_index": 4,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "executable_index": 4,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-14",
+      "source": "workspace",
+      "source_index": 5,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/state -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/state -q",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-14",
+      "source": "workspace",
+      "source_index": 6,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-14",
+      "source": "workspace",
+      "source_index": 7,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "executable_index": 7,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-14",
+      "source": "workspace",
+      "source_index": 8,
+      "source_command": "git diff --check",
+      "executable_index": 8,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-14",
+      "source": "workspace",
+      "source_index": 9,
+      "source_command": "git status --short",
+      "executable_index": 9,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-14",
+      "source": "repository",
+      "source_index": 1,
+      "source_command": "python -m pytest backend/tests/state -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/state -q",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-14",
+      "source": "repository",
+      "source_index": 2,
+      "source_command": "git diff --check",
+      "executable_index": 8,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-14",
+      "source": "repository",
+      "source_index": 3,
+      "source_command": "git status --short",
+      "executable_index": 9,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-15",
+      "source": "workspace",
+      "source_index": 1,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "executable_index": 1,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-15",
+      "source": "workspace",
+      "source_index": 2,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "executable_index": 2,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-15",
+      "source": "workspace",
+      "source_index": 3,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "executable_index": 3,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-15",
+      "source": "workspace",
+      "source_index": 4,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "executable_index": 4,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-15",
+      "source": "workspace",
+      "source_index": 5,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/rules -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/rules -q",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-15",
+      "source": "workspace",
+      "source_index": 6,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-15",
+      "source": "workspace",
+      "source_index": 7,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "executable_index": 7,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-15",
+      "source": "workspace",
+      "source_index": 8,
+      "source_command": "git diff --check",
+      "executable_index": 8,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-15",
+      "source": "workspace",
+      "source_index": 9,
+      "source_command": "git status --short",
+      "executable_index": 9,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-15",
+      "source": "repository",
+      "source_index": 1,
+      "source_command": "python -m pytest backend/tests/rules -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/rules -q",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-15",
+      "source": "repository",
+      "source_index": 2,
+      "source_command": "git diff --check",
+      "executable_index": 8,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-15",
+      "source": "repository",
+      "source_index": 3,
+      "source_command": "git status --short",
+      "executable_index": 9,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-16",
+      "source": "workspace",
+      "source_index": 1,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "executable_index": 1,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-16",
+      "source": "workspace",
+      "source_index": 2,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "executable_index": 2,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-16",
+      "source": "workspace",
+      "source_index": 3,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "executable_index": 3,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-16",
+      "source": "workspace",
+      "source_index": 4,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "executable_index": 4,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-16",
+      "source": "workspace",
+      "source_index": 5,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/resolutions/test_planner.py -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/resolutions/test_planner.py -q",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-16",
+      "source": "workspace",
+      "source_index": 6,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-16",
+      "source": "workspace",
+      "source_index": 7,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "executable_index": 7,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-16",
+      "source": "workspace",
+      "source_index": 8,
+      "source_command": "git diff --check",
+      "executable_index": 8,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-16",
+      "source": "workspace",
+      "source_index": 9,
+      "source_command": "git status --short",
+      "executable_index": 9,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-16",
+      "source": "repository",
+      "source_index": 1,
+      "source_command": "python -m pytest backend/tests/resolutions/test_planner.py -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/resolutions/test_planner.py -q",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-16",
+      "source": "repository",
+      "source_index": 2,
+      "source_command": "git diff --check",
+      "executable_index": 8,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-16",
+      "source": "repository",
+      "source_index": 3,
+      "source_command": "git status --short",
+      "executable_index": 9,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-17",
+      "source": "workspace",
+      "source_index": 1,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "executable_index": 1,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-17",
+      "source": "workspace",
+      "source_index": 2,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "executable_index": 2,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-17",
+      "source": "workspace",
+      "source_index": 3,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "executable_index": 3,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-17",
+      "source": "workspace",
+      "source_index": 4,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "executable_index": 4,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-17",
+      "source": "workspace",
+      "source_index": 5,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/receipts -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/receipts -q",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-17",
+      "source": "workspace",
+      "source_index": 6,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-17",
+      "source": "workspace",
+      "source_index": 7,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "executable_index": 7,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-17",
+      "source": "workspace",
+      "source_index": 8,
+      "source_command": "git diff --check",
+      "executable_index": 8,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-17",
+      "source": "workspace",
+      "source_index": 9,
+      "source_command": "git status --short",
+      "executable_index": 9,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-17",
+      "source": "repository",
+      "source_index": 1,
+      "source_command": "python -m pytest backend/tests/receipts -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/receipts -q",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-17",
+      "source": "repository",
+      "source_index": 2,
+      "source_command": "git diff --check",
+      "executable_index": 8,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-17",
+      "source": "repository",
+      "source_index": 3,
+      "source_command": "git status --short",
+      "executable_index": 9,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-18",
+      "source": "workspace",
+      "source_index": 1,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "executable_index": 1,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-18",
+      "source": "workspace",
+      "source_index": 2,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "executable_index": 2,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-18",
+      "source": "workspace",
+      "source_index": 3,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "executable_index": 3,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-18",
+      "source": "workspace",
+      "source_index": 4,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "executable_index": 4,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-18",
+      "source": "workspace",
+      "source_index": 5,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/storage -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/storage -q",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-18",
+      "source": "workspace",
+      "source_index": 6,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-18",
+      "source": "workspace",
+      "source_index": 7,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "executable_index": 7,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-18",
+      "source": "workspace",
+      "source_index": 8,
+      "source_command": "git diff --check",
+      "executable_index": 8,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-18",
+      "source": "workspace",
+      "source_index": 9,
+      "source_command": "git status --short",
+      "executable_index": 9,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-18",
+      "source": "repository",
+      "source_index": 1,
+      "source_command": "python -m pytest backend/tests/storage -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/storage -q",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-18",
+      "source": "repository",
+      "source_index": 2,
+      "source_command": "git diff --check",
+      "executable_index": 8,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-18",
+      "source": "repository",
+      "source_index": 3,
+      "source_command": "git status --short",
+      "executable_index": 9,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-19",
+      "source": "workspace",
+      "source_index": 1,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "executable_index": 1,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-19",
+      "source": "workspace",
+      "source_index": 2,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "executable_index": 2,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-19",
+      "source": "workspace",
+      "source_index": 3,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "executable_index": 3,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-19",
+      "source": "workspace",
+      "source_index": 4,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "executable_index": 4,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-19",
+      "source": "workspace",
+      "source_index": 5,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/services/test_analyze.py -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/services/test_analyze.py -q",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-19",
+      "source": "workspace",
+      "source_index": 6,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-19",
+      "source": "workspace",
+      "source_index": 7,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "executable_index": 7,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-19",
+      "source": "workspace",
+      "source_index": 8,
+      "source_command": "git diff --check",
+      "executable_index": 8,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-19",
+      "source": "workspace",
+      "source_index": 9,
+      "source_command": "git status --short",
+      "executable_index": 9,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-19",
+      "source": "repository",
+      "source_index": 1,
+      "source_command": "python -m pytest backend/tests/services/test_analyze.py -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/services/test_analyze.py -q",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-19",
+      "source": "repository",
+      "source_index": 2,
+      "source_command": "git diff --check",
+      "executable_index": 8,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-19",
+      "source": "repository",
+      "source_index": 3,
+      "source_command": "git status --short",
+      "executable_index": 9,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-20",
+      "source": "workspace",
+      "source_index": 1,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "executable_index": 1,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-20",
+      "source": "workspace",
+      "source_index": 2,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "executable_index": 2,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-20",
+      "source": "workspace",
+      "source_index": 3,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "executable_index": 3,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-20",
+      "source": "workspace",
+      "source_index": 4,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "executable_index": 4,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-20",
+      "source": "workspace",
+      "source_index": 5,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/cache -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/cache -q",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-20",
+      "source": "workspace",
+      "source_index": 6,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-20",
+      "source": "workspace",
+      "source_index": 7,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "executable_index": 7,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-20",
+      "source": "workspace",
+      "source_index": 8,
+      "source_command": "git diff --check",
+      "executable_index": 8,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-20",
+      "source": "workspace",
+      "source_index": 9,
+      "source_command": "git status --short",
+      "executable_index": 9,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-20",
+      "source": "repository",
+      "source_index": 1,
+      "source_command": "python -m pytest backend/tests/cache -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/cache -q",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-20",
+      "source": "repository",
+      "source_index": 2,
+      "source_command": "git diff --check",
+      "executable_index": 8,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-20",
+      "source": "repository",
+      "source_index": 3,
+      "source_command": "git status --short",
+      "executable_index": 9,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-21",
+      "source": "workspace",
+      "source_index": 1,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "executable_index": 1,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-21",
+      "source": "workspace",
+      "source_index": 2,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "executable_index": 2,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-21",
+      "source": "workspace",
+      "source_index": 3,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "executable_index": 3,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-21",
+      "source": "workspace",
+      "source_index": 4,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "executable_index": 4,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-21",
+      "source": "workspace",
+      "source_index": 5,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/api/test_analyze.py -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/api/test_analyze.py -q",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-21",
+      "source": "workspace",
+      "source_index": 6,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" tools/contracts/check_contracts.py --strict",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" tools/contracts/check_contracts.py --strict",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-21",
+      "source": "workspace",
+      "source_index": 7,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "executable_index": 7,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-21",
+      "source": "workspace",
+      "source_index": 8,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "executable_index": 8,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-21",
+      "source": "workspace",
+      "source_index": 9,
+      "source_command": "git diff --check",
+      "executable_index": 9,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-21",
+      "source": "workspace",
+      "source_index": 10,
+      "source_command": "git status --short",
+      "executable_index": 10,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-21",
+      "source": "repository",
+      "source_index": 1,
+      "source_command": "python -m pytest backend/tests/api/test_analyze.py -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/api/test_analyze.py -q",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-21",
+      "source": "repository",
+      "source_index": 2,
+      "source_command": "python tools/contracts/check_contracts.py --strict",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" tools/contracts/check_contracts.py --strict",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-21",
+      "source": "repository",
+      "source_index": 3,
+      "source_command": "git diff --check",
+      "executable_index": 9,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-21",
+      "source": "repository",
+      "source_index": 4,
+      "source_command": "git status --short",
+      "executable_index": 10,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-22",
+      "source": "workspace",
+      "source_index": 1,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "executable_index": 1,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-22",
+      "source": "workspace",
+      "source_index": 2,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "executable_index": 2,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-22",
+      "source": "workspace",
+      "source_index": 3,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "executable_index": 3,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-22",
+      "source": "workspace",
+      "source_index": 4,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "executable_index": 4,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-22",
+      "source": "workspace",
+      "source_index": 5,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/api/test_evaluate.py -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/api/test_evaluate.py -q",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-22",
+      "source": "workspace",
+      "source_index": 6,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" tools/contracts/check_contracts.py --strict",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" tools/contracts/check_contracts.py --strict",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-22",
+      "source": "workspace",
+      "source_index": 7,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "executable_index": 7,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-22",
+      "source": "workspace",
+      "source_index": 8,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "executable_index": 8,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-22",
+      "source": "workspace",
+      "source_index": 9,
+      "source_command": "git diff --check",
+      "executable_index": 9,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-22",
+      "source": "workspace",
+      "source_index": 10,
+      "source_command": "git status --short",
+      "executable_index": 10,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-22",
+      "source": "repository",
+      "source_index": 1,
+      "source_command": "python -m pytest backend/tests/api/test_evaluate.py -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/api/test_evaluate.py -q",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-22",
+      "source": "repository",
+      "source_index": 2,
+      "source_command": "python tools/contracts/check_contracts.py --strict",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" tools/contracts/check_contracts.py --strict",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-22",
+      "source": "repository",
+      "source_index": 3,
+      "source_command": "git diff --check",
+      "executable_index": 9,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-22",
+      "source": "repository",
+      "source_index": 4,
+      "source_command": "git status --short",
+      "executable_index": 10,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-23",
+      "source": "workspace",
+      "source_index": 1,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "executable_index": 1,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-23",
+      "source": "workspace",
+      "source_index": 2,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "executable_index": 2,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-23",
+      "source": "workspace",
+      "source_index": 3,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "executable_index": 3,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-23",
+      "source": "workspace",
+      "source_index": 4,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "executable_index": 4,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-23",
+      "source": "workspace",
+      "source_index": 5,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/services/test_approve.py -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/services/test_approve.py -q",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-23",
+      "source": "workspace",
+      "source_index": 6,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-23",
+      "source": "workspace",
+      "source_index": 7,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "executable_index": 7,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-23",
+      "source": "workspace",
+      "source_index": 8,
+      "source_command": "git diff --check",
+      "executable_index": 8,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-23",
+      "source": "workspace",
+      "source_index": 9,
+      "source_command": "git status --short",
+      "executable_index": 9,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-23",
+      "source": "repository",
+      "source_index": 1,
+      "source_command": "python -m pytest backend/tests/services/test_approve.py -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/services/test_approve.py -q",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-23",
+      "source": "repository",
+      "source_index": 2,
+      "source_command": "git diff --check",
+      "executable_index": 8,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-23",
+      "source": "repository",
+      "source_index": 3,
+      "source_command": "git status --short",
+      "executable_index": 9,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-24",
+      "source": "workspace",
+      "source_index": 1,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "executable_index": 1,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-24",
+      "source": "workspace",
+      "source_index": 2,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "executable_index": 2,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-24",
+      "source": "workspace",
+      "source_index": 3,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "executable_index": 3,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-24",
+      "source": "workspace",
+      "source_index": 4,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "executable_index": 4,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-24",
+      "source": "workspace",
+      "source_index": 5,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/api/test_approve.py -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/api/test_approve.py -q",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-24",
+      "source": "workspace",
+      "source_index": 6,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" tools/contracts/check_contracts.py --strict",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" tools/contracts/check_contracts.py --strict",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-24",
+      "source": "workspace",
+      "source_index": 7,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "executable_index": 7,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-24",
+      "source": "workspace",
+      "source_index": 8,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "executable_index": 8,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-24",
+      "source": "workspace",
+      "source_index": 9,
+      "source_command": "git diff --check",
+      "executable_index": 9,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-24",
+      "source": "workspace",
+      "source_index": 10,
+      "source_command": "git status --short",
+      "executable_index": 10,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-24",
+      "source": "repository",
+      "source_index": 1,
+      "source_command": "python -m pytest backend/tests/api/test_approve.py -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/api/test_approve.py -q",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-24",
+      "source": "repository",
+      "source_index": 2,
+      "source_command": "python tools/contracts/check_contracts.py --strict",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" tools/contracts/check_contracts.py --strict",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-24",
+      "source": "repository",
+      "source_index": 3,
+      "source_command": "git diff --check",
+      "executable_index": 9,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-24",
+      "source": "repository",
+      "source_index": 4,
+      "source_command": "git status --short",
+      "executable_index": 10,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-25",
+      "source": "workspace",
+      "source_index": 1,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "executable_index": 1,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-25",
+      "source": "workspace",
+      "source_index": 2,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "executable_index": 2,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-25",
+      "source": "workspace",
+      "source_index": 3,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "executable_index": 3,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-25",
+      "source": "workspace",
+      "source_index": 4,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "executable_index": 4,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-25",
+      "source": "workspace",
+      "source_index": 5,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/shipments -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/shipments -q",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-25",
+      "source": "workspace",
+      "source_index": 6,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-25",
+      "source": "workspace",
+      "source_index": 7,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "executable_index": 7,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-25",
+      "source": "workspace",
+      "source_index": 8,
+      "source_command": "git diff --check",
+      "executable_index": 8,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-25",
+      "source": "workspace",
+      "source_index": 9,
+      "source_command": "git status --short",
+      "executable_index": 9,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-25",
+      "source": "repository",
+      "source_index": 1,
+      "source_command": "python -m pytest backend/tests/shipments -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/shipments -q",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-25",
+      "source": "repository",
+      "source_index": 2,
+      "source_command": "git diff --check",
+      "executable_index": 8,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-25",
+      "source": "repository",
+      "source_index": 3,
+      "source_command": "git status --short",
+      "executable_index": 9,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-26",
+      "source": "workspace",
+      "source_index": 1,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "executable_index": 1,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-26",
+      "source": "workspace",
+      "source_index": 2,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "executable_index": 2,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-26",
+      "source": "workspace",
+      "source_index": 3,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "executable_index": 3,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-26",
+      "source": "workspace",
+      "source_index": 4,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "executable_index": 4,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-26",
+      "source": "workspace",
+      "source_index": 5,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/api/test_shipment.py -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/api/test_shipment.py -q",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-26",
+      "source": "workspace",
+      "source_index": 6,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" tools/contracts/check_contracts.py --strict",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" tools/contracts/check_contracts.py --strict",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-26",
+      "source": "workspace",
+      "source_index": 7,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "executable_index": 7,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-26",
+      "source": "workspace",
+      "source_index": 8,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "executable_index": 8,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-26",
+      "source": "workspace",
+      "source_index": 9,
+      "source_command": "git diff --check",
+      "executable_index": 9,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-26",
+      "source": "workspace",
+      "source_index": 10,
+      "source_command": "git status --short",
+      "executable_index": 10,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-26",
+      "source": "repository",
+      "source_index": 1,
+      "source_command": "python -m pytest backend/tests/api/test_shipment.py -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/api/test_shipment.py -q",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-26",
+      "source": "repository",
+      "source_index": 2,
+      "source_command": "python tools/contracts/check_contracts.py --strict",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" tools/contracts/check_contracts.py --strict",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-26",
+      "source": "repository",
+      "source_index": 3,
+      "source_command": "git diff --check",
+      "executable_index": 9,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-26",
+      "source": "repository",
+      "source_index": 4,
+      "source_command": "git status --short",
+      "executable_index": 10,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-27",
+      "source": "workspace",
+      "source_index": 1,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "executable_index": 1,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-27",
+      "source": "workspace",
+      "source_index": 2,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "executable_index": 2,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-27",
+      "source": "workspace",
+      "source_index": 3,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "executable_index": 3,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-27",
+      "source": "workspace",
+      "source_index": 4,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "executable_index": 4,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-27",
+      "source": "workspace",
+      "source_index": 5,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/test_composition.py -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/test_composition.py -q",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-27",
+      "source": "workspace",
+      "source_index": 6,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m covenia_b.preflight --offline --workbook data/tianchi-track1-mock-data.xlsx",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m covenia_b.preflight --offline --workbook data/tianchi-track1-mock-data.xlsx",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-27",
+      "source": "workspace",
+      "source_index": 7,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m ruff check backend/src",
+      "executable_index": 7,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m ruff check backend/src",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-27",
+      "source": "workspace",
+      "source_index": 8,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "executable_index": 8,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-27",
+      "source": "workspace",
+      "source_index": 9,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "executable_index": 9,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-27",
+      "source": "workspace",
+      "source_index": 10,
+      "source_command": "git diff --check",
+      "executable_index": 10,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-27",
+      "source": "workspace",
+      "source_index": 11,
+      "source_command": "git status --short",
+      "executable_index": 11,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-27",
+      "source": "repository",
+      "source_index": 1,
+      "source_command": "python -m pytest backend/tests/test_composition.py -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/test_composition.py -q",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-27",
+      "source": "repository",
+      "source_index": 2,
+      "source_command": "python -m covenia_b.preflight --offline --workbook data/tianchi-track1-mock-data.xlsx",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m covenia_b.preflight --offline --workbook data/tianchi-track1-mock-data.xlsx",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-27",
+      "source": "repository",
+      "source_index": 3,
+      "source_command": "python -m ruff check backend/src",
+      "executable_index": 7,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m ruff check backend/src",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-27",
+      "source": "repository",
+      "source_index": 4,
+      "source_command": "git diff --check",
+      "executable_index": 10,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-27",
+      "source": "repository",
+      "source_index": 5,
+      "source_command": "git status --short",
+      "executable_index": 11,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-28",
+      "source": "workspace",
+      "source_index": 1,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "executable_index": 1,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-28",
+      "source": "workspace",
+      "source_index": 2,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "executable_index": 2,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-28",
+      "source": "workspace",
+      "source_index": 3,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "executable_index": 3,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-28",
+      "source": "workspace",
+      "source_index": 4,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "executable_index": 4,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-28",
+      "source": "workspace",
+      "source_index": 5,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" tools/verification/live_smoke.py --require-live --disable-cache --output reports/batches/BATCH-28/live",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" tools/verification/live_smoke.py --require-live --disable-cache --output reports/batches/BATCH-28/live",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-28",
+      "source": "workspace",
+      "source_index": 6,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/live/test_real_extraction.py -q -m live",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/live/test_real_extraction.py -q -m live",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-28",
+      "source": "workspace",
+      "source_index": 7,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "executable_index": 7,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-28",
+      "source": "workspace",
+      "source_index": 8,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "executable_index": 8,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-28",
+      "source": "workspace",
+      "source_index": 9,
+      "source_command": "git diff --check",
+      "executable_index": 9,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-28",
+      "source": "workspace",
+      "source_index": 10,
+      "source_command": "git status --short",
+      "executable_index": 10,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-28",
+      "source": "repository",
+      "source_index": 1,
+      "source_command": "python tools/verification/live_smoke.py --require-live --disable-cache --output reports/batches/BATCH-28/live",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" tools/verification/live_smoke.py --require-live --disable-cache --output reports/batches/BATCH-28/live",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-28",
+      "source": "repository",
+      "source_index": 2,
+      "source_command": "python -m pytest backend/tests/live/test_real_extraction.py -q -m live",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/live/test_real_extraction.py -q -m live",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-28",
+      "source": "repository",
+      "source_index": 3,
+      "source_command": "git diff --check",
+      "executable_index": 9,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-28",
+      "source": "repository",
+      "source_index": 4,
+      "source_command": "git status --short",
+      "executable_index": 10,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-29",
+      "source": "workspace",
+      "source_index": 1,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "executable_index": 1,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-29",
+      "source": "workspace",
+      "source_index": 2,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "executable_index": 2,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-29",
+      "source": "workspace",
+      "source_index": 3,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "executable_index": 3,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-29",
+      "source": "workspace",
+      "source_index": 4,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "executable_index": 4,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-29",
+      "source": "workspace",
+      "source_index": 5,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest integration/tests/test_demo_ground_truth.py -q -m live",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest integration/tests/test_demo_ground_truth.py -q -m live",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-29",
+      "source": "workspace",
+      "source_index": 6,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" tools/verification/evaluate_holdout.py --self-test",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" tools/verification/evaluate_holdout.py --self-test",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-29",
+      "source": "workspace",
+      "source_index": 7,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "executable_index": 7,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-29",
+      "source": "workspace",
+      "source_index": 8,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "executable_index": 8,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-29",
+      "source": "workspace",
+      "source_index": 9,
+      "source_command": "git diff --check",
+      "executable_index": 9,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-29",
+      "source": "workspace",
+      "source_index": 10,
+      "source_command": "git status --short",
+      "executable_index": 10,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-29",
+      "source": "repository",
+      "source_index": 1,
+      "source_command": "python -m pytest integration/tests/test_demo_ground_truth.py -q -m live",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest integration/tests/test_demo_ground_truth.py -q -m live",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-29",
+      "source": "repository",
+      "source_index": 2,
+      "source_command": "python tools/verification/evaluate_holdout.py --self-test",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" tools/verification/evaluate_holdout.py --self-test",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-29",
+      "source": "repository",
+      "source_index": 3,
+      "source_command": "git diff --check",
+      "executable_index": 9,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-29",
+      "source": "repository",
+      "source_index": 4,
+      "source_command": "git status --short",
+      "executable_index": 10,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-30",
+      "source": "workspace",
+      "source_index": 1,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "executable_index": 1,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-30",
+      "source": "workspace",
+      "source_index": 2,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "executable_index": 2,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-30",
+      "source": "workspace",
+      "source_index": 3,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "executable_index": 3,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-30",
+      "source": "workspace",
+      "source_index": 4,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "executable_index": 4,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-30",
+      "source": "workspace",
+      "source_index": 5,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" tools/verification/check_no_case_branches.py --strict",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" tools/verification/check_no_case_branches.py --strict",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-30",
+      "source": "workspace",
+      "source_index": 6,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest integration/tests/test_security_and_generalization.py -q",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest integration/tests/test_security_and_generalization.py -q",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-30",
+      "source": "workspace",
+      "source_index": 7,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest integration/tests/test_security_and_generalization.py -q -m mutation",
+      "executable_index": 7,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest integration/tests/test_security_and_generalization.py -q -m mutation",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-30",
+      "source": "workspace",
+      "source_index": 8,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "executable_index": 8,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-30",
+      "source": "workspace",
+      "source_index": 9,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "executable_index": 9,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-30",
+      "source": "workspace",
+      "source_index": 10,
+      "source_command": "git diff --check",
+      "executable_index": 10,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-30",
+      "source": "workspace",
+      "source_index": 11,
+      "source_command": "git status --short",
+      "executable_index": 11,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-30",
+      "source": "repository",
+      "source_index": 1,
+      "source_command": "python tools/verification/check_no_case_branches.py --strict",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" tools/verification/check_no_case_branches.py --strict",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-30",
+      "source": "repository",
+      "source_index": 2,
+      "source_command": "python -m pytest integration/tests/test_security_and_generalization.py -q",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest integration/tests/test_security_and_generalization.py -q",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-30",
+      "source": "repository",
+      "source_index": 3,
+      "source_command": "python -m pytest integration/tests/test_security_and_generalization.py -q -m mutation",
+      "executable_index": 7,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest integration/tests/test_security_and_generalization.py -q -m mutation",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-30",
+      "source": "repository",
+      "source_index": 4,
+      "source_command": "git diff --check",
+      "executable_index": 10,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-30",
+      "source": "repository",
+      "source_index": 5,
+      "source_command": "git status --short",
+      "executable_index": 11,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-31",
+      "source": "workspace",
+      "source_index": 1,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "executable_index": 1,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-31",
+      "source": "workspace",
+      "source_index": 2,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "executable_index": 2,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-31",
+      "source": "workspace",
+      "source_index": 3,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "executable_index": 3,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-31",
+      "source": "workspace",
+      "source_index": 4,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "executable_index": 4,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-31",
+      "source": "workspace",
+      "source_index": 5,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest integration/tests/test_http_contract.py -q -m http",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest integration/tests/test_http_contract.py -q -m http",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-31",
+      "source": "workspace",
+      "source_index": 6,
+      "source_command": "npm --prefix frontend test -- --run",
+      "executable_index": 6,
+      "executable_command": "npm --prefix frontend test -- --run",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-31",
+      "source": "workspace",
+      "source_index": 7,
+      "source_command": "npm --prefix frontend run build",
+      "executable_index": 7,
+      "executable_command": "npm --prefix frontend run build",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-31",
+      "source": "workspace",
+      "source_index": 8,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "executable_index": 8,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-31",
+      "source": "workspace",
+      "source_index": 9,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "executable_index": 9,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-31",
+      "source": "workspace",
+      "source_index": 10,
+      "source_command": "git diff --check",
+      "executable_index": 10,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-31",
+      "source": "workspace",
+      "source_index": 11,
+      "source_command": "git status --short",
+      "executable_index": 11,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-31",
+      "source": "repository",
+      "source_index": 1,
+      "source_command": "python -m pytest integration/tests/test_http_contract.py -q -m http",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest integration/tests/test_http_contract.py -q -m http",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-31",
+      "source": "repository",
+      "source_index": 2,
+      "source_command": "npm --prefix frontend test -- --run",
+      "executable_index": 6,
+      "executable_command": "npm --prefix frontend test -- --run",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-31",
+      "source": "repository",
+      "source_index": 3,
+      "source_command": "npm --prefix frontend run build",
+      "executable_index": 7,
+      "executable_command": "npm --prefix frontend run build",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-31",
+      "source": "repository",
+      "source_index": 4,
+      "source_command": "git diff --check",
+      "executable_index": 10,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-31",
+      "source": "repository",
+      "source_index": 5,
+      "source_command": "git status --short",
+      "executable_index": 11,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-32",
+      "source": "workspace",
+      "source_index": 1,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "executable_index": 1,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-32",
+      "source": "workspace",
+      "source_index": 2,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "executable_index": 2,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-32",
+      "source": "workspace",
+      "source_index": 3,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "executable_index": 3,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-32",
+      "source": "workspace",
+      "source_index": 4,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "executable_index": 4,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-32",
+      "source": "workspace",
+      "source_index": 5,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m playwright install chromium",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m playwright install chromium",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-32",
+      "source": "workspace",
+      "source_index": 6,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest integration/tests/test_browser_acceptance.py -q -m e2e",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest integration/tests/test_browser_acceptance.py -q -m e2e",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-32",
+      "source": "workspace",
+      "source_index": 7,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest integration/tests/test_image_injection_live.py -q -m live",
+      "executable_index": 7,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest integration/tests/test_image_injection_live.py -q -m live",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-32",
+      "source": "workspace",
+      "source_index": 8,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "executable_index": 8,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-32",
+      "source": "workspace",
+      "source_index": 9,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "executable_index": 9,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-32",
+      "source": "workspace",
+      "source_index": 10,
+      "source_command": "git diff --check",
+      "executable_index": 10,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-32",
+      "source": "workspace",
+      "source_index": 11,
+      "source_command": "git status --short",
+      "executable_index": 11,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-32",
+      "source": "repository",
+      "source_index": 1,
+      "source_command": "python -m playwright install chromium",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m playwright install chromium",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-32",
+      "source": "repository",
+      "source_index": 2,
+      "source_command": "python -m pytest integration/tests/test_browser_acceptance.py -q -m e2e",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest integration/tests/test_browser_acceptance.py -q -m e2e",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-32",
+      "source": "repository",
+      "source_index": 3,
+      "source_command": "python -m pytest integration/tests/test_image_injection_live.py -q -m live",
+      "executable_index": 7,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest integration/tests/test_image_injection_live.py -q -m live",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-32",
+      "source": "repository",
+      "source_index": 4,
+      "source_command": "git diff --check",
+      "executable_index": 10,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-32",
+      "source": "repository",
+      "source_index": 5,
+      "source_command": "git status --short",
+      "executable_index": 11,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-33",
+      "source": "workspace",
+      "source_index": 1,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "executable_index": 1,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-33",
+      "source": "workspace",
+      "source_index": 2,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "executable_index": 2,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-33",
+      "source": "workspace",
+      "source_index": 3,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "executable_index": 3,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-33",
+      "source": "workspace",
+      "source_index": 4,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "executable_index": 4,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-33",
+      "source": "workspace",
+      "source_index": 5,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest integration/tests/test_runbook_commands.py -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest integration/tests/test_runbook_commands.py -q",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-33",
+      "source": "workspace",
+      "source_index": 6,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m covenia_b.preflight --offline --workbook data/tianchi-track1-mock-data.xlsx",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m covenia_b.preflight --offline --workbook data/tianchi-track1-mock-data.xlsx",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-33",
+      "source": "workspace",
+      "source_index": 7,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "executable_index": 7,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-33",
+      "source": "workspace",
+      "source_index": 8,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "executable_index": 8,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-33",
+      "source": "workspace",
+      "source_index": 9,
+      "source_command": "git diff --check",
+      "executable_index": 9,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-33",
+      "source": "workspace",
+      "source_index": 10,
+      "source_command": "git status --short",
+      "executable_index": 10,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-33",
+      "source": "repository",
+      "source_index": 1,
+      "source_command": "python -m pytest integration/tests/test_runbook_commands.py -q",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest integration/tests/test_runbook_commands.py -q",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-33",
+      "source": "repository",
+      "source_index": 2,
+      "source_command": "python -m covenia_b.preflight --offline --workbook data/tianchi-track1-mock-data.xlsx",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m covenia_b.preflight --offline --workbook data/tianchi-track1-mock-data.xlsx",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-33",
+      "source": "repository",
+      "source_index": 3,
+      "source_command": "git diff --check",
+      "executable_index": 9,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-33",
+      "source": "repository",
+      "source_index": 4,
+      "source_command": "git status --short",
+      "executable_index": 10,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-34",
+      "source": "workspace",
+      "source_index": 1,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "executable_index": 1,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-34",
+      "source": "workspace",
+      "source_index": 2,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "executable_index": 2,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-34",
+      "source": "workspace",
+      "source_index": 3,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "executable_index": 3,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-34",
+      "source": "workspace",
+      "source_index": 4,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "executable_index": 4,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-34",
+      "source": "workspace",
+      "source_index": 5,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" tools/contracts/check_contracts.py --strict",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" tools/contracts/check_contracts.py --strict",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-34",
+      "source": "workspace",
+      "source_index": 6,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" tools/verification/check_no_case_branches.py --strict",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" tools/verification/check_no_case_branches.py --strict",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-34",
+      "source": "workspace",
+      "source_index": 7,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests integration/tests -q -m \"not live and not http and not e2e\"",
+      "executable_index": 7,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests integration/tests -q -m \"not live and not http and not e2e\"",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-34",
+      "source": "workspace",
+      "source_index": 8,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/live integration/tests -q -m live",
+      "executable_index": 8,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/live integration/tests -q -m live",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-34",
+      "source": "workspace",
+      "source_index": 9,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest integration/tests -q -m http",
+      "executable_index": 9,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest integration/tests -q -m http",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-34",
+      "source": "workspace",
+      "source_index": 10,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest integration/tests -q -m e2e",
+      "executable_index": 10,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest integration/tests -q -m e2e",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-34",
+      "source": "workspace",
+      "source_index": 11,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" tools/verification/evaluate_holdout.py --manifest private-evaluation/holdout-manifest.json --output reports/batches/BATCH-34/holdout",
+      "executable_index": 11,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" tools/verification/evaluate_holdout.py --manifest private-evaluation/holdout-manifest.json --output reports/batches/BATCH-34/holdout",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-34",
+      "source": "workspace",
+      "source_index": 12,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m ruff check backend/src",
+      "executable_index": 12,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m ruff check backend/src",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-34",
+      "source": "workspace",
+      "source_index": 13,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m build --no-isolation backend --outdir reports/batches/BATCH-34/build",
+      "executable_index": 13,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m build --no-isolation backend --outdir reports/batches/BATCH-34/build",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-34",
+      "source": "workspace",
+      "source_index": 14,
+      "source_command": "npm --prefix frontend ci",
+      "executable_index": 14,
+      "executable_command": "npm --prefix frontend ci",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-34",
+      "source": "workspace",
+      "source_index": 15,
+      "source_command": "npm --prefix frontend test -- --run",
+      "executable_index": 15,
+      "executable_command": "npm --prefix frontend test -- --run",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-34",
+      "source": "workspace",
+      "source_index": 16,
+      "source_command": "npm --prefix frontend run build",
+      "executable_index": 16,
+      "executable_command": "npm --prefix frontend run build",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-34",
+      "source": "workspace",
+      "source_index": 17,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "executable_index": 17,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip list --format=json",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-34",
+      "source": "workspace",
+      "source_index": 18,
+      "source_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "executable_index": 18,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pip check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-34",
+      "source": "workspace",
+      "source_index": 19,
+      "source_command": "git diff --check",
+      "executable_index": 19,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-34",
+      "source": "workspace",
+      "source_index": 20,
+      "source_command": "git status --short",
+      "executable_index": 20,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-34",
+      "source": "repository",
+      "source_index": 1,
+      "source_command": "python tools/contracts/check_contracts.py --strict",
+      "executable_index": 5,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" tools/contracts/check_contracts.py --strict",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-34",
+      "source": "repository",
+      "source_index": 2,
+      "source_command": "python tools/verification/check_no_case_branches.py --strict",
+      "executable_index": 6,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" tools/verification/check_no_case_branches.py --strict",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-34",
+      "source": "repository",
+      "source_index": 3,
+      "source_command": "python -m pytest backend/tests integration/tests -q -m \"not live and not http and not e2e\"",
+      "executable_index": 7,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests integration/tests -q -m \"not live and not http and not e2e\"",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-34",
+      "source": "repository",
+      "source_index": 4,
+      "source_command": "python -m pytest backend/tests/live integration/tests -q -m live",
+      "executable_index": 8,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest backend/tests/live integration/tests -q -m live",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-34",
+      "source": "repository",
+      "source_index": 5,
+      "source_command": "python -m pytest integration/tests -q -m http",
+      "executable_index": 9,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest integration/tests -q -m http",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-34",
+      "source": "repository",
+      "source_index": 6,
+      "source_command": "python -m pytest integration/tests -q -m e2e",
+      "executable_index": 10,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m pytest integration/tests -q -m e2e",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-34",
+      "source": "repository",
+      "source_index": 7,
+      "source_command": "python tools/verification/evaluate_holdout.py --manifest private-evaluation/holdout-manifest.json --output reports/batches/BATCH-34/holdout",
+      "executable_index": 11,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" tools/verification/evaluate_holdout.py --manifest private-evaluation/holdout-manifest.json --output reports/batches/BATCH-34/holdout",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-34",
+      "source": "repository",
+      "source_index": 8,
+      "source_command": "python -m ruff check backend/src",
+      "executable_index": 12,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m ruff check backend/src",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-34",
+      "source": "repository",
+      "source_index": 9,
+      "source_command": "python -m build backend --outdir reports/batches/BATCH-34/build",
+      "executable_index": 13,
+      "executable_command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -m build --no-isolation backend --outdir reports/batches/BATCH-34/build",
+      "transformation": "ABSOLUTE_VENV_AND_APPROVED_LOCKED_INSTALL_FLAGS"
+    },
+    {
+      "batch_id": "BATCH-34",
+      "source": "repository",
+      "source_index": 10,
+      "source_command": "npm --prefix frontend ci",
+      "executable_index": 14,
+      "executable_command": "npm --prefix frontend ci",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-34",
+      "source": "repository",
+      "source_index": 11,
+      "source_command": "npm --prefix frontend test -- --run",
+      "executable_index": 15,
+      "executable_command": "npm --prefix frontend test -- --run",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-34",
+      "source": "repository",
+      "source_index": 12,
+      "source_command": "npm --prefix frontend run build",
+      "executable_index": 16,
+      "executable_command": "npm --prefix frontend run build",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-34",
+      "source": "repository",
+      "source_index": 13,
+      "source_command": "git diff --check",
+      "executable_index": 19,
+      "executable_command": "git diff --check",
+      "transformation": "UNCHANGED"
+    },
+    {
+      "batch_id": "BATCH-34",
+      "source": "repository",
+      "source_index": 14,
+      "source_command": "git status --short",
+      "executable_index": 20,
+      "executable_command": "git status --short",
+      "transformation": "UNCHANGED"
+    }
+  ]
+}

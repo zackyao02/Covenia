@@ -98,11 +98,7 @@
         "An invalid or inconsistent new plan does not advance the loaded hash or authorize stale-plan dispatch; a valid correction is retried at the next cycle without requiring state write permission.",
         "After restart with stale persisted state and no in-memory plan, the current plan loads read-only; lack of state write permission does not suppress this initial load."
       ]
-    },
-    "standing_rules": [
-      "每个任务线程在验收并集成完成后应被归档；调度器不得无限累积线程。每批集成回执记录本批创建的线程数并归档已完成批次的线程。同一逻辑步骤内的收尾工作应在同一线程内完成，不得拆分新建。",
-      "依赖人工动作的阻塞（归档、授权、外部交付）必须在回执中显式标记为“等待人工动作：<具体动作>”，并给出该动作不做时的后果与替代方案。"
-    ]
+    }
   },
   "external_gates": [
     {
@@ -131,30 +127,19 @@
     {
       "id": "X-A-MAPPING",
       "owner": "A",
-      "status": "ACCEPTED",
+      "status": "MISSING",
       "required_before": [
         "BATCH-05"
       ],
-      "artifact": "handoff/a/data-mapping.json",
+      "artifact": "handoff/a/data-mapping.json（约定的新交付路径）",
       "criteria": [
         "工作簿 SHA256、8 表/7 业务表名称、列映射、主外键、ID 存储类型、时间与空值解释；五类工单及预期计数来源。"
-      ],
-      "source_acceptance_date": "2026-09-13",
-      "source_acceptance_record": "reports/batches/X-A-MAPPING/ARCHIVE_REPORT.json",
-      "archive_integration_commit": "90c83590ad4955e24d6d859c1281b42f53686785",
-      "receipt": "reports/batches/X-A-MAPPING/GATE_ACCEPTANCE_RECEIPT.json",
-      "acceptance_basis": "PREEXISTING_ACCEPTANCE_REGISTRATION_ONLY",
-      "independent_evidence": "reports/batches/BATCH-05/VERIFICATION_REPORT.json",
-      "independent_evidence_integration_commit": "dbedd4e9f985911cc89b140d1a129586a09fbdf4",
-      "artifact_sha256": "8D76EEAD5757D5618B57107B3725FCF5543D96F0C9FECF6EDEA5FDDD210B5538",
-      "artifact_size_bytes": 74175,
-      "hash_method": "git_show_blob_raw_bytes",
-      "registration_note": "依据既有 gate_status=ACCEPTED、BATCH-05 独立核验与集成记录补登记；不是仅凭文件存在接收，不代签产品批准，不改变已验收批次状态。"
+      ]
     },
     {
       "id": "X-A-FIXTURES",
-      "owner": "A；Zack 审批语义变化",
-      "status": "ACCEPTED",
+      "owner": "A",
+      "status": "MISSING",
       "required_before": [
         "BATCH-06"
       ],
@@ -232,32 +217,8 @@
           "独立复核记录及原有 handoff/a/cases-manifest.json"
         ],
         "suggested_commit_message": "fix(fixtures): align DEMO_001 timeline with approved PRODUCT-FREEZE P0-4",
-        "status_note": "已完成 / ACCEPTED（2026-09-13）；见 reports/batches/X-A-FIXTURES/GATE_ACCEPTANCE_RECEIPT.json。既有交接规格仅作历史追溯，不重开一次性夹具授权，不替代任何 Batch 的独立验收、集成或资源锁检查。",
-        "historical_status_note": "本门保持 MISSING，直到 A 在目标仓库提交、独立复跑 16/16 并完成原有案例映射交接；不能把副本预验证等同入库验收。"
-      },
-      "accepted_by": "产品负责人",
-      "accepted_at": "2026-09-13",
-      "receipt": "reports/batches/X-A-FIXTURES/GATE_ACCEPTANCE_RECEIPT.json",
-      "verification_method": "git show <sha>:<path> raw Git blob bytes, never worktree",
-      "artifact_unchanged": true,
-      "accepted_git_blobs": {
-        "fixtures/demo-cases.json": {
-          "size_bytes": 10588,
-          "sha256": "AE06EC6EF7D2DB344B8F57820B2D549CACE662EEFCD2F31BFF0C65D74E658707"
-        },
-        "fixtures/ground-truth.json": {
-          "size_bytes": 3312,
-          "sha256": "0E6E8170FC7B113EE700087289B027FE93D412AA18C2F39D64D80D01C57C3311"
-        },
-        "handoff/a/cases-manifest.json": {
-          "size_bytes": 11957,
-          "sha256": "4169EFF9CF424271381046A32B36B5617A015C03BDB847F704C55CAA0E1641F6"
-        }
-      },
-      "prior_registration_error": "fixtures/ground-truth.json was previously registered as 0E6E817FC7...; corrected to 0E6E8170FC7B113EE700087289B027FE93D412AA18C2F39D64D80D01C57C3311. This was a registration transcription error; the delivered artifact was unchanged.",
-      "downstream_unblocked": [
-        "BATCH-06"
-      ]
+        "status_note": "本门保持 MISSING，直到 A 在目标仓库提交、独立复跑 16/16 并完成原有案例映射交接；不能把副本预验证等同入库验收。"
+      }
     },
     {
       "id": "X-A-IMAGES",
@@ -643,8 +604,7 @@
     "all_python_acceptance_commands_use_absolute_venv_template": true,
     "all_batches_have_pip_check": true,
     "dependency_additions_have_scoped_authority_and_evidence": true,
-    "environment_policy_change_only": false,
-    "plan_merge_only_no_runtime_transition": true
+    "environment_policy_change_only": true
   },
   "batches": [
     {
@@ -5398,7 +5358,7 @@
       ]
     }
   ],
-  "plan_revision_date": "2026-09-29",
+  "plan_revision_date": "2026-09-12",
   "environment_policy": {
     "reference": "MASTER_PLAN.md#55-全局环境与依赖约定",
     "interpreter_template": "<RUN_DIR>/venv/Scripts/python.exe",
@@ -5440,18 +5400,5 @@
       "reports/batches/{batch_id}/commands.json"
     ],
     "verifier_evidence_location": "reports/batches/{batch_id}/verification-evidence/; verifier writes only its own evidence/report, never implementation evidence or lockfile"
-  },
-  "plan_merge": {
-    "status": "MERGED_PENDING_INDEPENDENT_REVIEW",
-    "baseline_commit": "69d78e88c5c2ee0f7cd25c7a04c0eaa8223d0f51",
-    "basis": "docs/decisions/PLAN_MERGE_BASIS.md (version 3)",
-    "confirmation": "docs/planning/b/PLAN_MERGE_CONFIRMATION_2026-09-29.md",
-    "command_union_evidence": "docs/planning/b/plan-merge-2026-09-29/COMMAND_UNION.json",
-    "scope": "Planning synchronization and historical gate registration only; no code, dependencies, approvals, task state or DAG changes",
-    "batch_count": 34,
-    "workspace_command_count": 343,
-    "repository_command_count": 142,
-    "executable_command_count": 343,
-    "dispatch_boundary": "Independent V1-V5 PASS and new committed blob hashes must be recorded before clearing plan-drift blockers. No batch is started or unblocked by this merge; auto_start_next_batch remains false. Existing scheduler-index/packages must be revalidated against the new source before use."
   }
 }
