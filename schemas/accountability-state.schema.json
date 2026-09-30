@@ -119,8 +119,8 @@
         "received_evidence": {"type": "array", "items": {"type": "string"}},
         "brand_action": {"type": "string", "minLength": 1},
         "latest_update_at": {"type": "string", "format": "date-time"},
-        "next_update_by": {"type": "string", "format": "date-time"},
-        "consumer_action_required": {"type": "boolean"},
+        "next_update_by": {"type": ["string", "null"], "format": "date-time", "description": "Next consumer-visible update instant. While an obligation is open this MUST equal open_obligation.next_check_at and the notification draft commits_next_update_at. In terminal states (COMPLETED/RESOLVED) it is null; a synthetic instant MUST NOT be fabricated."},
+                "consumer_action_required": {"type": "boolean"},
         "recovery_if_missed": {"type": "string", "minLength": 1}
       }
     },
