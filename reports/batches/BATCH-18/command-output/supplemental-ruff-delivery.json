@@ -1,0 +1,19 @@
+{
+  "id": "supplemental-ruff-delivery",
+  "executable": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe",
+  "arguments": [
+    "-m",
+    "ruff",
+    "check",
+    "backend/src/covenia_b/storage",
+    "backend/tests/storage"
+  ],
+  "command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe\" \"-m\" \"ruff\" \"check\" \"backend/src/covenia_b/storage\" \"backend/tests/storage\"",
+  "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-18",
+  "started_at": "2026-10-02T00:19:17.2046162+08:00",
+  "exit_code": -1073741502,
+  "duration_seconds": 30.5991302,
+  "mode": "UNIT",
+  "output": "",
+  "output_path": "reports/batches/BATCH-18/command-output/supplemental-ruff-delivery.json"
+}

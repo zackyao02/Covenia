@@ -1,0 +1,18 @@
+{
+  "id": "freeze-before",
+  "executable": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe",
+  "arguments": [
+    "-m",
+    "pip",
+    "freeze",
+    "--all"
+  ],
+  "command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe\" \"-m\" \"pip\" \"freeze\" \"--all\"",
+  "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-18",
+  "started_at": "2026-10-01T23:05:14.3620970+08:00",
+  "exit_code": 0,
+  "duration_seconds": 0.5833599,
+  "mode": "ENVIRONMENT",
+  "output": "annotated-types==0.7.0\r\nanyio==4.8.0\r\nattrs==26.1.0\r\nbuild==1.2.2.post1\r\nclick==8.1.8\r\ncolorama==0.4.6\r\nfastapi==0.115.6\r\nh11==0.14.0\r\nidna==3.10\r\niniconfig==2.0.0\r\njsonschema==4.25.0\r\njsonschema-specifications==2025.9.1\r\npackaging==24.2\r\npip==25.1.1\r\npluggy==1.5.0\r\npydantic==2.10.5\r\npydantic-settings==2.7.1\r\npydantic_core==2.27.2\r\npyproject_hooks==1.2.0\r\npytest==8.3.4\r\npython-dotenv==1.0.1\r\nreferencing==0.37.0\r\nrpds-py==2026.6.3\r\nruff==0.8.4\r\nsetuptools==75.8.0\r\nsniffio==1.3.1\r\nstarlette==0.41.3\r\ntyping_extensions==4.12.2\r\nuvicorn==0.34.0\r\nwheel==0.45.1\r\n",
+  "output_path": "reports/batches/BATCH-18/command-output/freeze-before.json"
+}

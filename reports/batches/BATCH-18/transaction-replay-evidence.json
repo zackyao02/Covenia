@@ -1,0 +1,336 @@
+{
+  "report_version": "1.0",
+  "batch_id": "BATCH-18",
+  "code_commit": "3712a170969998e32b56d33e3d59c7b21a04f19d",
+  "mode": "UNIT",
+  "source_command": {
+    "id": "required-05-storage-pytest-final",
+    "executable": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe",
+    "arguments": [
+      "-m",
+      "pytest",
+      "backend/tests/storage",
+      "-q",
+      "--basetemp",
+      "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\t2",
+      "--junitxml",
+      "reports/batches/BATCH-18/storage-pytest-final.xml"
+    ],
+    "command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe\" \"-m\" \"pytest\" \"backend/tests/storage\" \"-q\" \"--basetemp\" \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\t2\" \"--junitxml\" \"reports/batches/BATCH-18/storage-pytest-final.xml\"",
+    "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-18",
+    "started_at": "2026-10-01T23:12:13.3148469+08:00",
+    "exit_code": 0,
+    "duration_seconds": 4.8653858,
+    "mode": "UNIT",
+    "output": "......................................                                   [100%]\r\n- generated xml file: C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-18\\reports\\batches\\BATCH-18\\storage-pytest-final.xml -\r\n38 passed in 4.35s\r\n",
+    "output_path": "reports/batches/BATCH-18/command-output/required-05-storage-pytest-final.json"
+  },
+  "junit_path": "reports/batches/BATCH-18/storage-pytest-final.xml",
+  "tests_passed": 38,
+  "tests_failed": 0,
+  "errors": 0,
+  "skipped": 0,
+  "xfail": 0,
+  "rerun_on_oct2": false,
+  "evidence_type": "Assertions verified by the retained real SQLite unit test run; this is not an independent verdict or a separately repeated runtime probe.",
+  "assertions_verified": [
+    {
+      "criterion": "十次同键同体重放",
+      "tests": [
+        "test_ten_replays_keep_one_change_and_first_complete_response"
+      ],
+      "asserted": "Only one current version, one audit, one request; first status/body/headers/request_id retained."
+    },
+    {
+      "criterion": "并发/跨进程双击",
+      "tests": [
+        "test_ten_concurrent_connections_only_call_mutation_once",
+        "test_separate_process_double_click_commits_once",
+        "test_different_keys_callbacks_observe_serialized_current_versions"
+      ],
+      "asserted": "Ten concurrent connections call the mutation once; two child processes commit once; distinct keys observe serialized versions."
+    },
+    {
+      "criterion": "规范化/跨端点同键/不同体冲突",
+      "tests": [
+        "test_normalized_request_replay_excludes_transport_id",
+        "test_case_scoped_key_conflicts_with_different_body_or_endpoint",
+        "test_same_key_is_independent_between_cases"
+      ],
+      "asserted": "Top-level transport request IDs/object order excluded; nested fields and array order retained; different operation/body conflict without mutation."
+    },
+    {
+      "criterion": "事件独立去重/时间高水位",
+      "tests": [
+        "test_event_replay_precedes_highwater_and_stale_version_checks",
+        "test_event_identity_different_content_conflicts_without_binding_key",
+        "test_equivalent_event_instants_deduplicate_and_submicrosecond_order_is_exact",
+        "test_equal_time_event_allowed_storage_does_not_decide_transition"
+      ],
+      "asserted": "Original event response replays even behind current high-water mark; altered events conflict; exact submicrosecond ordering; service owns transition legality."
+    },
+    {
+      "criterion": "写失败/进程中断原子回滚",
+      "tests": [
+        "test_database_write_failure_rolls_back_every_table",
+        "test_failed_update_retains_preexisting_state_and_audit",
+        "test_callback_exception_rolls_back_and_key_remains_retryable",
+        "test_process_death_between_state_and_response_write_recovers_empty_transaction"
+      ],
+      "asserted": "Failure injection at each table and os._exit(17) before response insertion leave no partial committed state/audit/event/reply."
+    },
+    {
+      "criterion": "重启/完整响应/终态 null",
+      "tests": [
+        "test_separate_process_restart_replays_first_response",
+        "test_compiled_commitments_and_terminal_null_survive_snapshot_and_response"
+      ],
+      "asserted": "Separate process and reopened repository retain exact first response/request ID and terminal null without synthetic timestamp."
+    },
+    {
+      "criterion": "本地备份恢复安全",
+      "tests": [
+        "test_backup_includes_live_wal_and_restore_preserves_replay",
+        "test_restore_insert_failure_keeps_original_transaction",
+        "test_existing_target_requires_new_safety_backup_and_backup_never_overwrites",
+        "test_unsafe_admin_paths_are_rejected",
+        "test_bad_backup_does_not_touch_target_or_create_new_db",
+        "test_actual_local_admin_cli_requires_explicit_paths_and_roundtrips"
+      ],
+      "asserted": "WAL-aware backups, mandatory fresh safety backup for existing targets, rollback on restore failure, unsafe paths refused, actual local CLI roundtrip."
+    }
+  ],
+  "test_cases": [
+    {
+      "name": "test_backup_includes_live_wal_and_restore_preserves_replay",
+      "classname": "tests.storage.test_admin",
+      "time_seconds": 0.122,
+      "result": "PASSED"
+    },
+    {
+      "name": "test_restore_insert_failure_keeps_original_transaction",
+      "classname": "tests.storage.test_admin",
+      "time_seconds": 0.079,
+      "result": "PASSED"
+    },
+    {
+      "name": "test_existing_target_requires_new_safety_backup_and_backup_never_overwrites",
+      "classname": "tests.storage.test_admin",
+      "time_seconds": 0.036,
+      "result": "PASSED"
+    },
+    {
+      "name": "test_unsafe_admin_paths_are_rejected[same]",
+      "classname": "tests.storage.test_admin",
+      "time_seconds": 0.009,
+      "result": "PASSED"
+    },
+    {
+      "name": "test_unsafe_admin_paths_are_rejected[hardlink]",
+      "classname": "tests.storage.test_admin",
+      "time_seconds": 0.009,
+      "result": "PASSED"
+    },
+    {
+      "name": "test_unsafe_admin_paths_are_rejected[sidecar]",
+      "classname": "tests.storage.test_admin",
+      "time_seconds": 0.01,
+      "result": "PASSED"
+    },
+    {
+      "name": "test_unsafe_admin_paths_are_rejected[relative]",
+      "classname": "tests.storage.test_admin",
+      "time_seconds": 0.008,
+      "result": "PASSED"
+    },
+    {
+      "name": "test_unsafe_admin_paths_are_rejected[missing]",
+      "classname": "tests.storage.test_admin",
+      "time_seconds": 0.01,
+      "result": "PASSED"
+    },
+    {
+      "name": "test_bad_backup_does_not_touch_target_or_create_new_db",
+      "classname": "tests.storage.test_admin",
+      "time_seconds": 0.033,
+      "result": "PASSED"
+    },
+    {
+      "name": "test_actual_local_admin_cli_requires_explicit_paths_and_roundtrips",
+      "classname": "tests.storage.test_admin",
+      "time_seconds": 1.329,
+      "result": "PASSED"
+    },
+    {
+      "name": "test_ten_replays_keep_one_change_and_first_complete_response",
+      "classname": "tests.storage.test_transactions",
+      "time_seconds": 0.051,
+      "result": "PASSED"
+    },
+    {
+      "name": "test_normalized_request_replay_excludes_transport_id",
+      "classname": "tests.storage.test_transactions",
+      "time_seconds": 0.025,
+      "result": "PASSED"
+    },
+    {
+      "name": "test_case_scoped_key_conflicts_with_different_body_or_endpoint[body]",
+      "classname": "tests.storage.test_transactions",
+      "time_seconds": 0.022,
+      "result": "PASSED"
+    },
+    {
+      "name": "test_case_scoped_key_conflicts_with_different_body_or_endpoint[operation]",
+      "classname": "tests.storage.test_transactions",
+      "time_seconds": 0.024,
+      "result": "PASSED"
+    },
+    {
+      "name": "test_same_key_is_independent_between_cases",
+      "classname": "tests.storage.test_transactions",
+      "time_seconds": 0.035,
+      "result": "PASSED"
+    },
+    {
+      "name": "test_ten_concurrent_connections_only_call_mutation_once",
+      "classname": "tests.storage.test_transactions",
+      "time_seconds": 0.19,
+      "result": "PASSED"
+    },
+    {
+      "name": "test_different_keys_callbacks_observe_serialized_current_versions",
+      "classname": "tests.storage.test_transactions",
+      "time_seconds": 0.035,
+      "result": "PASSED"
+    },
+    {
+      "name": "test_event_replay_precedes_highwater_and_stale_version_checks",
+      "classname": "tests.storage.test_transactions",
+      "time_seconds": 0.042,
+      "result": "PASSED"
+    },
+    {
+      "name": "test_event_identity_different_content_conflicts_without_binding_key[type]",
+      "classname": "tests.storage.test_transactions",
+      "time_seconds": 0.02,
+      "result": "PASSED"
+    },
+    {
+      "name": "test_event_identity_different_content_conflicts_without_binding_key[time]",
+      "classname": "tests.storage.test_transactions",
+      "time_seconds": 0.022,
+      "result": "PASSED"
+    },
+    {
+      "name": "test_equivalent_event_instants_deduplicate_and_submicrosecond_order_is_exact",
+      "classname": "tests.storage.test_transactions",
+      "time_seconds": 0.027,
+      "result": "PASSED"
+    },
+    {
+      "name": "test_equal_time_event_allowed_storage_does_not_decide_transition",
+      "classname": "tests.storage.test_transactions",
+      "time_seconds": 0.033,
+      "result": "PASSED"
+    },
+    {
+      "name": "test_database_write_failure_rolls_back_every_table[cases]",
+      "classname": "tests.storage.test_transactions",
+      "time_seconds": 0.035,
+      "result": "PASSED"
+    },
+    {
+      "name": "test_database_write_failure_rolls_back_every_table[case_versions]",
+      "classname": "tests.storage.test_transactions",
+      "time_seconds": 0.036,
+      "result": "PASSED"
+    },
+    {
+      "name": "test_database_write_failure_rolls_back_every_table[audit_entries]",
+      "classname": "tests.storage.test_transactions",
+      "time_seconds": 0.035,
+      "result": "PASSED"
+    },
+    {
+      "name": "test_database_write_failure_rolls_back_every_table[events]",
+      "classname": "tests.storage.test_transactions",
+      "time_seconds": 0.047,
+      "result": "PASSED"
+    },
+    {
+      "name": "test_database_write_failure_rolls_back_every_table[idempotent_requests]",
+      "classname": "tests.storage.test_transactions",
+      "time_seconds": 0.035,
+      "result": "PASSED"
+    },
+    {
+      "name": "test_failed_update_retains_preexisting_state_and_audit",
+      "classname": "tests.storage.test_transactions",
+      "time_seconds": 0.033,
+      "result": "PASSED"
+    },
+    {
+      "name": "test_callback_exception_rolls_back_and_key_remains_retryable",
+      "classname": "tests.storage.test_transactions",
+      "time_seconds": 0.019,
+      "result": "PASSED"
+    },
+    {
+      "name": "test_optimistic_save_and_append_only_history",
+      "classname": "tests.storage.test_transactions",
+      "time_seconds": 0.029,
+      "result": "PASSED"
+    },
+    {
+      "name": "test_compiled_commitments_and_terminal_null_survive_snapshot_and_response",
+      "classname": "tests.storage.test_transactions",
+      "time_seconds": 0.039,
+      "result": "PASSED"
+    },
+    {
+      "name": "test_stale_expected_version_rejected_before_callback",
+      "classname": "tests.storage.test_transactions",
+      "time_seconds": 0.022,
+      "result": "PASSED"
+    },
+    {
+      "name": "test_callback_cannot_rewrite_existing_audit_through_mutable_nested_list",
+      "classname": "tests.storage.test_transactions",
+      "time_seconds": 0.023,
+      "result": "PASSED"
+    },
+    {
+      "name": "test_separate_process_restart_replays_first_response",
+      "classname": "tests.storage.test_transactions",
+      "time_seconds": 0.471,
+      "result": "PASSED"
+    },
+    {
+      "name": "test_separate_process_double_click_commits_once",
+      "classname": "tests.storage.test_transactions",
+      "time_seconds": 0.472,
+      "result": "PASSED"
+    },
+    {
+      "name": "test_process_death_between_state_and_response_write_recovers_empty_transaction",
+      "classname": "tests.storage.test_transactions",
+      "time_seconds": 0.514,
+      "result": "PASSED"
+    },
+    {
+      "name": "test_unsupported_database_is_refused_without_reset[future]",
+      "classname": "tests.storage.test_transactions",
+      "time_seconds": 0.009,
+      "result": "PASSED"
+    },
+    {
+      "name": "test_unsupported_database_is_refused_without_reset[unidentified]",
+      "classname": "tests.storage.test_transactions",
+      "time_seconds": 0.01,
+      "result": "PASSED"
+    }
+  ],
+  "repository_business_boundary": "Storage accepts caller-validated state/event changes; rules, approval legality and logistics state-machine transitions belong to services.",
+  "no_http_reset_endpoint": true,
+  "no_live_model_claim": true
+}

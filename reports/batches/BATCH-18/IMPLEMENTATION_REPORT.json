@@ -1,0 +1,753 @@
+{
+  "report_version": "1.0",
+  "batch_id": "BATCH-18",
+  "result": "IMPLEMENTED",
+  "repo_root": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-18",
+  "branch": "codex/covenia-batch-18",
+  "base_integration_sha": "f507e37d94c0532f377a9475de2129c52f75d584",
+  "contract_version": "8314c76502cbc9d47d8432b7fe53f7d9fb82de82 / BATCH-03 contract-lock-v1; authorized terminal-null schema revision f507e37d94c0532f377a9475de2129c52f75d584",
+  "plan_sha256": {
+    "MASTER_PLAN.md": "DBE269F06F4BBE3D8C1F915DD8E4A2D78E0E4F021ABB396270C8B846D5FFA74E",
+    "batches.json": "18DA555CE5ADEA5062F680837AEC8214158F58CBC1A918CF6BBC31EF48448E2E"
+  },
+  "initial_worktree": [],
+  "dependency_receipts": [
+    {
+      "batch_id": "BATCH-04",
+      "verdict": "PASS",
+      "reviewed_code_commits": [
+        "e1070f150de14fa134a5492372828628ca38e89e"
+      ],
+      "verification_report_commit": "9d093a492e576d7cb02b46c2ca60ebf2cac1c244",
+      "integration_sha": "9d093a492e576d7cb02b46c2ca60ebf2cac1c244",
+      "integration_status": "SUCCESS",
+      "dependency_is_ancestor_of_base": true,
+      "receipt_path": "C:\\Users\\WONG Tsun Ming\\covenia-orchestration\\runs\\covenia-b-20260910-01\\integration-receipts\\BATCH-04.json",
+      "artifact_hashes": {
+        "reports/batches/BATCH-04/IMPLEMENTATION_REPORT.json": {
+          "sha256": "9A5D5B2E20864A715F6ACB33AF7DE13759F7056355B728E82C15C69F8F222391",
+          "source_commit": "f507e37d94c0532f377a9475de2129c52f75d584",
+          "basis": "git show f507e37d94c0532f377a9475de2129c52f75d584:reports/batches/BATCH-04/IMPLEMENTATION_REPORT.json raw blob bytes"
+        },
+        "reports/batches/BATCH-04/VERIFICATION_REPORT.json": {
+          "sha256": "A237005052FD141ADB97DACADBAFEADCBCC794D8C0326F42E56EB3FEB551256B",
+          "source_commit": "f507e37d94c0532f377a9475de2129c52f75d584",
+          "basis": "git show f507e37d94c0532f377a9475de2129c52f75d584:reports/batches/BATCH-04/VERIFICATION_REPORT.json raw blob bytes"
+        }
+      },
+      "integrated_smoke_results": [
+        {
+          "command": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b04int1\\venv\\Scripts\\python.exe -m pip install --no-deps -r backend/requirements-dev.lock",
+          "exit_code": 0,
+          "note": "The first sandbox-restricted socket attempt was retried once with approved network access; the same isolated venv completed the exact pinned installation."
+        },
+        {
+          "command": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b04int1\\venv\\Scripts\\python.exe -m pip install --no-deps --no-build-isolation -e backend",
+          "exit_code": 0
+        },
+        {
+          "command": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b04int1\\venv\\Scripts\\python.exe -c \"import pytest, jsonschema\"",
+          "exit_code": 0
+        },
+        {
+          "command": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b04int1\\venv\\Scripts\\python.exe -m pytest backend/tests/domain backend/tests/contracts -q",
+          "exit_code": 0,
+          "stdout_summary": "39 passed in 1.61s"
+        },
+        {
+          "command": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b04int1\\venv\\Scripts\\python.exe -m ruff check backend/src/covenia_b/domain backend/src/covenia_b/ports",
+          "exit_code": 0,
+          "stdout_summary": "All checks passed!"
+        },
+        {
+          "command": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b04int1\\venv\\Scripts\\python.exe tools/contracts/check_contracts.py --strict",
+          "exit_code": 0,
+          "stdout_summary": "14 schemas and 18 vectors validated"
+        },
+        {
+          "command": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b04int1\\venv\\Scripts\\python.exe -m pip check",
+          "exit_code": 0,
+          "stdout_summary": "No broken requirements found."
+        },
+        {
+          "command": "git -C C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-integration diff --check",
+          "exit_code": 0
+        },
+        {
+          "command": "git -C C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-integration status --short",
+          "exit_code": 0,
+          "stdout_summary": "CLEAN"
+        }
+      ],
+      "integrated_smoke_failures": [],
+      "external_receipt_note": "Existing coordinator receipt was read only; its successful smoke and raw-blob artifact integrity results were preserved."
+    }
+  ],
+  "external_gate_receipts": [],
+  "code_commits": [
+    "3712a170969998e32b56d33e3d59c7b21a04f19d"
+  ],
+  "changed_files": [
+    "backend/src/covenia_b/storage/__init__.py",
+    "backend/src/covenia_b/storage/admin.py",
+    "backend/src/covenia_b/storage/codec.py",
+    "backend/src/covenia_b/storage/models.py",
+    "backend/src/covenia_b/storage/schema.py",
+    "backend/src/covenia_b/storage/sqlite.py",
+    "backend/tests/storage/__init__.py",
+    "backend/tests/storage/process_worker.py",
+    "backend/tests/storage/support.py",
+    "backend/tests/storage/test_admin.py",
+    "backend/tests/storage/test_transactions.py",
+    "reports/batches/BATCH-18/collect-cached-wheels.py",
+    "reports/batches/BATCH-18/collect-evidence.ps1",
+    "reports/batches/BATCH-18/command-output/freeze-after.json",
+    "reports/batches/BATCH-18/command-output/freeze-before.json",
+    "reports/batches/BATCH-18/command-output/required-01-interpreter.json",
+    "reports/batches/BATCH-18/command-output/required-02-install-lock-offline.json",
+    "reports/batches/BATCH-18/command-output/required-02-install-lock-retry.json",
+    "reports/batches/BATCH-18/command-output/required-02-install-lock.json",
+    "reports/batches/BATCH-18/command-output/required-03-editable-backend.json",
+    "reports/batches/BATCH-18/command-output/required-04-import-preflight.json",
+    "reports/batches/BATCH-18/command-output/required-05-storage-pytest-final.json",
+    "reports/batches/BATCH-18/command-output/required-05-storage-pytest-initial.json",
+    "reports/batches/BATCH-18/command-output/required-06-pip-list.json",
+    "reports/batches/BATCH-18/command-output/required-07-pip-check.json",
+    "reports/batches/BATCH-18/command-output/required-08-git-diff-check.json",
+    "reports/batches/BATCH-18/command-output/required-09-git-status.json",
+    "reports/batches/BATCH-18/command-output/supplemental-cached-wheel-inventory.json",
+    "reports/batches/BATCH-18/command-output/supplemental-environment-preflight.json",
+    "reports/batches/BATCH-18/command-output/supplemental-ruff-delivery-approved.json",
+    "reports/batches/BATCH-18/command-output/supplemental-ruff-delivery.json",
+    "reports/batches/BATCH-18/command-output/supplemental-ruff-final.json",
+    "reports/batches/BATCH-18/command-output/supplemental-ruff-initial.json",
+    "reports/batches/BATCH-18/commands.json",
+    "reports/batches/BATCH-18/environment.json",
+    "reports/batches/BATCH-18/pip-check.txt",
+    "reports/batches/BATCH-18/record-command.ps1",
+    "reports/batches/BATCH-18/resume-evidence.json",
+    "reports/batches/BATCH-18/storage-layout.md",
+    "reports/batches/BATCH-18/storage-pytest-final.xml",
+    "reports/batches/BATCH-18/storage-pytest-initial.xml",
+    "reports/batches/BATCH-18/transaction-replay-evidence.json",
+    "reports/batches/BATCH-18/IMPLEMENTATION_REPORT.json",
+    "reports/batches/BATCH-18/IMPLEMENTATION_REPORT.md"
+  ],
+  "scope_check": {
+    "within_allowlist": true,
+    "allowed_paths": [
+      "backend/src/covenia_b/storage/**",
+      "backend/tests/storage/**",
+      "reports/batches/BATCH-18/**",
+      "backend/requirements-dev.lock"
+    ],
+    "forbidden_changes": [],
+    "code_files": 11,
+    "report_files": 33,
+    "requirements_dev_lock_changed": false,
+    "domain_ports_schemas_changed_by_batch": false,
+    "schema_baseline_included_by_clean_fast_forward": true,
+    "original_baseline": "bfc1f911c8dad8be0daf9b3bbb4e3bf2b4c0ae23",
+    "current_integration_head_observed": "cc82915b260ac108137ada27ffda56d1b4b1bc3d",
+    "later_integration_delta": "BATCH-09 observability/evidence only; no overlap; original BATCH-18 branch was not rebased/recreated on resume.",
+    "initial_resume_changes_preserved": true,
+    "run_state_modified": false,
+    "pushed": false,
+    "main_modified": false,
+    "verifier_report_created": false,
+    "verifier_evidence_created": false,
+    "final_worktree_clean_claim": false,
+    "preserved_permission_warnings": [
+      "warning: could not open directory 'pip-build-tracker-2aisoqh1/': Permission denied",
+      "warning: could not open directory 'pip-build-tracker-3y5h6skc/': Permission denied",
+      "warning: could not open directory 'pip-ephem-wheel-cache-tzzoufz1/': Permission denied",
+      "warning: could not open directory 'pip-ephem-wheel-cache-vbxlmk2k/': Permission denied",
+      "warning: could not open directory 'pip-install-06f_11n9/': Permission denied",
+      "warning: could not open directory 'pip-install-fk6dbgkf/': Permission denied"
+    ],
+    "temp_directory_cleanup": false,
+    "acl_change": false
+  },
+  "acceptance_results": [
+    {
+      "criterion": "相同请求十次/并发重放只有一次变更；不同请求冲突且状态不动。",
+      "status": "EVIDENCED",
+      "evidence": [
+        "reports/batches/BATCH-18/transaction-replay-evidence.json",
+        "reports/batches/BATCH-18/command-output/required-05-storage-pytest-final.json",
+        "reports/batches/BATCH-18/storage-pytest-final.xml",
+        "reports/batches/BATCH-18/storage-layout.md"
+      ]
+    },
+    {
+      "criterion": "异常注入不会留下“状态改了但审计/响应没写”的半成品。",
+      "status": "EVIDENCED",
+      "evidence": [
+        "reports/batches/BATCH-18/transaction-replay-evidence.json",
+        "reports/batches/BATCH-18/command-output/required-05-storage-pytest-final.json",
+        "reports/batches/BATCH-18/storage-pytest-final.xml",
+        "reports/batches/BATCH-18/storage-layout.md"
+      ]
+    },
+    {
+      "criterion": "仓储不决定规则或物流合法性，保留事件历史便于重新构建。",
+      "status": "EVIDENCED",
+      "evidence": [
+        "reports/batches/BATCH-18/transaction-replay-evidence.json",
+        "reports/batches/BATCH-18/command-output/required-05-storage-pytest-final.json",
+        "reports/batches/BATCH-18/storage-pytest-final.xml",
+        "reports/batches/BATCH-18/storage-layout.md"
+      ]
+    },
+    {
+      "criterion": "按5.5使用本批绝对隔离venv解释器；新增第三方依赖只增不改、精确钉版本并提交锁文件差异/原因/hash证据；交付前同解释器 pip check 退出0。环境证据缺失或冲突不得PASS。",
+      "status": "EVIDENCED",
+      "evidence": [
+        "reports/batches/BATCH-18/environment.json",
+        "reports/batches/BATCH-18/pip-check.txt",
+        "reports/batches/BATCH-18/command-output/freeze-before.json",
+        "reports/batches/BATCH-18/command-output/freeze-after.json"
+      ]
+    }
+  ],
+  "test_results": [
+    {
+      "command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe\" \"-m\" \"pytest\" \"backend/tests/storage\" \"-q\" \"--basetemp\" \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\t2\" \"--junitxml\" \"reports/batches/BATCH-18/storage-pytest-final.xml\"",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-18",
+      "exit_code": 0,
+      "duration_seconds": 4.8653858,
+      "mode": "UNIT",
+      "evidence": "reports/batches/BATCH-18/command-output/required-05-storage-pytest-final.json",
+      "tests_passed": 38,
+      "tests_failed": 0,
+      "tests_skipped": 0,
+      "xfail": 0,
+      "executed_at": "2026-10-01T23:12:13.3148469+08:00",
+      "rerun_during_oct2_resume": false,
+      "description": "Real SQLite connections, WAL backups and separate child processes; synthetic service callbacks, not live API/model integration."
+    },
+    {
+      "command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe\" \"-m\" \"ruff\" \"check\" \"backend/src/covenia_b/storage\" \"backend/tests/storage\"",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-18",
+      "exit_code": 0,
+      "duration_seconds": 0.15633,
+      "mode": "UNIT",
+      "check_kind": "STATIC_ANALYSIS",
+      "evidence": "reports/batches/BATCH-18/command-output/supplemental-ruff-delivery-approved.json",
+      "prior_normal_sandbox_error": -1073741502
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "backend/src/covenia_b/storage/__init__.py",
+      "sha256": "917BE83BAA9B54F661099B50821C7A0D2C8FFFDA0ABE6893F43C6C8184311070",
+      "source_commit": "3712a170969998e32b56d33e3d59c7b21a04f19d",
+      "classification": "SOURCE_OR_SYNTHETIC_TEST",
+      "hash_basis": "git show 3712a170969998e32b56d33e3d59c7b21a04f19d:backend/src/covenia_b/storage/__init__.py raw blob bytes"
+    },
+    {
+      "path": "backend/src/covenia_b/storage/admin.py",
+      "sha256": "BA9D61701F109011DB627B9FE3F2FCA132DEBAA1E088A60A0B740D5B9143B502",
+      "source_commit": "3712a170969998e32b56d33e3d59c7b21a04f19d",
+      "classification": "SOURCE_OR_SYNTHETIC_TEST",
+      "hash_basis": "git show 3712a170969998e32b56d33e3d59c7b21a04f19d:backend/src/covenia_b/storage/admin.py raw blob bytes"
+    },
+    {
+      "path": "backend/src/covenia_b/storage/codec.py",
+      "sha256": "E8913EFC35998CDF3D43B7E18425F2573B9FEC6D21BE24ABF4D06B4AD4B0CF48",
+      "source_commit": "3712a170969998e32b56d33e3d59c7b21a04f19d",
+      "classification": "SOURCE_OR_SYNTHETIC_TEST",
+      "hash_basis": "git show 3712a170969998e32b56d33e3d59c7b21a04f19d:backend/src/covenia_b/storage/codec.py raw blob bytes"
+    },
+    {
+      "path": "backend/src/covenia_b/storage/models.py",
+      "sha256": "2D8EBE2E56C981DC4268716E88C9B71DFA094F0C8F74F196DD6359CB8887896F",
+      "source_commit": "3712a170969998e32b56d33e3d59c7b21a04f19d",
+      "classification": "SOURCE_OR_SYNTHETIC_TEST",
+      "hash_basis": "git show 3712a170969998e32b56d33e3d59c7b21a04f19d:backend/src/covenia_b/storage/models.py raw blob bytes"
+    },
+    {
+      "path": "backend/src/covenia_b/storage/schema.py",
+      "sha256": "F956235D7129FAD33C65A2F99F5B6D30E3A0B5681B859C05D0E87A17E3592827",
+      "source_commit": "3712a170969998e32b56d33e3d59c7b21a04f19d",
+      "classification": "SOURCE_OR_SYNTHETIC_TEST",
+      "hash_basis": "git show 3712a170969998e32b56d33e3d59c7b21a04f19d:backend/src/covenia_b/storage/schema.py raw blob bytes"
+    },
+    {
+      "path": "backend/src/covenia_b/storage/sqlite.py",
+      "sha256": "8719E0DB9C296F99E7C69AF540CD50E8BF7CFEBEB14D76BEB6FFB454CE5222B0",
+      "source_commit": "3712a170969998e32b56d33e3d59c7b21a04f19d",
+      "classification": "SOURCE_OR_SYNTHETIC_TEST",
+      "hash_basis": "git show 3712a170969998e32b56d33e3d59c7b21a04f19d:backend/src/covenia_b/storage/sqlite.py raw blob bytes"
+    },
+    {
+      "path": "backend/tests/storage/__init__.py",
+      "sha256": "72254A0BE0A612E0A0099FC098446CA5331D2B62DAB81B3094F4AC7B853C431C",
+      "source_commit": "3712a170969998e32b56d33e3d59c7b21a04f19d",
+      "classification": "SOURCE_OR_SYNTHETIC_TEST",
+      "hash_basis": "git show 3712a170969998e32b56d33e3d59c7b21a04f19d:backend/tests/storage/__init__.py raw blob bytes"
+    },
+    {
+      "path": "backend/tests/storage/process_worker.py",
+      "sha256": "6560B9548816E204077562BA36E59D0286494BA3C567543A0FF6210A00D88FA8",
+      "source_commit": "3712a170969998e32b56d33e3d59c7b21a04f19d",
+      "classification": "SOURCE_OR_SYNTHETIC_TEST",
+      "hash_basis": "git show 3712a170969998e32b56d33e3d59c7b21a04f19d:backend/tests/storage/process_worker.py raw blob bytes"
+    },
+    {
+      "path": "backend/tests/storage/support.py",
+      "sha256": "793BD6A6145AC045F55B55B45FCD367D16C9252D26CF7812B95B29B11926C2EE",
+      "source_commit": "3712a170969998e32b56d33e3d59c7b21a04f19d",
+      "classification": "SOURCE_OR_SYNTHETIC_TEST",
+      "hash_basis": "git show 3712a170969998e32b56d33e3d59c7b21a04f19d:backend/tests/storage/support.py raw blob bytes"
+    },
+    {
+      "path": "backend/tests/storage/test_admin.py",
+      "sha256": "4B2D28E62D43DA55288E66B87B9228B0B87C887CFFA783F2B07E69D3E0BF1B45",
+      "source_commit": "3712a170969998e32b56d33e3d59c7b21a04f19d",
+      "classification": "SOURCE_OR_SYNTHETIC_TEST",
+      "hash_basis": "git show 3712a170969998e32b56d33e3d59c7b21a04f19d:backend/tests/storage/test_admin.py raw blob bytes"
+    },
+    {
+      "path": "backend/tests/storage/test_transactions.py",
+      "sha256": "958E1643551F4C03414A1F3D060E90E33163F64765156B605D2A80D3CD53A858",
+      "source_commit": "3712a170969998e32b56d33e3d59c7b21a04f19d",
+      "classification": "SOURCE_OR_SYNTHETIC_TEST",
+      "hash_basis": "git show 3712a170969998e32b56d33e3d59c7b21a04f19d:backend/tests/storage/test_transactions.py raw blob bytes"
+    },
+    {
+      "path": "reports/batches/BATCH-18/collect-cached-wheels.py",
+      "sha256": "A86AEA916E15566F60CED5E907783CEB5782B6285E40DD4F9E3C8E286BC8F23D",
+      "byte_length": 3152,
+      "source_git_tree": "9f6964e0ce9219d26ca26aef421885e61ae534de",
+      "classification": "REDACTED_IMPLEMENTATION_EVIDENCE",
+      "hash_basis": "git show 9f6964e0ce9219d26ca26aef421885e61ae534de:reports/batches/BATCH-18/collect-cached-wheels.py raw blob bytes"
+    },
+    {
+      "path": "reports/batches/BATCH-18/collect-evidence.ps1",
+      "sha256": "4B4BE8568E0ACEEC7A7CF081346910A5F974B69959404DD31D31F3A728CF0759",
+      "byte_length": 8941,
+      "source_git_tree": "9f6964e0ce9219d26ca26aef421885e61ae534de",
+      "classification": "REDACTED_IMPLEMENTATION_EVIDENCE",
+      "hash_basis": "git show 9f6964e0ce9219d26ca26aef421885e61ae534de:reports/batches/BATCH-18/collect-evidence.ps1 raw blob bytes"
+    },
+    {
+      "path": "reports/batches/BATCH-18/command-output/freeze-after.json",
+      "sha256": "C17B1992367E57224123EF1EEF7766C2A597523EFC6300F6B804B0BA2C54C6A1",
+      "byte_length": 1470,
+      "source_git_tree": "9f6964e0ce9219d26ca26aef421885e61ae534de",
+      "classification": "REDACTED_IMPLEMENTATION_EVIDENCE",
+      "hash_basis": "git show 9f6964e0ce9219d26ca26aef421885e61ae534de:reports/batches/BATCH-18/command-output/freeze-after.json raw blob bytes"
+    },
+    {
+      "path": "reports/batches/BATCH-18/command-output/freeze-before.json",
+      "sha256": "32447263D25BB0FA0E8DA3CA285E236E31B93FEFD1B3594EE95807D6D7CB6BE0",
+      "byte_length": 1300,
+      "source_git_tree": "9f6964e0ce9219d26ca26aef421885e61ae534de",
+      "classification": "REDACTED_IMPLEMENTATION_EVIDENCE",
+      "hash_basis": "git show 9f6964e0ce9219d26ca26aef421885e61ae534de:reports/batches/BATCH-18/command-output/freeze-before.json raw blob bytes"
+    },
+    {
+      "path": "reports/batches/BATCH-18/command-output/required-01-interpreter.json",
+      "sha256": "A9477F19B69889A44600948FF1A0196A1F5E066199703D13633545777AEC7987",
+      "byte_length": 1383,
+      "source_git_tree": "9f6964e0ce9219d26ca26aef421885e61ae534de",
+      "classification": "REDACTED_IMPLEMENTATION_EVIDENCE",
+      "hash_basis": "git show 9f6964e0ce9219d26ca26aef421885e61ae534de:reports/batches/BATCH-18/command-output/required-01-interpreter.json raw blob bytes"
+    },
+    {
+      "path": "reports/batches/BATCH-18/command-output/required-02-install-lock-offline.json",
+      "sha256": "2B77711DE6340C89A6CD07CA430CEF58F1DE905288FE40DECEE1670ABEFC349A",
+      "byte_length": 7083,
+      "source_git_tree": "9f6964e0ce9219d26ca26aef421885e61ae534de",
+      "classification": "REDACTED_IMPLEMENTATION_EVIDENCE",
+      "hash_basis": "git show 9f6964e0ce9219d26ca26aef421885e61ae534de:reports/batches/BATCH-18/command-output/required-02-install-lock-offline.json raw blob bytes"
+    },
+    {
+      "path": "reports/batches/BATCH-18/command-output/required-02-install-lock-retry.json",
+      "sha256": "1942BBD7CCBCE4B05F5D4B9A98DBDF17B8C247937F80B712CFB90BD724AC41D0",
+      "byte_length": 1068,
+      "source_git_tree": "9f6964e0ce9219d26ca26aef421885e61ae534de",
+      "classification": "REDACTED_IMPLEMENTATION_EVIDENCE",
+      "hash_basis": "git show 9f6964e0ce9219d26ca26aef421885e61ae534de:reports/batches/BATCH-18/command-output/required-02-install-lock-retry.json raw blob bytes"
+    },
+    {
+      "path": "reports/batches/BATCH-18/command-output/required-02-install-lock.json",
+      "sha256": "E32CAB696C41202F64E3FFEBBE3D75B4A124BEEE903FBBCDA7CF53A8042FC371",
+      "byte_length": 801,
+      "source_git_tree": "9f6964e0ce9219d26ca26aef421885e61ae534de",
+      "classification": "REDACTED_IMPLEMENTATION_EVIDENCE",
+      "hash_basis": "git show 9f6964e0ce9219d26ca26aef421885e61ae534de:reports/batches/BATCH-18/command-output/required-02-install-lock.json raw blob bytes"
+    },
+    {
+      "path": "reports/batches/BATCH-18/command-output/required-03-editable-backend.json",
+      "sha256": "FB508715B86294556B50AA59BE150A1C9E21667E9032AFE27B72223BAE3FDC68",
+      "byte_length": 1948,
+      "source_git_tree": "9f6964e0ce9219d26ca26aef421885e61ae534de",
+      "classification": "REDACTED_IMPLEMENTATION_EVIDENCE",
+      "hash_basis": "git show 9f6964e0ce9219d26ca26aef421885e61ae534de:reports/batches/BATCH-18/command-output/required-03-editable-backend.json raw blob bytes"
+    },
+    {
+      "path": "reports/batches/BATCH-18/command-output/required-04-import-preflight.json",
+      "sha256": "0EEFBFA88857B417B64259F0A7AFCDCAD97FB33747018985FCA15ACE18A9AC31",
+      "byte_length": 817,
+      "source_git_tree": "9f6964e0ce9219d26ca26aef421885e61ae534de",
+      "classification": "REDACTED_IMPLEMENTATION_EVIDENCE",
+      "hash_basis": "git show 9f6964e0ce9219d26ca26aef421885e61ae534de:reports/batches/BATCH-18/command-output/required-04-import-preflight.json raw blob bytes"
+    },
+    {
+      "path": "reports/batches/BATCH-18/command-output/required-05-storage-pytest-final.json",
+      "sha256": "1D7A68611D7DDD6054685CEDB58C3082BB906A7E8CFDF7AF6A0B0816EA8D8083",
+      "byte_length": 1335,
+      "source_git_tree": "9f6964e0ce9219d26ca26aef421885e61ae534de",
+      "classification": "REDACTED_IMPLEMENTATION_EVIDENCE",
+      "hash_basis": "git show 9f6964e0ce9219d26ca26aef421885e61ae534de:reports/batches/BATCH-18/command-output/required-05-storage-pytest-final.json raw blob bytes"
+    },
+    {
+      "path": "reports/batches/BATCH-18/command-output/required-05-storage-pytest-initial.json",
+      "sha256": "7C15B82C84A5F39D399C58493EE703FC1DA945D134C63969111FBC129AA16AFC",
+      "byte_length": 1345,
+      "source_git_tree": "9f6964e0ce9219d26ca26aef421885e61ae534de",
+      "classification": "REDACTED_IMPLEMENTATION_EVIDENCE",
+      "hash_basis": "git show 9f6964e0ce9219d26ca26aef421885e61ae534de:reports/batches/BATCH-18/command-output/required-05-storage-pytest-initial.json raw blob bytes"
+    },
+    {
+      "path": "reports/batches/BATCH-18/command-output/required-06-pip-list.json",
+      "sha256": "6F2D5BE026684DCD5914F115DD13834737A8D9C5737C5E7DE30F99D8BC884142",
+      "byte_length": 2478,
+      "source_git_tree": "9f6964e0ce9219d26ca26aef421885e61ae534de",
+      "classification": "REDACTED_IMPLEMENTATION_EVIDENCE",
+      "hash_basis": "git show 9f6964e0ce9219d26ca26aef421885e61ae534de:reports/batches/BATCH-18/command-output/required-06-pip-list.json raw blob bytes"
+    },
+    {
+      "path": "reports/batches/BATCH-18/command-output/required-07-pip-check.json",
+      "sha256": "C0DC691C2DF72BDF20BD1C137755026220DD13E594A3441AC7CAB6504E9D25F1",
+      "byte_length": 702,
+      "source_git_tree": "9f6964e0ce9219d26ca26aef421885e61ae534de",
+      "classification": "REDACTED_IMPLEMENTATION_EVIDENCE",
+      "hash_basis": "git show 9f6964e0ce9219d26ca26aef421885e61ae534de:reports/batches/BATCH-18/command-output/required-07-pip-check.json raw blob bytes"
+    },
+    {
+      "path": "reports/batches/BATCH-18/command-output/required-08-git-diff-check.json",
+      "sha256": "AF3A4CC412A0F71CF13ABFD0F3AC70A5157B7034727BC27B638C2F5789EC0FC9",
+      "byte_length": 485,
+      "source_git_tree": "9f6964e0ce9219d26ca26aef421885e61ae534de",
+      "classification": "REDACTED_IMPLEMENTATION_EVIDENCE",
+      "hash_basis": "git show 9f6964e0ce9219d26ca26aef421885e61ae534de:reports/batches/BATCH-18/command-output/required-08-git-diff-check.json raw blob bytes"
+    },
+    {
+      "path": "reports/batches/BATCH-18/command-output/required-09-git-status.json",
+      "sha256": "370D6E252C90F68AECB7C841741C50FA81ACBBD8B261E6B915962FCB1F73EE3F",
+      "byte_length": 1025,
+      "source_git_tree": "9f6964e0ce9219d26ca26aef421885e61ae534de",
+      "classification": "REDACTED_IMPLEMENTATION_EVIDENCE",
+      "hash_basis": "git show 9f6964e0ce9219d26ca26aef421885e61ae534de:reports/batches/BATCH-18/command-output/required-09-git-status.json raw blob bytes"
+    },
+    {
+      "path": "reports/batches/BATCH-18/command-output/supplemental-cached-wheel-inventory.json",
+      "sha256": "C27E71FD8280C1299472E1872A355A695C385F528CF06C3D180E831AAC9B4E41",
+      "byte_length": 8215,
+      "source_git_tree": "9f6964e0ce9219d26ca26aef421885e61ae534de",
+      "classification": "REDACTED_IMPLEMENTATION_EVIDENCE",
+      "hash_basis": "git show 9f6964e0ce9219d26ca26aef421885e61ae534de:reports/batches/BATCH-18/command-output/supplemental-cached-wheel-inventory.json raw blob bytes"
+    },
+    {
+      "path": "reports/batches/BATCH-18/command-output/supplemental-environment-preflight.json",
+      "sha256": "29D86D62479ABBE840ED4F55DBD29A6A804594BF5300B8EA9348D0B14C161053",
+      "byte_length": 3341,
+      "source_git_tree": "9f6964e0ce9219d26ca26aef421885e61ae534de",
+      "classification": "REDACTED_IMPLEMENTATION_EVIDENCE",
+      "hash_basis": "git show 9f6964e0ce9219d26ca26aef421885e61ae534de:reports/batches/BATCH-18/command-output/supplemental-environment-preflight.json raw blob bytes"
+    },
+    {
+      "path": "reports/batches/BATCH-18/command-output/supplemental-ruff-delivery-approved.json",
+      "sha256": "3558CD979822A1DEBFB9001AEDEDF7921591014841F51396D771AD3B4D0EEBFC",
+      "byte_length": 838,
+      "source_git_tree": "9f6964e0ce9219d26ca26aef421885e61ae534de",
+      "classification": "REDACTED_IMPLEMENTATION_EVIDENCE",
+      "hash_basis": "git show 9f6964e0ce9219d26ca26aef421885e61ae534de:reports/batches/BATCH-18/command-output/supplemental-ruff-delivery-approved.json raw blob bytes"
+    },
+    {
+      "path": "reports/batches/BATCH-18/command-output/supplemental-ruff-delivery.json",
+      "sha256": "7D1DF7829DBB4A075D77866572E328DDD089DD8FCA86072A1B6BD8338AB387DD",
+      "byte_length": 811,
+      "source_git_tree": "9f6964e0ce9219d26ca26aef421885e61ae534de",
+      "classification": "REDACTED_IMPLEMENTATION_EVIDENCE",
+      "hash_basis": "git show 9f6964e0ce9219d26ca26aef421885e61ae534de:reports/batches/BATCH-18/command-output/supplemental-ruff-delivery.json raw blob bytes"
+    },
+    {
+      "path": "reports/batches/BATCH-18/command-output/supplemental-ruff-final.json",
+      "sha256": "B7A7958FFFD14043E4DF4B83DBD002DB051E6A646BD90A8E25699DE12E7C1651",
+      "byte_length": 816,
+      "source_git_tree": "9f6964e0ce9219d26ca26aef421885e61ae534de",
+      "classification": "REDACTED_IMPLEMENTATION_EVIDENCE",
+      "hash_basis": "git show 9f6964e0ce9219d26ca26aef421885e61ae534de:reports/batches/BATCH-18/command-output/supplemental-ruff-final.json raw blob bytes"
+    },
+    {
+      "path": "reports/batches/BATCH-18/command-output/supplemental-ruff-initial.json",
+      "sha256": "6235EC58B18EFFD360CA780EA1A063455FD98317B2E1CB2EC7C496906B905367",
+      "byte_length": 4736,
+      "source_git_tree": "9f6964e0ce9219d26ca26aef421885e61ae534de",
+      "classification": "REDACTED_IMPLEMENTATION_EVIDENCE",
+      "hash_basis": "git show 9f6964e0ce9219d26ca26aef421885e61ae534de:reports/batches/BATCH-18/command-output/supplemental-ruff-initial.json raw blob bytes"
+    },
+    {
+      "path": "reports/batches/BATCH-18/commands.json",
+      "sha256": "ACCC9BCADA58C36092B2984709780429F10538AA2E3EBDAF26817A0143097EDF",
+      "byte_length": 50192,
+      "source_git_tree": "9f6964e0ce9219d26ca26aef421885e61ae534de",
+      "classification": "REDACTED_IMPLEMENTATION_EVIDENCE",
+      "hash_basis": "git show 9f6964e0ce9219d26ca26aef421885e61ae534de:reports/batches/BATCH-18/commands.json raw blob bytes"
+    },
+    {
+      "path": "reports/batches/BATCH-18/environment.json",
+      "sha256": "9446F189A720E22FDCE14775AA0C79D7286F1D3A41AF00FB2565620F3629ABF6",
+      "byte_length": 33893,
+      "source_git_tree": "9f6964e0ce9219d26ca26aef421885e61ae534de",
+      "classification": "REDACTED_IMPLEMENTATION_EVIDENCE",
+      "hash_basis": "git show 9f6964e0ce9219d26ca26aef421885e61ae534de:reports/batches/BATCH-18/environment.json raw blob bytes"
+    },
+    {
+      "path": "reports/batches/BATCH-18/pip-check.txt",
+      "sha256": "C09EA01055FAF9FCD6562A86C80567D2113FB83AA7AAED0493B953474CEA503C",
+      "byte_length": 600,
+      "source_git_tree": "9f6964e0ce9219d26ca26aef421885e61ae534de",
+      "classification": "REDACTED_IMPLEMENTATION_EVIDENCE",
+      "hash_basis": "git show 9f6964e0ce9219d26ca26aef421885e61ae534de:reports/batches/BATCH-18/pip-check.txt raw blob bytes"
+    },
+    {
+      "path": "reports/batches/BATCH-18/record-command.ps1",
+      "sha256": "3E0C3D6016D0467F27C5C8570553D09847B4F6301C749BB4B5194321F5193F8D",
+      "byte_length": 1437,
+      "source_git_tree": "9f6964e0ce9219d26ca26aef421885e61ae534de",
+      "classification": "REDACTED_IMPLEMENTATION_EVIDENCE",
+      "hash_basis": "git show 9f6964e0ce9219d26ca26aef421885e61ae534de:reports/batches/BATCH-18/record-command.ps1 raw blob bytes"
+    },
+    {
+      "path": "reports/batches/BATCH-18/resume-evidence.json",
+      "sha256": "B6DF7F479AA4CB550BF511830B6F3E6121561832A71DA413708CB9BD20BCA5BD",
+      "byte_length": 4194,
+      "source_git_tree": "9f6964e0ce9219d26ca26aef421885e61ae534de",
+      "classification": "REDACTED_IMPLEMENTATION_EVIDENCE",
+      "hash_basis": "git show 9f6964e0ce9219d26ca26aef421885e61ae534de:reports/batches/BATCH-18/resume-evidence.json raw blob bytes"
+    },
+    {
+      "path": "reports/batches/BATCH-18/storage-layout.md",
+      "sha256": "AF5543C45C222161E0EC4FFBADD2FF66E61885A014F959B5336E6990D3FA150B",
+      "byte_length": 6690,
+      "source_git_tree": "9f6964e0ce9219d26ca26aef421885e61ae534de",
+      "classification": "REDACTED_IMPLEMENTATION_EVIDENCE",
+      "hash_basis": "git show 9f6964e0ce9219d26ca26aef421885e61ae534de:reports/batches/BATCH-18/storage-layout.md raw blob bytes"
+    },
+    {
+      "path": "reports/batches/BATCH-18/storage-pytest-final.xml",
+      "sha256": "A4F509ECAF9F1DE1EEABC028F0F89B77E5831C29CABA6ADD88F64B8EF15FE681",
+      "byte_length": 5350,
+      "source_git_tree": "9f6964e0ce9219d26ca26aef421885e61ae534de",
+      "classification": "REDACTED_IMPLEMENTATION_EVIDENCE",
+      "hash_basis": "git show 9f6964e0ce9219d26ca26aef421885e61ae534de:reports/batches/BATCH-18/storage-pytest-final.xml raw blob bytes"
+    },
+    {
+      "path": "reports/batches/BATCH-18/storage-pytest-initial.xml",
+      "sha256": "302FD68A3319A2711E20B95CB5F0CA4F22E25177FDD00F5A83FE421DB96E96AF",
+      "byte_length": 5073,
+      "source_git_tree": "9f6964e0ce9219d26ca26aef421885e61ae534de",
+      "classification": "REDACTED_IMPLEMENTATION_EVIDENCE",
+      "hash_basis": "git show 9f6964e0ce9219d26ca26aef421885e61ae534de:reports/batches/BATCH-18/storage-pytest-initial.xml raw blob bytes"
+    },
+    {
+      "path": "reports/batches/BATCH-18/transaction-replay-evidence.json",
+      "sha256": "AA02A9AA1FFAD72719CA241F1FE6108286972C2473F5D58D4FAFDC84E0120163",
+      "byte_length": 12987,
+      "source_git_tree": "9f6964e0ce9219d26ca26aef421885e61ae534de",
+      "classification": "REDACTED_IMPLEMENTATION_EVIDENCE",
+      "hash_basis": "git show 9f6964e0ce9219d26ca26aef421885e61ae534de:reports/batches/BATCH-18/transaction-replay-evidence.json raw blob bytes"
+    },
+    {
+      "path": "reports/batches/BATCH-04/IMPLEMENTATION_REPORT.json",
+      "sha256": "9A5D5B2E20864A715F6ACB33AF7DE13759F7056355B728E82C15C69F8F222391",
+      "source_commit": "f507e37d94c0532f377a9475de2129c52f75d584",
+      "classification": "READ_ONLY_DEPENDENCY",
+      "hash_basis": "git show f507e37d94c0532f377a9475de2129c52f75d584:reports/batches/BATCH-04/IMPLEMENTATION_REPORT.json raw blob bytes"
+    },
+    {
+      "path": "reports/batches/BATCH-04/VERIFICATION_REPORT.json",
+      "sha256": "A237005052FD141ADB97DACADBAFEADCBCC794D8C0326F42E56EB3FEB551256B",
+      "source_commit": "f507e37d94c0532f377a9475de2129c52f75d584",
+      "classification": "READ_ONLY_DEPENDENCY",
+      "hash_basis": "git show f507e37d94c0532f377a9475de2129c52f75d584:reports/batches/BATCH-04/VERIFICATION_REPORT.json raw blob bytes"
+    },
+    {
+      "path": "docs/contracts/b-contract-lock.json",
+      "sha256": "A605DF1E063B69ABF3E6DF43ACF4C5A07B69CA0925E2ADB116F296E12527FE3A",
+      "source_commit": "f507e37d94c0532f377a9475de2129c52f75d584",
+      "classification": "READ_ONLY_DEPENDENCY",
+      "hash_basis": "git show f507e37d94c0532f377a9475de2129c52f75d584:docs/contracts/b-contract-lock.json raw blob bytes"
+    },
+    {
+      "path": "schemas/accountability-state.schema.json",
+      "sha256": "631431A2722DE649DA47DC0850A58CDED018B7FEACDBF9DFE0D34C9580B097EA",
+      "source_commit": "f507e37d94c0532f377a9475de2129c52f75d584",
+      "classification": "READ_ONLY_DEPENDENCY",
+      "hash_basis": "git show f507e37d94c0532f377a9475de2129c52f75d584:schemas/accountability-state.schema.json raw blob bytes"
+    },
+    {
+      "path": "docs/approvals/b-decisions.json",
+      "sha256": "3ACAD4A113EB595BCED29025AF884A4C5EA2835E90E38D0E897298F91DB371DA",
+      "source_commit": "f507e37d94c0532f377a9475de2129c52f75d584",
+      "classification": "READ_ONLY_DEPENDENCY",
+      "hash_basis": "git show f507e37d94c0532f377a9475de2129c52f75d584:docs/approvals/b-decisions.json raw blob bytes"
+    },
+    {
+      "path": "MASTER_PLAN.md",
+      "sha256": "DBE269F06F4BBE3D8C1F915DD8E4A2D78E0E4F021ABB396270C8B846D5FFA74E",
+      "source_commit": "3712a170969998e32b56d33e3d59c7b21a04f19d",
+      "classification": "READ_ONLY_PLAN",
+      "hash_basis": "git show 3712a170969998e32b56d33e3d59c7b21a04f19d:MASTER_PLAN.md raw blob bytes"
+    },
+    {
+      "path": "batches.json",
+      "sha256": "18DA555CE5ADEA5062F680837AEC8214158F58CBC1A918CF6BBC31EF48448E2E",
+      "source_commit": "3712a170969998e32b56d33e3d59c7b21a04f19d",
+      "classification": "READ_ONLY_PLAN",
+      "hash_basis": "git show 3712a170969998e32b56d33e3d59c7b21a04f19d:batches.json raw blob bytes"
+    }
+  ],
+  "model_runs": [],
+  "not_completed": [],
+  "risks": [
+    {
+      "id": "R18-CASE-SCOPE",
+      "description": "Old BATCH-03 docs/semantic-lock describe endpoint-scoped request keys, while the current plan/package and explicit user task authorize case scope. This implementation follows the current explicit authorization and includes operation in the digest.",
+      "mitigation": "Consumers use different keys across operations. Shared docs remain owner-controlled. The independent verifier must use the supplied current BATCH-18 package."
+    },
+    {
+      "id": "R18-NULL-DTO",
+      "description": "The f507e37 schema accepts terminal next_update_by=null while the frozen shared DTO remains non-nullable.",
+      "mitigation": "Storage-local schema-compatible subclasses preserve terminal null on snapshot/complete response round trips. Terminal-producing services must use schema-compatible construction until the domain owner aligns its DTO."
+    },
+    {
+      "id": "R18-CALLBACK",
+      "description": "Storage serializes writes and ordering, but service callbacks own approval legality, rules and logistics transitions.",
+      "mitigation": "Validate effective requests and response payloads and revalidate current facts inside the callback; callbacks must avoid external side effects."
+    },
+    {
+      "id": "R18-MAINTENANCE",
+      "description": "Restore rewinds local history to a backup, so active application writers must be stopped for maintenance.",
+      "mitigation": "Existing targets require an explicit new before-restore backup path; restore is one transaction and never deletes/replaces DB/WAL files."
+    },
+    {
+      "id": "R18-PERMISSION",
+      "description": "Normal-sandbox ruff DLL startup failed (-1073741502) and Git cannot inspect six residual pip directories.",
+      "mitigation": "Same ruff command succeeded after regular require_escalated approval. Permission warnings and all directories are preserved; no ACL/global-temp cleanup and no whole-worktree clean claim."
+    },
+    {
+      "id": "R18-GATE",
+      "description": "Implementation evidence is not independent acceptance or an integration receipt.",
+      "mitigation": "Hand off both commits to an independent verifier; this task does not start dependent work."
+    }
+  ],
+  "rollback": {
+    "code": "Revert only 3712a170969998e32b56d33e3d59c7b21a04f19d in a separately authorized context; revert the report-only delivery commit separately if needed. Preserve unrelated work and the accepted f507e37 schema baseline.",
+    "runtime_state": "No production DB was touched. Test DBs remain in run/b18/t1 and t2. Real runtime DBs require storage.admin backup before any migration/recovery; use explicit absolute DB/backup paths and a fresh --before-restore path for existing restore targets. Do not delete DBs to resolve conflicts."
+  },
+  "handoff": {
+    "interfaces": [
+      "SQLiteLedgerRepository.load/save (frozen LedgerRepository port)",
+      "SQLiteLedgerRepository.execute (case-scoped atomic callback transaction)",
+      "load_version/audit_history/event_history local methods",
+      "storage.admin backup/restore local CLI"
+    ],
+    "input_versions": {
+      "base_integration_sha": "f507e37d94c0532f377a9475de2129c52f75d584",
+      "implementation_commit": "3712a170969998e32b56d33e3d59c7b21a04f19d",
+      "original_worktree_baseline": "bfc1f911c8dad8be0daf9b3bbb4e3bf2b4c0ae23",
+      "current_integration_head_observed": "cc82915b260ac108137ada27ffda56d1b4b1bc3d",
+      "plan_sha256": [
+        {
+          "path": "MASTER_PLAN.md",
+          "commit": "3712a170969998e32b56d33e3d59c7b21a04f19d",
+          "byte_length": 317001,
+          "sha256": "DBE269F06F4BBE3D8C1F915DD8E4A2D78E0E4F021ABB396270C8B846D5FFA74E",
+          "basis": "git show 3712a170969998e32b56d33e3d59c7b21a04f19d:MASTER_PLAN.md raw blob bytes"
+        },
+        {
+          "path": "batches.json",
+          "commit": "3712a170969998e32b56d33e3d59c7b21a04f19d",
+          "byte_length": 282066,
+          "sha256": "18DA555CE5ADEA5062F680837AEC8214158F58CBC1A918CF6BBC31EF48448E2E",
+          "basis": "git show 3712a170969998e32b56d33e3d59c7b21a04f19d:batches.json raw blob bytes"
+        }
+      ],
+      "requirements_dev_lock_sha256": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+      "storage_schema_version": 1,
+      "snapshot_format_version": 1,
+      "application_id": "0x434F5642"
+    },
+    "reproduction": [
+      "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18/venv/Scripts/python.exe\"",
+      "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18/venv/Scripts/python.exe\" -m pytest backend/tests/storage -q",
+      "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18/venv/Scripts/python.exe\" -m pip list --format=json",
+      "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18/venv/Scripts/python.exe\" -m pip check",
+      "git diff --check",
+      "git status --short"
+    ],
+    "reproduction_note": "Use a fresh independent verifier RUN_DIR/venv and keep the same short path/depth limits. Retained commands include approved offline wheelhouse installation flags and batch-exclusive pytest basetemp/JUnit paths.",
+    "remaining_gates": [
+      "Independent BATCH-18 verification verdict and verifier-owned report",
+      "Coordinator integration receipt and integration smoke"
+    ],
+    "report_commit_resolution": "Read the report-only commit immediately after the code commit from final Git handoff; its own SHA is not self-embedded in this report.",
+    "evidence_hash_note": "Evidence SHA-256 values are from immutable raw Git blobs at the staged evidence tree; the final delivery commit must contain identical blobs. The two IMPLEMENTATION_REPORT files are excluded from their own manifest to avoid a self-reference cycle."
+  },
+  "next_batch_started": false,
+  "resume_history": {
+    "task_id": "01a0edf3-141c-7e10-8282-3a579f487efc",
+    "known_manual_resumes": [
+      {
+        "date": "2026-10-01",
+        "source": "User/product-owner manual authorization in this original task",
+        "at": null,
+        "baseline_reported": "f507e37d94c0532f377a9475de2129c52f75d584"
+      },
+      {
+        "date": "2026-10-02",
+        "source": "User manual continuation in this original task; save implementation then complete report",
+        "at": null,
+        "first_observed_check_at": "2026-10-02T00:18:42.4432262+08:00",
+        "head_at_check": "f507e37d94c0532f377a9475de2129c52f75d584",
+        "integration_head_at_check": "cc82915b260ac108137ada27ffda56d1b4b1bc3d",
+        "initial_dirty": [
+          "?? backend/src/covenia_b/storage/",
+          "?? backend/tests/storage/",
+          "?? reports/batches/BATCH-18/"
+        ],
+        "retained_functional_test": {
+          "path": "reports/batches/BATCH-18/command-output/required-05-storage-pytest-final.json",
+          "started_at": "2026-10-01T23:12:13.3148469+08:00",
+          "exit_code": 0,
+          "passed": 38,
+          "rerun_on_oct2": false
+        }
+      }
+    ],
+    "known_manual_resume_count": 2,
+    "cumulative_count_reset": false,
+    "prior_automated_resumes_unknown": null,
+    "automatic_resumes_performed": 0,
+    "actual_quota_restoration_at": null,
+    "platform_retry_time_reported": "2026-10-02T03:29:00+08:00",
+    "platform_error_raw": "Automatic approval review failed: You’ve hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Oct 2nd, 2026 3:29 AM.\nThe action was not executed because automatic approval review could not be completed. This is a review failure, not a determination that the action is unsafe. Do not bypass the approval check; resolve the error or ask the user for guidance.",
+    "normal_sandbox_error": {
+      "exit_code": -1073741502,
+      "evidence": "reports/batches/BATCH-18/command-output/supplemental-ruff-delivery.json",
+      "recovery": "Same absolute command approved via require_escalated; exit 0 in supplemental-ruff-delivery-approved.json"
+    },
+    "full_evidence": "reports/batches/BATCH-18/resume-evidence.json",
+    "original_functional_run_retained": true,
+    "sqlite_code_reimplemented_on_resume": false
+  }
+}

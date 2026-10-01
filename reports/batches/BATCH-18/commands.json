@@ -1,0 +1,519 @@
+{
+  "report_version": "1.0",
+  "batch_id": "BATCH-18",
+  "task_id": "01a0edf3-141c-7e10-8282-3a579f487efc",
+  "repo_root": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-18",
+  "code_commit": "3712a170969998e32b56d33e3d59c7b21a04f19d",
+  "generated_at": "2026-10-02T00:29:31.4905454+08:00",
+  "commands": [
+    {
+      "id": "required-01-interpreter",
+      "executable": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe",
+      "arguments": [
+        "-c",
+        "import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)",
+        "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe"
+      ],
+      "command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe\" \"-c\" \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe\"",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-18",
+      "started_at": "2026-10-01T22:50:38.810835+08:00",
+      "exit_code": 0,
+      "duration_seconds": 0.0739031,
+      "mode": "UNIT",
+      "output": "C:\\Users\\WONG Tsun Ming\\Desktop\\ŷ���źڿ���\\run\\b18\\venv\\Scripts\\python.exe\r\n3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]\r\n",
+      "output_path": "reports/batches/BATCH-18/command-output/required-01-interpreter.json"
+    },
+    {
+      "id": "required-02-install-lock",
+      "executable": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe",
+      "arguments": [
+        "-m",
+        "pip",
+        "install",
+        "--no-deps",
+        "-r",
+        "backend/requirements-dev.lock"
+      ],
+      "command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe\" \"-m\" \"pip\" \"install\" \"--no-deps\" \"-r\" \"backend/requirements-dev.lock\"",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-18",
+      "started_at": "2026-10-01T22:50:54.3334075+08:00",
+      "exit_code": -1,
+      "duration_seconds": 484.3741013,
+      "mode": "ENVIRONMENT",
+      "output": "",
+      "output_path": "reports/batches/BATCH-18/command-output/required-02-install-lock.json"
+    },
+    {
+      "id": "required-02-install-lock-retry",
+      "executable": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe",
+      "arguments": [
+        "-m",
+        "pip",
+        "install",
+        "--no-deps",
+        "--disable-pip-version-check",
+        "--retries",
+        "0",
+        "--timeout",
+        "15",
+        "--index-url",
+        "https://pypi.org/simple",
+        "-r",
+        "backend/requirements-dev.lock"
+      ],
+      "command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe\" \"-m\" \"pip\" \"install\" \"--no-deps\" \"--disable-pip-version-check\" \"--retries\" \"0\" \"--timeout\" \"15\" \"--index-url\" \"https://pypi.org/simple\" \"-r\" \"backend/requirements-dev.lock\"",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-18",
+      "started_at": "2026-10-01T22:59:24.8899335+08:00",
+      "exit_code": -1,
+      "duration_seconds": 267.3750127,
+      "mode": "ENVIRONMENT",
+      "output": "",
+      "output_path": "reports/batches/BATCH-18/command-output/required-02-install-lock-retry.json"
+    },
+    {
+      "id": "supplemental-cached-wheel-inventory",
+      "executable": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe",
+      "arguments": [
+        "reports/batches/BATCH-18/collect-cached-wheels.py",
+        "--cache",
+        "C:\\Users\\WONG Tsun Ming\\AppData\\Local\\pip\\Cache\\http-v2",
+        "--destination",
+        "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\wheels",
+        "--lock",
+        "backend/requirements-dev.lock"
+      ],
+      "command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe\" \"reports/batches/BATCH-18/collect-cached-wheels.py\" \"--cache\" \"C:\\Users\\WONG Tsun Ming\\AppData\\Local\\pip\\Cache\\http-v2\" \"--destination\" \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\wheels\" \"--lock\" \"backend/requirements-dev.lock\"",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-18",
+      "started_at": "2026-10-01T23:03:24.62265+08:00",
+      "exit_code": 0,
+      "duration_seconds": 4.8145231,
+      "mode": "ENVIRONMENT",
+      "output": "{\r\n  \"source\": \"existing local pip HTTP cache, compatible wheel archives only\",\r\n  \"missing_pins\": [],\r\n  \"wheels\": [\r\n    {\r\n      \"name\": \"annotated-types\",\r\n      \"version\": \"0.7.0\",\r\n      \"wheel\": \"annotated_types-0.7.0-py3-none-any.whl\",\r\n      \"sha256\": \"1f02e8b43a8fbbc3f3e0d4f0f4bfc8131bcb4eebe8849b8e5c773f3a1c582a53\"\r\n    },\r\n    {\r\n      \"name\": \"anyio\",\r\n      \"version\": \"4.8.0\",\r\n      \"wheel\": \"anyio-4.8.0-py3-none-any.whl\",\r\n      \"sha256\": \"b5011f270ab5eb0abf13385f851315585cc37ef330dd88e27ec3d34d651fd47a\"\r\n    },\r\n    {\r\n      \"name\": \"attrs\",\r\n      \"version\": \"26.1.0\",\r\n      \"wheel\": \"attrs-26.1.0-py3-none-any.whl\",\r\n      \"sha256\": \"c647aa4a12dfbad9333ca4e71fe62ddc36f4e63b2d260a37a8b83d2f043ac309\"\r\n    },\r\n    {\r\n      \"name\": \"build\",\r\n      \"version\": \"1.2.2.post1\",\r\n      \"wheel\": \"build-1.2.2.post1-py3-none-any.whl\",\r\n      \"sha256\": \"1d61c0887fa860c01971625baae8bdd338e517b836a2f70dd1f7aa3a6b2fc5b5\"\r\n    },\r\n    {\r\n      \"name\": \"click\",\r\n      \"version\": \"8.1.8\",\r\n      \"wheel\": \"click-8.1.8-py3-none-any.whl\",\r\n      \"sha256\": \"63c132bbbed01578a06712a2d1f497bb62d9c1c0d329b7903a866228027263b2\"\r\n    },\r\n    {\r\n      \"name\": \"colorama\",\r\n      \"version\": \"0.4.6\",\r\n      \"wheel\": \"colorama-0.4.6-py3-none-any.whl\",\r\n      \"sha256\": \"4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6\"\r\n    },\r\n    {\r\n      \"name\": \"fastapi\",\r\n      \"version\": \"0.115.6\",\r\n      \"wheel\": \"fastapi-0.115.6-py3-none-any.whl\",\r\n      \"sha256\": \"e9240b29e36fa8f4bb7290316988e90c381e5092e0cbe84e7818cc3713bcf305\"\r\n    },\r\n    {\r\n      \"name\": \"h11\",\r\n      \"version\": \"0.14.0\",\r\n      \"wheel\": \"h11-0.14.0-py3-none-any.whl\",\r\n      \"sha256\": \"e3fe4ac4b851c468cc8363d500db52c2ead036020723024a109d37346efaa761\"\r\n    },\r\n    {\r\n      \"name\": \"idna\",\r\n      \"version\": \"3.10\",\r\n      \"wheel\": \"idna-3.10-py3-none-any.whl\",\r\n      \"sha256\": \"946d195a0d259cbba61165e88e65941f16e9b36ea6ddb97f00452bae8b1287d3\"\r\n    },\r\n    {\r\n      \"name\": \"iniconfig\",\r\n      \"version\": \"2.0.0\",\r\n      \"wheel\": \"iniconfig-2.0.0-py3-none-any.whl\",\r\n      \"sha256\": \"b6a85871a79d2e3b22d2d1b94ac2824226a63c6b741c88f7ae975f18b6778374\"\r\n    },\r\n    {\r\n      \"name\": \"jsonschema\",\r\n      \"version\": \"4.25.0\",\r\n      \"wheel\": \"jsonschema-4.25.0-py3-none-any.whl\",\r\n      \"sha256\": \"24c2e8da302de79c8b9382fee3e76b355e44d2a4364bb207159ce10b517bd716\"\r\n    },\r\n    {\r\n      \"name\": \"jsonschema-specifications\",\r\n      \"version\": \"2025.9.1\",\r\n      \"wheel\": \"jsonschema_specifications-2025.9.1-py3-none-any.whl\",\r\n      \"sha256\": \"98802fee3a11ee76ecaca44429fda8a41bff98b00a0f2838151b113f210cc6fe\"\r\n    },\r\n    {\r\n      \"name\": \"packaging\",\r\n      \"version\": \"24.2\",\r\n      \"wheel\": \"packaging-24.2-py3-none-any.whl\",\r\n      \"sha256\": \"09abb1bccd265c01f4a3aa3f7a7db064b36514d2cba19a2f694fe6150451a759\"\r\n    },\r\n    {\r\n      \"name\": \"pluggy\",\r\n      \"version\": \"1.5.0\",\r\n      \"wheel\": \"pluggy-1.5.0-py3-none-any.whl\",\r\n      \"sha256\": \"44e1ad92c8ca002de6377e165f3e0f1be63266ab4d554740532335b9d75ea669\"\r\n    },\r\n    {\r\n      \"name\": \"pydantic\",\r\n      \"version\": \"2.10.5\",\r\n      \"wheel\": \"pydantic-2.10.5-py3-none-any.whl\",\r\n      \"sha256\": \"4dd4e322dbe55472cb7ca7e73f4b63574eecccf2835ffa2af9021ce113c83c53\"\r\n    },\r\n    {\r\n      \"name\": \"pydantic-core\",\r\n      \"version\": \"2.27.2\",\r\n      \"wheel\": \"pydantic_core-2.27.2-cp313-cp313-win_amd64.whl\",\r\n      \"sha256\": \"953101387ecf2f5652883208769a79e48db18c6df442568a0b5ccd8c2723abee\"\r\n    },\r\n    {\r\n      \"name\": \"pydantic-settings\",\r\n      \"version\": \"2.7.1\",\r\n      \"wheel\": \"pydantic_settings-2.7.1-py3-none-any.whl\",\r\n      \"sha256\": \"590be9e6e24d06db33a4262829edef682500ef008565a969c73d39d5f8bfb3fd\"\r\n    },\r\n    {\r\n      \"name\": \"pyproject-hooks\",\r\n      \"version\": \"1.2.0\",\r\n      \"wheel\": \"pyproject_hooks-1.2.0-py3-none-any.whl\",\r\n      \"sha256\": \"9e5c6bfa8dcc30091c74b0cf803c81fdd29d94f01992a7707bc97babb1141913\"\r\n    },\r\n    {\r\n      \"name\": \"pytest\",\r\n      \"version\": \"8.3.4\",\r\n      \"wheel\": \"pytest-8.3.4-py3-none-any.whl\",\r\n      \"sha256\": \"50e16d954148559c9a74109af1eaf0c945ba2d8f30f0a3d3335edde19788b6f6\"\r\n    },\r\n    {\r\n      \"name\": \"python-dotenv\",\r\n      \"version\": \"1.0.1\",\r\n      \"wheel\": \"python_dotenv-1.0.1-py3-none-any.whl\",\r\n      \"sha256\": \"f7b63ef50f1b690dddf550d03497b66d609393b40b564ed0d674909a68ebf16a\"\r\n    },\r\n    {\r\n      \"name\": \"referencing\",\r\n      \"version\": \"0.37.0\",\r\n      \"wheel\": \"referencing-0.37.0-py3-none-any.whl\",\r\n      \"sha256\": \"381329a9f99628c9069361716891d34ad94af76e461dcb0335825aecc7692231\"\r\n    },\r\n    {\r\n      \"name\": \"rpds-py\",\r\n      \"version\": \"2026.6.3\",\r\n      \"wheel\": \"rpds_py-2026.6.3-cp313-cp313-win_amd64.whl\",\r\n      \"sha256\": \"9250a9a0a6fd4648b3f868da8d91a4c52b5811a62df58e753d50ae4454a36f80\"\r\n    },\r\n    {\r\n      \"name\": \"ruff\",\r\n      \"version\": \"0.8.4\",\r\n      \"wheel\": \"ruff-0.8.4-py3-none-win_amd64.whl\",\r\n      \"sha256\": \"f21a1143776f8656d7f364bd264a9d60f01b7f52243fbe90e7670c0dfe0cf65d\"\r\n    },\r\n    {\r\n      \"name\": \"setuptools\",\r\n      \"version\": \"75.8.0\",\r\n      \"wheel\": \"setuptools-75.8.0-py3-none-any.whl\",\r\n      \"sha256\": \"e3982f444617239225d675215d51f6ba05f845d4eec313da4418fdbb56fb27e3\"\r\n    },\r\n    {\r\n      \"name\": \"sniffio\",\r\n      \"version\": \"1.3.1\",\r\n      \"wheel\": \"sniffio-1.3.1-py3-none-any.whl\",\r\n      \"sha256\": \"2f6da418d1f1e0fddd844478f41680e794e6051915791a034ff65e5f100525a2\"\r\n    },\r\n    {\r\n      \"name\": \"starlette\",\r\n      \"version\": \"0.41.3\",\r\n      \"wheel\": \"starlette-0.41.3-py3-none-any.whl\",\r\n      \"sha256\": \"44cedb2b7c77a9de33a8b74b2b90e9f50d11fcf25d8270ea525ad71a25374ff7\"\r\n    },\r\n    {\r\n      \"name\": \"typing-extensions\",\r\n      \"version\": \"4.12.2\",\r\n      \"wheel\": \"typing_extensions-4.12.2-py3-none-any.whl\",\r\n      \"sha256\": \"04e5ca0351e0f3f85c6853954072df659d0d13fac324d0072316b67d7794700d\"\r\n    },\r\n    {\r\n      \"name\": \"uvicorn\",\r\n      \"version\": \"0.34.0\",\r\n      \"wheel\": \"uvicorn-0.34.0-py3-none-any.whl\",\r\n      \"sha256\": \"023dc038422502fa28a09c7a30bf2b6991512da7dcdb8fd35fe57cfc154126f4\"\r\n    },\r\n    {\r\n      \"name\": \"wheel\",\r\n      \"version\": \"0.45.1\",\r\n      \"wheel\": \"wheel-0.45.1-py3-none-any.whl\",\r\n      \"sha256\": \"708e7481cc80179af0e556bbf0cc00b8444c7321e2700b8d8580231d13017248\"\r\n    }\r\n  ]\r\n}\r\n",
+      "output_path": "reports/batches/BATCH-18/command-output/supplemental-cached-wheel-inventory.json"
+    },
+    {
+      "id": "required-02-install-lock-offline",
+      "executable": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe",
+      "arguments": [
+        "-m",
+        "pip",
+        "install",
+        "--no-deps",
+        "--disable-pip-version-check",
+        "--no-index",
+        "--find-links",
+        "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\wheels",
+        "-r",
+        "backend/requirements-dev.lock"
+      ],
+      "command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe\" \"-m\" \"pip\" \"install\" \"--no-deps\" \"--disable-pip-version-check\" \"--no-index\" \"--find-links\" \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\wheels\" \"-r\" \"backend/requirements-dev.lock\"",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-18",
+      "started_at": "2026-10-01T23:03:52.3287761+08:00",
+      "exit_code": 0,
+      "duration_seconds": 11.6192944,
+      "mode": "ENVIRONMENT",
+      "output": "Looking in links: c:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\wheels\r\nProcessing c:\\users\\wong tsun ming\\desktop\\欧莱雅黑客松\\run\\b18\\wheels\\annotated_types-0.7.0-py3-none-any.whl (from -r backend/requirements-dev.lock (line 3))\r\nProcessing c:\\users\\wong tsun ming\\desktop\\欧莱雅黑客松\\run\\b18\\wheels\\anyio-4.8.0-py3-none-any.whl (from -r backend/requirements-dev.lock (line 4))\r\nProcessing c:\\users\\wong tsun ming\\desktop\\欧莱雅黑客松\\run\\b18\\wheels\\attrs-26.1.0-py3-none-any.whl (from -r backend/requirements-dev.lock (line 5))\r\nProcessing c:\\users\\wong tsun ming\\desktop\\欧莱雅黑客松\\run\\b18\\wheels\\build-1.2.2.post1-py3-none-any.whl (from -r backend/requirements-dev.lock (line 6))\r\nProcessing c:\\users\\wong tsun ming\\desktop\\欧莱雅黑客松\\run\\b18\\wheels\\click-8.1.8-py3-none-any.whl (from -r backend/requirements-dev.lock (line 7))\r\nProcessing c:\\users\\wong tsun ming\\desktop\\欧莱雅黑客松\\run\\b18\\wheels\\colorama-0.4.6-py3-none-any.whl (from -r backend/requirements-dev.lock (line 8))\r\nProcessing c:\\users\\wong tsun ming\\desktop\\欧莱雅黑客松\\run\\b18\\wheels\\fastapi-0.115.6-py3-none-any.whl (from -r backend/requirements-dev.lock (line 9))\r\nProcessing c:\\users\\wong tsun ming\\desktop\\欧莱雅黑客松\\run\\b18\\wheels\\h11-0.14.0-py3-none-any.whl (from -r backend/requirements-dev.lock (line 10))\r\nProcessing c:\\users\\wong tsun ming\\desktop\\欧莱雅黑客松\\run\\b18\\wheels\\idna-3.10-py3-none-any.whl (from -r backend/requirements-dev.lock (line 11))\r\nProcessing c:\\users\\wong tsun ming\\desktop\\欧莱雅黑客松\\run\\b18\\wheels\\iniconfig-2.0.0-py3-none-any.whl (from -r backend/requirements-dev.lock (line 12))\r\nProcessing c:\\users\\wong tsun ming\\desktop\\欧莱雅黑客松\\run\\b18\\wheels\\jsonschema-4.25.0-py3-none-any.whl (from -r backend/requirements-dev.lock (line 13))\r\nProcessing c:\\users\\wong tsun ming\\desktop\\欧莱雅黑客松\\run\\b18\\wheels\\jsonschema_specifications-2025.9.1-py3-none-any.whl (from -r backend/requirements-dev.lock (line 14))\r\nProcessing c:\\users\\wong tsun ming\\desktop\\欧莱雅黑客松\\run\\b18\\wheels\\packaging-24.2-py3-none-any.whl (from -r backend/requirements-dev.lock (line 15))\r\nProcessing c:\\users\\wong tsun ming\\desktop\\欧莱雅黑客松\\run\\b18\\wheels\\pluggy-1.5.0-py3-none-any.whl (from -r backend/requirements-dev.lock (line 16))\r\nProcessing c:\\users\\wong tsun ming\\desktop\\欧莱雅黑客松\\run\\b18\\wheels\\pydantic-2.10.5-py3-none-any.whl (from -r backend/requirements-dev.lock (line 17))\r\nProcessing c:\\users\\wong tsun ming\\desktop\\欧莱雅黑客松\\run\\b18\\wheels\\pydantic_core-2.27.2-cp313-cp313-win_amd64.whl (from -r backend/requirements-dev.lock (line 18))\r\nProcessing c:\\users\\wong tsun ming\\desktop\\欧莱雅黑客松\\run\\b18\\wheels\\pydantic_settings-2.7.1-py3-none-any.whl (from -r backend/requirements-dev.lock (line 19))\r\nProcessing c:\\users\\wong tsun ming\\desktop\\欧莱雅黑客松\\run\\b18\\wheels\\pyproject_hooks-1.2.0-py3-none-any.whl (from -r backend/requirements-dev.lock (line 20))\r\nProcessing c:\\users\\wong tsun ming\\desktop\\欧莱雅黑客松\\run\\b18\\wheels\\pytest-8.3.4-py3-none-any.whl (from -r backend/requirements-dev.lock (line 21))\r\nProcessing c:\\users\\wong tsun ming\\desktop\\欧莱雅黑客松\\run\\b18\\wheels\\python_dotenv-1.0.1-py3-none-any.whl (from -r backend/requirements-dev.lock (line 22))\r\nProcessing c:\\users\\wong tsun ming\\desktop\\欧莱雅黑客松\\run\\b18\\wheels\\referencing-0.37.0-py3-none-any.whl (from -r backend/requirements-dev.lock (line 23))\r\nProcessing c:\\users\\wong tsun ming\\desktop\\欧莱雅黑客松\\run\\b18\\wheels\\rpds_py-2026.6.3-cp313-cp313-win_amd64.whl (from -r backend/requirements-dev.lock (line 24))\r\nProcessing c:\\users\\wong tsun ming\\desktop\\欧莱雅黑客松\\run\\b18\\wheels\\ruff-0.8.4-py3-none-win_amd64.whl (from -r backend/requirements-dev.lock (line 25))\r\nProcessing c:\\users\\wong tsun ming\\desktop\\欧莱雅黑客松\\run\\b18\\wheels\\setuptools-75.8.0-py3-none-any.whl (from -r backend/requirements-dev.lock (line 26))\r\nProcessing c:\\users\\wong tsun ming\\desktop\\欧莱雅黑客松\\run\\b18\\wheels\\sniffio-1.3.1-py3-none-any.whl (from -r backend/requirements-dev.lock (line 27))\r\nProcessing c:\\users\\wong tsun ming\\desktop\\欧莱雅黑客松\\run\\b18\\wheels\\starlette-0.41.3-py3-none-any.whl (from -r backend/requirements-dev.lock (line 28))\r\nProcessing c:\\users\\wong tsun ming\\desktop\\欧莱雅黑客松\\run\\b18\\wheels\\typing_extensions-4.12.2-py3-none-any.whl (from -r backend/requirements-dev.lock (line 29))\r\nProcessing c:\\users\\wong tsun ming\\desktop\\欧莱雅黑客松\\run\\b18\\wheels\\uvicorn-0.34.0-py3-none-any.whl (from -r backend/requirements-dev.lock (line 30))\r\nProcessing c:\\users\\wong tsun ming\\desktop\\欧莱雅黑客松\\run\\b18\\wheels\\wheel-0.45.1-py3-none-any.whl (from -r backend/requirements-dev.lock (line 31))\r\nInstalling collected packages: wheel, uvicorn, typing-extensions, starlette, sniffio, setuptools, ruff, rpds-py, referencing, python-dotenv, pytest, pyproject-hooks, pydantic-settings, pydantic-core, pydantic, pluggy, packaging, jsonschema-specifications, jsonschema, iniconfig, idna, h11, fastapi, colorama, click, build, attrs, anyio, annotated-types\r\n\r\nSuccessfully installed annotated-types-0.7.0 anyio-4.8.0 attrs-26.1.0 build-1.2.2.post1 click-8.1.8 colorama-0.4.6 fastapi-0.115.6 h11-0.14.0 idna-3.10 iniconfig-2.0.0 jsonschema-4.25.0 jsonschema-specifications-2025.9.1 packaging-24.2 pluggy-1.5.0 pydantic-2.10.5 pydantic-core-2.27.2 pydantic-settings-2.7.1 pyproject-hooks-1.2.0 pytest-8.3.4 python-dotenv-1.0.1 referencing-0.37.0 rpds-py-2026.6.3 ruff-0.8.4 setuptools-75.8.0 sniffio-1.3.1 starlette-0.41.3 typing-extensions-4.12.2 uvicorn-0.34.0 wheel-0.45.1\r\n",
+      "output_path": "reports/batches/BATCH-18/command-output/required-02-install-lock-offline.json"
+    },
+    {
+      "id": "freeze-before",
+      "executable": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe",
+      "arguments": [
+        "-m",
+        "pip",
+        "freeze",
+        "--all"
+      ],
+      "command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe\" \"-m\" \"pip\" \"freeze\" \"--all\"",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-18",
+      "started_at": "2026-10-01T23:05:14.362097+08:00",
+      "exit_code": 0,
+      "duration_seconds": 0.5833599,
+      "mode": "ENVIRONMENT",
+      "output": "annotated-types==0.7.0\r\nanyio==4.8.0\r\nattrs==26.1.0\r\nbuild==1.2.2.post1\r\nclick==8.1.8\r\ncolorama==0.4.6\r\nfastapi==0.115.6\r\nh11==0.14.0\r\nidna==3.10\r\niniconfig==2.0.0\r\njsonschema==4.25.0\r\njsonschema-specifications==2025.9.1\r\npackaging==24.2\r\npip==25.1.1\r\npluggy==1.5.0\r\npydantic==2.10.5\r\npydantic-settings==2.7.1\r\npydantic_core==2.27.2\r\npyproject_hooks==1.2.0\r\npytest==8.3.4\r\npython-dotenv==1.0.1\r\nreferencing==0.37.0\r\nrpds-py==2026.6.3\r\nruff==0.8.4\r\nsetuptools==75.8.0\r\nsniffio==1.3.1\r\nstarlette==0.41.3\r\ntyping_extensions==4.12.2\r\nuvicorn==0.34.0\r\nwheel==0.45.1\r\n",
+      "output_path": "reports/batches/BATCH-18/command-output/freeze-before.json"
+    },
+    {
+      "id": "supplemental-ruff-initial",
+      "executable": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe",
+      "arguments": [
+        "-m",
+        "ruff",
+        "check",
+        "backend/src/covenia_b/storage",
+        "backend/tests/storage"
+      ],
+      "command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe\" \"-m\" \"ruff\" \"check\" \"backend/src/covenia_b/storage\" \"backend/tests/storage\"",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-18",
+      "started_at": "2026-10-01T23:05:17.9676099+08:00",
+      "exit_code": 1,
+      "duration_seconds": 0.2158851,
+      "mode": "UNIT",
+      "output": "backend\\src\\covenia_b\\storage\\sqlite.py:28:5: F401 [*] `covenia_b.storage.models.StoredResponse` imported but unused\r\n   |\r\n26 |     IdempotencyConflict,\r\n27 |     Mutation,\r\n28 |     StoredResponse,\r\n   |     ^^^^^^^^^^^^^^ F401\r\n29 |     TransactionResult,\r\n30 | )\r\n   |\r\n   = help: Remove unused import: `covenia_b.storage.models.StoredResponse`\r\n\r\nbackend\\src\\covenia_b\\storage\\sqlite.py:122:101: E501 Line too long (101 > 100)\r\n    |\r\n120 |         with self._connection() as connection:\r\n121 |             rows = connection.execute(\r\n122 |                 \"SELECT event_id,event_type,event_time FROM events WHERE case_id=? ORDER BY version\",\r\n    |                                                                                                     ^ E501\r\n123 |                 (case_id,),\r\n124 |             ).fetchall()\r\n    |\r\n\r\nbackend\\tests\\storage\\process_worker.py:3:1: I001 [*] Import block is un-sorted or un-formatted\r\n   |\r\n 1 |   \"\"\"Actual separate-process replay and crash-at-response-write test driver.\"\"\"\r\n 2 |   \r\n 3 | / from __future__ import annotations\r\n 4 | | \r\n 5 | | import json\r\n 6 | | import os\r\n 7 | | import sys\r\n 8 | | from contextlib import contextmanager\r\n 9 | | \r\n10 | | from backend.tests.storage.support import submit\r\n11 | | from covenia_b.storage import SQLiteLedgerRepository\r\n12 | | \r\n13 | | \r\n14 | | class CrashRepository(SQLiteLedgerRepository):\r\n   | |_^ I001\r\n15 |       @contextmanager\r\n16 |       def _connection(self, *, write=False):\r\n   |\r\n   = help: Organize imports\r\n\r\nbackend\\tests\\storage\\test_admin.py:1:1: I001 [*] Import block is un-sorted or un-formatted\r\n   |\r\n 1 | / from __future__ import annotations\r\n 2 | | \r\n 3 | | import sqlite3\r\n 4 | | import subprocess\r\n 5 | | import sys\r\n 6 | | \r\n 7 | | import pytest\r\n 8 | | \r\n 9 | | from backend.tests.storage.support import ROOT, submit\r\n10 | | from covenia_b.ports.errors import LedgerUnavailable\r\n11 | | from covenia_b.storage import SQLiteLedgerRepository\r\n12 | | from covenia_b.storage.admin import backup_database, restore_database\r\n13 | | \r\n14 | | \r\n15 | | def test_backup_includes_live_wal_and_restore_preserves_replay(tmp_path):\r\n   | |_^ I001\r\n16 |       repo = SQLiteLedgerRepository(tmp_path / \"ledger.db\")\r\n17 |       with sqlite3.connect(repo.db_path) as reader:\r\n   |\r\n   = help: Organize imports\r\n\r\nbackend\\tests\\storage\\test_transactions.py:1:1: I001 [*] Import block is un-sorted or un-formatted\r\n   |\r\n 1 | / from __future__ import annotations\r\n 2 | | \r\n 3 | | import json\r\n 4 | | import sqlite3\r\n 5 | | import subprocess\r\n 6 | | import sys\r\n 7 | | from concurrent.futures import ThreadPoolExecutor\r\n 8 | | from dataclasses import replace\r\n 9 | | from threading import Barrier\r\n10 | | \r\n11 | | import pytest\r\n12 | | \r\n13 | | from backend.tests.storage.support import INSTANT, ROOT, body, mutate, submit\r\n14 | | from covenia_b.domain.types import AuditEntry, CompiledCommitment, CompiledCommitments\r\n15 | | from covenia_b.ports import LedgerRepository\r\n16 | | from covenia_b.ports.errors import LedgerConflict, LedgerUnavailable\r\n17 | | from covenia_b.storage import EventRecord, IdempotencyConflict, SQLiteLedgerRepository\r\n18 | | from covenia_b.storage.codec import (\r\n19 | |     StoredAccountabilityState,\r\n20 | |     decode_snapshot,\r\n21 | |     encode_snapshot,\r\n22 | |     event_digest,\r\n23 | |     request_digest,\r\n24 | |     time_order,\r\n25 | | )\r\n26 | | from covenia_b.storage.schema import APPLICATION_ID, TABLES\r\n27 | | \r\n28 | | \r\n29 | | @pytest.fixture\r\n   | |_^ I001\r\n30 |   def repository(tmp_path):\r\n31 |       return SQLiteLedgerRepository(tmp_path / \"ledger.db\")\r\n   |\r\n   = help: Organize imports\r\n\r\nFound 5 errors.\r\n[*] 4 fixable with the `--fix` option.\r\n",
+      "output_path": "reports/batches/BATCH-18/command-output/supplemental-ruff-initial.json"
+    },
+    {
+      "id": "required-03-editable-backend",
+      "executable": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe",
+      "arguments": [
+        "-m",
+        "pip",
+        "install",
+        "--no-deps",
+        "--no-build-isolation",
+        "-e",
+        "backend"
+      ],
+      "command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe\" \"-m\" \"pip\" \"install\" \"--no-deps\" \"--no-build-isolation\" \"-e\" \"backend\"",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-18",
+      "started_at": "2026-10-01T23:05:59.5604565+08:00",
+      "exit_code": 0,
+      "duration_seconds": 3.8065979,
+      "mode": "ENVIRONMENT",
+      "output": "Obtaining file:///C:/Users/WONG%20Tsun%20Ming/Desktop/%E6%AC%A7%E8%8E%B1%E9%9B%85%E9%BB%91%E5%AE%A2%E6%9D%BE/worktrees/covenia-batch-18/backend\r\n  Checking if build backend supports build_editable: started\r\n  Checking if build backend supports build_editable: finished with status 'done'\r\n  Preparing editable metadata (pyproject.toml): started\r\n  Preparing editable metadata (pyproject.toml): finished with status 'done'\r\nBuilding wheels for collected packages: covenia-b\r\n  Building editable for covenia-b (pyproject.toml): started\r\n  Building editable for covenia-b (pyproject.toml): finished with status 'done'\r\n  Created wheel for covenia-b: filename=covenia_b-0.0.0-0.editable-py3-none-any.whl size=2824 sha256=9f3f1daea388a37470597891e3fc0b3340aee7c4871b66f0ce73985840c8a841\r\n  Stored in directory: C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-18\\pip-ephem-wheel-cache-ts_pek2v\\wheels\\5c\\5f\\0b\\592258229dec0652e0cd921689a2daf7cd0beab908323a791f\r\nSuccessfully built covenia-b\r\nInstalling collected packages: covenia-b\r\nSuccessfully installed covenia-b-0.0.0\r\n",
+      "output_path": "reports/batches/BATCH-18/command-output/required-03-editable-backend.json"
+    },
+    {
+      "id": "required-04-import-preflight",
+      "executable": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe",
+      "arguments": [
+        "-c",
+        "import pytest, jsonschema; print(\"pytest/jsonschema import OK\")"
+      ],
+      "command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe\" \"-c\" \"import pytest, jsonschema; print(`\"pytest/jsonschema import OK`\")\"",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-18",
+      "started_at": "2026-10-01T23:06:49.4235059+08:00",
+      "exit_code": 0,
+      "duration_seconds": 0.4614867,
+      "mode": "ENVIRONMENT",
+      "output": "pytest/jsonschema import OK\r\n",
+      "output_path": "reports/batches/BATCH-18/command-output/required-04-import-preflight.json"
+    },
+    {
+      "id": "freeze-after",
+      "executable": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe",
+      "arguments": [
+        "-m",
+        "pip",
+        "freeze",
+        "--all"
+      ],
+      "command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe\" \"-m\" \"pip\" \"freeze\" \"--all\"",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-18",
+      "started_at": "2026-10-01T23:06:53.7978921+08:00",
+      "exit_code": 0,
+      "duration_seconds": 0.7928395,
+      "mode": "ENVIRONMENT",
+      "output": "annotated-types==0.7.0\r\nanyio==4.8.0\r\nattrs==26.1.0\r\nbuild==1.2.2.post1\r\nclick==8.1.8\r\ncolorama==0.4.6\r\n-e git+https://github.com/zackyao02/Covenia.git@f507e37d94c0532f377a9475de2129c52f75d584#egg=covenia_b&subdirectory=..\\..\\..\\..\\worktrees\\covenia-batch-18\\backend\r\nfastapi==0.115.6\r\nh11==0.14.0\r\nidna==3.10\r\niniconfig==2.0.0\r\njsonschema==4.25.0\r\njsonschema-specifications==2025.9.1\r\npackaging==24.2\r\npip==25.1.1\r\npluggy==1.5.0\r\npydantic==2.10.5\r\npydantic-settings==2.7.1\r\npydantic_core==2.27.2\r\npyproject_hooks==1.2.0\r\npytest==8.3.4\r\npython-dotenv==1.0.1\r\nreferencing==0.37.0\r\nrpds-py==2026.6.3\r\nruff==0.8.4\r\nsetuptools==75.8.0\r\nsniffio==1.3.1\r\nstarlette==0.41.3\r\ntyping_extensions==4.12.2\r\nuvicorn==0.34.0\r\nwheel==0.45.1\r\n",
+      "output_path": "reports/batches/BATCH-18/command-output/freeze-after.json"
+    },
+    {
+      "id": "required-05-storage-pytest-initial",
+      "executable": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe",
+      "arguments": [
+        "-m",
+        "pytest",
+        "backend/tests/storage",
+        "-q",
+        "--basetemp",
+        "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\t1",
+        "--junitxml",
+        "reports/batches/BATCH-18/storage-pytest-initial.xml"
+      ],
+      "command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe\" \"-m\" \"pytest\" \"backend/tests/storage\" \"-q\" \"--basetemp\" \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\t1\" \"--junitxml\" \"reports/batches/BATCH-18/storage-pytest-initial.xml\"",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-18",
+      "started_at": "2026-10-01T23:07:11.6744073+08:00",
+      "exit_code": 0,
+      "duration_seconds": 5.8833331,
+      "mode": "UNIT",
+      "output": "....................................                                     [100%]\r\n- generated xml file: C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-18\\reports\\batches\\BATCH-18\\storage-pytest-initial.xml -\r\n36 passed in 5.08s\r\n",
+      "output_path": "reports/batches/BATCH-18/command-output/required-05-storage-pytest-initial.json"
+    },
+    {
+      "id": "required-06-pip-list",
+      "executable": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe",
+      "arguments": [
+        "-m",
+        "pip",
+        "list",
+        "--format=json"
+      ],
+      "command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe\" \"-m\" \"pip\" \"list\" \"--format=json\"",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-18",
+      "started_at": "2026-10-01T23:09:03.606665+08:00",
+      "exit_code": 0,
+      "duration_seconds": 0.4168197,
+      "mode": "ENVIRONMENT",
+      "output": "[{\"name\": \"annotated-types\", \"version\": \"0.7.0\"}, {\"name\": \"anyio\", \"version\": \"4.8.0\"}, {\"name\": \"attrs\", \"version\": \"26.1.0\"}, {\"name\": \"build\", \"version\": \"1.2.2.post1\"}, {\"name\": \"click\", \"version\": \"8.1.8\"}, {\"name\": \"colorama\", \"version\": \"0.4.6\"}, {\"name\": \"covenia-b\", \"version\": \"0.0.0\", \"editable_project_location\": \"C:\\\\Users\\\\WONG Tsun Ming\\\\Desktop\\\\\\u6b27\\u83b1\\u96c5\\u9ed1\\u5ba2\\u677e\\\\worktrees\\\\covenia-batch-18\\\\backend\"}, {\"name\": \"fastapi\", \"version\": \"0.115.6\"}, {\"name\": \"h11\", \"version\": \"0.14.0\"}, {\"name\": \"idna\", \"version\": \"3.10\"}, {\"name\": \"iniconfig\", \"version\": \"2.0.0\"}, {\"name\": \"jsonschema\", \"version\": \"4.25.0\"}, {\"name\": \"jsonschema-specifications\", \"version\": \"2025.9.1\"}, {\"name\": \"packaging\", \"version\": \"24.2\"}, {\"name\": \"pip\", \"version\": \"25.1.1\"}, {\"name\": \"pluggy\", \"version\": \"1.5.0\"}, {\"name\": \"pydantic\", \"version\": \"2.10.5\"}, {\"name\": \"pydantic_core\", \"version\": \"2.27.2\"}, {\"name\": \"pydantic-settings\", \"version\": \"2.7.1\"}, {\"name\": \"pyproject_hooks\", \"version\": \"1.2.0\"}, {\"name\": \"pytest\", \"version\": \"8.3.4\"}, {\"name\": \"python-dotenv\", \"version\": \"1.0.1\"}, {\"name\": \"referencing\", \"version\": \"0.37.0\"}, {\"name\": \"rpds-py\", \"version\": \"2026.6.3\"}, {\"name\": \"ruff\", \"version\": \"0.8.4\"}, {\"name\": \"setuptools\", \"version\": \"75.8.0\"}, {\"name\": \"sniffio\", \"version\": \"1.3.1\"}, {\"name\": \"starlette\", \"version\": \"0.41.3\"}, {\"name\": \"typing_extensions\", \"version\": \"4.12.2\"}, {\"name\": \"uvicorn\", \"version\": \"0.34.0\"}, {\"name\": \"wheel\", \"version\": \"0.45.1\"}]\r\n",
+      "output_path": "reports/batches/BATCH-18/command-output/required-06-pip-list.json"
+    },
+    {
+      "id": "required-07-pip-check",
+      "executable": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe",
+      "arguments": [
+        "-m",
+        "pip",
+        "check"
+      ],
+      "command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe\" \"-m\" \"pip\" \"check\"",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-18",
+      "started_at": "2026-10-01T23:09:05.4730014+08:00",
+      "exit_code": 0,
+      "duration_seconds": 0.6460178,
+      "mode": "ENVIRONMENT",
+      "output": "No broken requirements found.\r\n",
+      "output_path": "reports/batches/BATCH-18/command-output/required-07-pip-check.json"
+    },
+    {
+      "id": "supplemental-environment-preflight",
+      "executable": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe",
+      "arguments": [
+        "-c",
+        "import sys,site,json,os,sqlite3; from pathlib import Path; v=Path(sys.prefix); cfg=(v/\"pyvenv.cfg\").read_text(); longest=max(v.rglob(\"*\"),key=lambda p:len(str(p))); assert sys.prefix!=sys.base_prefix and \"include-system-site-packages = false\" in cfg and not site.ENABLE_USER_SITE and not os.environ.get(\"PYTHONPATH\") and len(str(longest))<250; print(json.dumps({\"sys_executable\":sys.executable,\"sys_prefix\":sys.prefix,\"sys_base_prefix\":sys.base_prefix,\"python_version\":sys.version,\"sqlite_version\":sqlite3.sqlite_version,\"user_site_enabled\":site.ENABLE_USER_SITE,\"pythonpath\":\"UNSET\",\"pyvenv_cfg\":cfg,\"venv_longest_file\":str(longest),\"venv_longest_path_length\":len(str(longest)),\"venv_direct_child\":v.parent.name==\"b18\"},ensure_ascii=False))"
+      ],
+      "command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe\" \"-c\" \"import sys,site,json,os,sqlite3; from pathlib import Path; v=Path(sys.prefix); cfg=(v/`\"pyvenv.cfg`\").read_text(); longest=max(v.rglob(`\"*`\"),key=lambda p:len(str(p))); assert sys.prefix!=sys.base_prefix and `\"include-system-site-packages = false`\" in cfg and not site.ENABLE_USER_SITE and not os.environ.get(`\"PYTHONPATH`\") and len(str(longest))<250; print(json.dumps({`\"sys_executable`\":sys.executable,`\"sys_prefix`\":sys.prefix,`\"sys_base_prefix`\":sys.base_prefix,`\"python_version`\":sys.version,`\"sqlite_version`\":sqlite3.sqlite_version,`\"user_site_enabled`\":site.ENABLE_USER_SITE,`\"pythonpath`\":`\"UNSET`\",`\"pyvenv_cfg`\":cfg,`\"venv_longest_file`\":str(longest),`\"venv_longest_path_length`\":len(str(longest)),`\"venv_direct_child`\":v.parent.name==`\"b18`\"},ensure_ascii=False))\"",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-18",
+      "started_at": "2026-10-01T23:09:05.7310343+08:00",
+      "exit_code": 0,
+      "duration_seconds": 0.1983705,
+      "mode": "ENVIRONMENT",
+      "output": "{\"sys_executable\": \"C:\\\\Users\\\\WONG Tsun Ming\\\\Desktop\\\\欧莱雅黑客松\\\\run\\\\b18\\\\venv\\\\Scripts\\\\python.exe\", \"sys_prefix\": \"C:\\\\Users\\\\WONG Tsun Ming\\\\Desktop\\\\欧莱雅黑客松\\\\run\\\\b18\\\\venv\", \"sys_base_prefix\": \"D:\\\\python\", \"python_version\": \"3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]\", \"sqlite_version\": \"3.49.1\", \"user_site_enabled\": false, \"pythonpath\": \"UNSET\", \"pyvenv_cfg\": \"home = D:\\\\python\\ninclude-system-site-packages = false\\nversion = 3.13.5\\nexecutable = D:\\\\python\\\\python.exe\\ncommand = D:\\\\python\\\\python.exe -m venv C:\\\\Users\\\\WONG Tsun Ming\\\\Desktop\\\\欧莱雅黑客松\\\\run\\\\b18\\\\venv\\n\", \"venv_longest_file\": \"C:\\\\Users\\\\WONG Tsun Ming\\\\Desktop\\\\欧莱雅黑客松\\\\run\\\\b18\\\\venv\\\\Lib\\\\site-packages\\\\pkg_resources\\\\tests\\\\data\\\\my-test-package_unpacked-egg\\\\my_test_package-1.0-py3.7.egg\\\\EGG-INFO\\\\dependency_links.txt\", \"venv_longest_path_length\": 183, \"venv_direct_child\": true}\r\n",
+      "output_path": "reports/batches/BATCH-18/command-output/supplemental-environment-preflight.json"
+    },
+    {
+      "id": "supplemental-ruff-final",
+      "executable": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe",
+      "arguments": [
+        "-m",
+        "ruff",
+        "check",
+        "backend/src/covenia_b/storage",
+        "backend/tests/storage"
+      ],
+      "command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe\" \"-m\" \"ruff\" \"check\" \"backend/src/covenia_b/storage\" \"backend/tests/storage\"",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-18",
+      "started_at": "2026-10-01T23:09:09.4244563+08:00",
+      "exit_code": 0,
+      "duration_seconds": 0.1292441,
+      "mode": "UNIT",
+      "output": "All checks passed!\r\n",
+      "output_path": "reports/batches/BATCH-18/command-output/supplemental-ruff-final.json"
+    },
+    {
+      "id": "required-05-storage-pytest-final",
+      "executable": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe",
+      "arguments": [
+        "-m",
+        "pytest",
+        "backend/tests/storage",
+        "-q",
+        "--basetemp",
+        "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\t2",
+        "--junitxml",
+        "reports/batches/BATCH-18/storage-pytest-final.xml"
+      ],
+      "command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe\" \"-m\" \"pytest\" \"backend/tests/storage\" \"-q\" \"--basetemp\" \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\t2\" \"--junitxml\" \"reports/batches/BATCH-18/storage-pytest-final.xml\"",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-18",
+      "started_at": "2026-10-01T23:12:13.3148469+08:00",
+      "exit_code": 0,
+      "duration_seconds": 4.8653858,
+      "mode": "UNIT",
+      "output": "......................................                                   [100%]\r\n- generated xml file: C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-18\\reports\\batches\\BATCH-18\\storage-pytest-final.xml -\r\n38 passed in 4.35s\r\n",
+      "output_path": "reports/batches/BATCH-18/command-output/required-05-storage-pytest-final.json"
+    },
+    {
+      "id": "supplemental-ruff-delivery",
+      "executable": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe",
+      "arguments": [
+        "-m",
+        "ruff",
+        "check",
+        "backend/src/covenia_b/storage",
+        "backend/tests/storage"
+      ],
+      "command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe\" \"-m\" \"ruff\" \"check\" \"backend/src/covenia_b/storage\" \"backend/tests/storage\"",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-18",
+      "started_at": "2026-10-02T00:19:17.2046162+08:00",
+      "exit_code": -1073741502,
+      "duration_seconds": 30.5991302,
+      "mode": "UNIT",
+      "output": "",
+      "output_path": "reports/batches/BATCH-18/command-output/supplemental-ruff-delivery.json"
+    },
+    {
+      "id": "supplemental-ruff-delivery-approved",
+      "executable": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe",
+      "arguments": [
+        "-m",
+        "ruff",
+        "check",
+        "backend/src/covenia_b/storage",
+        "backend/tests/storage"
+      ],
+      "command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe\" \"-m\" \"ruff\" \"check\" \"backend/src/covenia_b/storage\" \"backend/tests/storage\"",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-18",
+      "started_at": "2026-10-02T00:21:12.1430731+08:00",
+      "exit_code": 0,
+      "duration_seconds": 0.15633,
+      "mode": "UNIT",
+      "output": "All checks passed!\r\n",
+      "output_path": "reports/batches/BATCH-18/command-output/supplemental-ruff-delivery-approved.json"
+    },
+    {
+      "id": "required-08-git-diff-check",
+      "executable": "git",
+      "arguments": [
+        "diff",
+        "--check"
+      ],
+      "command": "& \"git\" \"diff\" \"--check\"",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-18",
+      "started_at": "2026-10-02T00:24:18.1590908+08:00",
+      "exit_code": 0,
+      "duration_seconds": 0.0780247,
+      "mode": "UNIT",
+      "output": "",
+      "output_path": "reports/batches/BATCH-18/command-output/required-08-git-diff-check.json"
+    },
+    {
+      "id": "required-09-git-status",
+      "executable": "git",
+      "arguments": [
+        "status",
+        "--short"
+      ],
+      "command": "& \"git\" \"status\" \"--short\"",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-18",
+      "started_at": "2026-10-02T00:24:18.9135122+08:00",
+      "exit_code": 0,
+      "duration_seconds": 0.0657831,
+      "mode": "UNIT",
+      "output": "warning: could not open directory 'pip-build-tracker-2aisoqh1/': Permission denied\r\nwarning: could not open directory 'pip-build-tracker-3y5h6skc/': Permission denied\r\nwarning: could not open directory 'pip-ephem-wheel-cache-tzzoufz1/': Permission denied\r\nwarning: could not open directory 'pip-ephem-wheel-cache-vbxlmk2k/': Permission denied\r\nwarning: could not open directory 'pip-install-06f_11n9/': Permission denied\r\nwarning: could not open directory 'pip-install-fk6dbgkf/': Permission denied\r\n?? reports/batches/BATCH-18/\r\n",
+      "output_path": "reports/batches/BATCH-18/command-output/required-09-git-status.json"
+    }
+  ],
+  "acceptance_mapping": [
+    {
+      "ordinal": 1,
+      "package_command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18/venv/Scripts/python.exe\"",
+      "retained_successful_command_id": "required-01-interpreter",
+      "exit_code": 0,
+      "evidence": "reports/batches/BATCH-18/command-output/required-01-interpreter.json",
+      "deviation": null
+    },
+    {
+      "ordinal": 2,
+      "package_command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18/venv/Scripts/python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "retained_successful_command_id": "required-02-install-lock-offline",
+      "exit_code": 0,
+      "evidence": "reports/batches/BATCH-18/command-output/required-02-install-lock-offline.json",
+      "deviation": "Same --no-deps exact-pin install, with approved --no-index/--find-links batch wheelhouse recovery after retained stalled network attempts."
+    },
+    {
+      "ordinal": 3,
+      "package_command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18/venv/Scripts/python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "retained_successful_command_id": "required-03-editable-backend",
+      "exit_code": 0,
+      "evidence": "reports/batches/BATCH-18/command-output/required-03-editable-backend.json",
+      "deviation": null
+    },
+    {
+      "ordinal": 4,
+      "package_command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18/venv/Scripts/python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "retained_successful_command_id": "required-04-import-preflight",
+      "exit_code": 0,
+      "evidence": "reports/batches/BATCH-18/command-output/required-04-import-preflight.json",
+      "deviation": null
+    },
+    {
+      "ordinal": 5,
+      "package_command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18/venv/Scripts/python.exe\" -m pytest backend/tests/storage -q",
+      "retained_successful_command_id": "required-05-storage-pytest-final",
+      "exit_code": 0,
+      "evidence": "reports/batches/BATCH-18/command-output/required-05-storage-pytest-final.json",
+      "deviation": "Added batch-exclusive --basetemp and JUnit evidence path; original functional command and final 38 passing tests preserved."
+    },
+    {
+      "ordinal": 6,
+      "package_command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18/venv/Scripts/python.exe\" -m pip list --format=json",
+      "retained_successful_command_id": "required-06-pip-list",
+      "exit_code": 0,
+      "evidence": "reports/batches/BATCH-18/command-output/required-06-pip-list.json",
+      "deviation": null
+    },
+    {
+      "ordinal": 7,
+      "package_command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18/venv/Scripts/python.exe\" -m pip check",
+      "retained_successful_command_id": "required-07-pip-check",
+      "exit_code": 0,
+      "evidence": "reports/batches/BATCH-18/command-output/required-07-pip-check.json",
+      "deviation": null
+    },
+    {
+      "ordinal": 8,
+      "package_command": "git diff --check",
+      "retained_successful_command_id": "required-08-git-diff-check",
+      "exit_code": 0,
+      "evidence": "reports/batches/BATCH-18/command-output/required-08-git-diff-check.json",
+      "deviation": null
+    },
+    {
+      "ordinal": 9,
+      "package_command": "git status --short",
+      "retained_successful_command_id": "required-09-git-status",
+      "exit_code": 0,
+      "evidence": "reports/batches/BATCH-18/command-output/required-09-git-status.json",
+      "deviation": null
+    }
+  ],
+  "successful_delivery_ruff": "supplemental-ruff-delivery-approved",
+  "functional_tests_repeated_on_oct2": false,
+  "prior_nonzero_attempts_preserved": [
+    {
+      "id": "required-02-install-lock",
+      "exit_code": -1,
+      "evidence": "reports/batches/BATCH-18/command-output/required-02-install-lock.json"
+    },
+    {
+      "id": "required-02-install-lock-retry",
+      "exit_code": -1,
+      "evidence": "reports/batches/BATCH-18/command-output/required-02-install-lock-retry.json"
+    },
+    {
+      "id": "supplemental-ruff-initial",
+      "exit_code": 1,
+      "evidence": "reports/batches/BATCH-18/command-output/supplemental-ruff-initial.json"
+    },
+    {
+      "id": "supplemental-ruff-delivery",
+      "exit_code": -1073741502,
+      "evidence": "reports/batches/BATCH-18/command-output/supplemental-ruff-delivery.json"
+    }
+  ],
+  "bootstrap": {
+    "command": "& \"D:\\python\\python.exe\" -m venv \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\"",
+    "exit_code": 0,
+    "source": "Successful 2026-10-01 approved exec output in original task; bootstrap evidence is pyvenv.cfg in environment preflight",
+    "existing_run_dir_rebuilt_on_resume": false
+  },
+  "implementation_commit_command": {
+    "command": "git add -- backend/src/covenia_b/storage backend/tests/storage; git diff --cached --check; git commit -m 'feat(storage): persist atomic ledger changes and idempotent replies'",
+    "exit_code": 0,
+    "code_commit": "3712a170969998e32b56d33e3d59c7b21a04f19d",
+    "staged_paths": [
+      "backend/src/covenia_b/storage/__init__.py",
+      "backend/src/covenia_b/storage/admin.py",
+      "backend/src/covenia_b/storage/codec.py",
+      "backend/src/covenia_b/storage/models.py",
+      "backend/src/covenia_b/storage/schema.py",
+      "backend/src/covenia_b/storage/sqlite.py",
+      "backend/tests/storage/__init__.py",
+      "backend/tests/storage/process_worker.py",
+      "backend/tests/storage/support.py",
+      "backend/tests/storage/test_admin.py",
+      "backend/tests/storage/test_transactions.py"
+    ],
+    "source": "Successful 2026-10-02 normal-sandbox Git command in this original task"
+  },
+  "modes_note": "Storage tests use real SQLite with synthetic service callbacks and real child processes. Infrastructure/install/lint modes are not LIVE/HTTP/E2E claims."
+}

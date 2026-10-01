@@ -1,0 +1,21 @@
+{
+  "id": "required-03-editable-backend",
+  "executable": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe",
+  "arguments": [
+    "-m",
+    "pip",
+    "install",
+    "--no-deps",
+    "--no-build-isolation",
+    "-e",
+    "backend"
+  ],
+  "command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe\" \"-m\" \"pip\" \"install\" \"--no-deps\" \"--no-build-isolation\" \"-e\" \"backend\"",
+  "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-18",
+  "started_at": "2026-10-01T23:05:59.5604565+08:00",
+  "exit_code": 0,
+  "duration_seconds": 3.8065979,
+  "mode": "ENVIRONMENT",
+  "output": "Obtaining file:///C:/Users/WONG%20Tsun%20Ming/Desktop/%E6%AC%A7%E8%8E%B1%E9%9B%85%E9%BB%91%E5%AE%A2%E6%9D%BE/worktrees/covenia-batch-18/backend\r\n  Checking if build backend supports build_editable: started\r\n  Checking if build backend supports build_editable: finished with status 'done'\r\n  Preparing editable metadata (pyproject.toml): started\r\n  Preparing editable metadata (pyproject.toml): finished with status 'done'\r\nBuilding wheels for collected packages: covenia-b\r\n  Building editable for covenia-b (pyproject.toml): started\r\n  Building editable for covenia-b (pyproject.toml): finished with status 'done'\r\n  Created wheel for covenia-b: filename=covenia_b-0.0.0-0.editable-py3-none-any.whl size=2824 sha256=9f3f1daea388a37470597891e3fc0b3340aee7c4871b66f0ce73985840c8a841\r\n  Stored in directory: C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-18\\pip-ephem-wheel-cache-ts_pek2v\\wheels\\5c\\5f\\0b\\592258229dec0652e0cd921689a2daf7cd0beab908323a791f\r\nSuccessfully built covenia-b\r\nInstalling collected packages: covenia-b\r\nSuccessfully installed covenia-b-0.0.0\r\n",
+  "output_path": "reports/batches/BATCH-18/command-output/required-03-editable-backend.json"
+}

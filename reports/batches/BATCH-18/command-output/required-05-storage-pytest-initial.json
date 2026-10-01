@@ -1,0 +1,22 @@
+{
+  "id": "required-05-storage-pytest-initial",
+  "executable": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe",
+  "arguments": [
+    "-m",
+    "pytest",
+    "backend/tests/storage",
+    "-q",
+    "--basetemp",
+    "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\t1",
+    "--junitxml",
+    "reports/batches/BATCH-18/storage-pytest-initial.xml"
+  ],
+  "command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe\" \"-m\" \"pytest\" \"backend/tests/storage\" \"-q\" \"--basetemp\" \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\t1\" \"--junitxml\" \"reports/batches/BATCH-18/storage-pytest-initial.xml\"",
+  "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-18",
+  "started_at": "2026-10-01T23:07:11.6744073+08:00",
+  "exit_code": 0,
+  "duration_seconds": 5.8833331,
+  "mode": "UNIT",
+  "output": "....................................                                     [100%]\r\n- generated xml file: C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-18\\reports\\batches\\BATCH-18\\storage-pytest-initial.xml -\r\n36 passed in 5.08s\r\n",
+  "output_path": "reports/batches/BATCH-18/command-output/required-05-storage-pytest-initial.json"
+}

@@ -1,0 +1,16 @@
+{
+  "id": "supplemental-environment-preflight",
+  "executable": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe",
+  "arguments": [
+    "-c",
+    "import sys,site,json,os,sqlite3; from pathlib import Path; v=Path(sys.prefix); cfg=(v/\"pyvenv.cfg\").read_text(); longest=max(v.rglob(\"*\"),key=lambda p:len(str(p))); assert sys.prefix!=sys.base_prefix and \"include-system-site-packages = false\" in cfg and not site.ENABLE_USER_SITE and not os.environ.get(\"PYTHONPATH\") and len(str(longest))<250; print(json.dumps({\"sys_executable\":sys.executable,\"sys_prefix\":sys.prefix,\"sys_base_prefix\":sys.base_prefix,\"python_version\":sys.version,\"sqlite_version\":sqlite3.sqlite_version,\"user_site_enabled\":site.ENABLE_USER_SITE,\"pythonpath\":\"UNSET\",\"pyvenv_cfg\":cfg,\"venv_longest_file\":str(longest),\"venv_longest_path_length\":len(str(longest)),\"venv_direct_child\":v.parent.name==\"b18\"},ensure_ascii=False))"
+  ],
+  "command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe\" \"-c\" \"import sys,site,json,os,sqlite3; from pathlib import Path; v=Path(sys.prefix); cfg=(v/`\"pyvenv.cfg`\").read_text(); longest=max(v.rglob(`\"*`\"),key=lambda p:len(str(p))); assert sys.prefix!=sys.base_prefix and `\"include-system-site-packages = false`\" in cfg and not site.ENABLE_USER_SITE and not os.environ.get(`\"PYTHONPATH`\") and len(str(longest))<250; print(json.dumps({`\"sys_executable`\":sys.executable,`\"sys_prefix`\":sys.prefix,`\"sys_base_prefix`\":sys.base_prefix,`\"python_version`\":sys.version,`\"sqlite_version`\":sqlite3.sqlite_version,`\"user_site_enabled`\":site.ENABLE_USER_SITE,`\"pythonpath`\":`\"UNSET`\",`\"pyvenv_cfg`\":cfg,`\"venv_longest_file`\":str(longest),`\"venv_longest_path_length`\":len(str(longest)),`\"venv_direct_child`\":v.parent.name==`\"b18`\"},ensure_ascii=False))\"",
+  "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-18",
+  "started_at": "2026-10-01T23:09:05.7310343+08:00",
+  "exit_code": 0,
+  "duration_seconds": 0.1983705,
+  "mode": "ENVIRONMENT",
+  "output": "{\"sys_executable\": \"C:\\\\Users\\\\WONG Tsun Ming\\\\Desktop\\\\欧莱雅黑客松\\\\run\\\\b18\\\\venv\\\\Scripts\\\\python.exe\", \"sys_prefix\": \"C:\\\\Users\\\\WONG Tsun Ming\\\\Desktop\\\\欧莱雅黑客松\\\\run\\\\b18\\\\venv\", \"sys_base_prefix\": \"D:\\\\python\", \"python_version\": \"3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]\", \"sqlite_version\": \"3.49.1\", \"user_site_enabled\": false, \"pythonpath\": \"UNSET\", \"pyvenv_cfg\": \"home = D:\\\\python\\ninclude-system-site-packages = false\\nversion = 3.13.5\\nexecutable = D:\\\\python\\\\python.exe\\ncommand = D:\\\\python\\\\python.exe -m venv C:\\\\Users\\\\WONG Tsun Ming\\\\Desktop\\\\欧莱雅黑客松\\\\run\\\\b18\\\\venv\\n\", \"venv_longest_file\": \"C:\\\\Users\\\\WONG Tsun Ming\\\\Desktop\\\\欧莱雅黑客松\\\\run\\\\b18\\\\venv\\\\Lib\\\\site-packages\\\\pkg_resources\\\\tests\\\\data\\\\my-test-package_unpacked-egg\\\\my_test_package-1.0-py3.7.egg\\\\EGG-INFO\\\\dependency_links.txt\", \"venv_longest_path_length\": 183, \"venv_direct_child\": true}\r\n",
+  "output_path": "reports/batches/BATCH-18/command-output/supplemental-environment-preflight.json"
+}

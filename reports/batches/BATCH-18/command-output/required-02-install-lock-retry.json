@@ -1,0 +1,27 @@
+{
+  "id": "required-02-install-lock-retry",
+  "executable": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe",
+  "arguments": [
+    "-m",
+    "pip",
+    "install",
+    "--no-deps",
+    "--disable-pip-version-check",
+    "--retries",
+    "0",
+    "--timeout",
+    "15",
+    "--index-url",
+    "https://pypi.org/simple",
+    "-r",
+    "backend/requirements-dev.lock"
+  ],
+  "command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe\" \"-m\" \"pip\" \"install\" \"--no-deps\" \"--disable-pip-version-check\" \"--retries\" \"0\" \"--timeout\" \"15\" \"--index-url\" \"https://pypi.org/simple\" \"-r\" \"backend/requirements-dev.lock\"",
+  "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-18",
+  "started_at": "2026-10-01T22:59:24.8899335+08:00",
+  "exit_code": -1,
+  "duration_seconds": 267.3750127,
+  "mode": "ENVIRONMENT",
+  "output": "",
+  "output_path": "reports/batches/BATCH-18/command-output/required-02-install-lock-retry.json"
+}

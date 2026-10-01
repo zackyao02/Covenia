@@ -1,0 +1,16 @@
+{
+  "id": "required-04-import-preflight",
+  "executable": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe",
+  "arguments": [
+    "-c",
+    "import pytest, jsonschema; print(\"pytest/jsonschema import OK\")"
+  ],
+  "command": "& \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b18\\venv\\Scripts\\python.exe\" \"-c\" \"import pytest, jsonschema; print(`\"pytest/jsonschema import OK`\")\"",
+  "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-18",
+  "started_at": "2026-10-01T23:06:49.4235059+08:00",
+  "exit_code": 0,
+  "duration_seconds": 0.4614867,
+  "mode": "ENVIRONMENT",
+  "output": "pytest/jsonschema import OK\r\n",
+  "output_path": "reports/batches/BATCH-18/command-output/required-04-import-preflight.json"
+}
