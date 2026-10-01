@@ -1,0 +1,6 @@
+BATCH-09 pip check
+cwd: C:\Users\WONG Tsun Ming\Desktop\欧莱雅黑客松\worktrees\covenia-batch-09
+command: & "C:\cov-run\batch-09\venv\Scripts\python.exe" -m pip check
+exit_code: 0
+stdout:
+No broken requirements found.

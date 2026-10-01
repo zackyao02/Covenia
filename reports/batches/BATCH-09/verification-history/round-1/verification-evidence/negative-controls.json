@@ -1,0 +1,34 @@
+{
+  "status": "PASS",
+  "provider_retry_cache": {
+    "result": "PASS",
+    "checks": [
+      "ProviderUsage rejects negative, bool, and float token values.",
+      "Provider usage 11/7 and OpenAI-style 3/2 are passed through exactly.",
+      "Cache hit adds four zero metrics and does not re-import historical tokens.",
+      "Duplicate cache event identifier is rejected."
+    ]
+  },
+  "audit_failure": {
+    "result": "PASS",
+    "checks": [
+      "Failing in-memory audit sink raises GovernanceLogWriteError and keeps request totals zero.",
+      "An unwriteable JsonlGovernanceSink parent path raises GovernanceLogWriteError and keeps request totals zero."
+    ]
+  },
+  "redaction": {
+    "result": "PASS",
+    "checks": [
+      "Synthetic phone, secret, full-prompt, and original-image sentinels are absent from temporary JSONL output.",
+      "Safe source SHA-256, image SHA-256, PII count, and prompt version remain traceable."
+    ]
+  },
+  "provenance": {
+    "result": "PASS",
+    "checks": [
+      "Model record retains request_id and frozen model identity.",
+      "Pure rule record retains request_id and RULE-phase input-source provenance."
+    ]
+  },
+  "evidence": "command-outputs/independent-boundary-probe.log"
+}

@@ -1,0 +1,13 @@
+COMMAND: C:\cov-run\batch-09-verify-2\venv\Scripts\python.exe -c <environment preflight>
+CWD: C:\Users\WONG Tsun Ming\Desktop\欧莱雅黑客松\work\repo2
+EXIT_CODE: 0
+interpreter=C:\cov-run\batch-09-verify-2\venv\Scripts\python.exe
+sys.prefix=C:\cov-run\batch-09-verify-2\venv
+sys.base_prefix=D:\python
+include-system-site-packages=false
+isolated=True
+site_packages=['C:\cov-run\batch-09-verify-2\venv', 'C:\cov-run\batch-09-verify-2\venv\Lib\site-packages']
+pythonpath=None
+version=3.13.5
+longest_venv_path_length=165
+longest_venv_path_lt_250=True

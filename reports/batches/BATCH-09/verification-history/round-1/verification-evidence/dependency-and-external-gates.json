@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "dependencies": [
+    {
+      "batch_id": "BATCH-04",
+      "receipt_path": "C:\\Users\\WONG Tsun Ming\\covenia-orchestration\\runs\\covenia-b-20260910-01\\integration-receipts\\BATCH-04.json",
+      "receipt_sha256": "482A9A3721D5CCECD02B92F93E552111B80D398C7CB822F92AF6CA8EC0FE36C2",
+      "receipt_status": "SUCCESS",
+      "integration_sha": "9d093a492e576d7cb02b46c2ca60ebf2cac1c244",
+      "integration_sha_is_ancestor_of_review": true
+    },
+    {
+      "batch_id": "BATCH-07",
+      "receipt_path": "C:\\Users\\WONG Tsun Ming\\covenia-orchestration\\runs\\covenia-b-20260910-01\\integration-receipts\\BATCH-07.json",
+      "receipt_sha256": "5C8A6E2FB788FF4B83EAE311E191F1A8DA61AE40E09F37315FD73513DB4B63C8",
+      "receipt_status": "SUCCESS",
+      "integration_sha": "abaad9ae9228432ea514a45817c2fc166b27bad3",
+      "integration_sha_is_ancestor_of_review": true
+    }
+  ],
+  "external_gates": {
+    "declared_for_batch_09": [],
+    "result": "NOT_REQUIRED"
+  },
+  "note": "Planning-hash provenance is reported separately in authority-plan-hash-audit.json because it is a FAIL finding, not a BATCH-09 external gate."
+}

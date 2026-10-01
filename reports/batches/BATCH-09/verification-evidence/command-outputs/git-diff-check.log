@@ -1,0 +1,4 @@
+COMMAND: git diff --check
+CWD: C:\Users\WONG Tsun Ming\Desktop\欧莱雅黑客松\work\repo2
+EXIT_CODE: 0
+No whitespace errors.

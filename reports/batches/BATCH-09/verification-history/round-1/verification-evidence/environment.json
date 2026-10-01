@@ -1,0 +1,39 @@
+{
+  "status": "PASS",
+  "run_dir": "C:\\cov-run\\batch-09-verify-1",
+  "run_dir_length": 28,
+  "venv": "C:\\cov-run\\batch-09-verify-1\\venv",
+  "venv_direct_child": true,
+  "interpreter": "C:\\cov-run\\batch-09-verify-1\\venv\\Scripts\\python.exe",
+  "sys_executable": "C:\\cov-run\\batch-09-verify-1\\venv\\Scripts\\python.exe",
+  "sys_prefix": "C:\\cov-run\\batch-09-verify-1\\venv",
+  "sys_base_prefix": "D:\\python",
+  "python_version": "3.13.5",
+  "include_system_site_packages": false,
+  "pythonpath_state": "UNSET",
+  "longest_venv_path": "C:\\cov-run\\batch-09-verify-1\\venv\\Lib\\site-packages\\pkg_resources\\tests\\data\\my-test-package_unpacked-egg\\my_test_package-1.0-py3.7.egg\\EGG-INFO\\dependency_links.txt",
+  "longest_venv_path_length": 165,
+  "longest_venv_path_lt_250": true,
+  "requirements_dev_lock": {
+    "change_type": "UNCHANGED",
+    "dependencies_added": [],
+    "reason": "BATCH-09 diff contains no backend/requirements-dev.lock change.",
+    "raw_git_show_sha256_base": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+    "raw_git_show_sha256_code": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+    "raw_git_show_sha256_review": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+    "existing_pins_changed": false
+  },
+  "setup": {
+    "locked_install_exit_code": 0,
+    "editable_install_exit_code": 0,
+    "pip_check_exit_code": 0,
+    "pip_check_stdout": "No broken requirements found."
+  },
+  "evidence": [
+    "command-outputs/environment-preflight.log",
+    "command-outputs/pip-install-lock-recheck.log",
+    "command-outputs/editable-install-recheck.log",
+    "command-outputs/pip-list.log",
+    "command-outputs/pip-check-post-editable.log"
+  ]
+}

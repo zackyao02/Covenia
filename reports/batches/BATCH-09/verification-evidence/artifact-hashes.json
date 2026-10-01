@@ -1,0 +1,17 @@
+{
+  "method": "SHA-256 over raw bytes from git cat-file blob <review_sha>:<path>; no default working-copy hash used",
+  "review_sha": "6a738add62d82dda4d59d1da2bb94bbe56702006",
+  "requirements_dev_lock_changed": false,
+  "artifacts": {
+    "backend/src/covenia_b/observability/__init__.py": {"bytes": 1104, "sha256": "4144011EDF0614F96A98D64825837721D5735C097FD54FE4774C8D3F9A8E290D", "git_blob_oid": "a8b8e79b096b20aea352dd99c89f997f11a45f56"},
+    "backend/src/covenia_b/observability/runtime.py": {"bytes": 29615, "sha256": "3A7BF5AB83AC17B200626BAB9C3DB2C2F34DD6F107E17AFF0E1EEA19D5C8ADB9", "git_blob_oid": "a3f16e1d27f0c388090e1c71a10a0af3c30a9dd1"},
+    "backend/tests/observability/test_runtime_metrics.py": {"bytes": 12044, "sha256": "122A224E4FC412095D3A2EFCEFD40EAE993DF0095C03A88DC53832749B49F410", "git_blob_oid": "d9f0d5577fba20d1373e75a339d8e4fb25e3e4de"},
+    "reports/batches/BATCH-09/IMPLEMENTATION_REPORT.json": {"bytes": 13134, "sha256": "2417E38E2DBF969A01B86DC0BD99ADD9F37D5646E2D543380E62C05E32CDFBCD", "git_blob_oid": "36d043f61ffe0de857b6fb76fc0660605387c636"},
+    "reports/batches/BATCH-09/IMPLEMENTATION_REPORT.md": {"bytes": 1737, "sha256": "C9B1A9FA95E003DE0E4A6E59FAEBB40819D60364AF5321B445EDFBE69F21C84D", "git_blob_oid": "64ee6e681890e63d13c3a3c6eec8e09f8293c310"},
+    "reports/batches/BATCH-09/commands.json": {"bytes": 7802, "sha256": "B2A98F6658B1F5CEB7381631965B847369CF0937437413A3021D457D71B78B8B", "git_blob_oid": "cabfe1629518da1518376e3db5e7ec490025d7e9"},
+    "reports/batches/BATCH-09/environment.json": {"bytes": 3817, "sha256": "C8D13B0D7B46BEB2B5EFCFF3BB842AD46D2E419808BAAD9C8BE8402637A37411", "git_blob_oid": "99597415030224cf72abd5f83cb09955a1350b86"},
+    "reports/batches/BATCH-09/governance-sample.redacted.jsonl": {"bytes": 3119, "sha256": "C59AE6C292A14ED7A6CF8AB8001BA0E4A82DB936CCB71910FC86239AC64D57B5", "git_blob_oid": "4c08a4d9731f79cc2c9994c8d5b5c08df1a0153a"},
+    "reports/batches/BATCH-09/metrics-semantics.json": {"bytes": 3120, "sha256": "D919EB8C8AE0EEEFA0BF4E09CB17D0D3E5DD6E3EB40164E82F95A5D13AA9B363", "git_blob_oid": "02e8e575a3b8038853439a58f4c836d44b6fb56a"},
+    "reports/batches/BATCH-09/pip-check.txt": {"bytes": 223, "sha256": "9FEFDD10D828BA2018AB8F054AF6793FA3C0C089A3B60CEE9C29DAA4962E6E7F", "git_blob_oid": "8257507ad888abf7daed0f4e7fa68b78df65affb"}
+  }
+}

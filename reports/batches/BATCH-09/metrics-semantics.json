@@ -1,0 +1,83 @@
+{
+  "semantics_version": "1.0",
+  "batch_id": "BATCH-09",
+  "contract": {
+    "path": "schemas/runtime-metrics.schema.json",
+    "required_nonnegative_integer_fields": [
+      "input_tokens",
+      "output_tokens",
+      "inference_latency_ms",
+      "rule_substitution_count"
+    ]
+  },
+  "input_tokens": {
+    "meaning": "Input tokens consumed by this request's distinct real provider attempts.",
+    "source_priority": [
+      "PROVIDER_USAGE exact input field",
+      "TOKENIZER_ACTUAL only when model ID and revision exactly match",
+      "MISSING => 0"
+    ]
+  },
+  "output_tokens": {
+    "meaning": "Output tokens consumed by this request's distinct real provider attempts.",
+    "source_priority": [
+      "PROVIDER_USAGE exact output field",
+      "TOKENIZER_ACTUAL only when model ID and revision exactly match",
+      "MISSING => 0"
+    ]
+  },
+  "inference_latency_ms": {
+    "meaning": "Integer milliseconds measured with a monotonic clock around each real provider attempt.",
+    "aggregation": "Sum only completed, durably audited real attempts; a cache-only event contributes 0.",
+    "pure_rule_evaluate": 0
+  },
+  "rule_substitution_count": {
+    "frozen_definition": "Exactly 1 for one pure-rule evaluate request, representing the service rule chain replacing model inference; it is not the count of individual rules inspected or branches matched.",
+    "pure_rule_evaluate": 1,
+    "model_attempt": 0,
+    "cache_event": 0
+  },
+  "provider_usage": {
+    "accepted_shapes": [
+      ["input_tokens", "output_tokens"],
+      ["prompt_tokens", "completion_tokens"]
+    ],
+    "total_tokens_only": "MISSING; it is never split or used to invent positive values.",
+    "partial_pair": "Rejected as an ambiguous measurement configuration."
+  },
+  "retry_and_deduplication": {
+    "deduplication_key": "unique event_id / attempt_id within a GovernanceSession",
+    "same_attempt_replay": "Rejected before a second accumulation.",
+    "new_real_retry": "Its newly reported exact usage and latency are counted once.",
+    "historical_token_policy": "No prior-attempt or cached token usage is copied into a later event."
+  },
+  "cache": {
+    "HIT": "Records 0 model tokens and 0 inference latency; historical metrics remain only in prior event totals.",
+    "FALLBACK": "Records an explicit safe reason code such as provider_unavailable and does not claim a live model result.",
+    "BYPASSED": "Used for pure-rule evaluate and premeasured compatibility records."
+  },
+  "governance_record": {
+    "required_safe_fields": [
+      "request_id",
+      "run_id",
+      "model_id",
+      "model_revision",
+      "prompt_version",
+      "image_hashes",
+      "input_sources.kind",
+      "input_sources.reference_sha256",
+      "pii_masked_count",
+      "cache.status",
+      "cache.fallback_reason",
+      "metric_provenance"
+    ],
+    "forbidden_content": [
+      "raw PII",
+      "secret values",
+      "original image bytes",
+      "full original prompt",
+      "provider exception text"
+    ],
+    "audit_failure_policy": "A sink failure raises GovernanceLogWriteError and does not update request totals."
+  }
+}

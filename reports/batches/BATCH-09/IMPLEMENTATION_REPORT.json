@@ -1,0 +1,281 @@
+{
+  "report_version": "1.0",
+  "batch_id": "BATCH-09",
+  "status": "COMPLETED",
+  "result": "IMPLEMENTED",
+  "summary": "Implemented a request-scoped RuntimeMetrics collector and durable redacted governance sink. It records exact provider usage or a model-revision-matched tokenizer count, measures real attempt latency, keeps pure-rule evaluate at zero model metrics with one frozen rule substitution, and fails closed when audit logging fails.",
+  "repo_root": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松",
+  "worktree": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-09",
+  "branch": "codex/covenia-batch-09",
+  "base_integration_sha": "dbedd4e9f985911cc89b140d1a129586a09fbdf4",
+  "contract_version": "integration/covenia-b@dbedd4e9f985911cc89b140d1a129586a09fbdf4",
+  "plan_sha256": {
+    "MASTER_PLAN.md": {
+      "value": "56A5CAF32334DC1D5628DA67A3BAB24A250CC7C5FE3F762BD781682633808AE1",
+      "method": "SHA-256 over the authoritative current root working-copy bytes, verified against the execution package; controlled working-copy EOL basis."
+    },
+    "batches.json": {
+      "value": "FAE792913DCE0F2DE7BC799C452FD0964775804117287A9745A719722326A720",
+      "method": "SHA-256 over the authoritative current root working-copy bytes, verified against the execution package; controlled working-copy EOL basis."
+    },
+    "base_worktree_snapshot": {
+      "MASTER_PLAN.md": "FD9127B6BE57BCB741F6816FFBE786F71E82234BBC088C8FEE68A517C2F2353B",
+      "batches.json": "093A65A1435A1FC1869B0E2F90C862F7A3EDD521CAB56F11EC9A5ED8215E34B2",
+      "interpretation": "Historical dbedd integration snapshot only. It was not edited because plan files are forbidden; the authoritative root plan and current JSON entry matched the supplied BATCH-09 package."
+    }
+  },
+  "initial_worktree": [],
+  "dependency_receipts": [
+    {
+      "batch_id": "BATCH-04",
+      "verdict": "PASS",
+      "implementation_report": "reports/batches/BATCH-04/IMPLEMENTATION_REPORT.json",
+      "verification_report": "reports/batches/BATCH-04/VERIFICATION_REPORT.json",
+      "integration_sha": "9d093a492e576d7cb02b46c2ca60ebf2cac1c244",
+      "integration_receipt": "C:\\Users\\WONG Tsun Ming\\covenia-orchestration\\runs\\covenia-b-20260910-01\\integration-receipts\\BATCH-04.json",
+      "baseline_ancestry_checked": true
+    },
+    {
+      "batch_id": "BATCH-07",
+      "verdict": "PASS",
+      "implementation_report": "reports/batches/BATCH-07/IMPLEMENTATION_REPORT.json",
+      "verification_report": "reports/batches/BATCH-07/VERIFICATION_REPORT.json",
+      "integration_sha": "abaad9ae9228432ea514a45817c2fc166b27bad3",
+      "integration_receipt": "C:\\Users\\WONG Tsun Ming\\covenia-orchestration\\runs\\covenia-b-20260910-01\\integration-receipts\\BATCH-07.json",
+      "baseline_ancestry_checked": true,
+      "privacy_handoff_consumed": "Only pii_masked_count, image hashes, safe source reference hashes, and redacted model metadata cross into governance records."
+    }
+  ],
+  "external_gate_receipts": [],
+  "code_commits": [
+    "cac51bd9ecc38b318eae6eed22561be829c885c2"
+  ],
+  "commit_hash": "cac51bd9ecc38b318eae6eed22561be829c885c2",
+  "files_changed": [
+    "backend/src/covenia_b/observability/__init__.py",
+    "backend/src/covenia_b/observability/runtime.py",
+    "backend/tests/observability/test_runtime_metrics.py",
+    "reports/batches/BATCH-09/governance-sample.redacted.jsonl",
+    "reports/batches/BATCH-09/metrics-semantics.json",
+    "reports/batches/BATCH-09/IMPLEMENTATION_REPORT.json",
+    "reports/batches/BATCH-09/IMPLEMENTATION_REPORT.md",
+    "reports/batches/BATCH-09/commands.json",
+    "reports/batches/BATCH-09/environment.json",
+    "reports/batches/BATCH-09/pip-check.txt"
+  ],
+  "changed_files": {
+    "code_and_tests": [
+      {
+        "path": "backend/src/covenia_b/observability/__init__.py",
+        "git_blob_sha256": "4144011EDF0614F96A98D64825837721D5735C097FD54FE4774C8D3F9A8E290D"
+      },
+      {
+        "path": "backend/src/covenia_b/observability/runtime.py",
+        "git_blob_sha256": "3A7BF5AB83AC17B200626BAB9C3DB2C2F34DD6F107E17AFF0E1EEA19D5C8ADB9"
+      },
+      {
+        "path": "backend/tests/observability/test_runtime_metrics.py",
+        "git_blob_sha256": "122A224E4FC412095D3A2EFCEFD40EAE993DF0095C03A88DC53832749B49F410"
+      }
+    ],
+    "hash_method": "SHA-256 over raw bytes returned by git show cac51bd9ecc38b318eae6eed22561be829c885c2:<path>; all listed hashes are Git blob LF hashes, not default CRLF working-copy hashes.",
+    "report_artifacts": [
+      "reports/batches/BATCH-09/governance-sample.redacted.jsonl",
+      "reports/batches/BATCH-09/metrics-semantics.json",
+      "reports/batches/BATCH-09/IMPLEMENTATION_REPORT.json",
+      "reports/batches/BATCH-09/IMPLEMENTATION_REPORT.md",
+      "reports/batches/BATCH-09/commands.json",
+      "reports/batches/BATCH-09/environment.json",
+      "reports/batches/BATCH-09/pip-check.txt"
+    ]
+  },
+  "scope_check": {
+    "within_allowlist": true,
+    "allowlist": [
+      "backend/src/covenia_b/observability/**",
+      "backend/tests/observability/**",
+      "reports/batches/BATCH-09/**",
+      "backend/requirements-dev.lock only if a dependency is added"
+    ],
+    "forbidden_changes": [],
+    "unlisted_tracked_paths": [],
+    "requirements_dev_lock": {
+      "changed": false,
+      "change_reason": "No dependency was required.",
+      "git_blob_sha256": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+      "hash_method": "SHA-256 over raw git show bytes at both base and code commit."
+    },
+    "dependency_changes": [],
+    "plan_or_contract_files_changed": false,
+    "other_batch_files_changed": false,
+    "verification_report_written": false,
+    "environment_evidence": "reports/batches/BATCH-09/environment.json",
+    "log_redaction_evidence": "reports/batches/BATCH-09/governance-sample.redacted.jsonl and the behavioral leakage probe"
+  },
+  "tests_run": [
+    "backend/tests/observability: 10 passed",
+    "provider/retry/cache deterministic probe: 2 passed",
+    "audit logging failure negative control: 1 passed",
+    "PII/secret/prompt/original-image leakage probe: 1 passed",
+    "ruff check: passed",
+    "pip check: passed"
+  ],
+  "tests_passed": 10,
+  "tests_failed": 0,
+  "tests_environment_errors": 1,
+  "test_results": [
+    {
+      "command": "& C:\\cov-run\\batch-09\\venv\\Scripts\\python.exe -m pytest backend/tests/observability -q",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-09",
+      "exit_code": 0,
+      "duration_seconds": 1.6,
+      "mode": "UNIT",
+      "tests_passed": 10,
+      "tests_failed": 0,
+      "evidence": "reports/batches/BATCH-09/commands.json#observability-tests-normal-context"
+    },
+    {
+      "command": "Selected provider/retry/cache behavioral probe",
+      "exit_code": 0,
+      "mode": "PROTOCOL_DOUBLE",
+      "tests_passed": 2,
+      "tests_failed": 0,
+      "evidence": "reports/batches/BATCH-09/commands.json#provider-retry-cache-deterministic-probe"
+    },
+    {
+      "command": "Selected sink-failure negative control",
+      "exit_code": 0,
+      "mode": "MUTATION",
+      "tests_passed": 1,
+      "tests_failed": 0,
+      "evidence": "reports/batches/BATCH-09/commands.json#audit-failure-negative-control"
+    },
+    {
+      "command": "Selected JSONL leakage behavior scan",
+      "exit_code": 0,
+      "mode": "MUTATION",
+      "tests_passed": 1,
+      "tests_failed": 0,
+      "evidence": "reports/batches/BATCH-09/commands.json#pii-secret-prompt-image-leakage-probe"
+    }
+  ],
+  "acceptance_results": [
+    {
+      "criterion": "All four metrics are non-negative integers; supplied provider usage is passed through exactly; retries and cache events do not double-count historical tokens; missing usage does not fabricate a positive value.",
+      "status": "EVIDENCED",
+      "evidence": [
+        "backend/tests/observability/test_runtime_metrics.py",
+        "reports/batches/BATCH-09/metrics-semantics.json",
+        "reports/batches/BATCH-09/commands.json#provider-retry-cache-deterministic-probe"
+      ]
+    },
+    {
+      "criterion": "A simulated logging failure cannot silently mark unaudited metrics as successful, and the PII leakage probe passes.",
+      "status": "EVIDENCED",
+      "evidence": [
+        "reports/batches/BATCH-09/commands.json#audit-failure-negative-control",
+        "reports/batches/BATCH-09/commands.json#pii-secret-prompt-image-leakage-probe"
+      ]
+    },
+    {
+      "criterion": "Governance records link request_id to model or rule input provenance with structured fields.",
+      "status": "EVIDENCED",
+      "evidence": [
+        "reports/batches/BATCH-09/governance-sample.redacted.jsonl",
+        "backend/src/covenia_b/observability/runtime.py"
+      ]
+    },
+    {
+      "criterion": "Real provider attempts are timed; pure-rule evaluate has zero model tokens and latency with one frozen rule substitution; cache hit and fallback reasons are explicit.",
+      "status": "EVIDENCED",
+      "evidence": [
+        "backend/tests/observability/test_runtime_metrics.py",
+        "reports/batches/BATCH-09/metrics-semantics.json"
+      ]
+    },
+    {
+      "criterion": "Logs and samples contain no raw PII, secret values, original images, or complete original prompts while preserving image hashes, PII counts, and model/prompt versions.",
+      "status": "EVIDENCED",
+      "evidence": [
+        "reports/batches/BATCH-09/governance-sample.redacted.jsonl",
+        "reports/batches/BATCH-09/commands.json#pii-secret-prompt-image-leakage-probe"
+      ]
+    },
+    {
+      "criterion": "The batch uses its own absolute venv; no dependency was added; pip check exits zero.",
+      "status": "EVIDENCED",
+      "evidence": [
+        "reports/batches/BATCH-09/environment.json",
+        "reports/batches/BATCH-09/pip-check.txt"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "reports/batches/BATCH-09/governance-sample.redacted.jsonl",
+      "classification": "REDACTED_GOVERNANCE_SAMPLE"
+    },
+    {
+      "path": "reports/batches/BATCH-09/metrics-semantics.json",
+      "classification": "SEMANTICS"
+    },
+    {
+      "path": "reports/batches/BATCH-09/commands.json",
+      "classification": "EXECUTION_EVIDENCE"
+    },
+    {
+      "path": "reports/batches/BATCH-09/environment.json",
+      "classification": "ENVIRONMENT_EVIDENCE"
+    },
+    {
+      "path": "reports/batches/BATCH-09/pip-check.txt",
+      "classification": "ENVIRONMENT_EVIDENCE"
+    }
+  ],
+  "model_runs": [],
+  "not_completed": [],
+  "remaining_risks": [
+    "No live provider or image service was invoked in this module batch; later callers must wrap real provider calls with begin_model_attempt/complete or fail.",
+    "The frozen MetricsSink compatibility method labels externally supplied metrics as PORT_SUPPLIED; downstream model callers must use the provenance-aware API rather than bypassing it.",
+    "This is implementation evidence, not independent verification or integration acceptance."
+  ],
+  "risks": [
+    "One elevated test retry hit a temporary-directory ACL before a tmp_path fixture; the same exact normal-context command passed 10/10 and the event is retained as non-passing environmental evidence."
+  ],
+  "blockers": [],
+  "rollback": {
+    "code": "git revert cac51bd9ecc38b318eae6eed22561be829c885c2; do not claim live or cache governance acceptance until a replacement audit sink is restored.",
+    "runtime_state": "NOT_APPLICABLE: this batch creates no durable business state; keep existing external governance logs for audit rather than deleting them."
+  },
+  "handoff": {
+    "interfaces": [
+      "RuntimeMetricsCollector.start_request(GovernanceContext)",
+      "GovernanceSession.begin_model_attempt(...).complete(...) or .fail(...)",
+      "GovernanceSession.record_rule_evaluation(...) for pure evaluate",
+      "GovernanceSession.record_cache_hit(...) and record_cache_fallback(...)"
+    ],
+    "input_versions": {
+      "runtime_metrics_schema": "schemas/runtime-metrics.schema.json",
+      "model_governance": "MODEL_GOVERNANCE.md",
+      "privacy_boundary": "BATCH-07 integrated at abaad9ae9228432ea514a45817c2fc166b27bad3"
+    },
+    "reproduction": [
+      "Use C:\\cov-run\\batch-09\\venv\\Scripts\\python.exe",
+      "Run backend/tests/observability with pytest -q",
+      "Read reports/batches/BATCH-09/metrics-semantics.json before integrating a provider or cache"
+    ],
+    "remaining_gates": [
+      "Independent BATCH-09 verification",
+      "Integration into a later provider/service caller",
+      "Integrated re-test after merge"
+    ]
+  },
+  "handoff_notes": [
+    "Use only hashed SafeInputSource references, image SHA-256 values, aggregate PII count, version labels, and reason codes in governance records.",
+    "Do not copy historical tokens into cache events; use a new unique attempt ID for each actual retry.",
+    "Do not write or modify VERIFICATION_REPORT.json; an independent verifier owns it."
+  ],
+  "implementation_evidence_not_independent_acceptance": true,
+  "next_batch_started": false,
+  "push_or_merge_performed": false
+}

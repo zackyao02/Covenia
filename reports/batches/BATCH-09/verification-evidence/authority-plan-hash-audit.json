@@ -1,0 +1,40 @@
+{
+  "status": "PASS",
+  "required_method": "SHA-256 over raw bytes emitted by git cat-file blob and git show <sha>:<path>; working-copy hashes are not authoritative",
+  "authority_integration_commit": "69d78e88c5c2ee0f7cd25c7a04c0eaa8223d0f51",
+  "raw_git_verification": {
+    "MASTER_PLAN.md": {
+      "bytes": 210779,
+      "cat_file_sha256": "76BB1D19197918C8C5D6677CB2F9CC25B7F2EA575FD3C6F1D231B494DB64F316",
+      "git_show_sha256": "76BB1D19197918C8C5D6677CB2F9CC25B7F2EA575FD3C6F1D231B494DB64F316",
+      "expected_sha256": "76BB1D19197918C8C5D6677CB2F9CC25B7F2EA575FD3C6F1D231B494DB64F316",
+      "cat_file_equals_show": true,
+      "expected_matches_both": true
+    },
+    "batches.json": {
+      "bytes": 202544,
+      "cat_file_sha256": "00179B264B25C51DCDE07B4576A6B09B70B3591F0AA1CBBD6B854DB0A1EFDB77",
+      "git_show_sha256": "00179B264B25C51DCDE07B4576A6B09B70B3591F0AA1CBBD6B854DB0A1EFDB77",
+      "expected_sha256": "00179B264B25C51DCDE07B4576A6B09B70B3591F0AA1CBBD6B854DB0A1EFDB77",
+      "cat_file_equals_show": true,
+      "expected_matches_both": true
+    }
+  },
+  "planning_receipt": {
+    "path": "C:\\Users\\WONG Tsun Ming\\covenia-orchestration\\runs\\covenia-b-20260910-01\\integration-receipts\\PLANNING-STANDING-RULES.json",
+    "hashes_match_raw_git_values": true,
+    "hash_method_declares_raw_git_show_blob_sha256": true,
+    "working_copy_hashes_present": true,
+    "working_copy_hashes_are_explicitly_diagnostic_only": true
+  },
+  "correction_receipt": {
+    "path": "C:\\Users\\WONG Tsun Ming\\covenia-orchestration\\runs\\covenia-b-20260910-01\\integration-receipts\\BATCH-09-PLAN-HASH-CORRECTION.json",
+    "finding_resolved_field": true,
+    "after_hashes_match_raw_git_values": true
+  },
+  "scheduler_state": {
+    "path": "C:\\Users\\WONG Tsun Ming\\covenia-orchestration\\run-state.json",
+    "modified_by_this_verification": false,
+    "scope_note": "The current scheduler ledger points to a later plan merge f4143b7b4957dfa70c3cae882abe0f4c619cc347 and its own raw blob hashes. It was read only; the BATCH-09 authority check uses the user-specified integration commit above."
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "status": "FAIL",
+  "required_method": "SHA-256 over raw bytes emitted by git show <sha>:<path>; no default working-copy hash may satisfy this check.",
+  "authority_receipt": {
+    "path": "C:\\Users\\WONG Tsun Ming\\covenia-orchestration\\runs\\covenia-b-20260910-01\\integration-receipts\\PLANNING-STANDING-RULES.json",
+    "sha256": "3E830D0608A6754990D891F32CF4356C04C0618EC058F9A7913DEC116F8B1488",
+    "source_sha": "14f35292dd71ac0e5d8741a1e90ad48f95463856",
+    "final_integration_commit": "69d78e88c5c2ee0f7cd25c7a04c0eaa8223d0f51",
+    "receipt_hash_method": "SHA256 over [IO.File]::ReadAllBytes for MASTER_PLAN.md and batches.json"
+  },
+  "declared_final_values_recorded_as_requested": {
+    "MASTER_PLAN.md": "1AEA6CAA46073BFFE5AD2BD2C1A6D8AFFF983F3371ABCE766C5882366B9292A1",
+    "batches.json": "BCF9CEC2AACE480B3D7F2C742C8F3DD7026C6493D4047009B330AF19E2E29E25"
+  },
+  "working_copy_provenance_only": {
+    "worktree": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-integration",
+    "head": "69d78e88c5c2ee0f7cd25c7a04c0eaa8223d0f51",
+    "MASTER_PLAN.md": "1AEA6CAA46073BFFE5AD2BD2C1A6D8AFFF983F3371ABCE766C5882366B9292A1",
+    "batches.json": "BCF9CEC2AACE480B3D7F2C742C8F3DD7026C6493D4047009B330AF19E2E29E25",
+    "note": "These values demonstrate the receipt provenance only. They are not used as acceptance hash evidence."
+  },
+  "raw_git_show_blob_verification": {
+    "authority_integration_commit": "69d78e88c5c2ee0f7cd25c7a04c0eaa8223d0f51",
+    "MASTER_PLAN.md": {
+      "git_blob": "f1a4af5f473d94c949682d9d4f3aa393318a099d",
+      "bytes": 210779,
+      "sha256": "76BB1D19197918C8C5D6677CB2F9CC25B7F2EA575FD3C6F1D231B494DB64F316",
+      "matches_declared_final_value": false
+    },
+    "batches.json": {
+      "git_blob": "e0e24656b7c5e290d29dd7011e75396f9b9c8dbc",
+      "bytes": 202544,
+      "sha256": "00179B264B25C51DCDE07B4576A6B09B70B3591F0AA1CBBD6B854DB0A1EFDB77",
+      "matches_declared_final_value": false
+    }
+  },
+  "batch_09_scope_and_acceptance_criteria_changed_by_reloaded_plan": false,
+  "conclusion": "The declared values are correctly recorded but cannot be treated as verified committed-blob SHA-256 values. This prevents PASS under the task-specific hash rule."
+}

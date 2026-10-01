@@ -1,0 +1,5 @@
+COMMAND: C:\cov-run\batch-09-verify-2\venv\Scripts\python.exe -m pytest -p no:cacheprovider backend/tests/observability -q -k "audit_write_failure or cache_fallback_and_failed_attempt"
+CWD: C:\Users\WONG Tsun Ming\Desktop\欧莱雅黑客松\work\repo2
+EXIT_CODE: 0
+..                                                                       [100%]
+2 passed, 8 deselected in 0.24s

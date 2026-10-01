@@ -1,0 +1,67 @@
+[
+  {
+    "id": "environment-preflight",
+    "exit_code": 0,
+    "log": "C:\\cov-run\\batch-09-verify-1\\logs\\environment-preflight.log"
+  },
+  {
+    "id": "dependency-imports",
+    "exit_code": 0,
+    "log": "C:\\cov-run\\batch-09-verify-1\\logs\\dependency-imports.log"
+  },
+  {
+    "id": "observability-pytest",
+    "exit_code": 0,
+    "log": "C:\\cov-run\\batch-09-verify-1\\logs\\observability-pytest.log"
+  },
+  {
+    "id": "provider-retry-cache-pytest",
+    "exit_code": 0,
+    "log": "C:\\cov-run\\batch-09-verify-1\\logs\\provider-retry-cache-pytest.log"
+  },
+  {
+    "id": "audit-failure-pytest",
+    "exit_code": 0,
+    "log": "C:\\cov-run\\batch-09-verify-1\\logs\\audit-failure-pytest.log"
+  },
+  {
+    "id": "pii-leakage-pytest",
+    "exit_code": 0,
+    "log": "C:\\cov-run\\batch-09-verify-1\\logs\\pii-leakage-pytest.log"
+  },
+  {
+    "id": "ruff",
+    "exit_code": 0,
+    "log": "C:\\cov-run\\batch-09-verify-1\\logs\\ruff.log"
+  },
+  {
+    "id": "pip-list",
+    "exit_code": 0,
+    "log": "C:\\cov-run\\batch-09-verify-1\\logs\\pip-list.log"
+  },
+  {
+    "id": "pip-check",
+    "exit_code": 0,
+    "log": "C:\\cov-run\\batch-09-verify-1\\logs\\pip-check.log"
+  },
+  {
+    "id": "scope-diff",
+    "exit_code": 0,
+    "log": "C:\\cov-run\\batch-09-verify-1\\logs\\scope-diff.log"
+  },
+  {
+    "id": "working-tree-diff-check",
+    "exit_code": 0,
+    "log": "C:\\cov-run\\batch-09-verify-1\\logs\\working-tree-diff-check.log"
+  },
+  {
+    "id": "working-tree-status-before-verification-output",
+    "exit_code": 0,
+    "log": "C:\\cov-run\\batch-09-verify-1\\logs\\working-tree-status-before-verification-output.log"
+  },
+  {
+    "id": "independent-boundary-probe",
+    "exit_code": 0,
+    "log": "C:\\cov-run\\batch-09-verify-1\\logs\\independent-boundary-probe.log"
+  }
+]

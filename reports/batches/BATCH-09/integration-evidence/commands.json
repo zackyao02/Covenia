@@ -1,0 +1,86 @@
+{
+  "report_version": "1.0",
+  "batch_id": "BATCH-09",
+  "task_id": "01a0edf2-c519-7be3-8713-6899dc9520dd",
+  "worktree": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-integration",
+  "base_sha": "f507e37d94c0532f377a9475de2129c52f75d584",
+  "activity_time": "2026-10-01T22:40:01.5806216+08:00",
+  "execution_context": "approved require_escalated after default sandbox helper_unknown_error",
+  "commands": [
+    {
+      "id": "venv_create",
+      "command": "D:\\python\\python.exe -m venv C:\\cov-run\\i09oct1\\venv",
+      "exit_code": 0
+    },
+    {
+      "id": "lock_install",
+      "command": "C:\\cov-run\\i09oct1\\venv\\Scripts\\python.exe -m pip install --no-deps -r backend/requirements-dev.lock",
+      "exit_code": 0
+    },
+    {
+      "id": "editable_install",
+      "command": "C:\\cov-run\\i09oct1\\venv\\Scripts\\python.exe -m pip install --no-deps --no-build-isolation -e backend",
+      "exit_code": 0
+    },
+    {
+      "id": "pytest_initial",
+      "command": "C:\\cov-run\\i09oct1\\venv\\Scripts\\python.exe -m pytest backend/tests/observability -q",
+      "started_at": "2026-10-01T22:46:37.9432324+08:00",
+      "exit_code": 1,
+      "result": "9 passed, 3 warnings, 1 error in 0.69s",
+      "classification": "ENVIRONMENT_ACL",
+      "error": "PermissionError [WinError 5] during tmp_path fixture setup at C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\pytest-of-WONG Tsun Ming; existing backend/.pytest_cache also produced write warnings",
+      "treated_as_pass": false
+    },
+    {
+      "id": "pytest_retry",
+      "command": "C:\\cov-run\\i09oct1\\venv\\Scripts\\python.exe -m pytest backend/tests/observability -q",
+      "started_at": "2026-10-01T22:47:18.2306173+08:00",
+      "environment": {
+        "TEMP": "C:\\cov-run\\i09oct1\\tmp",
+        "TMP": "C:\\cov-run\\i09oct1\\tmp",
+        "PYTEST_ADDOPTS": "-o cache_dir=C:\\cov-run\\i09oct1\\pytest-cache"
+      },
+      "exit_code": 0,
+      "result": "10 passed in 0.27s"
+    },
+    {
+      "id": "ruff",
+      "command": "C:\\cov-run\\i09oct1\\venv\\Scripts\\python.exe -m ruff check backend/src/covenia_b/observability backend/tests/observability",
+      "started_at": "2026-10-01T22:46:39.1003776+08:00",
+      "exit_code": 0,
+      "result": "All checks passed!"
+    },
+    {
+      "id": "pip_check",
+      "command": "C:\\cov-run\\i09oct1\\venv\\Scripts\\python.exe -m pip check",
+      "started_at": "2026-10-01T22:46:39.2815137+08:00",
+      "exit_code": 0,
+      "result": "No broken requirements found."
+    },
+    {
+      "id": "integration_smoke_precommit",
+      "command": "C:\\cov-run\\i09oct1\\venv\\Scripts\\python.exe -X utf8 reports/batches/BATCH-09/integration-evidence/smoke.py",
+      "started_at": "2026-10-01T22:46:40.1124419+08:00",
+      "exit_code": 0,
+      "result": "PASS; installed integration source, MetricsSink, exact provider usage, cache, rule metrics, redacted JSONL, audit failure",
+      "coverage": "Local integration probe with deterministic usage/clock; no live model or HTTP claim."
+    },
+    {
+      "id": "git_diff_check",
+      "command": "git diff --check",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "id": "git_cached_diff_check",
+      "command": "git diff --cached --check",
+      "exit_code": 0,
+      "result": "PASS"
+    }
+  ],
+  "source_code_modified": false,
+  "other_batches_started": [],
+  "run_state_modified": false,
+  "main_push_performed": false
+}

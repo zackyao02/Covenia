@@ -1,0 +1,23 @@
+{
+  "batch_id": "BATCH-09",
+  "interpreter": "C:\\cov-run\\i09oct1\\venv\\Scripts\\python.exe",
+  "python_version": "3.13.5",
+  "sys_prefix": "C:\\cov-run\\i09oct1\\venv",
+  "sys_base_prefix": "D:\\python",
+  "run_dir": "C:\\cov-run\\i09oct1",
+  "venv": "C:\\cov-run\\i09oct1\\venv",
+  "venv_direct_child": true,
+  "include_system_site_packages": false,
+  "pythonpath": "UNSET",
+  "longest_venv_path": "C:\\cov-run\\i09oct1\\venv\\Lib\\site-packages\\pkg_resources\\tests\\data\\my-test-package_unpacked-egg\\my_test_package-1.0-py3.7.egg\\EGG-INFO\\dependency_links.txt",
+  "longest_venv_path_length": 155,
+  "longest_venv_path_lt_250": true,
+  "imports": {
+    "pytest": "8.3.4",
+    "jsonschema": "4.25.0"
+  },
+  "editable_source": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/worktrees/covenia-integration/backend/src/covenia_b/observability/runtime.py",
+  "lock_install_exit_code": 0,
+  "editable_install_exit_code": 0,
+  "pip_check_exit_code": 0
+}

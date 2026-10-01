@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "controls": [
+    {
+      "id": "NC-09-AUDIT-SINK-FAILURE",
+      "scenario": "Governance sink raises during a record write",
+      "expected": "GovernanceLogWriteError propagates and request totals remain zero",
+      "result": "PASS",
+      "evidence": "verification-evidence/command-outputs/audit-failure-pytest.log"
+    },
+    {
+      "id": "NC-09-PII-SECRET-PROMPT-IMAGE",
+      "scenario": "Raw phone, secret, prompt, and original image sentinels supplied to a JSONL audit path",
+      "expected": "Sentinels absent; only image hash, PII count, and prompt version remain",
+      "result": "PASS",
+      "evidence": "verification-evidence/command-outputs/pii-leakage-pytest.log"
+    },
+    {
+      "id": "NC-09-INDEPENDENT-BOUNDARY",
+      "scenario": "Independent probe covers provider usage, cache hit, duplicate event, pure rule evaluation, sink failure, request-to-model/source trace, and redaction",
+      "expected": "Exact four metrics, zero cache addition, one pure-rule substitution, failure propagation, and no raw leakage",
+      "result": "PASS",
+      "evidence": "verification-evidence/command-outputs/independent-boundary-probe.log"
+    }
+  ]
+}

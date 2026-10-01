@@ -1,0 +1,34 @@
+COMMAND: C:\cov-run\batch-09-verify-2\venv\Scripts\python.exe -m pip list --format=freeze
+CWD: C:\Users\WONG Tsun Ming\Desktop\欧莱雅黑客松\work\repo2
+EXIT_CODE: 0
+annotated-types==0.7.0
+anyio==4.8.0
+attrs==26.1.0
+build==1.2.2.post1
+click==8.1.8
+colorama==0.4.6
+covenia-b==0.0.0
+fastapi==0.115.6
+h11==0.14.0
+idna==3.10
+iniconfig==2.0.0
+jsonschema==4.25.0
+jsonschema-specifications==2025.9.1
+packaging==24.2
+pip==25.1.1
+pluggy==1.5.0
+pydantic==2.10.5
+pydantic_core==2.27.2
+pydantic-settings==2.7.1
+pyproject_hooks==1.2.0
+pytest==8.3.4
+python-dotenv==1.0.1
+referencing==0.37.0
+rpds-py==2026.6.3
+ruff==0.8.4
+setuptools==75.8.0
+sniffio==1.3.1
+starlette==0.41.3
+typing-extensions==4.12.2
+uvicorn==0.34.0
+wheel==0.45.1

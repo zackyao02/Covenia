@@ -1,0 +1,37 @@
+{
+  "batch_id": "BATCH-09",
+  "base_sha": "f507e37d94c0532f377a9475de2129c52f75d584",
+  "reviewed_implementation": "6a738add62d82dda4d59d1da2bb94bbe56702006",
+  "pass_sha": "3d227ac208f3f373c7715ef78958dc942d428994",
+  "old_fail_sha": "db0b1d3acd814444803806f76d657f8e1777caa7",
+  "source_commits": [
+    "cac51bd9ecc38b318eae6eed22561be829c885c2",
+    "6a738add62d82dda4d59d1da2bb94bbe56702006",
+    "3d227ac208f3f373c7715ef78958dc942d428994"
+  ],
+  "merge_base": "dbedd4e9f985911cc89b140d1a129586a09fbdf4",
+  "base_ancestor_of_pass": false,
+  "implementation_ancestor_of_pass": true,
+  "ff_only": false,
+  "method": "Single commit on latest integration base; import only selected Git paths with exact source blob identity; no branch history merge.",
+  "non_ff_reason": "The verification branch diverged before current planning, prior batch integrations, and product-owner-authorized schema change. Fast-forward is impossible. Merging/replacing its full tree would risk importing obsolete plan/schema state.",
+  "source_files": 32,
+  "history_files": 26,
+  "source_blobs_identical": true,
+  "history_blobs_identical": true,
+  "history_root": "reports/batches/BATCH-09/verification-history/round-1",
+  "history_policy": "Original FAIL report and evidence copied verbatim from old_fail_sha. Embedded original evidence paths are unchanged; resolve them against the round-1 archive root.",
+  "allowed_paths": [
+    "backend/src/covenia_b/observability/**",
+    "backend/tests/observability/**",
+    "reports/batches/BATCH-09/**"
+  ],
+  "prior_integration_policy": "All paths outside the above scope must have identical tree entries to base_sha; schema, contract lock, plans, other batch artifacts and dependency lock remain at the latest base.",
+  "main_refs_before": {
+    "refs/heads/main": "4e83f3baeb5f4d6d9ee9b8bfc61c112abc1f55cb",
+    "refs/remotes/origin/main": "4e83f3baeb5f4d6d9ee9b8bfc61c112abc1f55cb"
+  },
+  "run_state_modified": false,
+  "main_push_performed": false,
+  "other_batches_started": []
+}

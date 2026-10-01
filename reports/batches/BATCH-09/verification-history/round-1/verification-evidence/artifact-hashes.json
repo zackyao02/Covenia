@@ -1,0 +1,47 @@
+{
+  "hash_method": "SHA-256 over raw bytes streamed from git show <sha>:<path> unless explicitly labeled receipt_file or working_copy_provenance_only.",
+  "reviewed_code_commit": "cac51bd9ecc38b318eae6eed22561be829c885c2",
+  "reviewed_sha": "6a738add62d82dda4d59d1da2bb94bbe56702006",
+  "artifacts": {
+    "backend/requirements-dev.lock@base": {
+      "git_blob": "4c3f8019eda3a683a5cf424eaa5dbc69b0cf91ef",
+      "bytes": 676,
+      "sha256": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04"
+    },
+    "backend/requirements-dev.lock@code": {
+      "git_blob": "4c3f8019eda3a683a5cf424eaa5dbc69b0cf91ef",
+      "bytes": 676,
+      "sha256": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04"
+    },
+    "backend/requirements-dev.lock@review": {
+      "git_blob": "4c3f8019eda3a683a5cf424eaa5dbc69b0cf91ef",
+      "bytes": 676,
+      "sha256": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04"
+    },
+    "backend/src/covenia_b/observability/runtime.py@code": {
+      "git_blob": "a3f16e1d27f0c388090e1c71a10a0af3c30a9dd1",
+      "bytes": 29615,
+      "sha256": "3A7BF5AB83AC17B200626BAB9C3DB2C2F34DD6F107E17AFF0E1EEA19D5C8ADB9"
+    },
+    "backend/tests/observability/test_runtime_metrics.py@code": {
+      "git_blob": "d9f0d5577fba20d1373e75a339d8e4fb25e3e4de",
+      "bytes": 12044,
+      "sha256": "122A224E4FC412095D3A2EFCEFD40EAE993DF0095C03A88DC53832749B49F410"
+    },
+    "reports/batches/BATCH-09/IMPLEMENTATION_REPORT.json@review": {
+      "git_blob": "36d043f61ffe0de857b6fb76fc0660605387c636",
+      "bytes": 13134,
+      "sha256": "2417E38E2DBF969A01B86DC0BD99ADD9F37D5646E2D543380E62C05E32CDFBCD"
+    },
+    "reports/batches/BATCH-09/metrics-semantics.json@review": {
+      "git_blob": "02e8e575a3b8038853439a58f4c836d44b6fb56a",
+      "bytes": 3120,
+      "sha256": "D919EB8C8AE0EEEFA0BF4E09CB17D0D3E5DD6E3EB40164E82F95A5D13AA9B363"
+    },
+    "reports/batches/BATCH-09/governance-sample.redacted.jsonl@review": {
+      "git_blob": "4c08a4d9731f79cc2c9994c8d5b5c08df1a0153a",
+      "bytes": 3119,
+      "sha256": "C59AE6C292A14ED7A6CF8AB8001BA0E4A82DB936CCB71910FC86239AC64D57B5"
+    }
+  }
+}

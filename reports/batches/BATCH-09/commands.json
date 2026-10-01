@@ -1,0 +1,168 @@
+{
+  "record_version": "1.0",
+  "batch_id": "BATCH-09",
+  "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-09",
+  "python_interpreter": "C:\\cov-run\\batch-09\\venv\\Scripts\\python.exe",
+  "commands": [
+    {
+      "id": "identity-preflight",
+      "command": "& \"C:\\cov-run\\batch-09\\venv\\Scripts\\python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"C:\\cov-run\\batch-09\\venv\\Scripts\\python.exe\"",
+      "exit_code": 0,
+      "duration_seconds": 0.075,
+      "output_summary": "Interpreter identity matched; CPython 3.13.5; sys.prefix differs from sys.base_prefix."
+    },
+    {
+      "id": "locked-install",
+      "command": "& \"C:\\cov-run\\batch-09\\venv\\Scripts\\python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "exit_code": 0,
+      "duration_seconds": 1.605,
+      "output_summary": "All exact pins already satisfied in the dedicated isolated venv."
+    },
+    {
+      "id": "editable-install",
+      "command": "& \"C:\\cov-run\\batch-09\\venv\\Scripts\\python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "exit_code": 0,
+      "duration_seconds": 2.873,
+      "output_summary": "Editable covenia-b 0.0.0 built and installed from this BATCH-09 worktree."
+    },
+    {
+      "id": "dependency-imports",
+      "command": "& \"C:\\cov-run\\batch-09\\venv\\Scripts\\python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "exit_code": 0,
+      "duration_seconds": 0.289,
+      "output_summary": "pytest/jsonschema import OK."
+    },
+    {
+      "id": "observability-tests-normal-context",
+      "command": "& \"C:\\cov-run\\batch-09\\venv\\Scripts\\python.exe\" -m pytest backend/tests/observability -q",
+      "exit_code": 0,
+      "duration_seconds": 1.6,
+      "tests_passed": 10,
+      "tests_failed": 0,
+      "tests_skipped": 0,
+      "output_summary": "10 passed in 0.24s."
+    },
+    {
+      "id": "provider-retry-cache-deterministic-probe",
+      "command": "& \"C:\\cov-run\\batch-09\\venv\\Scripts\\python.exe\" -m pytest backend/tests/observability/test_runtime_metrics.py -q -k \"provider_usage_is_exact or retry_and_cache_events\"",
+      "exit_code": 0,
+      "duration_seconds": 1.6,
+      "tests_passed": 2,
+      "tests_failed": 0,
+      "tests_deselected": 8,
+      "output_summary": "Provider usage, distinct retry accumulation, and zero-metric cache-hit behavior passed deterministically."
+    },
+    {
+      "id": "audit-failure-negative-control",
+      "command": "& \"C:\\cov-run\\batch-09\\venv\\Scripts\\python.exe\" -m pytest backend/tests/observability/test_runtime_metrics.py -q -k \"audit_write_failure\"",
+      "exit_code": 0,
+      "duration_seconds": 1.6,
+      "tests_passed": 1,
+      "tests_failed": 0,
+      "tests_deselected": 9,
+      "output_summary": "Simulated sink failure raised GovernanceLogWriteError and left request totals at zero."
+    },
+    {
+      "id": "pii-secret-prompt-image-leakage-probe",
+      "command": "& \"C:\\cov-run\\batch-09\\venv\\Scripts\\python.exe\" -m pytest backend/tests/observability/test_runtime_metrics.py -q -k \"jsonl_record_does_not_retain_pii_secret_prompt_or_original_image\"",
+      "exit_code": 0,
+      "duration_seconds": 1.6,
+      "tests_passed": 1,
+      "tests_failed": 0,
+      "tests_deselected": 9,
+      "output_summary": "Behavioral JSONL scan confirmed internal PII, secret, full-prompt, and original-image sentinels were absent while hash/count/version audit fields remained."
+    },
+    {
+      "id": "ruff",
+      "command": "& \"C:\\cov-run\\batch-09\\venv\\Scripts\\python.exe\" -m ruff check backend/src/covenia_b/observability backend/tests/observability",
+      "exit_code": 0,
+      "duration_seconds": 1.2,
+      "output_summary": "All checks passed."
+    },
+    {
+      "id": "pip-list",
+      "command": "& \"C:\\cov-run\\batch-09\\venv\\Scripts\\python.exe\" -m pip list --format=json",
+      "exit_code": 0,
+      "duration_seconds": 0.349,
+      "output_summary": "31 installed packages, including editable covenia-b; versions recorded in environment.json."
+    },
+    {
+      "id": "pip-check",
+      "command": "& \"C:\\cov-run\\batch-09\\venv\\Scripts\\python.exe\" -m pip check",
+      "exit_code": 0,
+      "duration_seconds": 0.485,
+      "output_summary": "No broken requirements found.",
+      "evidence": "reports/batches/BATCH-09/pip-check.txt"
+    },
+    {
+      "id": "git-diff-check-before-report",
+      "command": "git diff --check",
+      "exit_code": 0,
+      "duration_seconds": 0.068,
+      "output_summary": "No whitespace errors before report creation."
+    },
+    {
+      "id": "git-status-before-report",
+      "command": "git status --short",
+      "exit_code": 0,
+      "duration_seconds": 0.07,
+      "output_summary": "Clean after the code-and-test commit, before implementation artifacts were written."
+    },
+    {
+      "id": "report-json-parse",
+      "command": "& \"C:\\cov-run\\batch-09\\venv\\Scripts\\python.exe\" -c \"json.loads on report JSON and each governance JSONL line\"",
+      "exit_code": 0,
+      "duration_seconds": 0.064,
+      "output_summary": "JSON artifacts parse OK; governance records=3."
+    },
+    {
+      "id": "report-leakage-scan",
+      "command": "rg -F -n <internal redaction sentinels> reports/batches/BATCH-09; normalize no-match exit 1 to exit 0",
+      "exit_code": 0,
+      "raw_rg_exit_code": 1,
+      "duration_seconds": 0.09,
+      "output_summary": "LEAKAGE_SCAN_PASS_NO_MATCHES; no internal PII, secret, full-prompt, or original-image sentinels in report artifacts."
+    },
+    {
+      "id": "verification-artifacts-absent",
+      "command": "Test-Path reports/batches/BATCH-09/VERIFICATION_REPORT.json and verification-evidence",
+      "exit_code": 0,
+      "duration_seconds": 0.081,
+      "output_summary": "VERIFICATION_ARTIFACTS_ABSENT."
+    },
+    {
+      "id": "git-diff-check-after-report-artifacts",
+      "command": "git diff --check",
+      "exit_code": 0,
+      "duration_seconds": 0.113,
+      "output_summary": "No whitespace errors after report artifact creation."
+    },
+    {
+      "id": "git-status-after-report-artifacts",
+      "command": "git status --short --untracked-files=all",
+      "exit_code": 0,
+      "duration_seconds": 0.106,
+      "output_summary": "Seven expected BATCH-09 report artifacts were untracked before exact staging."
+    }
+  ],
+  "disclosed_environment_retry": {
+    "id": "observability-tests-elevated-retry",
+    "command": "& \"C:\\cov-run\\batch-09\\venv\\Scripts\\python.exe\" -m pytest backend/tests/observability -q",
+    "exit_code": 1,
+    "classification": "ENVIRONMENT_TEMP_DIRECTORY_ACL",
+    "output_summary": "The elevated process could not enumerate its inherited pytest temporary directory (WinError 5) before one tmp_path test; 9 tests had already passed and no assertion failure occurred.",
+    "resolution": "The exact command was rerun in the normal execution context and passed 10/10. This failed elevated retry is not presented as passing evidence."
+  },
+  "scope_and_hash_checks": {
+    "base_commit": "dbedd4e9f985911cc89b140d1a129586a09fbdf4",
+    "code_commit": "cac51bd9ecc38b318eae6eed22561be829c885c2",
+    "code_paths_only": [
+      "backend/src/covenia_b/observability/__init__.py",
+      "backend/src/covenia_b/observability/runtime.py",
+      "backend/tests/observability/test_runtime_metrics.py"
+    ],
+    "requirements_dev_lock_unchanged": true,
+    "lock_hash_method": "SHA-256 over raw bytes from git show <sha>:backend/requirements-dev.lock",
+    "lock_hash": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04"
+  }
+}

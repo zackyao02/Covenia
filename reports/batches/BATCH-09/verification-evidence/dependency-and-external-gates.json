@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "batch_id": "BATCH-04",
+      "integration_sha": "9d093a492e576d7cb02b46c2ca60ebf2cac1c244",
+      "receipt": "C:\\Users\\WONG Tsun Ming\\covenia-orchestration\\runs\\covenia-b-20260910-01\\integration-receipts\\BATCH-04.json",
+      "receipt_status": "SUCCESS",
+      "receipt_commit_matches": true,
+      "commit_object_present_in_repo2": true
+    },
+    {
+      "batch_id": "BATCH-07",
+      "integration_sha": "abaad9ae9228432ea514a45817c2fc166b27bad3",
+      "receipt": "C:\\Users\\WONG Tsun Ming\\covenia-orchestration\\runs\\covenia-b-20260910-01\\integration-receipts\\BATCH-07.json",
+      "receipt_status": "SUCCESS",
+      "receipt_commit_matches": true,
+      "commit_object_present_in_repo2": true
+    }
+  ],
+  "no_dependency_batch_execution_started": true
+}

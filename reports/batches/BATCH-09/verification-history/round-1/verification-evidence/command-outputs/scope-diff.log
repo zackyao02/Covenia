@@ -1,0 +1,10 @@
+A	backend/src/covenia_b/observability/__init__.py
+A	backend/src/covenia_b/observability/runtime.py
+A	backend/tests/observability/test_runtime_metrics.py
+A	reports/batches/BATCH-09/IMPLEMENTATION_REPORT.json
+A	reports/batches/BATCH-09/IMPLEMENTATION_REPORT.md
+A	reports/batches/BATCH-09/commands.json
+A	reports/batches/BATCH-09/environment.json
+A	reports/batches/BATCH-09/governance-sample.redacted.jsonl
+A	reports/batches/BATCH-09/metrics-semantics.json
+A	reports/batches/BATCH-09/pip-check.txt

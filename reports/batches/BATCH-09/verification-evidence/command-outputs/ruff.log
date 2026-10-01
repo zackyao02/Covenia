@@ -1,0 +1,4 @@
+COMMAND: C:\cov-run\batch-09-verify-2\venv\Scripts\python.exe -m ruff check backend/src/covenia_b/observability backend/tests/observability
+CWD: C:\Users\WONG Tsun Ming\Desktop\欧莱雅黑客松\work\repo2
+EXIT_CODE: 0
+All checks passed!

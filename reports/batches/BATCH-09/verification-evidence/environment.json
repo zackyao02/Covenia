@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "run_dir": "C:\\cov-run\\batch-09-verify-2",
+  "venv": "C:\\cov-run\\batch-09-verify-2\\venv",
+  "venv_direct_child": true,
+  "interpreter": "C:\\cov-run\\batch-09-verify-2\\venv\\Scripts\\python.exe",
+  "python": "3.13.5",
+  "sys_prefix": "C:\\cov-run\\batch-09-verify-2\\venv",
+  "sys_base_prefix": "D:\\python",
+  "include_system_site_packages": false,
+  "pythonpath": "UNSET",
+  "longest_venv_path": "C:\\cov-run\\batch-09-verify-2\\venv\\Lib\\site-packages\\pkg_resources\\tests\\data\\my-test-package_unpacked-egg\\my_test_package-1.0-py3.7.egg\\EGG-INFO\\dependency_links.txt",
+  "longest_venv_path_length": 165,
+  "longest_venv_path_lt_250": true,
+  "lock_install_exit_code": 0,
+  "editable_install_exit_code": 0,
+  "pip_check_exit_code": 0,
+  "governed_imports_exit_code": 0,
+  "note": "The first pytest attempt used a RUN_DIR basetemp that was not writable in the normal execution context; it stopped at tmp_path setup after 9 passed. The same tests were rerun with the user temp directory and passed 10/10. This was a runner ACL issue, not a test assertion failure."
+}

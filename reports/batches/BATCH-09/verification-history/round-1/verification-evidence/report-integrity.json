@@ -1,0 +1,9 @@
+{
+  "status": "PASS",
+  "check": "Independent JSON parse and required-field audit of VERIFICATION_REPORT.json plus verification-evidence JSON files.",
+  "parsed_json_files": 10,
+  "required_report_fields_present": true,
+  "verdict": "FAIL",
+  "code_modified": false,
+  "next_batch_started": false
+}

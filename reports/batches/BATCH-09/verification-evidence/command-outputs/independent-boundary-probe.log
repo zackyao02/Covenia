@@ -1,0 +1,4 @@
+COMMAND: C:\cov-run\batch-09-verify-2\venv\Scripts\python.exe -c <independent BATCH-09 boundary probe>
+CWD: C:\Users\WONG Tsun Ming\Desktop\欧莱雅黑客松\work\repo2
+EXIT_CODE: 0
+{"audit_failure_propagated": true, "cache_totals": {"inference_latency_ms": 21, "input_tokens": 11, "output_tokens": 7, "rule_substitution_count": 0}, "duplicate_event_guard": true, "provider_metrics": {"inference_latency_ms": 21, "input_tokens": 11, "output_tokens": 7, "rule_substitution_count": 0}, "redaction_probe": "PASS", "request_to_model_and_source_trace": true, "result": "PASS", "rule_metrics": {"inference_latency_ms": 0, "input_tokens": 0, "output_tokens": 0, "rule_substitution_count": 1}}
