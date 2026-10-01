@@ -1,0 +1,2 @@
+?? backend/src/covenia_b/rules/
+?? backend/tests/rules/

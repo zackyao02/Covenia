@@ -1,0 +1,901 @@
+{
+  "batch_id": "BATCH-15",
+  "rule_version": "deterministic-firewall-v1",
+  "mode": "UNIT",
+  "http_was_run": false,
+  "vectors": [
+    {
+      "id": "A13",
+      "inputs": {
+        "accountability_state": {
+          "case_id": "synthetic-rule-case",
+          "case_status": "READY_FOR_BRAND",
+          "consumer_input_required": false,
+          "accountable_side": "BRAND",
+          "evidence_status": "VALID",
+          "current_scope": {
+            "order_id": "synthetic-order",
+            "fulfillment_item_id": "synthetic-item",
+            "sku_id": "synthetic-sku",
+            "issue_type": "PACKAGE_DAMAGE"
+          },
+          "active_commitments": [],
+          "prohibited_actions": [
+            "CLOSE_BEFORE_RESOLUTION"
+          ],
+          "experience_gap_diagnosis": {
+            "consumer_expression": "synthetic service progress request",
+            "traceable_service_facts": [
+              {
+                "fact_type": "EVIDENCE_SUBMITTED",
+                "statement": "synthetic server evidence fact",
+                "source_ids": [
+                  "synthetic-session"
+                ]
+              }
+            ],
+            "deterioration_cause": "waiting for service progress",
+            "latent_need": "an auditable update",
+            "responsibility_judgment": {
+              "consumer_input_complete": true,
+              "accountable_side": "BRAND"
+            },
+            "action_impacts": [
+              "CHECK_EXISTING_FULFILLMENT"
+            ],
+            "reply_strategy": "check the existing fulfillment"
+          },
+          "open_obligation": null,
+          "service_progress_receipt": null,
+          "experience_risk": "MEDIUM",
+          "audit_trail": []
+        },
+        "prepared_action": {
+          "action_id": "synthetic-action",
+          "action_type": "CLOSE_CASE",
+          "requested_scope": null,
+          "requires_human_approval": false
+        }
+      },
+      "actual": {
+        "decision": "INTERVENE",
+        "rule_id": "P0_PROHIBITED_ACTION",
+        "rule_priority": 400,
+        "http_status_mapping": 400,
+        "matched_rule_ids": [
+          "P0_PROHIBITED_ACTION"
+        ],
+        "fact_trace": {
+          "evidence_status": "VALID",
+          "prepared_action": "CLOSE_CASE",
+          "scope_match": null,
+          "active_promise_count": 0,
+          "suppressed_rule_ids": []
+        },
+        "reason": "����˽�ֹ�� CLOSE_BEFORE_RESOLUTION ��ֹ CLOSE_CASE��"
+      },
+      "expected": {
+        "decision": "INTERVENE",
+        "rule_id": "P0_PROHIBITED_ACTION",
+        "priority": 400,
+        "suppressed_rule_ids": []
+      },
+      "result": "EVIDENCED"
+    },
+    {
+      "id": "A14",
+      "inputs": {
+        "accountability_state": {
+          "case_id": "synthetic-rule-case",
+          "case_status": "READY_FOR_BRAND",
+          "consumer_input_required": false,
+          "accountable_side": "BRAND",
+          "evidence_status": "VALID",
+          "current_scope": {
+            "order_id": "synthetic-order",
+            "fulfillment_item_id": "synthetic-item",
+            "sku_id": "synthetic-sku",
+            "issue_type": "ADVERSE_REACTION"
+          },
+          "active_commitments": [],
+          "prohibited_actions": [
+            "ASK_SAME_EVIDENCE"
+          ],
+          "experience_gap_diagnosis": {
+            "consumer_expression": "synthetic service progress request",
+            "traceable_service_facts": [
+              {
+                "fact_type": "EVIDENCE_SUBMITTED",
+                "statement": "synthetic server evidence fact",
+                "source_ids": [
+                  "synthetic-session"
+                ]
+              }
+            ],
+            "deterioration_cause": "waiting for service progress",
+            "latent_need": "an auditable update",
+            "responsibility_judgment": {
+              "consumer_input_complete": true,
+              "accountable_side": "BRAND"
+            },
+            "action_impacts": [
+              "CHECK_EXISTING_FULFILLMENT"
+            ],
+            "reply_strategy": "check the existing fulfillment"
+          },
+          "open_obligation": null,
+          "service_progress_receipt": null,
+          "experience_risk": "MEDIUM",
+          "audit_trail": []
+        },
+        "prepared_action": {
+          "action_id": "synthetic-action",
+          "action_type": "ASK_EVIDENCE",
+          "requested_scope": {
+            "order_id": "synthetic-order",
+            "fulfillment_item_id": "synthetic-item",
+            "sku_id": "synthetic-sku",
+            "issue_type": "ADVERSE_REACTION"
+          },
+          "requires_human_approval": false
+        }
+      },
+      "actual": {
+        "decision": "HUMAN_REVIEW",
+        "rule_id": "H1",
+        "rule_priority": 350,
+        "http_status_mapping": 200,
+        "matched_rule_ids": [
+          "H1",
+          "E1"
+        ],
+        "fact_trace": {
+          "evidence_status": "VALID",
+          "prepared_action": "ASK_EVIDENCE",
+          "scope_match": true,
+          "active_promise_count": 0,
+          "suppressed_rule_ids": [
+            "E1"
+          ]
+        },
+        "reason": "��ǰ����Ϊ ADVERSE_REACTION�����˹����ˡ�"
+      },
+      "expected": {
+        "decision": "HUMAN_REVIEW",
+        "rule_id": "H1",
+        "priority": 350,
+        "suppressed_rule_ids": [
+          "E1"
+        ]
+      },
+      "result": "EVIDENCED"
+    },
+    {
+      "id": "A15",
+      "inputs": {
+        "accountability_state": {
+          "case_id": "synthetic-rule-case",
+          "case_status": "READY_FOR_BRAND",
+          "consumer_input_required": false,
+          "accountable_side": "BRAND",
+          "evidence_status": "VALID",
+          "current_scope": {
+            "order_id": "synthetic-order",
+            "fulfillment_item_id": "synthetic-item",
+            "sku_id": "synthetic-sku",
+            "issue_type": "PACKAGE_DAMAGE"
+          },
+          "active_commitments": [],
+          "prohibited_actions": [],
+          "experience_gap_diagnosis": {
+            "consumer_expression": "synthetic service progress request",
+            "traceable_service_facts": [
+              {
+                "fact_type": "EVIDENCE_SUBMITTED",
+                "statement": "synthetic server evidence fact",
+                "source_ids": [
+                  "synthetic-session"
+                ]
+              }
+            ],
+            "deterioration_cause": "waiting for service progress",
+            "latent_need": "an auditable update",
+            "responsibility_judgment": {
+              "consumer_input_complete": true,
+              "accountable_side": "BRAND"
+            },
+            "action_impacts": [
+              "CHECK_EXISTING_FULFILLMENT"
+            ],
+            "reply_strategy": "check the existing fulfillment"
+          },
+          "open_obligation": null,
+          "service_progress_receipt": null,
+          "experience_risk": "MEDIUM",
+          "audit_trail": []
+        },
+        "prepared_action": {
+          "action_id": "synthetic-action",
+          "action_type": "CHECK_REPLACEMENT_PROGRESS",
+          "requested_scope": null,
+          "requires_human_approval": false
+        }
+      },
+      "actual": {
+        "decision": "ALLOW",
+        "rule_id": "E0_NO_RULE_MATCHED",
+        "rule_priority": 0,
+        "http_status_mapping": 200,
+        "matched_rule_ids": [],
+        "fact_trace": {
+          "evidence_status": "VALID",
+          "prepared_action": "CHECK_REPLACEMENT_PROGRESS",
+          "scope_match": null,
+          "active_promise_count": 0,
+          "suppressed_rule_ids": []
+        },
+        "reason": "��ǰ����δ���н�ֹ�������˹����ˡ��ظ���֤��Χ�仯��������ִ�С�"
+      },
+      "expected": {
+        "decision": "ALLOW",
+        "rule_id": "E0_NO_RULE_MATCHED",
+        "priority": 0,
+        "suppressed_rule_ids": []
+      },
+      "result": "EVIDENCED"
+    },
+    {
+      "id": "A20",
+      "inputs": {
+        "accountability_state": {
+          "case_id": "synthetic-rule-case",
+          "case_status": "READY_FOR_BRAND",
+          "consumer_input_required": false,
+          "accountable_side": "BRAND",
+          "evidence_status": "VALID",
+          "current_scope": {
+            "order_id": "synthetic-order",
+            "fulfillment_item_id": "synthetic-item",
+            "sku_id": "synthetic-sku",
+            "issue_type": "PACKAGE_DAMAGE"
+          },
+          "active_commitments": [],
+          "prohibited_actions": [
+            "ASK_SAME_EVIDENCE"
+          ],
+          "experience_gap_diagnosis": {
+            "consumer_expression": "synthetic service progress request",
+            "traceable_service_facts": [
+              {
+                "fact_type": "EVIDENCE_SUBMITTED",
+                "statement": "synthetic server evidence fact",
+                "source_ids": [
+                  "synthetic-session"
+                ]
+              }
+            ],
+            "deterioration_cause": "waiting for service progress",
+            "latent_need": "an auditable update",
+            "responsibility_judgment": {
+              "consumer_input_complete": true,
+              "accountable_side": "BRAND"
+            },
+            "action_impacts": [
+              "CHECK_EXISTING_FULFILLMENT"
+            ],
+            "reply_strategy": "check the existing fulfillment"
+          },
+          "open_obligation": null,
+          "service_progress_receipt": null,
+          "experience_risk": "MEDIUM",
+          "audit_trail": []
+        },
+        "prepared_action": {
+          "action_id": "synthetic-action",
+          "action_type": "ASK_EVIDENCE",
+          "requested_scope": {
+            "order_id": "synthetic-order",
+            "fulfillment_item_id": "synthetic-item",
+            "sku_id": "synthetic-sku",
+            "issue_type": "PACKAGE_DAMAGE"
+          },
+          "requires_human_approval": false
+        }
+      },
+      "actual": {
+        "decision": "INTERVENE",
+        "rule_id": "E1",
+        "rule_priority": 300,
+        "http_status_mapping": 200,
+        "matched_rule_ids": [
+          "E1"
+        ],
+        "fact_trace": {
+          "evidence_status": "VALID",
+          "prepared_action": "ASK_EVIDENCE",
+          "scope_match": true,
+          "active_promise_count": 0,
+          "suppressed_rule_ids": []
+        },
+        "reason": "��ǰ��Χ֤���� VALID����ͬ��Χ�� ASK_EVIDENCE �����ظ���֤��"
+      },
+      "expected": {
+        "decision": "INTERVENE",
+        "rule_id": "E1",
+        "priority": 300,
+        "suppressed_rule_ids": []
+      },
+      "result": "EVIDENCED"
+    },
+    {
+      "id": "A21",
+      "inputs": {
+        "accountability_state": {
+          "case_id": "synthetic-rule-case",
+          "case_status": "READY_FOR_BRAND",
+          "consumer_input_required": false,
+          "accountable_side": "BRAND",
+          "evidence_status": "VALID",
+          "current_scope": {
+            "order_id": "synthetic-order",
+            "fulfillment_item_id": "synthetic-item",
+            "sku_id": "synthetic-sku",
+            "issue_type": "PACKAGE_DAMAGE"
+          },
+          "active_commitments": [],
+          "prohibited_actions": [
+            "ASK_SAME_EVIDENCE"
+          ],
+          "experience_gap_diagnosis": {
+            "consumer_expression": "synthetic service progress request",
+            "traceable_service_facts": [
+              {
+                "fact_type": "EVIDENCE_SUBMITTED",
+                "statement": "synthetic server evidence fact",
+                "source_ids": [
+                  "synthetic-session"
+                ]
+              }
+            ],
+            "deterioration_cause": "waiting for service progress",
+            "latent_need": "an auditable update",
+            "responsibility_judgment": {
+              "consumer_input_complete": true,
+              "accountable_side": "BRAND"
+            },
+            "action_impacts": [
+              "CHECK_EXISTING_FULFILLMENT"
+            ],
+            "reply_strategy": "check the existing fulfillment"
+          },
+          "open_obligation": null,
+          "service_progress_receipt": null,
+          "experience_risk": "MEDIUM",
+          "audit_trail": []
+        },
+        "prepared_action": {
+          "action_id": "synthetic-action",
+          "action_type": "ASK_EVIDENCE",
+          "requested_scope": {
+            "order_id": "synthetic-order",
+            "fulfillment_item_id": "synthetic-item",
+            "sku_id": "synthetic-sku",
+            "issue_type": "PACKAGE_DAMAGE"
+          },
+          "requires_human_approval": false
+        }
+      },
+      "actual": {
+        "decision": "INTERVENE",
+        "rule_id": "E1",
+        "rule_priority": 300,
+        "http_status_mapping": 200,
+        "matched_rule_ids": [
+          "E1"
+        ],
+        "fact_trace": {
+          "evidence_status": "VALID",
+          "prepared_action": "ASK_EVIDENCE",
+          "scope_match": true,
+          "active_promise_count": 0,
+          "suppressed_rule_ids": []
+        },
+        "reason": "��ǰ��Χ֤���� VALID����ͬ��Χ�� ASK_EVIDENCE �����ظ���֤��"
+      },
+      "expected": {
+        "decision": "INTERVENE",
+        "rule_id": "E1",
+        "priority": 300,
+        "suppressed_rule_ids": []
+      },
+      "result": "EVIDENCED"
+    },
+    {
+      "id": "A29",
+      "inputs": {
+        "accountability_state": {
+          "case_id": "synthetic-rule-case",
+          "case_status": "READY_FOR_BRAND",
+          "consumer_input_required": false,
+          "accountable_side": "BRAND",
+          "evidence_status": "VALID",
+          "current_scope": {
+            "order_id": "synthetic-order",
+            "fulfillment_item_id": "synthetic-item",
+            "sku_id": "synthetic-sku",
+            "issue_type": "PACKAGE_DAMAGE"
+          },
+          "active_commitments": [],
+          "prohibited_actions": [
+            "SHIFT_FOLLOW_UP_TO_CONSUMER"
+          ],
+          "experience_gap_diagnosis": {
+            "consumer_expression": "synthetic service progress request",
+            "traceable_service_facts": [
+              {
+                "fact_type": "EVIDENCE_SUBMITTED",
+                "statement": "synthetic server evidence fact",
+                "source_ids": [
+                  "synthetic-session"
+                ]
+              }
+            ],
+            "deterioration_cause": "waiting for service progress",
+            "latent_need": "an auditable update",
+            "responsibility_judgment": {
+              "consumer_input_complete": true,
+              "accountable_side": "BRAND"
+            },
+            "action_impacts": [
+              "CHECK_EXISTING_FULFILLMENT"
+            ],
+            "reply_strategy": "check the existing fulfillment"
+          },
+          "open_obligation": null,
+          "service_progress_receipt": null,
+          "experience_risk": "MEDIUM",
+          "audit_trail": []
+        },
+        "prepared_action": {
+          "action_id": "synthetic-action",
+          "action_type": "SHIFT_FOLLOW_UP_TO_CONSUMER",
+          "requested_scope": null,
+          "requires_human_approval": false
+        }
+      },
+      "actual": {
+        "decision": "INTERVENE",
+        "rule_id": "P0_PROHIBITED_ACTION",
+        "rule_priority": 400,
+        "http_status_mapping": 400,
+        "matched_rule_ids": [
+          "P0_PROHIBITED_ACTION"
+        ],
+        "fact_trace": {
+          "evidence_status": "VALID",
+          "prepared_action": "SHIFT_FOLLOW_UP_TO_CONSUMER",
+          "scope_match": null,
+          "active_promise_count": 0,
+          "suppressed_rule_ids": []
+        },
+        "reason": "����˽�ֹ�� SHIFT_FOLLOW_UP_TO_CONSUMER ��ֹ SHIFT_FOLLOW_UP_TO_CONSUMER��"
+      },
+      "expected": {
+        "decision": "INTERVENE",
+        "rule_id": "P0_PROHIBITED_ACTION",
+        "priority": 400,
+        "suppressed_rule_ids": []
+      },
+      "result": "EVIDENCED"
+    },
+    {
+      "id": "A30",
+      "inputs": {
+        "accountability_state": {
+          "case_id": "synthetic-rule-case",
+          "case_status": "READY_FOR_BRAND",
+          "consumer_input_required": false,
+          "accountable_side": "BRAND",
+          "evidence_status": "VALID",
+          "current_scope": {
+            "order_id": "synthetic-order",
+            "fulfillment_item_id": "synthetic-item",
+            "sku_id": "synthetic-sku",
+            "issue_type": "ADVERSE_REACTION"
+          },
+          "active_commitments": [],
+          "prohibited_actions": [
+            "CLOSE_BEFORE_RESOLUTION"
+          ],
+          "experience_gap_diagnosis": {
+            "consumer_expression": "synthetic service progress request",
+            "traceable_service_facts": [
+              {
+                "fact_type": "EVIDENCE_SUBMITTED",
+                "statement": "synthetic server evidence fact",
+                "source_ids": [
+                  "synthetic-session"
+                ]
+              }
+            ],
+            "deterioration_cause": "waiting for service progress",
+            "latent_need": "an auditable update",
+            "responsibility_judgment": {
+              "consumer_input_complete": true,
+              "accountable_side": "BRAND"
+            },
+            "action_impacts": [
+              "CHECK_EXISTING_FULFILLMENT"
+            ],
+            "reply_strategy": "check the existing fulfillment"
+          },
+          "open_obligation": null,
+          "service_progress_receipt": null,
+          "experience_risk": "MEDIUM",
+          "audit_trail": []
+        },
+        "prepared_action": {
+          "action_id": "synthetic-action",
+          "action_type": "CLOSE_CASE",
+          "requested_scope": null,
+          "requires_human_approval": false
+        }
+      },
+      "actual": {
+        "decision": "INTERVENE",
+        "rule_id": "P0_PROHIBITED_ACTION",
+        "rule_priority": 400,
+        "http_status_mapping": 400,
+        "matched_rule_ids": [
+          "P0_PROHIBITED_ACTION",
+          "H1"
+        ],
+        "fact_trace": {
+          "evidence_status": "VALID",
+          "prepared_action": "CLOSE_CASE",
+          "scope_match": null,
+          "active_promise_count": 0,
+          "suppressed_rule_ids": [
+            "H1"
+          ]
+        },
+        "reason": "����˽�ֹ�� CLOSE_BEFORE_RESOLUTION ��ֹ CLOSE_CASE��"
+      },
+      "expected": {
+        "decision": "INTERVENE",
+        "rule_id": "P0_PROHIBITED_ACTION",
+        "priority": 400,
+        "suppressed_rule_ids": [
+          "H1"
+        ]
+      },
+      "result": "EVIDENCED"
+    },
+    {
+      "id": "repeat-explanation",
+      "inputs": {
+        "accountability_state": {
+          "case_id": "synthetic-rule-case",
+          "case_status": "READY_FOR_BRAND",
+          "consumer_input_required": false,
+          "accountable_side": "BRAND",
+          "evidence_status": "VALID",
+          "current_scope": {
+            "order_id": "synthetic-order",
+            "fulfillment_item_id": "synthetic-item",
+            "sku_id": "synthetic-sku",
+            "issue_type": "PACKAGE_DAMAGE"
+          },
+          "active_commitments": [],
+          "prohibited_actions": [
+            "ASK_REPEAT_EXPLANATION"
+          ],
+          "experience_gap_diagnosis": {
+            "consumer_expression": "synthetic service progress request",
+            "traceable_service_facts": [
+              {
+                "fact_type": "EVIDENCE_SUBMITTED",
+                "statement": "synthetic server evidence fact",
+                "source_ids": [
+                  "synthetic-session"
+                ]
+              }
+            ],
+            "deterioration_cause": "waiting for service progress",
+            "latent_need": "an auditable update",
+            "responsibility_judgment": {
+              "consumer_input_complete": true,
+              "accountable_side": "BRAND"
+            },
+            "action_impacts": [
+              "CHECK_EXISTING_FULFILLMENT"
+            ],
+            "reply_strategy": "check the existing fulfillment"
+          },
+          "open_obligation": null,
+          "service_progress_receipt": null,
+          "experience_risk": "MEDIUM",
+          "audit_trail": []
+        },
+        "prepared_action": {
+          "action_id": "synthetic-action",
+          "action_type": "REPEAT_EXPLANATION_REQUEST",
+          "requested_scope": null,
+          "requires_human_approval": false
+        }
+      },
+      "actual": {
+        "decision": "INTERVENE",
+        "rule_id": "P0_PROHIBITED_ACTION",
+        "rule_priority": 400,
+        "http_status_mapping": 400,
+        "matched_rule_ids": [
+          "P0_PROHIBITED_ACTION"
+        ],
+        "fact_trace": {
+          "evidence_status": "VALID",
+          "prepared_action": "REPEAT_EXPLANATION_REQUEST",
+          "scope_match": null,
+          "active_promise_count": 0,
+          "suppressed_rule_ids": []
+        },
+        "reason": "����˽�ֹ�� ASK_REPEAT_EXPLANATION ��ֹ REPEAT_EXPLANATION_REQUEST��"
+      },
+      "expected": {
+        "decision": "INTERVENE",
+        "rule_id": "P0_PROHIBITED_ACTION",
+        "priority": 400,
+        "suppressed_rule_ids": []
+      },
+      "result": "EVIDENCED"
+    },
+    {
+      "id": "scope-change",
+      "inputs": {
+        "accountability_state": {
+          "case_id": "synthetic-rule-case",
+          "case_status": "READY_FOR_BRAND",
+          "consumer_input_required": false,
+          "accountable_side": "BRAND",
+          "evidence_status": "MISMATCHED",
+          "current_scope": {
+            "order_id": "synthetic-order",
+            "fulfillment_item_id": "synthetic-item",
+            "sku_id": "synthetic-sku",
+            "issue_type": "PACKAGE_DAMAGE"
+          },
+          "active_commitments": [],
+          "prohibited_actions": [],
+          "experience_gap_diagnosis": {
+            "consumer_expression": "synthetic service progress request",
+            "traceable_service_facts": [
+              {
+                "fact_type": "EVIDENCE_SUBMITTED",
+                "statement": "synthetic server evidence fact",
+                "source_ids": [
+                  "synthetic-session"
+                ]
+              }
+            ],
+            "deterioration_cause": "waiting for service progress",
+            "latent_need": "an auditable update",
+            "responsibility_judgment": {
+              "consumer_input_complete": true,
+              "accountable_side": "BRAND"
+            },
+            "action_impacts": [
+              "CHECK_EXISTING_FULFILLMENT"
+            ],
+            "reply_strategy": "check the existing fulfillment"
+          },
+          "open_obligation": null,
+          "service_progress_receipt": null,
+          "experience_risk": "MEDIUM",
+          "audit_trail": []
+        },
+        "prepared_action": {
+          "action_id": "synthetic-action",
+          "action_type": "ASK_EVIDENCE",
+          "requested_scope": {
+            "order_id": "synthetic-order",
+            "fulfillment_item_id": "synthetic-item",
+            "sku_id": "gift-sku",
+            "issue_type": "PACKAGE_DAMAGE"
+          },
+          "requires_human_approval": false
+        }
+      },
+      "actual": {
+        "decision": "ALLOW",
+        "rule_id": "E2",
+        "rule_priority": 100,
+        "http_status_mapping": 200,
+        "matched_rule_ids": [
+          "E2"
+        ],
+        "fact_trace": {
+          "evidence_status": "MISMATCHED",
+          "prepared_action": "ASK_EVIDENCE",
+          "scope_match": false,
+          "active_promise_count": 0,
+          "suppressed_rule_ids": []
+        },
+        "reason": "����Χ�仯�ֶΣ�sku_id��ֻ���䵱ǰ��Χȱʧ��֤�ݡ�"
+      },
+      "expected": {
+        "decision": "ALLOW",
+        "rule_id": "E2",
+        "priority": 100,
+        "suppressed_rule_ids": []
+      },
+      "result": "EVIDENCED"
+    },
+    {
+      "id": "uncertain-evidence",
+      "inputs": {
+        "accountability_state": {
+          "case_id": "synthetic-rule-case",
+          "case_status": "READY_FOR_BRAND",
+          "consumer_input_required": false,
+          "accountable_side": "BRAND",
+          "evidence_status": "NEED_HUMAN_REVIEW",
+          "current_scope": {
+            "order_id": "synthetic-order",
+            "fulfillment_item_id": "synthetic-item",
+            "sku_id": "synthetic-sku",
+            "issue_type": "PACKAGE_DAMAGE"
+          },
+          "active_commitments": [],
+          "prohibited_actions": [],
+          "experience_gap_diagnosis": {
+            "consumer_expression": "synthetic service progress request",
+            "traceable_service_facts": [
+              {
+                "fact_type": "EVIDENCE_SUBMITTED",
+                "statement": "synthetic server evidence fact",
+                "source_ids": [
+                  "synthetic-session"
+                ]
+              }
+            ],
+            "deterioration_cause": "waiting for service progress",
+            "latent_need": "an auditable update",
+            "responsibility_judgment": {
+              "consumer_input_complete": true,
+              "accountable_side": "BRAND"
+            },
+            "action_impacts": [
+              "CHECK_EXISTING_FULFILLMENT"
+            ],
+            "reply_strategy": "check the existing fulfillment"
+          },
+          "open_obligation": null,
+          "service_progress_receipt": null,
+          "experience_risk": "MEDIUM",
+          "audit_trail": []
+        },
+        "prepared_action": {
+          "action_id": "synthetic-action",
+          "action_type": "ASK_EVIDENCE",
+          "requested_scope": {
+            "order_id": "synthetic-order",
+            "fulfillment_item_id": "synthetic-item",
+            "sku_id": "synthetic-sku",
+            "issue_type": "PACKAGE_DAMAGE"
+          },
+          "requires_human_approval": false
+        }
+      },
+      "actual": {
+        "decision": "HUMAN_REVIEW",
+        "rule_id": "H1",
+        "rule_priority": 350,
+        "http_status_mapping": 200,
+        "matched_rule_ids": [
+          "H1"
+        ],
+        "fact_trace": {
+          "evidence_status": "NEED_HUMAN_REVIEW",
+          "prepared_action": "ASK_EVIDENCE",
+          "scope_match": true,
+          "active_promise_count": 0,
+          "suppressed_rule_ids": []
+        },
+        "reason": "֤��״̬Ϊ NEED_HUMAN_REVIEW�����˹����ˡ�"
+      },
+      "expected": {
+        "decision": "HUMAN_REVIEW",
+        "rule_id": "H1",
+        "priority": 350,
+        "suppressed_rule_ids": []
+      },
+      "result": "EVIDENCED"
+    },
+    {
+      "id": "H1-suppresses-E2",
+      "inputs": {
+        "accountability_state": {
+          "case_id": "synthetic-rule-case",
+          "case_status": "READY_FOR_BRAND",
+          "consumer_input_required": false,
+          "accountable_side": "BRAND",
+          "evidence_status": "MISMATCHED",
+          "current_scope": {
+            "order_id": "synthetic-order",
+            "fulfillment_item_id": "synthetic-item",
+            "sku_id": "synthetic-sku",
+            "issue_type": "ADVERSE_REACTION"
+          },
+          "active_commitments": [],
+          "prohibited_actions": [],
+          "experience_gap_diagnosis": {
+            "consumer_expression": "synthetic service progress request",
+            "traceable_service_facts": [
+              {
+                "fact_type": "EVIDENCE_SUBMITTED",
+                "statement": "synthetic server evidence fact",
+                "source_ids": [
+                  "synthetic-session"
+                ]
+              }
+            ],
+            "deterioration_cause": "waiting for service progress",
+            "latent_need": "an auditable update",
+            "responsibility_judgment": {
+              "consumer_input_complete": true,
+              "accountable_side": "BRAND"
+            },
+            "action_impacts": [
+              "CHECK_EXISTING_FULFILLMENT"
+            ],
+            "reply_strategy": "check the existing fulfillment"
+          },
+          "open_obligation": null,
+          "service_progress_receipt": null,
+          "experience_risk": "MEDIUM",
+          "audit_trail": []
+        },
+        "prepared_action": {
+          "action_id": "synthetic-action",
+          "action_type": "ASK_EVIDENCE",
+          "requested_scope": {
+            "order_id": "synthetic-order",
+            "fulfillment_item_id": "synthetic-item",
+            "sku_id": "gift-sku",
+            "issue_type": "ADVERSE_REACTION"
+          },
+          "requires_human_approval": false
+        }
+      },
+      "actual": {
+        "decision": "HUMAN_REVIEW",
+        "rule_id": "H1",
+        "rule_priority": 350,
+        "http_status_mapping": 200,
+        "matched_rule_ids": [
+          "H1",
+          "E2"
+        ],
+        "fact_trace": {
+          "evidence_status": "MISMATCHED",
+          "prepared_action": "ASK_EVIDENCE",
+          "scope_match": false,
+          "active_promise_count": 0,
+          "suppressed_rule_ids": [
+            "E2"
+          ]
+        },
+        "reason": "��ǰ����Ϊ ADVERSE_REACTION�����˹����ˡ�"
+      },
+      "expected": {
+        "decision": "HUMAN_REVIEW",
+        "rule_id": "H1",
+        "priority": 350,
+        "suppressed_rule_ids": [
+          "E2"
+        ]
+      },
+      "result": "EVIDENCED"
+    }
+  ]
+}

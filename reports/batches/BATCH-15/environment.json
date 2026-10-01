@@ -1,0 +1,201 @@
+{
+  "run_dir": "C:\\cov-run\\batch-15",
+  "interpreter": "C:\\cov-run\\batch-15\\venv\\Scripts\\python.exe",
+  "python_version": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]",
+  "sys_prefix": "C:\\cov-run\\batch-15\\venv",
+  "sys_base_prefix": "D:\\python",
+  "include_system_site_packages": false,
+  "venv_direct_child_of_run_dir": true,
+  "longest_venv_path": "C:\\cov-run\\batch-15\\venv\\Lib\\site-packages\\pkg_resources\\tests\\data\\my-test-package_unpacked-egg\\my_test_package-1.0-py3.7.egg\\EGG-INFO\\dependency_links.txt",
+  "longest_venv_path_length": 156,
+  "path_limit": 250,
+  "hash_method": "SHA256 raw git show <sha>:<path> bytes (external receipt: raw source file)",
+  "input_hashes": {
+    "MASTER_PLAN.md": "DBE269F06F4BBE3D8C1F915DD8E4A2D78E0E4F021ABB396270C8B846D5FFA74E",
+    "batches.json": "18DA555CE5ADEA5062F680837AEC8214158F58CBC1A918CF6BBC31EF48448E2E",
+    "backend/requirements-dev.lock": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+    "docs/approvals/b-decisions.json": "3ACAD4A113EB595BCED29025AF884A4C5EA2835E90E38D0E897298F91DB371DA",
+    "docs/contracts/b-contract-lock.json": "A605DF1E063B69ABF3E6DF43ACF4C5A07B69CA0925E2ADB116F296E12527FE3A",
+    "docs/03-firewall-rules.md": "241365E9287CC5663F02790006DD43F2F3BAACA9138B7BCBDF953DDF64E6A0A3",
+    "schemas/decision-result.schema.json": "188536CD2C5B22C7B81AFA360995BD9B813DB7E2AE620C1060BF5483BB54C9FA",
+    "schemas/accountability-state.schema.json": "631431A2722DE649DA47DC0850A58CDED018B7FEACDBF9DFE0D34C9580B097EA",
+    "schemas/prepared-action.schema.json": "EF0C04D5507CE5D0039792CCC6E6A6E4EE03BE8682B2F285B73DD3CD99174C58",
+    "tests/contract-vectors/evaluate.json": "2B6496A08DE8A460A1291EADBA23522047F1C96BE7CF94EE5DEC2C3B253798D1"
+  },
+  "dependency_hashes": {
+    "implementation_report": "78422F0CA9129DAC165242EABBBD581F6ACBDD6D22B13E2342B61DD325E88D94",
+    "verification_report": "7C42695F24EA0BABFBB24D3B3B4C1FD299A63E66320DE6218F2BC0C4CACD7C55",
+    "integration_receipt_file": "5335C5F481FFBD610D38768B30CE1DE525EE898EE43D3E6021404EEF51777FC2"
+  },
+  "dependency_code_ancestry": true,
+  "dependency_integration_ancestry": true,
+  "dependency_state_tree_matches_reviewed_commit": true,
+  "pip_version": "25.1.1",
+  "requirements_lock_change": "UNCHANGED",
+  "dependency_additions": [],
+  "working_lock_sha256": "886A9FC311F16DA186158EFF8478F3058FF8E0AEFA00091830BBF87863CD0C5D",
+  "batch_id": "BATCH-15",
+  "task_id": "01a0edf2-eb7f-7173-bc72-74157a7f437a",
+  "host_interpreter_bootstrap": "D:\\python\\python.exe",
+  "bootstrap_command": "& 'D:\\python\\python.exe' -m venv 'C:\\cov-run\\batch-15\\venv'",
+  "code_commit": "c1e82b84d5418e79c3d766e8563082306bfa0612",
+  "lock_before_sha256": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+  "lock_after_sha256": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+  "lock_hash_source": "raw committed Git blob; working_lock_sha256 is CRLF diagnostic only",
+  "lock_diff": "EMPTY",
+  "dependency_lock_requested": false,
+  "installed_packages": [
+    {
+      "name": "annotated-types",
+      "version": "0.7.0"
+    },
+    {
+      "name": "anyio",
+      "version": "4.8.0"
+    },
+    {
+      "name": "attrs",
+      "version": "26.1.0"
+    },
+    {
+      "name": "build",
+      "version": "1.2.2.post1"
+    },
+    {
+      "name": "click",
+      "version": "8.1.8"
+    },
+    {
+      "name": "colorama",
+      "version": "0.4.6"
+    },
+    {
+      "name": "covenia-b",
+      "version": "0.0.0",
+      "editable_project_location": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w15\\backend"
+    },
+    {
+      "name": "fastapi",
+      "version": "0.115.6"
+    },
+    {
+      "name": "h11",
+      "version": "0.14.0"
+    },
+    {
+      "name": "idna",
+      "version": "3.10"
+    },
+    {
+      "name": "iniconfig",
+      "version": "2.0.0"
+    },
+    {
+      "name": "jsonschema",
+      "version": "4.25.0"
+    },
+    {
+      "name": "jsonschema-specifications",
+      "version": "2025.9.1"
+    },
+    {
+      "name": "packaging",
+      "version": "24.2"
+    },
+    {
+      "name": "pip",
+      "version": "25.1.1"
+    },
+    {
+      "name": "pluggy",
+      "version": "1.5.0"
+    },
+    {
+      "name": "pydantic",
+      "version": "2.10.5"
+    },
+    {
+      "name": "pydantic_core",
+      "version": "2.27.2"
+    },
+    {
+      "name": "pydantic-settings",
+      "version": "2.7.1"
+    },
+    {
+      "name": "pyproject_hooks",
+      "version": "1.2.0"
+    },
+    {
+      "name": "pytest",
+      "version": "8.3.4"
+    },
+    {
+      "name": "python-dotenv",
+      "version": "1.0.1"
+    },
+    {
+      "name": "referencing",
+      "version": "0.37.0"
+    },
+    {
+      "name": "rpds-py",
+      "version": "2026.6.3"
+    },
+    {
+      "name": "ruff",
+      "version": "0.8.4"
+    },
+    {
+      "name": "setuptools",
+      "version": "75.8.0"
+    },
+    {
+      "name": "sniffio",
+      "version": "1.3.1"
+    },
+    {
+      "name": "starlette",
+      "version": "0.41.3"
+    },
+    {
+      "name": "typing_extensions",
+      "version": "4.12.2"
+    },
+    {
+      "name": "uvicorn",
+      "version": "0.34.0"
+    },
+    {
+      "name": "wheel",
+      "version": "0.45.1"
+    }
+  ],
+  "core_autocrlf": {
+    "origin": "C:/Program Files/Git/etc/gitconfig",
+    "value": "true"
+  },
+  "eol": {
+    "baseline_protected_files": "i/lf w/crlf",
+    "new_implementation_files": "i/lf w/lf"
+  },
+  "workspace_inputs": {
+    "scheduler-packages\\BATCH-15.json": "EE2941C98272DADC4F4C14E288143EB2A7B2866FF990319641ACEB4C4D85A4D4",
+    "BATCH_PROMPT_TEMPLATE.md": "8EE5AF07099181A64E10A2430A085CBB9131D725871AC44A15439B10CB1E15A3"
+  },
+  "workspace_package_equals_batches_entry": true,
+  "workspace_package_equals_base_batches_entry": true,
+  "code_hashes": {
+    "backend/src/covenia_b/rules/__init__.py": "049C1DE1ACDE8ABB57132EEE29D7D7BFCE59347D6AD4EA405B52D5AB8F66A891",
+    "backend/src/covenia_b/rules/engine.py": "27F9488F0BAB128207678F7A17F71466D8567B8BEDD0FBC30955960AF678550C",
+    "backend/tests/rules/__init__.py": "4ACD62E7193B0301E19C1DDC3202A59B513A385B94B3B46A61E7493EF43A5AE8",
+    "backend/tests/rules/evidence_probe.py": "90B8D18C16FDEBBA5EFF076B2750E149D936D97DA1692ECC810FE5D2CCDEB5C7",
+    "backend/tests/rules/scenarios.py": "40DEA8CF8465498B8CAAB7E0870ED34E9F3A6BD15C52CA99AACBC254F1D3D29E",
+    "backend/tests/rules/test_engine.py": "571DF6EE959D0BD6A3671404E2F593C2FBD227A5251684B433C61BBD97426D13"
+  },
+  "pip_check": {
+    "exit_code": 0,
+    "output": "No broken requirements found.",
+    "evidence": "reports/batches/BATCH-15/pip-check.txt"
+  }
+}

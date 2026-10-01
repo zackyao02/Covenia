@@ -1,0 +1,165 @@
+{
+  "batch_id": "BATCH-15",
+  "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w15",
+  "interpreter": "C:\\cov-run\\batch-15\\venv\\Scripts\\python.exe",
+  "exit_code_capture": "Each native command ended with PowerShell exit $LASTEXITCODE; failed early lint is separately recorded",
+  "commands": [
+    {
+      "command": "& 'C:\\cov-run\\batch-15\\venv\\Scripts\\python.exe' -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" 'C:\\cov-run\\batch-15\\venv\\Scripts\\python.exe'",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w15",
+      "exit_code": 0,
+      "duration_seconds": 0.4115488,
+      "started_at_utc": "2026-10-01T14:55:15.395Z",
+      "mode": "UNIT",
+      "command_id": "01",
+      "evidence": "reports/batches/BATCH-15/logs/01.txt",
+      "output_streams": "stdout/stderr combined by exec tool"
+    },
+    {
+      "command": "& 'C:\\cov-run\\batch-15\\venv\\Scripts\\python.exe' -m pip install --no-deps -r backend/requirements-dev.lock",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w15",
+      "exit_code": 0,
+      "duration_seconds": 2.0617858,
+      "started_at_utc": "2026-10-01T14:55:20.768Z",
+      "mode": "UNIT",
+      "command_id": "02",
+      "evidence": "reports/batches/BATCH-15/logs/02.txt",
+      "output_streams": "stdout/stderr combined by exec tool"
+    },
+    {
+      "command": "& 'C:\\cov-run\\batch-15\\venv\\Scripts\\python.exe' -m pip install --no-deps --no-build-isolation -e backend",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w15",
+      "exit_code": 0,
+      "duration_seconds": 3.7254039,
+      "started_at_utc": "2026-10-01T14:55:28.273Z",
+      "mode": "UNIT",
+      "command_id": "03",
+      "evidence": "reports/batches/BATCH-15/logs/03.txt",
+      "output_streams": "stdout/stderr combined by exec tool"
+    },
+    {
+      "command": "& 'C:\\cov-run\\batch-15\\venv\\Scripts\\python.exe' -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w15",
+      "exit_code": 0,
+      "duration_seconds": 0.5867482,
+      "started_at_utc": "2026-10-01T14:55:36.472Z",
+      "mode": "UNIT",
+      "command_id": "04",
+      "evidence": "reports/batches/BATCH-15/logs/04.txt",
+      "output_streams": "stdout/stderr combined by exec tool"
+    },
+    {
+      "command": "& 'C:\\cov-run\\batch-15\\venv\\Scripts\\python.exe' -m pytest backend/tests/rules -q",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w15",
+      "exit_code": 0,
+      "duration_seconds": 1.0633301,
+      "started_at_utc": "2026-10-01T14:55:56.775Z",
+      "mode": "UNIT",
+      "command_id": "05",
+      "evidence": "reports/batches/BATCH-15/logs/05.txt",
+      "output_streams": "stdout/stderr combined by exec tool",
+      "test_count": 155,
+      "skipped": 0,
+      "xfail": 0
+    },
+    {
+      "command": "& 'C:\\cov-run\\batch-15\\venv\\Scripts\\python.exe' -m ruff check backend/src/covenia_b/rules backend/tests/rules",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w15",
+      "exit_code": 0,
+      "duration_seconds": 0.394436,
+      "started_at_utc": "2026-10-01T14:56:02.302Z",
+      "mode": "UNIT",
+      "command_id": "06",
+      "evidence": "reports/batches/BATCH-15/logs/06.txt",
+      "output_streams": "stdout/stderr combined by exec tool"
+    },
+    {
+      "command": "& 'C:\\cov-run\\batch-15\\venv\\Scripts\\python.exe' -m pip list --format=json",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w15",
+      "exit_code": 0,
+      "duration_seconds": 0.7461017,
+      "started_at_utc": "2026-10-01T14:56:06.471Z",
+      "mode": "UNIT",
+      "command_id": "07",
+      "evidence": "reports/batches/BATCH-15/logs/07.txt",
+      "output_streams": "stdout/stderr combined by exec tool"
+    },
+    {
+      "command": "& 'C:\\cov-run\\batch-15\\venv\\Scripts\\python.exe' -m pip check",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w15",
+      "exit_code": 0,
+      "duration_seconds": 0.8827191,
+      "started_at_utc": "2026-10-01T14:56:11.044Z",
+      "mode": "UNIT",
+      "command_id": "08",
+      "evidence": "reports/batches/BATCH-15/logs/08.txt",
+      "output_streams": "stdout/stderr combined by exec tool"
+    },
+    {
+      "command": "git diff --check",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w15",
+      "exit_code": 0,
+      "duration_seconds": 0.3921835,
+      "started_at_utc": "2026-10-01T14:56:15.935Z",
+      "mode": "UNIT",
+      "command_id": "09",
+      "evidence": "reports/batches/BATCH-15/logs/09.txt",
+      "output_streams": "stdout/stderr combined by exec tool"
+    },
+    {
+      "command": "git status --short",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w15",
+      "exit_code": 0,
+      "duration_seconds": 0.3889168,
+      "started_at_utc": "2026-10-01T14:56:23.959Z",
+      "mode": "UNIT",
+      "command_id": "10",
+      "evidence": "reports/batches/BATCH-15/logs/10.txt",
+      "output_streams": "stdout/stderr combined by exec tool"
+    },
+    {
+      "command": "& 'C:\\cov-run\\batch-15\\venv\\Scripts\\python.exe' -c 'import hashlib,json,subprocess,sys,configparser,importlib.metadata\nfrom pathlib import Path\ndef blob_hash(sha,path):\n    return hashlib.sha256(subprocess.check_output([\"git\",\"show\",sha+\":\"+path])).hexdigest().upper()\nroot=Path.cwd()\nrun=Path(r\"C:\\cov-run\\batch-15\")\nvenv=run/\"venv\"\ncfg=configparser.ConfigParser()\ncfg.read_string(\"[venv]\\n\"+(venv/\"pyvenv.cfg\").read_text())\nlongest=max((str(p.resolve()) for p in venv.rglob(\"*\")),key=len)\nassert len(longest)<250\nassert Path(sys.executable).resolve()==(venv/\"Scripts/python.exe\").resolve()\nassert sys.prefix!=sys.base_prefix\nassert cfg[\"venv\"][\"include-system-site-packages\"]==\"false\"\nbase=\"f507e37d94c0532f377a9475de2129c52f75d584\"\npaths=[\"MASTER_PLAN.md\",\"batches.json\",\"backend/requirements-dev.lock\",\"docs/approvals/b-decisions.json\",\"docs/contracts/b-contract-lock.json\",\"docs/03-firewall-rules.md\",\"schemas/decision-result.schema.json\",\"schemas/accountability-state.schema.json\",\"schemas/prepared-action.schema.json\",\"tests/contract-vectors/evaluate.json\"]\nhashes={p:blob_hash(base,p) for p in paths}\nassert hashes[\"MASTER_PLAN.md\"]==\"DBE269F06F4BBE3D8C1F915DD8E4A2D78E0E4F021ABB396270C8B846D5FFA74E\"\nassert hashes[\"batches.json\"]==\"18DA555CE5ADEA5062F680837AEC8214158F58CBC1A918CF6BBC31EF48448E2E\"\nassert hashes[\"docs/approvals/b-decisions.json\"]==\"3ACAD4A113EB595BCED29025AF884A4C5EA2835E90E38D0E897298F91DB371DA\"\nreceipt_path=Path(r\"C:\\Users\\WONG Tsun Ming\\covenia-orchestration\\runs\\covenia-b-20260910-01\\integration-receipts\\BATCH-14.json\")\nreceipt=json.loads(receipt_path.read_text(encoding=\"utf-8-sig\"))\nfor sha in [receipt[\"implementation_sha\"],receipt[\"integration_sha\"]]:\n    subprocess.run([\"git\",\"merge-base\",\"--is-ancestor\",sha,base],check=True)\nsubprocess.run([\"git\",\"diff\",\"--exit-code\",receipt[\"implementation_sha\"],base,\"--\",\"backend/src/covenia_b/state\",\"backend/tests/state\"],check=True)\ndependencies={\n    \"implementation_report\":blob_hash(\"e6b3581cc6af98a64280d6ee8c06be3d50af6c6a\",\"reports/batches/BATCH-14/IMPLEMENTATION_REPORT.json\"),\n    \"verification_report\":blob_hash(base,\"reports/batches/BATCH-14/VERIFICATION_REPORT.json\"),\n    \"integration_receipt_file\":hashlib.sha256(receipt_path.read_bytes()).hexdigest().upper()\n}\nprint(json.dumps({\n    \"run_dir\":str(run),\"interpreter\":sys.executable,\"python_version\":sys.version,\n    \"sys_prefix\":sys.prefix,\"sys_base_prefix\":sys.base_prefix,\n    \"include_system_site_packages\":False,\"venv_direct_child_of_run_dir\":venv.parent==run,\n    \"longest_venv_path\":longest,\"longest_venv_path_length\":len(longest),\"path_limit\":250,\n    \"hash_method\":\"SHA256 raw git show <sha>:<path> bytes (external receipt: raw source file)\",\n    \"input_hashes\":hashes,\"dependency_hashes\":dependencies,\n    \"dependency_code_ancestry\":True,\"dependency_integration_ancestry\":True,\n    \"dependency_state_tree_matches_reviewed_commit\":True,\n    \"dependency_receipt\":receipt,\n    \"pip_version\":importlib.metadata.version(\"pip\"),\n    \"requirements_lock_change\":\"UNCHANGED\",\"dependency_additions\":[],\n    \"working_lock_sha256\":hashlib.sha256((root/\"backend/requirements-dev.lock\").read_bytes()).hexdigest().upper()\n},ensure_ascii=False))'",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w15",
+      "exit_code": 0,
+      "duration_seconds": 2.1810905,
+      "mode": "UNIT",
+      "command_id": "11",
+      "evidence": "reports/batches/BATCH-15/logs/11.txt",
+      "output_streams": "stdout/stderr combined by exec tool"
+    },
+    {
+      "command": "& 'C:\\cov-run\\batch-15\\venv\\Scripts\\python.exe' -m backend.tests.rules.evidence_probe",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w15",
+      "exit_code": 0,
+      "duration_seconds": 0.9588962,
+      "mode": "MUTATION",
+      "command_id": "12",
+      "evidence": "reports/batches/BATCH-15/logs/12.txt",
+      "output_streams": "stdout/stderr combined by exec tool"
+    },
+    {
+      "command": "& 'C:\\cov-run\\batch-15\\venv\\Scripts\\python.exe' -c '\nimport hashlib,json,subprocess\nfrom pathlib import Path\nbase=\"f507e37d94c0532f377a9475de2129c52f75d584\"\nhead=subprocess.check_output([\"git\",\"rev-parse\",\"HEAD\"],text=True).strip()\nfiles=subprocess.check_output([\"git\",\"diff\",\"--name-only\",base,head],text=True).splitlines()\nhashes={p:hashlib.sha256(subprocess.check_output([\"git\",\"show\",head+\":\"+p])).hexdigest().upper() for p in files}\nworkspace=Path(r\"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\")\npackage=json.loads((workspace/\"scheduler-packages/BATCH-15.json\").read_text(encoding=\"utf-8-sig\"))\nplan=json.loads((workspace/\"batches.json\").read_text(encoding=\"utf-8-sig\"))\nbatch=next(b for b in plan[\"batches\"] if b[\"id\"]==\"BATCH-15\")\nassert package==batch\ngit_plan=json.loads(subprocess.check_output([\"git\",\"show\",base+\":batches.json\"]))\nassert next(b for b in git_plan[\"batches\"] if b[\"id\"]==\"BATCH-15\")==package\ninputs={str(p.relative_to(workspace)):hashlib.sha256(p.read_bytes()).hexdigest().upper() for p in [workspace/\"scheduler-packages/BATCH-15.json\",workspace/\"BATCH_PROMPT_TEMPLATE.md\"]}\nlock=hashlib.sha256(subprocess.check_output([\"git\",\"show\",head+\":backend/requirements-dev.lock\"])).hexdigest().upper()\nassert lock==\"177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04\"\nprint(json.dumps({\"code_commit\":head,\"code_files\":files,\"code_hashes\":hashes,\"workspace_input_hashes\":inputs,\"workspace_package_equals_batches_entry\":True,\"workspace_package_equals_base_batches_entry\":True,\"lock_after_code_commit\":lock}))\n'",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w15",
+      "exit_code": 0,
+      "duration_seconds": 0.8958316,
+      "mode": "UNIT",
+      "command_id": "13",
+      "evidence": "reports/batches/BATCH-15/logs/13.txt",
+      "output_streams": "stdout/stderr combined by exec tool"
+    }
+  ],
+  "initial_non_acceptance_checks": [
+    {
+      "command": "ruff format + ruff check + pytest backend/tests/rules -q",
+      "exit_code": 1,
+      "results": "149 tests passed; 2 import-sorting findings",
+      "evidence": "reports/batches/BATCH-15/logs/initial-format-and-tests.txt"
+    },
+    {
+      "command": "ruff import-sort + format + check",
+      "exit_code": 1,
+      "results": "1 E501 in evidence probe; fixed before final acceptance",
+      "evidence": "reports/batches/BATCH-15/logs/initial-evidence-lint.txt"
+    }
+  ]
+}
