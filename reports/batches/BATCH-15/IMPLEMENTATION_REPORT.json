@@ -1,0 +1,551 @@
+{
+  "report_version": "1.0",
+  "batch_id": "BATCH-15",
+  "result": "IMPLEMENTED",
+  "summary": "统一确定性规则链已实现：真实候选命中按 P0(400)>H1(350)>E1(300)>E2(100)>E0(0) 裁决；保留 suppressed_rule_ids；无命中 ALLOW/E0；P0 内部审计与错误 envelope 映射保留。",
+  "task_id": "01a0edf2-eb7f-7173-bc72-74157a7f437a",
+  "repo_root": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w15",
+  "branch": "codex/covenia-batch-15",
+  "base_integration_sha": "f507e37d94c0532f377a9475de2129c52f75d584",
+  "contract_version": "8314c76502cbc9d47d8432b7fe53f7d9fb82de82 / BATCH-03 contract-lock-v1",
+  "plan_sha256": {
+    "MASTER_PLAN.md": "DBE269F06F4BBE3D8C1F915DD8E4A2D78E0E4F021ABB396270C8B846D5FFA74E",
+    "batches.json": "18DA555CE5ADEA5062F680837AEC8214158F58CBC1A918CF6BBC31EF48448E2E"
+  },
+  "plan_source": "User-authorized workspace scheduler-packages/BATCH-15.json + BATCH_PROMPT_TEMPLATE.md; package equals workspace/base BATCH-15 entry",
+  "workspace_input_hashes": {
+    "scheduler-packages\\BATCH-15.json": "EE2941C98272DADC4F4C14E288143EB2A7B2866FF990319641ACEB4C4D85A4D4",
+    "BATCH_PROMPT_TEMPLATE.md": "8EE5AF07099181A64E10A2430A085CBB9131D725871AC44A15439B10CB1E15A3"
+  },
+  "initial_worktree": [],
+  "resume_evidence": "reports/batches/BATCH-15/resume-evidence.json",
+  "dependency_receipts": [
+    {
+      "batch_id": "BATCH-14",
+      "verdict": "PASS",
+      "integration_sha": "bfc1f911c8dad8be0daf9b3bbb4e3bf2b4c0ae23",
+      "reviewed_code_commits": [
+        "673a0a0bd95b43b9f43c31cc833f6d0f974dffe0"
+      ],
+      "implementation_report_ref": "e6b3581cc6af98a64280d6ee8c06be3d50af6c6a:reports/batches/BATCH-14/IMPLEMENTATION_REPORT.json",
+      "verification_report_ref": "bfc1f911c8dad8be0daf9b3bbb4e3bf2b4c0ae23:reports/batches/BATCH-14/VERIFICATION_REPORT.json",
+      "integration_receipt_path": "C:\\Users\\WONG Tsun Ming\\covenia-orchestration\\runs\\covenia-b-20260910-01\\integration-receipts\\BATCH-14.json",
+      "artifact_hashes": {
+        "implementation_report": "78422F0CA9129DAC165242EABBBD581F6ACBDD6D22B13E2342B61DD325E88D94",
+        "verification_report": "7C42695F24EA0BABFBB24D3B3B4C1FD299A63E66320DE6218F2BC0C4CACD7C55",
+        "integration_receipt_file": "5335C5F481FFBD610D38768B30CE1DE525EE898EE43D3E6021404EEF51777FC2"
+      },
+      "code_ancestor_of_baseline": true,
+      "integration_ancestor_of_baseline": true,
+      "reviewed_state_tree_equals_baseline": true,
+      "integration_smoke_results": {
+        "pytest": "PASS: 4 passed in 0.51s",
+        "pip_check": "PASS: No broken requirements found.",
+        "required_imports": "PASS: pytest/jsonschema import OK"
+      },
+      "note": "BATCH-14 implementation report is absent at its integration path; consumed directly from the immutable committed artifact e6b3581, hash checked against independent verification. No BATCH-14 artifacts were copied or modified."
+    }
+  ],
+  "external_gate_receipts": [],
+  "code_commits": [
+    "c1e82b84d5418e79c3d766e8563082306bfa0612"
+  ],
+  "implementation_evidence_commit": "d3f8b50a2f82303bb75b0206c96e5404b44adf9b",
+  "changed_files": [
+    "backend/src/covenia_b/rules/__init__.py",
+    "backend/src/covenia_b/rules/engine.py",
+    "backend/tests/rules/__init__.py",
+    "backend/tests/rules/evidence_probe.py",
+    "backend/tests/rules/scenarios.py",
+    "backend/tests/rules/test_engine.py",
+    "reports/batches/BATCH-15/commands.json",
+    "reports/batches/BATCH-15/environment.json",
+    "reports/batches/BATCH-15/logs/01.txt",
+    "reports/batches/BATCH-15/logs/02.txt",
+    "reports/batches/BATCH-15/logs/03.txt",
+    "reports/batches/BATCH-15/logs/04.txt",
+    "reports/batches/BATCH-15/logs/05.txt",
+    "reports/batches/BATCH-15/logs/06.txt",
+    "reports/batches/BATCH-15/logs/07.txt",
+    "reports/batches/BATCH-15/logs/08.txt",
+    "reports/batches/BATCH-15/logs/09.txt",
+    "reports/batches/BATCH-15/logs/10.txt",
+    "reports/batches/BATCH-15/logs/11.txt",
+    "reports/batches/BATCH-15/logs/12.txt",
+    "reports/batches/BATCH-15/logs/13.txt",
+    "reports/batches/BATCH-15/logs/initial-evidence-lint.txt",
+    "reports/batches/BATCH-15/logs/initial-format-and-tests.txt",
+    "reports/batches/BATCH-15/metamorphic-evidence.json",
+    "reports/batches/BATCH-15/pip-check.txt",
+    "reports/batches/BATCH-15/resume-evidence.json",
+    "reports/batches/BATCH-15/rule-matrix.json",
+    "reports/batches/BATCH-15/IMPLEMENTATION_REPORT.json",
+    "reports/batches/BATCH-15/IMPLEMENTATION_REPORT.md"
+  ],
+  "scope_check": {
+    "within_allowlist": true,
+    "forbidden_changes": [],
+    "lock_changed": false,
+    "verifier_owned_outputs_created": false,
+    "allowed_paths": [
+      "backend/src/covenia_b/rules/**",
+      "backend/tests/rules/**",
+      "reports/batches/BATCH-15/**"
+    ],
+    "requirements_lock_read_only": true,
+    "new_dependencies": [],
+    "other_batches_started": false,
+    "push_performed": false,
+    "main_changed": false
+  },
+  "acceptance_results": [
+    {
+      "criterion": "三种决策与 A13/A14/A15/A20/A21/A29/A30 全覆盖；A14 抑制 E1，A30 抑制 H1。",
+      "status": "EVIDENCED",
+      "evidence": [
+        "reports/batches/BATCH-15/rule-matrix.json",
+        "backend/tests/rules/test_engine.py",
+        "reports/batches/BATCH-15/logs/05.txt"
+      ],
+      "boundary": "UNIT evidence, including schema-valid success DTOs and P0 error envelope; no HTTP service run."
+    },
+    {
+      "criterion": "修改 case_id/会话 ID 无影响；改变事实/动作可改变结果。",
+      "status": "EVIDENCED",
+      "evidence": [
+        "reports/batches/BATCH-15/metamorphic-evidence.json",
+        "backend/tests/rules/test_engine.py"
+      ],
+      "details": "352 random case/action/session-source renamings and 352 fresh JSON reparses; known display IDs, changed status/action and all four scope fields tested."
+    },
+    {
+      "criterion": "规则、优先级与 rule_id 不在 API/前端另写一份。",
+      "status": "EVIDENCED",
+      "evidence": [
+        "backend/src/covenia_b/rules/engine.py"
+      ],
+      "details": "Only rules module/test/report paths changed. Public domain/schema validation remains read-only; no API/frontend evaluator was added."
+    },
+    {
+      "criterion": "按5.5使用本批绝对隔离venv解释器；新增第三方依赖只增不改、精确钉版本并提交锁文件差异/原因/hash证据；交付前同解释器 pip check 退出0。环境证据缺失或冲突不得PASS。",
+      "status": "EVIDENCED",
+      "evidence": [
+        "reports/batches/BATCH-15/environment.json",
+        "reports/batches/BATCH-15/commands.json",
+        "reports/batches/BATCH-15/pip-check.txt"
+      ],
+      "details": "Isolated absolute interpreter; longest venv path 156 < 250; zero new dependencies; read-only input lock unchanged."
+    }
+  ],
+  "test_results": [
+    {
+      "command": "& 'C:\\cov-run\\batch-15\\venv\\Scripts\\python.exe' -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" 'C:\\cov-run\\batch-15\\venv\\Scripts\\python.exe'",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w15",
+      "exit_code": 0,
+      "duration_seconds": 0.4115488,
+      "started_at_utc": "2026-10-01T14:55:15.395Z",
+      "mode": "UNIT",
+      "command_id": "01",
+      "evidence": "reports/batches/BATCH-15/logs/01.txt"
+    },
+    {
+      "command": "& 'C:\\cov-run\\batch-15\\venv\\Scripts\\python.exe' -m pip install --no-deps -r backend/requirements-dev.lock",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w15",
+      "exit_code": 0,
+      "duration_seconds": 2.0617858,
+      "started_at_utc": "2026-10-01T14:55:20.768Z",
+      "mode": "UNIT",
+      "command_id": "02",
+      "evidence": "reports/batches/BATCH-15/logs/02.txt"
+    },
+    {
+      "command": "& 'C:\\cov-run\\batch-15\\venv\\Scripts\\python.exe' -m pip install --no-deps --no-build-isolation -e backend",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w15",
+      "exit_code": 0,
+      "duration_seconds": 3.7254039,
+      "started_at_utc": "2026-10-01T14:55:28.273Z",
+      "mode": "UNIT",
+      "command_id": "03",
+      "evidence": "reports/batches/BATCH-15/logs/03.txt"
+    },
+    {
+      "command": "& 'C:\\cov-run\\batch-15\\venv\\Scripts\\python.exe' -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w15",
+      "exit_code": 0,
+      "duration_seconds": 0.5867482,
+      "started_at_utc": "2026-10-01T14:55:36.472Z",
+      "mode": "UNIT",
+      "command_id": "04",
+      "evidence": "reports/batches/BATCH-15/logs/04.txt"
+    },
+    {
+      "command": "& 'C:\\cov-run\\batch-15\\venv\\Scripts\\python.exe' -m pytest backend/tests/rules -q",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w15",
+      "exit_code": 0,
+      "duration_seconds": 1.0633301,
+      "started_at_utc": "2026-10-01T14:55:56.775Z",
+      "mode": "UNIT",
+      "command_id": "05",
+      "evidence": "reports/batches/BATCH-15/logs/05.txt",
+      "test_count": 155,
+      "skipped": 0,
+      "xfail": 0
+    },
+    {
+      "command": "& 'C:\\cov-run\\batch-15\\venv\\Scripts\\python.exe' -m ruff check backend/src/covenia_b/rules backend/tests/rules",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w15",
+      "exit_code": 0,
+      "duration_seconds": 0.394436,
+      "started_at_utc": "2026-10-01T14:56:02.302Z",
+      "mode": "UNIT",
+      "command_id": "06",
+      "evidence": "reports/batches/BATCH-15/logs/06.txt"
+    },
+    {
+      "command": "& 'C:\\cov-run\\batch-15\\venv\\Scripts\\python.exe' -m pip list --format=json",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w15",
+      "exit_code": 0,
+      "duration_seconds": 0.7461017,
+      "started_at_utc": "2026-10-01T14:56:06.471Z",
+      "mode": "UNIT",
+      "command_id": "07",
+      "evidence": "reports/batches/BATCH-15/logs/07.txt"
+    },
+    {
+      "command": "& 'C:\\cov-run\\batch-15\\venv\\Scripts\\python.exe' -m pip check",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w15",
+      "exit_code": 0,
+      "duration_seconds": 0.8827191,
+      "started_at_utc": "2026-10-01T14:56:11.044Z",
+      "mode": "UNIT",
+      "command_id": "08",
+      "evidence": "reports/batches/BATCH-15/logs/08.txt"
+    },
+    {
+      "command": "git diff --check",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w15",
+      "exit_code": 0,
+      "duration_seconds": 0.3921835,
+      "started_at_utc": "2026-10-01T14:56:15.935Z",
+      "mode": "UNIT",
+      "command_id": "09",
+      "evidence": "reports/batches/BATCH-15/logs/09.txt"
+    },
+    {
+      "command": "git status --short",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w15",
+      "exit_code": 0,
+      "duration_seconds": 0.3889168,
+      "started_at_utc": "2026-10-01T14:56:23.959Z",
+      "mode": "UNIT",
+      "command_id": "10",
+      "evidence": "reports/batches/BATCH-15/logs/10.txt"
+    },
+    {
+      "command": "& 'C:\\cov-run\\batch-15\\venv\\Scripts\\python.exe' -c 'import hashlib,json,subprocess,sys,configparser,importlib.metadata\nfrom pathlib import Path\ndef blob_hash(sha,path):\n    return hashlib.sha256(subprocess.check_output([\"git\",\"show\",sha+\":\"+path])).hexdigest().upper()\nroot=Path.cwd()\nrun=Path(r\"C:\\cov-run\\batch-15\")\nvenv=run/\"venv\"\ncfg=configparser.ConfigParser()\ncfg.read_string(\"[venv]\\n\"+(venv/\"pyvenv.cfg\").read_text())\nlongest=max((str(p.resolve()) for p in venv.rglob(\"*\")),key=len)\nassert len(longest)<250\nassert Path(sys.executable).resolve()==(venv/\"Scripts/python.exe\").resolve()\nassert sys.prefix!=sys.base_prefix\nassert cfg[\"venv\"][\"include-system-site-packages\"]==\"false\"\nbase=\"f507e37d94c0532f377a9475de2129c52f75d584\"\npaths=[\"MASTER_PLAN.md\",\"batches.json\",\"backend/requirements-dev.lock\",\"docs/approvals/b-decisions.json\",\"docs/contracts/b-contract-lock.json\",\"docs/03-firewall-rules.md\",\"schemas/decision-result.schema.json\",\"schemas/accountability-state.schema.json\",\"schemas/prepared-action.schema.json\",\"tests/contract-vectors/evaluate.json\"]\nhashes={p:blob_hash(base,p) for p in paths}\nassert hashes[\"MASTER_PLAN.md\"]==\"DBE269F06F4BBE3D8C1F915DD8E4A2D78E0E4F021ABB396270C8B846D5FFA74E\"\nassert hashes[\"batches.json\"]==\"18DA555CE5ADEA5062F680837AEC8214158F58CBC1A918CF6BBC31EF48448E2E\"\nassert hashes[\"docs/approvals/b-decisions.json\"]==\"3ACAD4A113EB595BCED29025AF884A4C5EA2835E90E38D0E897298F91DB371DA\"\nreceipt_path=Path(r\"C:\\Users\\WONG Tsun Ming\\covenia-orchestration\\runs\\covenia-b-20260910-01\\integration-receipts\\BATCH-14.json\")\nreceipt=json.loads(receipt_path.read_text(encoding=\"utf-8-sig\"))\nfor sha in [receipt[\"implementation_sha\"],receipt[\"integration_sha\"]]:\n    subprocess.run([\"git\",\"merge-base\",\"--is-ancestor\",sha,base],check=True)\nsubprocess.run([\"git\",\"diff\",\"--exit-code\",receipt[\"implementation_sha\"],base,\"--\",\"backend/src/covenia_b/state\",\"backend/tests/state\"],check=True)\ndependencies={\n    \"implementation_report\":blob_hash(\"e6b3581cc6af98a64280d6ee8c06be3d50af6c6a\",\"reports/batches/BATCH-14/IMPLEMENTATION_REPORT.json\"),\n    \"verification_report\":blob_hash(base,\"reports/batches/BATCH-14/VERIFICATION_REPORT.json\"),\n    \"integration_receipt_file\":hashlib.sha256(receipt_path.read_bytes()).hexdigest().upper()\n}\nprint(json.dumps({\n    \"run_dir\":str(run),\"interpreter\":sys.executable,\"python_version\":sys.version,\n    \"sys_prefix\":sys.prefix,\"sys_base_prefix\":sys.base_prefix,\n    \"include_system_site_packages\":False,\"venv_direct_child_of_run_dir\":venv.parent==run,\n    \"longest_venv_path\":longest,\"longest_venv_path_length\":len(longest),\"path_limit\":250,\n    \"hash_method\":\"SHA256 raw git show <sha>:<path> bytes (external receipt: raw source file)\",\n    \"input_hashes\":hashes,\"dependency_hashes\":dependencies,\n    \"dependency_code_ancestry\":True,\"dependency_integration_ancestry\":True,\n    \"dependency_state_tree_matches_reviewed_commit\":True,\n    \"dependency_receipt\":receipt,\n    \"pip_version\":importlib.metadata.version(\"pip\"),\n    \"requirements_lock_change\":\"UNCHANGED\",\"dependency_additions\":[],\n    \"working_lock_sha256\":hashlib.sha256((root/\"backend/requirements-dev.lock\").read_bytes()).hexdigest().upper()\n},ensure_ascii=False))'",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w15",
+      "exit_code": 0,
+      "duration_seconds": 2.1810905,
+      "mode": "UNIT",
+      "command_id": "11",
+      "evidence": "reports/batches/BATCH-15/logs/11.txt"
+    },
+    {
+      "command": "& 'C:\\cov-run\\batch-15\\venv\\Scripts\\python.exe' -m backend.tests.rules.evidence_probe",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w15",
+      "exit_code": 0,
+      "duration_seconds": 0.9588962,
+      "mode": "MUTATION",
+      "command_id": "12",
+      "evidence": "reports/batches/BATCH-15/logs/12.txt"
+    },
+    {
+      "command": "& 'C:\\cov-run\\batch-15\\venv\\Scripts\\python.exe' -c '\nimport hashlib,json,subprocess\nfrom pathlib import Path\nbase=\"f507e37d94c0532f377a9475de2129c52f75d584\"\nhead=subprocess.check_output([\"git\",\"rev-parse\",\"HEAD\"],text=True).strip()\nfiles=subprocess.check_output([\"git\",\"diff\",\"--name-only\",base,head],text=True).splitlines()\nhashes={p:hashlib.sha256(subprocess.check_output([\"git\",\"show\",head+\":\"+p])).hexdigest().upper() for p in files}\nworkspace=Path(r\"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\")\npackage=json.loads((workspace/\"scheduler-packages/BATCH-15.json\").read_text(encoding=\"utf-8-sig\"))\nplan=json.loads((workspace/\"batches.json\").read_text(encoding=\"utf-8-sig\"))\nbatch=next(b for b in plan[\"batches\"] if b[\"id\"]==\"BATCH-15\")\nassert package==batch\ngit_plan=json.loads(subprocess.check_output([\"git\",\"show\",base+\":batches.json\"]))\nassert next(b for b in git_plan[\"batches\"] if b[\"id\"]==\"BATCH-15\")==package\ninputs={str(p.relative_to(workspace)):hashlib.sha256(p.read_bytes()).hexdigest().upper() for p in [workspace/\"scheduler-packages/BATCH-15.json\",workspace/\"BATCH_PROMPT_TEMPLATE.md\"]}\nlock=hashlib.sha256(subprocess.check_output([\"git\",\"show\",head+\":backend/requirements-dev.lock\"])).hexdigest().upper()\nassert lock==\"177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04\"\nprint(json.dumps({\"code_commit\":head,\"code_files\":files,\"code_hashes\":hashes,\"workspace_input_hashes\":inputs,\"workspace_package_equals_batches_entry\":True,\"workspace_package_equals_base_batches_entry\":True,\"lock_after_code_commit\":lock}))\n'",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w15",
+      "exit_code": 0,
+      "duration_seconds": 0.8958316,
+      "mode": "UNIT",
+      "command_id": "13",
+      "evidence": "reports/batches/BATCH-15/logs/13.txt"
+    },
+    {
+      "command": "& 'C:\\cov-run\\batch-15\\venv\\Scripts\\python.exe' -c '\nimport hashlib,json,subprocess\nbase=\"f507e37d94c0532f377a9475de2129c52f75d584\"\nhead=subprocess.check_output([\"git\",\"rev-parse\",\"HEAD\"],text=True).strip()\npaths=subprocess.check_output([\"git\",\"diff\",\"--name-only\",base,head],text=True).splitlines()\nallowed=(\"backend/src/covenia_b/rules/\",\"backend/tests/rules/\",\"reports/batches/BATCH-15/\")\nassert all(p.startswith(allowed) for p in paths)\nassert not any(\"VERIFICATION_REPORT\" in p or \"/verification-evidence/\" in p for p in paths)\nhashes={}\nfor path in paths:\n    raw=subprocess.check_output([\"git\",\"show\",head+\":\"+path])\n    hashes[path]=hashlib.sha256(raw).hexdigest().upper()\n    if path.endswith(\".json\"): json.loads(raw)\nsubprocess.run([\"git\",\"diff\",\"--check\",base,head],check=True)\nsubprocess.run([\"git\",\"diff\",\"--exit-code\",base,head,\"--\",\"backend/requirements-dev.lock\"],check=True)\nmatrix=json.loads(subprocess.check_output([\"git\",\"show\",head+\":reports/batches/BATCH-15/rule-matrix.json\"]))\nmeta=json.loads(subprocess.check_output([\"git\",\"show\",head+\":reports/batches/BATCH-15/metamorphic-evidence.json\"]))\ncommands=json.loads(subprocess.check_output([\"git\",\"show\",head+\":reports/batches/BATCH-15/commands.json\"]))\nassert all(c[\"exit_code\"]==0 for c in commands[\"commands\"])\nassert len(matrix[\"vectors\"])==11 and meta[\"totals\"][\"id_renamings\"]==352\nassert meta[\"negative_control\"][\"source_hash_after\"]==hashes[\"backend/src/covenia_b/rules/engine.py\"]\nprint(json.dumps({\"evidence_commit\":head,\"all_hashes\":hashes,\"scope_check\":{\"within_allowlist\":True,\"forbidden_changes\":[],\"lock_changed\":False,\"verifier_owned_outputs_created\":False},\"artifact_json_valid\":True,\"committed_diff_check_exit_code\":0}))\n'",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w15",
+      "exit_code": 0,
+      "duration_seconds": 2.1202526,
+      "mode": "UNIT",
+      "evidence": "IMPLEMENTATION_REPORT.json#artifact_hashes",
+      "output": "{\"evidence_commit\": \"d3f8b50a2f82303bb75b0206c96e5404b44adf9b\", \"all_hashes\": {\"backend/src/covenia_b/rules/__init__.py\": \"049C1DE1ACDE8ABB57132EEE29D7D7BFCE59347D6AD4EA405B52D5AB8F66A891\", \"backend/src/covenia_b/rules/engine.py\": \"27F9488F0BAB128207678F7A17F71466D8567B8BEDD0FBC30955960AF678550C\", \"backend/tests/rules/__init__.py\": \"4ACD62E7193B0301E19C1DDC3202A59B513A385B94B3B46A61E7493EF43A5AE8\", \"backend/tests/rules/evidence_probe.py\": \"90B8D18C16FDEBBA5EFF076B2750E149D936D97DA1692ECC810FE5D2CCDEB5C7\", \"backend/tests/rules/scenarios.py\": \"40DEA8CF8465498B8CAAB7E0870ED34E9F3A6BD15C52CA99AACBC254F1D3D29E\", \"backend/tests/rules/test_engine.py\": \"571DF6EE959D0BD6A3671404E2F593C2FBD227A5251684B433C61BBD97426D13\", \"reports/batches/BATCH-15/commands.json\": \"CA6B86BBAA562993CB69B2A6331FA96E105AD23696B9ECA0F55AA9214FECBE20\", \"reports/batches/BATCH-15/environment.json\": \"C5FD69812F6F4948DB574AFA58BCBA590595FC8E606361ADFB5D0E70BB7F9901\", \"reports/batches/BATCH-15/logs/01.txt\": \"1C481781167A299E97079D2250C4892EF1395EDD9D721D3E6B764859373EFB11\", \"reports/batches/BATCH-15/logs/02.txt\": \"CE798B074FA7EDD7C8847DFAF9A211F5B61649FC151AA91C6F72219E7594ED4A\", \"reports/batches/BATCH-15/logs/03.txt\": \"D874B43EE9DCD0EB26B87BBFEED619433A4FFE6C1ADA3B9B0FEA6C1558B3B94C\", \"reports/batches/BATCH-15/logs/04.txt\": \"A872E86BB9FAF0D90F2F4D1BD5EB56691A2A295BCD27C09873421E5B886AD017\", \"reports/batches/BATCH-15/logs/05.txt\": \"EB83618BFBAD3F16AC9D4B4A786BFB6E4A73E779812AC533DF15438B8990E003\", \"reports/batches/BATCH-15/logs/06.txt\": \"82B3E6A6C090A57601D22943BD23FCA9218D1031DBE5A7B754092F9A156B4F18\", \"reports/batches/BATCH-15/logs/07.txt\": \"D1E9754D01849BA774FD2FDDF30038E7425B447CBA35673A9F75587EA82879A8\", \"reports/batches/BATCH-15/logs/08.txt\": \"9261363B733079A641C2E4CC9BC46FFA1D8336945A87F807B6CF68847DBC9B09\", \"reports/batches/BATCH-15/logs/09.txt\": \"01BA4719C80B6FE911B091A7C05124B64EEECE964E09C058EF8F9805DACA546B\", \"reports/batches/BATCH-15/logs/10.txt\": \"9CF6B511CBC6796812CBD7F688BDFBCE7D09A5087AB58B835158078425D1543C\", \"reports/batches/BATCH-15/logs/11.txt\": \"321F35887CE3CA67D05928210429BE442F85F259F60E19D937B3F9DC40917467\", \"reports/batches/BATCH-15/logs/12.txt\": \"4D8074E758D5BB8126DBC9B2DE9104443E6454083DA9528FD4DA87C21038DBD4\", \"reports/batches/BATCH-15/logs/13.txt\": \"0E1B27FDA4E14A2B28AA11E37C36D721104D5932A3410996042D18CDA9A283A6\", \"reports/batches/BATCH-15/logs/initial-evidence-lint.txt\": \"3CC94A8EAB5C311EAD324F13A04E0ECB029C3B9FE9AE71008E9161DFC766523A\", \"reports/batches/BATCH-15/logs/initial-format-and-tests.txt\": \"3ACDDB4491A9BF3B4CF39641BDC87E0EA2A504BF0A5B97947ED26848E53EEB36\", \"reports/batches/BATCH-15/metamorphic-evidence.json\": \"F61B24E025C207F580E39E73C64F2E122935097F0C9E93714D75850B213D0D8A\", \"reports/batches/BATCH-15/pip-check.txt\": \"9261363B733079A641C2E4CC9BC46FFA1D8336945A87F807B6CF68847DBC9B09\", \"reports/batches/BATCH-15/resume-evidence.json\": \"EEF93712C494EA806BA9E2BA9E5E2BFFD202F7A91ADA212A4C3359D7547DE558\", \"reports/batches/BATCH-15/rule-matrix.json\": \"8DE8B6F10ADC4BBFAB86AF641AF9F581267BBE4335B9D87D6E237BE71811D08F\"}, \"scope_check\": {\"within_allowlist\": true, \"forbidden_changes\": [], \"lock_changed\": false, \"verifier_owned_outputs_created\": false}, \"artifact_json_valid\": true, \"committed_diff_check_exit_code\": 0}\r\n"
+    }
+  ],
+  "test_summary": {
+    "pytest": {
+      "passed": 155,
+      "skipped": 0,
+      "xfail": 0,
+      "failed": 0
+    },
+    "ruff_exit_code": 0,
+    "pip_check_exit_code": 0,
+    "git_diff_check_exit_code": 0,
+    "parameterized_fact_combinations": 108,
+    "rule_matrix_vectors": 11,
+    "id_renamings": 352,
+    "fresh_json_recalculations": 352,
+    "mutation": {
+      "inner_assertion_failed_as_expected": true,
+      "outer_exit_code": 0,
+      "restored_source_hash": "27F9488F0BAB128207678F7A17F71466D8567B8BEDD0FBC30955960AF678550C"
+    }
+  },
+  "artifact_hash_method": "SHA256 raw git show d3f8b50a2f82303bb75b0206c96e5404b44adf9b:<path> bytes; report cannot hash its own future commit",
+  "artifact_hashes": {
+    "backend/src/covenia_b/rules/__init__.py": "049C1DE1ACDE8ABB57132EEE29D7D7BFCE59347D6AD4EA405B52D5AB8F66A891",
+    "backend/src/covenia_b/rules/engine.py": "27F9488F0BAB128207678F7A17F71466D8567B8BEDD0FBC30955960AF678550C",
+    "backend/tests/rules/__init__.py": "4ACD62E7193B0301E19C1DDC3202A59B513A385B94B3B46A61E7493EF43A5AE8",
+    "backend/tests/rules/evidence_probe.py": "90B8D18C16FDEBBA5EFF076B2750E149D936D97DA1692ECC810FE5D2CCDEB5C7",
+    "backend/tests/rules/scenarios.py": "40DEA8CF8465498B8CAAB7E0870ED34E9F3A6BD15C52CA99AACBC254F1D3D29E",
+    "backend/tests/rules/test_engine.py": "571DF6EE959D0BD6A3671404E2F593C2FBD227A5251684B433C61BBD97426D13",
+    "reports/batches/BATCH-15/commands.json": "CA6B86BBAA562993CB69B2A6331FA96E105AD23696B9ECA0F55AA9214FECBE20",
+    "reports/batches/BATCH-15/environment.json": "C5FD69812F6F4948DB574AFA58BCBA590595FC8E606361ADFB5D0E70BB7F9901",
+    "reports/batches/BATCH-15/logs/01.txt": "1C481781167A299E97079D2250C4892EF1395EDD9D721D3E6B764859373EFB11",
+    "reports/batches/BATCH-15/logs/02.txt": "CE798B074FA7EDD7C8847DFAF9A211F5B61649FC151AA91C6F72219E7594ED4A",
+    "reports/batches/BATCH-15/logs/03.txt": "D874B43EE9DCD0EB26B87BBFEED619433A4FFE6C1ADA3B9B0FEA6C1558B3B94C",
+    "reports/batches/BATCH-15/logs/04.txt": "A872E86BB9FAF0D90F2F4D1BD5EB56691A2A295BCD27C09873421E5B886AD017",
+    "reports/batches/BATCH-15/logs/05.txt": "EB83618BFBAD3F16AC9D4B4A786BFB6E4A73E779812AC533DF15438B8990E003",
+    "reports/batches/BATCH-15/logs/06.txt": "82B3E6A6C090A57601D22943BD23FCA9218D1031DBE5A7B754092F9A156B4F18",
+    "reports/batches/BATCH-15/logs/07.txt": "D1E9754D01849BA774FD2FDDF30038E7425B447CBA35673A9F75587EA82879A8",
+    "reports/batches/BATCH-15/logs/08.txt": "9261363B733079A641C2E4CC9BC46FFA1D8336945A87F807B6CF68847DBC9B09",
+    "reports/batches/BATCH-15/logs/09.txt": "01BA4719C80B6FE911B091A7C05124B64EEECE964E09C058EF8F9805DACA546B",
+    "reports/batches/BATCH-15/logs/10.txt": "9CF6B511CBC6796812CBD7F688BDFBCE7D09A5087AB58B835158078425D1543C",
+    "reports/batches/BATCH-15/logs/11.txt": "321F35887CE3CA67D05928210429BE442F85F259F60E19D937B3F9DC40917467",
+    "reports/batches/BATCH-15/logs/12.txt": "4D8074E758D5BB8126DBC9B2DE9104443E6454083DA9528FD4DA87C21038DBD4",
+    "reports/batches/BATCH-15/logs/13.txt": "0E1B27FDA4E14A2B28AA11E37C36D721104D5932A3410996042D18CDA9A283A6",
+    "reports/batches/BATCH-15/logs/initial-evidence-lint.txt": "3CC94A8EAB5C311EAD324F13A04E0ECB029C3B9FE9AE71008E9161DFC766523A",
+    "reports/batches/BATCH-15/logs/initial-format-and-tests.txt": "3ACDDB4491A9BF3B4CF39641BDC87E0EA2A504BF0A5B97947ED26848E53EEB36",
+    "reports/batches/BATCH-15/metamorphic-evidence.json": "F61B24E025C207F580E39E73C64F2E122935097F0C9E93714D75850B213D0D8A",
+    "reports/batches/BATCH-15/pip-check.txt": "9261363B733079A641C2E4CC9BC46FFA1D8336945A87F807B6CF68847DBC9B09",
+    "reports/batches/BATCH-15/resume-evidence.json": "EEF93712C494EA806BA9E2BA9E5E2BFFD202F7A91ADA212A4C3359D7547DE558",
+    "reports/batches/BATCH-15/rule-matrix.json": "8DE8B6F10ADC4BBFAB86AF641AF9F581267BBE4335B9D87D6E237BE71811D08F"
+  },
+  "artifacts": [
+    {
+      "path": "backend/src/covenia_b/rules/__init__.py",
+      "sha256": "049C1DE1ACDE8ABB57132EEE29D7D7BFCE59347D6AD4EA405B52D5AB8F66A891",
+      "classification": "REDACTED",
+      "source_commit": "d3f8b50a2f82303bb75b0206c96e5404b44adf9b"
+    },
+    {
+      "path": "backend/src/covenia_b/rules/engine.py",
+      "sha256": "27F9488F0BAB128207678F7A17F71466D8567B8BEDD0FBC30955960AF678550C",
+      "classification": "REDACTED",
+      "source_commit": "d3f8b50a2f82303bb75b0206c96e5404b44adf9b"
+    },
+    {
+      "path": "backend/tests/rules/__init__.py",
+      "sha256": "4ACD62E7193B0301E19C1DDC3202A59B513A385B94B3B46A61E7493EF43A5AE8",
+      "classification": "REDACTED",
+      "source_commit": "d3f8b50a2f82303bb75b0206c96e5404b44adf9b"
+    },
+    {
+      "path": "backend/tests/rules/evidence_probe.py",
+      "sha256": "90B8D18C16FDEBBA5EFF076B2750E149D936D97DA1692ECC810FE5D2CCDEB5C7",
+      "classification": "REDACTED",
+      "source_commit": "d3f8b50a2f82303bb75b0206c96e5404b44adf9b"
+    },
+    {
+      "path": "backend/tests/rules/scenarios.py",
+      "sha256": "40DEA8CF8465498B8CAAB7E0870ED34E9F3A6BD15C52CA99AACBC254F1D3D29E",
+      "classification": "REDACTED",
+      "source_commit": "d3f8b50a2f82303bb75b0206c96e5404b44adf9b"
+    },
+    {
+      "path": "backend/tests/rules/test_engine.py",
+      "sha256": "571DF6EE959D0BD6A3671404E2F593C2FBD227A5251684B433C61BBD97426D13",
+      "classification": "REDACTED",
+      "source_commit": "d3f8b50a2f82303bb75b0206c96e5404b44adf9b"
+    },
+    {
+      "path": "reports/batches/BATCH-15/commands.json",
+      "sha256": "CA6B86BBAA562993CB69B2A6331FA96E105AD23696B9ECA0F55AA9214FECBE20",
+      "classification": "REDACTED",
+      "source_commit": "d3f8b50a2f82303bb75b0206c96e5404b44adf9b"
+    },
+    {
+      "path": "reports/batches/BATCH-15/environment.json",
+      "sha256": "C5FD69812F6F4948DB574AFA58BCBA590595FC8E606361ADFB5D0E70BB7F9901",
+      "classification": "REDACTED",
+      "source_commit": "d3f8b50a2f82303bb75b0206c96e5404b44adf9b"
+    },
+    {
+      "path": "reports/batches/BATCH-15/logs/01.txt",
+      "sha256": "1C481781167A299E97079D2250C4892EF1395EDD9D721D3E6B764859373EFB11",
+      "classification": "REDACTED",
+      "source_commit": "d3f8b50a2f82303bb75b0206c96e5404b44adf9b"
+    },
+    {
+      "path": "reports/batches/BATCH-15/logs/02.txt",
+      "sha256": "CE798B074FA7EDD7C8847DFAF9A211F5B61649FC151AA91C6F72219E7594ED4A",
+      "classification": "REDACTED",
+      "source_commit": "d3f8b50a2f82303bb75b0206c96e5404b44adf9b"
+    },
+    {
+      "path": "reports/batches/BATCH-15/logs/03.txt",
+      "sha256": "D874B43EE9DCD0EB26B87BBFEED619433A4FFE6C1ADA3B9B0FEA6C1558B3B94C",
+      "classification": "REDACTED",
+      "source_commit": "d3f8b50a2f82303bb75b0206c96e5404b44adf9b"
+    },
+    {
+      "path": "reports/batches/BATCH-15/logs/04.txt",
+      "sha256": "A872E86BB9FAF0D90F2F4D1BD5EB56691A2A295BCD27C09873421E5B886AD017",
+      "classification": "REDACTED",
+      "source_commit": "d3f8b50a2f82303bb75b0206c96e5404b44adf9b"
+    },
+    {
+      "path": "reports/batches/BATCH-15/logs/05.txt",
+      "sha256": "EB83618BFBAD3F16AC9D4B4A786BFB6E4A73E779812AC533DF15438B8990E003",
+      "classification": "REDACTED",
+      "source_commit": "d3f8b50a2f82303bb75b0206c96e5404b44adf9b"
+    },
+    {
+      "path": "reports/batches/BATCH-15/logs/06.txt",
+      "sha256": "82B3E6A6C090A57601D22943BD23FCA9218D1031DBE5A7B754092F9A156B4F18",
+      "classification": "REDACTED",
+      "source_commit": "d3f8b50a2f82303bb75b0206c96e5404b44adf9b"
+    },
+    {
+      "path": "reports/batches/BATCH-15/logs/07.txt",
+      "sha256": "D1E9754D01849BA774FD2FDDF30038E7425B447CBA35673A9F75587EA82879A8",
+      "classification": "REDACTED",
+      "source_commit": "d3f8b50a2f82303bb75b0206c96e5404b44adf9b"
+    },
+    {
+      "path": "reports/batches/BATCH-15/logs/08.txt",
+      "sha256": "9261363B733079A641C2E4CC9BC46FFA1D8336945A87F807B6CF68847DBC9B09",
+      "classification": "REDACTED",
+      "source_commit": "d3f8b50a2f82303bb75b0206c96e5404b44adf9b"
+    },
+    {
+      "path": "reports/batches/BATCH-15/logs/09.txt",
+      "sha256": "01BA4719C80B6FE911B091A7C05124B64EEECE964E09C058EF8F9805DACA546B",
+      "classification": "REDACTED",
+      "source_commit": "d3f8b50a2f82303bb75b0206c96e5404b44adf9b"
+    },
+    {
+      "path": "reports/batches/BATCH-15/logs/10.txt",
+      "sha256": "9CF6B511CBC6796812CBD7F688BDFBCE7D09A5087AB58B835158078425D1543C",
+      "classification": "REDACTED",
+      "source_commit": "d3f8b50a2f82303bb75b0206c96e5404b44adf9b"
+    },
+    {
+      "path": "reports/batches/BATCH-15/logs/11.txt",
+      "sha256": "321F35887CE3CA67D05928210429BE442F85F259F60E19D937B3F9DC40917467",
+      "classification": "REDACTED",
+      "source_commit": "d3f8b50a2f82303bb75b0206c96e5404b44adf9b"
+    },
+    {
+      "path": "reports/batches/BATCH-15/logs/12.txt",
+      "sha256": "4D8074E758D5BB8126DBC9B2DE9104443E6454083DA9528FD4DA87C21038DBD4",
+      "classification": "REDACTED",
+      "source_commit": "d3f8b50a2f82303bb75b0206c96e5404b44adf9b"
+    },
+    {
+      "path": "reports/batches/BATCH-15/logs/13.txt",
+      "sha256": "0E1B27FDA4E14A2B28AA11E37C36D721104D5932A3410996042D18CDA9A283A6",
+      "classification": "REDACTED",
+      "source_commit": "d3f8b50a2f82303bb75b0206c96e5404b44adf9b"
+    },
+    {
+      "path": "reports/batches/BATCH-15/logs/initial-evidence-lint.txt",
+      "sha256": "3CC94A8EAB5C311EAD324F13A04E0ECB029C3B9FE9AE71008E9161DFC766523A",
+      "classification": "REDACTED",
+      "source_commit": "d3f8b50a2f82303bb75b0206c96e5404b44adf9b"
+    },
+    {
+      "path": "reports/batches/BATCH-15/logs/initial-format-and-tests.txt",
+      "sha256": "3ACDDB4491A9BF3B4CF39641BDC87E0EA2A504BF0A5B97947ED26848E53EEB36",
+      "classification": "REDACTED",
+      "source_commit": "d3f8b50a2f82303bb75b0206c96e5404b44adf9b"
+    },
+    {
+      "path": "reports/batches/BATCH-15/metamorphic-evidence.json",
+      "sha256": "F61B24E025C207F580E39E73C64F2E122935097F0C9E93714D75850B213D0D8A",
+      "classification": "REDACTED",
+      "source_commit": "d3f8b50a2f82303bb75b0206c96e5404b44adf9b"
+    },
+    {
+      "path": "reports/batches/BATCH-15/pip-check.txt",
+      "sha256": "9261363B733079A641C2E4CC9BC46FFA1D8336945A87F807B6CF68847DBC9B09",
+      "classification": "REDACTED",
+      "source_commit": "d3f8b50a2f82303bb75b0206c96e5404b44adf9b"
+    },
+    {
+      "path": "reports/batches/BATCH-15/resume-evidence.json",
+      "sha256": "EEF93712C494EA806BA9E2BA9E5E2BFFD202F7A91ADA212A4C3359D7547DE558",
+      "classification": "REDACTED",
+      "source_commit": "d3f8b50a2f82303bb75b0206c96e5404b44adf9b"
+    },
+    {
+      "path": "reports/batches/BATCH-15/rule-matrix.json",
+      "sha256": "8DE8B6F10ADC4BBFAB86AF641AF9F581267BBE4335B9D87D6E237BE71811D08F",
+      "classification": "REDACTED",
+      "source_commit": "d3f8b50a2f82303bb75b0206c96e5404b44adf9b"
+    }
+  ],
+  "environment": {
+    "run_dir": "C:\\cov-run\\batch-15",
+    "interpreter": "C:\\cov-run\\batch-15\\venv\\Scripts\\python.exe",
+    "longest_venv_path_length": 156,
+    "dependency_additions": [],
+    "lock_change": "UNCHANGED",
+    "lock_sha256": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04"
+  },
+  "model_runs": [],
+  "not_completed": [],
+  "blockers": [],
+  "risks": [
+    "Independent verification and post-integration smoke remain separate gates; implementation evidence is not an independent PASS or integration receipt.",
+    "A20/A21 prove the rules module's typed authoritative-state boundary. Actual request normalization, case loading, challenge projection and HTTP routing remain with their owning API batches.",
+    "P0 internal evaluation retains suppressed rules. A future API consumer must map ProhibitedActionError to HTTP 400 and persist evaluation.fact_trace in its internal audit; the strict error envelope has data=null.",
+    "E2 component/role/coverage-specific explanations require the server-owned EvidenceAggregation argument when those facts are not represented in AccountabilityState. The rule does not invent a changed evidence field.",
+    "ResolutionPath and RuntimeMetrics are caller-supplied; no resolution planner or observed-usage collector was implemented in this batch."
+  ],
+  "rollback": {
+    "code": "After checking dependent consumers, git revert c1e82b84d5418e79c3d766e8563082306bfa0612; revert BATCH-15 evidence/report commits separately if required. Re-evaluate all affected decisions; no fixed demo fallback.",
+    "runtime_state": "NOT_APPLICABLE: pure rule evaluation has no database writes; batch venv is reproducible and retained."
+  },
+  "handoff": {
+    "interfaces": [
+      "from covenia_b.rules import evaluate_decision, RuleEvaluation, ProhibitedActionError, RULE_VERSION",
+      "evaluate_decision(state: AccountabilityState, prepared_action: PreparedAction, *, challenge_mode: bool = False, evidence: EvidenceAggregation | None = None) -> RuleEvaluation",
+      "RuleEvaluation.to_decision_result(*, resolution_path: ResolutionPath, runtime_metrics: RuntimeMetrics) -> DecisionResult; P0 raises ProhibitedActionError",
+      "ProhibitedActionError.evaluation holds P0/400 and suppressed_rule_ids; to_error_envelope(request_id) produces data=null; caller applies http_status=400",
+      "RuleEvaluation.require_permitted_action checks only P0 transport rejection. Always handle RuleEvaluation.decision for E1 intervention/H1 review as well."
+    ],
+    "input_versions": {
+      "MASTER_PLAN.md": "DBE269F06F4BBE3D8C1F915DD8E4A2D78E0E4F021ABB396270C8B846D5FFA74E",
+      "batches.json": "18DA555CE5ADEA5062F680837AEC8214158F58CBC1A918CF6BBC31EF48448E2E",
+      "backend/requirements-dev.lock": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+      "docs/approvals/b-decisions.json": "3ACAD4A113EB595BCED29025AF884A4C5EA2835E90E38D0E897298F91DB371DA",
+      "docs/contracts/b-contract-lock.json": "A605DF1E063B69ABF3E6DF43ACF4C5A07B69CA0925E2ADB116F296E12527FE3A",
+      "docs/03-firewall-rules.md": "241365E9287CC5663F02790006DD43F2F3BAACA9138B7BCBDF953DDF64E6A0A3",
+      "schemas/decision-result.schema.json": "188536CD2C5B22C7B81AFA360995BD9B813DB7E2AE620C1060BF5483BB54C9FA",
+      "schemas/accountability-state.schema.json": "631431A2722DE649DA47DC0850A58CDED018B7FEACDBF9DFE0D34C9580B097EA",
+      "schemas/prepared-action.schema.json": "EF0C04D5507CE5D0039792CCC6E6A6E4EE03BE8682B2F285B73DD3CD99174C58",
+      "tests/contract-vectors/evaluate.json": "2B6496A08DE8A460A1291EADBA23522047F1C96BE7CF94EE5DEC2C3B253798D1"
+    },
+    "rule_version": "deterministic-firewall-v1",
+    "reproduction": [
+      "& 'C:\\cov-run\\batch-15\\venv\\Scripts\\python.exe' -m pytest backend/tests/rules -q",
+      "& 'C:\\cov-run\\batch-15\\venv\\Scripts\\python.exe' -m backend.tests.rules.evidence_probe",
+      "& 'C:\\cov-run\\batch-15\\venv\\Scripts\\python.exe' -m ruff check backend/src/covenia_b/rules backend/tests/rules",
+      "& 'C:\\cov-run\\batch-15\\venv\\Scripts\\python.exe' -m pip check"
+    ],
+    "remaining_gates": [
+      "BATCH-15 independent verification",
+      "Coordinator integration plus post-integration smoke"
+    ],
+    "environment_policy": "Independent verifier/downstream consumers create their own short RUN_DIR/venv; do not reuse this implementation environment."
+  },
+  "next_batch_started": false
+}
