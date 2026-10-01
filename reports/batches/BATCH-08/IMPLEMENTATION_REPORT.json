@@ -1,0 +1,212 @@
+{
+  "report_version": "1.0",
+  "batch_id": "BATCH-08",
+  "status": "COMPLETED",
+  "result": "IMPLEMENTED",
+  "repair_status": "REPAIR_REQUIRED",
+  "repair_attempt": 3,
+  "authorization": {
+    "authorized_at": "2026-09-29",
+    "reason": "quota interruption resume; not counted against failed retry budget",
+    "scope": "Only the confirmed B08-F01 JPEG coding-table defect"
+  },
+  "summary": "Repaired only B08-F01. The existing JPEG probe now parses DQT and DHT definitions and validates SOF quantization selectors plus SOS DC/AC Huffman selectors before ProviderImageInput construction. Permanent negative tests cover missing DQT and missing DHT, prove the same malformed bytes reject under two different filenames, and prove neither provider dispatch nor ProviderImageInput construction is reached.",
+  "repo_root": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-08-repair-1",
+  "branch": "codex/covenia-batch-08-repair-1",
+  "base_integration_sha": "abaad9ae9228432ea514a45817c2fc166b27bad3",
+  "base_repair_sha": "8568ee512aad3c780ef5807d22821448b7403894",
+  "previous_code_commit": "2373bcb22e24d491935d8c2b5d1efb512dde35cc",
+  "previous_implementation_report_commit": "8568ee512aad3c780ef5807d22821448b7403894",
+  "previous_verification_report": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-08-verify-1\\reports\\batches\\BATCH-08\\VERIFICATION_REPORT.json",
+  "contract_version": "8314c76502cbc9d47d8432b7fe53f7d9fb82de82 / BATCH-03 contract-lock-v1; unchanged",
+  "plan_sha256": {
+    "MASTER_PLAN.md": "dbe269f06f4bbe3d8c1f915dd8e4a2d78e0e4f021abb396270c8b846d5ffa74e",
+    "batches.json": "18da555ce5adea5062f680837aec8214158f58cbc1a918cf6bbc31ef48448e2e"
+  },
+  "plan_provenance": {
+    "authority_ref": "integration/covenia-b",
+    "authority_commit": "190d8c884b912103d799441d50213d192e6b4d78",
+    "authority_paths": [
+      "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\MASTER_PLAN.md",
+      "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\batches.json"
+    ],
+    "method": "SHA-256 over raw bytes returned by git show <authority_commit>:<path>; no worktree digest; no plan file modified."
+  },
+  "initial_worktree": [],
+  "code_commits": [
+    "d06754cfd8974164e1ba87aa00695d033877b743"
+  ],
+  "commit_hash": "d06754cfd8974164e1ba87aa00695d033877b743",
+  "changed_files": [
+    "backend/src/covenia_b/images/resolver.py",
+    "backend/tests/images/test_resolver.py",
+    "reports/batches/BATCH-08/IMPLEMENTATION_REPORT.json",
+    "reports/batches/BATCH-08/IMPLEMENTATION_REPORT.md",
+    "reports/batches/BATCH-08/commands.json",
+    "reports/batches/BATCH-08/environment.json",
+    "reports/batches/BATCH-08/pip-check.txt",
+    "reports/batches/BATCH-08/security-cases.json",
+    "reports/batches/BATCH-08/implementation-evidence/00-preflight.json",
+    "reports/batches/BATCH-08/implementation-evidence/01-images-pytest.txt",
+    "reports/batches/BATCH-08/implementation-evidence/02-negative-tests.txt",
+    "reports/batches/BATCH-08/implementation-evidence/03-ruff.txt",
+    "reports/batches/BATCH-08/implementation-evidence/04-pip-check.txt",
+    "reports/batches/BATCH-08/implementation-evidence/05-real-input-probe.json",
+    "reports/batches/BATCH-08/implementation-evidence/06-scope-and-blobs.json"
+  ],
+  "scope_check": {
+    "within_allowlist": true,
+    "allowed_paths": [
+      "backend/src/covenia_b/images/**",
+      "backend/tests/images/**",
+      "reports/batches/BATCH-08/**",
+      "backend/requirements-dev.lock"
+    ],
+    "forbidden_changes": [],
+    "frontend_changed": false,
+    "fixtures_changed": false,
+    "contract_changed": false,
+    "plan_changed": false,
+    "other_batch_changed": false,
+    "verification_report_written": false,
+    "verification_evidence_written": false,
+    "requirements_dev_lock_changed": false,
+    "new_dependencies": [],
+    "lock_hash_before": "177865457f146985726b02ef5c640363624e2a0c9b76b67fbed3929dada13d04",
+    "lock_hash_after": "177865457f146985726b02ef5c640363624e2a0c9b76b67fbed3929dada13d04",
+    "hash_basis": "SHA-256 over raw Git blob bytes from git show; no worktree digest."
+  },
+  "files_changed_detail": {
+    "repair_commit_name_status": [
+      {"status": "M", "path": "backend/src/covenia_b/images/resolver.py"},
+      {"status": "M", "path": "backend/tests/images/test_resolver.py"}
+    ],
+    "raw_git_blob_artifacts_at_commit": {
+      "backend/src/covenia_b/images/resolver.py": {
+        "bytes": 35667,
+        "sha256": "53d8f918feff17145c7a5eb71347aa52116c84ca2b6cf946488f9f0c95803e23"
+      },
+      "backend/tests/images/test_resolver.py": {
+        "bytes": 16425,
+        "sha256": "9a3dc16e3b9feeb7804ed2d20daffeb6174934964a81495b4b4517817c28d96b"
+      }
+    },
+    "report_files_hash_note": "Report files and implementation-evidence are written after the code commit; their final raw Git blob hashes are established by the report commit and are not self-embedded."
+  },
+  "tests_run": [
+    "C:\\cov-run\\batch-08-repair-1\\venv\\Scripts\\python.exe -m pytest backend/tests/images -q -p no:cacheprovider --basetemp=C:\\cov-run\\batch-08-repair-1\\pytest-basetemp-final",
+    "C:\\cov-run\\batch-08-repair-1\\venv\\Scripts\\python.exe -m pytest backend/tests/images/test_resolver.py -q -p no:cacheprovider --basetemp=C:\\cov-run\\batch-08-repair-1\\pytest-basetemp-negative -k \"jpeg_missing\"",
+    "C:\\cov-run\\batch-08-repair-1\\venv\\Scripts\\python.exe -m ruff check backend/src/covenia_b/images backend/tests/images",
+    "C:\\cov-run\\batch-08-repair-1\\venv\\Scripts\\python.exe -m pip check",
+    "ManifestImageResolver existing handoff/a/images-manifest.json five-entry probe"
+  ],
+  "tests_passed": 14,
+  "tests_failed": 0,
+  "focused_negative_cases_passed": 2,
+  "acceptance_results": [
+    {
+      "criterion": "B08-F01: JPEGs missing required DQT/DHT definitions or referencing undefined selectors are rejected before provider input construction.",
+      "status": "IMPLEMENTATION_EVIDENCED",
+      "evidence": [
+        "backend/src/covenia_b/images/resolver.py::_record_jpeg_quantization_tables",
+        "backend/src/covenia_b/images/resolver.py::_record_jpeg_huffman_tables",
+        "backend/src/covenia_b/images/resolver.py::_validate_jpeg_scan_tables",
+        "backend/tests/images/test_resolver.py::test_jpeg_missing_dqt_is_rejected_before_provider_dispatch",
+        "backend/tests/images/test_resolver.py::test_jpeg_missing_dht_is_rejected_before_provider_dispatch",
+        "reports/batches/BATCH-08/implementation-evidence/02-negative-tests.txt"
+      ],
+      "summary": "Both missing-table cases produce coded ImageContentRejected errors for two different filenames; provider dispatch and ProviderImageInput construction remain unreachable."
+    },
+    {
+      "criterion": "Existing supported JPEG positive behavior and five real images remain intact.",
+      "status": "IMPLEMENTATION_EVIDENCED",
+      "evidence": [
+        "backend/tests/images/test_resolver.py::test_jpeg_bounded_trailing_data_is_supported_but_excess_is_rejected",
+        "reports/batches/BATCH-08/implementation-evidence/01-images-pytest.txt",
+        "reports/batches/BATCH-08/implementation-evidence/05-real-input-probe.json"
+      ],
+      "summary": "14/14 image tests passed and all five existing real JPEG entries resolved with matching hashes, dimensions and byte lengths; no model call occurred."
+    },
+    {
+      "criterion": "Scope, dependency and environment controls remain complete.",
+      "status": "IMPLEMENTATION_EVIDENCED",
+      "evidence": [
+        "reports/batches/BATCH-08/implementation-evidence/06-scope-and-blobs.json",
+        "reports/batches/BATCH-08/environment.json",
+        "reports/batches/BATCH-08/pip-check.txt",
+        "reports/batches/BATCH-08/implementation-evidence/03-ruff.txt"
+      ],
+      "summary": "Only the allowlisted image code/tests and BATCH-08 report artifacts changed; requirements-dev.lock is byte-identical; the specified venv has sys.prefix set and pip check exits 0."
+    }
+  ],
+  "test_results": [
+    {
+      "command": "C:\\cov-run\\batch-08-repair-1\\venv\\Scripts\\python.exe -m pytest backend/tests/images -q -p no:cacheprovider --basetemp=C:\\cov-run\\batch-08-repair-1\\pytest-basetemp-final",
+      "exit_code": 0,
+      "tests_passed": 14,
+      "tests_failed": 0,
+      "evidence": "reports/batches/BATCH-08/implementation-evidence/01-images-pytest.txt"
+    },
+    {
+      "command": "C:\\cov-run\\batch-08-repair-1\\venv\\Scripts\\python.exe -m pytest backend/tests/images/test_resolver.py -q -p no:cacheprovider --basetemp=C:\\cov-run\\batch-08-repair-1\\pytest-basetemp-negative -k \"jpeg_missing\"",
+      "exit_code": 0,
+      "tests_passed": 2,
+      "tests_failed": 0,
+      "evidence": "reports/batches/BATCH-08/implementation-evidence/02-negative-tests.txt"
+    },
+    {
+      "command": "C:\\cov-run\\batch-08-repair-1\\venv\\Scripts\\python.exe -m ruff check backend/src/covenia_b/images backend/tests/images",
+      "exit_code": 0,
+      "evidence": "reports/batches/BATCH-08/implementation-evidence/03-ruff.txt"
+    },
+    {
+      "command": "C:\\cov-run\\batch-08-repair-1\\venv\\Scripts\\python.exe -m pip check",
+      "exit_code": 0,
+      "evidence": "reports/batches/BATCH-08/pip-check.txt"
+    },
+    {
+      "command": "C:\\cov-run\\batch-08-repair-1\\venv\\Scripts\\python.exe -c <existing handoff/a/images-manifest.json probe>",
+      "exit_code": 0,
+      "resolved": 5,
+      "model_called": false,
+      "evidence": "reports/batches/BATCH-08/implementation-evidence/05-real-input-probe.json"
+    },
+    {
+      "command": "C:\\cov-run\\batch-08-repair-1\\venv\\Scripts\\python.exe -m pytest backend/tests/images -q --cache-clear --basetemp=C:\\cov-run\\batch-08-repair-1\\pytest-basetemp",
+      "exit_code": 1,
+      "tests_executed": 0,
+      "classification": "ENVIRONMENT_ONLY",
+      "reason": "pytest could not access the host workspace .pytest_cache; final cache-disabled RUN_DIR execution passed.",
+      "evidence": "reports/batches/BATCH-08/commands.json#environment_retry"
+    }
+  ],
+  "artifacts": [
+    {"path": "reports/batches/BATCH-08/commands.json", "classification": "IMPLEMENTATION_COMMAND_EVIDENCE"},
+    {"path": "reports/batches/BATCH-08/environment.json", "classification": "ENVIRONMENT_EVIDENCE"},
+    {"path": "reports/batches/BATCH-08/pip-check.txt", "classification": "PIP_CHECK_EVIDENCE"},
+    {"path": "reports/batches/BATCH-08/implementation-evidence/06-scope-and-blobs.json", "classification": "SCOPE_AND_RAW_BLOB_EVIDENCE"}
+  ],
+  "model_runs": [],
+  "not_completed": [
+    {
+      "item": "Independent verification of the repaired B08-F01",
+      "reason": "Reserved for the independent verifier; this task did not write VERIFICATION_REPORT.json or verification-evidence."
+    },
+    {
+      "item": "Integration/covenia-b merge, receipt and post-integration smoke test",
+      "reason": "Explicitly outside this authorization; no integration or push was performed."
+    }
+  ],
+  "remaining_risks": [
+    "Independent verification has not yet re-run the verifier boundary probe against d06754cfd8974164e1ba87aa00695d033877b743.",
+    "No integration receipt or post-integration smoke test exists; this implementation report is not an independent PASS or integration-complete claim.",
+    "The resolver remains a structural supported-subset validator; this repair adds required coding-table and selector checks without adding a third-party decoder."
+  ],
+  "blockers": [],
+  "handoff_notes": "BATCH-08 only; B08-F01 is implementation-evidenced in d06754cfd8974164e1ba87aa00695d033877b743. Independent verification must confirm missing DQT and DHT remain coded rejections before any integration decision. Do not start another Batch, merge integration/covenia-b, or push main.",
+  "rollback": {
+    "code": "Revert d06754cfd8974164e1ba87aa00695d033877b743; preserve the prior 8568ee512aad3c780ef5807d22821448b7403894 implementation/report and do not reset branches.",
+    "runtime_state": "NOT_APPLICABLE"
+  },
+  "next_batch_started": false
+}

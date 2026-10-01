@@ -1,0 +1,5 @@
+command=git -C "C:\Users\WONG Tsun Ming\Desktop\欧莱雅黑客松\w08v3" diff --check
+cwd=C:\Users\WONG Tsun Ming\Desktop\欧莱雅黑客松\w08v3
+exit_code=0
+stdout:
+stderr:

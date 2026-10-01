@@ -1,0 +1,6 @@
+command=C:\cov-run\batch-08-repair-1\venv\Scripts\python.exe -m pytest backend/tests/images/test_resolver.py -q -p no:cacheprovider --basetemp=C:\cov-run\batch-08-repair-1\pytest-basetemp-negative -k "jpeg_missing"
+cwd=C:\Users\WONG Tsun Ming\Desktop\欧莱雅黑客松\worktrees\covenia-batch-08-repair-1
+exit_code=0
+stdout:
+..                                                                       [100%]
+2 passed, 12 deselected in 0.27s

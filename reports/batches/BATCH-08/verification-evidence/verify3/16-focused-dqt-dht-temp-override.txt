@@ -1,0 +1,9 @@
+command=C:\cov-run\v08oct1\venv\Scripts\python.exe -m pytest backend/tests/images/test_resolver.py -q -k jpeg_missing
+cwd=C:\Users\WONG Tsun Ming\Desktop\欧莱雅黑客松\w08v3
+TEMP=C:\cov-run\v08oct1\tmp
+TMP=C:\cov-run\v08oct1\tmp
+exit_code=0
+stdout:
+..                                                                       [100%]
+2 passed, 12 deselected in 0.32s
+stderr:

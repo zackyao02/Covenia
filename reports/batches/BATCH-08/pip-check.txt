@@ -1,0 +1,6 @@
+command=C:\cov-run\batch-08-repair-1\venv\Scripts\python.exe -m pip check
+cwd=C:\Users\WONG Tsun Ming\Desktop\欧莱雅黑客松\worktrees\covenia-batch-08-repair-1
+exit_code=0
+stdout:
+No broken requirements found.
+stderr:

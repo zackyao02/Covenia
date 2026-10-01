@@ -1,0 +1,6 @@
+command=C:\cov-run\v08oct1\venv\Scripts\python.exe -c "import pytest, jsonschema; print('pytest/jsonschema import OK')"
+cwd=C:\Users\WONG Tsun Ming\Desktop\欧莱雅黑客松\w08v3
+exit_code=0
+stdout:
+pytest/jsonschema import OK
+stderr:

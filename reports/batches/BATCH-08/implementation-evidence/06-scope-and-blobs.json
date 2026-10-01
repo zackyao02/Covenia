@@ -1,0 +1,33 @@
+{
+  "repair_base": "8568ee512aad3c780ef5807d22821448b7403894",
+  "repair_commit": "d06754cfd8974164e1ba87aa00695d033877b743",
+  "git_diff_name_status_base_to_repair": [
+    {"status": "M", "path": "backend/src/covenia_b/images/resolver.py"},
+    {"status": "M", "path": "backend/tests/images/test_resolver.py"}
+  ],
+  "allowed_paths": [
+    "backend/src/covenia_b/images/**",
+    "backend/tests/images/**",
+    "reports/batches/BATCH-08/**",
+    "backend/requirements-dev.lock"
+  ],
+  "forbidden_changes": [],
+  "verification_artifacts_changed": false,
+  "requirements_dev_lock": {
+    "changed": false,
+    "raw_git_blob_sha256": "177865457f146985726b02ef5c640363624e2a0c9b76b67fbed3929dada13d04",
+    "bytes": 676,
+    "method": "SHA-256 over bytes returned by git show <commit>:backend/requirements-dev.lock"
+  },
+  "code_artifacts": {
+    "backend/src/covenia_b/images/resolver.py": {"bytes": 35667, "sha256_raw_git_blob": "53d8f918feff17145c7a5eb71347aa52116c84ca2b6cf946488f9f0c95803e23"},
+    "backend/tests/images/test_resolver.py": {"bytes": 16425, "sha256_raw_git_blob": "9a3dc16e3b9feeb7804ed2d20daffeb6174934964a81495b4b4517817c28d96b"}
+  },
+  "plan_provenance": {
+    "authority_ref": "integration/covenia-b",
+    "authority_commit": "190d8c884b912103d799441d50213d192e6b4d78",
+    "MASTER_PLAN.md": {"bytes": 317001, "sha256_raw_git_blob": "dbe269f06f4bbe3d8c1f915dd8e4a2d78e0e4f021abb396270c8b846d5ffa74e"},
+    "batches.json": {"bytes": 282066, "sha256_raw_git_blob": "18da555ce5adea5062f680837aec8214158f58cbc1a918cf6bbc31ef48448e2e"},
+    "method": "SHA-256 over raw bytes from git show <authority_commit>:<path>; no worktree digest and no plan modification"
+  }
+}

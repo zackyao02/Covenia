@@ -1,0 +1,127 @@
+{
+  "batch_id": "BATCH-08",
+  "repair_attempt": 3,
+  "authorization": {
+    "authorized_at": "2026-09-29",
+    "reason": "quota interruption resume; not counted as failed retry budget",
+    "scope": "Only B08-F01 JPEG DQT/DHT validation and permanent negative tests"
+  },
+  "repo_root": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-08-repair-1",
+  "branch": "codex/covenia-batch-08-repair-1",
+  "base_sha": "8568ee512aad3c780ef5807d22821448b7403894",
+  "repair_commit": "d06754cfd8974164e1ba87aa00695d033877b743",
+  "interpreter": "C:\\cov-run\\batch-08-repair-1\\venv\\Scripts\\python.exe",
+  "pythonpath": "UNSET",
+  "plan_provenance": {
+    "authority_ref": "integration/covenia-b",
+    "authority_commit": "190d8c884b912103d799441d50213d192e6b4d78",
+    "MASTER_PLAN.md_sha256_raw_git_blob": "dbe269f06f4bbe3d8c1f915dd8e4a2d78e0e4f021abb396270c8b846d5ffa74e",
+    "batches.json_sha256_raw_git_blob": "18da555ce5adea5062f680837aec8214158f58cbc1a918cf6bbc31ef48448e2e",
+    "method": "SHA-256 over raw bytes returned by git show <authority_commit>:<path>; no plan modification"
+  },
+  "commands": [
+    {
+      "id": "required-01-preflight",
+      "command": "C:\\cov-run\\batch-08-repair-1\\venv\\Scripts\\python.exe -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version); print(sys.prefix); print(sys.base_prefix)\" C:\\cov-run\\batch-08-repair-1\\venv\\Scripts\\python.exe",
+      "exit_code": 0,
+      "mode": "ENVIRONMENT",
+      "evidence": "reports/batches/BATCH-08/implementation-evidence/00-preflight.json"
+    },
+    {
+      "id": "required-02-locked-install",
+      "command": "C:\\cov-run\\batch-08-repair-1\\venv\\Scripts\\python.exe -m pip install --no-deps -r backend/requirements-dev.lock",
+      "exit_code": 0,
+      "mode": "ENVIRONMENT",
+      "stdout": "Successfully installed existing pinned requirements; no lock file change."
+    },
+    {
+      "id": "required-03-editable-install",
+      "command": "C:\\cov-run\\batch-08-repair-1\\venv\\Scripts\\python.exe -m pip install --no-deps --no-build-isolation -e backend",
+      "exit_code": 0,
+      "mode": "ENVIRONMENT",
+      "stdout": "Successfully installed covenia-b-0.0.0 editable."
+    },
+    {
+      "id": "required-04-import-preflight",
+      "command": "C:\\cov-run\\batch-08-repair-1\\venv\\Scripts\\python.exe -c \"import pytest, jsonschema, covenia_b.images.resolver; print('imports OK')\"",
+      "exit_code": 0,
+      "mode": "UNIT"
+    },
+    {
+      "id": "required-05-image-pytest",
+      "command": "C:\\cov-run\\batch-08-repair-1\\venv\\Scripts\\python.exe -m pytest backend/tests/images -q -p no:cacheprovider --basetemp=C:\\cov-run\\batch-08-repair-1\\pytest-basetemp-final",
+      "exit_code": 0,
+      "mode": "UNIT",
+      "tests_collected": 14,
+      "tests_passed": 14,
+      "tests_failed": 0,
+      "evidence": "reports/batches/BATCH-08/implementation-evidence/01-images-pytest.txt"
+    },
+    {
+      "id": "required-06-pip-list",
+      "command": "C:\\cov-run\\batch-08-repair-1\\venv\\Scripts\\python.exe -m pip list --format=json",
+      "exit_code": 0,
+      "mode": "ENVIRONMENT",
+      "evidence": "reports/batches/BATCH-08/environment.json#pip_list"
+    },
+    {
+      "id": "required-07-pip-check",
+      "command": "C:\\cov-run\\batch-08-repair-1\\venv\\Scripts\\python.exe -m pip check",
+      "exit_code": 0,
+      "mode": "ENVIRONMENT",
+      "stdout": "No broken requirements found.",
+      "evidence": "reports/batches/BATCH-08/pip-check.txt"
+    },
+    {
+      "id": "required-08-diff-check",
+      "command": "git diff --check",
+      "exit_code": 0,
+      "mode": "SCOPE"
+    },
+    {
+      "id": "supplemental-negative-jpeg",
+      "command": "C:\\cov-run\\batch-08-repair-1\\venv\\Scripts\\python.exe -m pytest backend/tests/images/test_resolver.py -q -p no:cacheprovider --basetemp=C:\\cov-run\\batch-08-repair-1\\pytest-basetemp-negative -k \"jpeg_missing\"",
+      "exit_code": 0,
+      "mode": "UNIT",
+      "tests_passed": 2,
+      "tests_failed": 0,
+      "evidence": "reports/batches/BATCH-08/implementation-evidence/02-negative-tests.txt"
+    },
+    {
+      "id": "supplemental-ruff",
+      "command": "C:\\cov-run\\batch-08-repair-1\\venv\\Scripts\\python.exe -m ruff check backend/src/covenia_b/images backend/tests/images",
+      "exit_code": 0,
+      "mode": "STATIC_ANALYSIS",
+      "evidence": "reports/batches/BATCH-08/implementation-evidence/03-ruff.txt"
+    },
+    {
+      "id": "supplemental-real-manifest-probe",
+      "command": "C:\\cov-run\\batch-08-repair-1\\venv\\Scripts\\python.exe -c <existing handoff/a/images-manifest.json probe>",
+      "exit_code": 0,
+      "mode": "UNIT",
+      "summary": "5/5 resolved; SHA-256, dimensions and byte lengths matched; no model call.",
+      "evidence": "reports/batches/BATCH-08/implementation-evidence/05-real-input-probe.json"
+    }
+  ],
+  "environment_retry": {
+    "command": "C:\\cov-run\\batch-08-repair-1\\venv\\Scripts\\python.exe -m pytest backend/tests/images -q --cache-clear --basetemp=C:\\cov-run\\batch-08-repair-1\\pytest-basetemp",
+    "exit_code": 1,
+    "tests_executed": 0,
+    "classification": "ENVIRONMENT_ONLY",
+    "reason": "Host workspace .pytest_cache\\v was denied; final run disabled cacheprovider and passed in the RUN_DIR basetemp."
+  },
+  "scope_audit": {
+    "base_to_repair_name_status": [
+      {"status": "M", "path": "backend/src/covenia_b/images/resolver.py"},
+      {"status": "M", "path": "backend/tests/images/test_resolver.py"}
+    ],
+    "forbidden_paths_touched": [],
+    "verification_report_written": false,
+    "next_batch_started": false
+  },
+  "lock_file_change": {
+    "status": "UNCHANGED",
+    "new_dependencies": [],
+    "reason": "Standard-library JPEG structural validation; no dependency needed."
+  }
+}

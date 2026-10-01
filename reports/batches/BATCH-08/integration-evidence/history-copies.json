@@ -1,0 +1,27 @@
+{
+  "method": "SHA-256 over raw git show <sha>:<path> bytes; git blob LF; never CRLF working-copy expectations",
+  "copies": [
+    {
+      "source_commit": "81277d24217b993094cf22d54365e48f5faf11cd",
+      "source_path": "reports/batches/BATCH-08/VERIFICATION_REPORT.json",
+      "destination": "reports/batches/BATCH-08/verification-history/round-2-review-role-pass-superseded.json",
+      "source_blob_oid": "9ebe2490f3e02fd3f3567be5be6a95a132da3c09",
+      "sha256": "5aa6369cda7cea600f31c4df1c4da2ace53bac9679d5d04d66c40e5b208fe351"
+    },
+    {
+      "source_commit": "bce2c606a03ea3c0f6d2d588600d7ed66b1799c7",
+      "source_path": "reports/batches/BATCH-08/VERIFICATION_REPORT.json",
+      "destination": "reports/batches/BATCH-08/verification-history/round-1-fail.json",
+      "source_blob_oid": "8441d5fbdf60d2d20ea94517129a28d041777976",
+      "sha256": "a7210ffbe92c9b1c996b98c77153a5686ec7be440b51c5dfd9426a6b932c8dd4"
+    },
+    {
+      "source_commit": "81277d24217b993094cf22d54365e48f5faf11cd",
+      "source_path": "reports/batches/BATCH-08/VERIFICATION_REPORT.json",
+      "destination": "reports/batches/BATCH-08/history/81277d24217b993094cf22d54365e48f5faf11cd/VERIFICATION_REPORT.json",
+      "source_blob_oid": "9ebe2490f3e02fd3f3567be5be6a95a132da3c09",
+      "sha256": "5aa6369cda7cea600f31c4df1c4da2ace53bac9679d5d04d66c40e5b208fe351"
+    }
+  ],
+  "report_bodies_modified": false
+}

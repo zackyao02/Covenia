@@ -1,0 +1,303 @@
+{
+  "report_version": "1.0",
+  "batch_id": "BATCH-08",
+  "verdict": "FAIL",
+  "reviewed_base_sha": "abaad9ae9228432ea514a45817c2fc166b27bad3",
+  "reviewed_sha": "8568ee512aad3c780ef5807d22821448b7403894",
+  "reviewed_code_commits": [
+    "2373bcb22e24d491935d8c2b5d1efb512dde35cc"
+  ],
+  "contract_version": "BATCH-08-image-resolver-v1; upstream BATCH-03 contract-lock-v1 at 8314c76502cbc9d47d8432b7fe53f7d9fb82de82",
+  "plan_sha256": {
+    "MASTER_PLAN.md": "1AEA6CAA46073BFFE5AD2BD2C1A6D8AFFF983F3371ABCE766C5882366B9292A1",
+    "batches.json": "BCF9CEC2AACE480B3D7F2C742C8F3DD7026C6493D4047009B330AF19E2E29E25"
+  },
+  "plan_hash_basis": {
+    "authority": "Coordinator-provided post-reload values during this verification; coordinator stated the reload does not change BATCH-08 allowed paths or acceptance criteria.",
+    "fixed_review_tree_raw_git_show": {
+      "MASTER_PLAN.md": "cb6799483ea98648894c3e00b45971c4afaaa549572ca249c137e65c7d6c2939",
+      "batches.json": "7047986e3b702bc28ae5fb855c4b629fb068424dd9f66bec3173e6539ccd608c"
+    },
+    "local_integration_ref_raw_git_show": {
+      "ref": "integration/covenia-b",
+      "commit": "69d78e88c5c2ee0f7cd25c7a04c0eaa8223d0f51",
+      "MASTER_PLAN.md": "76bb1d19197918c8c5d6677cb2f9cc25b7f2ea575fd3c6f1d231b494db64f316",
+      "batches.json": "00179b264b25c51dcde07b4576a6b09b70b3591f0aa1cbbd6b854db0a1efdb77"
+    },
+    "verification_note": "No commit SHA carrying the coordinator-declared post-reload blobs was supplied in the target repository. The final plan values above are recorded as authority input and are not misrepresented as hashes recomputed from the fixed REVIEW_SHA tree. Full raw git-show evidence is in verification-evidence/13-scope-and-blob-audit.json."
+  },
+  "verified_at": "2026-09-28T18:44:04+08:00",
+  "independent_context": true,
+  "environment": {
+    "run_dir": "C:\\cov-run\\batch-08-verify-1",
+    "venv": "C:\\cov-run\\batch-08-verify-1\\venv",
+    "venv_direct_child": true,
+    "python": "C:\\cov-run\\batch-08-verify-1\\venv\\Scripts\\python.exe",
+    "sys_prefix": "C:\\cov-run\\batch-08-verify-1\\venv",
+    "sys_base_prefix": "D:\\python",
+    "python_version": "3.13.5",
+    "node": "NOT_REQUIRED",
+    "longest_venv_path": "C:\\cov-run\\batch-08-verify-1\\venv\\Lib\\site-packages\\pkg_resources\\tests\\data\\my-test-package_unpacked-egg\\my_test_package-1.0-py3.7.egg\\EGG-INFO\\dependency_links.txt",
+    "longest_venv_path_length": 165,
+    "longest_venv_path_lt_250": true,
+    "pip_check": {
+      "exit_code": 0,
+      "stdout": "No broken requirements found."
+    },
+    "evidence": [
+      "reports/batches/BATCH-08/verification-evidence/01-environment-preflight.txt",
+      "reports/batches/BATCH-08/verification-evidence/05-pip-list.txt",
+      "reports/batches/BATCH-08/verification-evidence/06-pip-check.txt",
+      "reports/batches/BATCH-08/verification-evidence/08-venv-path-audit.txt"
+    ]
+  },
+  "dependency_checks": [
+    {
+      "dependency": "BATCH-04",
+      "result": "PASS",
+      "evidence": {
+        "verification_report": "reports/batches/BATCH-04/VERIFICATION_REPORT.json",
+        "verification_verdict": "PASS",
+        "reviewed_sha": "3db29f343ee176b69a24a9b23568dbb0987823e9",
+        "reviewed_code_commit": "e1070f150de14fa134a5492372828628ca38e89e",
+        "integration_receipt": "C:\\Users\\WONG Tsun Ming\\covenia-orchestration\\runs\\covenia-b-20260910-01\\integration-receipts\\BATCH-04.json",
+        "integration_commit": "9d093a492e576d7cb02b46c2ca60ebf2cac1c244",
+        "integration_commit_is_ancestor_of_review": true
+      }
+    }
+  ],
+  "external_gate_checks": [
+    {
+      "gate": "BATCH-08 external acceptance gate",
+      "result": "NOT_REQUIRED",
+      "evidence": "MASTER_PLAN.md and batches.json BATCH-08 entry declare no external gate."
+    }
+  ],
+  "scope_audit": {
+    "passed": true,
+    "changed_files": [
+      "backend/src/covenia_b/images/__init__.py",
+      "backend/src/covenia_b/images/resolver.py",
+      "backend/tests/images/test_resolver.py",
+      "reports/batches/BATCH-08/IMPLEMENTATION_REPORT.json",
+      "reports/batches/BATCH-08/IMPLEMENTATION_REPORT.md",
+      "reports/batches/BATCH-08/commands.json",
+      "reports/batches/BATCH-08/environment.json",
+      "reports/batches/BATCH-08/pip-check.txt",
+      "reports/batches/BATCH-08/resolver-contract.json",
+      "reports/batches/BATCH-08/security-cases.json"
+    ],
+    "allowed_paths": [
+      "backend/src/covenia_b/images/**",
+      "backend/tests/images/**",
+      "reports/batches/BATCH-08/**"
+    ],
+    "violations": [],
+    "forbidden_paths_touched": [],
+    "requirements_dev_lock": {
+      "changed_in_range": false,
+      "base_review_raw_git_show_sha256": "177865457f146985726b02ef5c640363624e2a0c9b76b67fbed3929dada13d04",
+      "status": "UNCHANGED; no new third-party dependency claimed or observed"
+    },
+    "verifier_owned_output_paths": [
+      "reports/batches/BATCH-08/VERIFICATION_REPORT.json",
+      "reports/batches/BATCH-08/verification-evidence/**"
+    ],
+    "evidence": "reports/batches/BATCH-08/verification-evidence/13-scope-and-blob-audit.json"
+  },
+  "criteria": [
+    {
+      "criterion": "同名文件字节变化产生新 hash；缺失/损坏/越界图片明确失败且不调用模型。",
+      "result": "FAIL",
+      "evidence": [
+        "reports/batches/BATCH-08/verification-evidence/11-boundary-probe.json",
+        "reports/batches/BATCH-08/verification-evidence/12-system-drawing-malformed-jpeg.json",
+        "backend/src/covenia_b/images/resolver.py:706-794"
+      ],
+      "summary": "同名字节变化、缺失、损坏 PNG、manifest MIME 不匹配、字节/像素限制和路径穿越都在构造 provider 输入前被拒绝，且探针中的 provider_dispatch_calls 均为 0；但解析器将缺 DQT/DHT 的 28 字节伪 JPEG 作为 image/jpeg 成功构造 ProviderImageInput。独立 Windows 图像解码器拒绝同一字节序列并报告未定义量化表，因此损坏 JPEG 未被明确拒绝。"
+    },
+    {
+      "criterion": "不同文件名同图片不改变像素观察输入；原始赛事 image_path 与团队文件分离。",
+      "result": "PASS",
+      "evidence": [
+        "reports/batches/BATCH-08/verification-evidence/11-boundary-probe.json"
+      ],
+      "summary": "两个不同文件名的相同 PNG 得到相等的 ProviderImageInput 和相等的中性描述；五个真实 X-A-IMAGES 文件由独立文件读取 SHA-256/长度与 manifest 对照，并逐项验证原始 competition_reference_path 与团队 repo_target_path/provenance 分离。"
+    },
+    {
+      "criterion": "没有文件名→VALID/MISMATCHED/NEED_HUMAN_REVIEW 的映射。",
+      "result": "PASS",
+      "evidence": [
+        "reports/batches/BATCH-08/verification-evidence/11-boundary-probe.json",
+        "backend/src/covenia_b/images/resolver.py:95-114"
+      ],
+      "summary": "独立源文本探针未发现三个禁止状态、declared_view_type 或 sku_label；ProviderImageInput 的字段和 safe_media_description 只有 bytes、MIME、hash、字节长度和宽高。"
+    },
+    {
+      "criterion": "按计划使用本批绝对隔离 venv；新增第三方依赖只增不改、精确钉版本并提交锁文件差异/原因/hash证据；同解释器 pip check 退出 0。",
+      "result": "PASS",
+      "evidence": [
+        "reports/batches/BATCH-08/verification-evidence/01-environment-preflight.txt",
+        "reports/batches/BATCH-08/verification-evidence/05-pip-list.txt",
+        "reports/batches/BATCH-08/verification-evidence/06-pip-check.txt",
+        "reports/batches/BATCH-08/verification-evidence/08-venv-path-audit.txt",
+        "reports/batches/BATCH-08/verification-evidence/13-scope-and-blob-audit.json"
+      ],
+      "summary": "实际解释器、sys.prefix 和 venv 位置均为 C:\\cov-run\\batch-08-verify-1\\venv 的直接子目录；最长路径 165 < 250；同一绝对解释器的 pip check 为 0。requirements-dev.lock 在 BASE/REVIEW 的 raw git-show SHA-256 相同，未新增依赖。"
+    }
+  ],
+  "commands": [
+    {
+      "command": "git status --short; git rev-parse HEAD; git rev-parse abaad9ae9228432ea514a45817c2fc166b27bad3; git rev-parse 8568ee512aad3c780ef5807d22821448b7403894; git diff --name-status abaad9ae9228432ea514a45817c2fc166b27bad3 8568ee512aad3c780ef5807d22821448b7403894",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\work\\repo2",
+      "exit_code": 0,
+      "mode": "BASELINE_AND_SCOPE",
+      "output": "reports/batches/BATCH-08/verification-evidence/13-scope-and-blob-audit.json"
+    },
+    {
+      "command": "C:\\cov-run\\batch-08-verify-1\\venv\\Scripts\\python.exe -c \"import pytest, jsonschema; import covenia_b.images.resolver\"",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-08-verify-1",
+      "exit_code": 0,
+      "mode": "UNIT_PRECHECK",
+      "output": "reports/batches/BATCH-08/verification-evidence/02-pytest-jsonschema-import.txt"
+    },
+    {
+      "command": "C:\\cov-run\\batch-08-verify-1\\venv\\Scripts\\python.exe -m pytest backend/tests/images -q --cache-clear",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-08-verify-1",
+      "exit_code": 1,
+      "mode": "ENVIRONMENT_RETRY",
+      "output": "reports/batches/BATCH-08/verification-evidence/03-images-pytest.txt",
+      "note": "No test body ran: host default pytest temporary directory denied access. The failure was preserved and the replacement command isolated pytest temporary files under this batch RUN_DIR."
+    },
+    {
+      "command": "C:\\cov-run\\batch-08-verify-1\\venv\\Scripts\\python.exe -m pytest backend/tests/images -q --cache-clear --basetemp=C:\\cov-run\\batch-08-verify-1\\pytest-basetemp",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-08-verify-1",
+      "exit_code": 0,
+      "mode": "UNIT",
+      "output": "reports/batches/BATCH-08/verification-evidence/10-images-pytest-isolated-basetemp.txt",
+      "summary": "12 passed in 0.37s"
+    },
+    {
+      "command": "C:\\cov-run\\batch-08-verify-1\\venv\\Scripts\\python.exe -m ruff check backend/src/covenia_b/images backend/tests/images",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-08-verify-1",
+      "exit_code": 0,
+      "mode": "STATIC_ANALYSIS",
+      "output": "reports/batches/BATCH-08/verification-evidence/04-images-ruff.txt"
+    },
+    {
+      "command": "C:\\cov-run\\batch-08-verify-1\\venv\\Scripts\\python.exe -m pip list --format=json",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-08-verify-1",
+      "exit_code": 0,
+      "mode": "ENVIRONMENT",
+      "output": "reports/batches/BATCH-08/verification-evidence/05-pip-list.txt"
+    },
+    {
+      "command": "C:\\cov-run\\batch-08-verify-1\\venv\\Scripts\\python.exe -m pip check",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-08-verify-1",
+      "exit_code": 0,
+      "mode": "ENVIRONMENT",
+      "output": "reports/batches/BATCH-08/verification-evidence/06-pip-check.txt"
+    },
+    {
+      "command": "git diff --check",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-08-verify-1",
+      "exit_code": 0,
+      "mode": "SCOPE",
+      "output": "reports/batches/BATCH-08/verification-evidence/07-git-diff-check.txt"
+    },
+    {
+      "command": "C:\\cov-run\\batch-08-verify-1\\venv\\Scripts\\python.exe reports\\batches\\BATCH-08\\verification-evidence\\boundary_probe.py",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-08-verify-1",
+      "exit_code": 0,
+      "mode": "BOUNDARY_PROBE",
+      "output": "reports/batches/BATCH-08/verification-evidence/11-boundary-probe.json"
+    },
+    {
+      "command": "System.Drawing.Image.FromStream(validateImageData=true) plus Bitmap.GetPixel on C:\\cov-run\\batch-08-verify-1\\malformed-structural-only.jpg",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-08-verify-1",
+      "exit_code": 0,
+      "mode": "NEGATIVE_CONTROL",
+      "output": "reports/batches/BATCH-08/verification-evidence/12-system-drawing-malformed-jpeg.json",
+      "summary": "Decoder rejected malformed JPEG as expected; resolver had accepted it."
+    }
+  ],
+  "artifact_hashes": {
+    "method": "SHA-256 over raw bytes streamed from git show <sha>:<path>; no working-copy digest used for REVIEW_SHA artifacts.",
+    "review_source": {
+      "backend/src/covenia_b/images/__init__.py": "e939d5d44c0e3bb7ab37073de02d5a2e40e1681d404127f166bf954c13f561b0",
+      "backend/src/covenia_b/images/resolver.py": "dd3db55240c611706d42bb0c67ee77fc3da23750fbe0508cc8b1bc7c659c1d10",
+      "backend/tests/images/test_resolver.py": "031a688bda788c1eaf089e49f2a3c41fc64024eeebead521039967f5784a5b43"
+    },
+    "requirements_dev_lock_base_and_review": "177865457f146985726b02ef5c640363624e2a0c9b76b67fbed3929dada13d04",
+    "details": "reports/batches/BATCH-08/verification-evidence/13-scope-and-blob-audit.json"
+  },
+  "negative_controls": [
+    {
+      "name": "same registered file name with changed bytes",
+      "result": "PASS",
+      "evidence": "11-boundary-probe.json#synthetic_boundaries.same_name_changed_bytes",
+      "observed": "sha256_mismatch and provider_dispatch_calls=0"
+    },
+    {
+      "name": "missing/corrupt/MIME-mismatched/too-large/pixel-limit/path-traversal inputs",
+      "result": "PASS",
+      "evidence": "11-boundary-probe.json#synthetic_boundaries",
+      "observed": "each rejected before synthetic provider dispatch"
+    },
+    {
+      "name": "malformed JPEG missing DQT and DHT tables",
+      "result": "FAIL",
+      "evidence": "11-boundary-probe.json#synthetic_boundaries.structural_only_jpeg; 12-system-drawing-malformed-jpeg.json",
+      "observed": "resolver produced image/jpeg ProviderImageInput; independent decoder rejected it"
+    }
+  ],
+  "findings": [
+    {
+      "id": "B08-F01",
+      "severity": "P1",
+      "status": "CONFIRMED",
+      "location": "backend/src/covenia_b/images/resolver.py:706-794",
+      "criterion": "损坏图片明确失败且不调用模型；图片必须可解码。",
+      "reproduction": [
+        "The independent probe builds a 28-byte JPEG with SOI, SOF0, SOS and EOI but deliberately omits DQT and DHT tables; its manifest SHA-256, MIME and dimensions match its bytes.",
+        "ManifestImageResolver.resolve_for_provider accepts it and returns ProviderImageInput(media_type=image/jpeg).",
+        "System.Drawing.Image.FromStream(validateImageData=true) rejects the exact saved bytes; native output states that quantization table 0x00 was not defined."
+      ],
+      "expected": "Reject an invalid JPEG before returning model-bound bytes, with a coded ImageContentRejected error; no downstream provider dispatch can be reached.",
+      "actual": "_probe_jpeg checks selected markers, dimensions and entropy termination but does not validate referenced JPEG quantization/Huffman tables, so malformed bytes cross the resolver-to-provider boundary.",
+      "impact": "A caller can submit a corrupt JPEG payload to a later provider adapter despite this batch's integrity and decodability gate."
+    },
+    {
+      "id": "B08-I01",
+      "severity": "INFO",
+      "status": "RECORDED",
+      "location": "pytest host temporary-directory configuration",
+      "detail": "The first required pytest invocation could not enumerate the host default temp directory and executed no test body. The preserved failure log is followed by a successful rerun with --basetemp inside this batch's RUN_DIR; this is not the FAIL basis."
+    }
+  ],
+  "minimal_fix_list": [
+    {
+      "owner": "BATCH-08 implementation owner",
+      "path": "backend/src/covenia_b/images/resolver.py",
+      "location": "_probe_jpeg / _validate_jpeg_entropy",
+      "required_change": "Before accepting a JPEG, validate the required JPEG coding tables and table selectors for the supported JPEG subset, or use a vetted decoder for actual decoding. In particular, a scan referencing undefined DQT/DHT tables must raise ImageContentRejected before ProviderImageInput is created.",
+      "reproduction": "Run the verifier boundary probe's structural_only_jpeg case; it must no longer return resolver_accepted=true.",
+      "expected_assertions": "Add permanent tests for JPEG missing DQT and JPEG missing DHT that assert a coded rejection and prove no provider dispatch/ProviderImageInput is reachable.",
+      "responsible_batch": "BATCH-08"
+    }
+  ],
+  "blockers": [],
+  "recheck_commands": [
+    "C:\\cov-run\\batch-08-verify-1\\venv\\Scripts\\python.exe -m pytest backend/tests/images -q --cache-clear --basetemp=C:\\cov-run\\batch-08-verify-1\\pytest-basetemp-recheck",
+    "C:\\cov-run\\batch-08-verify-1\\venv\\Scripts\\python.exe reports\\batches\\BATCH-08\\verification-evidence\\boundary_probe.py",
+    "C:\\cov-run\\batch-08-verify-1\\venv\\Scripts\\python.exe -m ruff check backend/src/covenia_b/images backend/tests/images",
+    "C:\\cov-run\\batch-08-verify-1\\venv\\Scripts\\python.exe -m pip check",
+    "git diff --check"
+  ],
+  "rollback_review": {
+    "passed": true,
+    "notes": "The implementation report's rollback is scoped to git revert 2373bcb22e24d491935d8c2b5d1efb512dde35cc and explicitly preserves A-owned evidence assets. No revert, merge, push or scheduling change was performed by this verifier."
+  },
+  "code_modified": false,
+  "next_batch_started": false
+}

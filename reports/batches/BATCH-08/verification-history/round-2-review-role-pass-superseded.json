@@ -1,0 +1,126 @@
+{
+  "report_version": "1.0",
+  "batch_id": "BATCH-08",
+  "verdict": "PASS",
+  "verifier": "审查方（独立复核；实现方未参与本次验证）",
+  "reviewed_base_sha": "2373bcb22e24d491935d8c2b5d1efb512dde35cc",
+  "reviewed_sha": "6717c2803cb1bfe3598505cf5363dab0024331b0",
+  "reviewed_code_commits": [
+    "d06754cfd8974164e1ba87aa00695d033877b743",
+    "6717c2803cb1bfe3598505cf5363dab0024331b0"
+  ],
+  "contract_version": "BATCH-08-image-resolver-v1; upstream BATCH-03 contract-lock-v1",
+  "plan_sha256": {
+    "MASTER_PLAN.md": "DBE269F06F4BBE3D8C1F915DD8E4A2D78E0E4F021ABB396270C8B846D5FFA74E",
+    "batches.json": "18DA555CE5ADEA5062F680837AEC8214158F58CBC1A918CF6BBC31EF48448E2E"
+  },
+  "verified_at": "2026-09-30T13:32:12",
+  "independent_context": true,
+  "prior_verification": {
+    "verdict": "FAIL",
+    "report_commit": "bce2c606a03ea3c0f6d2d588600d7ed66b1799c7",
+    "finding": "B08-F01: _probe_jpeg did not validate referenced JPEG quantization/Huffman tables"
+  },
+  "what_was_independently_reproduced": [
+    "Author-written JPEG probe (NOT the implementation's test file): 4 cases.",
+    "A33 three-criteria anti-shortcut scan over backend/src on the reviewed commit.",
+    "Blob-level scope audit against the batch allowed_paths."
+  ],
+  "what_could_not_be_independently_reproduced": [
+    "The implementation's pytest suite was NOT re-run by the verifier. The local sandbox denies pytest tmpdir creation/cleanup (PermissionError WinError 5 on basetemp, both under %TEMP% and inside the workspace). The implementation's own evidence reports 14 passed / exit 0, which the verifier did NOT confirm. This report's PASS rests on the verifier's own probe, not on that claim."
+  ],
+  "environment": {
+    "note": "Verifier used the system interpreter with jsonschema available; the implementation venv C:\\cov-run\\batch-08-repair-1\\venv was inspected read-only.",
+    "implementation_runtime": "C:\\cov-run\\batch-08-repair-1\\venv\\Scripts\\python.exe (Python 3.13.5, per 00-preflight.json)"
+  },
+  "criteria": [
+    {
+      "id": "B08-F01",
+      "title": "Reject a JPEG missing referenced DQT/DHT before any provider dispatch",
+      "verifier_method": "self-built minimal JPEGs, calling covenia_b.images.resolver._probe_jpeg directly",
+      "results": [
+        {
+          "case": "complete JPEG (DQT+DHT present)",
+          "expected": "accepted",
+          "observed": "accepted (8x8)",
+          "pass": true
+        },
+        {
+          "case": "DQT segment absent while frame references table 0",
+          "expected": "rejected",
+          "observed": "rejected [jpeg_dqt_undefined]",
+          "pass": true
+        },
+        {
+          "case": "DHT segment absent while scan references DC table 0",
+          "expected": "rejected",
+          "observed": "rejected [jpeg_dht_undefined]",
+          "pass": true
+        },
+        {
+          "case": "scan references undefined DC table id=2",
+          "expected": "rejected",
+          "observed": "rejected [jpeg_dht_undefined]",
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "A33-filename-independence",
+      "title": "file_name must not decide content validity",
+      "verifier_method": "A33 scan + code read of resolver.py",
+      "results": [
+        {
+          "observation": "content trust is derived from sha256(payload) compared to manifest expected_sha256 (resolver.py L289/L133)",
+          "pass": true
+        },
+        {
+          "observation": "provider-facing metadata explicitly strips filename/SKU/view type/source labels (resolver.py L106 docstring and projection)",
+          "pass": true
+        },
+        {
+          "observation": "4 A33 hits are identity/validation/safety only: duplicate_file_name, declared-vs-manifest filename match, path traversal guard",
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "scope",
+      "title": "Write scope respects allowed_paths",
+      "pass": true,
+      "note": "Only backend/src/covenia_b/images/**, backend/tests/images/**, reports/batches/BATCH-08/** and the lock were touched."
+    }
+  ],
+  "commands_run_by_verifier": [
+    "python checks/independent_probe_batch08.py  -> 4/4 expected outcomes",
+    "python checks/anti_shortcut_scan.py --git work/repo2 codex/covenia-batch-08-repair-1 backend/src -> 4 hits, all false positives",
+    "git diff --stat integration/covenia-b...codex/covenia-batch-08-repair-1 -> 17 files, 2144 insertions"
+  ],
+  "artifact_hashes": {
+    "method": "SHA-256 over raw bytes streamed from git show <sha>:<path>; no working-copy bytes used",
+    "reviewed_head": "6717c2803cb1bfe3598505cf5363dab0024331b0",
+    "images_resolver_sha256": "53D8F918FEFF17145C7A5EB71347AA52116C84CA2B6CF946488F9F0C95803E23"
+  },
+  "negative_controls": [
+    {
+      "control": "verifier probe rejects a deliberately DQT-less JPEG",
+      "pass": true
+    },
+    {
+      "control": "verifier probe accepts a well-formed JPEG (guards against an always-reject implementation)",
+      "pass": true
+    }
+  ],
+  "findings": [],
+  "minimal_fix_list": [],
+  "blockers": [],
+  "recheck_commands": [
+    "python checks/independent_probe_batch08.py",
+    "C:\\cov-run\\batch-08-repair-1\\venv\\Scripts\\python.exe -m pytest backend/tests/images -q (implementation evidence; not confirmed by verifier due to sandbox tmpdir denial)"
+  ],
+  "code_modified": false,
+  "next_batch_started": false,
+  "verifier_scope_declaration": "This verifier wrote only reports/batches/BATCH-08/VERIFICATION_REPORT.json and its evidence. No implementation file was modified. Because the platform agent tasks were unavailable, this verification was performed by the review role rather than by a fresh task thread; that deviation is recorded here explicitly."
+}

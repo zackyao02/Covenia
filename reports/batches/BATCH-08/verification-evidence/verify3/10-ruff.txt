@@ -1,0 +1,6 @@
+command=C:\cov-run\v08oct1\venv\Scripts\python.exe -m ruff check backend/src/covenia_b/images backend/tests/images
+cwd=C:\Users\WONG Tsun Ming\Desktop\欧莱雅黑客松\w08v3
+exit_code=0
+stdout:
+All checks passed!
+stderr:

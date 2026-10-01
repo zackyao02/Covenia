@@ -1,0 +1,6 @@
+command=C:\cov-run\batch-08-repair-1\venv\Scripts\python.exe -m pytest backend/tests/images -q -p no:cacheprovider --basetemp=C:\cov-run\batch-08-repair-1\pytest-basetemp-final
+cwd=C:\Users\WONG Tsun Ming\Desktop\欧莱雅黑客松\worktrees\covenia-batch-08-repair-1
+exit_code=0
+stdout:
+..............                                                           [100%]
+14 passed in 0.37s

@@ -1,0 +1,61 @@
+{
+  "reviewed_sha": "6717c2803cb1bfe3598505cf5363dab0024331b0",
+  "source": "backend/src/covenia_b/images/resolver.py",
+  "forbidden_outcome_scan": {
+    "command": "rg -n 'declared_view_type|sku_label|MISMATCHED|NEED_HUMAN_REVIEW|VALID' backend/src/covenia_b/images/resolver.py",
+    "result": "NO_MATCHES",
+    "passed": true
+  },
+  "file_name_use_review": {
+    "matched_lines": [
+      129,
+      166,
+      175,
+      177,
+      179,
+      182,
+      254,
+      315,
+      323,
+      325,
+      349,
+      350,
+      357,
+      363,
+      369,
+      375,
+      422,
+      423,
+      424,
+      467,
+      504,
+      517,
+      522,
+      536
+    ],
+    "classification": "Manifest uniqueness, identity matching, registered local-path resolution, and path-safety validation only; no content or responsibility outcome mapping.",
+    "passed": true
+  },
+  "provider_projection_review": {
+    "lines": "95-114",
+    "fields": [
+      "content",
+      "media_type",
+      "content_sha256",
+      "byte_length",
+      "width",
+      "height"
+    ],
+    "excluded": [
+      "file_name",
+      "declared_view_type",
+      "sku_label",
+      "source_message_id",
+      "source_kind",
+      "competition_reference_path"
+    ],
+    "passed": true
+  },
+  "dynamic_confirmation": "independent-probe-retry.json#positive_case",
+  "passed": true
+}

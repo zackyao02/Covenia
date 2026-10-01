@@ -1,0 +1,152 @@
+{
+  "manifest_version": "1.0",
+  "hash_method": "SHA-256 over staged Git blob bytes from git show :<path>",
+  "self_excluded": "reports/batches/BATCH-08/verification-evidence/verify3/final-artifact-hashes.json",
+  "changed_paths_hashed": 30,
+  "artifacts": {
+    "reports/batches/BATCH-08/VERIFICATION_REPORT.json": {
+      "bytes": 21487,
+      "sha256": "55007495ed2aaf7425969a97a4fd51c5d918f77e3cda841e6e05e7985c54c8a6"
+    },
+    "reports/batches/BATCH-08/history/81277d24217b993094cf22d54365e48f5faf11cd/VERIFICATION_REPORT.json": {
+      "bytes": 5786,
+      "sha256": "5aa6369cda7cea600f31c4df1c4da2ace53bac9679d5d04d66c40e5b208fe351"
+    },
+    "reports/batches/BATCH-08/verification-evidence/verify3/01-create-venv.txt": {
+      "bytes": 150,
+      "sha256": "73b3234e0e2f75938d3e1922446363a14bf0923076067b0e4db1e9e47b03ce05"
+    },
+    "reports/batches/BATCH-08/verification-evidence/verify3/02-preflight.txt": {
+      "bytes": 927,
+      "sha256": "fb7614cb0e922c1e0b365727ff2bc99ee5ad5e4d8febc87dfeb496006d132a9e"
+    },
+    "reports/batches/BATCH-08/verification-evidence/verify3/03-lock-install.txt": {
+      "bytes": 7097,
+      "sha256": "0040da97632c44f14c35bf92293285f18a17b0af40f611fabde397d6d29d3ac6"
+    },
+    "reports/batches/BATCH-08/verification-evidence/verify3/04-editable-install.txt": {
+      "bytes": 1382,
+      "sha256": "73efca52a07ee2d95a54ee9bdfdedfd0be678aa207da57cca3c9e3347f17bd49"
+    },
+    "reports/batches/BATCH-08/verification-evidence/verify3/05-imports.txt": {
+      "bytes": 237,
+      "sha256": "cfb3bdd88a15d46ac1b88d9e1bf7f4fcf4919082d0ae6c73ef94562ee0618588"
+    },
+    "reports/batches/BATCH-08/verification-evidence/verify3/06-images-pytest.txt": {
+      "bytes": 87450,
+      "sha256": "7946e6cd5b221c617ea1c29f1f2e5aed8c4f06f8054656e3c8a2dee8cf508139"
+    },
+    "reports/batches/BATCH-08/verification-evidence/verify3/07-pip-list.txt": {
+      "bytes": 1643,
+      "sha256": "75dc4f3ca146364a70e0d463b54525e3cfc9c6b363625c154be6158f4ea71724"
+    },
+    "reports/batches/BATCH-08/verification-evidence/verify3/08-pip-check.txt": {
+      "bytes": 183,
+      "sha256": "2b3cbd91135de6952b63ed664d656e111d34ce90fd9f9e05bcdaa81f3910ff29"
+    },
+    "reports/batches/BATCH-08/verification-evidence/verify3/09-focused-dqt-dht.txt": {
+      "bytes": 12870,
+      "sha256": "31c67801746ca48352faf0e731763bfd03bb6ccfbb22f0eff4ed36b1d35a22eb"
+    },
+    "reports/batches/BATCH-08/verification-evidence/verify3/10-ruff.txt": {
+      "bytes": 223,
+      "sha256": "c9313434551605689cfafd42659906789b7160125ddeeef420674c179ac8b512"
+    },
+    "reports/batches/BATCH-08/verification-evidence/verify3/11-independent-probe.txt": {
+      "bytes": 5765,
+      "sha256": "625a482b74aae77636fdbd7148e1e268ae8cc805389ab5e78798b943bb6332f8"
+    },
+    "reports/batches/BATCH-08/verification-evidence/verify3/12-diff-check-reviewed-range.txt": {
+      "bytes": 261,
+      "sha256": "c462413fbe5f4e74a85313f7d2644a349ff298d80c566d6e37a7d5e17f3bcc32"
+    },
+    "reports/batches/BATCH-08/verification-evidence/verify3/13-diff-check-worktree.txt": {
+      "bytes": 176,
+      "sha256": "e67ab9686acb8dc13868734c110f6b4d20c0c3647acfd3d9105660e292c32af3"
+    },
+    "reports/batches/BATCH-08/verification-evidence/verify3/14-status-short.txt": {
+      "bytes": 237,
+      "sha256": "2ee1e64d52f019b52e043a11d3d76c41d31f828d681b357fbd66d51e226486f7"
+    },
+    "reports/batches/BATCH-08/verification-evidence/verify3/15-images-pytest-temp-override.txt": {
+      "bytes": 328,
+      "sha256": "2f3845f4311683530712d407beb981ef5ef838a7a7eae2eefef136137f8dbf11"
+    },
+    "reports/batches/BATCH-08/verification-evidence/verify3/16-focused-dqt-dht-temp-override.txt": {
+      "bytes": 375,
+      "sha256": "4cd534e1730553ba46f36416c546ae22462761ecf0120de49a57c829d176e04d"
+    },
+    "reports/batches/BATCH-08/verification-evidence/verify3/17-independent-probe-retry.txt": {
+      "bytes": 6294,
+      "sha256": "a5f719724a8c0724ffc61dfe76205519b45e59c7fec51bb30a1d6c1a547e548d"
+    },
+    "reports/batches/BATCH-08/verification-evidence/verify3/anti-shortcut-review.json": {
+      "bytes": 1337,
+      "sha256": "0ce8c607df273601c3bfb654086a38c7fc446ade88cf740d965459c3ba77d3bf"
+    },
+    "reports/batches/BATCH-08/verification-evidence/verify3/commands.json": {
+      "bytes": 5602,
+      "sha256": "0af91ef1ee05f6a29189d3e45e18c53223ab3324ba3a089ff3708b340f9a0ca3"
+    },
+    "reports/batches/BATCH-08/verification-evidence/verify3/environment.json": {
+      "bytes": 584,
+      "sha256": "98efc6b608c717010c738839d5716cf1d7e93bdeb418be707fb0c70f286a1266"
+    },
+    "reports/batches/BATCH-08/verification-evidence/verify3/finalize_artifact_hashes.py": {
+      "bytes": 4111,
+      "sha256": "6925f7fb8f04747322781e42c5ac03b077e35210ee3164941ceec3b7f8b66035"
+    },
+    "reports/batches/BATCH-08/verification-evidence/verify3/independent-probe-retry.json": {
+      "bytes": 5717,
+      "sha256": "0d7b7dfd8ab6d5e0d8b2d8f29c2c7b17f778f56abeed847fb53465529373b768"
+    },
+    "reports/batches/BATCH-08/verification-evidence/verify3/independent-probe.json": {
+      "bytes": 5249,
+      "sha256": "f2575e97b106429023edd70156637503bb560e53dc065cd16f2486ee83af9f11"
+    },
+    "reports/batches/BATCH-08/verification-evidence/verify3/independent_probe.py": {
+      "bytes": 11945,
+      "sha256": "2f81574371382adac05e02e949707359a666c3a70591c93f864f3c0a5ac31baa"
+    },
+    "reports/batches/BATCH-08/verification-evidence/verify3/retry-commands.json": {
+      "bytes": 1843,
+      "sha256": "fb1de0cd33c7996eccad0fa507edf3c9da5e18b373febbea43876c18d9f9cf9b"
+    },
+    "reports/batches/BATCH-08/verification-evidence/verify3/retry_environment_tests.py": {
+      "bytes": 3287,
+      "sha256": "98baf7adb80cd30a9f05da8a4ed0b5a8949baaa79ab7e675436ba90560036e6f"
+    },
+    "reports/batches/BATCH-08/verification-evidence/verify3/scope-and-hashes.json": {
+      "bytes": 7986,
+      "sha256": "2f53bd42f9946f8657423518be5470047c7726ce6357df6aa15f4263c0860ff2"
+    },
+    "reports/batches/BATCH-08/verification-evidence/verify3/verification_runner.py": {
+      "bytes": 16166,
+      "sha256": "e9437c58fc5a7fa9a316b6ead2209b6f11d9905669d947da3b64d7b3fd1f9ed6"
+    }
+  },
+  "history_preservation": {
+    "source_commit": "81277d24217b993094cf22d54365e48f5faf11cd",
+    "source_path": "reports/batches/BATCH-08/VERIFICATION_REPORT.json",
+    "history_path": "reports/batches/BATCH-08/history/81277d24217b993094cf22d54365e48f5faf11cd/VERIFICATION_REPORT.json",
+    "source_sha256": "5aa6369cda7cea600f31c4df1c4da2ace53bac9679d5d04d66c40e5b208fe351",
+    "history_sha256": "5aa6369cda7cea600f31c4df1c4da2ace53bac9679d5d04d66c40e5b208fe351",
+    "byte_for_byte_equal": true
+  },
+  "json_validation": {
+    "parsed": 9,
+    "failures": [],
+    "passed": true
+  },
+  "canonical_report_checks": {
+    "batch_id": true,
+    "verdict": true,
+    "commit_verified": true,
+    "independent_context": true,
+    "code_modified": true,
+    "next_batch_started": true,
+    "criteria_nonempty": true,
+    "commands_nonempty": true
+  },
+  "passed": true
+}

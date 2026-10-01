@@ -1,0 +1,5 @@
+command=C:\cov-run\batch-08-repair-1\venv\Scripts\python.exe -m ruff check backend/src/covenia_b/images backend/tests/images
+cwd=C:\Users\WONG Tsun Ming\Desktop\欧莱雅黑客松\worktrees\covenia-batch-08-repair-1
+exit_code=0
+stdout:
+All checks passed!

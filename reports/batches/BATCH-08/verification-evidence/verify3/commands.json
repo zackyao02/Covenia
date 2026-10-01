@@ -1,0 +1,100 @@
+[
+  {
+    "id": "01-create-venv",
+    "command": "D:\\python\\python.exe -m venv C:\\cov-run\\v08oct1\\venv",
+    "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w08v3",
+    "exit_code": 0,
+    "output": "reports/batches/BATCH-08/verification-evidence/verify3/01-create-venv.txt"
+  },
+  {
+    "id": "02-preflight",
+    "command": "C:\\cov-run\\v08oct1\\venv\\Scripts\\python.exe -c \"import json, os, site, sys; from pathlib import Path; expected=Path(sys.argv[1]).resolve(); actual=Path(sys.executable).resolve(); assert actual == expected and sys.prefix != sys.base_prefix; print(json.dumps({'sys_executable':str(actual),'python_version':sys.version,'sys_prefix':sys.prefix,'sys_base_prefix':sys.base_prefix,'pythonpath':os.environ.get('PYTHONPATH','UNSET'),'enable_user_site':site.ENABLE_USER_SITE}, ensure_ascii=False))\" C:\\cov-run\\v08oct1\\venv\\Scripts\\python.exe",
+    "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w08v3",
+    "exit_code": 0,
+    "output": "reports/batches/BATCH-08/verification-evidence/verify3/02-preflight.txt"
+  },
+  {
+    "id": "03-lock-install",
+    "command": "C:\\cov-run\\v08oct1\\venv\\Scripts\\python.exe -m pip install --no-deps -r backend/requirements-dev.lock",
+    "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w08v3",
+    "exit_code": 0,
+    "output": "reports/batches/BATCH-08/verification-evidence/verify3/03-lock-install.txt"
+  },
+  {
+    "id": "04-editable-install",
+    "command": "C:\\cov-run\\v08oct1\\venv\\Scripts\\python.exe -m pip install --no-deps --no-build-isolation -e backend",
+    "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w08v3",
+    "exit_code": 0,
+    "output": "reports/batches/BATCH-08/verification-evidence/verify3/04-editable-install.txt"
+  },
+  {
+    "id": "05-imports",
+    "command": "C:\\cov-run\\v08oct1\\venv\\Scripts\\python.exe -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+    "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w08v3",
+    "exit_code": 0,
+    "output": "reports/batches/BATCH-08/verification-evidence/verify3/05-imports.txt"
+  },
+  {
+    "id": "06-images-pytest",
+    "command": "C:\\cov-run\\v08oct1\\venv\\Scripts\\python.exe -m pytest backend/tests/images -q",
+    "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w08v3",
+    "exit_code": 1,
+    "output": "reports/batches/BATCH-08/verification-evidence/verify3/06-images-pytest.txt"
+  },
+  {
+    "id": "07-pip-list",
+    "command": "C:\\cov-run\\v08oct1\\venv\\Scripts\\python.exe -m pip list --format=json",
+    "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w08v3",
+    "exit_code": 0,
+    "output": "reports/batches/BATCH-08/verification-evidence/verify3/07-pip-list.txt"
+  },
+  {
+    "id": "08-pip-check",
+    "command": "C:\\cov-run\\v08oct1\\venv\\Scripts\\python.exe -m pip check",
+    "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w08v3",
+    "exit_code": 0,
+    "output": "reports/batches/BATCH-08/verification-evidence/verify3/08-pip-check.txt"
+  },
+  {
+    "id": "09-focused-dqt-dht",
+    "command": "C:\\cov-run\\v08oct1\\venv\\Scripts\\python.exe -m pytest backend/tests/images/test_resolver.py -q -k jpeg_missing",
+    "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w08v3",
+    "exit_code": 1,
+    "output": "reports/batches/BATCH-08/verification-evidence/verify3/09-focused-dqt-dht.txt"
+  },
+  {
+    "id": "10-ruff",
+    "command": "C:\\cov-run\\v08oct1\\venv\\Scripts\\python.exe -m ruff check backend/src/covenia_b/images backend/tests/images",
+    "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w08v3",
+    "exit_code": 0,
+    "output": "reports/batches/BATCH-08/verification-evidence/verify3/10-ruff.txt"
+  },
+  {
+    "id": "11-independent-probe",
+    "command": "C:\\cov-run\\v08oct1\\venv\\Scripts\\python.exe \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w08v3\\reports\\batches\\BATCH-08\\verification-evidence\\verify3\\independent_probe.py\" --repo \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w08v3\" --run-dir C:\\cov-run\\v08oct1 --output \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w08v3\\reports\\batches\\BATCH-08\\verification-evidence\\verify3\\independent-probe.json\"",
+    "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w08v3",
+    "exit_code": 1,
+    "output": "reports/batches/BATCH-08/verification-evidence/verify3/11-independent-probe.txt"
+  },
+  {
+    "id": "12-diff-check-reviewed-range",
+    "command": "git -C \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w08v3\" diff --check abaad9ae9228432ea514a45817c2fc166b27bad3 6717c2803cb1bfe3598505cf5363dab0024331b0 --",
+    "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w08v3",
+    "exit_code": 0,
+    "output": "reports/batches/BATCH-08/verification-evidence/verify3/12-diff-check-reviewed-range.txt"
+  },
+  {
+    "id": "13-diff-check-worktree",
+    "command": "git -C \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w08v3\" diff --check",
+    "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w08v3",
+    "exit_code": 0,
+    "output": "reports/batches/BATCH-08/verification-evidence/verify3/13-diff-check-worktree.txt"
+  },
+  {
+    "id": "14-status-short",
+    "command": "git -C \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w08v3\" status --short",
+    "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w08v3",
+    "exit_code": 0,
+    "output": "reports/batches/BATCH-08/verification-evidence/verify3/14-status-short.txt"
+  }
+]

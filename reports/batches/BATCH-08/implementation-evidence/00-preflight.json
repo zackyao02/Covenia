@@ -1,0 +1,10 @@
+{
+  "command": "C:\\cov-run\\batch-08-repair-1\\venv\\Scripts\\python.exe -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version); print(sys.prefix); print(sys.base_prefix)\" C:\\cov-run\\batch-08-repair-1\\venv\\Scripts\\python.exe",
+  "exit_code": 0,
+  "interpreter": "C:\\cov-run\\batch-08-repair-1\\venv\\Scripts\\python.exe",
+  "python_version": "3.13.5",
+  "sys_prefix": "C:\\cov-run\\batch-08-repair-1\\venv",
+  "sys_base_prefix": "D:\\python",
+  "pythonpath": "UNSET",
+  "include_system_site_packages": false
+}

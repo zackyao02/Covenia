@@ -1,0 +1,19 @@
+{
+  "task_id": "01a0f806-2548-7e51-9ecf-140fa05a58e2",
+  "observed_at": "2026-10-02T00:27:40+08:00",
+  "tool_output_chunk_id": "0feeee",
+  "execution_context": "normal sandbox",
+  "worktree": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-integration",
+  "head": "cc82915b260ac108137ada27ffda56d1b4b1bc3d",
+  "tracked_status_output": "",
+  "preflight_present": true,
+  "preflight_completed_at": "2026-10-02T00:24:56.545074+08:00",
+  "preflight_report_blob_sha256": "55007495ed2aaf7425969a97a4fd51c5d918f77e3cda841e6e05e7985c54c8a6",
+  "run_dir_existed": false,
+  "manual_wake_for_integration": true,
+  "resume_attempt_in_batch": 4,
+  "auto_resume_attempts": 2,
+  "repair_attempts": 1,
+  "run_state_modified": false,
+  "new_tasks_created": 0
+}

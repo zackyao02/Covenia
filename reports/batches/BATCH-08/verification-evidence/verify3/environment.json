@@ -1,0 +1,12 @@
+{
+  "run_dir": "C:\\cov-run\\v08oct1",
+  "venv": "C:\\cov-run\\v08oct1\\venv",
+  "venv_direct_child": true,
+  "interpreter": "C:\\cov-run\\v08oct1\\venv\\Scripts\\python.exe",
+  "pythonpath_child_state": "UNSET",
+  "include_system_site_packages_enabled": false,
+  "include_system_site_packages_false_confirmed": true,
+  "longest_venv_file": "C:\\cov-run\\v08oct1\\venv\\Lib\\site-packages\\pkg_resources\\tests\\data\\my-test-package_unpacked-egg\\my_test_package-1.0-py3.7.egg\\EGG-INFO\\dependency_links.txt",
+  "longest_venv_path_length": 155,
+  "longest_venv_path_lt_250": true
+}

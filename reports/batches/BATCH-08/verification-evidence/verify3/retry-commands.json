@@ -1,0 +1,35 @@
+[
+  {
+    "id": "15-images-pytest-temp-override",
+    "command": "C:\\cov-run\\v08oct1\\venv\\Scripts\\python.exe -m pytest backend/tests/images -q",
+    "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w08v3",
+    "environment_override": {
+      "TEMP": "C:\\cov-run\\v08oct1\\tmp",
+      "TMP": "C:\\cov-run\\v08oct1\\tmp"
+    },
+    "exit_code": 0,
+    "output": "reports/batches/BATCH-08/verification-evidence/verify3/15-images-pytest-temp-override.txt"
+  },
+  {
+    "id": "16-focused-dqt-dht-temp-override",
+    "command": "C:\\cov-run\\v08oct1\\venv\\Scripts\\python.exe -m pytest backend/tests/images/test_resolver.py -q -k jpeg_missing",
+    "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w08v3",
+    "environment_override": {
+      "TEMP": "C:\\cov-run\\v08oct1\\tmp",
+      "TMP": "C:\\cov-run\\v08oct1\\tmp"
+    },
+    "exit_code": 0,
+    "output": "reports/batches/BATCH-08/verification-evidence/verify3/16-focused-dqt-dht-temp-override.txt"
+  },
+  {
+    "id": "17-independent-probe-retry",
+    "command": "C:\\cov-run\\v08oct1\\venv\\Scripts\\python.exe \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w08v3\\reports\\batches\\BATCH-08\\verification-evidence\\verify3\\independent_probe.py\" --repo \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w08v3\" --run-dir C:\\cov-run\\v08oct1 --output \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w08v3\\reports\\batches\\BATCH-08\\verification-evidence\\verify3\\independent-probe-retry.json\"",
+    "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w08v3",
+    "environment_override": {
+      "TEMP": "C:\\cov-run\\v08oct1\\tmp",
+      "TMP": "C:\\cov-run\\v08oct1\\tmp"
+    },
+    "exit_code": 0,
+    "output": "reports/batches/BATCH-08/verification-evidence/verify3/17-independent-probe-retry.txt"
+  }
+]

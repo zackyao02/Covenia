@@ -1,0 +1,169 @@
+{
+  "probe_version": "verify3-1.0",
+  "implementation_tests_imported": false,
+  "negative_cases": [
+    {
+      "case": "missing-dqt",
+      "expected_code": "jpeg_dqt_undefined",
+      "file_names": [
+        "missing-dqt.jpg",
+        "renamed-missing-dqt.jpg"
+      ],
+      "same_payload_sha256": "f984493f4c96f0215b19c0c37befe450c4474c9d05c1b4474943ba3292ddc2bd",
+      "observed_codes": [
+        "jpeg_dqt_undefined",
+        "jpeg_dqt_undefined"
+      ],
+      "provider_inputs_constructed": 0,
+      "provider_dispatches": 0,
+      "passed": true
+    },
+    {
+      "case": "missing-dht",
+      "expected_code": "jpeg_dht_undefined",
+      "file_names": [
+        "missing-dht.jpg",
+        "renamed-missing-dht.jpg"
+      ],
+      "same_payload_sha256": "26e629b490393e95de91862ed735eaf572a01f035e853ca554dc029293f8b9a4",
+      "observed_codes": [
+        "jpeg_dht_undefined",
+        "jpeg_dht_undefined"
+      ],
+      "provider_inputs_constructed": 0,
+      "provider_dispatches": 0,
+      "passed": true
+    },
+    {
+      "case": "undefined-dqt-selector",
+      "expected_code": "jpeg_dqt_undefined",
+      "file_names": [
+        "undefined-dqt-selector.jpg"
+      ],
+      "same_payload_sha256": "43037313cc33b3889b6c3b4cce9363c87399d69a81e567b8c1d7e0eaead8f1d7",
+      "observed_codes": [
+        "jpeg_dqt_undefined"
+      ],
+      "provider_inputs_constructed": 0,
+      "provider_dispatches": 0,
+      "passed": true
+    },
+    {
+      "case": "undefined-dc-selector",
+      "expected_code": "jpeg_dht_undefined",
+      "file_names": [
+        "undefined-dc-selector.jpg"
+      ],
+      "same_payload_sha256": "ed8c1c901e6fd9b84178ca2925c807b1a1f304d3ec80450fec86848588544994",
+      "observed_codes": [
+        "jpeg_dht_undefined"
+      ],
+      "provider_inputs_constructed": 0,
+      "provider_dispatches": 0,
+      "passed": true
+    },
+    {
+      "case": "undefined-ac-selector",
+      "expected_code": "jpeg_dht_undefined",
+      "file_names": [
+        "undefined-ac-selector.jpg"
+      ],
+      "same_payload_sha256": "09324f5e1b043e02aa151722c0703ec52242bd2556815d92f49441dfdad84aaa",
+      "observed_codes": [
+        "jpeg_dht_undefined"
+      ],
+      "provider_inputs_constructed": 0,
+      "provider_dispatches": 0,
+      "passed": true
+    }
+  ],
+  "positive_case": {
+    "case": "positive_filename_independence",
+    "file_names": [
+      "neutral-a.jpg",
+      "renamed-neutral-b.jpg"
+    ],
+    "payload_sha256": "51d71c3a1ab34aa30014486b043f8644acad3aae5cf63e4da872d998f754a688",
+    "provider_inputs_equal": true,
+    "safe_media_description": {
+      "media_type": "image/jpeg",
+      "content_sha256": "51d71c3a1ab34aa30014486b043f8644acad3aae5cf63e4da872d998f754a688",
+      "byte_length": 137,
+      "width": 8,
+      "height": 8
+    },
+    "forbidden_keys_present": [],
+    "passed": true
+  },
+  "real_images": {
+    "manifest": "handoff/a/images-manifest.json",
+    "evidence_root": "frontend/public/evidence",
+    "manifest_entry_count": 5,
+    "resolved_count": 5,
+    "model_or_network_dependency_present": false,
+    "all_match": true,
+    "results": [
+      {
+        "evidence_id": "S00001_IMG_PRODUCT_OVERVIEW",
+        "source_kind": "TEAM_SYNTHETIC_RECREATION",
+        "source_message_id": "80525870445254.PNM",
+        "competition_reference_path": "mock_images/broken_pump/S00001_03.jpg",
+        "manifest_sha256": "E2C6BBD230F906F113D75F2F582E778B6E79AEA37544C2383F1FFDA15A5295D5",
+        "sha256": "e2c6bbd230f906f113d75f2f582e778b6e79aea37544c2383f1ffda15a5295d5",
+        "byte_length": 71574,
+        "width": 1254,
+        "height": 1254,
+        "matched_manifest": true
+      },
+      {
+        "evidence_id": "S00001_IMG_PUMP_DETAIL",
+        "source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
+        "source_message_id": "80525870445254.PNM",
+        "competition_reference_path": null,
+        "manifest_sha256": "4709D7529803846D4FF4E123BFCC034D420449AE23923CB54468BE573BD8CFC7",
+        "sha256": "4709d7529803846d4ff4e123bfcc034d420449ae23923cb54468be573bd8cfc7",
+        "byte_length": 66764,
+        "width": 1254,
+        "height": 1254,
+        "matched_manifest": true
+      },
+      {
+        "evidence_id": "S00001_IMG_PACKAGE_CONTEXT",
+        "source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
+        "source_message_id": "80525870445254.PNM",
+        "competition_reference_path": null,
+        "manifest_sha256": "C734BFB5A70FFA39E10B2535DC8321EACE3C1FB358293FA22B590B9F7B5836BD",
+        "sha256": "c734bfb5a70ffa39e10b2535dc8321eace3c1fb358293fa22b590b9f7b5836bd",
+        "byte_length": 129230,
+        "width": 1254,
+        "height": 1254,
+        "matched_manifest": true
+      },
+      {
+        "evidence_id": "S00001_IMG_GIFT_EVIDENCE",
+        "source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
+        "source_message_id": "80525870445254.PNM",
+        "competition_reference_path": null,
+        "manifest_sha256": "E52DF258CDBC5761D175F31985639337F2274211FBEB3DDB82A0B773150AA7F5",
+        "sha256": "e52df258cdbc5761d175f31985639337f2274211fbeb3ddb82a0b773150aa7f5",
+        "byte_length": 130254,
+        "width": 1254,
+        "height": 1254,
+        "matched_manifest": true
+      },
+      {
+        "evidence_id": "S00001_IMG_BLURRED_PUMP",
+        "source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
+        "source_message_id": "80525870445254.PNM",
+        "competition_reference_path": null,
+        "manifest_sha256": "634D2B4B0665FAE49DEC286628B13D8116808B3FFF7A39A9DD7CDEA9E7DE3143",
+        "sha256": "634d2b4b0665fae49dec286628b13d8116808b3fff7a39a9dd7cdea9e7de3143",
+        "byte_length": 55664,
+        "width": 1254,
+        "height": 1254,
+        "matched_manifest": true
+      }
+    ]
+  },
+  "all_passed": true
+}

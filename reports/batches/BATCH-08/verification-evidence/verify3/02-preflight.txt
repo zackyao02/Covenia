@@ -1,0 +1,6 @@
+command=C:\cov-run\v08oct1\venv\Scripts\python.exe -c "import json, os, site, sys; from pathlib import Path; expected=Path(sys.argv[1]).resolve(); actual=Path(sys.executable).resolve(); assert actual == expected and sys.prefix != sys.base_prefix; print(json.dumps({'sys_executable':str(actual),'python_version':sys.version,'sys_prefix':sys.prefix,'sys_base_prefix':sys.base_prefix,'pythonpath':os.environ.get('PYTHONPATH','UNSET'),'enable_user_site':site.ENABLE_USER_SITE}, ensure_ascii=False))" C:\cov-run\v08oct1\venv\Scripts\python.exe
+cwd=C:\Users\WONG Tsun Ming\Desktop\欧莱雅黑客松\w08v3
+exit_code=0
+stdout:
+{"sys_executable": "C:\\cov-run\\v08oct1\\venv\\Scripts\\python.exe", "python_version": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]", "sys_prefix": "C:\\cov-run\\v08oct1\\venv", "sys_base_prefix": "D:\\python", "pythonpath": "UNSET", "enable_user_site": false}
+stderr:

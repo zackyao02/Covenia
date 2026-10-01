@@ -1,0 +1,84 @@
+{
+  "contract_version": "BATCH-08-image-resolver-v1",
+  "batch_id": "BATCH-08",
+  "purpose": "Resolve registered evidence to verified local image bytes without deriving observations from labels.",
+  "port_compatibility": {
+    "port": "covenia_b.ports.contracts.ImageResolver",
+    "resolve_signature": "resolve(EvidenceImage) -> ResolvedImage",
+    "port_files_read_only": true,
+    "provider_bytes_extension": "resolve_for_provider(EvidenceImage) -> ProviderImageInput"
+  },
+  "manifest": {
+    "required_root_field": "images",
+    "required_fields": [
+      "evidence_id",
+      "file_name",
+      "repo_target_path",
+      "source_message_id",
+      "source_kind",
+      "competition_reference_path",
+      "sha256",
+      "bytes",
+      "mime",
+      "dimensions.width",
+      "dimensions.height"
+    ],
+    "supported_source_kinds": [
+      "TEAM_SYNTHETIC_RECREATION",
+      "TEAM_SYNTHETIC_AUGMENTATION"
+    ],
+    "supported_media_types": ["image/jpeg", "image/png"],
+    "file_name_resolution": "Only the registered simple file_name is joined to the configured evidence root; repo_target_path is validated metadata and is never used as an arbitrary filesystem path."
+  },
+  "security": {
+    "network_access": "FORBIDDEN",
+    "url_and_ssrf": "Rejected as manifest or evidence path input; no HTTP client exists in the module.",
+    "safe_root": "Resolved root must exist and be a directory; resolved candidate must remain inside it.",
+    "symlinks": "The final resolved target is checked against the safe root; out-of-root resolution is rejected.",
+    "default_limits": {
+      "max_bytes": 10485760,
+      "max_pixels": 16000000,
+      "max_dimension": 8192,
+      "max_jpeg_trailing_bytes_after_eoi": 64
+    },
+    "integrity": [
+      "Content SHA-256 is computed from bytes read from the resolved file.",
+      "Manifest byte length, MIME, dimensions and SHA-256 must all match.",
+      "PNG signatures, chunk CRCs, zlib scanlines and filters are checked.",
+      "JPEG frame markers, dimensions, entropy termination and bounded trailing data are checked."
+    ]
+  },
+  "outputs": {
+    "resolved_handle": ["evidence_id", "media_type", "content_sha256", "byte_length"],
+    "provider_image": [
+      "content",
+      "media_type",
+      "content_sha256",
+      "byte_length",
+      "width",
+      "height"
+    ],
+    "provenance": [
+      "evidence_id",
+      "source_message_id",
+      "source_kind",
+      "competition_reference_path"
+    ],
+    "provider_exclusions": [
+      "file_name",
+      "repo_target_path",
+      "declared_view_type",
+      "SKU labels",
+      "source_message_id",
+      "source_kind",
+      "competition_reference_path"
+    ]
+  },
+  "failure_behavior": {
+    "unavailable_base_error": "ImageUnavailable",
+    "unreadable_base_error": "ImageUnreadable",
+    "coded_errors": true,
+    "model_call": "The resolver has no ModelProvider dependency; a failed resolution raises before a consumer can submit provider bytes."
+  },
+  "test_asset_policy": "backend/tests/images creates explicitly synthetic minimal PNG/JPEG bytes in temporary directories. The five X-A-IMAGES files are input-validation evidence only and are never copied into test fixtures."
+}

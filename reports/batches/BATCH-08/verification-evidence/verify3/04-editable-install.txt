@@ -1,0 +1,21 @@
+command=C:\cov-run\v08oct1\venv\Scripts\python.exe -m pip install --no-deps --no-build-isolation -e backend
+cwd=C:\Users\WONG Tsun Ming\Desktop\欧莱雅黑客松\w08v3
+exit_code=0
+stdout:
+Obtaining file:///C:/Users/WONG%20Tsun%20Ming/Desktop/%E6%AC%A7%E8%8E%B1%E9%9B%85%E9%BB%91%E5%AE%A2%E6%9D%BE/w08v3/backend
+  Checking if build backend supports build_editable: started
+  Checking if build backend supports build_editable: finished with status 'done'
+  Preparing editable metadata (pyproject.toml): started
+  Preparing editable metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: covenia-b
+  Building editable for covenia-b (pyproject.toml): started
+  Building editable for covenia-b (pyproject.toml): finished with status 'done'
+  Created wheel for covenia-b: filename=covenia_b-0.0.0-0.editable-py3-none-any.whl size=2804 sha256=742e1302502227f87b92ab50a39fce11f8f83462a04c517ad59e482baac02193
+  Stored in directory: C:\Users\WONG Tsun Ming\AppData\Local\Temp\pip-ephem-wheel-cache-5ric_k5n\wheels\c8\7b\01\6b8991964ce5a2d6e63d56cd6762569231ef54edf4f346043b
+Successfully built covenia-b
+Installing collected packages: covenia-b
+Successfully installed covenia-b-0.0.0
+stderr:
+
+[notice] A new release of pip is available: 25.1.1 -> 26.2.1
+[notice] To update, run: C:\cov-run\v08oct1\venv\Scripts\python.exe -m pip install --upgrade pip

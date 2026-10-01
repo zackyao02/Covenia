@@ -1,0 +1,141 @@
+{
+  "environment": {
+    "actual_python": "C:\\cov-run\\i08oct1\\venv\\Scripts\\python.exe",
+    "sys_prefix": "C:\\cov-run\\i08oct1\\venv",
+    "sys_base_prefix": "D:\\python",
+    "version": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]",
+    "pythonpath": null,
+    "run_dir": "C:\\cov-run\\i08oct1",
+    "venv": "C:\\cov-run\\i08oct1\\venv",
+    "venv_direct_child": true,
+    "include_system_site_packages": false,
+    "longest_venv_file": "C:\\cov-run\\i08oct1\\venv\\Lib\\site-packages\\pkg_resources\\tests\\data\\my-test-package_unpacked-egg\\my_test_package-1.0-py3.7.egg\\EGG-INFO\\dependency_links.txt",
+    "longest_venv_path_length": 155,
+    "longest_venv_path_lt_250": true,
+    "environment": {
+      "TEMP": "C:\\cov-run\\i08oct1\\tmp",
+      "TMP": "C:\\cov-run\\i08oct1\\tmp",
+      "PIP_CACHE_DIR": "C:\\cov-run\\i08oct1\\cache\\pip",
+      "RUFF_CACHE_DIR": "C:\\cov-run\\i08oct1\\cache\\ruff",
+      "PYTEST_ADDOPTS": "-o cache_dir=C:\\cov-run\\i08oct1\\cache\\pytest",
+      "PYTHONPATH": null
+    }
+  },
+  "commands": [
+    {
+      "name": "01-create-venv",
+      "command": "D:\\python\\python.exe -m venv C:\\cov-run\\i08oct1\\venv",
+      "argv": [
+        "D:\\python\\python.exe",
+        "-m",
+        "venv",
+        "C:\\cov-run\\i08oct1\\venv"
+      ],
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-integration",
+      "started_at": "2026-10-02T00:28:42.145669+08:00",
+      "exit_code": 0,
+      "duration_seconds": 6.729,
+      "mode": "ENVIRONMENT",
+      "output": "C:\\cov-run\\i08oct1\\logs\\01-create-venv.txt",
+      "integration_sha": "cc82915b260ac108137ada27ffda56d1b4b1bc3d",
+      "environment": {
+        "TEMP": "C:\\cov-run\\i08oct1\\tmp",
+        "TMP": "C:\\cov-run\\i08oct1\\tmp",
+        "PIP_CACHE_DIR": "C:\\cov-run\\i08oct1\\cache\\pip",
+        "RUFF_CACHE_DIR": "C:\\cov-run\\i08oct1\\cache\\ruff",
+        "PYTEST_ADDOPTS": "-o cache_dir=C:\\cov-run\\i08oct1\\cache\\pytest",
+        "PYTHONPATH": null,
+        "PYTHONDONTWRITEBYTECODE": "1"
+      }
+    },
+    {
+      "name": "02-lock-install",
+      "command": "C:\\cov-run\\i08oct1\\venv\\Scripts\\python.exe -m pip install --no-deps -r backend/requirements-dev.lock",
+      "argv": [
+        "C:\\cov-run\\i08oct1\\venv\\Scripts\\python.exe",
+        "-m",
+        "pip",
+        "install",
+        "--no-deps",
+        "-r",
+        "backend/requirements-dev.lock"
+      ],
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-integration",
+      "started_at": "2026-10-02T00:28:48.915932+08:00",
+      "exit_code": 0,
+      "duration_seconds": 30.637,
+      "mode": "ENVIRONMENT",
+      "output": "C:\\cov-run\\i08oct1\\logs\\02-lock-install.txt",
+      "integration_sha": "cc82915b260ac108137ada27ffda56d1b4b1bc3d",
+      "environment": {
+        "TEMP": "C:\\cov-run\\i08oct1\\tmp",
+        "TMP": "C:\\cov-run\\i08oct1\\tmp",
+        "PIP_CACHE_DIR": "C:\\cov-run\\i08oct1\\cache\\pip",
+        "RUFF_CACHE_DIR": "C:\\cov-run\\i08oct1\\cache\\ruff",
+        "PYTEST_ADDOPTS": "-o cache_dir=C:\\cov-run\\i08oct1\\cache\\pytest",
+        "PYTHONPATH": null,
+        "PYTHONDONTWRITEBYTECODE": "1"
+      }
+    },
+    {
+      "name": "03-editable-install",
+      "command": "C:\\cov-run\\i08oct1\\venv\\Scripts\\python.exe -m pip install --no-deps --no-build-isolation -e backend",
+      "argv": [
+        "C:\\cov-run\\i08oct1\\venv\\Scripts\\python.exe",
+        "-m",
+        "pip",
+        "install",
+        "--no-deps",
+        "--no-build-isolation",
+        "-e",
+        "backend"
+      ],
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-integration",
+      "started_at": "2026-10-02T00:29:19.595143+08:00",
+      "exit_code": 0,
+      "duration_seconds": 2.439,
+      "mode": "ENVIRONMENT",
+      "output": "C:\\cov-run\\i08oct1\\logs\\03-editable-install.txt",
+      "integration_sha": "cc82915b260ac108137ada27ffda56d1b4b1bc3d",
+      "environment": {
+        "TEMP": "C:\\cov-run\\i08oct1\\tmp",
+        "TMP": "C:\\cov-run\\i08oct1\\tmp",
+        "PIP_CACHE_DIR": "C:\\cov-run\\i08oct1\\cache\\pip",
+        "RUFF_CACHE_DIR": "C:\\cov-run\\i08oct1\\cache\\ruff",
+        "PYTEST_ADDOPTS": "-o cache_dir=C:\\cov-run\\i08oct1\\cache\\pytest",
+        "PYTHONPATH": null,
+        "PYTHONDONTWRITEBYTECODE": "1"
+      }
+    },
+    {
+      "name": "04-environment",
+      "command": "C:\\cov-run\\i08oct1\\venv\\Scripts\\python.exe -c \"import json,os,sys;from pathlib import Path; p=Path(sys.argv[1]); assert Path(sys.executable).resolve()==p.resolve(); assert sys.prefix!=sys.base_prefix; assert os.environ.get('PYTHONPATH') is None; print(json.dumps({'actual_python':sys.executable,'sys_prefix':sys.prefix,'sys_base_prefix':sys.base_prefix,'version':sys.version,'pythonpath':os.environ.get('PYTHONPATH')}))\" C:\\cov-run\\i08oct1\\venv\\Scripts\\python.exe",
+      "argv": [
+        "C:\\cov-run\\i08oct1\\venv\\Scripts\\python.exe",
+        "-c",
+        "import json,os,sys;from pathlib import Path; p=Path(sys.argv[1]); assert Path(sys.executable).resolve()==p.resolve(); assert sys.prefix!=sys.base_prefix; assert os.environ.get('PYTHONPATH') is None; print(json.dumps({'actual_python':sys.executable,'sys_prefix':sys.prefix,'sys_base_prefix':sys.base_prefix,'version':sys.version,'pythonpath':os.environ.get('PYTHONPATH')}))",
+        "C:\\cov-run\\i08oct1\\venv\\Scripts\\python.exe"
+      ],
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-integration",
+      "started_at": "2026-10-02T00:29:22.075859+08:00",
+      "exit_code": 0,
+      "duration_seconds": 0.06,
+      "mode": "ENVIRONMENT",
+      "output": "C:\\cov-run\\i08oct1\\logs\\04-environment.txt",
+      "integration_sha": "cc82915b260ac108137ada27ffda56d1b4b1bc3d",
+      "environment": {
+        "TEMP": "C:\\cov-run\\i08oct1\\tmp",
+        "TMP": "C:\\cov-run\\i08oct1\\tmp",
+        "PIP_CACHE_DIR": "C:\\cov-run\\i08oct1\\cache\\pip",
+        "RUFF_CACHE_DIR": "C:\\cov-run\\i08oct1\\cache\\ruff",
+        "PYTEST_ADDOPTS": "-o cache_dir=C:\\cov-run\\i08oct1\\cache\\pytest",
+        "PYTHONPATH": null,
+        "PYTHONDONTWRITEBYTECODE": "1"
+      }
+    }
+  ],
+  "status": "ENVIRONMENT_PREPARED_POST_COMMIT_SMOKE_PENDING",
+  "final_evidence_directory": "C:\\cov-run\\i08oct1",
+  "external_receipt": "C:\\Users\\WONG Tsun Ming\\covenia-orchestration\\runs\\covenia-b-20260910-01\\integration-receipts\\BATCH-08.json",
+  "post_commit_smoke_required": true
+}
