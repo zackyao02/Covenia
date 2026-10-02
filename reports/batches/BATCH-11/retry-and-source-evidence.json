@@ -1,0 +1,54 @@
+{
+  "artifact_version": "1.0",
+  "batch_id": "BATCH-11",
+  "classification": "IMPLEMENTATION_TEST_EVIDENCE",
+  "source": "backend/tests/model/test_extraction.py and backend/tests/model/test_sources.py",
+  "provider_call_limit": 2,
+  "scenarios": [
+    {
+      "scenario": "valid candidate",
+      "provider_calls": 1,
+      "result": "ACCEPTED",
+      "evidence": "test_valid_candidate_is_bound_to_safe_prompt_input_and_never_retries"
+    },
+    {
+      "scenario": "schema invalid then repair",
+      "provider_calls": 2,
+      "result": "ACCEPTED_AFTER_SCHEMA_REPAIR",
+      "evidence": "test_schema_invalid_first_response_uses_exactly_one_repair_provider_call"
+    },
+    {
+      "scenario": "schema invalid twice",
+      "provider_calls": 2,
+      "result": "MODEL_OUTPUT_INVALID_QUARANTINED",
+      "evidence": "test_two_schema_failures_are_quarantined_after_at_most_two_calls"
+    },
+    {
+      "scenario": "provider identity failure",
+      "provider_calls": 1,
+      "result": "MODEL_OUTPUT_INVALID_PROPAGATED_WITHOUT_SCHEMA_RETRY",
+      "evidence": "test_model_identity_failure_is_not_misclassified_as_schema_repairable"
+    },
+    {
+      "scenario": "consumer forged promise",
+      "provider_calls": 1,
+      "result": "SOURCE_CONFLICT_QUARANTINED",
+      "evidence": "test_consumer_forged_promise_cannot_become_a_trusted_candidate"
+    },
+    {
+      "scenario": "fictitious source",
+      "provider_calls": 1,
+      "result": "UNKNOWN_SOURCE_REJECTED",
+      "evidence": "test_fictitious_source_id_is_rejected"
+    },
+    {
+      "scenario": "image instruction text",
+      "provider_calls": 1,
+      "result": "IMAGE_INSTRUCTION_TEXT_REJECTED",
+      "evidence": "test_image_instruction_text_is_not_a_trusted_observation"
+    }
+  ],
+  "targeted_test_result": "14 passed",
+  "regression_test_result": "51 passed for backend/tests/model and backend/tests/privacy",
+  "independent_verification": "NOT_PERFORMED_BY_IMPLEMENTATION_TASK"
+}

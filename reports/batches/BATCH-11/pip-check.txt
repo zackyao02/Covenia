@@ -1,0 +1,5 @@
+BATCH-11 isolated environment
+interpreter=C:\cov-run\b11-20261002\venv\Scripts\python.exe
+command=python.exe -m pip check
+exit_code=0
+No broken requirements found.

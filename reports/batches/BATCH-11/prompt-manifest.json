@@ -1,0 +1,39 @@
+{
+  "artifact_version": "1.0",
+  "batch_id": "BATCH-11",
+  "classification": "IMPLEMENTATION_EVIDENCE",
+  "prompt_version": "candidate-extraction-v1",
+  "source_files": [
+    "backend/src/covenia_b/model/prompts/__init__.py",
+    "backend/src/covenia_b/model/prompts/candidate_extraction.py"
+  ],
+  "candidate_output_fields": [
+    "observations",
+    "source_trace",
+    "candidate_promise_texts"
+  ],
+  "prompt_sha256": {
+    "candidate": "743d8c9668739b29a926261b5e99cf227eeb7cddda24d49a9e6b5fcb5ae34f5e",
+    "schema_repair": "e3eba756c7e2e14411e93677b83c6b58a20a2fddcc1a9f75678651f5cdf5ab18"
+  },
+  "input_boundary": [
+    "脱敏原文",
+    "可信来源标识",
+    "已验证图片字节"
+  ],
+  "model_must_not_emit": [
+    "case_id",
+    "model_metadata",
+    "evidence_status",
+    "responsibility",
+    "commitment_class",
+    "activation",
+    "deadline",
+    "rule_decision"
+  ],
+  "static_boundary_check": {
+    "ground_truth_file_read": false,
+    "case_specific_fixture_ids_in_prompt_directory": false,
+    "result": "PASS: prompt source contains only versioned instructions and output keys."
+  }
+}

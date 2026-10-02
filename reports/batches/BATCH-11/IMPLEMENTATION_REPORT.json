@@ -1,0 +1,121 @@
+{
+  "report_version": "1.0",
+  "batch_id": "BATCH-11",
+  "status": "COMPLETED",
+  "result": "IMPLEMENTED",
+  "summary": "Implemented candidate-only prompts, one bounded schema-repair retry, source provenance validation, and MODEL_OUTPUT_INVALID quarantine without producing final responsibility or activation fields.",
+  "worktree": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-11",
+  "branch": "codex/covenia-batch-11",
+  "base_integration_sha": "7fd23702d64e388342f8d82ff5abffddb07b04e8",
+  "commit_hash": "9569abf17f014ed876847098e5f1a8a9a25b9130",
+  "code_commits": [
+    "9569abf17f014ed876847098e5f1a8a9a25b9130"
+  ],
+  "contract_version": "8314c76502cbc9d47d8432b7fe53f7d9fb82de82 / BATCH-03 contract-lock-v1",
+  "plan_package": {
+    "path": "scheduler-packages/BATCH-11.json",
+    "sha256": "8259CB1AEE6DDD27D2ADF640AEEF2E7426475E8C907392D422E0322A38A814EB"
+  },
+  "dependency_receipts": [
+    {
+      "batch_id": "BATCH-10",
+      "implementation_report": "reports/batches/BATCH-10/IMPLEMENTATION_REPORT.json",
+      "verification_report": "reports/batches/BATCH-10/VERIFICATION_REPORT.json",
+      "integration_receipt": "C:\\Users\\WONG Tsun Ming\\covenia-orchestration\\runs\\covenia-b-20260910-01\\integration-receipts\\BATCH-10.json",
+      "receipt_status": "SUCCESS",
+      "final_integration_commit": "7fd23702d64e388342f8d82ff5abffddb07b04e8",
+      "independent_acceptance": "PASS",
+      "integration_smoke": "PASS"
+    }
+  ],
+  "files_changed_in_implementation_commit": [
+    "backend/src/covenia_b/model/extraction.py",
+    "backend/src/covenia_b/model/prompts/__init__.py",
+    "backend/src/covenia_b/model/prompts/candidate_extraction.py",
+    "backend/src/covenia_b/model/source_validation.py",
+    "backend/tests/model/test_extraction.py",
+    "backend/tests/model/test_sources.py",
+    "docs/02-ai-extraction.md"
+  ],
+  "changed_file_git_blob_sha256": {
+    "backend/src/covenia_b/model/extraction.py": "5B08C7212260F5F0ABE93E394923E2C0E7DD46FDBEF78ABE51002F0A6CB4254E",
+    "backend/src/covenia_b/model/prompts/__init__.py": "C79F5486A95CD2FD578C133CA52ABAD2C456A829E04AEF39BFCD1806C98C6AD1",
+    "backend/src/covenia_b/model/prompts/candidate_extraction.py": "95070097A5A873651EA21E8CF9A2399BE85B7C71584D378CBDA3AED2B5D65BD6",
+    "backend/src/covenia_b/model/source_validation.py": "9E5EEB7C3AB8A5A694EE87B1D8227521C380696B7EE9F406F70A48A982DE9CBA",
+    "backend/tests/model/test_extraction.py": "08CE83A5B73A038F0B9D4DF2E502BFB51910573D7EEDE27B759C06E8A034EF22",
+    "backend/tests/model/test_sources.py": "240FCE07C8745EE620661D43964BF6E918C6E194354049B9C135943CF9EDF4DA",
+    "docs/02-ai-extraction.md": "F289F84CF9D4836F73ACACB0D51CD260A9B7D7D81C0552C4E032C1E5EA4540D4"
+  },
+  "scope_check": {
+    "within_allowed_paths": true,
+    "forbidden_changes": [],
+    "other_batch_files_changed": false,
+    "schemas_changed": false,
+    "fixtures_changed": false,
+    "frontend_changed": false,
+    "requirements_dev_lock_changed": false,
+    "requirements_dev_lock_git_blob_sha256": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+    "verification_report_written": false
+  },
+  "implementation_behaviors": [
+    "Only candidate keys observations, source_trace, and candidate_promise_texts are accepted.",
+    "Server-owned case binding and model metadata are not model JSON fields.",
+    "Schema-invalid output retries exactly once through the repair provider.",
+    "Both provider calls share one total timeout budget.",
+    "Model identity failures are not misclassified as schema failures.",
+    "Every trace source ID and source type is checked against sanitized input.",
+    "Candidate promises must quote a declared AGENT chat source.",
+    "Image instruction text cannot become a trusted observation or promise.",
+    "Invalid output and source conflicts are quarantined as MODEL_OUTPUT_INVALID."
+  ],
+  "test_results": [
+    {
+      "command": "C:\\cov-run\\b11-20261002\\venv\\Scripts\\python.exe -m pytest backend/tests/model/test_extraction.py backend/tests/model/test_sources.py -q",
+      "exit_code": 0,
+      "result": "14 passed"
+    },
+    {
+      "command": "C:\\cov-run\\b11-20261002\\venv\\Scripts\\python.exe -m pytest backend/tests/model backend/tests/privacy -q",
+      "exit_code": 0,
+      "result": "51 passed"
+    },
+    {
+      "command": "C:\\cov-run\\b11-20261002\\venv\\Scripts\\python.exe -m ruff check <BATCH-11 source and test paths>",
+      "exit_code": 0,
+      "result": "All checks passed"
+    },
+    {
+      "command": "C:\\cov-run\\b11-20261002\\venv\\Scripts\\python.exe -m pip check",
+      "exit_code": 0,
+      "result": "No broken requirements found."
+    }
+  ],
+  "artifacts": [
+    "reports/batches/BATCH-11/prompt-manifest.json",
+    "reports/batches/BATCH-11/candidate-output.redacted.json",
+    "reports/batches/BATCH-11/retry-and-source-evidence.json",
+    "reports/batches/BATCH-11/commands.json",
+    "reports/batches/BATCH-11/environment.json",
+    "reports/batches/BATCH-11/pip-check.txt",
+    "reports/batches/BATCH-11/IMPLEMENTATION_REPORT.json",
+    "reports/batches/BATCH-11/IMPLEMENTATION_REPORT.md"
+  ],
+  "not_completed_by_implementation_task": [
+    "Independent BATCH-11 verification",
+    "Coordinator integration commit and integration smoke",
+    "Live model/image inference acceptance"
+  ],
+  "handoff": {
+    "prompt_version": "candidate-extraction-v1",
+    "candidate_type": "covenia_b.domain.types.CandidateExtraction",
+    "extractor": "covenia_b.model.extraction.BoundedCandidateExtractor",
+    "max_provider_calls": 2,
+    "source_conflict_semantics": "No retry; quarantine as MODEL_OUTPUT_INVALID.",
+    "schema_retry_semantics": "One repair provider call under the shared total timeout.",
+    "safe_output_sample": "reports/batches/BATCH-11/candidate-output.redacted.json"
+  },
+  "rollback": "git revert 9569abf17f014ed876847098e5f1a8a9a25b9130",
+  "implementation_evidence_not_independent_acceptance": true,
+  "next_batch_started": false,
+  "push_or_merge_performed": false
+}

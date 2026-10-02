@@ -1,0 +1,77 @@
+{
+  "artifact_version": "1.0",
+  "batch_id": "BATCH-11",
+  "classification": "EXECUTION_EVIDENCE",
+  "worktree": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-11",
+  "implementation_commit": "9569abf17f014ed876847098e5f1a8a9a25b9130",
+  "commands": [
+    {
+      "id": "interpreter_assertion",
+      "command": "C:\\cov-run\\b11-20261002\\venv\\Scripts\\python.exe -c <absolute venv and sys.prefix assertion>",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "id": "lock_install",
+      "command": "C:\\cov-run\\b11-20261002\\venv\\Scripts\\python.exe -m pip install --no-deps -r backend/requirements-dev.lock",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "id": "editable_install",
+      "command": "C:\\cov-run\\b11-20261002\\venv\\Scripts\\python.exe -m pip install --no-deps --no-build-isolation -e backend",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "id": "required_imports",
+      "command": "C:\\cov-run\\b11-20261002\\venv\\Scripts\\python.exe -c import pytest,jsonschema",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "id": "targeted_tests",
+      "command": "C:\\cov-run\\b11-20261002\\venv\\Scripts\\python.exe -m pytest backend/tests/model/test_extraction.py backend/tests/model/test_sources.py -q",
+      "exit_code": 0,
+      "result": "PASS: 14 passed"
+    },
+    {
+      "id": "model_privacy_regression",
+      "command": "C:\\cov-run\\b11-20261002\\venv\\Scripts\\python.exe -m pytest backend/tests/model backend/tests/privacy -q",
+      "exit_code": 0,
+      "result": "PASS: 51 passed"
+    },
+    {
+      "id": "ruff",
+      "command": "C:\\cov-run\\b11-20261002\\venv\\Scripts\\python.exe -m ruff check backend/src/covenia_b/model/prompts backend/src/covenia_b/model/extraction.py backend/src/covenia_b/model/source_validation.py backend/tests/model/test_extraction.py backend/tests/model/test_sources.py",
+      "exit_code": 0,
+      "result": "PASS: All checks passed"
+    },
+    {
+      "id": "pip_list",
+      "command": "C:\\cov-run\\b11-20261002\\venv\\Scripts\\python.exe -m pip list --format=json",
+      "exit_code": 0,
+      "result": "PASS: 31 packages listed"
+    },
+    {
+      "id": "pip_check",
+      "command": "C:\\cov-run\\b11-20261002\\venv\\Scripts\\python.exe -m pip check",
+      "exit_code": 0,
+      "result": "PASS: No broken requirements found."
+    },
+    {
+      "id": "diff_check",
+      "command": "git diff --check 7fd23702d64e388342f8d82ff5abffddb07b04e8 9569abf17f014ed876847098e5f1a8a9a25b9130",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "id": "implementation_worktree_before_report",
+      "command": "git status --short",
+      "exit_code": 0,
+      "result": "PASS: clean before report artifacts"
+    }
+  ],
+  "independent_acceptance": "NOT_PERFORMED_BY_IMPLEMENTATION_TASK",
+  "integration_smoke": "NOT_PERFORMED_BY_IMPLEMENTATION_TASK"
+}

@@ -1,0 +1,34 @@
+{
+  "artifact_version": "1.0",
+  "batch_id": "BATCH-11",
+  "classification": "ENVIRONMENT_EVIDENCE",
+  "run_dir": "C:\\cov-run\\b11-20261002",
+  "venv": "C:\\cov-run\\b11-20261002\\venv",
+  "interpreter": "C:\\cov-run\\b11-20261002\\venv\\Scripts\\python.exe",
+  "base_interpreter": "D:\\python\\python.exe",
+  "python_version": "3.13.5",
+  "interpreter_assertion": {
+    "exit_code": 0,
+    "result": "PASS: supplied absolute interpreter resolved inside an isolated venv with a distinct sys.prefix."
+  },
+  "dependency_lock": {
+    "changed": false,
+    "base_git_blob_sha256": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+    "implementation_git_blob_sha256": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+    "hash_method": "SHA-256 over raw bytes from git show <commit>:backend/requirements-dev.lock",
+    "change_reason": "No third-party dependency was added."
+  },
+  "pip_inventory": {
+    "command_exit_code": 0,
+    "package_count": 31,
+    "notable_versions": {
+      "pytest": "8.3.4",
+      "jsonschema": "4.25.0",
+      "ruff": "0.8.4",
+      "pydantic": "2.10.5",
+      "covenia-b": "0.0.0 editable"
+    }
+  },
+  "pip_check": "PASS: No broken requirements found.",
+  "setup_diagnostic": "An attempted venv under the Chinese project path failed during ensurepip path encoding. No source path was changed; the final required run used the independent ASCII C:\\cov-run path above."
+}

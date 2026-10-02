@@ -1,0 +1,41 @@
+{
+  "artifact_version": "1.0",
+  "batch_id": "BATCH-11",
+  "classification": "CONTROLLED_TEST_DOUBLE_SAFE_SAMPLE",
+  "live_model_inference": false,
+  "candidate": {
+    "case_id": "[SERVER_BOUND_CASE_ID]",
+    "model_metadata": {
+      "model_id": "Qwen/Qwen2-VL-2B-Instruct",
+      "model_revision": "[PROVIDER_BOUND_REVISION]",
+      "prompt_version": "candidate-extraction-v1",
+      "run_id": "[PROVIDER_BOUND_RUN_ID]",
+      "cached_result": false
+    },
+    "observations": [
+      "outer package appears visibly damaged"
+    ],
+    "source_trace": [
+      {
+        "field": "observations[0]",
+        "source_type": "IMAGE",
+        "source_id": "[REDACTED_IMAGE_SOURCE_ID]"
+      },
+      {
+        "field": "candidate_promise_texts[0]",
+        "source_type": "CHAT",
+        "source_id": "[REDACTED_AGENT_SOURCE_ID]"
+      }
+    ],
+    "candidate_promise_texts": [
+      "[REDACTED_VERBATIM_AGENT_QUOTE_WITH_TIME_AND_CONDITION]"
+    ],
+    "candidate_only": true
+  },
+  "validation": {
+    "schema": "PASS",
+    "source_ids": "REDACTED",
+    "agent_quote_and_speaker": "PASS",
+    "server_owned_decisions_created": false
+  }
+}
