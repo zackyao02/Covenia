@@ -1,0 +1,156 @@
+{
+  "report_version": "1.0",
+  "batch_id": "BATCH-10",
+  "verdict": "PASS",
+  "verification_type": "independent_acceptance",
+  "verified_at": "2026-10-02",
+  "commit_verified": "24093e804d8d6b6d14498ce8fc8f6fb2b3e729d4",
+  "implementation_commit": "54780d4fbe00202f8458a039292b1c49220cf957",
+  "commit_chain": {
+    "verified_commit_parent": "54780d4fbe00202f8458a039292b1c49220cf957",
+    "implementation_commit_parent": "eb231c479cf07f314205d3b529bfcbad5a3b7217",
+    "verified_commit_subject": "docs(batch-10): record provider implementation evidence",
+    "implementation_commit_subject": "feat(model): add bounded Qwen multimodal provider adapter"
+  },
+  "integration_baseline": {
+    "ref": "integration/covenia-b",
+    "sha_at_verification": "c23c5fb77af2fc4fb1faeb5c0276485c0e44dec3",
+    "target_is_ancestor": false,
+    "interpretation": "The fixed target was verified in its dedicated w10 worktree. It is not represented as integrated; coordinator integration and smoke remain separate gates."
+  },
+  "scope_review": {
+    "allowlist_source": "scheduler-packages/BATCH-10.json",
+    "verified_diff": "git diff --name-only 54780d4^ 24093e8",
+    "changed_paths": [
+      "backend/src/covenia_b/model/adapters/qwen_http.py",
+      "backend/src/covenia_b/model/provider.py",
+      "backend/tests/model/test_qwen_provider.py",
+      "reports/batches/BATCH-10/IMPLEMENTATION_REPORT.json",
+      "reports/batches/BATCH-10/IMPLEMENTATION_REPORT.md",
+      "reports/batches/BATCH-10/commands.json",
+      "reports/batches/BATCH-10/environment.json",
+      "reports/batches/BATCH-10/pip-check.txt",
+      "reports/batches/BATCH-10/provider-protocol.json",
+      "reports/batches/BATCH-10/required-model-environment.md"
+    ],
+    "within_allowed_paths": true,
+    "forbidden_or_unlisted_paths": [],
+    "requirements_dev_lock": {
+      "changed": false,
+      "git_blob_sha256": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+      "method": "SHA-256 of raw git show 54780d4fbe00202f8458a039292b1c49220cf957:<path> bytes"
+    },
+    "verifier_write_authority": "The package reserves this report path from implementation ownership; this independent-verification task explicitly authorizes writing it. No other path is modified by this verification."
+  },
+  "environment": {
+    "run_dir": "C:\\cov-run\\b10v2",
+    "run_dir_length": 18,
+    "venv": "C:\\cov-run\\b10v2\\venv",
+    "interpreter": "C:\\cov-run\\b10v2\\venv\\Scripts\\python.exe",
+    "sys_prefix": "C:\\cov-run\\b10v2\\venv",
+    "sys_base_prefix": "D:\\python",
+    "python_version": "3.13.5",
+    "interpreter_assertion": "PASS: sys.executable resolved to the supplied absolute venv interpreter and sys.prefix differed from sys.base_prefix.",
+    "longest_venv_path": "C:\\cov-run\\b10v2\\venv\\Lib\\site-packages\\pkg_resources\\tests\\data\\my-test-package_unpacked-egg\\my_test_package-1.0-py3.7.egg\\EGG-INFO\\dependency_links.txt",
+    "longest_venv_path_length": 153,
+    "pip_check": "PASS: No broken requirements found.",
+    "dependency_inventory": "pip list --format=json completed successfully; the editable covenia-b location is the verified w10/backend tree."
+  },
+  "commands": [
+    {
+      "command": "C:\\cov-run\\b10v2\\venv\\Scripts\\python.exe -c <interpreter/sys.prefix assertion>",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "command": "C:\\cov-run\\b10v2\\venv\\Scripts\\python.exe -m pip install --no-deps -r backend/requirements-dev.lock",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "command": "C:\\cov-run\\b10v2\\venv\\Scripts\\python.exe -m pip install --no-deps --no-build-isolation -e backend",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "command": "C:\\cov-run\\b10v2\\venv\\Scripts\\python.exe -c \"import pytest, jsonschema\"",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "command": "C:\\cov-run\\b10v2\\venv\\Scripts\\python.exe -m pytest backend/tests/model/test_qwen_provider.py -q",
+      "exit_code": 0,
+      "result": "PASS: 13 passed"
+    },
+    {
+      "command": "C:\\cov-run\\b10v2\\venv\\Scripts\\python.exe -m pytest backend/tests/model backend/tests/privacy backend/tests/images backend/tests/observability backend/tests/contracts -q",
+      "exit_code": 0,
+      "result": "PASS: 77 passed"
+    },
+    {
+      "command": "C:\\cov-run\\b10v2\\venv\\Scripts\\python.exe -m pytest backend/tests -q",
+      "exit_code": 0,
+      "result": "PASS: 153 passed"
+    },
+    {
+      "command": "C:\\cov-run\\b10v2\\venv\\Scripts\\python.exe -m ruff check backend/src/covenia_b/model/provider.py backend/src/covenia_b/model/adapters/qwen_http.py backend/tests/model/test_qwen_provider.py",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "command": "C:\\cov-run\\b10v2\\venv\\Scripts\\python.exe -m pip list --format=json",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "command": "C:\\cov-run\\b10v2\\venv\\Scripts\\python.exe -m pip check",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "command": "git diff --check 54780d4^ 24093e8; git diff --check; git status --short",
+      "exit_code": 0,
+      "result": "PASS before verifier report creation: no whitespace error and clean target worktree"
+    }
+  ],
+  "acceptance_criteria": [
+    {
+      "area": "Qwen provider boundary and model identity/revision",
+      "result": "PASS",
+      "evidence": "QwenHttpConfig fixes Qwen/Qwen2-VL-2B-Instruct; the adapter sends and verifies exact model_id and non-empty configured revision from response body/header. Protocol double proves the wire contract only; no live inference was claimed."
+    },
+    {
+      "area": "Timeout, cancellation, image/request/response limits, and concurrency",
+      "result": "PASS",
+      "evidence": "13 protocol tests pass, including total deadline during in-flight request and semaphore wait, explicit cancellation, verified-image size/hash enforcement, and bounded simultaneous calls."
+    },
+    {
+      "area": "Error mapping and privacy",
+      "result": "PASS",
+      "evidence": "Protocol tests distinguish 401, 429, timeout, cancellation, and disconnect without exposing endpoint, authorization secret, or provider body. Privacy regression is included in the 77-test targeted run and full 153-test suite."
+    },
+    {
+      "area": "Candidate-only output and usage",
+      "result": "PASS",
+      "evidence": "Parser accepts exactly observations, source_trace, and candidate_promise_texts; server-owned conclusion fields are rejected. Complete usage is exact and missing usage remains None/MISSING; partial usage is rejected."
+    },
+    {
+      "area": "Contract regression and dependency governance",
+      "result": "PASS",
+      "evidence": "Contract, model, privacy, images, and observability regressions pass (77); all backend tests pass (153). No third-party dependency or lockfile change occurred, and same-interpreter pip check is clean."
+    }
+  ],
+  "verified_source_blob_sha256": {
+    "backend/src/covenia_b/model/provider.py": "1C346E30629650D7B6D9FD4E5763573F6F672D499B4CD062061EAB331960BB30",
+    "backend/src/covenia_b/model/adapters/qwen_http.py": "705718C2A92B0B0A13B896AE55D720A2A138DEC74BEE1F8DC75135EA4DEEF9A8",
+    "backend/tests/model/test_qwen_provider.py": "7BD29E83B396B2E8882922B5380FB657FDAA786D243C9337F47A350D355664C9",
+    "method": "SHA-256 over raw bytes obtained with git show from implementation commit 54780d4fbe00202f8458a039292b1c49220cf957"
+  },
+  "limitations_and_next_gates": [
+    "This acceptance uses a local protocol double, not a live Qwen service or GPU. BATCH-28 owns real-service inference, real-image causal acceptance, and live identity/usage confirmation.",
+    "A coordinator must separately integrate the implementation and this independent report, then run its integration smoke test."
+  ],
+  "report_owner": "independent BATCH-10 verifier",
+  "next_batch_started": false,
+  "push_or_merge_performed": false
+}
