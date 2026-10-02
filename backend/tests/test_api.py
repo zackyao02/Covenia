@@ -1,10 +1,26 @@
 from fastapi.testclient import TestClient
+import pytest
 
 from backend.decision import engine as decision_engine
 from backend.main import app, analyses, deadline_escalations, idempotency, last_event_times, redact_for_model, shipment_stages, states
 
 
 client = TestClient(app)
+
+
+@pytest.fixture(autouse=True)
+def disable_live_typesafe_calls(monkeypatch) -> None:
+    """Keep the default API suite deterministic and independent of real credits."""
+    monkeypatch.setattr(decision_engine, "typesafe_configured", lambda: False)
+    monkeypatch.setattr(decision_engine, "ask_jev", lambda state, questions: {
+        "ok": False,
+        "source": "RULE_FALLBACK",
+        "attempted": False,
+        "error": {"code": "TYPESAFE_API_KEY_NOT_SET", "message": "test fallback"},
+        "latency_ms": 0,
+        "raw": None,
+        "model_version": "test-fallback",
+    })
 
 
 def reset_service() -> None:
@@ -113,6 +129,31 @@ def test_shipment_transition_requires_pickup_before_delivery() -> None:
     assert delivered["data"]["accountability_state"]["active_commitments"] == []
 
 
+def test_delayed_pickup_can_recover_after_not_picked_up_and_rejects_contradiction() -> None:
+    reset_service()
+    analyze()
+    delayed = client.post("/api/events/shipment", json={
+        "case_id": "DEMO_001", "event_id": "NOT-PICKED", "event_type": "SHIPMENT_NOT_PICKED_UP",
+        "event_time": "2026-05-07T11:35:00+08:00", "idempotency_key": "shipment-not-picked",
+    })
+    assert delayed.status_code == 200
+    assert delayed.json()["data"]["accountability_state"]["case_status"] == "AT_RISK"
+
+    pickup = client.post("/api/events/shipment", json={
+        "case_id": "DEMO_001", "event_id": "PICKUP-AFTER-DELAY", "event_type": "SHIPMENT_PICKED_UP",
+        "event_time": "2026-05-07T11:50:00+08:00", "idempotency_key": "shipment-pickup-after-delay",
+    })
+    assert pickup.status_code == 200
+    assert pickup.json()["data"]["accountability_state"]["case_status"] == "IN_FULFILLMENT"
+
+    contradictory = client.post("/api/events/shipment", json={
+        "case_id": "DEMO_001", "event_id": "CONTRADICTION", "event_type": "SHIPMENT_NOT_PICKED_UP",
+        "event_time": "2026-05-07T12:00:00+08:00", "idempotency_key": "shipment-contradiction",
+    })
+    assert contradictory.status_code == 409
+    assert contradictory.json()["error"]["code"] == "INVALID_EVENT_TRANSITION"
+
+
 def test_redacts_pii_before_the_extractor_receives_case_text() -> None:
     case = {"conversation": [{"text": "请寄到地址：上海市徐汇区，联系电话 13800138000；我有不良反应。"}]}
     redacted, count = redact_for_model(case)
@@ -211,9 +252,18 @@ def test_jev_decision_layer_maps_provider_response(monkeypatch) -> None:
         "model_version": "systemone-test",
         "raw": {
             "answers": {
-                "emotion_worsening": {"noul": 0.91},
-                "needs_human": {"probability": 0.72},
-                "next_action": {"choice": "HUMAN_ESCALATION", "probabilities": {"HUMAN_ESCALATION": 0.88}},
+                "emotion_worsening": {"type": "noul", "noul": 0.91},
+                "needs_human": {"type": "noul", "noul": 0.72},
+                "next_action": {
+                    "type": "choice",
+                    "choice": "HUMAN_ESCALATION",
+                    "probabilities": {
+                        "CHECK_REPLACEMENT": 0.04,
+                        "HUMAN_ESCALATION": 0.88,
+                        "CONTINUE_TROUBLESHOOTING": 0.05,
+                        "REQUEST_EVIDENCE": 0.03,
+                    },
+                },
             },
         },
     })

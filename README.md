@@ -1,4 +1,4 @@
-# Covenia Competition MVP v0.8
+# Covenia 比赛演示版 v1.1
 
 Covenia 是嵌入千牛客服工作台右侧的消费者体验责任副驾。它联动聊天、图片、订单与售后工单，把消费者已经提交的证据和客服作出的服务承诺转化为可追踪、可执行、可主动补救的服务责任，在动作发生前阻止重复伤害，并持续推动问题真正闭环。
 
@@ -6,6 +6,16 @@ Covenia 是嵌入千牛客服工作台右侧的消费者体验责任副驾。它
 > 品牌答应的事情，不让消费者催第二次。
 
 核心洞察：消费者不应该成为自己售后问题的项目经理。
+
+## 快速启动
+
+Windows 用户双击仓库根目录的 `START-COVENIA.cmd`。首次运行会检查并安装缺少的 Python/npm 依赖、生成本地配置文件，然后启动前后端并打开工作台。结束演示时双击 `STOP-COVENIA.cmd`。
+
+也可以手动启动：先按 `backend/README.md` 安装并运行本地 API，再在 `frontend/` 执行 `npm ci`、`npm run dev`。前端默认访问 `http://127.0.0.1:8000`。
+
+JEV 是可选能力。没有 TypeSafe API Key 时产品使用确定性规则降级，不阻断工作台；配置时只把自己的密钥写入仓库根目录 `.env`。不要把密钥发到聊天、文档或 Git。
+
+第一次运行后请阅读 [交付与运行指南](DELIVERY-GUIDE.md) 和 [本轮验收记录](QA-ACCEPTANCE.md)。
 
 ## 唯一核心创新
 
@@ -69,6 +79,9 @@ Covenia 是嵌入千牛客服工作台右侧的消费者体验责任副驾。它
 - [模型治理](MODEL_GOVERNANCE.md)
 - [数据与模拟声明](SIMULATION_DISCLOSURE.md)
 - [多角度评审与修订记录](MULTI-ANGLE-REVIEW-v0.8.0.md)
+- [实现状态](IMPLEMENTATION-STATUS.md)
+- [本轮验收记录](QA-ACCEPTANCE.md)
+- [团队交付指南](DELIVERY-GUIDE.md)
 
 ## 明确边界
 

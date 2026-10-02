@@ -463,7 +463,12 @@ function App() {
     const caseId = selectedCase.id;
     setActing(true);
     setShipmentChoice(eventType);
-    const eventTime = eventType === "SHIPMENT_PICKED_UP" ? "2026-05-07T10:10:00+08:00" : eventType === "SHIPMENT_NOT_PICKED_UP" ? "2026-05-07T11:35:00+08:00" : "2026-05-08T15:20:00+08:00";
+    const pickupAfterDelay = accountability.open_obligation?.milestone === "AWAITING_CARRIER_PICKUP";
+    const eventTime = eventType === "SHIPMENT_PICKED_UP"
+      ? (pickupAfterDelay ? "2026-05-07T11:50:00+08:00" : "2026-05-07T10:10:00+08:00")
+      : eventType === "SHIPMENT_NOT_PICKED_UP"
+        ? "2026-05-07T11:35:00+08:00"
+        : "2026-05-08T15:20:00+08:00";
     setSimulationTime(eventTime);
     const result = await api.pushShipmentEvent({
       case_id: selectedCase.id,
@@ -2138,7 +2143,7 @@ function ProgressView({
           <button
             className={shipmentChoice === "SHIPMENT_NOT_PICKED_UP" ? "selected risk-choice" : ""}
             onClick={() => onShipment("SHIPMENT_NOT_PICKED_UP")}
-            disabled={acting}
+            disabled={acting || pickedUp || delivered}
           ><AlertTriangle size={16} /><span><b>仍未揽收</b><small>升级风险并催办</small></span></button>
           <button
             className={shipmentChoice === "SHIPMENT_DELIVERED" ? "selected" : ""}

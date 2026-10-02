@@ -955,6 +955,8 @@ async def shipment_event(request: Request) -> JSONResponse:
         return error("VALIDATION_ERROR", "未找到案例事实。", rid, 400)
     stage = shipment_stages.get(body["case_id"], "AWAITING_PICKUP")
     kind = body["event_type"]
+    if kind == "SHIPMENT_NOT_PICKED_UP" and stage != "AWAITING_PICKUP":
+        return error("INVALID_EVENT_TRANSITION", "物流已揽收，不能再登记为未揽收。", rid, 409)
     if kind == "SHIPMENT_DELIVERED" and stage != "IN_TRANSIT":
         return error("INVALID_EVENT_TRANSITION", "必须先确认物流揽收，才能登记送达。", rid, 409)
     updated = clone(state)
