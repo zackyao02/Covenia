@@ -1,74 +1,71 @@
 {
-  "report_version": "1.0",
   "batch_id": "BATCH-18",
+  "report_type": "independent_recheck",
   "verdict": "PASS",
-  "verifier": "审查方（独立复核；实现方未参与）",
-  "reviewed_sha": "2280e3945359e0b31737e84b86cfd01718d5556d",
-  "reviewed_code_commit": "3712a170969998e32b56d33e3d59c7b21a04f19d",
-  "report_commit": "2280e3945359e0b31737e84b86cfd01718d5556d",
-  "contract_version": "BATCH-18-sqlite-ledger-v1",
-  "plan_sha256": {
-    "MASTER_PLAN.md": "DBE269F06F4BBE3D8C1F915DD8E4A2D78E0E4F021ABB396270C8B846D5FFA74E",
-    "batches.json": "18DA555CE5ADEA5062F680837AEC8214158F58CBC1A918CF6BBC31EF48448E2E"
+  "commit_verified": "2280e3945359e0b31737e84b86cfd01718d5556d",
+  "review_commit_provided": "67209e59608dfd461d00654cd436892ee3ab66a3",
+  "verification_target": "67209e59608dfd461d00654cd436892ee3ab66a3",
+  "commit_relationship": {
+    "implementation_is_ancestor_of_review_commit": true,
+    "review_commit_changes_from_implementation": [
+      "reports/batches/BATCH-18/VERIFICATION_REPORT.json",
+      "reports/batches/BATCH-18/verification-evidence/verifier-probe.py"
+    ],
+    "implementation_diff_check": "PASS"
   },
-  "verified_at": "2026-10-02T14:36:08",
-  "independent_context": true,
-  "acceptance_criteria_read_verbatim": [
-    "相同请求十次/并发重放只有一次变更；不同请求冲突且状态不动。",
-    "异常注入不会留下“状态改了但审计/响应没写”的半成品。",
-    "仓储不决定规则或物流合法性，保留事件历史便于重新构建。",
-    "按5.5使用本批绝对隔离venv解释器；新增第三方依赖只增不改、精确钉版本并提交锁文件差异/原因/hash证据；交付前同解释器 pip check 退出0。环境证据缺失或冲突不得PASS。"
-  ],
-  "verifier_method": "审查方自建探针（不使用实现方测试文件），直接调用 SQLiteLedgerRepository.execute/load/audit_history/event_history。",
-  "probe_results": [
+  "verification_method": {
+    "interpreter": "C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/run/b18/venv/Scripts/python.exe",
+    "source_selection": "PYTHONPATH was set to the current verification checkout backend/src; no editable-install source was relied on.",
+    "pytest_invoked": false,
+    "custom_probe": "reports/batches/BATCH-18/verification-evidence/independent-recheck-probe.py",
+    "result": "reports/batches/BATCH-18/verification-evidence/independent-recheck-results.json"
+  },
+  "acceptance_checks": [
     {
-      "criterion": "相同请求十次重放只有一次变更",
-      "observed": "10 次调用回调仅执行 1 次；版本恒为 1；replayed=[False]+[True]*9；响应体全同",
-      "pass": true
+      "criterion": "idempotency: the same normalized request is replayed ten times without another durable mutation",
+      "status": "PASS",
+      "evidence": "replay callback count=1; cases/case_versions/audit_entries/idempotent_requests=1; events=0"
     },
     {
-      "criterion": "不同请求冲突且状态不动",
-      "observed": "同 case+key 不同内容 → IdempotencyConflict(code=IDEMPOTENCY_CONFLICT)，版本前后均为 1",
-      "pass": true
+      "criterion": "conflict: same case/idempotency key with a different request body conflicts and leaves state unchanged",
+      "status": "PASS",
+      "evidence": "IdempotencyConflict was required; pre/post table counts and snapshot were equal"
     },
     {
-      "criterion": "异常注入不留半成品",
-      "observed": "回调抛错 → 异常传播，持久化版本前后不变（1→1）",
-      "pass": true
+      "criterion": "rollback: final idempotency/response insertion failure cannot leave snapshot or audit rows behind",
+      "status": "PASS",
+      "evidence": "BEFORE INSERT trigger on idempotent_requests raised; all five governed tables remained at zero and load returned null"
     },
     {
-      "criterion": "保留事件历史便于重新构建",
-      "observed": "event_history 返回 1 条(EventRecord)；load_version(case,1) 可取回历史版本；当前版本推进到 2",
-      "pass": true
+      "criterion": "restart recovery: a fresh repository instance recovers persisted version/snapshot and replays the first response without calling the mutation",
+      "status": "PASS",
+      "evidence": "restarted instance replayed the original response and snapshot; restart callback count=0"
     },
     {
-      "criterion": "仓储不决定规则或物流合法性",
-      "observed": "storage/ 六个模块静态扫描：未出现规则ID、优先级数值、决策名或物流状态机字面量",
-      "pass": true
+      "criterion": "transaction serialization: ten concurrent callers with the same request perform exactly one mutation",
+      "status": "PASS",
+      "evidence": "concurrent callback count=1; exactly one non-replayed result; durable counts remain one per applicable table"
     }
   ],
-  "additional_invariants_observed_in_code": [
-    "BEGIN IMMEDIATE 前置写锁（sqlite.py:65）",
-    "审计历史必须仅追加（sqlite.py:287-288）",
-    "不得丢弃已持久化的状态（sqlite.py:289-290）",
-    "事件水位不得回退（sqlite.py:293-294）",
-    "状态或承诺变更必须追加审计条目（sqlite.py:295-304）",
-    "响应体经 api-envelope.schema.json 契约校验（codec.py:129）"
+  "deviations": [
+    {
+      "item": "implementation_storage_pytest",
+      "status": "NOT_RERUN",
+      "reason": "This independent recheck intentionally did not run backend/tests/storage; it used a separately authored direct probe instead."
+    },
+    {
+      "item": "environment_acceptance_items",
+      "status": "NOT_INDEPENDENTLY_RECALCULATED",
+      "reason": "No install, pip list, pip check, lock-file hash, or environment JSON recalculation was performed in this recheck. Existing implementation environment evidence was not promoted to independently reverified evidence."
+    }
   ],
-  "what_could_not_be_independently_reproduced": [
-    "实现方的 pytest 套件未由审查方复跑。本地沙箱拒绝 pytest 临时目录创建/清理（PermissionError WinError 5）。本报告的 PASS 依据审查方自建探针，不依据实现方声称的测试结果。",
-    "环境项（隔离 venv 绝对路径、pip check、锁文件差异）审查方未复算，以实现方 reports/batches/BATCH-18/command-output/ 中的记录为准，未经独立确认。"
-  ],
-  "artifact_hashes": {
-    "method": "SHA-256 over raw bytes streamed from git show <sha>:<path>",
-    "sqlite_py": "8719E0DB9C296F99E7C69AF540CD50E8BF7CFEBEB14D76BEB6FFB454CE5222B0",
-    "models_py": "2D8EBE2E56C981DC4268716E88C9B71DFA094F0C8F74F196DD6359CB8887896F",
-    "verifier_probe_sha256": "2E7A4EBCA17C025DFF247D918B2DE0F3A9A583AD1A2ECA28DD37F3A3F817395D"
+  "scope": {
+    "writes": [
+      "reports/batches/BATCH-18/VERIFICATION_REPORT.json",
+      "reports/batches/BATCH-18/verification-evidence/independent-recheck-probe.py",
+      "reports/batches/BATCH-18/verification-evidence/independent-recheck-results.json"
+    ],
+    "code_schema_lock_plan_or_other_batch_changes": false
   },
-  "findings": [],
-  "minimal_fix_list": [],
-  "blockers": [],
-  "code_modified": false,
-  "next_batch_started": false,
-  "verifier_scope_declaration": "审查方仅写本报告与其证据文件，未修改任何实现文件。因平台额度限制，本验收由审查角色执行而非全新任务线程；该偏离在此显式记录。"
+  "conclusion": "PASS for the independently executed transaction, idempotency, conflict, rollback, and restart-recovery criteria. The two explicitly listed deviations remain outside this recheck's independently established evidence."
 }

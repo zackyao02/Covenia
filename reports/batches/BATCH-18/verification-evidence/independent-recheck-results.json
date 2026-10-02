@@ -1,0 +1,28 @@
+{
+  "status": "PASS",
+  "checks": {
+    "idempotency_ten_replays": "PASS",
+    "same_key_different_body_conflict": "PASS",
+    "injected_write_rollback": "PASS",
+    "restart_recovery": "PASS",
+    "ten_concurrent_callers": "PASS"
+  },
+  "observed": {
+    "replay_mutation_callback_count": 1,
+    "concurrent_mutation_callback_count": 1,
+    "replay_counts": {
+      "cases": 1,
+      "case_versions": 1,
+      "audit_entries": 1,
+      "events": 0,
+      "idempotent_requests": 1
+    },
+    "concurrent_counts": {
+      "cases": 1,
+      "case_versions": 1,
+      "audit_entries": 1,
+      "events": 0,
+      "idempotent_requests": 1
+    }
+  }
+}
