@@ -1,0 +1,101 @@
+{
+  "batch_id": "BATCH-16",
+  "run_dir": "C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\b16r8",
+  "interpreter": "C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\b16r8\\venv\\Scripts\\python.exe",
+  "commands": [
+    {
+      "name": "isolated_interpreter_assertion",
+      "command": "& \"C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\b16r8\\venv\\Scripts\\python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\b16r8\\venv\\Scripts\\python.exe\"",
+      "exit_code": 0,
+      "stdout": "C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\b16r8\\venv\\Scripts\\python.exe\n3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]"
+    },
+    {
+      "name": "locked_dependencies",
+      "command": "& \"C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\b16r8\\venv\\Scripts\\python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "exit_code": 0,
+      "stdout_summary": "All 29 locked requirements were already satisfied in the BATCH-16 venv."
+    },
+    {
+      "name": "editable_backend_install",
+      "command": "& \"C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\b16r8\\venv\\Scripts\\python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "exit_code": 0,
+      "stdout_summary": "Successfully built and installed editable covenia-b-0.0.0 from this worktree."
+    },
+    {
+      "name": "required_import_preflight",
+      "command": "& \"C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\b16r8\\venv\\Scripts\\python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "exit_code": 0,
+      "stdout": "pytest/jsonschema import OK"
+    },
+    {
+      "name": "batch_test",
+      "command": "& \"C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\b16r8\\venv\\Scripts\\python.exe\" -m pytest backend/tests/resolutions/test_planner.py -q",
+      "exit_code": 0,
+      "stdout": ".......                                                                  [100%]\n7 passed in 0.30s"
+    },
+    {
+      "name": "pip_list",
+      "command": "& \"C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\b16r8\\venv\\Scripts\\python.exe\" -m pip list --format=json",
+      "exit_code": 0,
+      "package_count": 31,
+      "packages": [
+        "annotated-types==0.7.0",
+        "anyio==4.8.0",
+        "attrs==26.1.0",
+        "build==1.2.2.post1",
+        "click==8.1.8",
+        "colorama==0.4.6",
+        "covenia-b==0.0.0 (editable)",
+        "fastapi==0.115.6",
+        "h11==0.14.0",
+        "idna==3.10",
+        "iniconfig==2.0.0",
+        "jsonschema==4.25.0",
+        "jsonschema-specifications==2025.9.1",
+        "packaging==24.2",
+        "pip==25.1.1",
+        "pluggy==1.5.0",
+        "pydantic==2.10.5",
+        "pydantic-core==2.27.2",
+        "pydantic-settings==2.7.1",
+        "pyproject-hooks==1.2.0",
+        "pytest==8.3.4",
+        "python-dotenv==1.0.1",
+        "referencing==0.37.0",
+        "rpds-py==2026.6.3",
+        "ruff==0.8.4",
+        "setuptools==75.8.0",
+        "sniffio==1.3.1",
+        "starlette==0.41.3",
+        "typing-extensions==4.12.2",
+        "uvicorn==0.34.0",
+        "wheel==0.45.1"
+      ]
+    },
+    {
+      "name": "pip_check",
+      "command": "& \"C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\b16r8\\venv\\Scripts\\python.exe\" -m pip check",
+      "exit_code": 0,
+      "stdout": "No broken requirements found."
+    },
+    {
+      "name": "diff_check",
+      "command": "git diff --check",
+      "exit_code": 0,
+      "stdout": ""
+    },
+    {
+      "name": "status_before_report_artifacts",
+      "command": "git status --short",
+      "exit_code": 0,
+      "stdout": "",
+      "note": "Ran after the code commit and before creating report artifacts."
+    },
+    {
+      "name": "supplemental_ruff",
+      "command": "& \"C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\b16r8\\venv\\Scripts\\python.exe\" -m ruff check backend/src/covenia_b/resolutions/planner.py backend/src/covenia_b/resolutions/reply_templates.py backend/tests/resolutions/test_planner.py",
+      "exit_code": 0,
+      "stdout": "All checks passed!"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "batch_id": "BATCH-16",
+  "generated_at": "2026-10-03T05:07:02.8382272+08:00",
+  "repository_root": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\b16",
+  "isolation": {
+    "run_dir": "C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\b16r8",
+    "run_dir_length": 48,
+    "run_dir_length_limit": 60,
+    "venv_path": "C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\b16r8\\venv",
+    "venv_is_direct_run_dir_child": true,
+    "interpreter": "C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\b16r8\\venv\\Scripts\\python.exe",
+    "sys_prefix": "C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\b16r8\\venv",
+    "sys_base_prefix": "D:\\python",
+    "sys_prefix_differs_from_base_prefix": true,
+    "python_version": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]",
+    "venv_creation": "D:\\python\\python.exe -m venv --without-pip C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\b16r8\\venv; then isolated ensurepip --upgrade"
+  },
+  "path_preflight": {
+    "longest_observed_path_length": 195,
+    "longest_observed_path": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\b16\\reports\\batches\\BATCH-09\\verification-history\\round-1\\verification-evidence\\command-outputs\\working-tree-status-before-verification-output.log",
+    "maximum_allowed_path_length": 250,
+    "passed": true
+  },
+  "dependencies": {
+    "global_install_used": false,
+    "requirements_dev_lock_changed": false,
+    "requirements_dev_lock_sha256_before": "886A9FC311F16DA186158EFF8478F3058FF8E0AEFA00091830BBF87863CD0C5D",
+    "requirements_dev_lock_sha256_after": "886A9FC311F16DA186158EFF8478F3058FF8E0AEFA00091830BBF87863CD0C5D",
+    "new_third_party_dependencies": []
+  },
+  "pip_check": {
+    "exit_code": 0,
+    "stdout": "No broken requirements found."
+  }
+}

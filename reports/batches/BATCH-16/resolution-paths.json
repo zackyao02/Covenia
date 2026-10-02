@@ -1,0 +1,82 @@
+{
+  "batch_id": "BATCH-16",
+  "status": "IMPLEMENTED_AWAITING_INDEPENDENT_VERIFICATION",
+  "planner_entrypoint": "covenia_b.resolutions.planner.plan_resolution",
+  "side_effects": {
+    "creates_or_updates_tickets": false,
+    "dispatches_replacement": false,
+    "issues_refund_or_compensation": false,
+    "sends_consumer_message": false
+  },
+  "rule_to_candidate": {
+    "E1": "CHECK_REPLACEMENT_FULFILLMENT",
+    "E2": "ASK_CURRENT_SCOPE_EVIDENCE",
+    "H1": "HUMAN_EVIDENCE_REVIEW",
+    "E0_NO_RULE_MATCHED": "CHECK_REPLACEMENT_FULFILLMENT only when PreparedAction is CHECK_REPLACEMENT_PROGRESS"
+  },
+  "candidate_paths": [
+    {
+      "candidate_type": "CHECK_REPLACEMENT_FULFILLMENT",
+      "legal_rule_results": ["E1", "E0_NO_RULE_MATCHED with CHECK_REPLACEMENT_PROGRESS"],
+      "task_prefill": {
+        "task_type": "CHECK_REPLACEMENT_STATUS",
+        "existing_ticket_id": "selected only from an existing open REPLACEMENT ticket",
+        "executor": "BRAND"
+      },
+      "requires_human_approval": false,
+      "creates_obligation": false,
+      "evidence_basis": [
+        "selected rule id",
+        "existing replacement ticket id when present",
+        "active compiled replacement promise source id when present",
+        "service progress receipt id when present"
+      ]
+    },
+    {
+      "candidate_type": "ASK_CURRENT_SCOPE_EVIDENCE",
+      "legal_rule_results": ["E2 with matching server EvidenceAggregation"],
+      "task_prefill": {
+        "task_type": "REQUEST_EVIDENCE",
+        "existing_ticket_id": null,
+        "scope_source": "authoritative AccountabilityState.current_scope",
+        "executor": "CONSUMER"
+      },
+      "requires_human_approval": false,
+      "creates_obligation": false,
+      "allowed_missing_coverage": [
+        "PRODUCT_IDENTITY",
+        "AFFECTED_COMPONENT",
+        "DAMAGE_DETAIL"
+      ],
+      "fallback_when_no_deterministic_gap": "HUMAN_EVIDENCE_REVIEW"
+    },
+    {
+      "candidate_type": "HUMAN_EVIDENCE_REVIEW",
+      "legal_rule_results": ["H1", "source conflict", "E2 without a deterministic missing material"],
+      "task_prefill": {
+        "task_type": "HUMAN_EVIDENCE_REVIEW",
+        "existing_ticket_id": "existing open replacement ticket when traceable",
+        "executor": "HUMAN_REVIEW_QUEUE"
+      },
+      "requires_human_approval": true,
+      "creates_obligation": false
+    }
+  ],
+  "compiled_service_responsibility": {
+    "selection": "active REPLACEMENT_DISPATCH promise, preferring one linked to the existing open replacement ticket",
+    "deadline": "formatted directly from CompiledPromise.deadline",
+    "next_check_at": "formatted directly from CompiledPromise.next_check_at",
+    "recovery_if_missed": "authoritative service progress receipt value or deterministic default",
+    "model_deadlines_or_free_text": "not used"
+  },
+  "consumer_reply_boundary": {
+    "allowed_dynamic_fields": ["candidate_type", "three allowlisted missing-coverage identifiers"],
+    "not_interpolated": [
+      "ticket id",
+      "internal assignee or executor name",
+      "risk score or label",
+      "model output",
+      "deadline or model time commitment"
+    ]
+  }
+}

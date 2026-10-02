@@ -1,0 +1,55 @@
+{
+  "batch_id": "BATCH-16",
+  "status": "IMPLEMENTED_AWAITING_INDEPENDENT_VERIFICATION",
+  "summary": "Implemented a pure deterministic planner that maps E1/E0 progress checks, E2 minimum current-scope evidence requests, and H1 or source-conflict review into the three legal ResolutionPath candidate types. The planner only plans tasks and never creates a replacement, refund, compensation, reshipment, ticket, or outbound message.",
+  "files_changed": [
+    "backend/src/covenia_b/resolutions/planner.py",
+    "backend/src/covenia_b/resolutions/reply_templates.py",
+    "backend/tests/resolutions/test_planner.py",
+    "reports/batches/BATCH-16/resolution-paths.json",
+    "reports/batches/BATCH-16/IMPLEMENTATION_REPORT.json",
+    "reports/batches/BATCH-16/IMPLEMENTATION_REPORT.md",
+    "reports/batches/BATCH-16/commands.json",
+    "reports/batches/BATCH-16/environment.json",
+    "reports/batches/BATCH-16/pip-check.txt"
+  ],
+  "tests_run": [
+    {
+      "command": "C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\b16r8\\venv\\Scripts\\python.exe -m pytest backend/tests/resolutions/test_planner.py -q",
+      "result": "7 passed in 0.30s"
+    },
+    {
+      "command": "C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\b16r8\\venv\\Scripts\\python.exe -m ruff check backend/src/covenia_b/resolutions/planner.py backend/src/covenia_b/resolutions/reply_templates.py backend/tests/resolutions/test_planner.py",
+      "result": "All checks passed!"
+    }
+  ],
+  "tests_passed": 7,
+  "tests_failed": 0,
+  "acceptance_results": {
+    "isolated_interpreter_assertion": "PASS",
+    "locked_dependency_install": "PASS",
+    "editable_backend_install": "PASS",
+    "pytest_and_jsonschema_import": "PASS",
+    "batch_test": "PASS",
+    "pip_list": "PASS",
+    "pip_check": "PASS",
+    "git_diff_check": "PASS",
+    "working_tree_check_before_reports": "PASS",
+    "independent_verification": "NOT_RUN",
+    "integration": "NOT_RUN"
+  },
+  "commit_hash": "e43a61f2ca5da3188d7a5116583fe96488946675",
+  "commit_message": "feat(resolutions): plan scoped human-approved service paths",
+  "remaining_risks": [
+    "Independent BATCH-16 verification has not been run.",
+    "BATCH-15 is consumed only as conditionally integrated backend rules; its independent acceptance remains FAIL as supplied by the task context.",
+    "No integration smoke test has been run."
+  ],
+  "blockers": [],
+  "handoff_notes": [
+    "Consumers of plan_resolution must provide the same RuleEvaluation, PreparedAction, CaseInput, CommitmentCompilation, and (for E2) authoritative EvidenceAggregation.",
+    "The planner rejects unsupported rule/action combinations rather than fabricating a candidate type.",
+    "Consumer replies are rendered only from candidate type and allowlisted missing-coverage labels; never interpolate internal names, scores, ticket ids, model text, or time commitments.",
+    "VERIFICATION_REPORT.json was intentionally not created; it is owned by independent verification."
+  ]
+}
