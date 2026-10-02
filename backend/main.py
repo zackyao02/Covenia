@@ -14,6 +14,8 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
+from backend.decision import decision_advisory_for
+
 
 ROOT = Path(__file__).resolve().parents[1]
 EXAMPLES = ROOT / "frontend" / "src" / "api" / "examples"
@@ -421,12 +423,15 @@ def customer_decision_for(case_id: str, state: dict[str, Any]) -> dict[str, Any]
     if not prepared:
         prepared = {"action_id": f"DECISION_{case_id}", "action_type": "ASK_EVIDENCE", "requested_scope": state["current_scope"], "requires_human_approval": False}
     decision = evaluate(state, {"case_id": case_id, "prepared_action": prepared})
+    case_input = find_case(case_id) or {"conversation": [], "evidence_images": [], "service_tickets": [], "order": {}, "evaluation_time": SERVICE_CLOCK}
+    advisory = decision_advisory_for(case_id, state, case_input, deadline_state_for(case_id, state), now=SERVICE_CLOCK)
     return {
         "case_id": case_id,
         "decision": decision["decision"],
         "reason": decision["reason"],
         "rule_id": decision["rule_id"],
-        "jev_assessment_id": None,
+        "jev_assessment_id": advisory["assessment_id"],
+        "decision_advisory": advisory,
         "source_evidence_ids": decision["resolution_path"]["evidence_basis"],
         "next_action": decision["resolution_path"]["task_prefill"]["summary"],
         "human_review_required": decision["decision"] == "HUMAN_REVIEW" or decision["resolution_path"]["requires_human_approval"],
@@ -443,6 +448,8 @@ def customer_state_for(case_id: str, rid: str) -> dict[str, Any] | None:
     source = source_evidence(case_input, state)
     risk = risk_state_for(case_id, state, case_input)
     deadline = deadline_state_for(case_id, state)
+    lightweight_decision = customer_decision_for(case_id, state)
+    advisory = lightweight_decision.get("decision_advisory")
     facts = [
         {"fact_id": f"FACT_{index+1}", "statement": fact["statement"], "source_evidence_ids": fact.get("source_ids", [])}
         for index, fact in enumerate(state.get("experience_gap_diagnosis", {}).get("traceable_service_facts", []))
@@ -473,16 +480,16 @@ def customer_state_for(case_id: str, rid: str) -> dict[str, Any] | None:
         },
         "emotion": {
             "current_label": "FRUSTRATED" if state.get("experience_risk") == "HIGH" else "CONFUSED" if state.get("evidence_status") != "VALID" else "ANXIOUS",
-            "trend": "WORSENING" if state.get("experience_risk") == "HIGH" else "STABLE",
+            "trend": advisory["emotion"]["trend"] if advisory else ("WORSENING" if state.get("experience_risk") == "HIGH" else "STABLE"),
             "cause": journey["journey_understanding"]["service_cause"],
             "communication_guidance": "先承认已收到材料，再给出品牌侧下一步，不把责任推回消费者。",
             "source_evidence_ids": journey["journey_understanding"].get("source_ids", []),
-            "confidence": 0.78,
+            "confidence": advisory["emotion"]["probability"] if advisory else 0.78,
             "risk_scoring_allowed": False,
         },
         "effort": effort_for(case_input),
         "actions": {
-            "next_best_action": customer_decision_for(case_id, state)["next_action"],
+            "next_best_action": lightweight_decision["next_action"],
             "blocked_actions": state.get("prohibited_actions", []),
             "allowed_actions": ["CHECK_REPLACEMENT_PROGRESS", "CREATE_FOLLOW_UP_TASK"],
             "human_review_actions": ["HUMAN_EVIDENCE_REVIEW"] if state.get("evidence_status") == "NEED_HUMAN_REVIEW" else [],
@@ -492,7 +499,8 @@ def customer_state_for(case_id: str, rid: str) -> dict[str, Any] | None:
             "deadline_state": deadline,
         },
         "risk": risk,
-        "decision": customer_decision_for(case_id, state),
+        "decision": lightweight_decision,
+        "decision_advisory": advisory,
         "resolution": {
             "status": "RESOLVED" if state.get("case_status") == "RESOLVED" else "AT_RISK" if state.get("case_status") == "AT_RISK" else "IN_PROGRESS" if state.get("open_obligation") else "DRAFTED",
             "current_path": state.get("experience_gap_diagnosis", {}).get("reply_strategy", "先恢复事实，再决定动作。"),
@@ -691,12 +699,15 @@ async def create_decision(request: Request) -> JSONResponse:
         return error("VALIDATION_ERROR", "未找到案例事实。", rid, 400)
     if isinstance(body.get("prepared_action"), dict):
         full = evaluate(state, body)
+        case_input = find_case(body["case_id"]) or {"conversation": [], "evidence_images": [], "service_tickets": [], "order": {}, "evaluation_time": SERVICE_CLOCK}
+        advisory = decision_advisory_for(body["case_id"], state, case_input, deadline_state_for(body["case_id"], state), now=SERVICE_CLOCK)
         data = {
             "case_id": full["case_id"],
             "decision": full["decision"],
             "reason": full["reason"],
             "rule_id": full["rule_id"],
-            "jev_assessment_id": None,
+            "jev_assessment_id": advisory["assessment_id"],
+            "decision_advisory": advisory,
             "source_evidence_ids": full["resolution_path"]["evidence_basis"],
             "next_action": full["resolution_path"]["task_prefill"]["summary"],
             "human_review_required": full["decision"] == "HUMAN_REVIEW" or full["resolution_path"]["requires_human_approval"],

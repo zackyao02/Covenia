@@ -420,12 +420,78 @@ export interface DeadlineState {
   audit_event_id: string | null;
 }
 
+export interface JEVDecisionAdvisory {
+  assessment_id: string;
+  customer_state_version: string;
+  source: "JEV" | "RULE_FALLBACK";
+  status: "READY" | "FALLBACK";
+  configured: boolean;
+  jev_call: {
+    configured: boolean;
+    attempted: boolean;
+    succeeded: boolean;
+    fallback_used: boolean;
+    error_code?: string | null;
+  };
+  emotion: {
+    trend: EmotionState["trend"];
+    probability: number;
+    threshold: number;
+    source: "JEV" | "RULE_FALLBACK";
+  };
+  human_escalation: {
+    required: boolean;
+    probability: number;
+    threshold: number;
+    source: "JEV" | "RULE_FALLBACK" | "RULE";
+  };
+  next_best_action: {
+    recommended:
+      | "CHECK_REPLACEMENT"
+      | "HUMAN_ESCALATION"
+      | "CONTINUE_TROUBLESHOOTING"
+      | "REQUEST_EVIDENCE";
+    probability: number;
+    threshold: number;
+    source: "JEV" | "RULE_FALLBACK";
+  };
+  deterministic_signals: {
+    promise_overdue: boolean;
+    repeated_contact: boolean;
+    conversation_count: number;
+    evidence_status: EvidenceStatus | "UNKNOWN";
+    has_open_obligation: boolean;
+    needs_human_by_rule: boolean;
+  };
+  audit: {
+    assessment_id: string;
+    case_id: string;
+    customer_state_version: string;
+    source: "JEV" | "RULE_FALLBACK";
+    jev_call: {
+      configured: boolean;
+      attempted: boolean;
+      succeeded: boolean;
+      fallback_used: boolean;
+      error_code?: string | null;
+    };
+    model_version?: string | null;
+    questions: string[];
+    thresholds: Record<string, number>;
+    final_decision: Record<string, string | boolean>;
+    provider_error?: { code: string; message: string } | null;
+    latency_ms: number;
+    created_at: ISODateTime;
+  };
+}
+
 export interface CustomerDecision {
   case_id: string;
   decision: Decision;
   reason: string;
   rule_id?: RuleId;
   jev_assessment_id?: string | null;
+  decision_advisory?: JEVDecisionAdvisory;
   source_evidence_ids: string[];
   next_action: string;
   human_review_required: boolean;
@@ -469,6 +535,7 @@ export interface CustomerState {
   };
   risk: RiskState;
   decision: CustomerDecision;
+  decision_advisory?: JEVDecisionAdvisory;
   resolution: {
     status: "NOT_STARTED" | "DRAFTED" | "APPROVED" | "IN_PROGRESS" | "AT_RISK" | "RESOLVED";
     current_path: string;

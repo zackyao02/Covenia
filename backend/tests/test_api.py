@@ -1,5 +1,6 @@
 from fastapi.testclient import TestClient
 
+from backend.decision import engine as decision_engine
 from backend.main import app, analyses, deadline_escalations, idempotency, last_event_times, redact_for_model, shipment_stages, states
 
 
@@ -13,6 +14,8 @@ def reset_service() -> None:
     last_event_times.clear()
     idempotency.clear()
     deadline_escalations.clear()
+    decision_engine._CACHE.clear()
+    decision_engine.AUDIT_LOG.clear()
 
 
 def analyze(case_id: str = "DEMO_001") -> dict:
@@ -128,6 +131,8 @@ def test_v11_customer_state_risk_priority_and_emerging_endpoints() -> None:
     assert customer_data["case_id"] == "DEMO_001"
     assert customer_data["emotion"]["risk_scoring_allowed"] is False
     assert customer_data["decision"]["decision"] in ("INTERVENE", "ALLOW", "HUMAN_REVIEW")
+    assert customer_data["decision"]["decision_advisory"]["status"] in ("READY", "FALLBACK")
+    assert customer_data["decision_advisory"]["assessment_id"] == customer_data["decision"]["jev_assessment_id"]
 
     risk = client.get("/api/risk")
     assert risk.status_code == 200
@@ -166,3 +171,62 @@ def test_v11_decisions_aliases_evaluate_and_deadline_monitor_runs_once() -> None
     second = client.post("/api/deadlines/run", json={"case_ids": ["DEMO_001"], "now": "2026-05-07T12:00:00+08:00"}).json()["data"]
     assert second["deadline_states"][0]["escalated_once"] is True
     assert len(states["DEMO_001"]["audit_trail"]) == audit_count
+
+
+def test_jev_decision_layer_falls_back_without_provider(monkeypatch) -> None:
+    reset_service()
+    monkeypatch.setattr(decision_engine, "ask_jev", lambda state, questions: {
+        "ok": False,
+        "source": "RULE_FALLBACK",
+        "error": {"code": "TYPESAFE_API_KEY_NOT_SET", "message": "missing"},
+        "latency_ms": 0,
+        "raw": None,
+    })
+    monkeypatch.setattr(decision_engine, "typesafe_configured", lambda: False)
+    analyze()
+
+    decision = client.post("/api/decisions", json={"case_id": "DEMO_001", "prepared_action": hero_action()}).json()["data"]
+    advisory = decision["decision_advisory"]
+    assert advisory["status"] == "FALLBACK"
+    assert advisory["source"] == "RULE_FALLBACK"
+    assert advisory["configured"] is False
+    assert advisory["jev_call"] == {
+        "configured": False,
+        "attempted": False,
+        "succeeded": False,
+        "fallback_used": True,
+        "error_code": "TYPESAFE_API_KEY_NOT_SET",
+    }
+    assert advisory["next_best_action"]["source"] == "RULE_FALLBACK"
+    assert decision_engine.AUDIT_LOG[-1]["provider_error"]["code"] == "TYPESAFE_API_KEY_NOT_SET"
+
+
+def test_jev_decision_layer_maps_provider_response(monkeypatch) -> None:
+    reset_service()
+    monkeypatch.setattr(decision_engine, "ask_jev", lambda state, questions: {
+        "ok": True,
+        "source": "JEV",
+        "error": None,
+        "latency_ms": 12,
+        "model_version": "systemone-test",
+        "raw": {
+            "answers": {
+                "emotion_worsening": {"noul": 0.91},
+                "needs_human": {"probability": 0.72},
+                "next_action": {"choice": "HUMAN_ESCALATION", "probabilities": {"HUMAN_ESCALATION": 0.88}},
+            },
+        },
+    })
+    monkeypatch.setattr(decision_engine, "typesafe_configured", lambda: True)
+    analyze()
+
+    customer = client.get("/api/customer-state/DEMO_001").json()["data"]
+    advisory = customer["decision_advisory"]
+    assert advisory["status"] == "READY"
+    assert advisory["source"] == "JEV"
+    assert advisory["jev_call"]["attempted"] is True
+    assert advisory["jev_call"]["succeeded"] is True
+    assert advisory["emotion"]["trend"] == "WORSENING"
+    assert advisory["human_escalation"]["required"] is True
+    assert advisory["next_best_action"]["recommended"] == "HUMAN_ESCALATION"
+    assert advisory["audit"]["model_version"] == "systemone-test"
