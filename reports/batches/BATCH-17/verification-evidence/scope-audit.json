@@ -1,0 +1,43 @@
+{
+  "passed": true,
+  "reviewed_range": "cc82915b260ac108137ada27ffda56d1b4b1bc3d..5cfbce2715fe543c28cda34856aa29e89ecc29eb",
+  "reviewed_code_commit_paths": [
+    "backend/src/covenia_b/receipts/__init__.py",
+    "backend/src/covenia_b/receipts/projection.py",
+    "backend/tests/receipts/test_projection.py"
+  ],
+  "allowed_paths_checked": [
+    "backend/src/covenia_b/receipts/**",
+    "backend/tests/receipts/**",
+    "reports/batches/BATCH-17/**",
+    "backend/requirements-dev.lock"
+  ],
+  "forbidden_changes": [],
+  "requirements_dev_lock_changed": false,
+  "schema_changed": false,
+  "verification_report_precreated_in_review_commit": false,
+  "implementation_report_commit": {
+    "sha": "60df6c2958f269960c2b716cce70681ee2064d49",
+    "parent_is_review_sha": true,
+    "changed_path_count": 8,
+    "all_paths_under": "reports/batches/BATCH-17/**",
+    "contains_verification_report": false
+  },
+  "base_to_review_topology": {
+    "base_sha": "eb231c479cf07f314205d3b529bfcbad5a3b7217",
+    "review_sha": "5cfbce2715fe543c28cda34856aa29e89ecc29eb",
+    "merge_base": "cc82915b260ac108137ada27ffda56d1b4b1bc3d",
+    "base_is_review_ancestor": false,
+    "direct_tree_diff_path_count": 63,
+    "batch17_paths_in_direct_tree_diff": 3,
+    "parallel_batch08_paths_in_direct_tree_diff": 60,
+    "interpretation": "The fixed integration baseline contains a parallel BATCH-08 tree advance, while the repair commit is a sibling from cc82915. The 60 BATCH-08 paths are context only and are not attributed to BATCH-17."
+  },
+  "final_worktree_status": "?? reports/batches/BATCH-17/",
+  "evidence": [
+    "reports/batches/BATCH-17/verification-evidence/15a-review-commit-name-status.txt",
+    "reports/batches/BATCH-17/verification-evidence/15b-base-to-review-name-status.txt",
+    "reports/batches/BATCH-17/verification-evidence/15c-report-commit-name-status.txt",
+    "reports/batches/BATCH-17/verification-evidence/16-status-short.txt"
+  ]
+}

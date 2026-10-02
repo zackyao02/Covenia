@@ -1,0 +1,13 @@
+Obtaining file:///C:/Users/WONG%20Tsun%20Ming/Desktop/%E6%AC%A7%E8%8E%B1%E9%9B%85%E9%BB%91%E5%AE%A2%E6%9D%BE/w17v1/backend
+  Checking if build backend supports build_editable: started
+  Checking if build backend supports build_editable: finished with status 'done'
+  Preparing editable metadata (pyproject.toml): started
+  Preparing editable metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: covenia-b
+  Building editable for covenia-b (pyproject.toml): started
+  Building editable for covenia-b (pyproject.toml): finished with status 'done'
+  Created wheel for covenia-b: filename=covenia_b-0.0.0-0.editable-py3-none-any.whl size=2803 sha256=5b45a0de799f71109cfdf8014d0ac8316f60bf886b3cb3eb7d694e0546909eb6
+  Stored in directory: C:\cov-run\v17oct2\tmp\pip-ephem-wheel-cache-be23se5v\wheels\ed\35\74\8a098f563f8d59c338baec2714d9c804aa9f4e1943e4a7ac7c
+Successfully built covenia-b
+Installing collected packages: covenia-b
+Successfully installed covenia-b-0.0.0

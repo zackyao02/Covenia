@@ -1,0 +1,200 @@
+[
+  {
+    "id": "00-runner-syntax-failure",
+    "command": "C:/cov-run/v17oct2/venv/Scripts/python.exe C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/w17v1/reports/batches/BATCH-17/verification-evidence/verification_runner.py",
+    "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w17v1",
+    "exit_code": 1,
+    "duration_seconds": 0.283309,
+    "mode": "VERIFIER_HARNESS",
+    "output": "reports/batches/BATCH-17/verification-evidence/00-runner-syntax-failure.txt"
+  },
+  {
+    "id": "00b-runner-record-syntax-failure",
+    "command": "C:/cov-run/v17oct2/venv/Scripts/python.exe C:/Users/WONG Tsun Ming/Desktop/欧莱雅黑客松/w17v1/reports/batches/BATCH-17/verification-evidence/verification_runner.py",
+    "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w17v1",
+    "exit_code": 1,
+    "duration_seconds": 0.210283,
+    "mode": "VERIFIER_HARNESS",
+    "output": "reports/batches/BATCH-17/verification-evidence/00b-runner-record-syntax-failure.txt"
+  },
+  {
+    "id": "01-interpreter",
+    "command": "C:\\cov-run\\v17oct2\\venv\\Scripts\\python.exe -c \"import sys; from pathlib import Path; expected=Path(sys.argv[1]).resolve(); actual=Path(sys.executable).resolve(); assert actual==expected and sys.prefix!=sys.base_prefix; print(sys.executable); print(sys.version); print('sys.prefix='+sys.prefix); print('sys.base_prefix='+sys.base_prefix)\" C:\\cov-run\\v17oct2\\venv\\Scripts\\python.exe",
+    "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w17v1",
+    "exit_code": 0,
+    "duration_seconds": 0.275548,
+    "mode": "ENVIRONMENT",
+    "output": "reports/batches/BATCH-17/verification-evidence/01-interpreter.txt"
+  },
+  {
+    "id": "02-lock-install-default-temp",
+    "command": "C:\\cov-run\\v17oct2\\venv\\Scripts\\python.exe -m pip install --no-deps -r backend/requirements-dev.lock",
+    "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w17v1",
+    "exit_code": 0,
+    "duration_seconds": 19.456516,
+    "mode": "SETUP",
+    "output": "reports/batches/BATCH-17/verification-evidence/02-lock-install-default-temp.txt"
+  },
+  {
+    "id": "03-editable-install",
+    "command": "C:\\cov-run\\v17oct2\\venv\\Scripts\\python.exe -m pip install --no-deps --no-build-isolation -e backend",
+    "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w17v1",
+    "exit_code": 0,
+    "duration_seconds": 2.727453,
+    "mode": "SETUP",
+    "output": "reports/batches/BATCH-17/verification-evidence/03-editable-install.txt"
+  },
+  {
+    "id": "04-imports",
+    "command": "C:\\cov-run\\v17oct2\\venv\\Scripts\\python.exe -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+    "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w17v1",
+    "exit_code": 0,
+    "duration_seconds": 0.479675,
+    "mode": "IMPORT",
+    "output": "reports/batches/BATCH-17/verification-evidence/04-imports.txt"
+  },
+  {
+    "id": "05-receipts-pytest",
+    "command": "C:\\cov-run\\v17oct2\\venv\\Scripts\\python.exe -m pytest backend/tests/receipts -q -o cache_dir=C:\\cov-run\\v17oct2\\pytest-cache\\receipts",
+    "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w17v1",
+    "exit_code": 0,
+    "duration_seconds": 0.65045,
+    "mode": "UNIT",
+    "output": "reports/batches/BATCH-17/verification-evidence/05-receipts-pytest.txt"
+  },
+  {
+    "id": "06-pip-list",
+    "command": "C:\\cov-run\\v17oct2\\venv\\Scripts\\python.exe -m pip list --format=json",
+    "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w17v1",
+    "exit_code": 0,
+    "duration_seconds": 0.471557,
+    "mode": "ENVIRONMENT",
+    "output": "reports/batches/BATCH-17/verification-evidence/06-pip-list.json"
+  },
+  {
+    "id": "07-pip-check",
+    "command": "C:\\cov-run\\v17oct2\\venv\\Scripts\\python.exe -m pip check",
+    "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w17v1",
+    "exit_code": 0,
+    "duration_seconds": 0.473198,
+    "mode": "DEPENDENCY",
+    "output": "reports/batches/BATCH-17/verification-evidence/07-pip-check.txt"
+  },
+  {
+    "id": "08-contract-check-strict",
+    "command": "C:\\cov-run\\v17oct2\\venv\\Scripts\\python.exe tools/contracts/check_contracts.py --strict",
+    "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w17v1",
+    "exit_code": 0,
+    "duration_seconds": 0.428499,
+    "mode": "CONTRACT",
+    "output": "reports/batches/BATCH-17/verification-evidence/08-contract-check-strict.txt"
+  },
+  {
+    "id": "09-contract-pytest",
+    "command": "C:\\cov-run\\v17oct2\\venv\\Scripts\\python.exe -m pytest backend/tests/contracts -q -o cache_dir=C:\\cov-run\\v17oct2\\pytest-cache\\contracts",
+    "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w17v1",
+    "exit_code": 0,
+    "duration_seconds": 1.441371,
+    "mode": "CONTRACT",
+    "output": "reports/batches/BATCH-17/verification-evidence/09-contract-pytest.txt"
+  },
+  {
+    "id": "10-ruff",
+    "command": "C:\\cov-run\\v17oct2\\venv\\Scripts\\python.exe -m ruff check --no-cache backend/src/covenia_b/receipts backend/tests/receipts reports/batches/BATCH-17/verification-evidence/independent_probe.py reports/batches/BATCH-17/verification-evidence/verification_runner.py",
+    "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w17v1",
+    "exit_code": 0,
+    "duration_seconds": 0.26634,
+    "mode": "LINT",
+    "output": "reports/batches/BATCH-17/verification-evidence/10-ruff.txt"
+  },
+  {
+    "id": "11-independent-probe",
+    "command": "C:\\cov-run\\v17oct2\\venv\\Scripts\\python.exe \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w17v1\\reports\\batches\\BATCH-17\\verification-evidence\\independent_probe.py\"",
+    "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w17v1",
+    "exit_code": 0,
+    "duration_seconds": 0.202572,
+    "mode": "POSITIVE_AND_NEGATIVE_PROBE",
+    "output": "reports/batches/BATCH-17/verification-evidence/11-independent-probe.json"
+  },
+  {
+    "id": "12-full-backend-default-temp",
+    "command": "C:\\cov-run\\v17oct2\\venv\\Scripts\\python.exe -m pytest backend/tests -q -o cache_dir=C:\\cov-run\\v17oct2\\pytest-cache\\default-full",
+    "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w17v1",
+    "exit_code": 1,
+    "duration_seconds": 5.108005,
+    "mode": "REGRESSION_DEFAULT_TEMP",
+    "output": "reports/batches/BATCH-17/verification-evidence/12-full-backend-default-temp.txt"
+  },
+  {
+    "id": "13-full-backend-confined-temp",
+    "command": "C:\\cov-run\\v17oct2\\venv\\Scripts\\python.exe -m pytest backend/tests -q --basetemp C:\\cov-run\\v17oct2\\pytest-tmp -o cache_dir=C:\\cov-run\\v17oct2\\pytest-cache\\confined-full",
+    "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w17v1",
+    "exit_code": 0,
+    "duration_seconds": 5.260064,
+    "mode": "REGRESSION_CONFINED_TEMP_RETRY",
+    "output": "reports/batches/BATCH-17/verification-evidence/13-full-backend-confined-temp.txt"
+  },
+  {
+    "id": "14a-diff-check-review-commit",
+    "command": "git diff --check cc82915b260ac108137ada27ffda56d1b4b1bc3d 5cfbce2715fe543c28cda34856aa29e89ecc29eb",
+    "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w17v1",
+    "exit_code": 0,
+    "duration_seconds": 0.051181,
+    "mode": "SCOPE",
+    "output": "reports/batches/BATCH-17/verification-evidence/14a-diff-check-review-commit.txt"
+  },
+  {
+    "id": "14b-diff-check-base-to-review-tree",
+    "command": "git diff --check eb231c479cf07f314205d3b529bfcbad5a3b7217 5cfbce2715fe543c28cda34856aa29e89ecc29eb",
+    "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w17v1",
+    "exit_code": 0,
+    "duration_seconds": 0.075157,
+    "mode": "SCOPE",
+    "output": "reports/batches/BATCH-17/verification-evidence/14b-diff-check-base-to-review-tree.txt"
+  },
+  {
+    "id": "14c-diff-check-worktree",
+    "command": "git diff --check",
+    "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w17v1",
+    "exit_code": 0,
+    "duration_seconds": 0.082954,
+    "mode": "SCOPE",
+    "output": "reports/batches/BATCH-17/verification-evidence/14c-diff-check-worktree.txt"
+  },
+  {
+    "id": "15a-review-commit-name-status",
+    "command": "git diff --name-status cc82915b260ac108137ada27ffda56d1b4b1bc3d 5cfbce2715fe543c28cda34856aa29e89ecc29eb",
+    "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w17v1",
+    "exit_code": 0,
+    "duration_seconds": 0.042388,
+    "mode": "SCOPE",
+    "output": "reports/batches/BATCH-17/verification-evidence/15a-review-commit-name-status.txt"
+  },
+  {
+    "id": "15b-base-to-review-name-status",
+    "command": "git diff --name-status eb231c479cf07f314205d3b529bfcbad5a3b7217 5cfbce2715fe543c28cda34856aa29e89ecc29eb",
+    "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w17v1",
+    "exit_code": 0,
+    "duration_seconds": 0.068632,
+    "mode": "SCOPE_CONTEXT",
+    "output": "reports/batches/BATCH-17/verification-evidence/15b-base-to-review-name-status.txt"
+  },
+  {
+    "id": "15c-report-commit-name-status",
+    "command": "git diff --name-status 5cfbce2715fe543c28cda34856aa29e89ecc29eb 60df6c2958f269960c2b716cce70681ee2064d49",
+    "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w17v1",
+    "exit_code": 0,
+    "duration_seconds": 0.043326,
+    "mode": "SCOPE_CONTEXT",
+    "output": "reports/batches/BATCH-17/verification-evidence/15c-report-commit-name-status.txt"
+  },
+  {
+    "id": "16-status-short",
+    "command": "git status --short",
+    "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w17v1",
+    "exit_code": 0,
+    "duration_seconds": 0.050363,
+    "mode": "SCOPE",
+    "output": "reports/batches/BATCH-17/verification-evidence/16-status-short.txt"
+  }
+]

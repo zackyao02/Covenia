@@ -1,0 +1,11 @@
+Command: C:\cov-run\v17oct2\venv\Scripts\python.exe C:\Users\WONG Tsun Ming\Desktop\欧莱雅黑客松\w17v1\reports\batches\BATCH-17\verification-evidence\verification_runner.py
+Exit code: 1
+Elapsed: 0.210283 seconds
+Stage: verifier harness parse; no dependency installation or acceptance checks started
+
+File "reports/batches/BATCH-17/verification-evidence/verification_runner.py", line 29
+  raw string ended with a trailing backslash
+SyntaxError: unterminated string literal (detected at line 29)
+
+Verifier-only correction: record the command with forward slashes. No business
+code, schema, lock, implementation report, or implementation commit was changed.

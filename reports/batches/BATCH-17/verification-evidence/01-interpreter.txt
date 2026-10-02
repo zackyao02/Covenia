@@ -1,0 +1,4 @@
+C:\cov-run\v17oct2\venv\Scripts\python.exe
+3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]
+sys.prefix=C:\cov-run\v17oct2\venv
+sys.base_prefix=D:\python

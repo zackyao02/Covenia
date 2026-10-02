@@ -1,0 +1,8 @@
+{
+  "checked_at": "2026-10-02T14:44:54+08:00",
+  "fixed_reviewed_base_sha": "eb231c479cf07f314205d3b529bfcbad5a3b7217",
+  "integration_ref_at_initial_preflight": "eb231c479cf07f314205d3b529bfcbad5a3b7217",
+  "integration_ref_after_verification": "55b188b84832263a4284d4d2417b340799d75608",
+  "drifted_after_or_during_verification": true,
+  "action": "No ref reset, merge, integration, or re-verification against the drifted ref."
+}

@@ -1,0 +1,114 @@
+{
+  "result": "PASS",
+  "probe": "independent BATCH-17 projection and schema probe",
+  "schema_path": "C:\\Users\\WONG Tsun Ming\\Desktop\\ŷ���źڿ���\\w17v1\\schemas\\accountability-state.schema.json",
+  "positive_cases": [
+    {
+      "status": "ACTIVE",
+      "schema": "PASS",
+      "consumer_keys": [
+        "brand_action",
+        "consumer_action_required",
+        "latest_update_at",
+        "next_update_by",
+        "receipt_id",
+        "received_evidence",
+        "recovery_if_missed",
+        "status"
+      ],
+      "next_update_state_public": false,
+      "timing": {
+        "next_check_at": "2034-07-11T04:00:29+00:00",
+        "next_update_by": "2034-07-11T04:00:29+00:00",
+        "commits_next_update_at": "2034-07-11T04:00:29+00:00"
+      }
+    },
+    {
+      "status": "AT_RISK",
+      "schema": "PASS",
+      "consumer_keys": [
+        "brand_action",
+        "consumer_action_required",
+        "latest_update_at",
+        "next_update_by",
+        "receipt_id",
+        "received_evidence",
+        "recovery_if_missed",
+        "status"
+      ],
+      "next_update_state_public": false,
+      "timing": {
+        "next_check_at": "2034-07-11T04:00:29+00:00",
+        "next_update_by": "2034-07-11T04:00:29+00:00",
+        "commits_next_update_at": "2034-07-11T04:00:29+00:00"
+      }
+    },
+    {
+      "status": "COMPLETED",
+      "schema": "PASS",
+      "consumer_keys": [
+        "brand_action",
+        "consumer_action_required",
+        "latest_update_at",
+        "next_update_by",
+        "receipt_id",
+        "received_evidence",
+        "recovery_if_missed",
+        "status"
+      ],
+      "next_update_state_public": false,
+      "timing": {
+        "next_check_at": null,
+        "next_update_by": null,
+        "draft": null
+      }
+    }
+  ],
+  "negative_cases": [
+    {
+      "case": "terminal_future_next_check_at",
+      "result": "EXPECTED_REJECTION",
+      "error": "terminal receipt must not expose a future next update"
+    },
+    {
+      "case": "terminal_future_next_update_by",
+      "result": "EXPECTED_REJECTION",
+      "error": "terminal receipt must not expose a future next update"
+    },
+    {
+      "case": "terminal_notification_draft",
+      "result": "EXPECTED_REJECTION",
+      "error": "terminal receipt must not create a notification draft"
+    },
+    {
+      "case": "scheduled_next_check_at_mismatch",
+      "result": "EXPECTED_REJECTION",
+      "error": "receipt next_update_by must equal next_check_at"
+    },
+    {
+      "case": "scheduled_next_update_by_mismatch",
+      "result": "EXPECTED_REJECTION",
+      "error": "receipt next_update_by must equal next_check_at"
+    },
+    {
+      "case": "scheduled_commits_next_update_at_mismatch",
+      "result": "EXPECTED_REJECTION",
+      "error": "draft commits_next_update_at must equal next_check_at"
+    },
+    {
+      "case": "notification_text_time_mismatch",
+      "result": "EXPECTED_REJECTION",
+      "error": "notification text must contain commits_next_update_at"
+    },
+    {
+      "case": "public_next_update_state_extra_field",
+      "result": "EXPECTED_SCHEMA_REJECTION",
+      "error": "Additional properties are not allowed ('next_update_state' was unexpected)"
+    }
+  ],
+  "summary": {
+    "positive_states": 3,
+    "expected_runtime_rejections": 7,
+    "expected_schema_rejections": 1
+  }
+}

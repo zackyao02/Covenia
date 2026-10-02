@@ -1,0 +1,27 @@
+{
+  "required_exit_codes": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "all_required_passed": true,
+  "default_backend_exit_code": 1,
+  "default_temp_acl_failure": true,
+  "confined_backend_exit_code": 0,
+  "diagnostic_failure_ids": []
+}

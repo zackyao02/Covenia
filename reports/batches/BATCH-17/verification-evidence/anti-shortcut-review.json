@@ -1,0 +1,6 @@
+{
+  "passed": true,
+  "skip_or_xfail_markers_in_review_receipt_tests": [],
+  "fixture_id_markers_in_review_receipt_tree": [],
+  "notes": "The reviewed tests execute the projector and current JSON schema; the independent probe uses fresh AUDIT-V17 identifiers and fresh times."
+}

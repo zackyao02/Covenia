@@ -1,0 +1,21 @@
+{
+  "run_dir": "C:\\cov-run\\v17oct2",
+  "venv": "C:\\cov-run\\v17oct2\\venv",
+  "python": "C:\\cov-run\\v17oct2\\venv\\Scripts\\python.exe",
+  "python_version": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]",
+  "sys_prefix": "C:\\cov-run\\v17oct2\\venv",
+  "sys_base_prefix": "D:\\python",
+  "venv_direct_child_of_run_dir": true,
+  "longest_venv_path_length": 155,
+  "longest_venv_path": "C:\\cov-run\\v17oct2\\venv\\Lib\\site-packages\\pkg_resources\\tests\\data\\my-test-package_unpacked-egg\\my_test_package-1.0-py3.7.egg\\EGG-INFO\\dependency_links.txt",
+  "path_limit": 250,
+  "path_limit_passed": true,
+  "default_temp": "C:\\Users\\WONGTS~1\\AppData\\Local\\Temp",
+  "default_tmp": "C:\\Users\\WONGTS~1\\AppData\\Local\\Temp",
+  "confined_temp": "C:\\cov-run\\v17oct2\\tmp",
+  "confined_tmp": "C:\\cov-run\\v17oct2\\tmp",
+  "confined_pip_cache": "C:\\cov-run\\v17oct2\\pip-cache",
+  "default_backend_exit_code": 1,
+  "default_temp_acl_failure": true,
+  "confined_backend_exit_code": 0
+}

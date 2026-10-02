@@ -1,0 +1,12 @@
+Command: C:\cov-run\v17oct2\venv\Scripts\python.exe C:\Users\WONG Tsun Ming\Desktop\欧莱雅黑客松\w17v1\reports\batches\BATCH-17\verification-evidence\verification_runner.py
+Exit code: 1
+Elapsed: 0.283309 seconds
+Stage: verifier harness parse; no dependency installation or acceptance checks started
+
+File "reports/batches/BATCH-17/verification-evidence/verification_runner.py", line 226
+  rb"permission|access is denied|winerror 5|拒绝访问", lock_install.stdout, re.I
+  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+SyntaxError: bytes can only contain ASCII literal characters
+
+Verifier-only correction: use an ASCII-only bytes regex. No business code, schema,
+lock, implementation report, or implementation commit was changed.

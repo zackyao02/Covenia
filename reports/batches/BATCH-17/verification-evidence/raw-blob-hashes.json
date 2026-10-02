@@ -1,0 +1,177 @@
+{
+  "method": "SHA-256 over raw stdout bytes from git show <sha>:<path>",
+  "line_ending_label": "git blob LF",
+  "artifacts": [
+    {
+      "commit": "5cfbce2715fe543c28cda34856aa29e89ecc29eb",
+      "path": "MASTER_PLAN.md",
+      "sha256": "DBE269F06F4BBE3D8C1F915DD8E4A2D78E0E4F021ABB396270C8B846D5FFA74E",
+      "bytes": 317001,
+      "crlf_count": 0,
+      "basis": "git show 5cfbce2715fe543c28cda34856aa29e89ecc29eb:MASTER_PLAN.md raw blob bytes; git blob LF"
+    },
+    {
+      "commit": "5cfbce2715fe543c28cda34856aa29e89ecc29eb",
+      "path": "batches.json",
+      "sha256": "18DA555CE5ADEA5062F680837AEC8214158F58CBC1A918CF6BBC31EF48448E2E",
+      "bytes": 282066,
+      "crlf_count": 0,
+      "basis": "git show 5cfbce2715fe543c28cda34856aa29e89ecc29eb:batches.json raw blob bytes; git blob LF"
+    },
+    {
+      "commit": "5cfbce2715fe543c28cda34856aa29e89ecc29eb",
+      "path": "VERIFICATION_PROMPT_TEMPLATE.md",
+      "sha256": "6F581129A08AEE428CA2A958F7133265DAE68018CE4CAD261C9A1100D5167655",
+      "bytes": 6590,
+      "crlf_count": 0,
+      "basis": "git show 5cfbce2715fe543c28cda34856aa29e89ecc29eb:VERIFICATION_PROMPT_TEMPLATE.md raw blob bytes; git blob LF"
+    },
+    {
+      "commit": "5cfbce2715fe543c28cda34856aa29e89ecc29eb",
+      "path": "backend/requirements-dev.lock",
+      "sha256": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+      "bytes": 676,
+      "crlf_count": 0,
+      "basis": "git show 5cfbce2715fe543c28cda34856aa29e89ecc29eb:backend/requirements-dev.lock raw blob bytes; git blob LF"
+    },
+    {
+      "commit": "5cfbce2715fe543c28cda34856aa29e89ecc29eb",
+      "path": "backend/src/covenia_b/receipts/__init__.py",
+      "sha256": "F208D7BEDFFDE6AA2DC1E65880F42AA5BDCCEFB662A96D4C682BAF48EA0A78EF",
+      "bytes": 461,
+      "crlf_count": 0,
+      "basis": "git show 5cfbce2715fe543c28cda34856aa29e89ecc29eb:backend/src/covenia_b/receipts/__init__.py raw blob bytes; git blob LF"
+    },
+    {
+      "commit": "5cfbce2715fe543c28cda34856aa29e89ecc29eb",
+      "path": "backend/src/covenia_b/receipts/projection.py",
+      "sha256": "DE2C0F80FF36D41FD9AF6E8EA24358493286C7176E7C7D4CB8DEF0DC351EF8AD",
+      "bytes": 9398,
+      "crlf_count": 0,
+      "basis": "git show 5cfbce2715fe543c28cda34856aa29e89ecc29eb:backend/src/covenia_b/receipts/projection.py raw blob bytes; git blob LF"
+    },
+    {
+      "commit": "5cfbce2715fe543c28cda34856aa29e89ecc29eb",
+      "path": "backend/tests/receipts/test_projection.py",
+      "sha256": "72F5ECD502409C4E801164DEA3528CB9399555F96B5A3C99C7333C763345AC1C",
+      "bytes": 7694,
+      "crlf_count": 0,
+      "basis": "git show 5cfbce2715fe543c28cda34856aa29e89ecc29eb:backend/tests/receipts/test_projection.py raw blob bytes; git blob LF"
+    },
+    {
+      "commit": "5cfbce2715fe543c28cda34856aa29e89ecc29eb",
+      "path": "docs/contracts/b-contract-lock.json",
+      "sha256": "A605DF1E063B69ABF3E6DF43ACF4C5A07B69CA0925E2ADB116F296E12527FE3A",
+      "bytes": 9384,
+      "crlf_count": 0,
+      "basis": "git show 5cfbce2715fe543c28cda34856aa29e89ecc29eb:docs/contracts/b-contract-lock.json raw blob bytes; git blob LF"
+    },
+    {
+      "commit": "5cfbce2715fe543c28cda34856aa29e89ecc29eb",
+      "path": "schemas/accountability-state.schema.json",
+      "sha256": "631431A2722DE649DA47DC0850A58CDED018B7FEACDBF9DFE0D34C9580B097EA",
+      "bytes": 6570,
+      "crlf_count": 0,
+      "basis": "git show 5cfbce2715fe543c28cda34856aa29e89ecc29eb:schemas/accountability-state.schema.json raw blob bytes; git blob LF"
+    },
+    {
+      "commit": "eb231c479cf07f314205d3b529bfcbad5a3b7217",
+      "path": "reports/batches/BATCH-13/VERIFICATION_REPORT.json",
+      "sha256": "4052ED03BE8BF40454DA4298C15000DA3D6553835332EABD8E158710EB93F9EB",
+      "bytes": 10496,
+      "crlf_count": 0,
+      "basis": "git show eb231c479cf07f314205d3b529bfcbad5a3b7217:reports/batches/BATCH-13/VERIFICATION_REPORT.json raw blob bytes; git blob LF"
+    },
+    {
+      "commit": "60df6c2958f269960c2b716cce70681ee2064d49",
+      "path": "reports/batches/BATCH-17/IMPLEMENTATION_REPORT.json",
+      "sha256": "FFE3D01BC026D35A28E4E28F11CA01E9A3799C6FD7F531BCB43CD9E2E7451A1D",
+      "bytes": 28795,
+      "crlf_count": 0,
+      "basis": "git show 60df6c2958f269960c2b716cce70681ee2064d49:reports/batches/BATCH-17/IMPLEMENTATION_REPORT.json raw blob bytes; git blob LF"
+    },
+    {
+      "commit": "60df6c2958f269960c2b716cce70681ee2064d49",
+      "path": "reports/batches/BATCH-17/IMPLEMENTATION_REPORT.md",
+      "sha256": "135F6A7B5B4D291BD0D116D95CBAB9745EAE420ED6A7111F19F906B5CA6BCE61",
+      "bytes": 4632,
+      "crlf_count": 0,
+      "basis": "git show 60df6c2958f269960c2b716cce70681ee2064d49:reports/batches/BATCH-17/IMPLEMENTATION_REPORT.md raw blob bytes; git blob LF"
+    },
+    {
+      "commit": "60df6c2958f269960c2b716cce70681ee2064d49",
+      "path": "reports/batches/BATCH-17/commands.json",
+      "sha256": "5870FBEB66FBAD4D0F9A51C80F5AAE6E3CD9F9810FB9CA47BD627E6DA3301F58",
+      "bytes": 78327,
+      "crlf_count": 0,
+      "basis": "git show 60df6c2958f269960c2b716cce70681ee2064d49:reports/batches/BATCH-17/commands.json raw blob bytes; git blob LF"
+    },
+    {
+      "commit": "60df6c2958f269960c2b716cce70681ee2064d49",
+      "path": "reports/batches/BATCH-17/environment.json",
+      "sha256": "222641C34DD4183F269A1B53D4EE2ACCA61D808BB7F93891B218DA72E6CFCDC0",
+      "bytes": 5283,
+      "crlf_count": 0,
+      "basis": "git show 60df6c2958f269960c2b716cce70681ee2064d49:reports/batches/BATCH-17/environment.json raw blob bytes; git blob LF"
+    },
+    {
+      "commit": "60df6c2958f269960c2b716cce70681ee2064d49",
+      "path": "reports/batches/BATCH-17/pip-check.txt",
+      "sha256": "9261363B733079A641C2E4CC9BC46FFA1D8336945A87F807B6CF68847DBC9B09",
+      "bytes": 30,
+      "crlf_count": 0,
+      "basis": "git show 60df6c2958f269960c2b716cce70681ee2064d49:reports/batches/BATCH-17/pip-check.txt raw blob bytes; git blob LF"
+    },
+    {
+      "commit": "60df6c2958f269960c2b716cce70681ee2064d49",
+      "path": "reports/batches/BATCH-17/receipt-and-notification-vectors.json",
+      "sha256": "ABE8A87BF222F7A077254C4E0D6BE5CD8E30A247F9C13ED877AED167AA892C0A",
+      "bytes": 6344,
+      "crlf_count": 0,
+      "basis": "git show 60df6c2958f269960c2b716cce70681ee2064d49:reports/batches/BATCH-17/receipt-and-notification-vectors.json raw blob bytes; git blob LF"
+    },
+    {
+      "commit": "60df6c2958f269960c2b716cce70681ee2064d49",
+      "path": "reports/batches/BATCH-17/closeout_evidence.py",
+      "sha256": "7B3BC910C8681FFEF3538FDC94A74B17F7B8923D357B4C892615E6134F814D9A",
+      "bytes": 10625,
+      "crlf_count": 0,
+      "basis": "git show 60df6c2958f269960c2b716cce70681ee2064d49:reports/batches/BATCH-17/closeout_evidence.py raw blob bytes; git blob LF"
+    },
+    {
+      "commit": "60df6c2958f269960c2b716cce70681ee2064d49",
+      "path": "reports/batches/BATCH-17/closeout-evidence.json",
+      "sha256": "F37367571C75004D5A83A88876FDFCEDB5ECEF291A3644E8ADE8D0D772F407CE",
+      "bytes": 7380,
+      "crlf_count": 0,
+      "basis": "git show 60df6c2958f269960c2b716cce70681ee2064d49:reports/batches/BATCH-17/closeout-evidence.json raw blob bytes; git blob LF"
+    }
+  ],
+  "claim_checks": {
+    "MASTER_PLAN.md": {
+      "expected": "DBE269F06F4BBE3D8C1F915DD8E4A2D78E0E4F021ABB396270C8B846D5FFA74E",
+      "actual": "DBE269F06F4BBE3D8C1F915DD8E4A2D78E0E4F021ABB396270C8B846D5FFA74E",
+      "matches": true
+    },
+    "batches.json": {
+      "expected": "18DA555CE5ADEA5062F680837AEC8214158F58CBC1A918CF6BBC31EF48448E2E",
+      "actual": "18DA555CE5ADEA5062F680837AEC8214158F58CBC1A918CF6BBC31EF48448E2E",
+      "matches": true
+    },
+    "contract_lock": {
+      "expected": "A605DF1E063B69ABF3E6DF43ACF4C5A07B69CA0925E2ADB116F296E12527FE3A",
+      "actual": "A605DF1E063B69ABF3E6DF43ACF4C5A07B69CA0925E2ADB116F296E12527FE3A",
+      "matches": true
+    },
+    "schema": {
+      "expected": "631431A2722DE649DA47DC0850A58CDED018B7FEACDBF9DFE0D34C9580B097EA",
+      "actual": "631431A2722DE649DA47DC0850A58CDED018B7FEACDBF9DFE0D34C9580B097EA",
+      "matches": true
+    },
+    "requirements_lock": {
+      "expected": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+      "actual": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+      "matches": true
+    }
+  }
+}

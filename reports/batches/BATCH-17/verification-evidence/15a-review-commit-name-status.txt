@@ -1,0 +1,3 @@
+A	backend/src/covenia_b/receipts/__init__.py
+A	backend/src/covenia_b/receipts/projection.py
+A	backend/tests/receipts/test_projection.py

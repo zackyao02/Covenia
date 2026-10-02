@@ -1,0 +1,1 @@
+{"lock": "docs/contracts/b-contract-lock.json", "schemas_validated": 14, "strict": true, "vectors_validated": 18}

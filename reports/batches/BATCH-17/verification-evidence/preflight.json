@@ -1,0 +1,11 @@
+{
+  "commit_verified": "5cfbce2715fe543c28cda34856aa29e89ecc29eb",
+  "branch": "codex/covenia-batch-17-verify-1",
+  "base_branch_sha": "eb231c479cf07f314205d3b529bfcbad5a3b7217",
+  "merge_base": "cc82915b260ac108137ada27ffda56d1b4b1bc3d",
+  "schema_auth_is_review_ancestor": true,
+  "schema_auth_is_base_ancestor": true,
+  "review_is_report_parent": true,
+  "initial_worktree_clean_before_evidence": true,
+  "status_after_evidence": "?? reports/batches/BATCH-17/\n"
+}
