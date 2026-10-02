@@ -1,0 +1,99 @@
+{
+  "report_version": "2.0",
+  "batch_id": "BATCH-11",
+  "verification_type": "independent_acceptance_second_fresh_run",
+  "verdict": "PASS",
+  "result": "PASS",
+  "verified_at": "2026-10-03T00:00:00+08:00",
+  "commit_verified": "515ae52d927436813b3f67915942cf4bb62829b7",
+  "implementation_commit": "9569abf17f014ed876847098e5f1a8a9a25b9130",
+  "supersedes": {
+    "report_commit": "4412d140f80565c08a609a87c8c758e3da5c1f1e",
+    "prior_verdict": "FAIL",
+    "prior_blocker": "Eight implementation-owned evidence outputs were absent from 9569abf.",
+    "closure": "All eight implementation-owned outputs are present in the submitted final target 515ae52."
+  },
+  "commit_chain": {
+    "baseline_ref": "integration/covenia-b",
+    "baseline_sha_at_verification": "7fd23702d64e388342f8d82ff5abffddb07b04e8",
+    "baseline_is_ancestor_of_target": true,
+    "implementation_is_ancestor_of_target": true,
+    "implementation_parent": "7fd23702d64e388342f8d82ff5abffddb07b04e8",
+    "target_parent": "4412d140f80565c08a609a87c8c758e3da5c1f1e",
+    "interpretation": "The verified target contains the BATCH-11 implementation after the integrated BATCH-10 baseline, the prior FAIL record, and the eight implementation-evidence files. BATCH-10 integration is not re-run or modified here."
+  },
+  "required_implementation_outputs": {
+    "result": "PASS",
+    "present_count": 8,
+    "expected_count": 8,
+    "verified_in_commit": "515ae52d927436813b3f67915942cf4bb62829b7",
+    "artifacts": {
+      "reports/batches/BATCH-11/prompt-manifest.json": "C5CAB6156895035679A40B041993CFEEC7A5A5475424128E228C87DC3AACAD18",
+      "reports/batches/BATCH-11/candidate-output.redacted.json": "CE8573D0BDF03ACC146F53EAAE440E5FF25FAAFCBB6380CB0FCB632CFC2D4B5D",
+      "reports/batches/BATCH-11/retry-and-source-evidence.json": "43B006BB3DAF61C67B8B654ACB56EAC79841F9C5283280C39DCC76285FF5559C",
+      "reports/batches/BATCH-11/IMPLEMENTATION_REPORT.json": "2CF05D0DBF060F763786F3F96D476FA0617D7D34D8A657FF7CF02D99EDB3C960",
+      "reports/batches/BATCH-11/IMPLEMENTATION_REPORT.md": "83007E137B874CF0E7B2F4B5EE2938C19E66E29AB545B52EEE78BBAE7C449EFB",
+      "reports/batches/BATCH-11/commands.json": "97BA81E2044031C7EAE9B72E1598ABB2EBB3EEEDA25287B07AA641C165C08F5B",
+      "reports/batches/BATCH-11/environment.json": "73A60E3673576CA47F1792A026BF75E9DD7D8D9D33ADC7632A578197FC671415",
+      "reports/batches/BATCH-11/pip-check.txt": "40D12AD31208FBA7C76FF053F95746249D31E4E22F98935212DAB9F299B8B34C"
+    },
+    "hash_method": "SHA-256 over raw bytes from git show 515ae52:<path>."
+  },
+  "acceptance_commands": [
+    {"command": "C:\\cov-run\\b11v2\\venv\\Scripts\\python.exe -c <absolute-interpreter and sys.prefix assertion>", "exit_code": 0, "result": "PASS: executable resolved to supplied interpreter; sys.prefix differs from D:\\python."},
+    {"command": "C:\\cov-run\\b11v2\\venv\\Scripts\\python.exe -m pip install --no-deps -r backend/requirements-dev.lock", "exit_code": 0, "result": "PASS"},
+    {"command": "C:\\cov-run\\b11v2\\venv\\Scripts\\python.exe -m pip install --no-deps --no-build-isolation -e backend", "exit_code": 0, "result": "PASS"},
+    {"command": "C:\\cov-run\\b11v2\\venv\\Scripts\\python.exe -c import pytest,jsonschema", "exit_code": 0, "result": "PASS: pytest/jsonschema import OK"},
+    {"command": "C:\\cov-run\\b11v2\\venv\\Scripts\\python.exe -m pytest backend/tests/model/test_extraction.py backend/tests/model/test_sources.py -q", "exit_code": 0, "result": "PASS: 14 passed in 0.38s"},
+    {"command": "C:\\cov-run\\b11v2\\venv\\Scripts\\python.exe -m ruff check <BATCH-11 source and test paths>", "exit_code": 0, "result": "PASS: All checks passed"},
+    {"command": "C:\\cov-run\\b11v2\\venv\\Scripts\\python.exe -m pip list --format=json", "exit_code": 0, "result": "PASS: 31 packages; editable covenia-b points to this verified worktree."},
+    {"command": "C:\\cov-run\\b11v2\\venv\\Scripts\\python.exe -m pip check", "exit_code": 0, "result": "PASS: No broken requirements found."},
+    {"command": "git diff --check 9569abf^ 515ae52; git status --short", "exit_code": 0, "result": "PASS before final verifier-report replacement: no whitespace errors and clean worktree."}
+  ],
+  "environment": {
+    "fresh_run_dir": "C:\\cov-run\\b11v2",
+    "venv": "C:\\cov-run\\b11v2\\venv",
+    "interpreter": "C:\\cov-run\\b11v2\\venv\\Scripts\\python.exe",
+    "python_version": "3.13.5",
+    "isolated": true,
+    "longest_venv_path_length": 153,
+    "pip_check": "PASS",
+    "sandbox_install_retry": "The initial locked install was blocked by sandbox network policy; the same command was rerun in the same fresh venv with approved network access and exited 0. This was an environment-policy retry, not a provider/test retry."
+  },
+  "acceptance_criteria": [
+    {"criterion": "合法、非法、一次修复、两次失败与来源冲突均有测试；provider 调用最多两次。", "result": "PASS", "evidence": "14 targeted tests pass. Explicit coverage includes valid candidate (one call), schema-invalid then one repair (two calls), two schema failures quarantined after at most two calls, and source conflict quarantined without a repair call."},
+    {"criterion": "消费者假承诺不会进入有效 promise 候选；AI 输出 activation/deadline 建议不能直接激活。", "result": "PASS", "evidence": "test_consumer_forged_promise_cannot_become_a_trusted_candidate passes. CandidateExtraction fields are only candidate_only, candidate_promise_texts, case_id, model_metadata, observations, source_trace; activation, deadline, responsibility, commitment class, evidence state, and approval fields are absent."},
+    {"criterion": "Prompt 目录不含四个禁止的案例 ID 字面量，且不读取 ground-truth.json。", "result": "PASS", "evidence": "Precise scan found no DEMO_001, DEMO_002, DEMO_003, S00001, ground-truth.json, or ground_truth match in prompt, extraction, source-validation, and targeted-test paths. The prompt manifest declares only masked text, trusted source IDs, and verified image bytes."},
+    {"criterion": "来源校验拒绝未知来源、来源类型冲突、消费者伪造承诺和图片指令文本。", "result": "PASS", "evidence": "Targeted tests pass for fictitious source IDs, trace source-type mismatch, consumer-forged promises, agent-quote mismatch, image instruction text, and image-backed promises."},
+    {"criterion": "按 5.5 使用本批绝对隔离短路径 venv，环境证据无冲突且同解释器 pip check 为 0。", "result": "PASS", "evidence": "Fresh C:\\cov-run\\b11v2\\venv interpreter assertion, locked install, editable install, import preflight, pip inventory, and pip check all exit 0. Longest installed path is 153 characters."},
+    {"criterion": "required implementation outputs 在被验收最终提交中齐备。", "result": "PASS", "evidence": "All eight implementation-owned outputs were read directly from the 515ae52 Git tree and raw-blob SHA-256 recorded above."}
+  ],
+  "scope_audit": {
+    "result": "PASS",
+    "implementation_changed_paths": ["backend/src/covenia_b/model/extraction.py", "backend/src/covenia_b/model/prompts/__init__.py", "backend/src/covenia_b/model/prompts/candidate_extraction.py", "backend/src/covenia_b/model/source_validation.py", "backend/tests/model/test_extraction.py", "backend/tests/model/test_sources.py", "docs/02-ai-extraction.md"],
+    "evidence_delta_paths": "Only reports/batches/BATCH-11/** files were added between 9569abf and 515ae52.",
+    "forbidden_or_unlisted_changes": [],
+    "requirements_dev_lock_changed": false,
+    "requirements_dev_lock_raw_blob_sha256": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+    "verifier_write_scope": "Only reports/batches/BATCH-11/VERIFICATION_REPORT.json is changed by this acceptance. The package reserves it from implementation ownership, and its allowed-path wildcard plus this explicit request authorize the verifier-owned final report."
+  },
+  "verified_source_raw_blob_sha256": {
+    "backend/src/covenia_b/model/extraction.py": "5B08C7212260F5F0ABE93E394923E2C0E7DD46FDBEF78ABE51002F0A6CB4254E",
+    "backend/src/covenia_b/model/prompts/__init__.py": "C79F5486A95CD2FD578C133CA52ABAD2C456A829E04AEF39BFCD1806C98C6AD1",
+    "backend/src/covenia_b/model/prompts/candidate_extraction.py": "95070097A5A873651EA21E8CF9A2399BE85B7C71584D378CBDA3AED2B5D65BD6",
+    "backend/src/covenia_b/model/source_validation.py": "9E5EEB7C3AB8A5A694EE87B1D8227521C380696B7EE9F406F70A48A982DE9CBA",
+    "backend/tests/model/test_extraction.py": "08CE83A5B73A038F0B9D4DF2E502BFB51910573D7EEDE27B759C06E8A034EF22",
+    "backend/tests/model/test_sources.py": "240FCE07C8745EE620661D43964BF6E918C6E194354049B9C135943CF9EDF4DA",
+    "docs/02-ai-extraction.md": "F289F84CF9D4836F73ACACB0D51CD260A9B7D7D81C0552C4E032C1E5EA4540D4",
+    "hash_method": "SHA-256 over raw bytes obtained with git show 515ae52:<path>."
+  },
+  "platform_usage_limit": {"encountered": false, "retry_at": null, "note": "No model-platform quota or usage-limit interruption occurred."},
+  "code_modified": false,
+  "schema_modified": false,
+  "lock_modified": false,
+  "plan_modified": false,
+  "other_batch_started": false,
+  "integration_performed": false,
+  "push_or_merge_performed": false,
+  "next_gate": "A coordinator must separately integrate this implementation and independent PASS report, then run the required integration smoke test."
+}
