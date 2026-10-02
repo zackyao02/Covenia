@@ -1,0 +1,81 @@
+{
+  "batch_id": "BATCH-25",
+  "title": "物流事件纯状态机转移矩阵",
+  "implementation_commit": "38ab4a5947d8b12e27141f37e544e5bde42e5bb4",
+  "baseline": "c23c5fb77af2fc4fb1faeb5c0276485c0e44dec3",
+  "event_vocabulary": [
+    "SHIPMENT_NOT_PICKED_UP",
+    "SHIPMENT_PICKED_UP",
+    "SHIPMENT_DELIVERED"
+  ],
+  "time_rules": {
+    "event_high_watermark": "An event strictly earlier than the ledger high-watermark is rejected without state or audit mutation.",
+    "equal_time": "An equal-time event is legal only when the current milestone permits that event type.",
+    "next_update_projection": "open_obligation.next_check_at, service_progress_receipt.next_update_by, and proactive_notification_draft.commits_next_update_at use one projected instant.",
+    "past_promise_guard": "When an inherited check is at or before event_time, the reducer projects event_time plus 30 minutes.",
+    "post_event_check_delay_seconds": 1800
+  },
+  "transitions": [
+    {
+      "from_milestone": "AWAITING_CARRIER_PICKUP",
+      "event_type": "SHIPMENT_NOT_PICKED_UP",
+      "boundary": "event_time < deadline",
+      "result": {
+        "milestone": "AWAITING_CARRIER_PICKUP",
+        "obligation_status": "ON_TRACK",
+        "case_status": "IN_FULFILLMENT",
+        "experience_risk": "MEDIUM",
+        "follow_up_candidate": null,
+        "supervisor_escalation_candidate": null
+      }
+    },
+    {
+      "from_milestone": "AWAITING_CARRIER_PICKUP",
+      "event_type": "SHIPMENT_NOT_PICKED_UP",
+      "boundary": "event_time >= deadline",
+      "result": {
+        "milestone": "AWAITING_CARRIER_PICKUP",
+        "obligation_status": "AT_RISK",
+        "case_status": "AT_RISK",
+        "experience_risk": "HIGH",
+        "follow_up_candidate": "WAREHOUSE_FOLLOW_UP with HIGH priority",
+        "supervisor_escalation_candidate": "PROMISE_OVERDUE with HIGH priority"
+      }
+    },
+    {
+      "from_milestone": "AWAITING_CARRIER_PICKUP",
+      "event_type": "SHIPMENT_PICKED_UP",
+      "result": {
+        "milestone": "IN_TRANSIT",
+        "obligation_status": "ON_TRACK",
+        "case_status": "IN_FULFILLMENT",
+        "matching_fulfillment_commitment": "COMPLETED",
+        "resolved": false,
+        "follow_up_candidate": null,
+        "supervisor_escalation_candidate": null
+      }
+    },
+    {
+      "from_milestone": "IN_TRANSIT",
+      "event_type": "SHIPMENT_DELIVERED",
+      "result": {
+        "milestone": "DELIVERED",
+        "obligation_status": "COMPLETED",
+        "case_status": "RESOLVED",
+        "service_progress_status": "COMPLETED",
+        "service_progress_next_update_by": null,
+        "proactive_notification_draft": null
+      }
+    }
+  ],
+  "rejections_and_replays": {
+    "direct_delivery": "SHIPMENT_DELIVERED from AWAITING_CARRIER_PICKUP returns INVALID_EVENT_TRANSITION and leaves state and audit unchanged.",
+    "reverse_transition": "SHIPMENT_NOT_PICKED_UP from IN_TRANSIT returns INVALID_EVENT_TRANSITION and leaves state and audit unchanged.",
+    "delivery_before_pickup": "SHIPMENT_DELIVERED without an IN_TRANSIT milestone returns INVALID_EVENT_TRANSITION.",
+    "missing_obligation": "Any shipment event without open_obligation returns INVALID_EVENT_TRANSITION.",
+    "terminal_new_event": "A new event after RESOLVED or DELIVERED returns INVALID_EVENT_TRANSITION.",
+    "exact_replay": "A recorded event with the same event_id, event_type, and event_time returns the original outcome with replayed=true and no new audit entry.",
+    "conflicting_replay": "A recorded event_id with different immutable content returns IDEMPOTENCY_CONFLICT.",
+    "rejected_event_audit": "Rejected requests do not append audit history."
+  }
+}

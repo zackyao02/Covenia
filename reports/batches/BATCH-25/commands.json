@@ -1,0 +1,70 @@
+{
+  "batch_id": "BATCH-25",
+  "evidence_state": "RECOVERED_FROM_EXISTING_IMPLEMENTATION_AND_TEST_RECORDS",
+  "implementation_commit": "38ab4a5947d8b12e27141f37e544e5bde42e5bb4",
+  "baseline": "c23c5fb77af2fc4fb1faeb5c0276485c0e44dec3",
+  "interpreter": "C:\\cov-run\\b25-20261002\\venv\\Scripts\\python.exe",
+  "commands": [
+    {
+      "name": "interpreter_identity",
+      "command": "& \"C:\\cov-run\\b25-20261002\\venv\\Scripts\\python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"C:\\cov-run\\b25-20261002\\venv\\Scripts\\python.exe\"",
+      "exit_code": 0,
+      "output": "C:\\cov-run\\b25-20261002\\venv\\Scripts\\python.exe; Python 3.13.5"
+    },
+    {
+      "name": "install_locked_dev_dependencies",
+      "command": "& \"C:\\cov-run\\b25-20261002\\venv\\Scripts\\python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "exit_code": 0,
+      "output": "locked requirements installed"
+    },
+    {
+      "name": "install_editable_backend",
+      "command": "& \"C:\\cov-run\\b25-20261002\\venv\\Scripts\\python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "exit_code": 0,
+      "output": "covenia-b editable install completed"
+    },
+    {
+      "name": "required_imports",
+      "command": "& \"C:\\cov-run\\b25-20261002\\venv\\Scripts\\python.exe\" -c \"import pytest, jsonschema; from covenia_b.shipments import reduce_shipment_event; print('pytest/jsonschema import OK')\"",
+      "exit_code": 0,
+      "output": "pytest/jsonschema import OK"
+    },
+    {
+      "name": "shipment_tests",
+      "command": "& \"C:\\cov-run\\b25-20261002\\venv\\Scripts\\python.exe\" -m pytest backend/tests/shipments -q",
+      "exit_code": 0,
+      "output": "13 passed in 0.28s"
+    },
+    {
+      "name": "package_inventory",
+      "command": "& \"C:\\cov-run\\b25-20261002\\venv\\Scripts\\python.exe\" -m pip list --format=json",
+      "exit_code": 0,
+      "output": "31 installed distributions recorded"
+    },
+    {
+      "name": "pip_check",
+      "command": "& \"C:\\cov-run\\b25-20261002\\venv\\Scripts\\python.exe\" -m pip check",
+      "exit_code": 0,
+      "output": "No broken requirements found."
+    },
+    {
+      "name": "ruff",
+      "command": "& \"C:\\cov-run\\b25-20261002\\venv\\Scripts\\python.exe\" -m ruff check backend/src/covenia_b/shipments backend/tests/shipments",
+      "exit_code": 0,
+      "output": "All checks passed!"
+    },
+    {
+      "name": "git_diff_check",
+      "command": "git diff --check",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "name": "implementation_worktree_status_before_report",
+      "command": "git status --short --branch",
+      "exit_code": 0,
+      "output": "## codex/covenia-batch-25"
+    }
+  ],
+  "recovery_note": "These results were recorded during implementation validation and are being transcribed without rerunning or interrupting the acceptance environment."
+}

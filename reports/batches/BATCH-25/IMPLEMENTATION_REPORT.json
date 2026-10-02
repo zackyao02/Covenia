@@ -1,0 +1,93 @@
+{
+  "report_type": "IMPLEMENTATION_REPORT",
+  "batch_id": "BATCH-25",
+  "title": "物流事件纯状态机",
+  "status": "IMPLEMENTED_PENDING_INDEPENDENT_VERIFICATION",
+  "evidence_state": "REPORT_RESTORED_FROM_EXISTING_COMMIT_AND_TEST_RECORDS",
+  "implementation_commit": "38ab4a5947d8b12e27141f37e544e5bde42e5bb4",
+  "baseline": "c23c5fb77af2fc4fb1faeb5c0276485c0e44dec3",
+  "branch": "codex/covenia-batch-25",
+  "worktree": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-25",
+  "scope": {
+    "implementation_paths": [
+      "backend/src/covenia_b/shipments/**",
+      "backend/tests/shipments/**"
+    ],
+    "report_paths": [
+      "reports/batches/BATCH-25/shipment-transition-matrix.json",
+      "reports/batches/BATCH-25/IMPLEMENTATION_REPORT.json",
+      "reports/batches/BATCH-25/IMPLEMENTATION_REPORT.md",
+      "reports/batches/BATCH-25/commands.json",
+      "reports/batches/BATCH-25/environment.json",
+      "reports/batches/BATCH-25/pip-check.txt"
+    ],
+    "requirements_lock_changed": false,
+    "verification_report_created": false,
+    "other_batches_started": false,
+    "forbidden_paths_modified": false
+  },
+  "implementation_summary": [
+    "Added a pure in-memory shipment reducer with no HTTP, database, clock, or notification-send side effect.",
+    "Closed the event vocabulary to SHIPMENT_NOT_PICKED_UP, SHIPMENT_PICKED_UP, and SHIPMENT_DELIVERED.",
+    "Kept pre-deadline NOT_PICKED_UP ON_TRACK; promoted at-deadline or overdue events to AT_RISK with follow-up and supervisor candidates.",
+    "Made PICKED_UP move the shipment to IN_TRANSIT and complete the matching fulfillment promise without resolving the case.",
+    "Allowed DELIVERED only from IN_TRANSIT and emitted a terminal completed/resolved outcome.",
+    "Applied event high-watermark, equal-time legality, exact replay, conflicting event-id, terminal replay, and no-mutation rejection rules.",
+    "Synchronized the three next-update projections and prevented an already-past promise from being returned."
+  ],
+  "source_fingerprints": [
+    {
+      "path": "backend/src/covenia_b/shipments/__init__.py",
+      "git_blob_sha1": "0d91d00dc1afefd4d4b4937cf802956bca6b22cc",
+      "sha256": "d87d74376fe95c435a0decb9a9d0e5951d4329560983401351410f86a5770979"
+    },
+    {
+      "path": "backend/src/covenia_b/shipments/models.py",
+      "git_blob_sha1": "d7024b47319183c0ef98ee3395798c810ff80f88",
+      "sha256": "a784b5ad35d44109cf9eab6f9f1294d6c3862ee4870f2f3faf32c814d896e018"
+    },
+    {
+      "path": "backend/src/covenia_b/shipments/reducer.py",
+      "git_blob_sha1": "40ec1e973eba082fb25a4f2650cef324e48db1a3",
+      "sha256": "bffc9d2c8eb85401b4580e1453f5fe5f5c1b6709541b349c034e2f3be9eddb91"
+    },
+    {
+      "path": "backend/tests/shipments/test_reducer.py",
+      "git_blob_sha1": "2f5d258b5df1a3823cf1e0d6ef8c27123559c377",
+      "sha256": "8a7091252a2afd68a7ac2b5549304f540efd6a734923fbc34b0f4cb3e9eb364e"
+    }
+  ],
+  "test_results": {
+    "shipment_tests": {
+      "command": "python -m pytest backend/tests/shipments -q",
+      "result": "13 passed in 0.28s",
+      "exit_code": 0,
+      "evidence_mode": "recorded_not_rerun_during_report_retry"
+    },
+    "ruff": {
+      "result": "All checks passed!",
+      "exit_code": 0,
+      "evidence_mode": "recorded_not_rerun_during_report_retry"
+    },
+    "pip_check": {
+      "result": "No broken requirements found.",
+      "exit_code": 0,
+      "evidence_mode": "recorded_not_rerun_during_report_retry"
+    }
+  },
+  "dependency_evidence": {
+    "lock_path": "backend/requirements-dev.lock",
+    "changed": false,
+    "sha256": "177865457f146985726b02ef5c640363624e2a0c9b76b67fbed3929dada13d04",
+    "pip_check": "reports/batches/BATCH-25/pip-check.txt",
+    "environment": "reports/batches/BATCH-25/environment.json"
+  },
+  "handoff": {
+    "implementation_ready": true,
+    "independent_verification": "NOT_RUN_BY_IMPLEMENTER",
+    "integration_smoke": "NOT_RUN",
+    "next_batch_started": false,
+    "known_risk": "The frozen accountability-state schema permits terminal service_progress_receipt.next_update_by=null while the older domain DTO declares a non-null field. The reducer returns and validates the raw contract-shaped mapping; a later integration layer must persist ShipmentOutcome.as_contract() without changing the locked schema in this Batch."
+  },
+  "rollback": "Revert implementation commit 38ab4a5947d8b12e27141f37e544e5bde42e5bb4; do not write rejected events into history."
+}

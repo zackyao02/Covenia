@@ -1,0 +1,6 @@
+BATCH-25 isolated interpreter: C:\cov-run\b25-20261002\venv\Scripts\python.exe
+Command: python -m pip check
+Exit code: 0
+No broken requirements found.
+
+Evidence status: recovered from the implementation validation record; no dependency lock change was made.

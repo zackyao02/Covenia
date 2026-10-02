@@ -1,0 +1,40 @@
+{
+  "batch_id": "BATCH-25",
+  "evidence_state": "RECOVERED_FROM_EXISTING_IMPLEMENTATION_AND_TEST_RECORDS",
+  "recorded_at": "2026-10-02T20:48:11+08:00",
+  "worktree": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-25",
+  "branch": "codex/covenia-batch-25",
+  "run_directory": "C:\\cov-run\\b25-20261002",
+  "interpreter": "C:\\cov-run\\b25-20261002\\venv\\Scripts\\python.exe",
+  "python": {
+    "version": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]",
+    "sys_prefix": "C:\\cov-run\\b25-20261002\\venv",
+    "sys_base_prefix": "D:\\python",
+    "isolated_venv": true
+  },
+  "dependency_lock": {
+    "path": "backend/requirements-dev.lock",
+    "changed_from_baseline": false,
+    "append_only_change": false,
+    "git_blob_sha1_at_implementation_commit": "4c3f8019eda3a683a5cf424eaa5dbc69b0cf91ef",
+    "sha256_at_implementation_commit": "177865457f146985726b02ef5c640363624e2a0c9b76b67fbed3929dada13d04"
+  },
+  "installation": {
+    "lock_install": "pip install --no-deps -r backend/requirements-dev.lock",
+    "editable_install": "pip install --no-deps --no-build-isolation -e backend",
+    "pip_check_exit_code": 0,
+    "pip_check_output": "No broken requirements found."
+  },
+  "installed_packages": {
+    "pytest": "8.3.4",
+    "jsonschema": "4.25.0",
+    "ruff": "0.8.4",
+    "covenia-b": "0.0.0 editable",
+    "fastapi": "0.115.6",
+    "pydantic": "2.10.5",
+    "uvicorn": "0.34.0",
+    "pip": "25.1.1",
+    "package_count_from_pip_list": 31
+  },
+  "host_note": "The isolated venv was created at C:\\cov-run because the host's registry-less Python environment could not initialize native modules under the Unicode workspace path. The local pip bootstrap support was process-local and outside the repository; it is not an application dependency or tracked source change."
+}
