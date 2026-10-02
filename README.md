@@ -82,6 +82,8 @@ JEV 是可选能力。没有 TypeSafe API Key 时产品使用确定性规则降�
 - [实现状态](IMPLEMENTATION-STATUS.md)
 - [本轮验收记录](QA-ACCEPTANCE.md)
 - [团队交付指南](DELIVERY-GUIDE.md)
+- [比赛提交材料目录](submission/01-赛事提交核对.md)
+- [答辩演示稿](submission/Covenia-赛道一-答辩演示稿-2026-10.pptx)
 
 ## 明确边界
 
