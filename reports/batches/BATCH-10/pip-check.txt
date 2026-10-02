@@ -1,0 +1,5 @@
+command=C:\cov-run\b10oct2\venv\Scripts\python.exe -m pip check
+cwd=C:\Users\WONG Tsun Ming\Desktop\欧莱雅黑客松\w10
+exit_code=0
+duration_seconds=0.445
+No broken requirements found.

@@ -1,0 +1,69 @@
+{
+  "report_version": "1.0",
+  "batch_id": "BATCH-10",
+  "run_dir": "C:\\cov-run\\b10oct2",
+  "run_dir_length": 18,
+  "venv": "C:\\cov-run\\b10oct2\\venv",
+  "venv_direct_child": true,
+  "interpreter": "C:\\cov-run\\b10oct2\\venv\\Scripts\\python.exe",
+  "sys_executable": "C:\\cov-run\\b10oct2\\venv\\Scripts\\python.exe",
+  "sys_prefix": "C:\\cov-run\\b10oct2\\venv",
+  "sys_base_prefix": "D:\\python",
+  "python_version": "3.13.5",
+  "include_system_site_packages": false,
+  "pythonpath": null,
+  "longest_venv_path": "C:\\cov-run\\b10oct2\\venv\\Lib\\site-packages\\pkg_resources\\tests\\data\\my-test-package_unpacked-egg\\my_test_package-1.0-py3.7.egg\\EGG-INFO\\dependency_links.txt",
+  "longest_venv_path_length": 155,
+  "longest_path_gate": "PASS",
+  "install_commands": [
+    {
+      "command": "D:\\python\\python.exe -m venv C:\\cov-run\\b10oct2\\venv",
+      "exit_code": 0,
+      "duration_seconds": 9.9,
+      "note": "Host interpreter used only to create the isolated venv; all subsequent Python commands used the absolute venv interpreter."
+    },
+    {
+      "command": "C:\\cov-run\\b10oct2\\venv\\Scripts\\python.exe -m pip install --no-deps -r backend/requirements-dev.lock",
+      "exit_code": 0,
+      "duration_seconds": 26.151
+    },
+    {
+      "command": "C:\\cov-run\\b10oct2\\venv\\Scripts\\python.exe -m pip install --no-deps --no-build-isolation -e backend",
+      "exit_code": 0,
+      "duration_seconds": 2.798
+    }
+  ],
+  "pip_freeze": {
+    "command": "C:\\cov-run\\b10oct2\\venv\\Scripts\\python.exe -m pip freeze",
+    "exit_code": 2,
+    "duration_seconds": 0.506,
+    "status": "ENVIRONMENT_DIAGNOSTIC",
+    "failure": "pip 25.1.1 attempted to resolve the editable covenia-b VCS path and raised WinError 3 for the worktree administrative path C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\work\\repo2\\.git\\worktrees.",
+    "preserved": true,
+    "fallback_command": "C:\\cov-run\\b10oct2\\venv\\Scripts\\python.exe -m pip list --format=freeze",
+    "fallback_exit_code": 0,
+    "fallback_duration_seconds": 0.316,
+    "fallback_packages": [
+      "annotated-types==0.7.0", "anyio==4.8.0", "attrs==26.1.0", "build==1.2.2.post1", "click==8.1.8", "colorama==0.4.6", "covenia-b==0.0.0", "fastapi==0.115.6", "h11==0.14.0", "idna==3.10", "iniconfig==2.0.0", "jsonschema==4.25.0", "jsonschema-specifications==2025.9.1", "packaging==24.2", "pip==25.1.1", "pluggy==1.5.0", "pydantic==2.10.5", "pydantic-core==2.27.2", "pydantic-settings==2.7.1", "pyproject_hooks==1.2.0", "pytest==8.3.4", "python-dotenv==1.0.1", "referencing==0.37.0", "rpds-py==2026.6.3", "ruff==0.8.4", "setuptools==75.8.0", "sniffio==1.3.1", "starlette==0.41.3", "typing_extensions==4.12.2", "uvicorn==0.34.0", "wheel==0.45.1"
+    ]
+  },
+  "pip_list_json": {
+    "command": "C:\\cov-run\\b10oct2\\venv\\Scripts\\python.exe -m pip list --format=json",
+    "exit_code": 0,
+    "duration_seconds": 0.314,
+    "editable_project_location": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w10\\backend"
+  },
+  "pip_check": {
+    "command": "C:\\cov-run\\b10oct2\\venv\\Scripts\\python.exe -m pip check",
+    "exit_code": 0,
+    "duration_seconds": 0.445,
+    "stdout": "No broken requirements found."
+  },
+  "dependency_change": {
+    "changed": false,
+    "reason": "Standard-library HTTP transport; no new third-party dependency was required.",
+    "requirements_dev_lock_base_sha256": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+    "requirements_dev_lock_code_sha256": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+    "hash_method": "SHA-256 over raw bytes emitted by git cat-file blob for the base and code commits"
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "report_version": "1.0",
+  "batch_id": "BATCH-10",
+  "status": "PROTOCOL_ONLY",
+  "live_inference_performed": false,
+  "live_inference_owner": "BATCH-28",
+  "model": {
+    "model_id": "Qwen/Qwen2-VL-2B-Instruct",
+    "revision_required": true,
+    "revision_source": "COVENIA_QWEN_MODEL_REVISION and provider response body/header",
+    "identity_rule": "request and response must agree with the configured exact model_id and non-empty revision"
+  },
+  "endpoint": {
+    "style": "OpenAI-compatible HTTP POST /v1/chat/completions",
+    "accepted_schemes": ["http", "https"],
+    "endpoint_rule": "No URL credentials, query string, or fragment; API key is an Authorization header only",
+    "request_method": "POST",
+    "response_content_type": "application/json"
+  },
+  "request": {
+    "model": "Qwen/Qwen2-VL-2B-Instruct",
+    "model_revision": "exact configured deployment revision",
+    "messages": "system prompt plus one user message whose content is sanitized text followed by data URLs for verified image bytes",
+    "stream": false,
+    "response_format": {"type": "json_object"},
+    "metadata": ["run_id", "prompt_version"],
+    "image_transport": "data:<verified media type>;base64,<exact verified bytes>",
+    "excluded_from_wire_payload": ["browser image URLs", "raw case_id", "authorization secret", "server-owned decisions"]
+  },
+  "limits": {
+    "default_timeout_seconds": 30.0,
+    "timeout_scope": "serialization, semaphore wait, network request, and response parsing",
+    "default_max_concurrency": 4,
+    "default_max_images": 8,
+    "default_max_image_bytes": 8388608,
+    "default_max_total_image_bytes": 25165824,
+    "default_max_request_bytes": 37748736,
+    "default_max_response_bytes": 4194304,
+    "cancellation": "asyncio.Event or task cancellation; in-flight protocol operation is cancelled",
+    "image_validation": "handle media type, byte length, SHA-256, dimensions, pixels, per-image and total byte limits"
+  },
+  "response": {
+    "identity": ["model", "model_revision body or x-model-revision header"],
+    "candidate_content": "choices[0].message.content is a JSON object",
+    "candidate_keys_exactly": ["observations", "source_trace", "candidate_promise_texts"],
+    "forbidden_model_fields": ["responsibility", "evidence_status", "activation", "decision", "approved_at", "case_id"],
+    "usage": "complete prompt_tokens/completion_tokens or input_tokens/output_tokens is exact; absent or total-only is MISSING and remains None",
+    "raw_output": "returned in memory in ProviderResult only; never copied into audit metadata",
+    "run_metadata": ["run_id", "deployment_id", "model_id", "model_revision", "prompt_version", "request_sha256", "response_sha256", "image_sha256s", "status_code", "duration_ms", "usage_status"]
+  },
+  "error_mapping": {
+    "401_403": "ModelAuthenticationError / AUTHENTICATION_FAILED",
+    "429": "ModelRateLimitError / RATE_LIMITED with bounded retry_after_seconds",
+    "408_504_or_budget": "ModelRequestTimeout / TIMEOUT",
+    "connection_or_disconnect": "ModelConnectionError / CONNECTION_FAILED",
+    "explicit_cancel": "ModelRequestCancelled / CANCELLED",
+    "413_or_local_limit": "ModelRequestRejected / REQUEST_REJECTED",
+    "wrong_model_or_revision": "ModelIdentityMismatch / MODEL_IDENTITY_MISMATCH",
+    "malformed_json_or_candidate": "ModelResponseInvalid / MODEL_RESPONSE_INVALID",
+    "other_http": "ModelProviderHttpError / PROVIDER_HTTP_ERROR"
+  },
+  "caller_boundary": "Call through covenia_b.privacy.boundary.extract_with_privacy_boundary in service use cases; the adapter itself contains no business rule conclusion.",
+  "protocol_double_evidence": "backend/tests/model/test_qwen_provider.py covers exact bytes, 401, 429, timeout, cancellation, disconnect, missing usage, concurrency, queue deadline, limits, identity, and candidate-only parsing.",
+  "secrets": "COVENIA_QWEN_API_KEY is never written to report metadata, errors, or logs."
+}
