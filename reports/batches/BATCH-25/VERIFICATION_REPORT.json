@@ -1,0 +1,158 @@
+{
+  "report_version": "1.0",
+  "report_type": "INDEPENDENT_VERIFICATION_REPORT",
+  "batch_id": "BATCH-25",
+  "verdict": "PASS",
+  "verified_at": "2026-10-03T03:06:46+08:00",
+  "independent_context": true,
+  "commit_verified": "38ab4a5947d8b12e27141f37e544e5bde42e5bb4",
+  "reviewed_base_sha": "c23c5fb77af2fc4fb1faeb5c0276485c0e44dec3",
+  "implementation_evidence_commit": "e990a84676b3516edfc90d2dbbbefdbfbce38ead",
+  "reviewed_code_commits": [
+    "38ab4a5947d8b12e27141f37e544e5bde42e5bb4"
+  ],
+  "baseline": {
+    "requested_ref": "integration/covenia-b",
+    "observed_sha": "7fd23702d64e388342f8d82ff5abffddb07b04e8",
+    "common_base_with_reviewed_commit": "c23c5fb77af2fc4fb1faeb5c0276485c0e44dec3",
+    "topology": "The reviewed BATCH-25 commit and the current integration ref are sibling descendants of the common base. The common base contains the BATCH-14 and BATCH-17 verification reports; no merge, integration receipt, or integration smoke test was started by this verifier."
+  },
+  "dependency_checks": [
+    {
+      "batch_id": "BATCH-14",
+      "report": "reports/batches/BATCH-14/VERIFICATION_REPORT.json@c23c5fb77af2fc4fb1faeb5c0276485c0e44dec3",
+      "verdict": "PASS"
+    },
+    {
+      "batch_id": "BATCH-17",
+      "report": "reports/batches/BATCH-17/VERIFICATION_REPORT.json@c23c5fb77af2fc4fb1faeb5c0276485c0e44dec3",
+      "verdict": "PASS"
+    }
+  ],
+  "scope_audit": {
+    "reviewed_range": "c23c5fb77af2fc4fb1faeb5c0276485c0e44dec3..38ab4a5947d8b12e27141f37e544e5bde42e5bb4",
+    "changed_paths": [
+      "backend/src/covenia_b/shipments/__init__.py",
+      "backend/src/covenia_b/shipments/models.py",
+      "backend/src/covenia_b/shipments/reducer.py",
+      "backend/tests/shipments/test_reducer.py"
+    ],
+    "allowed_paths_passed": true,
+    "forbidden_path_changes": [],
+    "schema_changed": false,
+    "requirements_dev_lock_changed": false,
+    "reviewed_range_diff_check_exit_code": 0,
+    "worktree_diff_check_exit_code_before_verification_report": 0,
+    "source_git_blob_sha1": {
+      "backend/src/covenia_b/shipments/__init__.py": "0d91d00dc1afefd4d4b4937cf802956bca6b22cc",
+      "backend/src/covenia_b/shipments/models.py": "d7024b47319183c0ef98ee3395798c810ff80f88",
+      "backend/src/covenia_b/shipments/reducer.py": "40ec1e973eba082fb25a4f2650cef324e48db1a3",
+      "backend/tests/shipments/test_reducer.py": "2f5d258b5df1a3823cf1e0d6ef8c27123559c377"
+    }
+  },
+  "environment": {
+    "run_dir": "C:\\cov-run\\b25",
+    "interpreter": "C:\\cov-run\\b25\\venv\\Scripts\\python.exe",
+    "python_version": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]",
+    "sys_prefix": "C:\\cov-run\\b25\\venv",
+    "sys_base_prefix": "D:\\python",
+    "venv_direct_child_of_run_dir": true,
+    "longest_venv_path_length": 151,
+    "path_limit": 250,
+    "path_limit_passed": true,
+    "lock_install": "PASS after an initial sandbox-only ACL/network failure; the required retry in the same isolated environment exited 0.",
+    "editable_install_exit_code": 0,
+    "required_imports_exit_code": 0,
+    "pip_list_distribution_count": 31,
+    "pip_check_exit_code": 0,
+    "pip_check_output": "No broken requirements found."
+  },
+  "commands": [
+    {
+      "name": "interpreter_identity",
+      "command": "C:\\cov-run\\b25\\venv\\Scripts\\python.exe -c <identity assertion>",
+      "exit_code": 0
+    },
+    {
+      "name": "locked_dependencies",
+      "command": "C:\\cov-run\\b25\\venv\\Scripts\\python.exe -m pip install --no-deps -r backend/requirements-dev.lock",
+      "exit_code": 0
+    },
+    {
+      "name": "editable_backend",
+      "command": "C:\\cov-run\\b25\\venv\\Scripts\\python.exe -m pip install --no-deps --no-build-isolation -e backend",
+      "exit_code": 0
+    },
+    {
+      "name": "required_imports",
+      "command": "C:\\cov-run\\b25\\venv\\Scripts\\python.exe -c import pytest, jsonschema",
+      "exit_code": 0
+    },
+    {
+      "name": "shipment_tests",
+      "command": "C:\\cov-run\\b25\\venv\\Scripts\\python.exe -m pytest backend/tests/shipments -q -p no:cacheprovider",
+      "exit_code": 0,
+      "output": "13 passed in 0.43s"
+    },
+    {
+      "name": "package_inventory",
+      "command": "C:\\cov-run\\b25\\venv\\Scripts\\python.exe -m pip list --format=json",
+      "exit_code": 0
+    },
+    {
+      "name": "pip_check",
+      "command": "C:\\cov-run\\b25\\venv\\Scripts\\python.exe -m pip check",
+      "exit_code": 0
+    },
+    {
+      "name": "diff_checks",
+      "command": "git diff --check c23c5fb77af2fc4fb1faeb5c0276485c0e44dec3 38ab4a5947d8b12e27141f37e544e5bde42e5bb4; git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "criteria": [
+    {
+      "id": "B25-V-001",
+      "criterion": "Direct delivery, reverse order, NOT_PICKED_UP after IN_TRANSIT, and events without an open obligation do not mutate state or audit history.",
+      "result": "PASS",
+      "evidence": "test_direct_delivery_is_rejected_without_state_or_audit_mutation; test_reverse_events_and_not_picked_after_in_transit_are_rejected_unchanged; test_event_without_an_obligation_is_rejected_without_audit_mutation"
+    },
+    {
+      "id": "B25-V-002",
+      "criterion": "PICKED_UP enters IN_TRANSIT without RESOLVED; only DELIVERED from IN_TRANSIT completes the case; an old dispatch deadline does not make in-transit work overdue.",
+      "result": "PASS",
+      "evidence": "test_pickup_moves_to_in_transit_without_resolving_and_completes_dispatch_promise; test_delivered_only_from_in_transit_and_has_a_terminal_receipt"
+    },
+    {
+      "id": "B25-V-003",
+      "criterion": "Event high-watermark rejects older events, permits a legal equal-time event, preserves exact replay after completion, and rejects conflicting event IDs without audit mutation.",
+      "result": "PASS",
+      "evidence": "test_high_watermark_rejects_reverse_time_but_equal_time_legal_transition_is_accepted; test_exact_event_replay_survives_completion_without_another_audit_entry; test_same_event_id_with_different_content_is_an_idempotency_conflict"
+    },
+    {
+      "id": "B25-V-004",
+      "criterion": "Normal and risk NOT_PICKED_UP branches independently replay their first outcome; next-check, receipt next_update_by, and notification commitment remain synchronized, and elapsed updates are replaced by a future value.",
+      "result": "PASS",
+      "evidence": "test_not_picked_up_before_deadline_stays_on_track_and_synchronizes_projections; test_overdue_not_picked_up_escalates_and_replaces_an_elapsed_next_check; test_normal_and_risk_branches_each_replay_their_first_outcome"
+    },
+    {
+      "id": "B25-V-005",
+      "criterion": "The required absolute isolated interpreter, import preflight, locked dependency setup, editable package setup, package inventory, and pip check all pass with a venv path under the limit.",
+      "result": "PASS",
+      "evidence": "environment and commands in this report"
+    }
+  ],
+  "usage_limit": {
+    "encountered": false,
+    "retry_at": null,
+    "note": "No platform usage-limit response occurred; no retry time is applicable."
+  },
+  "findings": [],
+  "blockers": [],
+  "code_modified": false,
+  "schema_modified": false,
+  "lock_modified": false,
+  "other_batches_started": false,
+  "integration_started": false,
+  "next_step": "A coordinator may separately integrate this independently accepted commit and run its required integration smoke test. This verification is not an integration receipt."
+}
