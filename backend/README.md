@@ -37,11 +37,15 @@ BC Core 接口不直接依赖 JEV。新增的 `backend/decision/` 只作为 Deci
 ```dotenv
 TYPESAFE_API_KEY=你的真实key
 TYPESAFE_API_URL=https://api.typesafe.ai/v1/systemone
-TYPESAFE_MODEL_VERSION=systemone
+TYPESAFE_MODEL_VERSION=jev-latest
 TYPESAFE_TIMEOUT_SECONDS=10
 ```
 
 `.env` 已加入 `.gitignore`，不要把真实 key 提交到 GitHub。未配置 key、TypeSafe 超时或返回异常时，接口会继续返回规则降级结果：`decision_advisory.status = "FALLBACK"`，不会阻断客服工作台。
+
+2026-10-02 更新：JEV 输入先对手机号、账号、明确标记的地址和健康描述脱敏，治理审计记录 `pii_masked_count`；此掩码尚需真实数据验证覆盖率。只有符合官方 Noul/Choice 响应形状的结果才标记 `READY`。降级时情绪趋势为 `UNKNOWN`、概率为 `null`，规则建议不带虚构的模型概率。阈值尚未经业务数据校准。缓存包含消息内容与问题版本，成功结果保留五分钟，失败结果十五秒后可重试。
+
+发送检查支持可选 `draft_reply`；仅明确的进度回复可直接在本地记录，索证/结案继续受规则控制，新承诺及未知文本需要人工确认。当前识别器是保守关键词规则，未实现通用语义识别。人工修改的 `consumer_reply`、`executor`、`next_check_at` 写入批准结果、服务回执和审计；人工确认不能绕过硬规则。切换已有案件会保留其服务状态；状态仍在进程内保存，重启后不保留。
 
 运行验证：
 

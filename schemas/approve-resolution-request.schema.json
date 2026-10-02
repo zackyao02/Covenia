@@ -15,6 +15,7 @@
       "additionalProperties": false,
       "properties": {
         "executor": {"enum": ["BRAND", "WAREHOUSE", "LOGISTICS_PROVIDER"]},
+        "consumer_reply": {"type": "string", "minLength": 1, "maxLength": 5000},
         "next_check_at": {"type": "string", "format": "date-time"},
         "recovery_if_missed": {"type": "string", "minLength": 1}
       }

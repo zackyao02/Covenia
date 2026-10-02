@@ -12,6 +12,14 @@
     "rule_priority": {"enum": [400, 350, 300, 100, 0]},
     "accountability_state": {"$ref": "accountability-state.schema.json"},
     "challenge_mode": {"type": "boolean"},
+    "draft_assessment": {
+      "type": ["object", "null"], "additionalProperties": false,
+      "required": ["kind", "requires_confirmation", "explanation", "evaluated_text"],
+      "properties": {
+        "kind": {"enum": ["EVIDENCE_REQUEST", "PROGRESS_UPDATE", "NEW_COMMITMENT", "CLOSE_CASE", "UNCLASSIFIED"]},
+        "requires_confirmation": {"type": "boolean"}, "explanation": {"type": "string"}, "evaluated_text": {"type": "string"}
+      }
+    },
     "fact_trace": {
       "type": "object",
       "additionalProperties": false,

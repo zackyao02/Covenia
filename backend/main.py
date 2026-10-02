@@ -15,6 +15,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from backend.decision import decision_advisory_for
+from backend.draft_review import assess_draft
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -39,6 +40,7 @@ app.add_middleware(
 
 states: dict[str, dict[str, Any]] = {}
 analyses: dict[str, dict[str, Any]] = {}
+analyzed_inputs: dict[str, dict[str, Any]] = {}
 shipment_stages: dict[str, str] = {}
 last_event_times: dict[str, datetime] = {}
 idempotency: dict[tuple[str, str, str], tuple[str, dict[str, Any]]] = {}
@@ -78,6 +80,12 @@ def canonical(value: dict[str, Any]) -> str:
 
 def parse_time(value: str) -> datetime:
     return datetime.fromisoformat(value)
+
+
+def service_time_for(case_id: str) -> str:
+    baseline = parse_time(SERVICE_CLOCK)
+    latest = last_event_times.get(case_id, baseline)
+    return max(baseline, latest).isoformat()
 
 
 def find_case(case_id: str) -> dict[str, Any] | None:
@@ -187,6 +195,7 @@ def analyze(case_id: str, case_input: dict[str, Any], evaluation_time: str, rid:
     logger.info("governance_record request_id=%s case_id=%s pii_masked_count=%s", rid, case_id, pii_count)
     states[case_id] = clone(response["accountability_state"])
     analyses[case_id] = clone(response)
+    analyzed_inputs[case_id] = clone(case_input)
     shipment_stages.setdefault(case_id, "AWAITING_PICKUP")
     return response
 
@@ -197,7 +206,9 @@ def state_for(case_id: str, rid: str) -> dict[str, Any] | None:
     source = find_case(case_id)
     if source is None:
         return None
-    return analyze(case_id, source, source.get("evaluation_time", SERVICE_CLOCK), rid, False)["accountability_state"]
+    first = (source.get("evidence_images") or [{}])[0]
+    variant = first.get("declared_view_type") == "PACKAGE_CONTEXT" or "blur" in first.get("file_name", "").lower()
+    return analyze(case_id, source, source.get("evaluation_time", SERVICE_CLOCK), rid, variant)["accountability_state"]
 
 
 def analysis_for(case_id: str, rid: str) -> dict[str, Any] | None:
@@ -241,7 +252,23 @@ def resolution(state: dict[str, Any], candidate: str, rule_id: str) -> dict[str,
 def evaluate(state: dict[str, Any], body: dict[str, Any]) -> dict[str, Any]:
     challenge_mode = body.get("challenge_mode") is True
     action = body["prepared_action"].get("action_type")
+    draft_assessment = None
+    draft_actions: list[str] = []
+    if isinstance(body.get("draft_reply"), str):
+        draft_assessment = assess_draft(body["draft_reply"])
+        draft_actions = draft_assessment.pop("_detected_actions", [])
+        action = "CHECK_REPLACEMENT_PROGRESS"
+        if "EVIDENCE_REQUEST" in draft_actions:
+            action = "ASK_EVIDENCE"
+        if "CLOSE_CASE" in draft_actions:
+            action = "CLOSE_CASE"
+        elif draft_assessment["kind"] == "PROGRESS_UPDATE":
+            action = "CHECK_PROGRESS"
+        elif draft_assessment["kind"] == "NEW_COMMITMENT":
+            action = "MAKE_COMMITMENT"
     requested_scope = body["prepared_action"].get("requested_scope")
+    if draft_assessment is not None:
+        requested_scope = state["current_scope"]
     overrides = body.get("challenge_overrides", {}) if challenge_mode else {}
     if overrides.get("requested_scope"):
         requested_scope = overrides["requested_scope"]
@@ -252,9 +279,13 @@ def evaluate(state: dict[str, Any], body: dict[str, Any]) -> dict[str, Any]:
     elif overrides.get("requested_scope") and overrides["requested_scope"].get("sku_id") != state["current_scope"]["sku_id"]:
         evidence_status = "MISMATCHED"
     scope_match = same_scope(requested_scope, state["current_scope"])
-    e1 = action == "ASK_EVIDENCE" and evidence_status == "VALID" and scope_match is True
+    draft_evidence_request = "EVIDENCE_REQUEST" in draft_actions
+    draft_close = "CLOSE_CASE" in draft_actions
+    e1 = (action == "ASK_EVIDENCE" or draft_evidence_request) and evidence_status == "VALID" and scope_match is True
     h1 = evidence_status == "NEED_HUMAN_REVIEW" or state["current_scope"]["issue_type"] == "ADVERSE_REACTION"
-    p0 = action == "CLOSE_CASE" and "CLOSE_BEFORE_RESOLUTION" in state["prohibited_actions"]
+    p0 = (action == "CLOSE_CASE" or draft_close) and "CLOSE_BEFORE_RESOLUTION" in state["prohibited_actions"]
+    if draft_assessment and draft_assessment["kind"] == "UNCLASSIFIED" and draft_actions:
+        action = "+".join(draft_actions)
     if p0:
         rule_id, priority, decision, suppressed = "P0_PROHIBITED_ACTION", 400, "INTERVENE", (["H1"] if h1 else [])
     elif h1:
@@ -266,10 +297,20 @@ def evaluate(state: dict[str, Any], body: dict[str, Any]) -> dict[str, Any]:
     else:
         rule_id, priority, decision, suppressed = "E0_NO_RULE_MATCHED", 0, "ALLOW", []
     candidate = "HUMAN_EVIDENCE_REVIEW" if rule_id == "H1" else "ASK_CURRENT_SCOPE_EVIDENCE" if rule_id == "E2" else "CHECK_REPLACEMENT_FULFILLMENT"
-    return {"case_id": state["case_id"], "decision": decision, "rule_id": rule_id, "rule_priority": priority, "accountability_state": clone(state),
+    result = {"case_id": state["case_id"], "decision": decision, "rule_id": rule_id, "rule_priority": priority, "accountability_state": clone(state),
             "challenge_mode": challenge_mode, "fact_trace": {"evidence_status": evidence_status, "prepared_action": action, "scope_match": scope_match, "active_promise_count": len(state["active_commitments"]), "suppressed_rule_ids": suppressed},
             "reason": {"P0_PROHIBITED_ACTION": "当前不能结案，已有未完成的服务责任。", "H1": "当前证据存在不确定性，需要人工复核。", "E1": "已有与当前范围一致的有效证据，不能重复索取。", "E2": "现有证据属于不同范围，可以补充当前范围所需材料。", "E0_NO_RULE_MATCHED": "当前动作未命中阻断规则。"}[rule_id],
             "resolution_path": resolution(state, candidate, rule_id), "runtime_metrics": {"input_tokens": 238, "output_tokens": 74, "inference_latency_ms": 36, "rule_substitution_count": 1}}
+    if draft_assessment is not None:
+        result["draft_assessment"] = draft_assessment
+        if draft_assessment["requires_confirmation"]:
+            result["resolution_path"]["requires_human_approval"] = True
+            if draft_assessment["kind"] == "UNCLASSIFIED" and "NEW_COMMITMENT" not in draft_actions:
+                result["resolution_path"]["creates_obligation"] = False
+                result["resolution_path"]["compiled_service_responsibility"] = None
+        elif draft_assessment["kind"] == "PROGRESS_UPDATE" and decision == "ALLOW":
+            result["resolution_path"]["requires_human_approval"] = False
+    return result
 
 
 async def body_or_error(request: Request, rid: str) -> tuple[dict[str, Any] | None, JSONResponse | None]:
@@ -346,22 +387,26 @@ def source_evidence(case_input: dict[str, Any], state: dict[str, Any]) -> list[d
 def deadline_state_for(case_id: str, state: dict[str, Any]) -> dict[str, Any]:
     obligation = state.get("open_obligation") or {}
     commitment = state.get("active_commitments", [{}])[0] if state.get("active_commitments") else {}
-    deadline = obligation.get("deadline") or commitment.get("deadline") or SERVICE_CLOCK
+    deadline = obligation.get("deadline") or commitment.get("deadline")
     next_check = obligation.get("next_check_at") or deadline
+    now = parse_time(service_time_for(case_id))
+    due = parse_time(deadline) if deadline else None
     if state.get("case_status") == "RESOLVED" or obligation.get("status") == "COMPLETED":
         status, monitor_status = "CLOSED", "CLOSED"
     elif state.get("case_status") == "AT_RISK" or obligation.get("status") == "AT_RISK":
         status, monitor_status = "ESCALATED", "RUNNING"
-    elif obligation:
+    elif due is not None and now >= due:
+        status, monitor_status = "OVERDUE", "RUNNING"
+    elif obligation or commitment:
         status, monitor_status = "SCHEDULED", "WAITING"
     else:
-        status, monitor_status = "SCHEDULED", "WAITING"
+        status, monitor_status = "CLOSED", "CLOSED"
     return {
         "case_id": case_id,
         "promise_id": commitment.get("promise_type") or obligation.get("obligation_type") or "NO_ACTIVE_PROMISE",
         "status": status,
-        "deadline": deadline,
-        "next_check_at": next_check,
+        "deadline": deadline or SERVICE_CLOCK,
+        "next_check_at": next_check or SERVICE_CLOCK,
         "monitor_status": monitor_status,
         "escalated_once": case_id in deadline_escalations or status == "ESCALATED",
         "risk_state_id": f"RISK_{case_id}",
@@ -442,14 +487,30 @@ def customer_state_for(case_id: str, rid: str) -> dict[str, Any] | None:
     analysis = analysis_for(case_id, rid)
     if analysis is None:
         return None
-    state = analysis["accountability_state"]
-    case_input = find_case(case_id) or {"conversation": [], "evidence_images": [], "service_tickets": [], "order": {}, "evaluation_time": SERVICE_CLOCK}
+    state = states.get(case_id, analysis["accountability_state"])
+    case_input = analyzed_inputs.get(case_id) or find_case(case_id) or {"conversation": [], "evidence_images": [], "service_tickets": [], "order": {}, "evaluation_time": SERVICE_CLOCK}
     journey = analysis["extracted_journey"]
     source = source_evidence(case_input, state)
     risk = risk_state_for(case_id, state, case_input)
     deadline = deadline_state_for(case_id, state)
-    lightweight_decision = customer_decision_for(case_id, state)
-    advisory = lightweight_decision.get("decision_advisory")
+    prepared = demo_record(case_id).get("prepared_action") if demo_record(case_id) else None
+    prepared = prepared or {"action_id": f"STATE_{case_id}", "action_type": "CHECK_PROGRESS", "requested_scope": state["current_scope"]}
+    lightweight_decision = evaluate(state, {"case_id": case_id, "prepared_action": prepared})
+    advisory = decision_advisory_for(case_id, state, case_input, deadline, now=service_time_for(case_id))
+    probability = advisory["emotion"]["probability"]
+    trend = advisory["emotion"]["trend"]
+    next_action = lightweight_decision["resolution_path"]["task_prefill"]["summary"]
+    if state.get("case_status") == "RESOLVED":
+        next_action = "服务已完成，保留回执供消费者查看。"
+        guidance = "先确认处理已经完成，再提供服务回执，无需消费者继续操作。"
+    elif state["evidence_status"] == "MISMATCHED":
+        guidance = "说明已有图片覆盖的商品范围，仅补充当前问题缺少的证据。"
+    elif state["evidence_status"] == "NEED_HUMAN_REVIEW":
+        guidance = "先说明已收到图片并安排人工复核，不直接要求重复上传。"
+    else:
+        guidance = "先承认已收到材料，再说明品牌侧的下一步处理与更新时间。"
+    if trend == "WORSENING":
+        guidance = "先回应消费者已经付出的沟通成本，避免要求重复解释。" + guidance
     facts = [
         {"fact_id": f"FACT_{index+1}", "statement": fact["statement"], "source_evidence_ids": fact.get("source_ids", [])}
         for index, fact in enumerate(state.get("experience_gap_diagnosis", {}).get("traceable_service_facts", []))
@@ -464,6 +525,7 @@ def customer_state_for(case_id: str, rid: str) -> dict[str, Any] | None:
         missing.append("人工复核结论。")
     return {
         "case_id": case_id,
+        "service_clock": service_time_for(case_id),
         "facts": facts,
         "evidence": {
             "status": state["evidence_status"],
@@ -479,17 +541,18 @@ def customer_state_for(case_id: str, rid: str) -> dict[str, Any] | None:
             "source_evidence_ids": journey["journey_understanding"].get("source_ids", []),
         },
         "emotion": {
-            "current_label": "FRUSTRATED" if state.get("experience_risk") == "HIGH" else "CONFUSED" if state.get("evidence_status") != "VALID" else "ANXIOUS",
-            "trend": advisory["emotion"]["trend"] if advisory else ("WORSENING" if state.get("experience_risk") == "HIGH" else "STABLE"),
+            "current_label": "UNKNOWN",
+            "trend": trend,
             "cause": journey["journey_understanding"]["service_cause"],
-            "communication_guidance": "先承认已收到材料，再给出品牌侧下一步，不把责任推回消费者。",
-            "source_evidence_ids": journey["journey_understanding"].get("source_ids", []),
-            "confidence": advisory["emotion"]["probability"] if advisory else 0.78,
+            "communication_guidance": guidance,
+            "source_evidence_ids": [item["source_id"] for item in source if item["source_type"] == "CHAT"],
+            "confidence": max(probability, 1 - probability) if probability is not None and trend != "UNKNOWN" else 0,
+            "probability": probability,
             "risk_scoring_allowed": False,
         },
         "effort": effort_for(case_input),
         "actions": {
-            "next_best_action": lightweight_decision["next_action"],
+            "next_best_action": next_action,
             "blocked_actions": state.get("prohibited_actions", []),
             "allowed_actions": ["CHECK_REPLACEMENT_PROGRESS", "CREATE_FOLLOW_UP_TASK"],
             "human_review_actions": ["HUMAN_EVIDENCE_REVIEW"] if state.get("evidence_status") == "NEED_HUMAN_REVIEW" else [],
@@ -499,7 +562,7 @@ def customer_state_for(case_id: str, rid: str) -> dict[str, Any] | None:
             "deadline_state": deadline,
         },
         "risk": risk,
-        "decision": lightweight_decision,
+        "decision": {"case_id": case_id, "decision": lightweight_decision["decision"], "reason": lightweight_decision["reason"], "rule_id": lightweight_decision["rule_id"], "jev_assessment_id": advisory.get("assessment_id"), "decision_advisory": advisory, "source_evidence_ids": lightweight_decision["resolution_path"]["evidence_basis"], "next_action": next_action, "human_review_required": lightweight_decision["decision"] == "HUMAN_REVIEW" or lightweight_decision["resolution_path"]["requires_human_approval"]},
         "decision_advisory": advisory,
         "resolution": {
             "status": "RESOLVED" if state.get("case_status") == "RESOLVED" else "AT_RISK" if state.get("case_status") == "AT_RISK" else "IN_PROGRESS" if state.get("open_obligation") else "DRAFTED",
@@ -518,6 +581,8 @@ def priority_states(rid: str) -> list[dict[str, Any]]:
         case_input = find_case(case_id)
         if state is None or case_input is None:
             continue
+        if state.get("case_status") == "RESOLVED":
+            continue
         risk = risk_state_for(case_id, state, case_input)
         deadline = deadline_state_for(case_id, state)
         score = risk["score"] + (25 if deadline["status"] in ("OVERDUE", "ESCALATED") else 0)
@@ -528,7 +593,7 @@ def priority_states(rid: str) -> list[dict[str, Any]]:
             "band": band,
             "priority_score": score,
             "queue_reasons": [factor["reason"] for factor in risk["factors"][:3]] or ["当前无高风险信号"],
-            "next_best_action": customer_decision_for(case_id, state)["next_action"],
+            "next_best_action": evaluate(state, {"case_id": case_id, "prepared_action": (demo_record(case_id) or {}).get("prepared_action") or {"action_type": "CHECK_PROGRESS", "requested_scope": state["current_scope"]}})["resolution_path"]["task_prefill"]["summary"],
         })
     rows.sort(key=lambda item: item["priority_score"], reverse=True)
     for index, row in enumerate(rows, start=1):
@@ -583,7 +648,11 @@ async def analyze_case(request: Request) -> JSONResponse:
         parse_time(evaluation_time)
     except (TypeError, ValueError):
         return error("SCHEMA_INVALID", "evaluation_time 必须是 ISO 8601 时间。", rid, 400)
-    data = analyze(case_id, case_input, evaluation_time, rid, challenge_mode)
+    if case_id in states and case_id in analyses and analyzed_inputs.get(case_id) == case_input:
+        data = clone(analyses[case_id])
+        data["accountability_state"] = clone(states[case_id])
+    else:
+        data = analyze(case_id, case_input, evaluation_time, rid, challenge_mode)
     data["risk_state"] = risk_state_for(case_id, data["accountability_state"], case_input)
     data["deadline_state"] = deadline_state_for(case_id, data["accountability_state"])
     data["customer_state"] = customer_state_for(case_id, rid)
@@ -728,6 +797,8 @@ async def evaluate_action(request: Request) -> JSONResponse:
         return error("SCHEMA_INVALID", "case_id 和 prepared_action 为必填字段。", rid, 400)
     if not isinstance(body["prepared_action"].get("action_type"), str):
         return error("SCHEMA_INVALID", "prepared_action.action_type 为必填字段。", rid, 400)
+    if "draft_reply" in body and (not isinstance(body["draft_reply"], str) or not body["draft_reply"].strip() or len(body["draft_reply"]) > 5000):
+        return error("SCHEMA_INVALID", "draft_reply 必须是 1 到 5000 字符的非空文本。", rid, 400)
     state = state_for(body["case_id"], rid)
     if state is None:
         return error("VALIDATION_ERROR", "未找到案例事实。", rid, 400)
@@ -750,6 +821,11 @@ async def approve_resolution(request: Request) -> JSONResponse:
         return error("SCHEMA_INVALID", "idempotency_key 至少需要 8 个字符。", rid, 400)
     if not isinstance(body["human_edits"], dict):
         return error("SCHEMA_INVALID", "human_edits 必须是对象。", rid, 400)
+    edits = body["human_edits"]
+    if "consumer_reply" in edits and (not isinstance(edits["consumer_reply"], str) or not edits["consumer_reply"].strip() or len(edits["consumer_reply"]) > 5000):
+        return error("SCHEMA_INVALID", "consumer_reply 必须是 1 到 5000 字符的非空文本。", rid, 400)
+    if "executor" in edits and edits["executor"] not in ("BRAND", "WAREHOUSE", "LOGISTICS_PROVIDER"):
+        return error("SCHEMA_INVALID", "executor 不在允许范围。", rid, 400)
     key = ("approve", body["case_id"], body["idempotency_key"])
     fingerprint = canonical(body)
     if key in idempotency:
@@ -764,15 +840,83 @@ async def approve_resolution(request: Request) -> JSONResponse:
     if candidate not in ("CHECK_REPLACEMENT_FULFILLMENT", "ASK_CURRENT_SCOPE_EVIDENCE", "HUMAN_EVIDENCE_REVIEW"):
         return error("SCHEMA_INVALID", "candidate_type 不在允许范围。", rid, 400)
     approved = resolution(state, candidate, "E1")
-    edits = body["human_edits"]
-    if edits.get("executor") in ("BRAND", "WAREHOUSE", "LOGISTICS_PROVIDER"):
+    draft = edits.get("consumer_reply", approved["consumer_reply_draft"])
+    draft_review = assess_draft(draft)
+    guard = evaluate(state, {"prepared_action": {"action_type": "CHECK_REPLACEMENT_PROGRESS", "requested_scope": state["current_scope"]}, "draft_reply": draft})
+    if guard["decision"] == "INTERVENE":
+        return error("P0_PROHIBITED_ACTION", guard["reason"], rid, 409)
+    if re.search(r"退款|退钱|原路退", draft):
+        return error("VALIDATION_ERROR", "当前演示不支持批准退款承诺。", rid, 409)
+    if re.search(r"(保证|承诺|一定|确保|最晚|将|会).{0,16}(换货|补发|重新发货|送达)", draft):
+        return error("VALIDATION_ERROR", "当前演示不支持新增换货或送达保证，请确认查询进度的回复。", rid, 409)
+    if "next_check_at" in edits:
+        try:
+            edited_time = parse_time(edits["next_check_at"])
+            if edited_time.tzinfo is None or edited_time <= parse_time(service_time_for(body["case_id"])):
+                raise ValueError
+        except (TypeError, ValueError):
+            return error("VALIDATION_ERROR", "下次更新时间必须带时区且晚于当前服务时间。", rid, 400)
+    if "NEW_COMMITMENT" in draft_review.get("_detected_actions", []) and not edits.get("next_check_at"):
+        return error("VALIDATION_ERROR", "新的更新时间承诺需要填写下次更新时间。", rid, 400)
+    if edits.get("executor"):
         approved["executor"] = edits["executor"]
-    deadline = state["active_commitments"][0]["deadline"] if state["active_commitments"] else "2026-05-07T10:27:37+08:00"
-    next_check = edits.get("next_check_at") or "2026-05-07T10:30:00+08:00"
+    if candidate == "ASK_CURRENT_SCOPE_EVIDENCE":
+        if state.get("evidence_status") == "VALID":
+            return error("VALIDATION_ERROR", "已有有效证据，不能批准重复索取材料。", rid, 409)
+    if candidate in ("ASK_CURRENT_SCOPE_EVIDENCE", "HUMAN_EVIDENCE_REVIEW"):
+        edits = body["human_edits"]
+        if edits.get("executor"):
+            approved["executor"] = edits["executor"]
+        if edits.get("consumer_reply"):
+            approved["consumer_reply_draft"] = edits["consumer_reply"]
+        updated = clone(state)
+        audit = {"at": SERVICE_CLOCK, "actor": body["approver_id"].strip(), "action": "RESOLUTION_APPROVED", "changed_fields": sorted(edits.keys()), "request_id": rid}
+        updated["audit_trail"] = [*updated.get("audit_trail", []), audit]
+        states[body["case_id"]] = updated
+        data = {"accountability_state": updated, "approved_resolution": approved, "audit_trail": updated["audit_trail"]}
+        response = {"data": data, "error": None, "request_id": rid}
+        idempotency[key] = (fingerprint, response)
+        return JSONResponse(response)
+    if draft_review["kind"] == "UNCLASSIFIED" and "NEW_COMMITMENT" not in draft_review.get("_detected_actions", []):
+        approved.update({"consumer_reply_draft": draft, "creates_obligation": False, "compiled_service_responsibility": None, "requires_human_approval": True})
+        updated = clone(state)
+        audit = {"at": SERVICE_CLOCK, "actor": body["approver_id"].strip(), "action": "RESOLUTION_APPROVED", "changed_fields": sorted(edits.keys()), "request_id": rid}
+        updated["audit_trail"] = [*updated.get("audit_trail", []), audit]
+        states[body["case_id"]] = updated
+        data = {"accountability_state": updated, "approved_resolution": approved, "audit_trail": updated["audit_trail"]}
+        response = {"data": data, "error": None, "request_id": rid}
+        idempotency[key] = (fingerprint, response)
+        return JSONResponse(response)
+    valid_commitments = [c for c in state.get("active_commitments", []) if c.get("deadline")]
+    deadline = (state.get("open_obligation") or {}).get("deadline") or (valid_commitments[0]["deadline"] if valid_commitments else None)
+    next_check = edits.get("next_check_at")
+    existing_obligation = state.get("open_obligation") or {}
+    prior_replacement_promise = any(re.search(r"换货|补发|重新发货", str(item.get("raw_text", ""))) for item in valid_commitments)
+    if existing_obligation.get("obligation_type") != "REPLACEMENT_FULFILLMENT" and not prior_replacement_promise:
+        return error("VALIDATION_ERROR", "没有既有换货履约承诺，不能创建新的换货义务。", rid, 409)
+    if not deadline:
+        return error("VALIDATION_ERROR", "没有有效的既有承诺或义务，不能新建换货履约期限。", rid, 409)
+    draft_kind = draft_review["kind"]
+    if not next_check and draft_kind == "NEW_COMMITMENT":
+        return error("VALIDATION_ERROR", "批准新的进度更新时间承诺必须提供 next_check_at。", rid, 400)
+    next_check = next_check or (approved.get("compiled_service_responsibility") or {}).get("next_check_at")
+    if not next_check:
+        return error("VALIDATION_ERROR", "请填写下次更新时间。", rid, 400)
+    try:
+        next_dt = parse_time(next_check)
+        service_dt = parse_time(service_time_for(body["case_id"]))
+        if next_dt.tzinfo is None or next_dt <= service_dt:
+            raise ValueError
+    except (TypeError, ValueError):
+        return error("VALIDATION_ERROR", "next_check_at 必须带时区且晚于服务时钟。", rid, 400)
     recovery = edits.get("recovery_if_missed") or "若仍未确认揽收，品牌将升级催办并主动通知新的处理时间。"
     updated = clone(state)
     updated.update({"case_status": "IN_FULFILLMENT", "open_obligation": {"obligation_type": "REPLACEMENT_FULFILLMENT", "status": "ON_TRACK", "accountable_side": "BRAND", "executor": approved["executor"], "deadline": deadline, "next_check_at": next_check, "milestone": "AWAITING_CARRIER_PICKUP", "resolution_condition": "REPLACEMENT_DELIVERED"},
-                    "service_progress_receipt": {"receipt_id": f"RECEIPT_{body['case_id']}_001", "status": "ACTIVE", "received_evidence": ["粉底液泵头损坏图片", "订单和商品货号", "换货工单"], "brand_action": "正在核实换货件是否已由物流揽收，并催促仓库反馈。", "latest_update_at": SERVICE_CLOCK, "next_update_by": next_check, "consumer_action_required": False, "recovery_if_missed": recovery}})
+                    "service_progress_receipt": {"receipt_id": f"RECEIPT_{body['case_id']}_001", "status": "ACTIVE", "received_evidence": ["粉底液泵头损坏图片", "订单和商品货号", "换货工单"], "brand_action": draft, "latest_update_at": SERVICE_CLOCK, "next_update_by": next_check, "consumer_action_required": False, "recovery_if_missed": recovery}})
+    approved["consumer_reply_draft"] = draft
+    compiled = approved.get("compiled_service_responsibility")
+    if compiled is not None:
+        compiled.update({"deadline": deadline, "next_check_at": next_check, "recovery_if_missed": recovery})
     audit = {"at": SERVICE_CLOCK, "actor": body["approver_id"].strip(), "action": "RESOLUTION_APPROVED", "changed_fields": sorted(edits.keys()), "request_id": rid}
     updated["audit_trail"] = [*updated["audit_trail"], audit]
     states[body["case_id"]] = updated

@@ -98,7 +98,7 @@ def ask_jev(state: dict[str, Any], questions: list[dict[str, Any]]) -> dict[str,
                 "error": None,
                 "latency_ms": int((time.perf_counter() - started) * 1000),
                 "raw": raw,
-                "model_version": model_version,
+                "model_version": raw.get("model", model_version) if isinstance(raw, dict) else model_version,
             }
     except urllib.error.HTTPError as exc:
         message = exc.read().decode("utf-8", "replace")[:500]

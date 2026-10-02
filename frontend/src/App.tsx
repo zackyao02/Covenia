@@ -2,7 +2,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import {
   AlertCircle,
   AlertTriangle,
-  Bell,
   Check,
   CheckCircle2,
   ChevronDown,
@@ -11,25 +10,19 @@ import {
   ClipboardCheck,
   Clock3,
   Headphones,
-  HelpCircle,
-  Image as ImageIcon,
-  Inbox,
   Loader2,
   Menu,
   MessageCircleMore,
   MoreHorizontal,
   PackageCheck,
-  Paperclip,
   RefreshCw,
   Search,
   Send,
   ShieldCheck,
-  Smile,
   Sparkles,
   Store,
   Truck,
   UserRoundCheck,
-  WandSparkles,
   X,
 } from "lucide-react";
 import type {
@@ -45,6 +38,8 @@ import type {
   FollowUpCandidate,
   SupervisorEscalationCandidate,
   RuntimeMetrics,
+  CustomerState,
+  PriorityState,
 } from "./api/contracts";
 import { api } from "./api/client";
 import { decisionLabels, demoCases, formatClock, type DemoCase } from "./demoData";
@@ -154,15 +149,26 @@ function prohibitedCopy(caseId: string) {
   return "不要再次索取相同的破损图片";
 }
 
-function useCountdown(target?: string) {
-  const [now, setNow] = useState(Date.now());
+function toShanghaiDateTimeInput(isoTime: string) {
+  return new Date(new Date(isoTime).getTime() + 8 * 60 * 60 * 1000).toISOString().slice(0, 16);
+}
+
+function fromShanghaiDateTimeInput(localTime: string) {
+  return new Date(`${localTime}:00+08:00`).toISOString();
+}
+
+function useCountdown(target?: string, referenceTime?: string) {
+  const [wallAnchor, setWallAnchor] = useState(Date.now());
+  const [, setTick] = useState(0);
   useEffect(() => {
-    const timer = window.setInterval(() => setNow(Date.now()), 1000);
+    setWallAnchor(Date.now());
+    const timer = window.setInterval(() => setTick((value) => value + 1), 1000);
     return () => window.clearInterval(timer);
-  }, []);
+  }, [referenceTime]);
 
   if (!target) return { label: "未设置", overdue: false };
-  const difference = new Date(target).getTime() - now;
+  const simulatedNow = referenceTime ? new Date(referenceTime).getTime() + Date.now() - wallAnchor : Date.now();
+  const difference = new Date(target).getTime() - simulatedNow;
   const absoluteSeconds = Math.max(0, Math.floor(Math.abs(difference) / 1000));
   const hours = Math.floor(absoluteSeconds / 3600);
   const minutes = Math.floor((absoluteSeconds % 3600) / 60);
@@ -191,6 +197,19 @@ function App() {
   const [loadError, setLoadError] = useState<string | null>(null);
   const [cachedResult, setCachedResult] = useState(false);
   const [runtimeMetrics, setRuntimeMetrics] = useState<RuntimeMetrics | null>(null);
+  const [customerState, setCustomerState] = useState<CustomerState | null>(null);
+  const [priorityStates, setPriorityStates] = useState<PriorityState[]>([]);
+  const [priorityError, setPriorityError] = useState<string | null>(null);
+  const [executor, setExecutor] = useState("WAREHOUSE");
+  const [nextCheckAt, setNextCheckAt] = useState("");
+  const sendSequence = useRef(0);
+  const prioritySequence = useRef(0);
+  const caseGeneration = useRef(0);
+  const draftRef = useRef(draft);
+  const pendingDraftRef = useRef<string | null>(null);
+  const [simulationTime, setSimulationTime] = useState(demoCases[0].input.evaluation_time);
+
+  useEffect(() => { draftRef.current = draft; }, [draft]);
   const [followUpCandidate, setFollowUpCandidate] = useState<FollowUpCandidate | null>(null);
   const [supervisorCandidate, setSupervisorCandidate] = useState<SupervisorEscalationCandidate | null>(null);
   const [mockMode, setMockMode] = useState<MockMode>("normal");
@@ -208,6 +227,8 @@ function App() {
       setLoadError(null);
       setCachedResult(false);
       setRuntimeMetrics(null);
+      setCustomerState(null);
+      setSimulationTime(selectedCase.input.evaluation_time);
       setFollowUpCandidate(null);
       setSupervisorCandidate(null);
       setAccountability(null);
@@ -236,8 +257,12 @@ function App() {
       setRuntimeMetrics(result.data.runtime_metrics);
       setAccountability(result.data.accountability_state);
       setJourney(result.data.extracted_journey);
+      setCustomerState(result.data.customer_state ?? null);
+      void refreshPriority();
 
-      if (selectedCase.id !== "DEMO_001") {
+      if (result.data.accountability_state.open_obligation) {
+        setPhase("approved");
+      } else if (selectedCase.id !== "DEMO_001") {
         const evaluated = await api.evaluateAction(buildEvaluateRequest(selectedCase));
         if (!active) return;
         if (evaluated.error) {
@@ -257,16 +282,30 @@ function App() {
     };
   }, [selectedCase, reloadKey]);
 
+  async function refreshPriority() {
+    const sequence = ++prioritySequence.current;
+    const result = await api.getPriority();
+    if (sequence !== prioritySequence.current) return;
+    if (result.error) { setPriorityError(result.error.message); return; }
+    setPriorityError(null);
+    setPriorityStates(result.data);
+  }
+
+  useEffect(() => { void refreshPriority(); }, []);
+
   useEffect(() => {
     if (!toast) return;
     const timer = window.setTimeout(() => setToast(null), 2800);
     return () => window.clearTimeout(timer);
   }, [toast]);
 
-  async function evaluateAction(action?: PreparedAction) {
+  async function evaluateAction(action?: PreparedAction, draftReply?: string) {
     if (!accountability) return null;
+    const generation = caseGeneration.current;
+    const caseId = selectedCase.id;
     setActing(true);
-    const result = await api.evaluateAction(buildEvaluateRequest(selectedCase, action));
+    const result = await api.evaluateAction({ ...buildEvaluateRequest(selectedCase, action), ...(draftReply === undefined ? {} : { draft_reply: draftReply }) });
+    if (generation !== caseGeneration.current || caseId !== selectedId) return null;
     setActing(false);
     if (result.error) {
       setToast(result.error.message);
@@ -274,31 +313,40 @@ function App() {
     }
     setDecision(result.data);
     setRuntimeMetrics(result.data.runtime_metrics);
+    void refreshPriority();
     return result.data;
   }
 
   async function handleAttemptSend() {
     if (!draft.trim()) return;
-    if (phase === "resolution" && decision) {
-      setApprovalReply(draft);
-      setApprovalOpen(true);
-      return;
-    }
 
-    const result = await evaluateAction();
+    const submittedDraft = draftRef.current;
+    const caseId = selectedCase.id;
+    const sequence = ++sendSequence.current;
+    const result = await evaluateAction(undefined, submittedDraft);
+    if (sequence !== sendSequence.current || caseId !== selectedId) return;
     if (!result) return;
     setPhase("decision");
+    const assessment = result.draft_assessment;
     if (result.decision === "INTERVENE") {
       setToast("消息已暂停，未发送给消费者");
-    } else if (result.decision === "ALLOW") {
+    } else if (result.decision === "ALLOW" && assessment && !assessment.requires_confirmation) {
       setExtraMessages((items) => [
         ...items,
-        { id: `MSG_${Date.now()}`, kind: "agent", text: draft, time: "现在" },
+        { id: `MSG_${Date.now()}`, kind: "agent", text: assessment.evaluated_text, time: "本地记录" },
       ]);
-      setDraft("");
-      setToast("已按当前问题范围发送");
+      if (draftRef.current === submittedDraft) setDraft("");
+      setToast("回复已记录在本地；千牛发送尚未接入");
+    } else if (assessment) {
+      setApprovalReply(assessment.evaluated_text);
+      pendingDraftRef.current = submittedDraft;
+      setExecutor(result.resolution_path.executor);
+      const suggested = result.resolution_path.compiled_service_responsibility?.next_check_at ?? accountability?.service_progress_receipt?.next_update_by ?? accountability?.open_obligation?.next_check_at ?? accountability?.open_obligation?.deadline;
+      setNextCheckAt(suggested ? toShanghaiDateTimeInput(suggested) : "");
+      setApprovalOpen(true);
+      setToast(assessment.explanation || "草稿需要人工确认");
     } else {
-      setToast("已转人工复核，消息暂未发送");
+      setToast("草稿评估未确认可发送，请人工确认后再处理");
     }
   }
 
@@ -322,36 +370,32 @@ function App() {
     if (!result) return;
     if (result.decision === "ALLOW") {
       setDraft(result.resolution_path.consumer_reply_draft);
-      setToast("精准索证回复已放入输入框，可直接发送");
+      setToast("精准索证草稿已放入输入框；发送前仍需评估");
       return;
     }
     if (result.decision === "HUMAN_REVIEW") {
       if (extraMessages.some((message) => message.id.startsWith("REVIEW_"))) {
-        setToast("人工复核任务已经提交，请等待复核结果");
+        setToast("待人工复核；当前版本未连接任务创建服务");
         return;
       }
-      setExtraMessages((items) => [
-        ...items,
-        {
-          id: `REVIEW_${Date.now()}`,
-          kind: "status",
-          text: "人工证据复核任务已创建。复核完成前不会要求消费者重复上传。",
-          time: "现在",
-        },
-      ]);
       setDraft(result.resolution_path.consumer_reply_draft);
-      setToast("已提交人工复核，安抚回复已准备");
+      setToast("需要人工证据复核；已准备安抚回复");
       return;
     }
     setPhase("resolution");
     setDraft(result.resolution_path.consumer_reply_draft);
     setApprovalReply(result.resolution_path.consumer_reply_draft);
-    setToast("解决回复已放入输入框，确认后发送");
+    setToast("解决回复已放入输入框；确认后会本地记录");
   }
 
   function handleSelectCase(caseId: string) {
     // 案例切换后的分析是异步的；先同步清除旧决策，避免旧案例短暂影响新案例的操作路径。
     setSelectedId(caseId);
+    caseGeneration.current += 1;
+    sendSequence.current += 1;
+    setApprovalOpen(false);
+    pendingDraftRef.current = null;
+    setActing(false);
     setDecision(null);
     setPhase("overview");
     setLoading(true);
@@ -360,6 +404,8 @@ function App() {
 
   async function handleApprove() {
     if (!decision) return;
+    const generation = caseGeneration.current;
+    const caseId = selectedCase.id;
     setActing(true);
     const input: ApproveResolutionRequest = {
       case_id: selectedCase.id,
@@ -367,10 +413,13 @@ function App() {
       approver_id: "AGENT_ZHOU",
       idempotency_key: `approve-${selectedCase.id}-${crypto.randomUUID()}`,
       human_edits: {
-        executor: "WAREHOUSE",
+        ...(decision.resolution_path.creates_obligation ? { executor: executor as ApproveResolutionRequest["human_edits"]["executor"] } : {}),
+        ...(decision.resolution_path.creates_obligation && nextCheckAt ? { next_check_at: fromShanghaiDateTimeInput(nextCheckAt) } : {}),
+        consumer_reply: approvalReply,
       },
     };
     const result = await api.approveResolution(input);
+    if (generation !== caseGeneration.current || caseId !== selectedId) return;
     setActing(false);
     if (result.error) {
       setToast(result.error.message);
@@ -379,14 +428,15 @@ function App() {
     setAccountability(result.data.accountability_state);
     setPhase("approved");
     setApprovalOpen(false);
-    setDraft("");
+    if (pendingDraftRef.current === null || draftRef.current === pendingDraftRef.current) setDraft("");
+    pendingDraftRef.current = null;
     const receipt = result.data.accountability_state.service_progress_receipt;
     setExtraMessages([
       {
         id: `AGENT_${Date.now()}`,
         kind: "agent",
-        text: approvalReply,
-        time: "现在",
+        text: result.data.approved_resolution.consumer_reply_draft,
+        time: "本地记录",
       },
       ...(receipt
         ? [
@@ -399,31 +449,41 @@ function App() {
           ]
         : []),
     ]);
-    setToast("解决路径已确认，服务责任开始运行");
+    await refreshPriority();
+    if (generation !== caseGeneration.current || caseId !== selectedId) return;
+    const currentState = await api.getCustomerState(caseId);
+    if (generation !== caseGeneration.current || caseId !== selectedId) return;
+    if (!currentState.error) setCustomerState(currentState.data);
+    setToast("解决路径已确认并本地记录回复；千牛发送尚未接入");
   }
 
   async function handleShipment(eventType: ShipmentEventType) {
     if (!accountability) return;
+    const generation = caseGeneration.current;
+    const caseId = selectedCase.id;
     setActing(true);
     setShipmentChoice(eventType);
+    const eventTime = eventType === "SHIPMENT_PICKED_UP" ? "2026-05-07T10:10:00+08:00" : eventType === "SHIPMENT_NOT_PICKED_UP" ? "2026-05-07T11:35:00+08:00" : "2026-05-08T15:20:00+08:00";
+    setSimulationTime(eventTime);
     const result = await api.pushShipmentEvent({
       case_id: selectedCase.id,
       event_id: `EVT_${crypto.randomUUID()}`,
       event_type: eventType,
-      event_time:
-        eventType === "SHIPMENT_PICKED_UP"
-          ? "2026-05-07T10:10:00+08:00"
-          : eventType === "SHIPMENT_NOT_PICKED_UP"
-            ? "2026-05-07T11:35:00+08:00"
-            : "2026-05-08T15:20:00+08:00",
+      event_time: eventTime,
       idempotency_key: `shipment-${selectedCase.id}-${crypto.randomUUID()}`,
     });
+    if (generation !== caseGeneration.current || caseId !== selectedId) return;
     setActing(false);
     if (result.error) {
       setToast(result.error.message);
       return;
     }
     setAccountability(result.data.accountability_state);
+    await refreshPriority();
+    if (generation !== caseGeneration.current || caseId !== selectedId) return;
+    const currentState = await api.getCustomerState(caseId);
+    if (generation !== caseGeneration.current || caseId !== selectedId) return;
+    if (!currentState.error) setCustomerState(currentState.data);
     setFollowUpCandidate(result.data.follow_up_candidate);
     setSupervisorCandidate(result.data.supervisor_escalation_candidate);
     const receipt = result.data.accountability_state.service_progress_receipt;
@@ -493,12 +553,22 @@ function App() {
           onApprove={() => {
             if (decision) {
               setApprovalReply(decision.resolution_path.consumer_reply_draft);
+              setExecutor(decision.resolution_path.executor);
+              const suggested = decision.resolution_path.compiled_service_responsibility?.next_check_at ?? accountability?.service_progress_receipt?.next_update_by ?? accountability?.open_obligation?.next_check_at ?? accountability?.open_obligation?.deadline;
+              setNextCheckAt(suggested ? toShanghaiDateTimeInput(suggested) : "");
             }
+            setApprovalReply(draft.trim() || decision?.resolution_path.consumer_reply_draft || "");
+            pendingDraftRef.current = draftRef.current || null;
             setApprovalOpen(true);
           }}
           onShipment={handleShipment}
           shipmentChoice={shipmentChoice}
           runtimeMetrics={runtimeMetrics}
+          customerState={customerState}
+          simulationTime={simulationTime}
+          priorityStates={priorityStates}
+          priorityError={priorityError}
+          onRetryPriority={refreshPriority}
           followUpCandidate={followUpCandidate}
           supervisorCandidate={supervisorCandidate}
           loadError={loadError}
@@ -514,6 +584,10 @@ function App() {
           decision={decision}
           reply={approvalReply}
           setReply={setApprovalReply}
+          executor={executor}
+          setExecutor={setExecutor}
+          nextCheckAt={nextCheckAt}
+          setNextCheckAt={setNextCheckAt}
           acting={acting}
           onClose={() => setApprovalOpen(false)}
           onConfirm={handleApprove}
@@ -533,15 +607,13 @@ function TopBar() {
   return (
     <header className="topbar">
       <div className="brand-mark" aria-label="千牛工作台">
-        <span className="qianniu-logo">千</span>
+        <span className="qianniu-logo"><img src="/brand/qianniu-demo-mark.svg" alt="" /></span>
         <span>千牛工作台</span>
         <span className="topbar-divider" />
         <span className="shop-name">测试美妆官方旗舰店</span>
       </div>
       <div className="topbar-actions">
         <span className="online-pill"><span /> 在线接待中</span>
-        <button aria-label="通知"><Bell size={17} /></button>
-        <button aria-label="帮助"><HelpCircle size={17} /></button>
         <div className="agent-avatar">周</div>
       </div>
     </header>
@@ -557,14 +629,35 @@ function ConversationRail({
   selectedId: string;
   onSelect: (id: string) => void;
 }) {
+  const [query, setQuery] = useState("");
+  const [showUnread, setShowUnread] = useState(false);
+  const searchRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    const handleShortcut = (event: KeyboardEvent) => {
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k" && window.innerWidth > 1050) {
+        event.preventDefault();
+        searchRef.current?.focus();
+      } else if (event.key === "Escape" && document.activeElement === searchRef.current) {
+        setQuery("");
+        searchRef.current?.blur();
+      }
+    };
+    document.addEventListener("keydown", handleShortcut);
+    return () => document.removeEventListener("keydown", handleShortcut);
+  }, []);
+  const unreadCount = cases.filter((item) => item.unread).length;
+  const visibleCases = cases.filter((item) => {
+    const matchesQuery = `${item.title} ${item.preview} ${item.id}`.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase());
+    return matchesQuery && (!showUnread || Boolean(item.unread));
+  });
   return (
     <aside className="conversation-rail">
-      <div className="rail-nav">
-        <button className="rail-icon active" aria-label="接待消息"><MessageCircleMore size={19} /></button>
-        <button className="rail-icon" aria-label="工单"><ClipboardCheck size={19} /></button>
-        <button className="rail-icon" aria-label="店铺"><Store size={19} /></button>
+      <div className="rail-nav" aria-hidden="true">
+        <span className="rail-icon active"><MessageCircleMore size={19} /></span>
+        <span className="rail-icon"><ClipboardCheck size={19} /></span>
+        <span className="rail-icon"><Store size={19} /></span>
         <div className="rail-spacer" />
-        <button className="rail-icon" aria-label="菜单"><Menu size={19} /></button>
+        <span className="rail-icon"><Menu size={19} /></span>
       </div>
       <div className="sessions-panel">
         <div className="sessions-heading">
@@ -572,24 +665,25 @@ function ConversationRail({
             <span className="section-kicker">接待中心</span>
             <h2>进行中的会话</h2>
           </div>
-          <button aria-label="更多"><MoreHorizontal size={19} /></button>
         </div>
         <label className="search-box">
           <Search size={15} />
-          <input placeholder="搜索消费者或订单" />
+          <input ref={searchRef} aria-label="搜索会话" placeholder="搜索消费者或订单" value={query} onChange={(event) => setQuery(event.target.value)} />
+          <kbd className="search-shortcut">Ctrl K</kbd>
         </label>
         <div className="session-filter">
-          <button className="active">全部 <span>3</span></button>
-          <button>未回复 <span>1</span></button>
+          <button className={!showUnread ? "active" : ""} onClick={() => setShowUnread(false)} aria-pressed={!showUnread}>全部 <span>{cases.length}</span></button>
+          <button className={showUnread ? "active" : ""} onClick={() => setShowUnread(true)} aria-pressed={showUnread}>未回复 <span>{unreadCount}</span></button>
         </div>
         <div className="session-list">
-          {cases.map((item, index) => (
+          {visibleCases.map((item) => (
             <button
               className={`session-item ${item.id === selectedId ? "selected" : ""}`}
               key={item.id}
               onClick={() => onSelect(item.id)}
+              aria-current={item.id === selectedId ? "true" : undefined}
             >
-              <div className={`customer-avatar avatar-${index + 1}`}>
+              <div className={`customer-avatar avatar-${cases.findIndex((candidate) => candidate.id === item.id) + 1}`}>
                 {item.title.slice(0, 1)}
                 <span className="channel-dot" />
               </div>
@@ -604,12 +698,11 @@ function ConversationRail({
                 </div>
                 <div className="case-tag-row">
                   <span>{item.sourceLabel}</span>
-                  <i className={`decision-dot decision-${item.expectedDecision.toLowerCase()}`} />
-                  <small>{decisionLabels[item.expectedDecision].compact}</small>
                 </div>
               </div>
             </button>
           ))}
+          {visibleCases.length === 0 ? <p className="session-empty">没有符合条件的会话</p> : null}
         </div>
       </div>
     </aside>
@@ -638,6 +731,9 @@ function ChatWorkspace({
   const todayMessages = demoCase.input.conversation.slice(-1);
   const historyStart = historicalMessages[0]?.timestamp;
   const historyEnd = historicalMessages[historicalMessages.length - 1]?.timestamp;
+  const memoryMilestones = historicalMessages
+    .filter((message) => message.speaker === "CONSUMER" || message.text.includes("换货单"))
+    .slice(0, 3);
 
   useEffect(() => {
     setHistoryOpen(false);
@@ -674,30 +770,45 @@ function ChatWorkspace({
           <p>订单 6920185815517983396 · 天猫</p>
         </div>
         <div className="chat-header-actions">
-          <button><Clock3 size={16} /> 服务记录</button>
-          <button aria-label="更多"><MoreHorizontal size={19} /></button>
+          <button onClick={() => setHistoryOpen((value) => !value)} aria-expanded={historyOpen}><Clock3 size={16} /> 服务记录</button>
         </div>
       </header>
       <div className="context-strip">
-        <div className="product-thumb"><span /></div>
+        <div className="product-thumb"><img src="/evidence/s00001-product-overview.jpg" alt="粉底液泵头实拍" /></div>
         <div>
           <strong>测试轻透粉底液 30ml</strong>
           <p>#N02 自然色 · SKU XC33003</p>
         </div>
         <div className="context-price">¥329.00</div>
-        <button>查看订单 <ChevronRight size={14} /></button>
       </div>
       <div className="messages story-messages" key={demoCase.id}>
         {historicalMessages.length > 0 ? (
           <section className="history-summary-card">
             <div>
-              <span>Earlier conversation</span>
-              <strong>{historicalMessages.length} 条消息已由 Covenia 总结</strong>
-              <p>{historyStart ? formatClock(historyStart) : "此前"}–{historyEnd ? formatClock(historyEnd) : "现在"} · 已完成问题说明 · 已提交图片 · 已创建换货单</p>
+              <span>沟通快照 / {historicalMessages.length} 条记录</span>
+              <strong>此前已经发生</strong>
+              <p>{historyStart ? formatClock(historyStart) : "此前"}–{historyEnd ? formatClock(historyEnd) : "现在"} · 以下内容来自原始对话</p>
             </div>
             <button type="button" onClick={() => setHistoryOpen((value) => !value)} aria-expanded={historyOpen}>
-              {historyOpen ? "收起历史" : "展开历史"}
+              {historyOpen ? "收起完整对话" : "查看完整对话"}
             </button>
+            {!historyOpen ? (
+              <ol className="history-milestones">
+                {memoryMilestones.map((message) => (
+                  <li key={message.message_id}>
+                    <time>{formatClock(message.timestamp)}</time>
+                    <span>{message.text}</span>
+                  </li>
+                ))}
+              </ol>
+            ) : null}
+            {!historyOpen && demoCase.id === "DEMO_001" ? (
+              <button type="button" className="history-evidence-preview" onClick={() => setHistoryOpen(true)} aria-label="查看已经收到的泵头照片">
+                <img src="/evidence/s00001-product-overview.jpg" alt="已收到的泵头损坏照片" />
+                <span><small>已收到的图片证据</small><strong>泵头损坏照片</strong><em>查看原始对话与图片</em></span>
+                <ChevronRight size={16} />
+              </button>
+            ) : null}
           </section>
         ) : null}
         {historyOpen ? (
@@ -705,7 +816,7 @@ function ChatWorkspace({
             {historicalMessages.map((message, index) => renderConversationMessage(message, index, "history"))}
           </div>
         ) : null}
-        <div className="message-day"><span>Today</span></div>
+        <div className="message-day"><span>最新消息</span></div>
         {todayMessages.map((message, index) => renderConversationMessage(message, index, "today"))}
         {addedMessages.map((message) => {
           if (message.kind === "receipt" && message.receipt) {
@@ -732,16 +843,19 @@ function ChatWorkspace({
       </div>
       <div className="composer">
         <div className="composer-tools">
-          <button aria-label="表情"><Smile size={18} /></button>
-          <button aria-label="附件"><Paperclip size={18} /></button>
-          <button aria-label="图片"><ImageIcon size={18} /></button>
-          <span />
-          <button className="smart-copy"><WandSparkles size={14} /> 智能润色</button>
+          <span className="draft-label">回复草稿</span>
+          <span className="send-check"><CheckCircle2 size={14} /> 发送前核查</span>
         </div>
         <textarea
           aria-label="客服回复内容"
           value={draft}
           onChange={(event) => setDraft(event.target.value)}
+          onKeyDown={(event) => {
+            if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) {
+              event.preventDefault();
+              if (!acting && draft.trim()) onSend();
+            }
+          }}
           placeholder="输入回复内容…"
         />
         <div className="composer-footer">
@@ -1189,21 +1303,21 @@ function StoryActionPanel({
 }) {
   const decisionType = decision?.decision;
   return (
-    <section className="story-action-panel">
-      <span>建议下一步</span>
-      <h3>{decision ? decisionLabels[decision.decision].title : "优先核查换货进度"}</h3>
-      <p>{decision?.reason ?? "消费者已经交过材料，此刻应该先查进度，而不是重复索证。"}</p>
+    <section className="story-action-panel" key={phase}>
+      <span>{phase === "resolution" ? "等待人工确认" : "建议的下一步"}</span>
+      <h3 aria-live="polite">{phase === "resolution" ? "确认处理安排" : decision?.resolution_path.candidate_type === "HUMAN_EVIDENCE_REVIEW" ? "先复核现有图片" : decision?.resolution_path.candidate_type === "ASK_CURRENT_SCOPE_EVIDENCE" ? "只补充缺少的证据" : "跟进现有换货进度"}</h3>
+      <p>{phase === "resolution" ? "确认后保存处理责任，并继续跟踪承诺。" : decision?.resolution_path.candidate_type === "HUMAN_EVIDENCE_REVIEW" ? "已有图片先由人工复核，避免直接让消费者重拍。" : decision?.resolution_path.candidate_type === "ASK_CURRENT_SCOPE_EVIDENCE" ? "只询问本次商品范围内缺少的材料。" : "先查已有换货单，再向消费者同步进度。"}</p>
       {phase === "resolution" ? (
         <button className="primary-action" onClick={onApprove} disabled={acting || loading}>
           <ClipboardCheck size={16} /> 人工确认解决路径 <ChevronRight size={16} />
         </button>
-      ) : decisionType === "ALLOW" ? (
+      ) : decision?.resolution_path.candidate_type === "ASK_CURRENT_SCOPE_EVIDENCE" ? (
         <button className="primary-action allow-action" onClick={onGenerate} disabled={acting}>
-          生成精准索证回复 <ChevronRight size={16} />
+          准备补充证据回复 <ChevronRight size={16} />
         </button>
       ) : decisionType === "HUMAN_REVIEW" ? (
         <button className="primary-action review-action" onClick={onGenerate} disabled={acting || reviewSubmitted}>
-          {reviewSubmitted ? "人工复核已提交" : "提交人工证据复核"} <UserRoundCheck size={16} />
+          准备人工复核回复 <UserRoundCheck size={16} />
         </button>
       ) : (
         <div className="action-stack">
@@ -1211,12 +1325,8 @@ function StoryActionPanel({
             {acting ? <Loader2 size={16} className="spin" /> : <Search size={16} />}
             查询补发进度 <ChevronRight size={16} />
           </button>
-          <button className="secondary-action" onClick={onGenerate} disabled={acting}>
-            <WandSparkles size={15} /> 生成解决回复
-          </button>
         </div>
       )}
-      <small>{prohibitedCopy(demoCase.id)}</small>
     </section>
   );
 }
@@ -1245,48 +1355,66 @@ function priorityReasons(caseItem: DemoCase) {
 function PriorityQueue({
   selectedId,
   onSelectCase,
+  states,
+  error,
+  onRetry,
 }: {
   selectedId: string;
   onSelectCase: (caseId: string) => void;
+  states: PriorityState[];
+  error: string | null;
+  onRetry: () => void;
 }) {
   const [open, setOpen] = useState(false);
-  const ordered = useMemo(() => [...demoCases].sort((a, b) => priorityScore(b) - priorityScore(a)), []);
-  const currentIndex = Math.max(0, ordered.findIndex((item) => item.id === selectedId));
+  const ordered = useMemo(() => states.slice().sort((a, b) => a.rank - b.rank).map((state) => ({ state, item: demoCases.find((entry) => entry.id === state.case_id) })).filter((row): row is { state: PriorityState; item: DemoCase } => Boolean(row.item)), [states]);
+  const currentIndex = Math.max(0, ordered.findIndex((item) => item.item.id === selectedId));
   const current = ordered[currentIndex] ?? ordered[0];
   const move = (direction: -1 | 1) => {
+    if (!ordered.length) return;
     const nextIndex = (currentIndex + direction + ordered.length) % ordered.length;
-    onSelectCase(ordered[nextIndex].id);
+    if (ordered[nextIndex]) onSelectCase(ordered[nextIndex].item.id);
   };
+
+  useEffect(() => {
+    if (!open) return;
+    const onEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onEscape);
+    return () => window.removeEventListener("keydown", onEscape);
+  }, [open]);
 
   return (
     <section className="priority-queue-card">
+      {error ? <div className="priority-load-error">待处理案件加载失败：{error} <button type="button" onClick={onRetry}>重试</button></div> : null}
       <div className="priority-queue-top">
         <button type="button" onClick={() => move(-1)} aria-label="上一位消费者"><ChevronLeft size={15} /></button>
         <div>
-          <span>优先处理 · {currentIndex + 1}/{ordered.length}</span>
-          <strong>{current?.title ?? "—"}</strong>
+          <span>服务序列 · {ordered.length ? `${String(currentIndex + 1).padStart(2, "0")} / ${String(ordered.length).padStart(2, "0")}` : "—"}</span>
+          <strong>{current?.item.title ?? "—"}</strong>
+          <small className="queue-current-reason">{current?.state.queue_reasons?.[0] ?? ""}</small>
         </div>
         <button type="button" onClick={() => move(1)} aria-label="下一位消费者"><ChevronRight size={15} /></button>
-        <button className="priority-toggle-button" type="button" onClick={() => setOpen((value) => !value)} aria-expanded={open}>
-          待处理案件 <small>{ordered.length} 位消费者</small>
+        <button className="priority-toggle-button" type="button" onClick={() => setOpen((value) => !value)} aria-expanded={open} aria-controls="priority-list">
+          查看队列 <small>{ordered.length} 位待处理</small>
         </button>
       </div>
       {open ? (
-        <div className="priority-list-panel">
+        <div className="priority-list-panel" id="priority-list">
           <div className="priority-list-head">
             <span>待处理案件</span>
-            <small>按紧急程度排序</small>
+            <small>{error ? "加载失败" : "服务端优先级"}</small>
           </div>
-          {ordered.map((item, index) => (
+          {error ? <p>{error} <button type="button" onClick={onRetry}>重试</button></p> : ordered.map(({ item, state }, index) => (
             <button
               type="button"
-              className={`priority-list-item ${priorityBand(item)} ${item.id === selectedId ? "selected" : ""}`}
+              className={`priority-list-item ${state.band.toLowerCase()} ${item.id === selectedId ? "selected" : ""}`}
               key={item.id}
-              onClick={() => onSelectCase(item.id)}
+              onClick={() => { onSelectCase(item.id); setOpen(false); }}
             >
               <b>{index + 1}</b>
               <strong>{item.title}</strong>
-              <small>主要原因：{priorityReasons(item).slice(0, 2).join("、")}</small>
+              <small>主要原因：{state.queue_reasons.slice(0, 2).map((reason) => reason.replace(/[。！!?？、，,\s]+$/u, "")).join("；")}</small>
             </button>
           ))}
         </div>
@@ -1605,6 +1733,11 @@ function CoveniaPlugin({
   onShipment,
   shipmentChoice,
   runtimeMetrics,
+  customerState,
+  simulationTime,
+  priorityStates,
+  priorityError,
+  onRetryPriority,
   followUpCandidate,
   supervisorCandidate,
   loadError,
@@ -1631,6 +1764,11 @@ function CoveniaPlugin({
   onShipment: (event: ShipmentEventType) => void;
   shipmentChoice: ShipmentEventType | null;
   runtimeMetrics: RuntimeMetrics | null;
+  customerState: CustomerState | null;
+  simulationTime: string;
+  priorityStates: PriorityState[];
+  priorityError: string | null;
+  onRetryPriority: () => void;
   followUpCandidate: FollowUpCandidate | null;
   supervisorCandidate: SupervisorEscalationCandidate | null;
   loadError: string | null;
@@ -1641,6 +1779,36 @@ function CoveniaPlugin({
   reviewSubmitted: boolean;
 }) {
   const decisionType = decision?.decision;
+  const detailsRef = useRef<HTMLDivElement>(null);
+  const [evidencePreview, setEvidencePreview] = useState<{ fileName: string; label: string } | null>(null);
+  const evidenceTriggerRef = useRef<HTMLButtonElement | null>(null);
+  const evidenceCloseRef = useRef<HTMLButtonElement | null>(null);
+  useEffect(() => { setEvidencePreview(null); }, [selectedId]);
+  useEffect(() => {
+    if (!evidencePreview) return;
+    const handlePreviewKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setEvidencePreview(null);
+      if (event.key === "Tab") {
+        event.preventDefault();
+        evidenceCloseRef.current?.focus();
+      }
+    };
+    window.addEventListener("keydown", handlePreviewKey);
+    return () => {
+      window.removeEventListener("keydown", handlePreviewKey);
+      evidenceTriggerRef.current?.focus();
+    };
+  }, [evidencePreview]);
+  useEffect(() => {
+    if (!detailsOpen) return;
+    const frame = window.requestAnimationFrame(() => {
+      detailsRef.current?.scrollIntoView({
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
+        block: "nearest",
+      });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [detailsOpen]);
   if (loadError) {
     return (
       <aside className="plugin-panel">
@@ -1661,7 +1829,7 @@ function CoveniaPlugin({
       <aside className="plugin-panel">
         <PluginHeader mockMode={mockMode} onMockModeChange={onMockModeChange} />
         <div className="plugin-loading">
-          <div className="loading-orbit"><Sparkles size={20} /></div>
+          <div className="loading-orbit"><img src="/brand/covenia-relay-glass-v5.png" alt="" /></div>
           <strong>正在恢复这次服务旅程</strong>
           <p>核对聊天、订单、图片和已有工单…</p>
           <div className="loading-lines"><span /><span /><span /></div>
@@ -1677,9 +1845,11 @@ function CoveniaPlugin({
         {decision?.challenge_mode ? (
           <div className="challenge-notice">挑战案例</div>
         ) : null}
-        {phase === "approved" && accountability.service_progress_receipt ? (
+        {phase === "approved" && accountability.service_progress_receipt && accountability.open_obligation ? (
           <ProgressView
             accountability={accountability}
+            serviceClock={customerState?.service_clock ?? simulationTime}
+            deadline={accountability.open_obligation?.deadline}
             acting={acting}
             onShipment={onShipment}
             shipmentChoice={shipmentChoice}
@@ -1689,14 +1859,14 @@ function CoveniaPlugin({
           />
         ) : (
           <>
+            {phase === "approved" && !accountability.open_obligation ? <div className="cached-notice"><CheckCircle2 size={14} /> 人工确认与回复已记录；本次未创建服务义务</div> : null}
             {cachedResult ? (
               <div className="cached-notice"><RefreshCw size={13} /> 当前使用缓存抽取结果，后续规则仍实时运行</div>
             ) : null}
-            <PriorityQueue selectedId={selectedId} onSelectCase={onSelectCase} />
-            <StoryDeck
+            {phase !== "approved" ? <>
+            <PriorityQueue selectedId={selectedId} onSelectCase={onSelectCase} states={priorityStates} error={priorityError} onRetry={onRetryPriority} />
+            <StoryActionPanel
               demoCase={demoCase}
-              accountability={accountability}
-              journey={journey}
               decision={decision}
               phase={phase}
               acting={acting}
@@ -1706,30 +1876,54 @@ function CoveniaPlugin({
               onApprove={onApprove}
               reviewSubmitted={reviewSubmitted}
             />
+            <section className="customer-facts" aria-label="本次服务依据">
+              <div className="fact-evidence" data-status={accountability.evidence_status}>
+                <div className="fact-evidence-copy">
+                  <span><ShieldCheck size={15} /> 已收到的材料</span>
+                  <b>{{ VALID: "材料已齐，别再重复索取", MISMATCHED: "材料与当前商品不一致", NEED_HUMAN_REVIEW: "画面不清，先由人工复核" }[accountability.evidence_status]}</b>
+                  <small>{demoCase.input.evidence_images.length} 张演示图片 · 对应当前案例</small>
+                </div>
+                <div className="fact-evidence-gallery" aria-label="图片证据预览">
+                  {demoCase.input.evidence_images.slice(0, 3).map((item) => {
+                    const label = { PRODUCT_OVERVIEW: "商品", ISSUE_DETAIL: "问题", PACKAGE_CONTEXT: "包装", OTHER: "其他" }[item.declared_view_type];
+                    return (
+                      <button type="button" key={item.evidence_id} onClick={(event) => { evidenceTriggerRef.current = event.currentTarget; setEvidencePreview({ fileName: item.file_name, label }); }} aria-label={`查看${label}图片`}>
+                        <EvidenceCard fileName={item.file_name} className="dossier-evidence" label={label} fallbackClass={item.declared_view_type === "PACKAGE_CONTEXT" ? "box-shape" : "bottle-shape"} />
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+              <div className="fact-owner"><span><UserRoundCheck size={14} /> 负责方</span><b>{accountability.accountable_side === "BRAND" ? "品牌跟进" : accountability.accountable_side === "CONSUMER" ? "消费者待补充" : "待人工确认"}</b></div>
+              <div className="fact-deadline"><span><Clock3 size={14} /> 下次更新</span><b>{accountability.service_progress_receipt?.next_update_by ? formatClock(accountability.service_progress_receipt.next_update_by) : "待确认时间"}</b>{!accountability.service_progress_receipt && accountability.active_commitments[0]?.deadline ? <span>原承诺 {formatClock(accountability.active_commitments[0].deadline)} 前</span> : null}</div>
+              <small>{customerState?.emotion.trend === "WORSENING" ? "可能需要优先安抚 · " : customerState?.emotion.trend === "UNKNOWN" ? "情绪待确认 · " : "沟通建议 · "}{customerState?.emotion.communication_guidance ?? "先确认已有材料，再说明下一步。"}</small>
+            </section>
+            </> : null}
 
-            <button className="details-toggle" onClick={onToggleDetails} aria-expanded={detailsOpen}>
-              <span><Inbox size={15} /> 更多案件信息</span>
+            <button className="details-toggle" onClick={onToggleDetails} aria-expanded={detailsOpen} aria-controls="case-details">
+              <span>判断依据与服务记录</span>
               <ChevronDown size={16} className={detailsOpen ? "rotated" : ""} />
             </button>
             {detailsOpen ? (
-              <>
+              <div id="case-details" className="case-details-content" ref={detailsRef}>
                 {decision ? <DecisionBanner decision={decision} /> : null}
                 <DiagnosisDetails accountability={accountability} journey={journey} />
-                <V11Workspace
-                  demoCase={demoCase}
-                  selectedId={selectedId}
-                  onSelectCase={onSelectCase}
-                  accountability={accountability}
-                  journey={journey}
-                  decision={decision}
-                  phase={phase}
-                />
-                {runtimeMetrics ? <RuntimeCostBar metrics={runtimeMetrics} /> : null}
-              </>
+                {customerState ? <details className="communication-sources"><summary>查看沟通依据</summary>{customerState.source_evidence.filter((item) => customerState.emotion.source_evidence_ids.includes(item.source_id)).slice(-3).map((item) => <p key={item.source_id}><small>{item.source_label} · {item.observed_at ? formatClock(item.observed_at) : ""}</small><br />{item.claim}</p>)}</details> : null}
+                {runtimeMetrics ? <details className="technical-disclosure"><summary>技术运行信息</summary><RuntimeCostBar metrics={runtimeMetrics} /></details> : null}
+              </div>
             ) : null}
           </>
         )}
       </div>
+      {evidencePreview ? (
+        <div className="evidence-lightbox-backdrop" onClick={() => setEvidencePreview(null)}>
+          <section className="evidence-lightbox" role="dialog" aria-modal="true" aria-label={`${evidencePreview.label}图片预览`} onClick={(event) => event.stopPropagation()}>
+            <div className="evidence-lightbox-head"><strong>{evidencePreview.label}图片</strong><button type="button" ref={evidenceCloseRef} autoFocus onClick={() => setEvidencePreview(null)}>关闭</button></div>
+            <img src={`/evidence/${evidencePreview.fileName}`} alt={`${evidencePreview.label}图片`} />
+            <small>本地演示素材 · 已关联当前案例</small>
+          </section>
+        </div>
+      ) : null}
     </aside>
   );
 }
@@ -1751,7 +1945,7 @@ function PluginHeader({
   ];
   return (
     <header className="plugin-header">
-      <div className="covenia-symbol"><span>C</span></div>
+      <div className="covenia-symbol"><img src="/brand/covenia-relay-glass-v5.png" alt="" /></div>
       <div>
         <strong>Covenia</strong>
         <small>体验责任副驾</small>
@@ -1791,7 +1985,7 @@ function DecisionBanner({ decision }: { decision: DecisionResult }) {
     <div className={`decision-banner state-${decision.decision.toLowerCase()}`}>
       <div className="decision-icon"><Icon size={19} /></div>
       <div>
-        <span>{copy.eyebrow} · {decision.decision}</span>
+        <span>{copy.eyebrow}</span>
         <strong>{copy.title}</strong>
         <p>{decision.reason}</p>
       </div>
@@ -1830,7 +2024,7 @@ function DiagnosisDetails({ accountability, journey }: { accountability: Account
       <div><span>潜在需要</span><p>{accountability.experience_gap_diagnosis.latent_need}</p></div>
       <div><span>责任判断</span><p>{accountability.accountable_side === "BRAND" ? "消费者输入已完整，当前由品牌负责" : accountability.accountable_side === "CONSUMER" ? "当前范围仍需消费者补充输入" : "事实不足，等待人工确认"}</p></div>
       <div className="fact-chips">
-        <span>证据 {accountability.evidence_status}</span>
+        <span>证据 {{ VALID: "已核实", MISMATCHED: "需要补充", NEED_HUMAN_REVIEW: "待人工复核" }[accountability.evidence_status]}</span>
         <span>{journey?.image_observations.length ?? 0} 张图片</span>
         <span>{accountability.active_commitments.length} 条承诺</span>
       </div>
@@ -1842,7 +2036,7 @@ function AccountabilitySummary({ accountability }: { accountability: Accountabil
   const commitment = accountability.active_commitments[0];
   return (
     <section className="accountability-summary">
-      <div><span>案件状态</span><b>{accountability.case_status}</b></div>
+      <div><span>案件状态</span><b>{{ WAITING_FOR_CONSUMER: "等待消费者回复", READY_FOR_BRAND: "等待品牌处理", ACTION_REVIEW: "待确认处理动作", IN_FULFILLMENT: "处理中", AT_RISK: "承诺有超时风险", RESOLVED: "已解决" }[accountability.case_status]}</b></div>
       {commitment ? <>
         <div><span>承诺原文</span><b>{commitment.raw_text}</b></div>
         <div><span>当前义务</span><b>{commitment.status} · {formatClock(commitment.deadline)} 前</b></div>
@@ -1861,6 +2055,8 @@ function RuntimeCostBar({ metrics }: { metrics: RuntimeMetrics }) {
 
 function ProgressView({
   accountability,
+  serviceClock,
+  deadline,
   acting,
   onShipment,
   shipmentChoice,
@@ -1869,6 +2065,8 @@ function ProgressView({
   supervisorCandidate,
 }: {
   accountability: AccountabilityState;
+  serviceClock?: string;
+  deadline?: string;
   acting: boolean;
   onShipment: (event: ShipmentEventType) => void;
   shipmentChoice: ShipmentEventType | null;
@@ -1880,7 +2078,7 @@ function ProgressView({
   const pickedUp = accountability.open_obligation?.milestone === "IN_TRANSIT";
   const delivered = accountability.open_obligation?.milestone === "DELIVERED";
   const atRisk = accountability.case_status === "AT_RISK";
-  const countdown = useCountdown(accountability.open_obligation?.deadline);
+  const countdown = useCountdown(deadline, serviceClock);
   return (
     <div className="progress-view">
       <div className={`progress-hero ${pickedUp || delivered ? "on-track" : atRisk ? "at-risk" : ""}`}>
@@ -1963,6 +2161,10 @@ function ApprovalDialog({
   decision,
   reply,
   setReply,
+  executor,
+  setExecutor,
+  nextCheckAt,
+  setNextCheckAt,
   acting,
   onClose,
   onConfirm,
@@ -1970,41 +2172,53 @@ function ApprovalDialog({
   decision: DecisionResult;
   reply: string;
   setReply: (value: string) => void;
+  executor: string;
+  setExecutor: (value: string) => void;
+  nextCheckAt: string;
+  setNextCheckAt: (value: string) => void;
   acting: boolean;
   onClose: () => void;
   onConfirm: () => void;
 }) {
+  const createsObligation = decision.resolution_path.creates_obligation;
+  const confirmationTitle = decision.resolution_path.candidate_type === "HUMAN_EVIDENCE_REVIEW"
+    ? "确认人工复核记录"
+    : decision.resolution_path.candidate_type === "ASK_CURRENT_SCOPE_EVIDENCE"
+      ? "确认索证回复"
+      : createsObligation ? "确认服务责任安排" : "确认这条回复";
+  const confirmationEffect = createsObligation
+    ? "确认后建立服务责任，并按约定时间持续跟进。回复只会记入本地演示记录。"
+    : "确认后记录人工复核决定与回复，不会创建服务义务或发送到千牛。";
   return (
     <div className="modal-backdrop" role="presentation">
       <div className="approval-dialog" role="dialog" aria-modal="true" aria-labelledby="approval-title">
         <header>
-          <div className="dialog-icon"><ClipboardCheck size={20} /></div>
-          <div><span>人工确认</span><h2 id="approval-title">让这条服务承诺开始运行</h2></div>
+          <div className="dialog-icon"><img src="/brand/covenia-relay-glass-v5.png" alt="" /></div>
+          <div><span>人工确认</span><h2 id="approval-title">{confirmationTitle}</h2></div>
           <button onClick={onClose} aria-label="关闭"><X size={19} /></button>
         </header>
-        <div className="approval-grid">
-          <label><span>责任方</span><div className="fixed-input"><ShieldCheck size={15} /> 品牌</div></label>
-          <label><span>执行方</span><select defaultValue="WAREHOUSE"><option value="WAREHOUSE">测试美妆分销中心</option><option value="BRAND">品牌客服</option></select></label>
-          <label><span>承诺截止</span><div className="fixed-input"><Clock3 size={15} /> 5月7日 10:27</div></label>
-          <label><span>完成条件</span><div className="fixed-input"><PackageCheck size={15} /> 换货商品送达</div></label>
-        </div>
+        {createsObligation ? <div className="approval-grid">
+          <label><span>责任方</span><div className="fixed-input"><ShieldCheck size={15} /> {decision.resolution_path.accountable_side === "BRAND" ? "品牌" : decision.resolution_path.accountable_side}</div></label>
+          <label><span>执行方</span><select value={executor} onChange={(event) => setExecutor(event.target.value)}><option value="WAREHOUSE">仓库</option><option value="BRAND">品牌客服</option><option value="LOGISTICS_PROVIDER">物流服务方</option></select></label>
+          <label><span>下次更新时间</span><input className="fixed-input" type="datetime-local" value={nextCheckAt} onChange={(event) => setNextCheckAt(event.target.value)} /></label>
+          <label><span>完成条件</span><div className="fixed-input"><PackageCheck size={15} /> {decision.resolution_path.compiled_service_responsibility?.source_promise_text ?? decision.resolution_path.task_prefill.summary}</div></label>
+        </div> : null}
         <label className="reply-editor">
           <span>消费者回复</span>
           <textarea value={reply} onChange={(event) => setReply(event.target.value)} />
-          <small>不展示内部责任人、风险分数或规则术语</small>
+          <small>确认后，这段文字会保存为本次服务回复。</small>
         </label>
         <div className="approval-summary">
           <Sparkles size={16} />
-          <p><b>确认后会发生什么</b><span>创建服务责任与倒计时、发送进度回执，并持续等待物流事件。</span></p>
+          <p><b>确认后会发生什么</b><span>{confirmationEffect}</span></p>
         </div>
         <footer>
           <button className="dialog-cancel" onClick={onClose}>返回修改</button>
           <button className="dialog-confirm" onClick={onConfirm} disabled={acting || !reply.trim()}>
             {acting ? <Loader2 size={16} className="spin" /> : <Check size={16} />}
-            确认并发送回执
+            确认并记录回复
           </button>
         </footer>
-        <p className="rule-footnote">依据 {decision.rule_id} · 人工事实将成为最高优先级</p>
       </div>
     </div>
   );

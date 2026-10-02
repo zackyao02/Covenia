@@ -363,6 +363,7 @@ export interface EmotionState {
   communication_guidance: string;
   source_evidence_ids: string[];
   confidence: number;
+  probability?: number | null;
   risk_scoring_allowed: false;
 }
 
@@ -435,13 +436,13 @@ export interface JEVDecisionAdvisory {
   };
   emotion: {
     trend: EmotionState["trend"];
-    probability: number;
+    probability: number | null;
     threshold: number;
     source: "JEV" | "RULE_FALLBACK";
   };
   human_escalation: {
     required: boolean;
-    probability: number;
+    probability: number | null;
     threshold: number;
     source: "JEV" | "RULE_FALLBACK" | "RULE";
   };
@@ -451,7 +452,7 @@ export interface JEVDecisionAdvisory {
       | "HUMAN_ESCALATION"
       | "CONTINUE_TROUBLESHOOTING"
       | "REQUEST_EVIDENCE";
-    probability: number;
+    probability: number | null;
     threshold: number;
     source: "JEV" | "RULE_FALLBACK";
   };
@@ -482,6 +483,8 @@ export interface JEVDecisionAdvisory {
     provider_error?: { code: string; message: string } | null;
     latency_ms: number;
     created_at: ISODateTime;
+    pii_masked_count?: number;
+    thresholds_validated?: boolean;
   };
 }
 
@@ -499,6 +502,7 @@ export interface CustomerDecision {
 
 export interface CustomerState {
   case_id: string;
+  service_clock?: ISODateTime;
   facts: Array<{
     fact_id: string;
     statement: string;
@@ -608,6 +612,14 @@ export interface DecisionResult {
   reason: string;
   resolution_path: ResolutionPath;
   runtime_metrics: RuntimeMetrics;
+  draft_assessment?: DraftAssessment;
+}
+
+export interface DraftAssessment {
+  kind: "EVIDENCE_REQUEST" | "PROGRESS_UPDATE" | "NEW_COMMITMENT" | "CLOSE_CASE" | "UNCLASSIFIED";
+  requires_confirmation: boolean;
+  explanation: string;
+  evaluated_text: string;
 }
 
 // POST /api/cases/analyze — case_input 仅允许在 challenge_mode 中使用
@@ -631,6 +643,7 @@ export interface AnalyzeCaseResponse {
 export interface EvaluateActionRequest {
   case_id: string;
   prepared_action: PreparedAction;
+  draft_reply?: string;
   evaluation_time?: ISODateTime;
   challenge_mode?: boolean;
   challenge_overrides?: {
@@ -656,6 +669,7 @@ export interface HumanResolutionEdits {
   executor?: ObligationExecutor;
   next_check_at?: ISODateTime;
   recovery_if_missed?: string;
+  consumer_reply?: string;
 }
 
 // POST /api/resolutions/approve
@@ -734,6 +748,8 @@ export type ApiResult<T> =
     };
 
 export interface CoveniaApi {
+  getCustomerState(caseId: string): Promise<ApiResult<CustomerState>>;
+  getPriority(): Promise<ApiResult<PriorityState[]>>;
   analyzeCase(input: AnalyzeCaseRequest): Promise<ApiResult<AnalyzeCaseResponse>>;
   evaluateAction(
     input: EvaluateActionRequest,
@@ -744,7 +760,6 @@ export interface CoveniaApi {
   pushShipmentEvent(
     input: ShipmentEventRequest,
   ): Promise<ApiResult<ShipmentEventResponse>>;
-  getCustomerState?(caseId: string): Promise<ApiResult<CustomerState>>;
   getRiskStates?(): Promise<ApiResult<RiskState[]>>;
   getPriorityStates?(): Promise<ApiResult<PriorityState[]>>;
   getEmergingIssues?(): Promise<ApiResult<EmergingIssue[]>>;

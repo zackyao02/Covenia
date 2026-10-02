@@ -7,6 +7,7 @@
   "required": ["case_id", "facts", "evidence", "intent", "emotion", "effort", "actions", "promises", "risk", "decision", "resolution", "source_evidence"],
   "properties": {
     "case_id": {"type": "string"},
+    "service_clock": {"type": "string", "format": "date-time"},
     "facts": {
       "type": "array",
       "items": {
@@ -76,6 +77,7 @@
     },
     "risk": {"$ref": "risk-state.schema.json"},
     "decision": {"$ref": "decision.schema.json"},
+    "decision_advisory": {"anyOf": [{"$ref": "jev-advisory.schema.json"}, {"type": "null"}]},
     "resolution": {
       "type": "object",
       "additionalProperties": false,

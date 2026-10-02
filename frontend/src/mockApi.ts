@@ -18,7 +18,10 @@ import type {
   ShipmentEventResponse,
   ApiErrorCode,
   RuntimeMetrics,
+  CustomerState,
+  PriorityState,
 } from "./api/contracts";
+import { demoCases } from "./demoData";
 
 export type MockMode =
   | "normal"
@@ -277,6 +280,34 @@ function decisionFor(state: AccountabilityState, input: EvaluateActionRequest): 
 }
 
 export const mockApi = {
+  async getCustomerState(): Promise<ApiResult<CustomerState>> {
+    return fail("MODEL_UNAVAILABLE", "演示数据不提供实时沟通判断，请连接本地服务查看。", "REQ_CUSTOMER", false);
+  },
+  async getPriority(): Promise<ApiResult<PriorityState[]>> {
+    const rows: PriorityState[] = [];
+    for (const item of demoCases) {
+      const state = states.get(item.id) ?? analysisFor({
+        case_id: item.id,
+        evaluation_time: item.input.evaluation_time,
+        challenge_mode: item.id !== "DEMO_001",
+        case_input: item.input,
+      }).accountability_state;
+      if (state.case_status === "RESOLVED") continue;
+      const overdue = state.case_status === "AT_RISK" || state.active_commitments.some(
+        (entry) => entry.status !== "COMPLETED" && Date.parse(entry.deadline) < Date.parse(serviceClock),
+      );
+      const review = state.evidence_status === "NEED_HUMAN_REVIEW" || state.current_scope.issue_type === "ADVERSE_REACTION";
+      const score = overdue ? 120 : review ? 92 : state.evidence_status === "MISMATCHED" ? 40 : 64;
+      rows.push({
+        case_id: item.id, rank: 0, priority_score: score,
+        band: score >= 120 ? "RED" : score >= 92 ? "ORANGE" : score >= 64 ? "YELLOW" : "NORMAL",
+        queue_reasons: [overdue ? "承诺需要跟进" : review ? "待人工复核" : state.consumer_input_required ? "等待补充当前证据" : "品牌待处理"],
+        next_best_action: review ? "人工复核" : state.consumer_input_required ? "补齐当前证据" : "跟进处理进度",
+      });
+    }
+    rows.sort((a, b) => b.priority_score - a.priority_score);
+    return ok(rows.map((row, i) => ({ ...row, rank: i + 1 })), "REQ_PRIORITY");
+  },
   async analyzeCase(
     input: AnalyzeCaseRequest,
   ): Promise<ApiResult<AnalyzeCaseResponse>> {
@@ -298,6 +329,9 @@ export const mockApi = {
     input: EvaluateActionRequest,
   ): Promise<ApiResult<EvaluateActionResponse>> {
     await wait();
+    if (input.draft_reply !== undefined) {
+      return fail("MODEL_UNAVAILABLE", "草稿检查需要本地服务。演示数据不能确认这条回复是否可发送。", "REQ_EVALUATE", false);
+    }
     if (mockMode === "state_conflict") {
       return fail("INVALID_EVENT_TRANSITION", "责任状态已变化，请刷新后重试。", "REQ_EVALUATE");
     }
@@ -324,7 +358,10 @@ export const mockApi = {
     const deadline = existingState?.active_commitments[0]?.deadline
       ?? response.accountability_state.active_commitments[0]?.deadline
       ?? "2026-05-07T10:27:37+08:00";
-    const nextCheckAt = "2026-05-07T10:30:00+08:00";
+    const nextCheckAt = input.human_edits.next_check_at ?? "2026-05-07T10:30:00+08:00";
+    if (!Number.isFinite(Date.parse(nextCheckAt)) || Date.parse(nextCheckAt) <= Date.parse(serviceClock)) {
+      return fail("VALIDATION_ERROR", "下次更新时间须晚于当前服务时间。", "REQ_APPROVE", false);
+    }
     response.accountability_state.case_id = input.case_id;
     response.accountability_state.case_status = "IN_FULFILLMENT";
     response.accountability_state.experience_risk = "MEDIUM";
@@ -335,6 +372,7 @@ export const mockApi = {
       response.accountability_state.open_obligation.status = "ON_TRACK";
       response.accountability_state.open_obligation.deadline = deadline;
       response.accountability_state.open_obligation.next_check_at = nextCheckAt;
+      response.accountability_state.open_obligation.executor = input.human_edits.executor ?? response.accountability_state.open_obligation.executor;
     }
     if (response.accountability_state.service_progress_receipt) {
       response.accountability_state.service_progress_receipt.status = "ACTIVE";
@@ -348,6 +386,12 @@ export const mockApi = {
     const priorDecision = decisions.get(input.case_id);
     if (priorDecision) response.approved_resolution = structuredClone(priorDecision.resolution_path);
     response.approved_resolution.executor = input.human_edits.executor ?? response.approved_resolution.executor;
+    if (input.human_edits.consumer_reply?.trim()) {
+      response.approved_resolution.consumer_reply_draft = input.human_edits.consumer_reply.trim();
+      if (response.accountability_state.service_progress_receipt) {
+        response.accountability_state.service_progress_receipt.brand_action = input.human_edits.consumer_reply.trim();
+      }
+    }
     if (response.approved_resolution.compiled_service_responsibility) {
       response.approved_resolution.compiled_service_responsibility.next_check_at =
         input.human_edits.next_check_at ?? nextCheckAt;

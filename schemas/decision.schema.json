@@ -11,6 +11,7 @@
     "reason": {"type": "string", "minLength": 1},
     "rule_id": {"enum": ["P0_PROHIBITED_ACTION", "E1", "E2", "H1", "E0_NO_RULE_MATCHED"]},
     "jev_assessment_id": {"type": ["string", "null"]},
+    "decision_advisory": {"anyOf": [{"$ref": "jev-advisory.schema.json"}, {"type": "null"}]},
     "source_evidence_ids": {"type": "array", "items": {"type": "string"}},
     "next_action": {"type": "string", "minLength": 1},
     "human_review_required": {"type": "boolean"}

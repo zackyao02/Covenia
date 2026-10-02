@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "jev-advisory.schema.json",
+  "title": "JEVDecisionAdvisory",
+  "type": "object",
+  "required": ["assessment_id", "customer_state_version", "source", "status", "configured", "jev_call", "emotion", "human_escalation", "next_best_action", "deterministic_signals", "audit"],
+  "additionalProperties": false,
+  "properties": {
+    "assessment_id": {"type": "string"},
+    "customer_state_version": {"type": "string"},
+    "source": {"enum": ["JEV", "RULE_FALLBACK"]},
+    "status": {"enum": ["READY", "FALLBACK"]},
+    "configured": {"type": "boolean"},
+    "jev_call": {"$ref": "#/$defs/call"},
+    "emotion": {
+      "type": "object",
+      "required": ["trend", "probability", "threshold", "source"],
+      "properties": {
+        "trend": {"enum": ["STABLE", "IMPROVING", "WORSENING", "UNKNOWN"]},
+        "probability": {"$ref": "#/$defs/probability"},
+        "threshold": {"type": "number", "minimum": 0, "maximum": 1},
+        "source": {"enum": ["JEV", "RULE_FALLBACK"]}
+      }
+    },
+    "human_escalation": {
+      "type": "object",
+      "required": ["required", "probability", "threshold", "source"],
+      "properties": {
+        "required": {"type": "boolean"},
+        "probability": {"$ref": "#/$defs/probability"},
+        "threshold": {"type": "number", "minimum": 0, "maximum": 1},
+        "source": {"enum": ["JEV", "RULE_FALLBACK", "RULE"]}
+      }
+    },
+    "next_best_action": {
+      "type": "object",
+      "required": ["recommended", "probability", "threshold", "source"],
+      "properties": {
+        "recommended": {"enum": ["CHECK_REPLACEMENT", "HUMAN_ESCALATION", "CONTINUE_TROUBLESHOOTING", "REQUEST_EVIDENCE"]},
+        "probability": {"$ref": "#/$defs/probability"},
+        "threshold": {"type": "number", "minimum": 0, "maximum": 1},
+        "source": {"enum": ["JEV", "RULE_FALLBACK"]}
+      }
+    },
+    "deterministic_signals": {"type": "object"},
+    "audit": {"type": "object", "required": ["assessment_id", "source", "jev_call", "pii_masked_count", "thresholds_validated"], "properties": {"jev_call": {"$ref": "#/$defs/call"}, "pii_masked_count": {"type": "integer", "minimum": 0}, "thresholds_validated": {"const": false}}}
+  },
+  "$defs": {
+    "probability": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+    "call": {"type": "object", "required": ["configured", "attempted", "succeeded", "fallback_used"], "properties": {"configured": {"type": "boolean"}, "attempted": {"type": "boolean"}, "succeeded": {"type": "boolean"}, "fallback_used": {"type": "boolean"}, "error_code": {"type": ["string", "null"]}}}
+  }
+}

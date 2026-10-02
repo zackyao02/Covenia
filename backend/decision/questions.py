@@ -10,9 +10,9 @@ def jev_questions() -> list[dict[str, Any]]:
         {
             "id": "emotion_worsening",
             "type": "noul",
-            "instructions": "Does the consumer's emotion appear to be worsening compared with the start of this service interaction?",
+            "instructions": "Compare the consumer's earlier and latest messages in `recent_messages`. Is expressed frustration, urgency or distrust increasing? Count only what the consumer expresses; do not treat risk scores, repeat contact or an overdue promise alone as evidence of worsening emotion.",
             "criteria": {
-                "true": "The consumer shows increasing frustration, urgency, distrust, or repeated effort.",
+                "true": "The consumer's later words express more frustration, urgency or distrust than their earlier words.",
                 "false": "The consumer is stable, calmer, or only asking a routine status question.",
             },
         },

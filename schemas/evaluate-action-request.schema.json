@@ -8,6 +8,7 @@
   "properties": {
     "case_id": {"type": "string", "minLength": 1},
     "prepared_action": {"$ref": "prepared-action.schema.json"},
+    "draft_reply": {"type": "string", "minLength": 1, "maxLength": 5000},
     "evaluation_time": {"type": "string", "format": "date-time"},
     "challenge_mode": {"type": "boolean", "default": false},
     "challenge_overrides": {
