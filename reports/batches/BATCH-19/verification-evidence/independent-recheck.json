@@ -1,0 +1,86 @@
+{
+  "report_type": "INDEPENDENT_VERIFICATION_REPORT",
+  "report_version": "1.0",
+  "batch_id": "BATCH-19",
+  "result": "PASS",
+  "acceptance_commit_verified": true,
+  "implementation_commit_verified": true,
+  "commit_evidence": {
+    "acceptance_commit": "87414361becc44c0677b908a4b6f6e2e0608b65e",
+    "acceptance_parent_reviewed_sha": "7afde7323dcfd3e8bacdffcb25974864a268e399",
+    "implementation_commit": "38757402993aaa46f1690c146bad734f88cac3b5",
+    "implementation_is_ancestor_of_reviewed_sha": true,
+    "reviewed_critical_code_blobs_equal_to_implementation_commit": true,
+    "acceptance_commit_changes_from_reviewed_sha": [
+      "reports/batches/BATCH-19/VERIFICATION_REPORT.json",
+      "reports/batches/BATCH-19/verification-evidence/verifier-probe.py"
+    ]
+  },
+  "commands_run": [
+    {
+      "command": "git rev-parse 87414361becc44c0677b908a4b6f6e2e0608b65e^; git merge-base --is-ancestor 38757402993aaa46f1690c146bad734f88cac3b5 7afde7323dcfd3e8bacdffcb25974864a268e399",
+      "exit_code": 0,
+      "result": "acceptance parent is reviewed_sha; implementation commit is an ancestor"
+    },
+    {
+      "command": "git show <sha>:<path> piped as raw blob bytes to SHA-256 for analyze.py, fact_loader.py, test_analyze.py, and verifier-probe.py",
+      "exit_code": 0,
+      "result": "all four digests match the committed report evidence"
+    },
+    {
+      "command": "& \"C:\\Users\\WONGTS~1\\AppData\\Local\\Temp\\cvb19r03\\venv\\Scripts\\python.exe\" -c \"assert sys.prefix != sys.base_prefix; import ssl, ctypes\"",
+      "exit_code": 0,
+      "result": "fresh isolated venv; native import preflight passed"
+    },
+    {
+      "command": "& \"C:\\Users\\WONGTS~1\\AppData\\Local\\Temp\\cvb19r03\\venv\\Scripts\\python.exe\" -m pytest C:\\Users\\WONGTS~1\\AppData\\Local\\Temp\\cvb19r03\\src\\backend\\tests\\services\\test_analyze.py -q",
+      "exit_code": 0,
+      "result": "6 passed in 0.90s"
+    },
+    {
+      "command": "& \"C:\\Users\\WONGTS~1\\AppData\\Local\\Temp\\cvb19r03\\venv\\Scripts\\python.exe\" reports\\batches\\BATCH-19\\verification-evidence\\verifier-probe.py",
+      "exit_code": 0,
+      "result": "all structural probe assertions printed true"
+    },
+    {
+      "command": "& \"C:\\Users\\WONGTS~1\\AppData\\Local\\Temp\\cvb19r03\\venv\\Scripts\\python.exe\" -m pip check",
+      "exit_code": 0,
+      "result": "No broken requirements found."
+    },
+    {
+      "command": "longest-path preflight over the fresh run directory",
+      "exit_code": 0,
+      "result": "run_dir length 45; longest path length 192; below the 250-character gate"
+    },
+    {
+      "command": "git show 38757402993aaa46f1690c146bad734f88cac3b5:<changed production path> | literal scan for DEMO_001, DEMO_002, DEMO_003, S00001",
+      "exit_code": 0,
+      "result": "0 hits in analyze.py and fact_loader.py"
+    }
+  ],
+  "passed_checks": [
+    "8741436 contains VERIFICATION_REPORT.json with batch_id BATCH-19, verdict PASS, reviewed_sha 7afde7323dcfd3e8bacdffcb25974864a268e399, and reviewed_code_commit 38757402993aaa46f1690c146bad734f88cac3b5; Git ancestry and exact critical blob comparison confirm the linkage.",
+    "Raw git-show blob SHA-256 values match: analyze.py 7979c77bb2e6128c553b557b2a3daa5afb69635062240f927d02ecdf97316c49; fact_loader.py 9bccd2add642990ee0fac5891f48ade2021d6adacc331047ba0ee406c1847903; test_analyze.py 425160b73f3aa8ca9c939d084e34d84495c0a32d0d68e4fbe2d4eb6fae71e32f; verifier-probe.py b80e1c93f683b675f550686f11f9a7ee64bfb0891b03bb7511968899e2bebb9b.",
+    "The re-run service tests exercise challenge isolation with NoTouchLedger, persisted manual/completed state retention, and the ledger expected_version assertion; all six tests passed in the independently created venv.",
+    "The committed verifier probe re-ran successfully against a clean worktree at reviewed_sha and confirms challenge short-circuits before ledger load/save, prior precedes build, build precedes persist, persisted prior is passed to the builder, and _persist_state supplies expected_version.",
+    "A33 literal control was independently re-run using raw implementation blobs: none of DEMO_001, DEMO_002, DEMO_003, or S00001 occurs in either changed production service module.",
+    "The fresh short-path venv has a distinct sys.prefix, passed ssl/ctypes preflight and pip check, and its longest observed path is below the required 250-character limit."
+  ],
+  "failed_checks": [],
+  "scope_violations": [],
+  "regression_risks": [
+    "The original verifier-probe.py is structural, imports a hard-coded external worktree path, and does not instantiate its declared SpyLedger. Its dynamic challenge coverage therefore comes from test_analyze.py rather than that probe alone. This recheck verified that referenced worktree was clean and at reviewed_sha before executing it.",
+    "The original report labels its anti-shortcut description as an A33 filename/view-type scan, whereas PRODUCT-FREEZE A33 is the four-literal static control. This recheck ran the actual A33 literal scan over the changed production blobs and got zero hits; future reports should name the exact A33 predicate and command.",
+    "No separate end-to-end independently constructed case/provider test was added in the original acceptance report; this limitation was disclosed there and is outside this report-only recheck's allowed write scope."
+  ],
+  "minimal_fix_request": [],
+  "limitations": [
+    "This is an independent recheck of the acceptance evidence and key controls, not an implementation change, integration receipt, or authorization to start another batch.",
+    "The canonical report uses verdict rather than a top-level result field and does not contain a top-level commit_verified field. The requested result and commit-verification values in this report are established directly from the immutable Git chain and blobs."
+  ],
+  "code_modified": false,
+  "canonical_verification_report_modified": false,
+  "schema_modified": false,
+  "plan_modified": false,
+  "other_batch_started": false
+}
