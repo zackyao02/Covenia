@@ -1,5 +1,5 @@
 param(
-  [string]$OutputPath = (Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) 'Covenia-Competition-Demo-2026-10-03-v4.zip')
+  [string]$OutputPath = (Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) 'Covenia-Competition-Demo-2026-10-03-v6.zip')
 )
 $ErrorActionPreference = 'Stop'
 $ProjectRoot = Split-Path $PSScriptRoot -Parent

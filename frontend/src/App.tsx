@@ -1946,13 +1946,12 @@ function JevInsightCard({ state }: { state: CustomerState | null }) {
     UNKNOWN: "情绪变化待确认",
   }[advisory.emotion.trend];
   const actionCopy = {
-    CHECK_REPLACEMENT: "查询换货 / 补发进度",
-    HUMAN_ESCALATION: "转人工主管复核",
-    CONTINUE_TROUBLESHOOTING: "继续处理当前问题",
-    REQUEST_EVIDENCE: "确认是否确需补充材料",
+    CHECK_REPLACEMENT: "查换货进度",
+    HUMAN_ESCALATION: "请主管一起处理",
+    CONTINUE_TROUBLESHOOTING: "继续处理问题",
+    REQUEST_EVIDENCE: "确认需要补什么材料",
   }[advisory.next_best_action.recommended];
   const emotionProbability = live ? advisory.emotion.probability : null;
-  const actionProbability = live ? advisory.next_best_action.probability : null;
   const citedEvidence = state.source_evidence
     .filter((item) => advisory.emotion.source === "JEV" && state.emotion.source_evidence_ids.includes(item.source_id))
     .slice(-2);
@@ -1961,19 +1960,19 @@ function JevInsightCard({ state }: { state: CustomerState | null }) {
     <section className={`jev-insight-card${live ? " is-live" : " is-fallback"}`} aria-label="JEV 情绪分析与下一步建议">
       <div className="jev-insight-topline">
         <div className="jev-brand-mark"><Sparkles size={16} /></div>
-        <div className="jev-insight-title"><span>对话情绪识别</span><strong>JEV 智能洞察</strong></div>
-        <span className="jev-status-pill">{live ? "本次模型已分析" : "规则保障中"}</span>
+        <div className="jev-insight-title"><span>JEV</span><strong>情绪判断</strong></div>
+        <span className="jev-status-pill">{live ? "已分析" : "暂不可用"}</span>
       </div>
 
       <div className="jev-insight-main">
         <div className="jev-emotion-copy">
-          <small>比较多轮对话的语气变化</small>
+          <small>消费者情绪</small>
           <h3>{live ? trendCopy : "当前无法确认情绪变化"}</h3>
         </div>
         {emotionProbability !== null ? (
           <div className="jev-probability" aria-label={`未校准模型输出 ${Math.round(emotionProbability * 100)}%`}>
             <strong>{Math.round(emotionProbability * 100)}<small>%</small></strong>
-            <span>模型输出</span>
+            <span>模型估计 · 未校准</span>
           </div>
         ) : null}
       </div>
@@ -1984,20 +1983,19 @@ function JevInsightCard({ state }: { state: CustomerState | null }) {
 
       <div className="jev-action-row">
         <div className="jev-action-icon"><CheckCircle2 size={15} /></div>
-        <div><small>{live ? "JEV 建议客服下一步" : "当前服务建议"}</small><strong>{actionCopy}</strong></div>
-        {actionProbability !== null ? <b>{Math.round(actionProbability * 100)}<small>%</small></b> : null}
+        <div><small>{live ? "同时建议" : "当前建议"}</small><strong>{actionCopy}</strong></div>
       </div>
 
       {citedEvidence.length > 0 ? (
         <details className="jev-evidence-disclosure">
-          <summary>查看 JEV 参考的 {citedEvidence.length} 段对话</summary>
+          <summary>查看依据（{citedEvidence.length} 段对话）</summary>
           <div className="jev-evidence-list" aria-label="情绪分析引用的对话">
             {citedEvidence.map((item) => <p key={item.source_id}><span>{item.observed_at ? formatClock(item.observed_at) : "对话"}</span>“{item.claim}”</p>)}
           </div>
         </details>
       ) : null}
 
-      <div className="jev-boundary-note">情绪辅助沟通 · 规则负责风险拦截 · 概率未校准</div>
+      <div className="jev-boundary-note">模型建议供参考，处理仍按服务规则。</div>
     </section>
   );
 }
