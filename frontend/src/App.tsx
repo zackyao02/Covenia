@@ -1967,9 +1967,8 @@ function JevInsightCard({ state }: { state: CustomerState | null }) {
 
       <div className="jev-insight-main">
         <div className="jev-emotion-copy">
-          <small>从多轮对话中识别</small>
+          <small>比较多轮对话的语气变化</small>
           <h3>{live ? trendCopy : "当前无法确认情绪变化"}</h3>
-          <p>{live ? "不仅统计重复联系，还比较消费者表达中的语气和紧迫感。" : "模型信号暂不可用，客服仍可按既有服务规则继续处理。"}</p>
         </div>
         {emotionProbability !== null ? (
           <div className="jev-probability" aria-label={`未校准模型输出 ${Math.round(emotionProbability * 100)}%`}>
@@ -1990,12 +1989,15 @@ function JevInsightCard({ state }: { state: CustomerState | null }) {
       </div>
 
       {citedEvidence.length > 0 ? (
-        <div className="jev-evidence-list" aria-label="情绪分析引用的对话">
-          {citedEvidence.map((item) => <p key={item.source_id}><span>{item.observed_at ? formatClock(item.observed_at) : "对话"}</span>“{item.claim}”</p>)}
-        </div>
+        <details className="jev-evidence-disclosure">
+          <summary>查看 JEV 参考的 {citedEvidence.length} 段对话</summary>
+          <div className="jev-evidence-list" aria-label="情绪分析引用的对话">
+            {citedEvidence.map((item) => <p key={item.source_id}><span>{item.observed_at ? formatClock(item.observed_at) : "对话"}</span>“{item.claim}”</p>)}
+          </div>
+        </details>
       ) : null}
 
-      <div className="jev-boundary-note">JEV 辅助理解情绪与建议沟通动作；责任、风险拦截仍由规则把关。模型概率尚未用真实业务数据校准。</div>
+      <div className="jev-boundary-note">情绪辅助沟通 · 规则负责风险拦截 · 概率未校准</div>
     </section>
   );
 }
