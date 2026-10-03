@@ -1,0 +1,75 @@
+{
+  "artifact": "cache-invalidation-matrix.json",
+  "batch_id": "BATCH-20",
+  "cache_format_version": "covenia-b-extraction-cache-v1",
+  "cache_mode": "failure_only_candidate_fallback",
+  "key_material": {
+    "normalised_safe_text": "NFKC plus whitespace-normalised SanitizedModelInput.redacted_text; no raw value is persisted",
+    "actual_images": [
+      "resolved evidence ID",
+      "content_sha256",
+      "media type",
+      "byte length",
+      "input order"
+    ],
+    "scope_and_sources": [
+      "case ID",
+      "explicit request scope",
+      "ordered trusted source IDs"
+    ],
+    "versions": [
+      "model ID",
+      "model revision",
+      "prompt version",
+      "candidate schema version",
+      "policy version"
+    ]
+  },
+  "invalidation_cases": [
+    {
+      "change": "normalised safe text / commitment wording",
+      "expected": "different digest; cache miss",
+      "implementation_test": "test_input_scope_or_version_change_is_a_cache_miss[safe_text-NORMAL]"
+    },
+    {
+      "change": "resolved image content_sha256",
+      "expected": "different digest; cache miss",
+      "implementation_test": "test_input_scope_or_version_change_is_a_cache_miss[image_hash-NORMAL]"
+    },
+    {
+      "change": "trusted source IDs",
+      "expected": "different digest; cache miss",
+      "implementation_test": "test_input_scope_or_version_change_is_a_cache_miss[source_ids-NORMAL]"
+    },
+    {
+      "change": "explicit request scope",
+      "expected": "different digest; cache miss",
+      "implementation_test": "test_input_scope_or_version_change_is_a_cache_miss[scope-CHALLENGE]"
+    },
+    {
+      "change": "model revision, prompt, schema, or policy version",
+      "expected": "different digest; cache miss",
+      "implementation_test": "test_input_scope_or_version_change_is_a_cache_miss[*version-NORMAL]"
+    },
+    {
+      "change": "cached candidate mutation, invalid schema/source, detectable PII, or incompatible metadata",
+      "expected": "not cached or rejected as CACHE_CORRUPT; never returned",
+      "implementation_test": "test_corrupt_cached_candidate_is_not_a_hit; test_only_schema_source_and_privacy_safe_candidates_are_cached"
+    },
+    {
+      "change": "invalid/missing actual image content hash",
+      "expected": "UNSAFE_CACHE_INPUT; no cache read or write",
+      "implementation_test": "test_unsafe_input_or_store_outage_never_becomes_a_cache_hit"
+    }
+  ],
+  "runtime_rules": {
+    "normal_path": "always calls the upstream model before considering any cache",
+    "fallback_trigger": "ModelUnavailable only",
+    "cold_cache_model_failure": "raises EXTRACTION_CACHE_FALLBACK_UNAVAILABLE with CACHE_MISS",
+    "live_mode": "LIVE forces cache_enabled=false and bypasses all cache reads/writes",
+    "cached_payload": "CandidateExtraction only; no AnalyzeCaseResponse, DecisionResult, accountability state, ledger snapshot, deadline, human edit, or event status",
+    "fallback_metadata": "preserves the origin run_id and sets ModelMetadata.cached_result=true",
+    "governance_requirement": "a redacted current request_id/origin run_id relation must be recorded before serving fallback"
+  },
+  "evidence_scope": "Implementation-test evidence only; not an independent verification or integration receipt."
+}

@@ -1,0 +1,32 @@
+{
+  "artifact": "environment.json",
+  "batch_id": "BATCH-20",
+  "base_integration_sha": "16ee07cb4553ddaad74d0dc54323867c55095923",
+  "implementation_code_commit": "4140835c03a0b80d24b1220c92d62f061feda109",
+  "branch": "codex/covenia-batch-20",
+  "run_dir": "C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\cvb20",
+  "run_dir_length": 48,
+  "venv": "C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\cvb20\\venv",
+  "venv_is_direct_run_dir_child": true,
+  "interpreter": "C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\cvb20\\venv\\Scripts\\python.exe",
+  "interpreter_length": 72,
+  "sys_prefix": "C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\cvb20\\venv",
+  "sys_base_prefix": "D:\\python",
+  "python_version": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]",
+  "interpreter_assertion": "PASS: executable resolved to the supplied venv interpreter and sys.prefix differs from sys.base_prefix.",
+  "longest_observed_path": "C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\cvb20\\venv\\Lib\\site-packages\\pkg_resources\\tests\\data\\my-test-package_unpacked-egg\\my_test_package-1.0-py3.7.egg\\EGG-INFO\\dependency_links.txt",
+  "longest_observed_path_length": 185,
+  "longest_path_under_250": true,
+  "requirements_dev_lock": {
+    "path": "backend/requirements-dev.lock",
+    "modified": false,
+    "new_third_party_dependencies": false,
+    "reason": "The implementation uses only the existing standard library and project dependencies."
+  },
+  "pip_list": {
+    "command": "& C:/Users/WONG Tsun Ming/AppData/Local/Temp/cvb20/venv/Scripts/python.exe -m pip list --format=json",
+    "package_count": 31,
+    "editable_project": "covenia-b==0.0.0"
+  },
+  "installation_scope": "Only the isolated BATCH-20 venv was modified; no global interpreter installation was performed."
+}

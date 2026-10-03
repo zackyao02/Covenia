@@ -1,0 +1,74 @@
+{
+  "artifact": "commands.json",
+  "batch_id": "BATCH-20",
+  "run_dir": "C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\cvb20",
+  "interpreter": "C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\cvb20\\venv\\Scripts\\python.exe",
+  "commands": [
+    {
+      "command": "& D:/python/python.exe -m venv C:/Users/WONG Tsun Ming/AppData/Local/Temp/cvb20/venv",
+      "exit_code": 0,
+      "result": "Created isolated short-path venv."
+    },
+    {
+      "command": "& C:/Users/WONG Tsun Ming/AppData/Local/Temp/cvb20/venv/Scripts/python.exe -c <interpreter assertion> C:/Users/WONG Tsun Ming/AppData/Local/Temp/cvb20/venv/Scripts/python.exe",
+      "exit_code": 0,
+      "result": "Resolved supplied venv interpreter; sys.prefix differs from sys.base_prefix."
+    },
+    {
+      "command": "& C:/Users/WONG Tsun Ming/AppData/Local/Temp/cvb20/venv/Scripts/python.exe -m pip install --no-deps -r backend/requirements-dev.lock",
+      "exit_code": 0,
+      "result": "Installed only the exact existing lock pins into the isolated venv."
+    },
+    {
+      "command": "& C:/Users/WONG Tsun Ming/AppData/Local/Temp/cvb20/venv/Scripts/python.exe -m pip install --no-deps --no-build-isolation -e backend",
+      "exit_code": 0,
+      "result": "Installed covenia-b==0.0.0 editable with no dependency resolution."
+    },
+    {
+      "command": "& C:/Users/WONG Tsun Ming/AppData/Local/Temp/cvb20/venv/Scripts/python.exe -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "exit_code": 0,
+      "result": "pytest/jsonschema import OK"
+    },
+    {
+      "command": "& C:/Users/WONG Tsun Ming/AppData/Local/Temp/cvb20/venv/Scripts/python.exe -m pytest backend/tests/cache -q",
+      "exit_code": 0,
+      "result": "17 passed in 0.37s"
+    },
+    {
+      "command": "& C:/Users/WONG Tsun Ming/AppData/Local/Temp/cvb20/venv/Scripts/python.exe -m ruff check backend/src/covenia_b/cache backend/tests/cache",
+      "exit_code": 0,
+      "result": "All checks passed!"
+    },
+    {
+      "command": "& C:/Users/WONG Tsun Ming/AppData/Local/Temp/cvb20/venv/Scripts/python.exe -m pip list --format=json",
+      "exit_code": 0,
+      "result": "31 installed distributions including editable covenia-b==0.0.0."
+    },
+    {
+      "command": "& C:/Users/WONG Tsun Ming/AppData/Local/Temp/cvb20/venv/Scripts/python.exe -m pip check",
+      "exit_code": 0,
+      "result": "No broken requirements found."
+    },
+    {
+      "command": "git diff --cached --check",
+      "exit_code": 0,
+      "result": "No whitespace errors before implementation code commit."
+    },
+    {
+      "command": "git status --short --branch",
+      "exit_code": 0,
+      "result": "Before code commit, only backend/src/covenia_b/cache/** and backend/tests/cache/** were staged."
+    },
+    {
+      "command": "git diff --cached --check",
+      "exit_code": 0,
+      "result": "No whitespace errors across the staged BATCH-20 implementation evidence."
+    },
+    {
+      "command": "git status --short --branch",
+      "exit_code": 0,
+      "result": "Before report commit, only reports/batches/BATCH-20/** was staged."
+    }
+  ],
+  "note": "The commands above are implementation-side execution evidence. Independent verification and integration smoke remain separate owner actions."
+}

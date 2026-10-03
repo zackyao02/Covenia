@@ -1,0 +1,93 @@
+{
+  "report_version": "1.0",
+  "batch_id": "BATCH-20",
+  "title": "只缓存抽取结果的显式灾备",
+  "status": "IMPLEMENTED_PENDING_INDEPENDENT_VERIFICATION",
+  "base_integration_sha": "16ee07cb4553ddaad74d0dc54323867c55095923",
+  "implementation_code_commit": "4140835c03a0b80d24b1220c92d62f061feda109",
+  "branch": "codex/covenia-batch-20",
+  "summary": [
+    "Adds a failure-only ModelProvider decorator under covenia_b.cache. It calls the configured model on every normal request and reads a cache only after ModelUnavailable.",
+    "Derives an opaque SHA-256 key from normalised safe text, content-addressed image facts, scope/source facts, and model/prompt/schema/policy versions.",
+    "Stores only CandidateExtraction values that pass schema, source, metadata, and detectable-PII checks; it never caches an analysis response, decision, responsibility snapshot, or live state.",
+    "On a valid fallback, preserves the original extraction run_id, marks cached_result=true, and writes a redacted current-request/origin-run relation before returning the candidate.",
+    "LIVE mode forcibly bypasses cache reads and writes. Input/version changes, unsafe input, store failure, cache mutation, or cold cache cause an explicit non-hit failure."
+  ],
+  "changed_files": [
+    "backend/src/covenia_b/cache/__init__.py",
+    "backend/src/covenia_b/cache/extraction_fallback.py",
+    "backend/tests/cache/test_extraction_fallback.py",
+    "reports/batches/BATCH-20/cache-invalidation-matrix.json",
+    "reports/batches/BATCH-20/fallback-governance.redacted.jsonl",
+    "reports/batches/BATCH-20/IMPLEMENTATION_REPORT.json",
+    "reports/batches/BATCH-20/IMPLEMENTATION_REPORT.md",
+    "reports/batches/BATCH-20/commands.json",
+    "reports/batches/BATCH-20/environment.json",
+    "reports/batches/BATCH-20/pip-check.txt"
+  ],
+  "code_artifacts": [
+    {
+      "path": "backend/src/covenia_b/cache/__init__.py",
+      "sha256": "144a8152ff6fe0338e171a1e32b0de5b17ef0ce91e198123de163d7ba5d23de2",
+      "byte_length": 789,
+      "hash_basis": "git show 4140835c03a0b80d24b1220c92d62f061feda109:path raw blob bytes"
+    },
+    {
+      "path": "backend/src/covenia_b/cache/extraction_fallback.py",
+      "sha256": "9bf12936e22c8bb530e93336fef566e5e1b800cce974a1df88ad6446010bc79c",
+      "byte_length": 19510,
+      "hash_basis": "git show 4140835c03a0b80d24b1220c92d62f061feda109:path raw blob bytes"
+    },
+    {
+      "path": "backend/tests/cache/test_extraction_fallback.py",
+      "sha256": "49d773056eb2b6ab9d0f4d69766bef72ca7f326dd1de4a21d1fbeb5c9b5a4e7d",
+      "byte_length": 14587,
+      "hash_basis": "git show 4140835c03a0b80d24b1220c92d62f061feda109:path raw blob bytes"
+    }
+  ],
+  "implementation_evidence": {
+    "tests": {
+      "command": "python -m pytest backend/tests/cache -q",
+      "result": "17 passed in 0.37s",
+      "coverage": [
+        "failure-only fallback and cached_result/run_id/request relation",
+        "safe text, image hash, source, scope, and version invalidation",
+        "cache corruption, cold cache, unsafe input, store failure, and audit failure",
+        "schema/source/PII/metadata cache admission and LIVE cache bypass"
+      ]
+    },
+    "static_check": {
+      "command": "python -m ruff check backend/src/covenia_b/cache backend/tests/cache",
+      "result": "All checks passed!"
+    },
+    "dependency_health": {
+      "command": "python -m pip check",
+      "result": "No broken requirements found.",
+      "requirements_dev_lock_modified": false,
+      "new_third_party_dependencies": false
+    },
+    "environment": "reports/batches/BATCH-20/environment.json",
+    "commands": "reports/batches/BATCH-20/commands.json",
+    "invalidation_matrix": "reports/batches/BATCH-20/cache-invalidation-matrix.json",
+    "redacted_fallback_event": "reports/batches/BATCH-20/fallback-governance.redacted.jsonl"
+  },
+  "scope_controls": {
+    "worktree": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w20",
+    "main_modified": false,
+    "batches_started": ["BATCH-20"],
+    "forbidden_paths_modified": false,
+    "batch_19_integrated_files_modified": false,
+    "verification_report_written": false,
+    "verification_evidence_written": false
+  },
+  "handoff": [
+    "A later authorized wiring change may inject CachingExtractionProvider as BATCH-19's ModelProvider. It must bind the same request_id passed to AnalyzeService plus a NORMAL/CHALLENGE scope around each call.",
+    "Do not treat cached_result=true as a cached final response: AnalyzeService still validates the candidate and recomputes commitments, evidence, time, human progress, event state, metrics, and persistence on each request.",
+    "Keep LIVE provider mode at cache_enabled=false. Re-enable test-mode fallback only with a working CacheGovernanceSink and an ExtractionStore limited to CandidateExtraction."
+  ],
+  "remaining_gates": [
+    "Independent BATCH-20 verification has not been run and is not claimed by this implementation report.",
+    "No integration receipt or integration smoke test has been written or claimed.",
+    "The final report-only commit follows the immutable implementation code commit so this report can cite code blob provenance without a self-reference cycle."
+  ]
+}
