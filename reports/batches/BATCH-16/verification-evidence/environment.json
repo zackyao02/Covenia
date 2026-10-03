@@ -1,0 +1,20 @@
+{
+  "run_dir": "C:\\Users\\WONGTS~1\\AppData\\Local\\Temp\\b16v",
+  "run_dir_length": 41,
+  "venv": "C:\\Users\\WONGTS~1\\AppData\\Local\\Temp\\b16v\\venv",
+  "venv_is_direct_child_of_run_dir": true,
+  "interpreter": "C:\\Users\\WONGTS~1\\AppData\\Local\\Temp\\b16v\\venv\\Scripts\\python.exe",
+  "python_version": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]",
+  "sys_prefix": "C:\\Users\\WONGTS~1\\AppData\\Local\\Temp\\b16v\\venv",
+  "sys_base_prefix": "D:\\python",
+  "longest_actual_venv_path_length": 184,
+  "path_limit": 250,
+  "path_preflight_passed": true,
+  "final_path_check_passed": true,
+  "initial_project_path_venv_attempt": {
+    "run_dir": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b16v",
+    "result": "REJECTED_FOR_EVIDENCE",
+    "reason": "CPython ensurepip failed under the Chinese project path; the incomplete venv had no pip and was removed before the final run."
+  },
+  "final_environment_result": "PASS"
+}

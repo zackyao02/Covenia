@@ -1,0 +1,68 @@
+{
+  "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w16v1",
+  "commands": [
+    {
+      "id": "01-interpreter",
+      "command": "C:\\Users\\WONGTS~1\\AppData\\Local\\Temp\\b16v\\venv\\Scripts\\python.exe -c <execution-package isolated interpreter assertion>",
+      "exit_code": 0,
+      "result": "PASS",
+      "observed": "sys.prefix is the isolated venv and differs from sys.base_prefix."
+    },
+    {
+      "id": "02-lock-install",
+      "command": "C:\\Users\\WONGTS~1\\AppData\\Local\\Temp\\b16v\\venv\\Scripts\\python.exe -m pip install --no-deps -r backend/requirements-dev.lock",
+      "attempts": [
+        {"environment": "sandbox", "exit_code": 1, "result": "Network socket access denied"},
+        {"environment": "approved isolated venv", "exit_code": 0, "result": "PASS"}
+      ]
+    },
+    {
+      "id": "03-editable-install",
+      "command": "C:\\Users\\WONGTS~1\\AppData\\Local\\Temp\\b16v\\venv\\Scripts\\python.exe -m pip install --no-deps --no-build-isolation -e backend",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "id": "04-imports",
+      "command": "C:\\Users\\WONGTS~1\\AppData\\Local\\Temp\\b16v\\venv\\Scripts\\python.exe -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "id": "05-targeted-pytest",
+      "command": "C:\\Users\\WONGTS~1\\AppData\\Local\\Temp\\b16v\\venv\\Scripts\\python.exe -m pytest backend/tests/resolutions/test_planner.py -q",
+      "exit_code": 0,
+      "result": "7 passed in 0.51s"
+    },
+    {
+      "id": "06-pip-list",
+      "command": "C:\\Users\\WONGTS~1\\AppData\\Local\\Temp\\b16v\\venv\\Scripts\\python.exe -m pip list --format=json",
+      "exit_code": 0,
+      "result": "PASS; covenia-b 0.0.0 is editable from this independent worktree."
+    },
+    {
+      "id": "07-pip-check",
+      "command": "C:\\Users\\WONGTS~1\\AppData\\Local\\Temp\\b16v\\venv\\Scripts\\python.exe -m pip check",
+      "exit_code": 0,
+      "result": "No broken requirements found."
+    },
+    {
+      "id": "08-git-diff-check",
+      "command": "git diff --check",
+      "exit_code": 0,
+      "result": "PASS before verifier artifacts were written."
+    },
+    {
+      "id": "09-git-status",
+      "command": "git status --short",
+      "exit_code": 0,
+      "result": "Clean before verifier artifacts were written."
+    },
+    {
+      "id": "10-independent-probe",
+      "command": "C:\\Users\\WONGTS~1\\AppData\\Local\\Temp\\b16v\\venv\\Scripts\\python.exe -c <independent planner assertions>",
+      "exit_code": 0,
+      "result": "hero/e2/conflict/templates PASS"
+    }
+  ]
+}

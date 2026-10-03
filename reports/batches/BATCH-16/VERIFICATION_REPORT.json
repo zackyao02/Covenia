@@ -1,0 +1,47 @@
+{
+  "batch_id": "BATCH-16",
+  "result": "PASS",
+  "commit_verified": "11c62e2da15a0b488636605d1b97573de37c98e3",
+  "reviewed_code_commit": "e43a61f2ca5da3188d7a5116583fe96488946675",
+  "reviewed_base_commit": "1bc0794d5fb91b4f4b34327abd081b76e423162b",
+  "reviewed_commit_topology": "1bc0794d5fb91b4f4b34327abd081b76e423162b -> e43a61f2ca5da3188d7a5116583fe96488946675 -> 11c62e2da15a0b488636605d1b97573de37c98e3",
+  "independent_context": true,
+  "integration_performed": false,
+  "next_batch_started": false,
+  "commands_run": [
+    "Isolated interpreter assertion: PASS",
+    "Pinned lock install: PASS after sandbox network retry in the same isolated venv",
+    "Editable backend install: PASS",
+    "pytest/jsonschema import: PASS",
+    "pytest backend/tests/resolutions/test_planner.py -q: 7 passed in 0.51s",
+    "pip list --format=json: PASS",
+    "pip check: PASS (No broken requirements found)",
+    "git diff --check: PASS",
+    "git status --short: clean before verifier artifacts",
+    "Independent planner probe: PASS"
+  ],
+  "passed_checks": [
+    "Git review verified the actual top commit 11c62e2da15a0b488636605d1b97573de37c98e3 and code commit e43a61f2ca5da3188d7a5116583fe96488946675; their complete changed paths are allowlisted.",
+    "All three legal candidate types have bounded candidate_type, evidence_basis, policy_basis, and task_prefill construction; unsupported rule/action combinations fail closed.",
+    "Hero path queries the existing replacement ticket through CHECK_REPLACEMENT_STATUS, retains its ticket id, and creates no new fulfillment, refund, compensation, reshipment, or ticket obligation.",
+    "Compiled deadline and next_check_at are carried from the same active compiled promise; the independent probe confirmed the exact distinct compiler values.",
+    "E2 requests only trusted current-scope missing-coverage labels; no deterministic gap and source conflict both route to HUMAN_EVIDENCE_REVIEW.",
+    "Consumer replies are fixed templates with no interpolation of assignee names, scores, ticket ids, free-form model text, or time commitments.",
+    "Fresh absolute isolated venv used a direct-child venv, sys.prefix isolation, and longest actual path 184 below 250; pip check exited zero."
+  ],
+  "failed_checks": [],
+  "scope_violations": [],
+  "regression_risks": [
+    "This execution package requires the targeted planner test only; no full backend regression suite was run.",
+    "BATCH-15 at 1bc0794d5fb91b4f4b34327abd081b76e423162b remains conditionally integrated with verification FAIL. Its backend rules are consumed solely as task-authorized baseline and are not promoted to PASS.",
+    "This PASS is independent verification only; no integration receipt or integration smoke test has been created."
+  ],
+  "minimal_fix_request": [],
+  "evidence": [
+    "reports/batches/BATCH-16/verification-evidence/environment.json",
+    "reports/batches/BATCH-16/verification-evidence/scope-and-blobs.json",
+    "reports/batches/BATCH-16/verification-evidence/commands-run.json",
+    "reports/batches/BATCH-16/verification-evidence/independent-probe.json"
+  ],
+  "verifier_scope_declaration": "The verifier created only this VERIFICATION_REPORT.json and files below reports/batches/BATCH-16/verification-evidence/. It did not modify implementation code, schemas, plans, frontend, fixtures, lock files, other batch files, or integration state."
+}

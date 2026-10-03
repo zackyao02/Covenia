@@ -1,0 +1,26 @@
+{
+  "result": "PASS",
+  "execution": "Fresh assertions executed through the BATCH-16 isolated venv without modifying product source or tests.",
+  "checks": [
+    {
+      "name": "hero_existing_replacement",
+      "observed": "CHECK_REPLACEMENT_FULFILLMENT with CHECK_REPLACEMENT_STATUS and existing_ticket_id=ticket-z; it retained deadline 2026-05-07T10:27:37+08:00 and next_check_at 2026-05-07T10:30:00+08:00 from the active compiled promise.",
+      "passed": true
+    },
+    {
+      "name": "mismatched_scope_minimum_evidence",
+      "observed": "ASK_CURRENT_SCOPE_EVIDENCE requested only PRODUCT_IDENTITY and DAMAGE_DETAIL labels; AFFECTED_COMPONENT was absent; no obligation or human approval was created.",
+      "passed": true
+    },
+    {
+      "name": "source_conflict_escalation",
+      "observed": "A conflicting source produced HUMAN_EVIDENCE_REVIEW with requires_human_approval=true and creates_obligation=false.",
+      "passed": true
+    },
+    {
+      "name": "consumer_template_boundary",
+      "observed": "All three rendered replies excluded 王小明, HIGH, 99分, 48小时, 2026-05-07T10:27:37, and ticket-z; unsupported free text was rejected with ReplyTemplateError.",
+      "passed": true
+    }
+  ]
+}
