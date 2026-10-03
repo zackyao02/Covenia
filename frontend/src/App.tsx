@@ -2052,9 +2052,14 @@ function AccountabilitySummary({ accountability }: { accountability: Accountabil
 }
 
 function RuntimeCostBar({ metrics }: { metrics: RuntimeMetrics }) {
+  if (metrics.measurement_status === "NOT_MEASURED") {
+    return <section className="runtime-cost-bar" aria-label="本次运行方式">
+      <span>运行方式</span><b>本地演示适配器</b><span>未调用图文模型，模型成本未计量</span>
+    </section>;
+  }
   return <section className="runtime-cost-bar" aria-label="本次运行成本">
-    <span>本次运行</span><b>{metrics.input_tokens + metrics.output_tokens} tokens</b>
-    <b>{metrics.inference_latency_ms} ms</b><b>规则替代 {metrics.rule_substitution_count}</b>
+    <span>本次运行</span><b>{(metrics.input_tokens ?? 0) + (metrics.output_tokens ?? 0)} tokens</b>
+    <b>{metrics.inference_latency_ms ?? "—"} ms</b><b>规则替代 {metrics.rule_substitution_count ?? "—"}</b>
   </section>;
 }
 

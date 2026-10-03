@@ -228,11 +228,12 @@ describe("Covenia v0.8 frontend API contract", () => {
     expect(approved.data.accountability_state.open_obligation?.next_check_at).toBe("2026-05-07T10:30:00+08:00");
   });
 
-  it("returns server-provided runtime metrics on analysis and evaluation", async () => {
+  it("marks demo-adapter metrics as not measured instead of inventing model usage", async () => {
     const analyzed = await analyze("DEMO_001");
-    expect(analyzed.data?.runtime_metrics.input_tokens).toBeGreaterThan(0);
+    expect(analyzed.data?.runtime_metrics.measurement_status).toBe("NOT_MEASURED");
+    expect(analyzed.data?.runtime_metrics.input_tokens).toBeNull();
     const evaluated = await mockApi.evaluateAction(evaluateRequest("DEMO_001"));
-    expect(evaluated.data?.runtime_metrics.inference_latency_ms).toBeGreaterThan(0);
-    expect(evaluated.data?.runtime_metrics.rule_substitution_count).toBe(1);
+    expect(evaluated.data?.runtime_metrics.inference_latency_ms).toBeNull();
+    expect(evaluated.data?.runtime_metrics.rule_substitution_count).toBeNull();
   });
 });

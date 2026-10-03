@@ -1,4 +1,7 @@
 from fastapi.testclient import TestClient
+from datetime import datetime
+import json
+from pathlib import Path
 import pytest
 
 from backend.decision import engine as decision_engine
@@ -6,6 +9,56 @@ from backend.main import app, analyses, deadline_escalations, idempotency, last_
 
 
 client = TestClient(app)
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+
+
+def test_hero_fixture_keeps_original_fuzzy_ack_before_deadline() -> None:
+    cases = json.loads((PROJECT_ROOT / "fixtures/demo-cases.json").read_text(encoding="utf-8"))
+    ground_truth = json.loads((PROJECT_ROOT / "fixtures/ground-truth.json").read_text(encoding="utf-8"))
+    frontend_example = json.loads((PROJECT_ROOT / "frontend/src/api/examples/01-analyze-case.json").read_text(encoding="utf-8"))
+    hero = next(item["case_input"] for item in cases if item["demo_case_id"] == "DEMO_001")
+    expected = next(item for item in ground_truth if item["demo_case_id"] == "DEMO_001")
+
+    fuzzy_ack = next(message for message in hero["conversation"] if message["message_id"] == "94357468399952.PNM")
+    assert fuzzy_ack["text"] == "行，那尽快哈"
+    assert fuzzy_ack["speaker"] == "CONSUMER"
+    assert fuzzy_ack["source_kind"] == "COMPETITION_MOCK"
+
+    promise = expected["expected_promise"]
+    agent_promise = next(message for message in hero["conversation"] if message["text"] == promise["raw_text"])
+    assert agent_promise["speaker"] == "AGENT"
+    evaluation_time = datetime.fromisoformat(hero["evaluation_time"])
+    deadline = datetime.fromisoformat(promise["deadline"])
+    follow_up = datetime.fromisoformat(next(
+        message["timestamp"] for message in hero["conversation"] if message["message_id"] == "DEMO_AUG_MSG_001"
+    ))
+    assert evaluation_time < deadline
+    assert follow_up == datetime.fromisoformat("2026-05-07T09:32:00+08:00")
+    assert 40 * 60 < (deadline - evaluation_time).total_seconds() < 60 * 60
+    assert "RAISE_PRIORITY" not in expected["expected_action_impacts"]
+
+    front_input = frontend_example["case_input_fixture"]
+    assert front_input["evaluation_time"] == hero["evaluation_time"]
+    assert [m["message_id"] for m in front_input["conversation"]] == [m["message_id"] for m in hero["conversation"]]
+
+
+def test_demo_adapter_does_not_claim_live_model_or_measured_usage() -> None:
+    reset_service()
+    data = analyze()
+    assert data["model_metadata"]["model_id"] == "COVENIA_DEMO_ADAPTER"
+    assert data["extracted_journey"]["model_metadata"]["model_id"] == "COVENIA_DEMO_ADAPTER"
+    assert data["runtime_metrics"] == {
+        "measurement_status": "NOT_MEASURED",
+        "input_tokens": None,
+        "output_tokens": None,
+        "inference_latency_ms": None,
+        "rule_substitution_count": None,
+    }
+    decision = client.post("/api/actions/evaluate", json={
+        "case_id": "DEMO_001", "prepared_action": hero_action(),
+    }).json()["data"]
+    assert decision["runtime_metrics"]["measurement_status"] == "NOT_MEASURED"
+    assert decision["runtime_metrics"]["inference_latency_ms"] is None
 
 
 @pytest.fixture(autouse=True)

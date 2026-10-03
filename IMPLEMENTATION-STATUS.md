@@ -22,7 +22,7 @@
 - 首屏突出证据、负责方、更新时间；沟通建议保留来源，未取得有效 JEV 结果显示待确认。
 - JEV 接入按官方 Noul/Choice 响应检查，模型输入脱敏，失败不生成情绪概率，缓存随消息内容变化。
 
-本轮修改已提交并推送到 `codex/bc-v1.1-optimized`。本轮独立于旧记录重跑了前后端自动测试与生产构建，并在浏览器完成“查询进度→人工确认→未揽收催办→延迟后揽收→送达闭环”。这属于 Codex 自验，不等同于队友或 Claude 的独立验收。草稿判断仍是关键词规则，JEV 阈值尚未校准；工作台未接真实千牛发送，后端状态仍在进程内存中。
+本轮本地修改尚未提交。本轮独立重跑前后端自动测试与生产构建；全新浏览器会话确认主案例显示 09:32 二次进线、原始模糊回复，并明确标出图文演示适配器与未计量状态。此前已验证“查询进度→人工确认→未揽收催办→延迟后揽收→送达闭环”。这属于 Codex 自验，不等同于队员或 Claude 的独立验收。草稿判断仍是关键词规则，JEV 阈值尚未校准；工作台未接真实千牛发送，后端状态仍在进程内存中。
 
 ### 视觉与交互打磨（2026-10-02）
 
@@ -72,7 +72,8 @@
 | 卡片边缘视觉清理 | 移除风险卡红色侧条、判断卡金色侧条及同类装饰条，保留图标、文字和状态标签传达风险 | `npm run build` 通过（1587 模块）；浏览器核对主案例和人工复核展开态；`git diff --check` 通过 | `artifacts/2026-10-02-no-edge-stripes-progress.png`、`artifacts/2026-10-02-no-edge-stripes-review.png`（2026-10-02） |
 | JEV 实际 API 烟测 | 使用本机 `.env` 密钥调用 `DEMO_001`，检查 TypeSafe 返回来源、状态、建议概率及延迟；工作台点击“重新分析”后恢复 | TypeSafe 返回 `READY`、`WORSENING 0.93`、`CHECK_REPLACEMENT 0.92`，耗时约 1.65 秒，`fallback_used=false`；阈值未校准，仅为合成数据单次烟测 | 本机 `GET /api/customer-state/DEMO_001` 与 `POST /api/cases/analyze`（2026-10-03） |
 | JEV 接入后生产构建 | `python -m compileall -q backend`；`npm run build` | 后端语法检查通过；前端生产构建通过，1587 个模块，JS 201.87 kB（gzip 63.60 kB） | 本轮本机检查（2026-10-03） |
-| 当前版本自动化回归 | `npm test`；`python -m pytest backend/tests -q`；`npm run build`；解析 schemas/fixtures JSON | 前端 11/11、后端 10/10 通过；构建通过（1587 模块，JS 201.99 kB，gzip 63.64 kB）；24 个 JSON 文件可解析 | `QA-ACCEPTANCE.md`（2026-10-03） |
+| 本轮自动化回归 | `npm --prefix frontend test -- --run`；`python -m pytest backend/tests -q`；`npm --prefix frontend run build` | 前端 11/11、后端 12/12 通过；构建通过（1587 模块，JS 202.45 kB，gzip 63.79 kB） | 本轮本机运行（2026-10-03） |
+| 演示模式与计量边界 | 前后端示例、API schema、UI 运行信息、交付文案核对 | 本地演示适配器标为 `COVENIA_DEMO_ADAPTER`；未调用图文模型时 tokens/latency 显示未计量；README、交付指南和答辩稿不再声称现场图文抽取或 Excel 运行时导入 | 本轮代码与静态核对（2026-10-03） |
 | 浏览器服务闭环 | 查询补发进度→确认责任与回复→未揽收催办→延迟后揽收→送达 | 主链完成，责任状态到 `RESOLVED`；发现并修复未揽收后时间倒退与已揽收后仍可点未揽收的问题 | `QA-ACCEPTANCE.md`（2026-10-03） |
 
 ## B 线实现状态（2026-09-13）

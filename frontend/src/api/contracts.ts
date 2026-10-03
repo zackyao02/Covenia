@@ -199,7 +199,7 @@ export interface ExtractedJourney {
   journey_understanding: JourneyUnderstanding;
   source_trace: SourceTrace[];
   model_metadata: {
-    model_id: "Qwen/Qwen2-VL-2B-Instruct";
+    model_id: string;
     model_revision?: string;
     prompt_version: string;
     run_id: string;
@@ -339,10 +339,11 @@ export type RuleId = "P0_PROHIBITED_ACTION" | "E1" | "E2" | "H1" | "E0_NO_RULE_M
 export type RulePriority = 400 | 350 | 300 | 100 | 0;
 
 export interface RuntimeMetrics {
-  input_tokens: number;
-  output_tokens: number;
-  inference_latency_ms: number;
-  rule_substitution_count: number;
+  measurement_status: "MEASURED" | "NOT_MEASURED";
+  input_tokens: number | null;
+  output_tokens: number | null;
+  inference_latency_ms: number | null;
+  rule_substitution_count: number | null;
 }
 
 export interface SourceEvidence {

@@ -3,7 +3,7 @@
   "scenario": "S00001 主案例：从原始聊天、订单、工单和三张证据图生成旅程与责任账本",
   "request": {
     "case_id": "DEMO_001",
-    "evaluation_time": "2026-05-07T11:00:00+08:00"
+    "evaluation_time": "2026-05-07T09:40:00+08:00"
   },
   "response": {
     "data": {
@@ -119,8 +119,8 @@
           }
         ],
         "model_metadata": {
-          "model_id": "Qwen/Qwen2-VL-2B-Instruct",
-          "model_revision": "competition-demo",
+          "model_id": "COVENIA_DEMO_ADAPTER",
+          "model_revision": "fixture-v1",
           "prompt_version": "journey-v0.8.0",
           "run_id": "RUN_DEMO_001_001",
           "cached_result": false
@@ -200,14 +200,15 @@
         "audit_trail": []
       },
       "runtime_metrics": {
-        "input_tokens": 1184,
-        "output_tokens": 346,
-        "inference_latency_ms": 842,
-        "rule_substitution_count": 0
+        "measurement_status": "NOT_MEASURED",
+        "input_tokens": null,
+        "output_tokens": null,
+        "inference_latency_ms": null,
+        "rule_substitution_count": null
       },
       "model_metadata": {
-        "model_id": "Qwen/Qwen2-VL-2B-Instruct",
-        "model_revision": "competition-demo",
+        "model_id": "COVENIA_DEMO_ADAPTER",
+        "model_revision": "fixture-v1",
         "prompt_version": "journey-v0.8.0",
         "run_id": "RUN_DEMO_001_001",
         "cached_result": false
@@ -226,7 +227,7 @@
         "第二次进线和评估时间为团队压力测试扩充"
       ]
     },
-    "evaluation_time": "2026-05-07T11:00:00+08:00",
+    "evaluation_time": "2026-05-07T09:40:00+08:00",
     "conversation": [
       {
         "message_id": "20974795108539.PNM",
@@ -257,6 +258,13 @@
         "source_kind": "COMPETITION_MOCK"
       },
       {
+          "message_id": "94357468399952.PNM",
+          "timestamp": "2026-05-05T10:25:13+08:00",
+          "speaker": "CONSUMER",
+          "text": "行，那尽快哈",
+          "source_kind": "COMPETITION_MOCK"
+        },
+        {
         "message_id": "36199788469718.PNM",
         "timestamp": "2026-05-05T10:27:37+08:00",
         "speaker": "AGENT",
@@ -265,7 +273,7 @@
       },
       {
         "message_id": "DEMO_AUG_MSG_001",
-        "timestamp": "2026-05-07T10:45:00+08:00",
+          "timestamp": "2026-05-07T09:32:00+08:00",
         "speaker": "CONSUMER",
         "text": "我前天图片都发过了，换货到底有没有发？",
         "source_kind": "DEMO_AUGMENTATION"

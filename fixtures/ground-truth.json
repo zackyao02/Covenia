@@ -21,7 +21,7 @@
       "cooperation_willingness": "DECLINING",
       "action_impact": "阻止重复索证，优先查询已有换货和物流状态"
     },
-    "expected_action_impacts": ["BLOCK_REPEAT_EVIDENCE", "RAISE_PRIORITY", "CHECK_EXISTING_FULFILLMENT", "START_PROACTIVE_UPDATE"],
+    "expected_action_impacts": ["BLOCK_REPEAT_EVIDENCE", "CHECK_EXISTING_FULFILLMENT", "START_PROACTIVE_UPDATE"],
     "rationale": "团队测试图片覆盖同一订单、正装粉底液、泵头损坏与包装环境；赛事聊天和换货工单共同支撑已有证据与48小时承诺。"
   },
   {

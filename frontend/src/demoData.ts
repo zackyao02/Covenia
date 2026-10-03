@@ -92,7 +92,7 @@ export const demoCases: DemoCase[] = [
     shortId: "S00001",
     title: "林小满",
     preview: "换货到底有没有发？",
-    time: "10:45",
+    time: "09:32",
     unread: 1,
     expectedDecision: "INTERVENE",
     sourceLabel: "主案例",

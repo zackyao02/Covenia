@@ -141,6 +141,7 @@ def base_analysis(case_input: dict[str, Any], case_id: str, evaluation_time: str
         "request_id": rid,
     }]
     response["model_metadata"] = journey["model_metadata"]
+    response["model_metadata"].update({"model_id": "COVENIA_DEMO_ADAPTER", "model_revision": "fixture-v1"})
     return response
 
 
@@ -185,10 +186,11 @@ def analyze(case_id: str, case_input: dict[str, Any], evaluation_time: str, rid:
         make_challenge_analysis(response, case_input)
     model_input, pii_count = redact_for_model(case_input)
     response["runtime_metrics"] = {
-        "input_tokens": max(1, len(json.dumps(model_input, ensure_ascii=False)) // 3),
-        "output_tokens": 346,
-        "inference_latency_ms": 842,
-        "rule_substitution_count": 0,
+        "measurement_status": "NOT_MEASURED",
+        "input_tokens": None,
+        "output_tokens": None,
+        "inference_latency_ms": None,
+        "rule_substitution_count": None,
     }
     response["model_metadata"]["run_id"] = f"RUN_{case_id}_{hashlib.sha1(rid.encode()).hexdigest()[:6]}"
     # Governance records stay on the server so the public response remains within the frozen Schema.
@@ -300,7 +302,7 @@ def evaluate(state: dict[str, Any], body: dict[str, Any]) -> dict[str, Any]:
     result = {"case_id": state["case_id"], "decision": decision, "rule_id": rule_id, "rule_priority": priority, "accountability_state": clone(state),
             "challenge_mode": challenge_mode, "fact_trace": {"evidence_status": evidence_status, "prepared_action": action, "scope_match": scope_match, "active_promise_count": len(state["active_commitments"]), "suppressed_rule_ids": suppressed},
             "reason": {"P0_PROHIBITED_ACTION": "当前不能结案，已有未完成的服务责任。", "H1": "当前证据存在不确定性，需要人工复核。", "E1": "已有与当前范围一致的有效证据，不能重复索取。", "E2": "现有证据属于不同范围，可以补充当前范围所需材料。", "E0_NO_RULE_MATCHED": "当前动作未命中阻断规则。"}[rule_id],
-            "resolution_path": resolution(state, candidate, rule_id), "runtime_metrics": {"input_tokens": 238, "output_tokens": 74, "inference_latency_ms": 36, "rule_substitution_count": 1}}
+            "resolution_path": resolution(state, candidate, rule_id), "runtime_metrics": {"measurement_status": "NOT_MEASURED", "input_tokens": None, "output_tokens": None, "inference_latency_ms": None, "rule_substitution_count": None}}
     if draft_assessment is not None:
         result["draft_assessment"] = draft_assessment
         if draft_assessment["requires_confirmation"]:

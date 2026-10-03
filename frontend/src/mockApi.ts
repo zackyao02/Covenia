@@ -83,17 +83,19 @@ const decisions = new Map<string, DecisionResult>();
 const shipmentStages = new Map<string, "AWAITING_PICKUP" | "IN_TRANSIT" | "DELIVERED">();
 
 const analysisMetrics: RuntimeMetrics = {
-  input_tokens: 1184,
-  output_tokens: 346,
-  inference_latency_ms: 842,
-  rule_substitution_count: 0,
+  measurement_status: "NOT_MEASURED",
+  input_tokens: null,
+  output_tokens: null,
+  inference_latency_ms: null,
+  rule_substitution_count: null,
 };
 
 const evaluationMetrics: RuntimeMetrics = {
-  input_tokens: 238,
-  output_tokens: 74,
-  inference_latency_ms: 36,
-  rule_substitution_count: 1,
+  measurement_status: "NOT_MEASURED",
+  input_tokens: null,
+  output_tokens: null,
+  inference_latency_ms: null,
+  rule_substitution_count: null,
 };
 
 export function resetMockState() {

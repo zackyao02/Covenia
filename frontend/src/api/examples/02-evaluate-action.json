@@ -133,10 +133,11 @@
       },
       "challenge_mode": false,
       "runtime_metrics": {
-        "input_tokens": 238,
-        "output_tokens": 74,
-        "inference_latency_ms": 36,
-        "rule_substitution_count": 1
+        "measurement_status": "NOT_MEASURED",
+        "input_tokens": null,
+        "output_tokens": null,
+        "inference_latency_ms": null,
+        "rule_substitution_count": null
       }
     },
     "error": null,
@@ -264,10 +265,11 @@
         },
         "challenge_mode": true,
         "runtime_metrics": {
-          "input_tokens": 238,
-          "output_tokens": 74,
-          "inference_latency_ms": 36,
-          "rule_substitution_count": 1
+          "measurement_status": "NOT_MEASURED",
+          "input_tokens": null,
+          "output_tokens": null,
+          "inference_latency_ms": null,
+          "rule_substitution_count": null
         }
       }
     },
@@ -394,10 +396,11 @@
         },
         "challenge_mode": true,
         "runtime_metrics": {
-          "input_tokens": 238,
-          "output_tokens": 74,
-          "inference_latency_ms": 36,
-          "rule_substitution_count": 1
+          "measurement_status": "NOT_MEASURED",
+          "input_tokens": null,
+          "output_tokens": null,
+          "inference_latency_ms": null,
+          "rule_substitution_count": null
         }
       }
     }
