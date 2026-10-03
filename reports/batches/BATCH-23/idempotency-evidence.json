@@ -1,0 +1,43 @@
+{
+  "artifact_type": "SYNTHETIC_IMPLEMENTATION_EVIDENCE",
+  "producer": "BATCH-23 implementation",
+  "independent_verification": "NOT_RUN",
+  "storage_contract": "BATCH-18 SQLiteLedgerRepository.execute",
+  "tests": [
+    {
+      "name": "test_same_key_replays_first_response_and_request_id_without_duplicate_audit",
+      "request_identity": [
+        "CASE-APPROVE-UNIT-001",
+        "approve",
+        "approve-unit-key-001"
+      ],
+      "observed": {
+        "first_replayed": false,
+        "second_replayed": true,
+        "first_request_id_preserved": true,
+        "response_equal": true,
+        "audit_entry_count_after_replay": 2,
+        "additional_state_mutation": false
+      }
+    },
+    {
+      "name": "test_same_key_with_different_normalized_body_conflicts_without_state_change",
+      "observed": {
+        "exception": "ApprovalConflictError",
+        "code": "IDEMPOTENCY_CONFLICT",
+        "snapshot_unchanged": true
+      }
+    },
+    {
+      "name": "test_final_response_write_failure_rolls_back_approval_snapshot_and_audit",
+      "fault": "SQLite BEFORE INSERT trigger on idempotent_requests",
+      "observed": {
+        "exception": "ApprovalInfrastructureError",
+        "preexisting_snapshot_preserved": true,
+        "partial_approval_audit_persisted": false,
+        "partial_first_response_persisted": false
+      }
+    }
+  ],
+  "boundary_note": "These are implementation tests using a fresh synthetic SQLite database. They are not an independent verifier verdict or an integration receipt."
+}

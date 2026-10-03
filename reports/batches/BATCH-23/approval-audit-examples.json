@@ -1,0 +1,48 @@
+{
+  "artifact_type": "REDACTED_SYNTHETIC_IMPLEMENTATION_EVIDENCE",
+  "producer": "BATCH-23 implementation",
+  "independent_verification": "NOT_RUN",
+  "case": "CASE-APPROVE-UNIT-001",
+  "request": {
+    "candidate_type": "CHECK_REPLACEMENT_FULFILLMENT",
+    "approver_id": "AGENT-UNIT-001",
+    "idempotency_key": "approve-unit-key-001",
+    "human_edits": {
+      "executor": "LOGISTICS_PROVIDER",
+      "next_check_at": "2030-01-01T12:15:00+00:00"
+    },
+    "client_approved_at_accepted": false
+  },
+  "server_fact_checks": {
+    "evidence_status": "VALID",
+    "accountable_side": "BRAND",
+    "active_standard_replacement_commitment": true,
+    "high_risk_or_adverse_reaction": false,
+    "candidate_recomputed_inside_transaction_callback": true
+  },
+  "server_clock_and_audit": {
+    "clock_approved_at": "2030-01-01T10:02:00+00:00",
+    "audit_action": "RESOLUTION_APPROVED",
+    "audit_actor": "AGENT-UNIT-001",
+    "audit_request_id": "approve-request-001",
+    "changed_fields_frozen_submission_keys": [
+      "executor",
+      "next_check_at"
+    ]
+  },
+  "synchronized_projection_values": {
+    "open_obligation.executor": "LOGISTICS_PROVIDER",
+    "open_obligation.next_check_at": "2030-01-01T12:15:00+00:00",
+    "compiled_service_responsibility.next_check_at": "2030-01-01T12:15:00+00:00",
+    "service_progress_receipt.next_update_by": "2030-01-01T12:15:00+00:00",
+    "notification_draft.commits_next_update_at": "2030-01-01T12:15:00+00:00",
+    "notification_draft.requires_human_approval": true,
+    "notification_draft.is_sent": false
+  },
+  "ownership_controls": {
+    "accountable_side_is_server_owned": true,
+    "status_is_server_derived": true,
+    "refund_or_compensation_path": "ABSENT",
+    "unapproved_human_edit_fields": "REJECTED_BY_LOCKED_SCHEMA_AND_SERVICE_BOUNDARY"
+  }
+}

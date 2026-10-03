@@ -1,0 +1,52 @@
+{
+  "artifact_type": "IMPLEMENTATION_ENVIRONMENT",
+  "batch_id": "BATCH-23",
+  "captured_at": "2026-10-04T00:07:36.1005728+08:00",
+  "repo_root": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w23",
+  "branch": "codex/covenia-batch-23",
+  "base_integration_sha": "16ee07cb4553ddaad74d0dc54323867c55095923",
+  "run_dir": "C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\cvb23",
+  "run_dir_length": 48,
+  "venv": "C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\cvb23\\venv",
+  "venv_is_direct_child_of_run_dir": true,
+  "interpreter": "C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\cvb23\\venv\\Scripts\\python.exe",
+  "interpreter_path_length": 72,
+  "longest_observed_or_planned_path_under_250": true,
+  "base_interpreter": "D:\\python\\python.exe",
+  "python_version": "3.13.5",
+  "sys_prefix": "C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\cvb23\\venv",
+  "sys_base_prefix": "D:\\python",
+  "interpreter_isolation_assertion": "PASS",
+  "dependency_lock": {
+    "path": "backend/requirements-dev.lock",
+    "raw_git_blob_sha256": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+    "changed_by_batch": false,
+    "third_party_dependencies_added": []
+  },
+  "installed_distribution_count": 31,
+  "selected_installed_distributions": {
+    "pytest": "8.3.4",
+    "jsonschema": "4.25.0",
+    "pydantic": "2.10.5",
+    "ruff": "0.8.4",
+    "covenia-b": "0.0.0 (editable from this worktree)"
+  },
+  "setup_history": [
+    {
+      "run_dir": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\r23",
+      "result": "NOT_USED",
+      "reason": "The base interpreter's ensurepip subprocess failed while rendering the Chinese workspace path. The newly created partial venv was removed after its exact contents were inspected; no dependency was installed."
+    },
+    {
+      "run_dir": "C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\cvb23",
+      "result": "USED",
+      "reason": "ASCII, batch-exclusive short path; venv creation and isolation assertion completed successfully."
+    }
+  ],
+  "pip_install_network_retry": {
+    "initial_sandbox_attempt": "FAILED_WITH_WINERROR_10013",
+    "approved_retry": "PASS",
+    "scope": "Pinned requirements installed only into this BATCH-23 venv."
+  },
+  "pip_check": "PASS: No broken requirements found."
+}

@@ -1,0 +1,151 @@
+{
+  "report_version": "1.0",
+  "artifact_type": "IMPLEMENTATION_REPORT",
+  "batch_id": "BATCH-23",
+  "title": "人工批准事务用例",
+  "result": "IMPLEMENTED_AWAITING_INDEPENDENT_VERIFICATION",
+  "base_integration_sha": "16ee07cb4553ddaad74d0dc54323867c55095923",
+  "branch": "codex/covenia-batch-23",
+  "code_commit": "99c661abd63973cb590f5fa4ff717b72e6e328b0",
+  "code_commit_message": "feat(approval): atomically activate approved service obligations",
+  "report_commit_resolution": "This implementation report names the immutable code commit and intentionally does not self-reference its later report-only commit.",
+  "execution_package": {
+    "path": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\scheduler-packages\\BATCH-23.json",
+    "filesystem_sha256": "651A01E399F9E52D716111B48D2C4A6EBDA47BA684394A089692EA8DBD14810C"
+  },
+  "inputs_read": {
+    "locked_request_schema_sha256": "FB95DB481C1A309E2EE83D21A67F8D5940332F5EF3615191C23783E3E1DA1D45",
+    "locked_response_schema_sha256": "F2E927864311E5A19F51636C9297EFC7875BD7CB210434EFBA485629F70C3491",
+    "contract_lock_sha256": "A605DF1E063B69ABF3E6DF43ACF4C5A07B69CA0925E2ADB116F296E12527FE3A",
+    "direct_dependencies": [
+      {
+        "batch_id": "BATCH-16",
+        "implementation_code_commit": "e43a61f2ca5da3188d7a5116583fe96488946675",
+        "independent_verdict": "PASS",
+        "integration_receipt_status": "SUCCESS",
+        "integration_receipt_sha256": "72F3E91209F82DB0A74B93F06322376A534AAB496554392C340AA24B8883F8F2",
+        "final_integration_sha": "1f2699ed343044f0f9172fd055fa527cc1fab285"
+      },
+      {
+        "batch_id": "BATCH-17",
+        "implementation_code_commit": "5cfbce2715fe543c28cda34856aa29e89ecc29eb",
+        "independent_verdict": "PASS",
+        "integration_receipt_status": "SUCCESS",
+        "integration_receipt_sha256": "84CC40F86B4B5427996C6707DBB9A3EAAD63B575B980298FD70774B21543C47A",
+        "final_integration_sha": "c23c5fb77af2fc4fb1faeb5c0276485c0e44dec3"
+      },
+      {
+        "batch_id": "BATCH-18",
+        "implementation_code_commit": "3712a170969998e32b56d33e3d59c7b21a04f19d",
+        "independent_verdict": "PASS",
+        "integration_receipt_status": "SUCCESS",
+        "integration_receipt_sha256": "CF6BD6DA67B2998C180A6D8384E7DB615B51F77F819979BA4825BF0DDF26E7F9",
+        "final_integration_sha": "c23c5fb77af2fc4fb1faeb5c0276485c0e44dec3"
+      },
+      {
+        "batch_id": "BATCH-19",
+        "implementation_code_commit": "38757402993aaa46f1690c146bad734f88cac3b5",
+        "independent_verdict": "PASS",
+        "integration_receipt_status": "PASS",
+        "integration_receipt_sha256": "68C2CE257C4AB78359FFC4D7ED32F004DADF20FC94BD9EAB29D11500BB7C16DD",
+        "final_integration_sha": "16ee07cb4553ddaad74d0dc54323867c55095923"
+      }
+    ]
+  },
+  "implementation": {
+    "service": "ApprovalService.approve / approve_with_trace",
+    "server_fact_revalidation": "The BATCH-18 execute callback reads the locked current LedgerSnapshot, validates the current state, active STANDARD_APPROVED replacement responsibility, risk, case status, and deadline before any mutation. Client plans are not accepted.",
+    "allowed_human_edits": [
+      "executor",
+      "next_check_at",
+      "recovery_if_missed"
+    ],
+    "rejected_client_authority": [
+      "blank approver_id",
+      "client approved_at",
+      "accountable_side changes",
+      "status changes",
+      "refund or compensation fields",
+      "human edits on non-fulfillment candidates"
+    ],
+    "clock": "Clock.now() is called only inside a non-replay transaction callback. Its value becomes the RESOLUTION_APPROVED audit timestamp and receipt latest_update_at.",
+    "projection_sync": [
+      "open_obligation",
+      "compiled_service_responsibility",
+      "compiled_commitments",
+      "service_progress_receipt",
+      "reconstructable internal proactive notification draft"
+    ],
+    "notification_boundary": "The draft is always requires_human_approval=true and is_sent=false. It is deterministically reconstructed from the persisted approved response on replay; no notification is sent or claimed as sent.",
+    "transaction_boundary": "The snapshot (obligation, compiled commitments, append-only audit) and the first complete API envelope containing approved_resolution are saved by one BATCH-18 SQLite transaction.",
+    "idempotency": "The repository key is case_id + operation + idempotency_key and its normalized request-body digest. Same body returns the first response/request_id; different body raises IDEMPOTENCY_CONFLICT before a callback mutation.",
+    "audit_diagnostics": "Public changed_fields contains only submitted allowed edit keys. ApprovalExecution separately exposes derived projection fields and their effective values."
+  },
+  "code_artifacts": [
+    {
+      "path": "backend/src/covenia_b/services/approve.py",
+      "raw_git_blob_sha256": "565456E33DF83D68ECAE09A3859D45DACB78383040543459D2BC19D7B6F03530",
+      "source_commit": "99c661abd63973cb590f5fa4ff717b72e6e328b0"
+    },
+    {
+      "path": "backend/tests/services/test_approve.py",
+      "raw_git_blob_sha256": "76793618734967D62F71EA9AC7CA161ABD44C9F746CEDC975E642898A571ED42",
+      "source_commit": "99c661abd63973cb590f5fa4ff717b72e6e328b0"
+    }
+  ],
+  "requirements_dev_lock": {
+    "changed": false,
+    "raw_git_blob_sha256": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+    "third_party_dependencies_added": []
+  },
+  "tests_run": [
+    {
+      "command": "<RUN_DIR>/venv/Scripts/python.exe -m pytest backend/tests/services/test_approve.py -q",
+      "exit_code": 0,
+      "result": "11 passed in 0.70s",
+      "scope": "Synthetic service/unit tests only"
+    },
+    {
+      "command": "<RUN_DIR>/venv/Scripts/python.exe -m ruff check backend/src/covenia_b/services/approve.py backend/tests/services/test_approve.py",
+      "exit_code": 0,
+      "result": "All checks passed"
+    },
+    {
+      "command": "<RUN_DIR>/venv/Scripts/python.exe -m pip check",
+      "exit_code": 0,
+      "result": "No broken requirements found."
+    }
+  ],
+  "scope": {
+    "code_commit_changed_paths": [
+      "backend/src/covenia_b/services/approve.py",
+      "backend/tests/services/test_approve.py"
+    ],
+    "requirements_dev_lock_changed": false,
+    "schemas_changed": false,
+    "frontend_changed": false,
+    "fixtures_changed": false,
+    "plan_files_changed": false,
+    "main_modified": false,
+    "pushed": false,
+    "other_batches_started": false,
+    "verification_report_created": false,
+    "verification_evidence_created": false,
+    "report_stage_diff_check": "PASS",
+    "report_stage_staged_paths": [
+      "reports/batches/BATCH-23/IMPLEMENTATION_REPORT.json",
+      "reports/batches/BATCH-23/IMPLEMENTATION_REPORT.md",
+      "reports/batches/BATCH-23/approval-audit-examples.json",
+      "reports/batches/BATCH-23/commands.json",
+      "reports/batches/BATCH-23/environment.json",
+      "reports/batches/BATCH-23/idempotency-evidence.json",
+      "reports/batches/BATCH-23/pip-check.txt"
+    ]
+  },
+  "remaining_gates": [
+    "Independent BATCH-23 verification is required before an acceptance PASS can be claimed.",
+    "Coordinator integration, a separate integration receipt, and integration smoke tests are required before downstream BATCH-24 or BATCH-26 can consume this work."
+  ],
+  "rollback": "Revert code commit 99c661abd63973cb590f5fa4ff717b72e6e328b0 in a separately authorized context. For persisted runtime data, use an explicit BATCH-18 database backup/recovery procedure or rebuild from original events; do not silently erase human approval history.",
+  "next_batch_started": false
+}
