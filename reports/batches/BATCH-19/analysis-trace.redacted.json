@@ -1,0 +1,33 @@
+{
+  "artifact": "analysis-trace.redacted.json",
+  "batch_id": "BATCH-19",
+  "source_code_commit": "38757402993aaa46f1690c146bad734f88cac3b5",
+  "purpose": "Implementation-only redacted trace from the authoritative analysis flow.",
+  "contains_raw_chat": false,
+  "contains_pii": false,
+  "contains_image_bytes": false,
+  "trace": {
+    "case_id": "case-safe-001",
+    "request_id": "report-normal-001",
+    "provider_mode": "TEST_DOUBLE",
+    "used_persisted_state": false,
+    "persisted": true,
+    "pii_masked_count": 1,
+    "provider_image_binding_verified": true,
+    "source_validation": {
+      "trusted_source_count": 4,
+      "traced_field_count": 0,
+      "agent_quote_count": 0,
+      "image_observation_count": 0
+    },
+    "runtime_metrics": {
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "inference_latency_ms": 0,
+      "rule_substitution_count": 0
+    },
+    "case_status": "ACTION_REVIEW",
+    "evidence_status": "NEED_HUMAN_REVIEW"
+  },
+  "interpretation": "A candidate with no final conclusion still yields a schema-valid journey and accountability snapshot from server-owned facts. TEST_DOUBLE is explicit and is not a live-provider claim."
+}

@@ -1,0 +1,4 @@
+Interpreter: C:\Users\WONG Tsun Ming\AppData\Local\Temp\cvb19\venv\Scripts\python.exe
+Command: & "C:\Users\WONG Tsun Ming\AppData\Local\Temp\cvb19\venv\Scripts\python.exe" -m pip check
+Exit code: 0
+Output: No broken requirements found.

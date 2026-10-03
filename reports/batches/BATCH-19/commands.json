@@ -1,0 +1,71 @@
+{
+  "artifact": "commands.json",
+  "batch_id": "BATCH-19",
+  "code_commit": "38757402993aaa46f1690c146bad734f88cac3b5",
+  "worktree": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\worktrees\\covenia-batch-19",
+  "interpreter": "C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\cvb19\\venv\\Scripts\\python.exe",
+  "acceptance_commands": [
+    {
+      "command": "& \"C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\cvb19\\venv\\Scripts\\python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" \"C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\cvb19\\venv\\Scripts\\python.exe\"",
+      "exit_code": 0,
+      "result": "venv executable assertion passed; Python 3.13.5"
+    },
+    {
+      "command": "& \"C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\cvb19\\venv\\Scripts\\python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "exit_code": 0,
+      "result": "all locked requirements already satisfied in the isolated venv"
+    },
+    {
+      "command": "& \"C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\cvb19\\venv\\Scripts\\python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "exit_code": 0,
+      "result": "covenia-b editable installation succeeded"
+    },
+    {
+      "command": "& \"C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\cvb19\\venv\\Scripts\\python.exe\" -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "exit_code": 0,
+      "result": "pytest/jsonschema import OK"
+    },
+    {
+      "command": "& \"C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\cvb19\\venv\\Scripts\\python.exe\" -m pytest backend/tests/services/test_analyze.py -q",
+      "exit_code": 0,
+      "result": "6 passed in 0.91s"
+    },
+    {
+      "command": "& \"C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\cvb19\\venv\\Scripts\\python.exe\" -m pip list --format=json",
+      "exit_code": 0,
+      "result": "31 installed distributions; JSON snapshot SHA-256 13e69ddbefa197a7bcc6c6a6b0b68521857e66bc68f72b31de5b2638af45dc4b"
+    },
+    {
+      "command": "& \"C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\cvb19\\venv\\Scripts\\python.exe\" -m pip check",
+      "exit_code": 0,
+      "result": "No broken requirements found."
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "result": "no whitespace errors"
+    },
+    {
+      "command": "git status --short --untracked-files=all",
+      "exit_code": 0,
+      "result": "only BATCH-19 allowed source and test paths were present before implementation evidence was added"
+    }
+  ],
+  "additional_checks": [
+    {
+      "command": "python -m ruff check backend/src/covenia_b/services/analyze.py backend/src/covenia_b/services/fact_loader.py backend/tests/services/test_analyze.py",
+      "exit_code": 0,
+      "result": "All checks passed."
+    },
+    {
+      "command": "python -m pytest backend/tests/images/test_resolver.py backend/tests/privacy/test_sanitizer.py backend/tests/privacy/test_model_boundary.py backend/tests/model/test_extraction.py backend/tests/model/test_sources.py backend/tests/commitments/test_compiler.py backend/tests/state/test_builder.py -q",
+      "exit_code": 0,
+      "result": "71 passed in 1.23s"
+    }
+  ],
+  "discarded_setup_attempt": {
+    "run_dir": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\run\\b19",
+    "result": "not used for acceptance",
+    "reason": "the copied venv could not initialize native extensions under the non-ASCII workspace path; no project dependency was installed globally"
+  }
+}

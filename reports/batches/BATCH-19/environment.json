@@ -1,0 +1,30 @@
+{
+  "artifact": "environment.json",
+  "batch_id": "BATCH-19",
+  "base_commit": "1bc0794d5fb91b4f4b34327abd081b76e423162b",
+  "code_commit": "38757402993aaa46f1690c146bad734f88cac3b5",
+  "branch": "codex/covenia-batch-19",
+  "run_dir": "C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\cvb19",
+  "run_dir_length": 48,
+  "venv": "C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\cvb19\\venv",
+  "venv_is_direct_run_dir_child": true,
+  "interpreter": "C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\cvb19\\venv\\Scripts\\python.exe",
+  "interpreter_length": 72,
+  "sys_prefix": "C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\cvb19\\venv",
+  "sys_base_prefix": "D:\\python",
+  "python_version": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]",
+  "interpreter_assertion": "PASS: executable resolved to the supplied venv interpreter and sys.prefix differs from sys.base_prefix.",
+  "native_extension_preflight": "PASS: ssl and ctypes imported from the final ASCII short-path venv.",
+  "longest_observed_path": "C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\cvb19\\venv\\Lib\\site-packages\\pkg_resources\\tests\\data\\my-test-package_unpacked-egg\\my_test_package-1.0-py3.7.egg\\EGG-INFO\\dependency_links.txt",
+  "longest_observed_path_length": 185,
+  "longest_path_under_limit": true,
+  "requirements_dev_lock": {
+    "path": "backend/requirements-dev.lock",
+    "sha256": "886a9fc311f16da186158eff8478f3058ff8e0aefa00091830bbf87863cd0c5d",
+    "modified": false,
+    "new_third_party_dependencies": false
+  },
+  "pip_list_sha256": "13e69ddbefa197a7bcc6c6a6b0b68521857e66bc68f72b31de5b2638af45dc4b",
+  "installation_scope": "Only the isolated BATCH-19 venv; no global interpreter installation was performed.",
+  "setup_note": "An earlier workspace-path venv could not initialize native extensions because its path contained non-ASCII characters. It was not used for acceptance commands; the final Temp/cvb19 run directory is ASCII, short, and passed native-extension and package checks."
+}

@@ -1,0 +1,109 @@
+{
+  "batch_id": "BATCH-19",
+  "status": "IMPLEMENTED_PENDING_INDEPENDENT_VERIFICATION",
+  "summary": [
+    "Adds a transport-free AnalyzeService that loads trusted case facts, applies the existing privacy boundary, validates a candidate source trace, compiles server-owned commitments, builds accountability state, and optionally persists one normal-case snapshot.",
+    "Adds FactLoader with CaseSource/challenge selection, case relation checks, accepted no-PII declarations, ManifestImageResolver detail binding, and safe image-handle validation before provider extraction.",
+    "Preserves prior responsibility, manual fulfillment milestones, completed state, and audit history across normal-case reruns; challenge inputs neither load nor save a normal ledger."
+  ],
+  "files_changed": [
+    "backend/src/covenia_b/services/analyze.py",
+    "backend/src/covenia_b/services/fact_loader.py",
+    "backend/tests/services/test_analyze.py",
+    "reports/batches/BATCH-19/analysis-trace.redacted.json",
+    "reports/batches/BATCH-19/state-preservation.json",
+    "reports/batches/BATCH-19/environment.json",
+    "reports/batches/BATCH-19/pip-check.txt",
+    "reports/batches/BATCH-19/commands.json",
+    "reports/batches/BATCH-19/IMPLEMENTATION_REPORT.json",
+    "reports/batches/BATCH-19/IMPLEMENTATION_REPORT.md"
+  ],
+  "tests_run": [
+    {
+      "command": "python -m pytest backend/tests/services/test_analyze.py -q",
+      "result": "6 passed in 0.91s"
+    },
+    {
+      "command": "python -m pytest backend/tests/images/test_resolver.py backend/tests/privacy/test_sanitizer.py backend/tests/privacy/test_model_boundary.py backend/tests/model/test_extraction.py backend/tests/model/test_sources.py backend/tests/commitments/test_compiler.py backend/tests/state/test_builder.py -q",
+      "result": "71 passed in 1.23s"
+    },
+    {
+      "command": "python -m ruff check backend/src/covenia_b/services/analyze.py backend/src/covenia_b/services/fact_loader.py backend/tests/services/test_analyze.py",
+      "result": "All checks passed"
+    },
+    {
+      "command": "python -m pip check",
+      "result": "No broken requirements found"
+    }
+  ],
+  "tests_passed": 77,
+  "tests_failed": 0,
+  "acceptance_results": [
+    {
+      "criterion": "An empty candidate conclusion still produces a schema-valid journey/state from trusted facts.",
+      "implementation_result": "MET",
+      "evidence": "test_normal_analysis_uses_real_image_binding_masks_pii_and_survives_empty_candidate"
+    },
+    {
+      "criterion": "Normal reruns retain manual and completed fulfillment state and audit history.",
+      "implementation_result": "MET",
+      "evidence": "test_same_and_changed_reruns_preserve_manual_progress_and_completed_state; state-preservation.json"
+    },
+    {
+      "criterion": "Challenge copies are isolated from normal persistence.",
+      "implementation_result": "MET",
+      "evidence": "test_challenge_case_isolated_from_normal_ledger"
+    },
+    {
+      "criterion": "Unknown input, provider unavailability, invalid candidate source, tampered image binding, and metrics failure have stable stop semantics.",
+      "implementation_result": "MET",
+      "evidence": "test_unknown_case_has_stable_input_failure_semantics; test_model_failure_and_invalid_candidate_never_persist; test_tampered_provider_image_and_metric_failure_stop_before_persistence"
+    },
+    {
+      "criterion": "Short isolated venv, dependency health, and no new third-party dependencies.",
+      "implementation_result": "MET",
+      "evidence": "environment.json; pip-check.txt; commands.json"
+    }
+  ],
+  "commit_hash": "38757402993aaa46f1690c146bad734f88cac3b5",
+  "code_commits": [
+    "38757402993aaa46f1690c146bad734f88cac3b5"
+  ],
+  "artifacts": [
+    {
+      "path": "backend/src/covenia_b/services/analyze.py",
+      "sha256": "7979c77bb2e6128c553b557b2a3daa5afb69635062240f927d02ecdf97316c49",
+      "byte_length": 25352,
+      "source_commit": "38757402993aaa46f1690c146bad734f88cac3b5",
+      "hash_basis": "git show 38757402993aaa46f1690c146bad734f88cac3b5:backend/src/covenia_b/services/analyze.py raw blob bytes"
+    },
+    {
+      "path": "backend/src/covenia_b/services/fact_loader.py",
+      "sha256": "9bccd2add642990ee0fac5891f48ade2021d6adacc331047ba0ee406c1847903",
+      "byte_length": 13699,
+      "source_commit": "38757402993aaa46f1690c146bad734f88cac3b5",
+      "hash_basis": "git show 38757402993aaa46f1690c146bad734f88cac3b5:backend/src/covenia_b/services/fact_loader.py raw blob bytes"
+    },
+    {
+      "path": "backend/tests/services/test_analyze.py",
+      "sha256": "425160b73f3aa8ca9c939d084e34d84495c0a32d0d68e4fbe2d4eb6fae71e32f",
+      "byte_length": 21123,
+      "source_commit": "38757402993aaa46f1690c146bad734f88cac3b5",
+      "hash_basis": "git show 38757402993aaa46f1690c146bad734f88cac3b5:backend/tests/services/test_analyze.py raw blob bytes"
+    }
+  ],
+  "remaining_risks": [
+    "This is implementation evidence only. Independent verification and integration acceptance remain separate owner actions.",
+    "The service intentionally has no HTTP transport or default live-provider wiring; callers must inject a CaseSource, image resolver, provider, ledger repository, and metrics sink.",
+    "Live provider deployment must continue to use a provider configured against the same accepted image resolver that supplied the validated handles."
+  ],
+  "blockers": [],
+  "handoff_notes": [
+    "Use AnalyzeService.analyze for the frozen response projection, or analyze_with_trace for a redacted implementation trace.",
+    "Map AnalysisInputError, AnalysisModelUnavailable, AnalysisModelOutputError, and AnalysisInfrastructureError in the later transport layer while retaining request_id and retryable.",
+    "Do not reuse this venv for a later batch; create a new short isolated venv as required by that batch."
+  ],
+  "verification_report_written": false,
+  "integration_receipt_written": false,
+  "report_commit_resolution": "A separate report-only commit follows the code commit so this report can record the immutable code SHA without a self-reference cycle."
+}

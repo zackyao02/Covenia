@@ -1,0 +1,48 @@
+{
+  "artifact": "state-preservation.json",
+  "batch_id": "BATCH-19",
+  "source_code_commit": "38757402993aaa46f1690c146bad734f88cac3b5",
+  "case_id": "case-safe-001",
+  "normal_case_runs": [
+    {
+      "stage": "first_analysis",
+      "request_id": "report-normal-001",
+      "persisted": true,
+      "used_persisted_state": false,
+      "audit_count": 1,
+      "milestone": "AWAITING_CARRIER_PICKUP"
+    },
+    {
+      "stage": "same_input_after_manual_event",
+      "request_id": "report-rerun-002",
+      "persisted": true,
+      "used_persisted_state": true,
+      "audit_count": 2,
+      "milestone": "IN_TRANSIT",
+      "manual_progress_retained": true
+    },
+    {
+      "stage": "changed_input_after_manual_event",
+      "request_id": "report-changed-003",
+      "persisted": true,
+      "used_persisted_state": true,
+      "audit_count": 3,
+      "milestone": "IN_TRANSIT",
+      "manual_progress_retained": true
+    }
+  ],
+  "completed_state_test": {
+    "request_id": "request-completed-004",
+    "milestone": "DELIVERED",
+    "obligation_status": "COMPLETED",
+    "completed_state_retained": true
+  },
+  "challenge_isolation_test": {
+    "request_id": "request-challenge-001",
+    "persisted": false,
+    "used_persisted_state": false,
+    "ledger_load_calls": 0,
+    "ledger_save_calls": 0
+  },
+  "source": "backend/tests/services/test_analyze.py"
+}
