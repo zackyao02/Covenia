@@ -1,0 +1,585 @@
+{
+  "case_id": "HERO_EFFECTIVENESS_001",
+  "title": "连续服务断层 Hero：已提交证据 + 48 小时换货承诺即将失约 + 第三次进线",
+  "design_goal": "用一条可复现数据同时展示 Customer Continuity、Operational Empathy、Promise-to-Action 三个核心竞争力。",
+  "why_this_case_works": [
+    "只看最后一句聊天，消费者像是在普通催进度；融合订单、证据、工单、承诺和物流后，系统知道这是企业承诺即将失约后的第三次联系。",
+    "错误动作 ASK_EVIDENCE 会被拦截，证明 Covenia 不是更会道歉，而是避免消费者重复提交材料。",
+    "正确动作 CHECK_REPLACEMENT_PROGRESS 会生成服务责任、回执、Deadline Monitor、物流异常升级和最终解决闭环。"
+  ],
+  "case_input": {
+    "case_id": "HERO_EFFECTIVENESS_001",
+    "data_provenance": {
+      "source_dataset": "TIANCHI_LOREAL_TRACK1_MOCK",
+      "source_session_id": "S_HERO_001",
+      "augmentation_notes": [
+        "Designed hero case for Covenia end-to-end effectiveness demo",
+        "Synthetic but schema-compatible with current CaseInput contract",
+        "Designed to show multi-source fusion, do-not-ask guardrail, promise tracking, risk escalation and recovery"
+      ]
+    },
+    "evaluation_time": "2026-05-07T09:40:00+08:00",
+    "conversation": [
+      {
+        "message_id": "HERO_MSG_001",
+        "timestamp": "2026-05-05T09:18:10+08:00",
+        "speaker": "CONSUMER",
+        "text": "你好，我收到的粉底液泵头坏了，按不出来，今天急着用。",
+        "source_kind": "DEMO_AUGMENTATION"
+      },
+      {
+        "message_id": "HERO_MSG_002",
+        "timestamp": "2026-05-05T09:19:02+08:00",
+        "speaker": "AGENT",
+        "text": "非常抱歉亲，麻烦拍一下商品整体和泵头位置，我们马上核实。",
+        "source_kind": "DEMO_AUGMENTATION"
+      },
+      {
+        "message_id": "HERO_MSG_003",
+        "timestamp": "2026-05-05T09:21:35+08:00",
+        "speaker": "CONSUMER",
+        "text": "图片发了，订单号也在这里。泵头就是按不动。",
+        "source_kind": "DEMO_AUGMENTATION"
+      },
+      {
+        "message_id": "HERO_MSG_004",
+        "timestamp": "2026-05-05T09:24:10+08:00",
+        "speaker": "AGENT",
+        "text": "已确认是泵头问题，不需要您再补充图片。我们给您登记换货，新件 48 小时内发出。",
+        "source_kind": "DEMO_AUGMENTATION"
+      },
+      {
+        "message_id": "HERO_MSG_005",
+        "timestamp": "2026-05-06T15:02:00+08:00",
+        "speaker": "CONSUMER",
+        "text": "昨天说48小时内发出，现在有单号了吗？",
+        "source_kind": "DEMO_AUGMENTATION"
+      },
+      {
+        "message_id": "HERO_MSG_006",
+        "timestamp": "2026-05-06T15:04:12+08:00",
+        "speaker": "AGENT",
+        "text": "亲亲已经有换货工单了，仓库处理中，有进展会主动通知您。",
+        "source_kind": "DEMO_AUGMENTATION"
+      },
+      {
+        "message_id": "HERO_MSG_007",
+        "timestamp": "2026-05-07T09:38:20+08:00",
+        "speaker": "CONSUMER",
+        "text": "这已经是第三次问了。我前面图也发了，订单也给了，别再让我重新拍照了。换货到底发没发？",
+        "source_kind": "DEMO_AUGMENTATION"
+      }
+    ],
+    "order": {
+      "order_id": "HERO_ORDER_6920185815517983396",
+      "channel": "TIANCHI_MOCK_QIANNIU",
+      "original_logistics_number": "SF_HERO_773478190943155",
+      "items": [
+        {
+          "fulfillment_item_id": "HERO_ORDER_6920185815517983396-XC33003",
+          "sku_id": "XC33003",
+          "product_name": "测试轻透粉底液30ml #N02自然色",
+          "batch_code": "BATCH-HERO-0505",
+          "item_role": "PRIMARY"
+        },
+        {
+          "fulfillment_item_id": "HERO_ORDER_6920185815517983396-GIFT-01",
+          "sku_id": "GIFT-B5-MASK-2",
+          "product_name": "测试B5面膜体验装2片",
+          "batch_code": null,
+          "item_role": "GIFT"
+        }
+      ]
+    },
+    "service_tickets": [
+      {
+        "ticket_id": "BH_HERO_919209358357",
+        "ticket_type": "REPLACEMENT",
+        "status": "进行中",
+        "assignee_id": "G003",
+        "executor_name": "测试美妆华东仓",
+        "replacement_logistics_number": "YT_HERO_7667875838478",
+        "created_at": "2026-05-05T09:29:45+08:00",
+        "completed_at": null,
+        "source_sheet": "补发换货工单"
+      }
+    ],
+    "evidence_images": [
+      {
+        "evidence_id": "HERO_IMG_PRODUCT_OVERVIEW",
+        "file_name": "hero-product-overview.jpg",
+        "submitted_at": "2026-05-05T09:21:35+08:00",
+        "declared_view_type": "PRODUCT_OVERVIEW",
+        "source_kind": "TEAM_SYNTHETIC_RECREATION",
+        "source_message_id": "HERO_MSG_003",
+        "competition_reference_path": "mock_images/broken_pump/HERO_001_overview.jpg"
+      },
+      {
+        "evidence_id": "HERO_IMG_PUMP_DETAIL",
+        "file_name": "hero-pump-detail.jpg",
+        "submitted_at": "2026-05-05T09:21:35+08:00",
+        "declared_view_type": "ISSUE_DETAIL",
+        "source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
+        "source_message_id": "HERO_MSG_003",
+        "competition_reference_path": "mock_images/broken_pump/HERO_001_pump.jpg"
+      },
+      {
+        "evidence_id": "HERO_IMG_PACKAGE_CONTEXT",
+        "file_name": "hero-package-context.jpg",
+        "submitted_at": "2026-05-05T09:21:35+08:00",
+        "declared_view_type": "PACKAGE_CONTEXT",
+        "source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
+        "source_message_id": "HERO_MSG_003",
+        "competition_reference_path": "mock_images/broken_pump/HERO_001_package.jpg"
+      }
+    ],
+    "current_issue": {
+      "fulfillment_item_id": "HERO_ORDER_6920185815517983396-XC33003",
+      "sku_id": "XC33003",
+      "issue_type": "PACKAGE_DAMAGE",
+      "affected_component": "PUMP"
+    },
+    "policy_requirement_id": "HERO_POLICY_PACKAGE_DAMAGE_PROMISE_V1"
+  },
+  "prepared_actions": {
+    "wrong_action_repeat_evidence": {
+      "action_id": "HERO_ACT_REPEAT_EVIDENCE",
+      "action_type": "ASK_EVIDENCE",
+      "requested_scope": {
+        "order_id": "HERO_ORDER_6920185815517983396",
+        "fulfillment_item_id": "HERO_ORDER_6920185815517983396-XC33003",
+        "sku_id": "XC33003",
+        "issue_type": "PACKAGE_DAMAGE"
+      },
+      "requires_human_approval": false
+    },
+    "right_action_check_replacement": {
+      "action_id": "HERO_ACT_CHECK_REPLACEMENT",
+      "action_type": "CHECK_REPLACEMENT_PROGRESS",
+      "requested_scope": {
+        "order_id": "HERO_ORDER_6920185815517983396",
+        "fulfillment_item_id": "HERO_ORDER_6920185815517983396-XC33003",
+        "sku_id": "XC33003",
+        "issue_type": "PACKAGE_DAMAGE"
+      },
+      "requires_human_approval": false
+    },
+    "bad_action_close_case": {
+      "action_id": "HERO_ACT_CLOSE_CASE",
+      "action_type": "CLOSE_CASE",
+      "requested_scope": {
+        "order_id": "HERO_ORDER_6920185815517983396",
+        "fulfillment_item_id": "HERO_ORDER_6920185815517983396-XC33003",
+        "sku_id": "XC33003",
+        "issue_type": "PACKAGE_DAMAGE"
+      },
+      "requires_human_approval": false
+    }
+  },
+  "reproducible_api_sequence": [
+    {
+      "step": 1,
+      "name": "load_customer_state",
+      "method": "POST",
+      "path": "/api/cases/analyze",
+      "body_template": {
+        "case_id": "HERO_EFFECTIVENESS_001",
+        "challenge_mode": true,
+        "evaluation_time": "2026-05-07T09:40:00+08:00",
+        "case_input": "$.case_input"
+      },
+      "expected": [
+        "Customer State 能恢复聊天、订单、证据、工单和承诺上下文",
+        "Evidence Memory 显示用户已经提交商品图、泵头图和包裹图"
+      ]
+    },
+    {
+      "step": 2,
+      "name": "block_repeat_evidence_request",
+      "method": "POST",
+      "path": "/api/actions/evaluate",
+      "body_template": {
+        "case_id": "HERO_EFFECTIVENESS_001",
+        "challenge_mode": true,
+        "evaluation_time": "2026-05-07T09:40:00+08:00",
+        "prepared_action": "$.prepared_actions.wrong_action_repeat_evidence"
+      },
+      "expected": [
+        "decision=INTERVENE",
+        "rule_id=E1",
+        "证明系统拦截重复索证：不要再让消费者重新拍图"
+      ]
+    },
+    {
+      "step": 3,
+      "name": "choose_correct_action",
+      "method": "POST",
+      "path": "/api/actions/evaluate",
+      "body_template": {
+        "case_id": "HERO_EFFECTIVENESS_001",
+        "challenge_mode": true,
+        "evaluation_time": "2026-05-07T09:40:00+08:00",
+        "prepared_action": "$.prepared_actions.right_action_check_replacement"
+      },
+      "expected": [
+        "decision=ALLOW",
+        "resolution_path.candidate_type=CHECK_REPLACEMENT_FULFILLMENT",
+        "requires_human_approval=true"
+      ]
+    },
+    {
+      "step": 4,
+      "name": "approve_service_responsibility",
+      "method": "POST",
+      "path": "/api/resolutions/approve",
+      "body_template": {
+        "case_id": "HERO_EFFECTIVENESS_001",
+        "candidate_type": "CHECK_REPLACEMENT_FULFILLMENT",
+        "approver_id": "HERO_AGENT",
+        "idempotency_key": "hero-approve-001",
+        "human_edits": {
+          "executor": "WAREHOUSE",
+          "next_check_at": "2026-05-07T10:30:00+08:00",
+          "recovery_if_missed": "若 10:30 前仍未确认揽收，品牌升级催办仓库并主动通知消费者。"
+        }
+      },
+      "expected": [
+        "case_status=IN_FULFILLMENT",
+        "service_progress_receipt.consumer_action_required=false",
+        "生成服务回执：消费者无需再次补充材料"
+      ]
+    },
+    {
+      "step": 5,
+      "name": "simulate_promise_breach",
+      "method": "POST",
+      "path": "/api/events/shipment",
+      "body_template": {
+        "case_id": "HERO_EFFECTIVENESS_001",
+        "event_id": "HERO_SHIPMENT_NOT_PICKED_UP",
+        "event_type": "SHIPMENT_NOT_PICKED_UP",
+        "event_time": "2026-05-07T11:35:00+08:00",
+        "idempotency_key": "hero-shipment-risk-001"
+      },
+      "expected": [
+        "case_status=AT_RISK",
+        "follow_up_candidate.priority=HIGH",
+        "supervisor_escalation_candidate.priority=HIGH",
+        "proactive_notification_draft 告诉消费者无需再次提供材料"
+      ]
+    },
+    {
+      "step": 6,
+      "name": "recover_fulfillment",
+      "method": "POST",
+      "path": "/api/events/shipment",
+      "body_template": {
+        "case_id": "HERO_EFFECTIVENESS_001",
+        "event_id": "HERO_SHIPMENT_PICKED_UP",
+        "event_type": "SHIPMENT_PICKED_UP",
+        "event_time": "2026-05-07T12:20:00+08:00",
+        "idempotency_key": "hero-shipment-pickup-001"
+      },
+      "expected": [
+        "case_status=IN_FULFILLMENT",
+        "open_obligation.milestone=IN_TRANSIT",
+        "风险从违约恢复为履约跟踪"
+      ]
+    },
+    {
+      "step": 7,
+      "name": "close_loop",
+      "method": "POST",
+      "path": "/api/events/shipment",
+      "body_template": {
+        "case_id": "HERO_EFFECTIVENESS_001",
+        "event_id": "HERO_SHIPMENT_DELIVERED",
+        "event_type": "SHIPMENT_DELIVERED",
+        "event_time": "2026-05-08T15:20:00+08:00",
+        "idempotency_key": "hero-shipment-delivered-001"
+      },
+      "expected": [
+        "case_status=RESOLVED",
+        "open_obligation.status=COMPLETED",
+        "active_commitments=[]"
+      ]
+    }
+  ],
+    "demo_evidence_pack": {
+        "without_covenia_replay": {
+            "purpose": "展示没有 Covenia 时，同一位消费者会被当成一次新的普通咨询处理，导致重复索证、承诺失焦和风险后置。",
+            "baseline_flow": [
+                {
+                    "step": 1,
+                    "agent_view": "只看到最后一句：换货到底发没发？",
+                    "likely_action": "先安抚，再要求消费者重新上传商品图或订单信息",
+                    "experience_break": "忽略消费者已经提交过图片、订单和问题描述"
+                },
+                {
+                    "step": 2,
+                    "agent_view": "客服不知道 48 小时换货承诺即将失约",
+                    "likely_action": "回复仓库处理中，请耐心等待",
+                    "experience_break": "承诺没有变成可追踪责任，消费者继续等待"
+                },
+                {
+                    "step": 3,
+                    "agent_view": "物流未揽收只是一个外部状态",
+                    "likely_action": "等消费者再次催问后再查",
+                    "experience_break": "企业没有主动催办、升级或通知"
+                }
+            ],
+            "covenia_contrast": [
+                "识别这是第三次进线，而不是一次孤立催问",
+                "拦截 ASK_EVIDENCE，避免重复索证",
+                "把 48 小时发出承诺转为 OpenObligation 和 Deadline Monitor",
+                "未揽收时主动升级仓库催办和主管复核",
+                "送达后自动闭环并保留 AuditTrail"
+            ],
+            "demo_line": "Without Covenia, the customer has to repeat herself. With Covenia, the company remembers, acts, and closes the promise."
+        },
+        "demo_time_slices": [
+            {
+                "slice_id": "T0_INITIAL_REPORT",
+                "timestamp": "2026-05-05T09:24:10+08:00",
+                "visible_state": "已确认泵头问题，承诺 48 小时内发出换货",
+                "risk_score": 31,
+                "priority_rank": 4,
+                "obligation_status": "ACTIVE",
+                "deadline_state": "48h_remaining",
+                "ui_focus": "Customer State 记录问题、图片证据和换货承诺"
+            },
+            {
+                "slice_id": "T1_FIRST_FOLLOW_UP",
+                "timestamp": "2026-05-06T15:02:00+08:00",
+                "visible_state": "消费者第一次追问换货单号",
+                "risk_score": 48,
+                "priority_rank": 3,
+                "obligation_status": "ACTIVE",
+                "deadline_state": "18h_remaining",
+                "ui_focus": "Promise Monitor 提示仍在承诺窗口内"
+            },
+            {
+                "slice_id": "T2_THIRD_CONTACT",
+                "timestamp": "2026-05-07T09:40:00+08:00",
+                "visible_state": "消费者第三次进线，并明确要求不要重复拍照",
+                "risk_score": 67,
+                "priority_rank": 2,
+                "obligation_status": "NEAR_DUE",
+                "deadline_state": "less_than_2h_remaining",
+                "ui_focus": "Evidence Memory + Don't Ask Again + JEV emotion_worsening"
+            },
+            {
+                "slice_id": "T3_NOT_PICKED_UP",
+                "timestamp": "2026-05-07T11:35:00+08:00",
+                "visible_state": "承诺窗口内仍未揽收",
+                "risk_score": 87,
+                "priority_rank": 1,
+                "obligation_status": "AT_RISK",
+                "deadline_state": "breached_or_about_to_breach",
+                "ui_focus": "Priority Queue 升至 #1，生成仓库催办和主管升级"
+            },
+            {
+                "slice_id": "T4_DELIVERED",
+                "timestamp": "2026-05-08T15:20:00+08:00",
+                "visible_state": "换货送达，责任闭环",
+                "risk_score": 12,
+                "priority_rank": null,
+                "obligation_status": "COMPLETED",
+                "deadline_state": "closed",
+                "ui_focus": "Resolved，active commitments 清空"
+            }
+        ],
+        "priority_queue_context": {
+            "purpose": "让 Demo 不只展示一个卡片，而是展示 Covenia 如何改变企业处理顺序。",
+            "queue_before_third_contact": [
+                {
+                    "rank": 1,
+                    "case_id": "Q_CASE_REFUND_012",
+                    "summary": "退款到账咨询，等待 22 小时",
+                    "risk_score": 72,
+                    "reason": "退款时效接近 SLA"
+                },
+                {
+                    "rank": 2,
+                    "case_id": "Q_CASE_ALLERGY_004",
+                    "summary": "疑似不良反应，待人工复核",
+                    "risk_score": 69,
+                    "reason": "健康安全类需人工"
+                },
+                {
+                    "rank": 3,
+                    "case_id": "HERO_EFFECTIVENESS_001",
+                    "summary": "换货承诺待履约，消费者第三次进线",
+                    "risk_score": 67,
+                    "reason": "重复联系 + 承诺接近 deadline + 证据已齐"
+                }
+            ],
+            "queue_after_not_picked_up": [
+                {
+                    "rank": 1,
+                    "case_id": "HERO_EFFECTIVENESS_001",
+                    "summary": "换货承诺未揽收，需仓库催办和主管升级",
+                    "risk_score": 87,
+                    "reason": "承诺即将失约 / 已失约 + 消费者无需再补材料"
+                },
+                {
+                    "rank": 2,
+                    "case_id": "Q_CASE_REFUND_012",
+                    "summary": "退款到账咨询，等待 23 小时",
+                    "risk_score": 74,
+                    "reason": "退款时效接近 SLA"
+                },
+                {
+                    "rank": 3,
+                    "case_id": "Q_CASE_ALLERGY_004",
+                    "summary": "疑似不良反应，待人工复核",
+                    "risk_score": 69,
+                    "reason": "健康安全类需人工"
+                }
+            ],
+            "demo_line": "Hero case 从 #3 升到 #1，不是因为消费者更生气，而是因为企业承诺正在失约。"
+        },
+        "human_handoff_package": {
+            "purpose": "让人工客服接手时不再重新问一遍，而是拿到可执行上下文。",
+            "consumer_story": "消费者购买粉底液后发现泵头按不出，已提交商品整体图、泵头细节图和包裹图；客服已承诺 48 小时内发出换货，但消费者第三次进线询问进度。",
+            "current_intent": "确认换货是否已经发出，并避免再次提交图片或订单材料。",
+            "emotion_trend": {
+                "current": "FRUSTRATED",
+                "trend": "WORSENING",
+                "jev_advisory": {
+                    "emotion_worsening_probability": 0.84,
+                    "needs_human_probability": 0.71,
+                    "source": "JEV_OR_RULE_FALLBACK_COMPATIBLE"
+                }
+            },
+            "effort": {
+                "contact_count": 3,
+                "submitted_evidence_count": 3,
+                "repeated_evidence_risk": true,
+                "why_it_matters": "消费者已经完成配合动作，继续索证会制造新的体验断层。"
+            },
+            "existing_evidence": [
+                "HERO_IMG_PRODUCT_OVERVIEW",
+                "HERO_IMG_PUMP_DETAIL",
+                "HERO_IMG_PACKAGE_CONTEXT",
+                "BH_HERO_919209358357",
+                "YT_HERO_7667875838478"
+            ],
+            "promises": [
+                {
+                    "promise_text": "新件 48 小时内发出",
+                    "promised_at": "2026-05-05T09:24:10+08:00",
+                    "deadline": "2026-05-07T09:24:10+08:00",
+                    "owner": "WAREHOUSE",
+                    "status": "NEAR_DUE_OR_AT_RISK"
+                }
+            ],
+            "risk": {
+                "risk_score": 87,
+                "risk_reasons": [
+                    "third_contact",
+                    "evidence_already_provided",
+                    "promise_near_due_or_breached",
+                    "shipment_not_picked_up"
+                ]
+            },
+            "dont_ask_again": [
+                "不要再要求消费者重新上传商品整体图",
+                "不要再要求消费者重新上传泵头细节图",
+                "不要再要求消费者重新提供订单号"
+            ],
+            "next_best_action": "CHECK_REPLACEMENT_PROGRESS_AND_ESCALATE_WAREHOUSE",
+            "handoff_reply_draft": "我看到您前面已经提交过图片和订单信息了，这次不需要您再补材料。我现在直接为您核对换货揽收状态；如果仓库还没有揽收，我们会立即催办并同步新的处理时间。"
+        },
+        "consumer_recovery_options": {
+            "trigger": "当承诺 deadline 已失约或物流未揽收超过 next_check_at 时展示",
+            "consumer_message_principle": "先承认企业责任，再给消费者选择，不把补救责任推回消费者。",
+            "options": [
+                {
+                    "option_id": "CONTINUE_REPLACEMENT_EXPEDITE",
+                    "label": "继续换货并加急",
+                    "company_action": "仓库优先拣货，主管跟进，下一次检查时间 30 分钟内",
+                    "consumer_action_required": false
+                },
+                {
+                    "option_id": "REFUND_INSTEAD",
+                    "label": "改为退款",
+                    "company_action": "取消换货责任，创建退款责任并跟踪到账",
+                    "consumer_action_required": false
+                },
+                {
+                    "option_id": "HUMAN_SERVICE_OWNER",
+                    "label": "转人工负责人跟进",
+                    "company_action": "分配服务负责人，带着 handoff package 接手",
+                    "consumer_action_required": false
+                },
+                {
+                    "option_id": "BRAND_RECOVERY_COUPON",
+                    "label": "品牌补偿权益",
+                    "company_action": "在不替代原责任的前提下提供补偿券或小样权益",
+                    "consumer_action_required": false
+                }
+            ],
+            "demo_reply": "这次没有按承诺时间完成换货发出，是我们的责任。您不需要重新提交材料。现在可以选择继续加急换货、改为退款，或由人工负责人直接跟进。"
+        },
+        "emerging_issue_cluster": {
+            "purpose": "把单个消费者的体验断层扩展成企业侧问题发现，但明确只是候选问题，需要人工确认。",
+            "cluster_id": "EMERGING_PUMP_BATCH_HERO_0505",
+            "sku_id": "XC33003",
+            "batch_code": "BATCH-HERO-0505",
+            "candidate_issue": "pump_failure_or_stuck",
+            "similar_case_count": 27,
+            "prediction": false,
+            "requires_human_confirmation": true,
+            "confidence_note": "同 SKU / 同批次 / 相似泵头关键词聚合，不等于已判定批次质量问题。",
+            "similar_cases": [
+                {
+                    "case_id": "HERO_CLUSTER_01",
+                    "message": "泵头按不出来，刚收到就用不了",
+                    "evidence": "pump_detail_image"
+                },
+                {
+                    "case_id": "HERO_CLUSTER_02",
+                    "message": "粉底液泵头卡住，怎么按都不出",
+                    "evidence": "chat_only"
+                },
+                {
+                    "case_id": "HERO_CLUSTER_03",
+                    "message": "新买的 N02 粉底液无法按压",
+                    "evidence": "product_overview_image"
+                },
+                {
+                    "case_id": "HERO_CLUSTER_04",
+                    "message": "pump broken, replacement requested",
+                    "evidence": "ticket_replacement"
+                },
+                {
+                    "case_id": "HERO_CLUSTER_05",
+                    "message": "同批次泵头松动，已经申请换货",
+                    "evidence": "order_and_ticket"
+                },
+                {
+                    "case_id": "HERO_CLUSTER_06",
+                    "message": "按压泵坏了，客服让我重新拍图",
+                    "evidence": "chat_and_image"
+                }
+            ],
+            "operator_prompt": "是否确认该 SKU / 批次进入人工质检复核？",
+            "demo_line": "Is this just one customer? Covenia shows 27 similar cases, but marks it as a human-confirmed candidate, not an automatic prediction."
+        }
+    },
+    "demo_scorecard": {
+    "customer_continuity": {
+      "what_to_show": "同一消费者的首次报修、图片证据、换货工单、48 小时承诺、第三次进线被合并为一个 Customer State。",
+      "proof": "最后一句不是孤立催问，而是承诺即将失约后的连续服务断层。"
+    },
+    "operational_empathy": {
+      "what_to_show": "系统拦截 ASK_EVIDENCE，并在回执里明确 consumer_action_required=false。",
+      "proof": "Covenia 的共情是减少重复劳动，不只是识别 Angry。"
+    },
+    "promise_to_action": {
+      "what_to_show": "承诺变成 deadline、monitor、warehouse follow-up、supervisor escalation、shipment recovery 和 resolution。",
+      "proof": "企业说过的话被系统持续追踪，直到履约完成。"
+    }
+  }
+}
