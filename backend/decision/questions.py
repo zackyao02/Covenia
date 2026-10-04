@@ -10,10 +10,10 @@ def jev_questions() -> list[dict[str, Any]]:
         {
             "id": "emotion_worsening",
             "type": "noul",
-            "instructions": "Compare the consumer's earlier and latest messages in `recent_messages`. Is expressed frustration, urgency or distrust increasing? Count only what the consumer expresses; do not treat risk scores, repeat contact or an overdue promise alone as evidence of worsening emotion.",
+            "instructions": "Compare `consumer_emotion_comparison.previous_consumer_message` with `consumer_emotion_comparison.latest_consumer_message`. Is the latest consumer message explicitly more frustrated, urgent, or distrustful than the previous consumer message? Judge only the consumer's wording. Ignore agent messages, risk scores, repeat contact, evidence status, and overdue promises. If either message is missing or the wording does not show a clear change, answer false.",
             "criteria": {
-                "true": "The consumer's later words express more frustration, urgency or distrust than their earlier words.",
-                "false": "The consumer is stable, calmer, or only asking a routine status question.",
+                "true": "The latest consumer message clearly increases expressed frustration, urgency, or distrust compared with the previous consumer message.",
+                "false": "There is no clear increase: the consumer is stable, calmer, missing a comparison message, or asking a routine follow-up.",
             },
         },
         {

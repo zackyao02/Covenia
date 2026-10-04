@@ -54,6 +54,24 @@ describe("Covenia v0.8 frontend API contract", () => {
     configureMockMode("normal");
   });
 
+  it("advances the two service side cases through recorded simulator events", async () => {
+    await analyze("DEMO_002");
+    const evidence = await mockApi.pushDemoServiceEvent({ case_id: "DEMO_002", event_type: "CURRENT_SCOPE_EVIDENCE_SUBMITTED", idempotency_key: "mock-evidence-001" });
+    if (evidence.error) throw new Error(evidence.error.message);
+    expect(evidence.data.accountability_state.evidence_status).toBe("VALID");
+    expect(evidence.data.accountability_state.consumer_input_required).toBe(false);
+
+    await analyze("DEMO_003");
+    const beforeAssignment = await mockApi.pushDemoServiceEvent({ case_id: "DEMO_003", event_type: "SPECIALIST_FOLLOWED_UP", idempotency_key: "mock-followup-too-early" });
+    expect(beforeAssignment.error?.code).toBe("INVALID_EVENT_TRANSITION");
+    const assignment = await mockApi.pushDemoServiceEvent({ case_id: "DEMO_003", event_type: "SPECIALIST_ASSIGNED", idempotency_key: "mock-assignment-001" });
+    if (assignment.error) throw new Error(assignment.error.message);
+    expect(assignment.data.accountability_state.demo_specialist_status).toBe("已接手");
+    const followup = await mockApi.pushDemoServiceEvent({ case_id: "DEMO_003", event_type: "SPECIALIST_FOLLOWED_UP", idempotency_key: "mock-followup-001" });
+    if (followup.error) throw new Error(followup.error.message);
+    expect(followup.data.accountability_state.demo_specialist_status).toBe("已反馈");
+  });
+
   it.each([
     ["DEMO_001", "INTERVENE", "E1", false],
     ["DEMO_002", "ALLOW", "E2", true],
@@ -67,6 +85,10 @@ describe("Covenia v0.8 frontend API contract", () => {
     expect(evaluated.data.decision).toBe(decision);
     expect(evaluated.data.rule_id).toBe(ruleId);
     expect(evaluated.data.challenge_mode).toBe(challengeMode);
+    expect(evaluated.data.resolution_path.candidate_type).toBe(
+      caseId === "DEMO_001" ? "CHECK_REPLACEMENT_FULFILLMENT"
+        : caseId === "DEMO_002" ? "ASK_CURRENT_SCOPE_EVIDENCE" : "HUMAN_EVIDENCE_REVIEW",
+    );
   });
 
   it("creates a running obligation only after human approval", async () => {
@@ -86,6 +108,19 @@ describe("Covenia v0.8 frontend API contract", () => {
     expect(approved.data.accountability_state.case_status).toBe("IN_FULFILLMENT");
     expect(approved.data.accountability_state.open_obligation?.status).toBe("ON_TRACK");
     expect(approved.data.audit_trail[approved.data.audit_trail.length - 1]?.actor).toBe("AGENT_ZHOU");
+  });
+
+  it("resets one simulated conversation so the case can be replayed", async () => {
+    const firstRun = await analyze("DEMO_001");
+    expect(firstRun.error).toBeNull();
+    const reset = await mockApi.resetDemoSession("DEMO_001");
+    expect(reset.error).toBeNull();
+    const replay = await analyze("DEMO_001");
+    expect(replay.error).toBeNull();
+    if (!replay.error) {
+      expect(replay.data.accountability_state.open_obligation).toBeNull();
+      expect(replay.data.accountability_state.case_status).toBe("ACTION_REVIEW");
+    }
   });
 
   it("keeps pickup open, rejects direct delivery, then closes after delivery", async () => {
@@ -225,7 +260,7 @@ describe("Covenia v0.8 frontend API contract", () => {
     expect(approved.error).toBeNull();
     if (approved.error) return;
     expect(approved.data.accountability_state.active_commitments[0]?.deadline).toBe("2026-05-07T10:27:37+08:00");
-    expect(approved.data.accountability_state.open_obligation?.next_check_at).toBe("2026-05-07T10:30:00+08:00");
+    expect(approved.data.accountability_state.open_obligation?.next_check_at).toBe("2026-05-07T10:10:00+08:00");
   });
 
   it("marks demo-adapter metrics as not measured instead of inventing model usage", async () => {

@@ -1,15 +1,36 @@
 from fastapi.testclient import TestClient
 from datetime import datetime
+import copy
 import json
 from pathlib import Path
 import pytest
 
 from backend.decision import engine as decision_engine
-from backend.main import app, analyses, deadline_escalations, idempotency, last_event_times, redact_for_model, shipment_stages, states
+from backend.draft_review import assess_draft, contains_unsupported_fulfillment_guarantee
+from backend.main import app, analyses, analyzed_inputs, deadline_escalations, idempotency, last_event_times, redact_for_model, shipment_stages, states
 
 
 client = TestClient(app)
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
+
+
+def test_conversational_evidence_reply_stays_scoped_and_negative_phrase_is_not_request() -> None:
+    scoped = assess_draft("对，不用重传整单。您只要补一张精华瓶口裂痕近照。")
+    assert scoped["kind"] == "EVIDENCE_REQUEST"
+    assert scoped["requires_confirmation"] is False
+    negative = assess_draft("照片不用再发，您之前提交的材料已经收到了。")
+    assert "EVIDENCE_REQUEST" not in negative["_detected_actions"]
+
+
+def test_existing_fulfillment_check_is_not_misread_as_a_delivery_guarantee() -> None:
+    progress_reply = "您之前提交的泵头照片已经收到，不用再发。我会先核实换货单是否已被物流揽收，并在约定更新时间前主动告诉您核实结果。"
+    assert contains_unsupported_fulfillment_guarantee(progress_reply) is False
+    assert contains_unsupported_fulfillment_guarantee("我保证换货件明天送达。") is True
+    assert contains_unsupported_fulfillment_guarantee("我会为您安排补发。") is True
+    assert contains_unsupported_fulfillment_guarantee("我不能保证明天送达，但会帮您查询物流进度。") is False
+    assert assess_draft("我会先核实换货进度，并主动告知您。 ")["_detected_actions"] == ["PROGRESS_UPDATE"]
+    assert assess_draft("我会先核实换货单是否已被物流揽收，并在约定更新时间前主动告诉您核实结果。")["kind"] == "PROGRESS_UPDATE"
+    assert "CLOSE_CASE" not in assess_draft("您的问题还未解决，我不会结案。")["_detected_actions"]
 
 
 def test_hero_fixture_keeps_original_fuzzy_ack_before_deadline() -> None:
@@ -61,6 +82,33 @@ def test_demo_adapter_does_not_claim_live_model_or_measured_usage() -> None:
     assert decision["runtime_metrics"]["inference_latency_ms"] is None
 
 
+def test_demo_session_reset_clears_only_selected_demo_case() -> None:
+    reset_service()
+    analyze("DEMO_001")
+    states["DEMO_001"]["case_status"] = "RESOLVED"
+    shipment_stages["DEMO_001"] = "DELIVERED"
+    last_event_times["DEMO_001"] = datetime.fromisoformat("2026-05-08T15:20:00+08:00")
+    idempotency[("shipment", "DEMO_001", "shipment-reset-test")] = ("fingerprint", {"ok": True})
+    states["DEMO_002"] = {"case_id": "DEMO_002", "case_status": "ACTION_REVIEW"}
+
+    reset = client.post("/api/demo/session/reset", json={"case_id": "DEMO_001"})
+    assert reset.status_code == 200
+    assert reset.json()["data"] == {"case_id": "DEMO_001", "reset": True}
+    assert "DEMO_001" not in states
+    assert "DEMO_001" not in analyses
+    assert "DEMO_001" not in analyzed_inputs
+    assert "DEMO_001" not in shipment_stages
+    assert "DEMO_001" not in last_event_times
+    assert ("shipment", "DEMO_001", "shipment-reset-test") not in idempotency
+    assert states["DEMO_002"]["case_status"] == "ACTION_REVIEW"
+
+    replayed = analyze("DEMO_001")
+    assert replayed["accountability_state"]["open_obligation"] is None
+
+    invalid = client.post("/api/demo/session/reset", json={"case_id": "not-a-demo-case"})
+    assert invalid.status_code == 400
+
+
 @pytest.fixture(autouse=True)
 def disable_live_typesafe_calls(monkeypatch) -> None:
     """Keep the default API suite deterministic and independent of real credits."""
@@ -79,6 +127,7 @@ def disable_live_typesafe_calls(monkeypatch) -> None:
 def reset_service() -> None:
     states.clear()
     analyses.clear()
+    analyzed_inputs.clear()
     shipment_stages.clear()
     last_event_times.clear()
     idempotency.clear()
@@ -92,6 +141,51 @@ def analyze(case_id: str = "DEMO_001") -> dict:
     assert response.status_code == 200
     assert response.json()["error"] is None
     return response.json()["data"]
+
+
+def test_simulated_new_consumer_reply_reaches_jev_without_rewriting_service_state(monkeypatch) -> None:
+    reset_service()
+    analyze()
+    baseline = client.get("/api/customer-state/DEMO_001").json()["data"]
+    original_state = copy.deepcopy(states["DEMO_001"])
+    seen: list[dict] = []
+
+    def fake_jev(model_state: dict, _questions: list) -> dict:
+        seen.append(model_state)
+        return {
+            "ok": True, "attempted": True, "source": "JEV", "latency_ms": 1,
+            "model_version": "test-jev", "raw": {"answers": {
+                "emotion_worsening": {"type": "noul", "noul": 0.92},
+                "needs_human": {"type": "noul", "noul": 0.10},
+                "next_action": {"type": "choice", "choice": "CHECK_REPLACEMENT", "probabilities": {
+                    "CHECK_REPLACEMENT": 0.90, "HUMAN_ESCALATION": 0.03,
+                    "CONTINUE_TROUBLESHOOTING": 0.04, "REQUEST_EVIDENCE": 0.03,
+                }},
+            }},
+        }
+
+    monkeypatch.setattr(decision_engine, "ask_jev", fake_jev)
+    monkeypatch.setattr(decision_engine, "typesafe_configured", lambda: True)
+    messages = [
+        {"message_id": "DEMO_CHAT_AGENT_1", "timestamp": "2026-05-07T09:41:00+08:00", "speaker": "AGENT", "text": "我会核实换货进度。", "source_kind": "DEMO_AUGMENTATION"},
+        {"message_id": "DEMO_CHAT_CONSUMER_1", "timestamp": "2026-05-07T09:42:00+08:00", "speaker": "CONSUMER", "text": "我已经问了好几次，什么时候能有结果？", "source_kind": "DEMO_AUGMENTATION"},
+    ]
+    response = client.post("/api/demo/customer-state/refresh", json={"case_id": "DEMO_001", "challenge_mode": True, "messages": messages})
+    assert response.status_code == 200
+    refreshed = response.json()["data"]
+    assert refreshed["decision_advisory"]["source"] == "JEV"
+    assert refreshed["decision_advisory"]["emotion"]["trend"] == "WORSENING"
+    assert refreshed["decision_advisory"]["customer_state_version"] != baseline["decision_advisory"]["customer_state_version"]
+    assert seen[-1]["recent_messages"][-1]["text"] == messages[-1]["text"]
+    assert seen[-1]["consumer_emotion_comparison"]["latest_consumer_message"] == messages[-1]["text"]
+    assert seen[-1]["consumer_emotion_comparison"]["previous_consumer_message"]
+    assert refreshed["emotion"]["source_evidence_ids"] == ["DEMO_AUG_MSG_001", "DEMO_CHAT_CONSUMER_1"]
+    assert any(item["source_id"] == "DEMO_CHAT_CONSUMER_1" for item in refreshed["source_evidence"])
+    assert states["DEMO_001"] == original_state
+
+    duplicate = client.post("/api/demo/customer-state/refresh", json={"case_id": "DEMO_001", "challenge_mode": True, "messages": [messages[0], messages[0]]})
+    assert duplicate.status_code == 400
+    assert states["DEMO_001"] == original_state
 
 
 def hero_action(kind: str = "ASK_EVIDENCE") -> dict:
@@ -128,6 +222,13 @@ def test_evaluate_uses_server_state_and_challenge_gate() -> None:
     assert challenged["data"]["rule_id"] == "E2"
     assert challenged["data"]["challenge_mode"] is True
 
+    repeated_photo_reply = client.post("/api/actions/evaluate", json={
+        **base,
+        "draft_reply": "麻烦您再上传一次泵头破损照片，我收到后才能继续处理。",
+    }).json()["data"]
+    assert repeated_photo_reply["rule_id"] == "E1"
+    assert repeated_photo_reply["decision"] == "INTERVENE"
+
 
 def test_priority_order_is_p0_then_h1_then_e1() -> None:
     reset_service()
@@ -151,6 +252,147 @@ def test_priority_order_is_p0_then_h1_then_e1() -> None:
     assert "E1" in reviewed["data"]["fact_trace"]["suppressed_rule_ids"]
 
 
+def test_adverse_reaction_case_routes_to_human_without_fake_image_or_promise() -> None:
+    reset_service()
+    from backend.main import find_case
+
+    case_input = copy.deepcopy(find_case("DEMO_001"))
+    case_input["case_id"] = "DEMO_003"
+    case_input["data_provenance"]["source_session_id"] = "S00003"
+    case_input["order"]["order_id"] = "6920185815517983398"
+    case_input["order"]["items"] = [{
+        "fulfillment_item_id": "6920185815517983398-EL-SUN40",
+        "sku_id": "EL-SUN40",
+        "product_name": "清爽防晒乳 SPF50+ 40ml",
+        "item_role": "PRIMARY",
+    }]
+    case_input["current_issue"] = {
+        "fulfillment_item_id": "6920185815517983398-EL-SUN40",
+        "sku_id": "EL-SUN40",
+        "issue_type": "ADVERSE_REACTION",
+        "affected_component": "UNKNOWN",
+    }
+    case_input["conversation"] = [{
+        "message_id": "S00003_MSG_001",
+        "timestamp": "2026-05-05T10:14:00+08:00",
+        "speaker": "CONSUMER",
+        "text": "用了清爽防晒乳后脸有点泛红，能帮我确认下一步该怎么办吗？",
+        "source_kind": "DEMO_AUGMENTATION",
+    }]
+    case_input["evidence_images"] = []
+    case_input["service_tickets"] = []
+    analyzed = client.post("/api/cases/analyze", json={
+        "case_id": "DEMO_003", "challenge_mode": True, "case_input": case_input,
+    }).json()["data"]
+
+    state = analyzed["accountability_state"]
+    assert state["current_scope"]["issue_type"] == "ADVERSE_REACTION"
+    assert state["evidence_status"] == "NEED_HUMAN_REVIEW"
+    assert state["active_commitments"] == []
+    assert analyzed["extracted_journey"]["image_observations"] == []
+
+    decision = client.post("/api/actions/evaluate", json={
+        "case_id": "DEMO_003",
+        "prepared_action": {
+            "action_id": "ACT_ADVERSE",
+            "action_type": "ASK_EVIDENCE",
+            "requested_scope": state["current_scope"],
+            "requires_human_approval": False,
+        },
+    }).json()["data"]
+    assert decision["rule_id"] == "H1"
+    assert "自动判断原因" in decision["reason"]
+    assert "粉底液" not in decision["resolution_path"]["consumer_reply_draft"]
+
+    safe_reply = client.post("/api/actions/evaluate", json={
+        "case_id": "DEMO_003",
+        "prepared_action": {
+            "action_id": "ACT_ADVERSE_REPLY",
+            "action_type": "ASK_EVIDENCE",
+            "requested_scope": state["current_scope"],
+            "requires_human_approval": False,
+        },
+        "draft_reply": "已记录您使用后泛红、刺痛的反馈，不用先上传面部照片。我会交给专人核实。",
+    }).json()["data"]
+    assert safe_reply["rule_id"] == "H1"
+    assert safe_reply["draft_assessment"]["requires_confirmation"] is True
+
+    customer = client.get("/api/customer-state/DEMO_003").json()["data"]
+    assert "不要求提交健康图片" in customer["emotion"]["communication_guidance"]
+
+
+def test_mismatched_gift_evidence_reply_names_the_current_product() -> None:
+    reset_service()
+    from backend.main import find_case
+
+    case_input = copy.deepcopy(find_case("DEMO_001"))
+    case_input["case_id"] = "DEMO_002"
+    case_input["data_provenance"]["source_session_id"] = "S00002"
+    case_input["order"]["order_id"] = "6920185815517983397"
+    case_input["order"]["items"][0].update({
+        "fulfillment_item_id": "6920185815517983397-EL-RS30",
+        "sku_id": "EL-RS30",
+        "product_name": "复颜修护精华 30ml",
+    })
+    case_input["order"]["items"][1]["fulfillment_item_id"] = "6920185815517983397-GIFT-01"
+    case_input["current_issue"].update({
+        "fulfillment_item_id": "6920185815517983397-EL-RS30",
+        "sku_id": "EL-RS30",
+        "affected_component": "BOTTLE",
+    })
+    case_input["evidence_images"] = [{
+        "evidence_id": "S00002_GIFT_IMG",
+        "file_name": "s00002-gift-evidence.jpg",
+        "submitted_at": "2026-05-05T10:55:00+08:00",
+        "declared_view_type": "PACKAGE_CONTEXT",
+        "source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
+        "source_message_id": "S00002_MSG_003",
+        "competition_reference_path": None,
+    }]
+    analyzed = client.post("/api/cases/analyze", json={
+        "case_id": "DEMO_002", "challenge_mode": True, "case_input": case_input,
+    }).json()["data"]
+    state = analyzed["accountability_state"]
+    gift = next(item for item in case_input["order"]["items"] if item["item_role"] == "GIFT")
+    decision = client.post("/api/actions/evaluate", json={
+        "case_id": "DEMO_002",
+        "prepared_action": {
+            "action_id": "ACT_GIFT_SCOPE",
+            "action_type": "ASK_EVIDENCE",
+            "requested_scope": state["current_scope"],
+            "requires_human_approval": False,
+        },
+        "challenge_mode": True,
+        "challenge_overrides": {"requested_scope": {
+            **state["current_scope"],
+            "fulfillment_item_id": gift["fulfillment_item_id"],
+            "sku_id": gift["sku_id"],
+        }},
+    }).json()["data"]
+    reply = decision["resolution_path"]["consumer_reply_draft"]
+    assert decision["rule_id"] == "E2"
+    assert "复颜修护精华" in reply
+
+    scoped_reply = client.post("/api/actions/evaluate", json={
+        "case_id": "DEMO_002",
+        "prepared_action": {
+            "action_id": "ACT_GIFT_REPLY", "action_type": "ASK_EVIDENCE",
+            "requested_scope": state["current_scope"], "requires_human_approval": False,
+        },
+        "challenge_mode": True,
+        "challenge_overrides": {"requested_scope": {
+            **state["current_scope"],
+            "fulfillment_item_id": gift["fulfillment_item_id"],
+            "sku_id": gift["sku_id"],
+        }},
+        "draft_reply": "照片收到了。现有照片拍的是赠品面膜，不用重发订单；麻烦只补充一张精华瓶口裂痕的近照，我就按这件商品继续核实。",
+    }).json()["data"]
+    assert scoped_reply["rule_id"] == "E2"
+    assert scoped_reply["draft_assessment"]["kind"] == "EVIDENCE_REQUEST"
+    assert scoped_reply["draft_assessment"]["requires_confirmation"] is False
+    assert "粉底液" not in reply
+
+
 def test_approval_is_validated_and_idempotent() -> None:
     reset_service()
     analyze()
@@ -164,10 +406,114 @@ def test_approval_is_validated_and_idempotent() -> None:
     first = client.post("/api/resolutions/approve", json=payload).json()
     replay = client.post("/api/resolutions/approve", json=payload).json()
     assert first == replay
-    assert first["data"]["accountability_state"]["open_obligation"]["next_check_at"] == "2026-05-07T10:30:00+08:00"
+    assert first["data"]["accountability_state"]["open_obligation"]["next_check_at"] == "2026-05-07T10:10:00+08:00"
     conflict = client.post("/api/resolutions/approve", json={**payload, "approver_id": "ANOTHER"})
     assert conflict.status_code == 409
     assert conflict.json()["error"]["code"] == "IDEMPOTENCY_CONFLICT"
+
+
+def test_approval_accepts_existing_order_progress_reply_without_promising_new_fulfillment() -> None:
+    reset_service()
+    analyze()
+    reply = "您之前提交的泵头照片已经收到，不用再发。我会先核实换货单是否已被物流揽收，并在约定更新时间前主动告诉您核实结果。"
+    response = client.post("/api/resolutions/approve", json={
+        "case_id": "DEMO_001",
+        "candidate_type": "CHECK_REPLACEMENT_FULFILLMENT",
+        "approver_id": "AGENT_ZHOU",
+        "idempotency_key": "approve-existing-progress-001",
+        "human_edits": {
+            "executor": "WAREHOUSE",
+            "next_check_at": "2026-05-07T10:10:00+08:00",
+            "consumer_reply": reply,
+        },
+    })
+    assert response.status_code == 200
+    assert response.json()["data"]["approved_resolution"]["consumer_reply_draft"] == reply
+    assert response.json()["data"]["accountability_state"]["open_obligation"]["milestone"] == "AWAITING_CARRIER_PICKUP"
+
+
+def test_explicit_follow_up_approval_does_not_silently_become_reply_only() -> None:
+    reset_service()
+    analyze()
+    response = client.post("/api/resolutions/approve", json={
+        "case_id": "DEMO_001", "candidate_type": "CHECK_REPLACEMENT_FULFILLMENT",
+        "approver_id": "AGENT_ZHOU", "idempotency_key": "approve-explicit-follow-up",
+        "human_edits": {"executor": "WAREHOUSE", "next_check_at": "2026-05-07T10:10:00+08:00",
+                        "consumer_reply": "现有换货单已经记录，我们会继续处理。"},
+    })
+    assert response.status_code == 200
+    data = response.json()["data"]
+    assert data["approved_resolution"]["creates_obligation"] is True
+    assert data["accountability_state"]["open_obligation"]["next_check_at"] == "2026-05-07T10:10:00+08:00"
+
+
+def test_follow_up_reply_preserves_pickup_stage_and_receipt() -> None:
+    reset_service()
+    analyze()
+    first = client.post("/api/resolutions/approve", json={
+        "case_id": "DEMO_001", "candidate_type": "CHECK_REPLACEMENT_FULFILLMENT",
+        "approver_id": "AGENT_ZHOU", "idempotency_key": "approve-before-pickup",
+        "human_edits": {"executor": "WAREHOUSE", "next_check_at": "2026-05-07T10:10:00+08:00",
+                        "consumer_reply": "我会先核实换货单是否被物流揽收，并主动告知进度。"},
+    })
+    assert first.status_code == 200
+    pickup = client.post("/api/events/shipment", json={
+        "case_id": "DEMO_001", "event_id": "PICKUP", "event_type": "SHIPMENT_PICKED_UP",
+        "event_time": "2026-05-07T10:10:00+08:00", "idempotency_key": "pickup-before-reply",
+    })
+    assert pickup.status_code == 200
+    before = pickup.json()["data"]["accountability_state"]
+    follow_up = client.post("/api/resolutions/approve", json={
+        "case_id": "DEMO_001", "candidate_type": "CHECK_REPLACEMENT_FULFILLMENT",
+        "approver_id": "AGENT_ZHOU", "idempotency_key": "approve-after-pickup",
+        "human_edits": {"executor": "WAREHOUSE", "next_check_at": "2026-05-08T10:10:00+08:00",
+                        "consumer_reply": "我会核实换货件的运输进度并主动告知您。"},
+    })
+    assert follow_up.status_code == 200
+    after = follow_up.json()["data"]["accountability_state"]
+    assert after["open_obligation"]["milestone"] == before["open_obligation"]["milestone"] == "IN_TRANSIT"
+    assert after["open_obligation"]["executor"] == before["open_obligation"]["executor"] == "LOGISTICS_PROVIDER"
+    assert after["open_obligation"]["deadline"] == before["open_obligation"]["deadline"]
+    assert after["service_progress_receipt"]["brand_action"] == before["service_progress_receipt"]["brand_action"]
+    assert after["service_progress_receipt"]["next_update_by"] == "2026-05-08T10:10:00+08:00"
+
+
+def test_demo_service_side_cases_advance_without_reusing_wrong_evidence() -> None:
+    reset_service()
+    analyze("DEMO_002")
+    evidence = client.post("/api/demo/events/service", json={
+        "case_id": "DEMO_002", "event_type": "CURRENT_SCOPE_EVIDENCE_SUBMITTED",
+        "idempotency_key": "serum-evidence-001",
+    })
+    assert evidence.status_code == 200
+    state = evidence.json()["data"]["accountability_state"]
+    assert state["evidence_status"] == "VALID"
+    assert state["consumer_input_required"] is False
+    assert "精华瓶口" in state["service_progress_receipt"]["received_evidence"][1]
+    assert analyze("DEMO_002")["accountability_state"]["demo_service_event"] == "CURRENT_SCOPE_EVIDENCE_SUBMITTED"
+    assert client.post("/api/demo/events/service", json={
+        "case_id": "DEMO_002", "event_type": "CURRENT_SCOPE_EVIDENCE_SUBMITTED",
+        "idempotency_key": "serum-evidence-002",
+    }).status_code == 409
+
+    analyze("DEMO_003")
+    too_early = client.post("/api/demo/events/service", json={
+        "case_id": "DEMO_003", "event_type": "SPECIALIST_FOLLOWED_UP",
+        "idempotency_key": "specialist-early-001",
+    })
+    assert too_early.status_code == 409
+    assigned = client.post("/api/demo/events/service", json={
+        "case_id": "DEMO_003", "event_type": "SPECIALIST_ASSIGNED",
+        "idempotency_key": "specialist-assigned-001",
+    })
+    assert assigned.status_code == 200
+    assert assigned.json()["data"]["accountability_state"]["demo_specialist_status"] == "已接手"
+    follow_up = client.post("/api/demo/events/service", json={
+        "case_id": "DEMO_003", "event_type": "SPECIALIST_FOLLOWED_UP",
+        "idempotency_key": "specialist-followed-up-001",
+    })
+    assert follow_up.status_code == 200
+    assert follow_up.json()["data"]["accountability_state"]["demo_specialist_status"] == "已反馈"
 
 
 def test_shipment_transition_requires_pickup_before_delivery() -> None:

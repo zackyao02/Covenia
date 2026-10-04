@@ -127,8 +127,21 @@ def _jev_state(
     signals: dict[str, Any],
 ) -> dict[str, Any]:
     messages = case_input.get("conversation", [])[-6:]
+    consumer_messages = [
+        message for message in case_input.get("conversation", [])
+        if str(message.get("speaker", "")).upper() in {"CONSUMER", "CUSTOMER"}
+    ]
     masked_messages = []
     pii_count = 0
+
+    def mask_customer_text(message: dict[str, Any] | None) -> str | None:
+        nonlocal pii_count
+        if not message:
+            return None
+        masked, count = mask_model_text(message.get("text"))
+        pii_count += count
+        return masked
+
     for message in messages:
         masked, count = mask_model_text(message.get("text"))
         pii_count += count
@@ -143,6 +156,10 @@ def _jev_state(
         "deadline": deadline,
         "deterministic_signals": signals,
         "recent_messages": masked_messages,
+        "consumer_emotion_comparison": {
+            "previous_consumer_message": mask_customer_text(consumer_messages[-2]) if len(consumer_messages) >= 2 else None,
+            "latest_consumer_message": mask_customer_text(consumer_messages[-1]) if consumer_messages else None,
+        },
         "pii_masked_count": pii_count,
     }
 

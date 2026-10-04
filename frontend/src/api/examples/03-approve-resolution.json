@@ -101,7 +101,7 @@
           ],
           "brand_action": "正在核实换货件是否已由物流揽收，并催促仓库反馈。",
           "latest_update_at": "2026-05-07T09:42:00+08:00",
-          "next_update_by": "2026-05-07T10:30:00+08:00",
+          "next_update_by": "2026-05-07T10:10:00+08:00",
           "consumer_action_required": false,
           "recovery_if_missed": "若仍未确认揽收，品牌将升级催办并主动通知新的处理时间。"
         },

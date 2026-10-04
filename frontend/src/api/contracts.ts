@@ -61,6 +61,12 @@ export interface ConversationMessage {
   source_kind: ConversationSourceKind;
 }
 
+export interface DemoCustomerStateRefreshRequest {
+  case_id: string;
+  challenge_mode: true;
+  messages: ConversationMessage[];
+}
+
 export interface OrderItem {
   fulfillment_item_id: string;
   sku_id: string;
@@ -306,6 +312,9 @@ export interface AccountabilityState {
   service_progress_receipt: ServiceProgressReceipt | null;
   experience_risk: Exclude<RiskLevel, "UNKNOWN">;
   audit_trail: AuditTrailEntry[];
+  demo_service_event?: DemoServiceEventType;
+  demo_specialist?: string;
+  demo_specialist_status?: "已接手" | "已反馈";
 }
 
 export interface AuditTrailEntry {
@@ -316,7 +325,8 @@ export interface AuditTrailEntry {
     | "RESOLUTION_APPROVED"
     | "SHIPMENT_PICKED_UP"
     | "SHIPMENT_NOT_PICKED_UP"
-    | "SHIPMENT_DELIVERED";
+    | "SHIPMENT_DELIVERED"
+    | DemoServiceEventType;
   changed_fields: string[];
   request_id: string;
 }
@@ -726,6 +736,19 @@ export interface ShipmentEventResponse {
   } | null;
 }
 
+export type DemoServiceEventType = "CURRENT_SCOPE_EVIDENCE_SUBMITTED" | "SPECIALIST_ASSIGNED" | "SPECIALIST_FOLLOWED_UP";
+
+export interface DemoServiceEventRequest {
+  case_id: "DEMO_002" | "DEMO_003";
+  event_type: DemoServiceEventType;
+  idempotency_key: string;
+}
+
+export interface DemoServiceEventResponse {
+  accountability_state: AccountabilityState;
+  event_summary: string;
+}
+
 export type ApiErrorCode =
   | "SCHEMA_INVALID"
   | "VALIDATION_ERROR"
@@ -749,7 +772,9 @@ export type ApiResult<T> =
     };
 
 export interface CoveniaApi {
+  resetDemoSession(caseId: string): Promise<ApiResult<{ case_id: string; reset: true }>>;
   getCustomerState(caseId: string): Promise<ApiResult<CustomerState>>;
+  refreshDemoCustomerState(input: DemoCustomerStateRefreshRequest): Promise<ApiResult<CustomerState>>;
   getPriority(): Promise<ApiResult<PriorityState[]>>;
   analyzeCase(input: AnalyzeCaseRequest): Promise<ApiResult<AnalyzeCaseResponse>>;
   evaluateAction(
@@ -761,6 +786,7 @@ export interface CoveniaApi {
   pushShipmentEvent(
     input: ShipmentEventRequest,
   ): Promise<ApiResult<ShipmentEventResponse>>;
+  pushDemoServiceEvent(input: DemoServiceEventRequest): Promise<ApiResult<DemoServiceEventResponse>>;
   getRiskStates?(): Promise<ApiResult<RiskState[]>>;
   getPriorityStates?(): Promise<ApiResult<PriorityState[]>>;
   getEmergingIssues?(): Promise<ApiResult<EmergingIssue[]>>;
@@ -840,6 +866,16 @@ export const API_ENDPOINTS = {
     changesResponsibilityState: false,
     requiresIdempotencyKey: false,
     suggestedTimeoutMs: 5000,
+  },
+  refreshDemoCustomerState: {
+    method: "POST",
+    path: "/api/demo/customer-state/refresh",
+    request: "DemoCustomerStateRefreshRequest",
+    response: "ApiResult<CustomerState>",
+    uiTrigger: "本地模拟顾客产生新回复",
+    changesResponsibilityState: false,
+    requiresIdempotencyKey: false,
+    suggestedTimeoutMs: 20000,
   },
   getRiskStates: {
     method: "GET",

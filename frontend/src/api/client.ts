@@ -10,6 +10,9 @@ import type {
   ShipmentEventRequest,
   ShipmentEventResponse,
   CustomerState,
+  DemoCustomerStateRefreshRequest,
+  DemoServiceEventRequest,
+  DemoServiceEventResponse,
   PriorityState,
 } from "./contracts";
 import { mockApi } from "../mockApi";
@@ -78,8 +81,18 @@ async function post<TRequest, TResponse>(
 }
 
 export const httpApi: CoveniaApi = {
+  resetDemoSession(caseId: string) {
+    return post<{ case_id: string }, { case_id: string; reset: true }>("/api/demo/session/reset", { case_id: caseId }, {
+      timeoutMs: 10_000,
+    });
+  },
   getCustomerState(caseId: string) {
     return get<CustomerState>(`/api/customer-state/${encodeURIComponent(caseId)}`);
+  },
+  refreshDemoCustomerState(input: DemoCustomerStateRefreshRequest) {
+    return post<DemoCustomerStateRefreshRequest, CustomerState>("/api/demo/customer-state/refresh", input, {
+      timeoutMs: 20_000,
+    });
   },
   getPriority() {
     return get<PriorityState[]>("/api/priority");
@@ -104,6 +117,11 @@ export const httpApi: CoveniaApi = {
     return post<ShipmentEventRequest, ShipmentEventResponse>("/api/events/shipment", input, {
       timeoutMs: 10_000,
       idempotent: true,
+    });
+  },
+  pushDemoServiceEvent(input: DemoServiceEventRequest) {
+    return post<DemoServiceEventRequest, DemoServiceEventResponse>("/api/demo/events/service", input, {
+      timeoutMs: 10_000,
     });
   },
 };

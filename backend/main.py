@@ -6,7 +6,7 @@ import json
 import logging
 import re
 import uuid
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any
 
@@ -15,7 +15,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from backend.decision import decision_advisory_for
-from backend.draft_review import assess_draft
+from backend.draft_review import assess_draft, contains_unsupported_fulfillment_guarantee
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -31,8 +31,10 @@ app.add_middleware(
         "http://127.0.0.1:5173",
         "http://127.0.0.1:4173",
         "http://127.0.0.1:4174",
+        "http://127.0.0.1:4175",
         "http://localhost:5173",
         "http://localhost:4174",
+        "http://localhost:4175",
     ],
     allow_methods=["GET", "POST"],
     allow_headers=["Content-Type", "X-Request-Id"],
@@ -86,6 +88,20 @@ def service_time_for(case_id: str) -> str:
     baseline = parse_time(SERVICE_CLOCK)
     latest = last_event_times.get(case_id, baseline)
     return max(baseline, latest).isoformat()
+
+
+def default_next_check(case_id: str, deadline: str | None) -> str:
+    """Schedule a proactive check before the promise deadline when time remains."""
+    now = parse_time(service_time_for(case_id))
+    if not deadline:
+        return (now + timedelta(minutes=28)).isoformat()
+    deadline_at = parse_time(deadline)
+    if deadline_at <= now:
+        return (now + timedelta(minutes=5)).isoformat()
+    remaining = deadline_at - now
+    margin = min(timedelta(minutes=5), remaining / 2)
+    target = min(now + timedelta(minutes=28), deadline_at - margin)
+    return target.isoformat()
 
 
 def find_case(case_id: str) -> dict[str, Any] | None:
@@ -162,10 +178,63 @@ def make_challenge_analysis(response: dict[str, Any], case_input: dict[str, Any]
             "coverage": ["PRODUCT_IDENTITY", "PACKAGE_CONTEXT"], "integrity_concern": False,
             "hygiene_risk_signal": "LOW", "confidence": 0.96,
         }]
+        journey["journey_understanding"] = {
+            "consumer_intent": "核实精华瓶口破损，并弄清已经发过照片后还缺什么",
+            "experience_expression": "消费者被要求整单重传，想知道只需补哪张图片",
+            "service_cause": "现有图片没有覆盖精华瓶口破损处",
+            "latent_need": "只补充当前精华瓶口所需的证据",
+            "cooperation_willingness": "STABLE",
+            "action_impact": "可以请求当前范围缺失的精华瓶口照片",
+            "source_ids": [(case_input.get("conversation") or [{}])[0].get("message_id", "CHALLENGE_MESSAGE"), (case_input.get("conversation") or [{}])[-1].get("message_id", "CHALLENGE_MESSAGE"), first.get("evidence_id", "CHALLENGE_IMAGE")],
+        }
         state.update({"case_status": "WAITING_FOR_CONSUMER", "consumer_input_required": True,
                       "accountable_side": "CONSUMER", "evidence_status": "MISMATCHED",
                       "active_commitments": [], "prohibited_actions": [], "open_obligation": None,
                       "service_progress_receipt": None, "experience_risk": "LOW"})
+        state["experience_gap_diagnosis"] = {
+            "consumer_expression": "消费者反馈复颜精华瓶口有裂痕，已发过照片，不愿整单重传。",
+            "traceable_service_facts": [{
+                "fact_type": "EVIDENCE_SUBMITTED",
+                "statement": "已收到赠品面膜外盒照片，尚未收到精华瓶口破损照片。",
+                "source_ids": [first.get("evidence_id", "CHALLENGE_IMAGE")],
+            }],
+            "deterioration_cause": "现有图片对应赠品面膜，无法核实精华瓶口破损。",
+            "latent_need": "只补充精华瓶口破损照片，不重复索要已收到的赠品图片。",
+            "responsibility_judgment": {"consumer_input_complete": False, "accountable_side": "CONSUMER"},
+            "action_impacts": [],
+            "reply_strategy": "说明已收到赠品照片，再请求当前精华问题所需的照片。",
+        }
+    elif case_input.get("current_issue", {}).get("issue_type") == "ADVERSE_REACTION" and not evidence:
+        journey["promise_events"] = []
+        journey["image_observations"] = []
+        consumer_message = next((message for message in case_input.get("conversation", []) if message.get("speaker") == "CONSUMER"), {})
+        source_ids = [consumer_message.get("message_id", "CHALLENGE_MESSAGE")]
+        journey["journey_understanding"] = {
+            "consumer_intent": "反馈使用防晒乳后泛红、刺痛，要求无需先发面部照片即可由专人跟进",
+            "experience_expression": "消费者仍感不适，也不愿在聊天里上传面部照片",
+            "service_cause": "涉及使用不适，不能只凭当前材料自动推断原因",
+            "latent_need": "先由专人接手，说明后续安排，并尊重不上传面部照片的选择",
+            "cooperation_willingness": "STABLE",
+            "action_impact": "先转人工核实，不自动诊断，也不要求消费者重复描述",
+            "source_ids": source_ids,
+        }
+        state.update({"case_status": "ACTION_REVIEW", "consumer_input_required": False,
+                      "accountable_side": "UNKNOWN", "evidence_status": "NEED_HUMAN_REVIEW",
+                      "active_commitments": [], "prohibited_actions": [], "open_obligation": None,
+                      "service_progress_receipt": None, "experience_risk": "MEDIUM"})
+        state["experience_gap_diagnosis"] = {
+            "consumer_expression": "消费者反馈使用防晒乳后泛红、刺痛，要求无需上传面部照片即可由专人跟进。",
+            "traceable_service_facts": [{
+                "fact_type": "OTHER",
+                "statement": "当前记录是消费者的使用反馈，尚未由人工核实。",
+                "source_ids": source_ids,
+            }],
+            "deterioration_cause": "涉及身体不适，自动判断可能造成误导。",
+            "latent_need": "无需先上传面部照片，也能获得谨慎回应和人工跟进。",
+            "responsibility_judgment": {"consumer_input_complete": False, "accountable_side": "UNKNOWN"},
+            "action_impacts": ["ROUTE_TO_HUMAN"],
+            "reply_strategy": "先回应消费者关切，记录反馈并转人工核实，不自动判断原因。",
+        }
     elif is_blurred:
         journey["promise_events"] = []
         journey["image_observations"] = [{
@@ -233,22 +302,33 @@ def resolution(state: dict[str, Any], candidate: str, rule_id: str) -> dict[str,
     current = state["current_scope"]
     ticket = next((fact for fact in state["experience_gap_diagnosis"]["traceable_service_facts"] if fact["fact_type"] == "TICKET_CREATED"), None)
     ticket_id = ticket["source_ids"][0] if ticket else None
+    case_input = analyzed_inputs.get(state["case_id"]) or find_case(state["case_id"]) or {}
+    issue = case_input.get("current_issue", {})
+    order_items = case_input.get("order", {}).get("items", [])
+    product_name = next((item.get("product_name", "当前商品") for item in order_items if item.get("sku_id") == current["sku_id"]), "当前商品")
+    affected_part = {"BOTTLE": "瓶口", "PUMP": "泵头", "CAP": "瓶盖", "SEAL": "封口", "OUTER_PACKAGE": "外包装"}.get(issue.get("affected_component"), "破损部位")
     if candidate == "HUMAN_EVIDENCE_REVIEW":
-        return {"candidate_type": candidate, "evidence_basis": ["当前图片无法可靠判定"], "policy_basis": "H1：不确定证据进入人工复核。",
-                "consumer_reply_draft": "我们已收到您提交的材料，正在安排人工核实，不需要您重复说明。",
-                "task_prefill": {"task_type": "HUMAN_EVIDENCE_REVIEW", "existing_ticket_id": ticket_id, "sku_id": current["sku_id"], "affected_component": "PUMP", "summary": "人工复核当前证据与问题范围。"},
+        is_adverse_reaction = current["issue_type"] == "ADVERSE_REACTION"
+        evidence_basis = ["消费者反馈使用后出现身体不适", "当前信息尚未由人工核实"] if is_adverse_reaction else ["当前图片无法可靠判定"]
+        reply = "已记录您使用后泛红、刺痛的反馈，不用先上传面部照片。我会交给专人核实；在核实前请先暂停使用，如不适明显或持续，请及时咨询医生。" if is_adverse_reaction else "我们已收到您提交的材料，正在安排人工核实，不需要您重复说明。"
+        summary = "人工核实消费者使用防晒乳后泛红的反馈，不自动判断原因。" if is_adverse_reaction else "人工复核当前证据与问题范围。"
+        return {"candidate_type": candidate, "evidence_basis": evidence_basis, "policy_basis": "H1：事实不足或涉及使用不适时进入人工复核。",
+                "consumer_reply_draft": reply,
+                "task_prefill": {"task_type": "HUMAN_EVIDENCE_REVIEW", "existing_ticket_id": ticket_id, "sku_id": current["sku_id"], "affected_component": "UNKNOWN" if is_adverse_reaction else "PUMP", "summary": summary},
                 "accountable_side": "UNKNOWN", "executor": "HUMAN_REVIEW_QUEUE", "requires_human_approval": True, "creates_obligation": False, "compiled_service_responsibility": None}
     if candidate == "ASK_CURRENT_SCOPE_EVIDENCE":
-        return {"candidate_type": candidate, "evidence_basis": ["现有材料与当前商品范围不一致"], "policy_basis": "E2：仅请求当前范围缺失的证据。",
-                "consumer_reply_draft": "已收到赠品相关图片。为核实粉底液泵头问题，请补充泵头近照。",
-                "task_prefill": {"task_type": "REQUEST_EVIDENCE", "existing_ticket_id": ticket_id, "sku_id": current["sku_id"], "affected_component": "PUMP", "summary": "请求当前粉底液泵头近照。"},
+        gift_name = next((item.get("product_name", "赠品") for item in order_items if item.get("item_role") == "GIFT"), "赠品")
+        requested_evidence = f"{product_name}{affected_part}破损照片"
+        return {"candidate_type": candidate, "evidence_basis": [f"现有图片对应{gift_name}", f"当前问题属于{product_name}{affected_part}破损"], "policy_basis": "E2：仅请求当前范围缺失的证据。",
+                "consumer_reply_draft": f"刚才收到的是{gift_name}照片，不能用于核实{product_name}。麻烦补充一张{requested_evidence}，我会按这件商品继续处理。",
+                "task_prefill": {"task_type": "REQUEST_EVIDENCE", "existing_ticket_id": ticket_id, "sku_id": current["sku_id"], "affected_component": issue.get("affected_component") or "UNKNOWN", "summary": f"请求消费者补充{requested_evidence}。"},
                 "accountable_side": "CONSUMER", "executor": "CONSUMER", "requires_human_approval": False, "creates_obligation": False, "compiled_service_responsibility": None}
     deadline = state["active_commitments"][0]["deadline"] if state["active_commitments"] else None
     return {"candidate_type": "CHECK_REPLACEMENT_FULFILLMENT", "evidence_basis": ["粉底液正装与订单已匹配", "泵头损坏图片可辨认", "换货工单已创建"],
             "policy_basis": f"{rule_id}：依据既有证据和责任状态计算。", "consumer_reply_draft": "您此前提交的粉底液泵头损坏图片我们已经收到，无需再次上传。我正在核实换货件的最新物流进度，并会主动向您更新。",
             "task_prefill": {"task_type": "WAREHOUSE_FOLLOW_UP", "existing_ticket_id": ticket_id, "sku_id": current["sku_id"], "affected_component": "PUMP", "summary": "核实换货件是否已交物流揽收；若仍未揽收，请立即反馈预计处理时间。"},
             "accountable_side": "BRAND", "executor": "WAREHOUSE", "requires_human_approval": True, "creates_obligation": True,
-            "compiled_service_responsibility": {"source_promise_text": state["active_commitments"][0]["raw_text"] if state["active_commitments"] else "", "commitment_class": "STANDARD_APPROVED", "activation_status": "ACTIVE", "deadline": deadline, "next_check_at": "2026-05-07T10:30:00+08:00", "recovery_if_missed": "品牌主动催办仓库，升级给主管并通知消费者新的处理时间。"}}
+            "compiled_service_responsibility": {"source_promise_text": state["active_commitments"][0]["raw_text"] if state["active_commitments"] else "", "commitment_class": "STANDARD_APPROVED", "activation_status": "ACTIVE", "deadline": deadline, "next_check_at": default_next_check(state["case_id"], deadline), "recovery_if_missed": "品牌主动催办仓库，升级给主管并通知消费者新的处理时间。"}}
 
 
 def evaluate(state: dict[str, Any], body: dict[str, Any]) -> dict[str, Any]:
@@ -301,7 +381,7 @@ def evaluate(state: dict[str, Any], body: dict[str, Any]) -> dict[str, Any]:
     candidate = "HUMAN_EVIDENCE_REVIEW" if rule_id == "H1" else "ASK_CURRENT_SCOPE_EVIDENCE" if rule_id == "E2" else "CHECK_REPLACEMENT_FULFILLMENT"
     result = {"case_id": state["case_id"], "decision": decision, "rule_id": rule_id, "rule_priority": priority, "accountability_state": clone(state),
             "challenge_mode": challenge_mode, "fact_trace": {"evidence_status": evidence_status, "prepared_action": action, "scope_match": scope_match, "active_promise_count": len(state["active_commitments"]), "suppressed_rule_ids": suppressed},
-            "reason": {"P0_PROHIBITED_ACTION": "当前不能结案，已有未完成的服务责任。", "H1": "当前证据存在不确定性，需要人工复核。", "E1": "已有与当前范围一致的有效证据，不能重复索取。", "E2": "现有证据属于不同范围，可以补充当前范围所需材料。", "E0_NO_RULE_MATCHED": "当前动作未命中阻断规则。"}[rule_id],
+            "reason": "涉及消费者使用不适，需人工核实；系统不自动判断原因。" if rule_id == "H1" and state["current_scope"]["issue_type"] == "ADVERSE_REACTION" else {"P0_PROHIBITED_ACTION": "当前不能结案，已有未完成的服务责任。", "H1": "当前证据存在不确定性，需要人工复核。", "E1": "已有与当前范围一致的有效证据，不能重复索取。", "E2": "现有证据属于不同范围，可以补充当前范围所需材料。", "E0_NO_RULE_MATCHED": "当前动作未命中阻断规则。"}[rule_id],
             "resolution_path": resolution(state, candidate, rule_id), "runtime_metrics": {"measurement_status": "NOT_MEASURED", "input_tokens": None, "output_tokens": None, "inference_latency_ms": None, "rule_substitution_count": None}}
     if draft_assessment is not None:
         result["draft_assessment"] = draft_assessment
@@ -485,12 +565,12 @@ def customer_decision_for(case_id: str, state: dict[str, Any]) -> dict[str, Any]
     }
 
 
-def customer_state_for(case_id: str, rid: str) -> dict[str, Any] | None:
+def customer_state_for(case_id: str, rid: str, case_input_override: dict[str, Any] | None = None) -> dict[str, Any] | None:
     analysis = analysis_for(case_id, rid)
     if analysis is None:
         return None
     state = states.get(case_id, analysis["accountability_state"])
-    case_input = analyzed_inputs.get(case_id) or find_case(case_id) or {"conversation": [], "evidence_images": [], "service_tickets": [], "order": {}, "evaluation_time": SERVICE_CLOCK}
+    case_input = case_input_override or analyzed_inputs.get(case_id) or find_case(case_id) or {"conversation": [], "evidence_images": [], "service_tickets": [], "order": {}, "evaluation_time": SERVICE_CLOCK}
     journey = analysis["extracted_journey"]
     source = source_evidence(case_input, state)
     risk = risk_state_for(case_id, state, case_input)
@@ -505,6 +585,8 @@ def customer_state_for(case_id: str, rid: str) -> dict[str, Any] | None:
     if state.get("case_status") == "RESOLVED":
         next_action = "服务已完成，保留回执供消费者查看。"
         guidance = "先确认处理已经完成，再提供服务回执，无需消费者继续操作。"
+    elif state.get("current_scope", {}).get("issue_type") == "ADVERSE_REACTION":
+        guidance = "先回应使用不适并说明转人工核实；不自动判断原因，也不要求提交健康图片。"
     elif state["evidence_status"] == "MISMATCHED":
         guidance = "说明已有图片覆盖的商品范围，仅补充当前问题缺少的证据。"
     elif state["evidence_status"] == "NEED_HUMAN_REVIEW":
@@ -513,6 +595,11 @@ def customer_state_for(case_id: str, rid: str) -> dict[str, Any] | None:
         guidance = "先承认已收到材料，再说明品牌侧的下一步处理与更新时间。"
     if trend == "WORSENING":
         guidance = "先回应消费者已经付出的沟通成本，避免要求重复解释。" + guidance
+    consumer_message_ids = [
+        item["message_id"]
+        for item in case_input.get("conversation", [])
+        if str(item.get("speaker", "")).upper() in {"CONSUMER", "CUSTOMER"}
+    ][-2:]
     facts = [
         {"fact_id": f"FACT_{index+1}", "statement": fact["statement"], "source_evidence_ids": fact.get("source_ids", [])}
         for index, fact in enumerate(state.get("experience_gap_diagnosis", {}).get("traceable_service_facts", []))
@@ -522,9 +609,13 @@ def customer_state_for(case_id: str, rid: str) -> dict[str, Any] | None:
     evidence_known = [fact["statement"] for fact in state.get("experience_gap_diagnosis", {}).get("traceable_service_facts", [])]
     missing = []
     if state.get("evidence_status") == "MISMATCHED":
-        missing.append("当前正装粉底液泵头近照。")
+        issue = case_input.get("current_issue", {})
+        product_name = next((item.get("product_name", "当前商品") for item in case_input.get("order", {}).get("items", []) if item.get("sku_id") == issue.get("sku_id")), "当前商品")
+        affected_part = {"BOTTLE": "瓶口", "PUMP": "泵头", "CAP": "瓶盖", "SEAL": "封口", "OUTER_PACKAGE": "外包装"}.get(issue.get("affected_component"), "问题部位")
+        missing.append(f"{product_name}{affected_part}近照。")
     elif state.get("evidence_status") == "NEED_HUMAN_REVIEW":
         missing.append("人工复核结论。")
+    adverse_reaction = state.get("current_scope", {}).get("issue_type") == "ADVERSE_REACTION"
     return {
         "case_id": case_id,
         "service_clock": service_time_for(case_id),
@@ -533,7 +624,7 @@ def customer_state_for(case_id: str, rid: str) -> dict[str, Any] | None:
             "status": state["evidence_status"],
             "known": evidence_known or ["已恢复当前服务上下文。"],
             "missing": missing or ["暂无待消费者补充证据。"],
-            "do_not_ask_again": ["不要再次索取相同破损图片"] if state["evidence_status"] == "VALID" else ["不要要求消费者重复解释历史问题"],
+            "do_not_ask_again": ["无需先上传面部照片；不要要求消费者重复描述"] if adverse_reaction else ["不要再次索取相同破损图片"] if state["evidence_status"] == "VALID" else ["不要要求消费者重传整个订单"],
         },
         "intent": {
             "current_goal": journey["journey_understanding"]["consumer_intent"],
@@ -547,7 +638,7 @@ def customer_state_for(case_id: str, rid: str) -> dict[str, Any] | None:
             "trend": trend,
             "cause": journey["journey_understanding"]["service_cause"],
             "communication_guidance": guidance,
-            "source_evidence_ids": [item["source_id"] for item in source if item["source_type"] == "CHAT"],
+            "source_evidence_ids": consumer_message_ids,
             "confidence": max(probability, 1 - probability) if probability is not None and trend != "UNKNOWN" else 0,
             "probability": probability,
             "risk_scoring_allowed": False,
@@ -556,7 +647,7 @@ def customer_state_for(case_id: str, rid: str) -> dict[str, Any] | None:
         "actions": {
             "next_best_action": next_action,
             "blocked_actions": state.get("prohibited_actions", []),
-            "allowed_actions": ["CHECK_REPLACEMENT_PROGRESS", "CREATE_FOLLOW_UP_TASK"],
+            "allowed_actions": ["ROUTE_TO_HUMAN"] if adverse_reaction else ["REQUEST_CURRENT_SCOPE_EVIDENCE"] if state["evidence_status"] == "MISMATCHED" else ["CHECK_REPLACEMENT_PROGRESS", "CREATE_FOLLOW_UP_TASK"],
             "human_review_actions": ["HUMAN_EVIDENCE_REVIEW"] if state.get("evidence_status") == "NEED_HUMAN_REVIEW" else [],
         },
         "promises": {
@@ -661,12 +752,80 @@ async def analyze_case(request: Request) -> JSONResponse:
     return envelope(data, rid)
 
 
+@app.post("/api/demo/session/reset")
+async def reset_demo_session(request: Request) -> JSONResponse:
+    """Reset one known demo case so the local judging walkthrough can be replayed."""
+    rid = request_id(request, "REQ_DEMO_RESET")
+    body, problem = await body_or_error(request, rid)
+    if problem:
+        return problem
+    case_id = body.get("case_id")
+    if not isinstance(case_id, str) or case_id not in demo_case_ids():
+        return error("VALIDATION_ERROR", "只能重置已配置的本地演示会话。", rid, 400)
+    states.pop(case_id, None)
+    analyses.pop(case_id, None)
+    analyzed_inputs.pop(case_id, None)
+    shipment_stages.pop(case_id, None)
+    last_event_times.pop(case_id, None)
+    deadline_escalations.discard(case_id)
+    for key in [key for key in idempotency if len(key) > 1 and key[1] == case_id]:
+        idempotency.pop(key, None)
+    return envelope({"case_id": case_id, "reset": True}, rid)
+
+
 @app.get("/api/customer-state/{case_id}")
 async def get_customer_state_by_path(case_id: str, request: Request) -> JSONResponse:
     rid = request_id(request, "REQ_CUSTOMER_STATE")
     state = customer_state_for(case_id, rid)
     if state is None:
         return error("VALIDATION_ERROR", "未找到案例事实。", rid, 400)
+    return envelope(state, rid)
+
+
+@app.post("/api/demo/customer-state/refresh")
+async def refresh_demo_customer_state(request: Request) -> JSONResponse:
+    """Reassess a simulated transcript without changing frozen service facts or obligations."""
+    rid = request_id(request, "REQ_DEMO_CUSTOMER_STATE")
+    body, problem = await body_or_error(request, rid)
+    if problem:
+        return problem
+    case_id = body.get("case_id")
+    messages = body.get("messages")
+    if body.get("challenge_mode") is not True or not isinstance(case_id, str) or not case_id:
+        return error("SCHEMA_INVALID", "模拟对话刷新需要 case_id 和 challenge_mode=true。", rid, 400)
+    if not isinstance(messages, list) or not 1 <= len(messages) <= 24:
+        return error("SCHEMA_INVALID", "messages 必须包含 1 到 24 条模拟消息。", rid, 400)
+    if state_for(case_id, rid) is None:
+        return error("VALIDATION_ERROR", "未找到案例事实。", rid, 400)
+    case_input = clone(analyzed_inputs.get(case_id) or find_case(case_id))
+    if not isinstance(case_input, dict):
+        return error("VALIDATION_ERROR", "未找到案例对话。", rid, 400)
+    known_ids = {item.get("message_id") for item in case_input.get("conversation", [])}
+    checked = []
+    for message in messages:
+        if not isinstance(message, dict) or set(message) != {"message_id", "timestamp", "speaker", "text", "source_kind"}:
+            return error("SCHEMA_INVALID", "模拟消息字段不完整。", rid, 400)
+        message_id, timestamp, speaker, text = (message[key] for key in ("message_id", "timestamp", "speaker", "text"))
+        if not isinstance(message_id, str) or not message_id.startswith("DEMO_CHAT_") or message_id in known_ids:
+            return error("SCHEMA_INVALID", "模拟消息 ID 无效或重复。", rid, 400)
+        if speaker not in ("AGENT", "CONSUMER") or message.get("source_kind") != "DEMO_AUGMENTATION":
+            return error("SCHEMA_INVALID", "只接受标注来源的模拟客服与顾客消息。", rid, 400)
+        if not isinstance(text, str) or not 1 <= len(text.strip()) <= 2000:
+            return error("SCHEMA_INVALID", "模拟消息文本长度无效。", rid, 400)
+        try:
+            if not isinstance(timestamp, str):
+                raise ValueError("invalid timestamp")
+            parse_time(timestamp)
+        except ValueError:
+            return error("SCHEMA_INVALID", "模拟消息时间格式无效。", rid, 400)
+        known_ids.add(message_id)
+        checked.append(message)
+    if checked[-1]["speaker"] != "CONSUMER":
+        return error("SCHEMA_INVALID", "最后一条必须是顾客的新回复。", rid, 400)
+    case_input["conversation"] = [*case_input.get("conversation", []), *checked]
+    state = customer_state_for(case_id, rid, case_input_override=case_input)
+    if state is None:
+        return error("VALIDATION_ERROR", "无法重新分析当前案例。", rid, 400)
     return envelope(state, rid)
 
 
@@ -847,9 +1006,9 @@ async def approve_resolution(request: Request) -> JSONResponse:
     guard = evaluate(state, {"prepared_action": {"action_type": "CHECK_REPLACEMENT_PROGRESS", "requested_scope": state["current_scope"]}, "draft_reply": draft})
     if guard["decision"] == "INTERVENE":
         return error("P0_PROHIBITED_ACTION", guard["reason"], rid, 409)
-    if re.search(r"退款|退钱|原路退", draft):
+    if re.search(r"(?:会|将|保证|承诺|办理|安排|立即).{0,8}(?:退款|退钱|原路退)", draft) and not re.search(r"(?:不会|不能|无法|尚未|暂不).{0,8}(?:退款|退钱|原路退)", draft):
         return error("VALIDATION_ERROR", "当前演示不支持批准退款承诺。", rid, 409)
-    if re.search(r"(保证|承诺|一定|确保|最晚|将|会).{0,16}(换货|补发|重新发货|送达)", draft):
+    if contains_unsupported_fulfillment_guarantee(draft):
         return error("VALIDATION_ERROR", "当前演示不支持新增换货或送达保证，请确认查询进度的回复。", rid, 409)
     if "next_check_at" in edits:
         try:
@@ -879,7 +1038,11 @@ async def approve_resolution(request: Request) -> JSONResponse:
         response = {"data": data, "error": None, "request_id": rid}
         idempotency[key] = (fingerprint, response)
         return JSONResponse(response)
-    if draft_review["kind"] == "UNCLASSIFIED" and "NEW_COMMITMENT" not in draft_review.get("_detected_actions", []):
+    # An explicit CHECK approval with an executor and next update creates or updates
+    # the responsibility even when the edited consumer wording is not recognized.
+    # A plain reply confirmation without those fields only records the reply.
+    explicit_follow_up = bool(edits.get("executor") and edits.get("next_check_at"))
+    if (draft_review["kind"] == "UNCLASSIFIED" and "NEW_COMMITMENT" not in draft_review.get("_detected_actions", []) and not explicit_follow_up) or state.get("demo_service_event"):
         approved.update({"consumer_reply_draft": draft, "creates_obligation": False, "compiled_service_responsibility": None, "requires_human_approval": True})
         updated = clone(state)
         audit = {"at": SERVICE_CLOCK, "actor": body["approver_id"].strip(), "action": "RESOLUTION_APPROVED", "changed_fields": sorted(edits.keys()), "request_id": rid}
@@ -907,14 +1070,31 @@ async def approve_resolution(request: Request) -> JSONResponse:
     try:
         next_dt = parse_time(next_check)
         service_dt = parse_time(service_time_for(body["case_id"]))
-        if next_dt.tzinfo is None or next_dt <= service_dt:
+        latest_receipt_time = (state.get("service_progress_receipt") or {}).get("latest_update_at")
+        effective_now = max(service_dt, parse_time(latest_receipt_time)) if latest_receipt_time else service_dt
+        if next_dt.tzinfo is None or next_dt <= effective_now:
             raise ValueError
     except (TypeError, ValueError):
         return error("VALIDATION_ERROR", "next_check_at 必须带时区且晚于服务时钟。", rid, 400)
-    recovery = edits.get("recovery_if_missed") or "若仍未确认揽收，品牌将升级催办并主动通知新的处理时间。"
+    deadline_dt = parse_time(deadline)
+    awaiting_pickup = not existing_obligation or existing_obligation.get("milestone") == "AWAITING_CARRIER_PICKUP"
+    if awaiting_pickup and service_dt < deadline_dt and next_dt >= deadline_dt:
+        return error("VALIDATION_ERROR", "正常跟进时间必须早于原承诺截止；如已无法按时处理，请先写明升级与主动告知消费者的安排。", rid, 409)
+    if awaiting_pickup and service_dt >= deadline_dt and not re.search(r"升级|主动通知|通知消费者|新的处理时间", draft):
+        return error("VALIDATION_ERROR", "原承诺已到期，请在回复中说明升级处理并主动告知新的更新时间。", rid, 409)
+    recovery = edits.get("recovery_if_missed") or (state.get("service_progress_receipt") or {}).get("recovery_if_missed") or "若仍未确认揽收，品牌将升级催办并主动通知新的处理时间。"
     updated = clone(state)
-    updated.update({"case_status": "IN_FULFILLMENT", "open_obligation": {"obligation_type": "REPLACEMENT_FULFILLMENT", "status": "ON_TRACK", "accountable_side": "BRAND", "executor": approved["executor"], "deadline": deadline, "next_check_at": next_check, "milestone": "AWAITING_CARRIER_PICKUP", "resolution_condition": "REPLACEMENT_DELIVERED"},
-                    "service_progress_receipt": {"receipt_id": f"RECEIPT_{body['case_id']}_001", "status": "ACTIVE", "received_evidence": ["粉底液泵头损坏图片", "订单和商品货号", "换货工单"], "brand_action": draft, "latest_update_at": SERVICE_CLOCK, "next_update_by": next_check, "consumer_action_required": False, "recovery_if_missed": recovery}})
+    if existing_obligation.get("status") == "COMPLETED":
+        return error("INVALID_EVENT_TRANSITION", "履约已完成，不能重新激活换货责任。", rid, 409)
+    obligation = clone(existing_obligation) if existing_obligation else {"obligation_type": "REPLACEMENT_FULFILLMENT", "status": "ON_TRACK", "accountable_side": "BRAND", "executor": approved["executor"], "deadline": deadline, "next_check_at": next_check, "milestone": "AWAITING_CARRIER_PICKUP", "resolution_condition": "REPLACEMENT_DELIVERED"}
+    obligation["next_check_at"] = next_check
+    receipt = clone(state.get("service_progress_receipt")) if state.get("service_progress_receipt") else {"receipt_id": f"RECEIPT_{body['case_id']}_001", "status": "ACTIVE", "received_evidence": ["粉底液泵头损坏图片", "订单和商品货号", "换货工单"], "brand_action": "正在核实换货件是否已由物流揽收。", "latest_update_at": SERVICE_CLOCK, "next_update_by": next_check, "consumer_action_required": False, "recovery_if_missed": recovery}
+    receipt["next_update_by"] = next_check
+    receipt["recovery_if_missed"] = recovery
+    updated["open_obligation"] = obligation
+    updated["service_progress_receipt"] = receipt
+    if not existing_obligation:
+        updated["case_status"] = "IN_FULFILLMENT"
     approved["consumer_reply_draft"] = draft
     compiled = approved.get("compiled_service_responsibility")
     if compiled is not None:
@@ -990,5 +1170,80 @@ async def shipment_event(request: Request) -> JSONResponse:
     last_event_times[body["case_id"]] = event_time
     data = {"accountability_state": updated, "follow_up_candidate": follow_up, "supervisor_escalation_candidate": escalation, "proactive_notification_draft": {"text": notification, "commits_next_update_at": next_update, "requires_human_approval": True, "channel": "ORIGINAL_CHAT"}}
     response = {"data": data, "error": None, "request_id": rid}
+    idempotency[key] = (fingerprint, response)
+    return JSONResponse(response)
+
+
+@app.post("/api/demo/events/service")
+async def demo_service_event(request: Request) -> JSONResponse:
+    """Advance only the two bounded, local competition side cases."""
+    rid = request_id(request, "REQ_DEMO_SERVICE")
+    body, problem = await body_or_error(request, rid)
+    if problem:
+        return problem
+    event_type = body.get("event_type")
+    case_id = body.get("case_id")
+    allowed = {
+        "DEMO_002": {"CURRENT_SCOPE_EVIDENCE_SUBMITTED"},
+        "DEMO_003": {"SPECIALIST_ASSIGNED", "SPECIALIST_FOLLOWED_UP"},
+    }
+    if not isinstance(case_id, str) or event_type not in allowed.get(case_id, set()):
+        return error("SCHEMA_INVALID", "当前案例不支持此服务事件。", rid, 400)
+    key_text = body.get("idempotency_key")
+    if not isinstance(key_text, str) or len(key_text) < 8:
+        return error("SCHEMA_INVALID", "idempotency_key 至少需要 8 个字符。", rid, 400)
+    key = ("demo_service", case_id, key_text)
+    fingerprint = canonical(body)
+    if key in idempotency:
+        previous_fingerprint, previous = idempotency[key]
+        if previous_fingerprint != fingerprint:
+            return error("IDEMPOTENCY_CONFLICT", "同一幂等键不能对应不同请求。", rid, 409)
+        return JSONResponse(previous)
+    state = state_for(case_id, rid)
+    if state is None:
+        return error("VALIDATION_ERROR", "未找到案例事实。", rid, 400)
+    prior = state.get("demo_service_event")
+    if event_type == "CURRENT_SCOPE_EVIDENCE_SUBMITTED" and prior:
+        return error("INVALID_EVENT_TRANSITION", "当前商品材料已经收到。", rid, 409)
+    if event_type == "SPECIALIST_ASSIGNED" and prior:
+        return error("INVALID_EVENT_TRANSITION", "专人已经接手。", rid, 409)
+    if event_type == "SPECIALIST_FOLLOWED_UP" and prior != "SPECIALIST_ASSIGNED":
+        return error("INVALID_EVENT_TRANSITION", "请先确认专人接手。", rid, 409)
+    updated = clone(state)
+    if event_type == "CURRENT_SCOPE_EVIDENCE_SUBMITTED":
+        summary = "已收到当前商品的精华瓶口照片；赠品材料无需重传，品牌继续核验。"
+        updated.update({"case_status": "READY_FOR_BRAND", "consumer_input_required": False,
+                        "accountable_side": "BRAND", "evidence_status": "VALID",
+                        "demo_service_event": event_type})
+        updated["experience_gap_diagnosis"]["traceable_service_facts"].append({"fact_type": "EVIDENCE_SUBMITTED", "statement": "已模拟收到复颜精华瓶口近照。", "source_ids": ["DEMO_SERVICE_EVIDENCE_002"]})
+        next_update = "2026-05-07T12:00:00+08:00"
+        received = ["赠品面膜外盒照片", "复颜精华瓶口近照（模拟提交）"]
+    elif event_type == "SPECIALIST_ASSIGNED":
+        summary = "售后专员已接手使用不适反馈，将在 12:00 前主动联系；当前无需上传面部照片。"
+        updated.update({"case_status": "IN_FULFILLMENT", "consumer_input_required": False,
+                        "accountable_side": "BRAND", "demo_service_event": event_type,
+                        "demo_specialist": "售后专员", "demo_specialist_status": "已接手"})
+        next_update = "2026-05-07T12:00:00+08:00"
+        received = ["消费者的使用反馈"]
+    else:
+        summary = "售后专员已主动联系并记录反馈，后续仍由品牌跟进；不自动判断不适原因。"
+        updated.update({"case_status": "READY_FOR_BRAND", "accountable_side": "BRAND",
+                        "demo_service_event": event_type, "demo_specialist_status": "已反馈"})
+        next_update = "2026-05-07T14:00:00+08:00"
+        received = ["消费者的使用反馈", "专人沟通记录（模拟）"]
+    updated["service_progress_receipt"] = {
+        "receipt_id": f"DEMO_SERVICE_RECEIPT_{case_id}", "status": "ACTIVE",
+        "received_evidence": received, "brand_action": summary,
+        "latest_update_at": SERVICE_CLOCK, "next_update_by": next_update,
+        "consumer_action_required": False,
+        "recovery_if_missed": "如未按时更新，由品牌继续跟进并告知新的处理时间。",
+    }
+    updated["audit_trail"] = [*updated.get("audit_trail", []), {
+        "at": SERVICE_CLOCK, "actor": "SIMULATOR", "action": event_type,
+        "changed_fields": ["case_status", "accountable_side", "service_progress_receipt"],
+        "request_id": rid,
+    }]
+    states[case_id] = updated
+    response = {"data": {"accountability_state": updated, "event_summary": summary}, "error": None, "request_id": rid}
     idempotency[key] = (fingerprint, response)
     return JSONResponse(response)

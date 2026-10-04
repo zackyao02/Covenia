@@ -20,6 +20,8 @@ import type {
   RuntimeMetrics,
   CustomerState,
   PriorityState,
+  DemoServiceEventRequest,
+  DemoServiceEventResponse,
 } from "./api/contracts";
 import { demoCases } from "./demoData";
 
@@ -110,6 +112,12 @@ function analysisFor(input: AnalyzeCaseRequest): AnalyzeCaseResponse {
   const response = structuredClone(heroAnalysis);
   const caseInput = (input.case_input ?? sourceHeroInput) as CaseInput;
   response.extracted_journey.case_id = input.case_id;
+  response.extracted_journey.extracted_scope = {
+    order_id: caseInput.order.order_id,
+    fulfillment_item_id: caseInput.current_issue.fulfillment_item_id,
+    sku_id: caseInput.current_issue.sku_id,
+    issue_type: caseInput.current_issue.issue_type,
+  };
   response.accountability_state.case_id = input.case_id;
   response.accountability_state.current_scope = {
     order_id: caseInput.order.order_id,
@@ -130,7 +138,9 @@ function analysisFor(input: AnalyzeCaseRequest): AnalyzeCaseResponse {
 
   const firstEvidence = caseInput.evidence_images[0];
   const isGiftChallenge = input.challenge_mode === true && firstEvidence?.declared_view_type === "PACKAGE_CONTEXT";
-  const isBlurredChallenge = input.challenge_mode === true && firstEvidence?.declared_view_type === "ISSUE_DETAIL";
+  const isHumanReviewChallenge = input.challenge_mode === true && (
+    firstEvidence?.declared_view_type === "ISSUE_DETAIL" || (caseInput.current_issue.issue_type === "ADVERSE_REACTION" && !firstEvidence)
+  );
 
   if (isGiftChallenge) {
     response.extracted_journey = {
@@ -154,13 +164,13 @@ function analysisFor(input: AnalyzeCaseRequest): AnalyzeCaseResponse {
         },
       ],
       journey_understanding: {
-        consumer_intent: "说明赠品与正装是两个不同问题",
-        experience_expression: "消费者主动指出证据范围发生变化",
-        service_cause: "现有图片只覆盖赠品面膜外盒",
-        latent_need: "只补充当前粉底液泵头所需的证据",
+        consumer_intent: "核实精华瓶口破损，并弄清已经发过照片后还缺什么",
+        experience_expression: "消费者被要求整单重传，想知道只需补哪张图片",
+        service_cause: "现有图片没有覆盖精华瓶口破损处",
+        latent_need: "只补充当前精华瓶口所需的证据",
         cooperation_willingness: "STABLE",
-        action_impact: "可以请求当前范围缺失的泵头近照",
-        source_ids: [caseInput.conversation[0]?.message_id ?? "CHALLENGE_MESSAGE", firstEvidence.evidence_id],
+        action_impact: "可以请求当前范围缺失的精华瓶口照片",
+        source_ids: [caseInput.conversation[0]?.message_id ?? "CHALLENGE_MESSAGE", caseInput.conversation[caseInput.conversation.length - 1]?.message_id ?? "CHALLENGE_MESSAGE", firstEvidence.evidence_id],
       },
     } satisfies ExtractedJourney;
     response.accountability_state = {
@@ -177,12 +187,12 @@ function analysisFor(input: AnalyzeCaseRequest): AnalyzeCaseResponse {
     };
   }
 
-  if (isBlurredChallenge) {
+  if (isHumanReviewChallenge) {
     response.extracted_journey = {
       ...response.extracted_journey,
       case_id: input.case_id,
       promise_events: [],
-      image_observations: [
+      image_observations: firstEvidence ? [
         {
           evidence_id: firstEvidence.evidence_id,
           readability: "LOW",
@@ -197,15 +207,15 @@ function analysisFor(input: AnalyzeCaseRequest): AnalyzeCaseResponse {
           hygiene_risk_signal: "UNKNOWN",
           confidence: 0.41,
         },
-      ],
+      ] : [],
       journey_understanding: {
-        consumer_intent: "说明粉底液泵头无法使用",
-        experience_expression: "消费者已提交图片但图片未对焦",
-        service_cause: "当前图片不足以支持自动判断",
-        latent_need: "明确告诉消费者是否真的需要补充材料",
+        consumer_intent: "反馈使用防晒乳后泛红、刺痛，要求无需先发面部照片即可由专人跟进",
+        experience_expression: "消费者仍感不适，也不愿在聊天里上传面部照片",
+        service_cause: "涉及使用不适，不能只凭当前材料自动推断原因",
+        latent_need: "先由专人接手，说明后续安排，并尊重不上传面部照片的选择",
         cooperation_willingness: "STABLE",
-        action_impact: "应先由人工复核，避免无依据地重复索证",
-        source_ids: [caseInput.conversation[0]?.message_id ?? "CHALLENGE_MESSAGE", firstEvidence.evidence_id],
+        action_impact: "先转人工核实，不自动诊断，也不要求消费者重复描述",
+        source_ids: [caseInput.conversation[0]?.message_id ?? "CHALLENGE_MESSAGE", caseInput.conversation[caseInput.conversation.length - 1]?.message_id ?? "CHALLENGE_MESSAGE", ...(firstEvidence ? [firstEvidence.evidence_id] : [])],
       },
     } satisfies ExtractedJourney;
     response.accountability_state = {
@@ -219,6 +229,19 @@ function analysisFor(input: AnalyzeCaseRequest): AnalyzeCaseResponse {
       open_obligation: null,
       service_progress_receipt: null,
       experience_risk: "MEDIUM",
+      experience_gap_diagnosis: {
+        consumer_expression: "消费者反馈使用防晒乳后泛红、刺痛，要求无需上传面部照片即可由专人跟进。",
+        traceable_service_facts: [{
+          fact_type: "OTHER",
+          statement: "当前记录是消费者的使用反馈，尚未由人工核实。",
+          source_ids: [caseInput.conversation[0]?.message_id ?? "DEMO_AUG_MSG_003_1"],
+        }],
+        deterioration_cause: "涉及身体不适，自动判断可能造成误导。",
+        latent_need: "无需先上传面部照片，也能获得谨慎回应和人工跟进。",
+        responsibility_judgment: { consumer_input_complete: false, accountable_side: "UNKNOWN" },
+        action_impacts: ["ROUTE_TO_HUMAN"],
+        reply_strategy: "先回应消费者关切，记录反馈并转人工核实，不自动判断原因。",
+      },
     };
   }
 
@@ -267,6 +290,7 @@ function decisionFor(state: AccountabilityState, input: EvaluateActionRequest): 
     reason: template.reason,
     rule_id: ruleId,
     rule_priority: priority,
+    resolution_path: structuredClone(template.resolution_path),
     fact_trace: { ...base.fact_trace, suppressed_rule_ids: suppressed },
   } satisfies DecisionResult);
 
@@ -275,15 +299,83 @@ function decisionFor(state: AccountabilityState, input: EvaluateActionRequest): 
   const p0Matches = action === "CLOSE_CASE" && state.prohibited_actions.includes("CLOSE_BEFORE_RESOLUTION");
 
   if (p0Matches) return apply(interveneDecision, "P0_PROHIBITED_ACTION", 400, "INTERVENE", h1Matches ? ["H1"] : []);
-  if (h1Matches) return apply(reviewDecision, "H1", 350, "HUMAN_REVIEW", e1Matches ? ["E1"] : []);
+  if (h1Matches) {
+    const result = apply(reviewDecision, "H1", 350, "HUMAN_REVIEW", e1Matches ? ["E1"] : []);
+    if (state.current_scope.issue_type === "ADVERSE_REACTION") {
+      result.reason = "涉及消费者使用不适，需人工核实相关信息；系统不自动判断原因。";
+      result.resolution_path.evidence_basis = ["消费者反馈使用防晒乳后脸部泛红", "当前没有可支持自动判断的完整依据"];
+      result.resolution_path.consumer_reply_draft = "已记录您使用后泛红、刺痛的反馈，不用先上传面部照片。我会交给专人核实；在核实前请先暂停使用，如不适明显或持续，请及时咨询医生。";
+      result.resolution_path.task_prefill = {
+        ...result.resolution_path.task_prefill,
+        sku_id: state.current_scope.sku_id,
+        affected_component: "UNKNOWN",
+        summary: "人工核实消费者使用防晒乳后脸部泛红的反馈；不自动判断原因。",
+      };
+    }
+    return result;
+  }
   if (e1Matches) return apply(interveneDecision, "E1", 300, "INTERVENE");
   if (action === "ASK_EVIDENCE" && evidenceStatus === "MISMATCHED") return apply(allowDecision, "E2", 100, "ALLOW");
   return apply(allowDecision, "E0_NO_RULE_MATCHED", 0, "ALLOW");
 }
 
 export const mockApi = {
+  async pushDemoServiceEvent(input: DemoServiceEventRequest): Promise<ApiResult<DemoServiceEventResponse>> {
+    await wait();
+    const state = states.get(input.case_id);
+    if (!state) return fail("VALIDATION_ERROR", "请先打开当前会话。", "REQ_DEMO_SERVICE", false);
+    const next = structuredClone(state);
+    let summary: string;
+    let nextUpdate: string;
+    if (input.case_id === "DEMO_002" && input.event_type === "CURRENT_SCOPE_EVIDENCE_SUBMITTED" && !next.demo_service_event) {
+      summary = "已收到当前商品的精华瓶口照片；赠品材料无需重传，品牌继续核验。";
+      nextUpdate = "2026-05-07T12:00:00+08:00";
+      next.evidence_status = "VALID";
+      next.consumer_input_required = false;
+      next.accountable_side = "BRAND";
+      next.case_status = "READY_FOR_BRAND";
+    } else if (input.case_id === "DEMO_003" && input.event_type === "SPECIALIST_ASSIGNED" && !next.demo_service_event) {
+      summary = "售后专员已接手使用不适反馈，将在 12:00 前主动联系；当前无需上传面部照片。";
+      nextUpdate = "2026-05-07T12:00:00+08:00";
+      next.accountable_side = "BRAND";
+      next.case_status = "IN_FULFILLMENT";
+      next.demo_specialist = "售后专员";
+      next.demo_specialist_status = "已接手";
+    } else if (input.case_id === "DEMO_003" && input.event_type === "SPECIALIST_FOLLOWED_UP" && next.demo_service_event === "SPECIALIST_ASSIGNED") {
+      summary = "售后专员已主动联系并记录反馈，后续仍由品牌跟进；不自动判断不适原因。";
+      nextUpdate = "2026-05-07T14:00:00+08:00";
+      next.case_status = "READY_FOR_BRAND";
+      next.demo_specialist_status = "已反馈";
+    } else {
+      return fail("INVALID_EVENT_TRANSITION", "当前服务事件不能重复或跳步。", "REQ_DEMO_SERVICE", false);
+    }
+    next.demo_service_event = input.event_type;
+    next.service_progress_receipt = {
+      receipt_id: `DEMO_SERVICE_RECEIPT_${input.case_id}`,
+      status: "ACTIVE",
+      received_evidence: input.case_id === "DEMO_002" ? ["赠品面膜外盒照片", "复颜精华瓶口近照（模拟提交）"] : ["消费者的使用反馈"],
+      brand_action: summary,
+      latest_update_at: serviceClock,
+      next_update_by: nextUpdate,
+      consumer_action_required: false,
+      recovery_if_missed: "如未按时更新，由品牌继续跟进并告知新的处理时间。",
+    };
+    next.audit_trail = [...next.audit_trail, { at: serviceClock, actor: "SIMULATOR", action: input.event_type, changed_fields: ["case_status", "accountable_side", "service_progress_receipt"], request_id: `REQ_DEMO_SERVICE_${Date.now()}` }];
+    states.set(input.case_id, structuredClone(next));
+    return ok({ accountability_state: next, event_summary: summary }, "REQ_DEMO_SERVICE");
+  },
+  async resetDemoSession(caseId: string): Promise<ApiResult<{ case_id: string; reset: true }>> {
+    states.delete(caseId);
+    decisions.delete(caseId);
+    shipmentStages.delete(caseId);
+    serviceClock = "2026-05-07T09:42:00+08:00";
+    return ok({ case_id: caseId, reset: true }, "REQ_DEMO_RESET");
+  },
   async getCustomerState(): Promise<ApiResult<CustomerState>> {
-    return fail("MODEL_UNAVAILABLE", "演示数据不提供实时沟通判断，请连接本地服务查看。", "REQ_CUSTOMER", false);
+    return fail("MODEL_UNAVAILABLE", "当前运行模式未启用实时沟通判断，请连接服务后重试。", "REQ_CUSTOMER", false);
+  },
+  async refreshDemoCustomerState(): Promise<ApiResult<CustomerState>> {
+    return fail("MODEL_UNAVAILABLE", "当前运行模式未启用实时沟通判断，请连接服务后重试。", "REQ_DEMO_CUSTOMER", false);
   },
   async getPriority(): Promise<ApiResult<PriorityState[]>> {
     const rows: PriorityState[] = [];
@@ -332,7 +424,7 @@ export const mockApi = {
   ): Promise<ApiResult<EvaluateActionResponse>> {
     await wait();
     if (input.draft_reply !== undefined) {
-      return fail("MODEL_UNAVAILABLE", "草稿检查需要本地服务。演示数据不能确认这条回复是否可发送。", "REQ_EVALUATE", false);
+      return fail("MODEL_UNAVAILABLE", "当前运行模式无法确认这条回复是否可发送，请连接服务后重试。", "REQ_EVALUATE", false);
     }
     if (mockMode === "state_conflict") {
       return fail("INVALID_EVENT_TRANSITION", "责任状态已变化，请刷新后重试。", "REQ_EVALUATE");
@@ -360,9 +452,13 @@ export const mockApi = {
     const deadline = existingState?.active_commitments[0]?.deadline
       ?? response.accountability_state.active_commitments[0]?.deadline
       ?? "2026-05-07T10:27:37+08:00";
-    const nextCheckAt = input.human_edits.next_check_at ?? "2026-05-07T10:30:00+08:00";
-    if (!Number.isFinite(Date.parse(nextCheckAt)) || Date.parse(nextCheckAt) <= Date.parse(serviceClock)) {
+    const nextCheckAt = input.human_edits.next_check_at ?? "2026-05-07T10:10:00+08:00";
+    const latestRecordedAt = existingState?.service_progress_receipt?.latest_update_at ?? serviceClock;
+    if (!Number.isFinite(Date.parse(nextCheckAt)) || Date.parse(nextCheckAt) <= Math.max(Date.parse(serviceClock), Date.parse(latestRecordedAt))) {
       return fail("VALIDATION_ERROR", "下次更新时间须晚于当前服务时间。", "REQ_APPROVE", false);
+    }
+    if ((!existingState?.open_obligation || existingState.open_obligation.milestone === "AWAITING_CARRIER_PICKUP") && Date.parse(serviceClock) < Date.parse(deadline) && Date.parse(nextCheckAt) >= Date.parse(deadline)) {
+      return fail("VALIDATION_ERROR", "正常跟进时间必须早于原承诺截止；请改成截止前的时间。", "REQ_APPROVE", false);
     }
     response.accountability_state.case_id = input.case_id;
     response.accountability_state.case_status = "IN_FULFILLMENT";
@@ -399,6 +495,12 @@ export const mockApi = {
         input.human_edits.next_check_at ?? nextCheckAt;
       response.approved_resolution.compiled_service_responsibility.recovery_if_missed =
         input.human_edits.recovery_if_missed ?? response.approved_resolution.compiled_service_responsibility.recovery_if_missed;
+    }
+    if (existingState?.open_obligation) {
+      if (existingState.open_obligation.status === "COMPLETED") return fail("INVALID_EVENT_TRANSITION", "履约已完成，不能重新激活换货责任。", "REQ_APPROVE", false);
+      response.accountability_state = structuredClone(existingState);
+      response.accountability_state.open_obligation!.next_check_at = nextCheckAt;
+      if (response.accountability_state.service_progress_receipt) response.accountability_state.service_progress_receipt.next_update_by = nextCheckAt;
     }
     const auditEntry = {
       at: serviceClock,

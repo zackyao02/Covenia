@@ -15,6 +15,11 @@ export interface DemoCase {
   input: CaseInput;
   preparedAction: PreparedAction;
   composerText: string;
+  productImage?: string;
+  productImageIsSynthetic?: boolean;
+  productShortLabel: string;
+  productPrice: string;
+  evidenceVariant?: "hero" | "gift";
 }
 
 const heroScope = {
@@ -24,66 +29,154 @@ const heroScope = {
   issue_type: heroInput.current_issue.issue_type,
 };
 
+function scopeFor(input: CaseInput) {
+  return {
+    order_id: input.order.order_id,
+    fulfillment_item_id: input.current_issue.fulfillment_item_id,
+    sku_id: input.current_issue.sku_id,
+    issue_type: input.current_issue.issue_type,
+  };
+}
+
+function withOrderId(input: CaseInput, orderId: string, logisticsNumber: string): CaseInput {
+  const serialized = JSON.stringify(input)
+    .split(heroInput.order.order_id).join(orderId)
+    .split(heroInput.order.original_logistics_number).join(logisticsNumber);
+  return JSON.parse(serialized) as CaseInput;
+}
+
 const giftCase: CaseInput = {
-  ...heroInput,
+  ...withOrderId(heroInput, "6920185815517983397", "773478190943156"),
   case_id: "DEMO_002",
   evaluation_time: "2026-05-05T11:00:00+08:00",
   data_provenance: {
     ...heroInput.data_provenance,
-    augmentation_notes: ["赠品损坏图片为团队构建的范围变化测试"],
+    source_session_id: "TEAM_SYNTH_002",
+    augmentation_notes: ["消费者、订单与对话为团队构建的独立合成案例", "赠品面膜照片用于展示证据与当前问题不匹配的判断"],
   },
   conversation: [
     {
-      message_id: "DEMO_AUG_MSG_002",
+      message_id: "DEMO_AUG_MSG_002_1",
+      timestamp: "2026-05-05T10:41:00+08:00",
+      speaker: "CONSUMER",
+      text: "刚拆开复颜精华，瓶口有一道裂痕。我怕漏出来，能帮我处理吗？",
+      source_kind: "DEMO_AUGMENTATION",
+    },
+    {
+      message_id: "DEMO_AUG_MSG_002_2",
+      timestamp: "2026-05-05T10:48:00+08:00",
+      speaker: "AGENT",
+      text: "麻烦发一张瓶口的照片，我帮您核实。",
+      source_kind: "DEMO_AUGMENTATION",
+    },
+    {
+      message_id: "DEMO_AUG_MSG_002_3",
+      timestamp: "2026-05-05T10:55:00+08:00",
+      speaker: "CONSUMER",
+      text: "照片发过去了，刚从相册里选的。",
+      source_kind: "DEMO_AUGMENTATION",
+    },
+    {
+      message_id: "DEMO_AUG_MSG_002_4",
+      timestamp: "2026-05-05T10:57:00+08:00",
+      speaker: "AGENT",
+      text: "这张好像对不上。您把订单和照片都重新发一遍吧。",
+      source_kind: "DEMO_AUGMENTATION",
+    },
+    {
+      message_id: "DEMO_AUG_MSG_002_5",
       timestamp: "2026-05-05T10:58:00+08:00",
       speaker: "CONSUMER",
-      text: "刚才发的是赠品面膜外盒压坏的照片，粉底液泵头也按不出来，这是另一件商品。",
+      text: "我刚刚发过了。到底缺哪张？别让我整单从头再传。",
       source_kind: "DEMO_AUGMENTATION",
     },
   ],
+  order: {
+    ...withOrderId(heroInput, "6920185815517983397", "773478190943156").order,
+    items: [
+      {
+        fulfillment_item_id: "6920185815517983397-EL-RS30",
+        sku_id: "EL-RS30",
+        product_name: "复颜修护精华 30ml",
+        item_role: "PRIMARY",
+      },
+      {
+        fulfillment_item_id: "6920185815517983397-GIFT-01",
+        sku_id: "GIFT-B5-MASK-2",
+        product_name: "B5面膜体验装 2片",
+        item_role: "GIFT",
+      },
+    ],
+  },
+  current_issue: {
+    fulfillment_item_id: "6920185815517983397-EL-RS30",
+    sku_id: "EL-RS30",
+    issue_type: "PACKAGE_DAMAGE",
+    affected_component: "BOTTLE",
+  },
   service_tickets: [],
   evidence_images: [
     {
-      evidence_id: "S00001_GIFT_IMG",
+      evidence_id: "TEAM_SYNTH_002_GIFT_IMG",
       file_name: "s00001-gift-evidence.jpg",
       submitted_at: "2026-05-05T10:55:00+08:00",
       declared_view_type: "PACKAGE_CONTEXT",
       source_kind: "TEAM_SYNTHETIC_AUGMENTATION",
-      source_message_id: "DEMO_AUG_IMG_GIFT",
+      source_message_id: "DEMO_AUG_MSG_002_3",
       competition_reference_path: null,
     },
   ],
 };
 
 const blurredCase: CaseInput = {
-  ...heroInput,
+  ...withOrderId(heroInput, "6920185815517983398", "773478190943157"),
   case_id: "DEMO_003",
   evaluation_time: "2026-05-05T11:00:00+08:00",
   data_provenance: {
     ...heroInput.data_provenance,
-    augmentation_notes: ["模糊泵头图片为团队构建的不确定性测试"],
+    source_session_id: "TEAM_SYNTH_003",
+    augmentation_notes: ["消费者、订单与对话为团队构建的独立合成案例", "未构造或展示健康图片；使用不适由人工谨慎核实"],
   },
   conversation: [
     {
-      message_id: "DEMO_AUG_MSG_003",
+      message_id: "DEMO_AUG_MSG_003_1",
+      timestamp: "2026-05-05T10:14:00+08:00",
+      speaker: "CONSUMER",
+      text: "昨天用了这支防晒，脸有点泛红、刺痛。是产品的问题吗？",
+      source_kind: "DEMO_AUGMENTATION",
+    },
+    {
+      message_id: "DEMO_AUG_MSG_003_2",
+      timestamp: "2026-05-05T10:21:00+08:00",
+      speaker: "AGENT",
+      text: "方便上传一张面部照片吗？这样我们好判断。",
+      source_kind: "DEMO_AUGMENTATION",
+    },
+    {
+      message_id: "DEMO_AUG_MSG_003_3",
       timestamp: "2026-05-05T10:58:00+08:00",
       speaker: "CONSUMER",
-      text: "粉底液泵头按不出来，我拍了照片，但手机没有对上焦。",
+      text: "现在还红着。我不想在聊天里发脸部照片，能先让专人跟进吗？",
       source_kind: "DEMO_AUGMENTATION",
     },
   ],
+  order: {
+    ...withOrderId(heroInput, "6920185815517983398", "773478190943157").order,
+    items: [{
+      fulfillment_item_id: "6920185815517983398-EL-SUN40",
+      sku_id: "EL-SUN40",
+      product_name: "清爽防晒乳 SPF50+ 40ml",
+      item_role: "PRIMARY",
+    }],
+  },
+  current_issue: {
+    fulfillment_item_id: "6920185815517983398-EL-SUN40",
+    sku_id: "EL-SUN40",
+    issue_type: "ADVERSE_REACTION",
+    affected_component: "UNKNOWN",
+  },
   service_tickets: [],
-  evidence_images: [
-    {
-      evidence_id: "S00001_BLURRED_IMG",
-      file_name: "s00001-blurred-pump.jpg",
-      submitted_at: "2026-05-05T10:59:00+08:00",
-      declared_view_type: "ISSUE_DETAIL",
-      source_kind: "TEAM_SYNTHETIC_AUGMENTATION",
-      source_message_id: "DEMO_AUG_IMG_BLURRED",
-      competition_reference_path: null,
-    },
-  ],
+  evidence_images: [],
 };
 
 export const demoCases: DemoCase[] = [
@@ -95,7 +188,7 @@ export const demoCases: DemoCase[] = [
     time: "09:32",
     unread: 1,
     expectedDecision: "INTERVENE",
-    sourceLabel: "主案例",
+    sourceLabel: "换货跟进",
     input: heroInput,
     preparedAction: {
       action_id: "ACT_001",
@@ -103,41 +196,54 @@ export const demoCases: DemoCase[] = [
       requested_scope: heroScope,
       requires_human_approval: false,
     },
-    composerText: "您之前提交的粉底液泵头损坏照片已经收到，无需重复上传。我先核查换货进度，并会主动向您更新。",
+    composerText: "麻烦您再上传一次泵头破损照片，我收到后才能继续处理。",
+    productImage: "/evidence/s00001-product-overview.jpg",
+    productShortLabel: "粉底",
+    productPrice: "¥329.00",
+    evidenceVariant: "hero",
   },
   {
     id: "DEMO_002",
-    shortId: "范围变化",
-    title: "赠品与正装",
-    preview: "这是另一件商品",
+    shortId: "SYN-02",
+    title: "周婉晴",
+    preview: "我发过照片，还要整单重传？",
     time: "10:58",
     expectedDecision: "ALLOW",
-    sourceLabel: "挑战案例",
+    sourceLabel: "证据范围不符",
     input: giftCase,
     preparedAction: {
       action_id: "ACT_002",
       action_type: "ASK_EVIDENCE",
-      requested_scope: heroScope,
+      requested_scope: scopeFor(giftCase),
       requires_human_approval: false,
     },
-    composerText: "请补充一张正装粉底液泵头的近照。",
+    composerText: "照片收到了。现有照片拍的是赠品面膜，不用重发订单；麻烦只补充一张精华瓶口裂痕的近照，我就按这件商品继续核实。",
+    productImage: "/evidence/demo-serum-product.png",
+    productImageIsSynthetic: true,
+    productPrice: "订单商品",
+    productShortLabel: "精华",
+    evidenceVariant: "gift",
   },
   {
     id: "DEMO_003",
-    shortId: "图片模糊",
-    title: "需要人工判断",
-    preview: "手机没有对上焦",
+    shortId: "SYN-03",
+    title: "陈语桐",
+    preview: "脸还在发红，必须先拍照吗？",
     time: "10:58",
     expectedDecision: "HUMAN_REVIEW",
-    sourceLabel: "挑战案例",
+    sourceLabel: "使用不适待复核",
     input: blurredCase,
     preparedAction: {
       action_id: "ACT_003",
       action_type: "ASK_EVIDENCE",
-      requested_scope: heroScope,
+      requested_scope: scopeFor(blurredCase),
       requires_human_approval: false,
     },
-    composerText: "麻烦重新拍一张清晰的泵头照片。",
+    composerText: "已记录您使用后泛红、刺痛的反馈，不用先上传面部照片。我会交给专人核实；在核实前请先暂停使用，如不适明显或持续，请及时咨询医生。",
+    productImage: "/evidence/demo-sunscreen-product.png",
+    productImageIsSynthetic: true,
+    productPrice: "订单商品",
+    productShortLabel: "防晒",
   },
 ];
 
