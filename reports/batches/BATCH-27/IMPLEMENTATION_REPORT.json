@@ -4,7 +4,7 @@
   "status": "IMPLEMENTED (implementation evidence only; not an acceptance verdict)",
   "disclaimer": "本批由辅助调度器实现，非独立实现方；验收须由他方完成。",
   "produced_by": "auxiliary dispatcher implementation executor (辅助调度器实现执行者)",
-  "produced_at": "2026-10-05T14:20:32.000153+00:00",
+  "produced_at": "2026-10-05T14:21:10.358491+00:00",
   "branch": "codex/covenia-batch-27-aux",
   "base_integration_sha": "f259e9b7101172be144f70a46f495593a07754d0",
   "code_commit": "cb7c30cbcdb9cf91b42daf165a9f5f2d506d218b",
@@ -57,7 +57,7 @@
     {
       "path": "reports/batches/BATCH-27/preflight.json",
       "bytes": 11482,
-      "sha256_worktree_lf_bytes": "CE17DD2D705D47952F322232447972383417812E501799EE17BCD2226E06B51B"
+      "sha256_worktree_lf_bytes": "B38FC7BF1E2A3AFB5E476CA601F520A284D7E11239351EEDD21044B125CFB40C"
     },
     {
       "path": "reports/batches/BATCH-27/preflight-variants.json",
@@ -259,7 +259,8 @@
     "The verified-journey seam is process-owned and in memory: after a restart, analyze must run again before evaluate. The persisted ledger alone cannot supply a verified extraction and this root does not invent one.",
     "cache_mode other than 'disabled' has no locked ExtractionStore adapter yet, so the composition root records that as a notice and calls the provider directly; it never serves a cached candidate.",
     "There is no authentication or authorization boundary (competition build); the listener is loopback-only and must not be exposed beyond the local host.",
-    "runtime/covenia.sqlite3 and runtime/logs/requests.jsonl appear as untracked files after a live/preflight run; they are runtime artifacts and are intentionally not committed (.gitignore does not cover the repository-root runtime/ directory)."
+    "runtime/covenia.sqlite3 and runtime/logs/requests.jsonl appear as untracked files after a live/preflight run; they are runtime artifacts and are intentionally not committed (.gitignore does not cover the repository-root runtime/ directory).",
+    "reports/batches/BATCH-27/preflight.json is produced by the acceptance command itself, so every run rewrites its generated_at field. A consecutive re-run on this machine differed only in that field (1 insertion / 1 deletion in git diff); route-inventory.json carries no timestamp and is byte-identical across runs. A verifier who re-runs the preflight should therefore expect preflight.json to show as modified, not as a content change."
   ],
   "demo_reset_method": "Offline only: stop the process, move runtime/covenia.sqlite3 aside with a timestamped name (or point COVENIA_SQLITE_PATH at a fresh isolated directory), and restart; covenia_b.storage.admin provides local backup/restore. No reset, health or query HTTP endpoint exists, and the route table proves it.",
   "runbook": {

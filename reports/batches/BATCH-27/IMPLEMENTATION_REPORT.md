@@ -118,6 +118,7 @@ No PASS/FAIL is asserted here. Every criterion row above lists implementation ev
 - cache_mode other than 'disabled' has no locked ExtractionStore adapter yet, so the composition root records that as a notice and calls the provider directly; it never serves a cached candidate.
 - There is no authentication or authorization boundary (competition build); the listener is loopback-only and must not be exposed beyond the local host.
 - runtime/covenia.sqlite3 and runtime/logs/requests.jsonl appear as untracked files after a live/preflight run; they are runtime artifacts and are intentionally not committed (.gitignore does not cover the repository-root runtime/ directory).
+- reports/batches/BATCH-27/preflight.json is produced by the acceptance command itself, so every run rewrites its generated_at field. A consecutive re-run on this machine differed only in that field (1 insertion / 1 deletion in git diff); route-inventory.json carries no timestamp and is byte-identical across runs. A verifier who re-runs the preflight should therefore expect preflight.json to show as modified, not as a content change.
 
 ## Local runbook and demo reset
 
