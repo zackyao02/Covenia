@@ -1,0 +1,54 @@
+{
+  "report_version": "1.0",
+  "batch_id": "BATCH-21",
+  "title": "analyze HTTP 接口",
+  "status": "BLOCKED",
+  "base_integration_sha": "5378f46f37e3323ae4e46548f82a92d72432289a",
+  "branch": "codex/covenia-batch-21",
+  "summary": "Mandatory isolated-venv preflight could not start because no CPython interpreter is installed or discoverable. No router, tests, dependency changes, or acceptance claim were made.",
+  "changed_files": [
+    "reports/batches/BATCH-21/analyze-http-examples.redacted.json",
+    "reports/batches/BATCH-21/IMPLEMENTATION_REPORT.json",
+    "reports/batches/BATCH-21/IMPLEMENTATION_REPORT.md",
+    "reports/batches/BATCH-21/commands.json",
+    "reports/batches/BATCH-21/environment.json",
+    "reports/batches/BATCH-21/pip-check.txt"
+  ],
+  "implementation_evidence": {
+    "tests_run": [],
+    "tests_passed": [],
+    "tests_failed": [],
+    "acceptance_results": [
+      {
+        "name": "isolated venv preflight",
+        "result": "BLOCKED",
+        "evidence": "reports/batches/BATCH-21/environment.json"
+      },
+      {
+        "name": "all remaining acceptance commands",
+        "result": "NOT_RUN",
+        "reason": "No RUN_DIR/venv interpreter exists."
+      }
+    ]
+  },
+  "scope_controls": {
+    "main_modified": false,
+    "batches_started": ["BATCH-21"],
+    "router_or_tests_implemented": false,
+    "requirements_dev_lock_modified": false,
+    "verification_report_written": false,
+    "verification_evidence_written": false
+  },
+  "remaining_risks": [
+    "The HTTP route is unimplemented and untested.",
+    "No dependency health, schema contract, ASGI, timeout, or repeated-analysis behavior can be claimed until a CPython 3.13 interpreter is supplied."
+  ],
+  "blockers": [
+    "`py -3.13 -m venv venv` returned `No installed Python found!`.",
+    "No discoverable `python`, `python3`, or `py` executable was found; the Batch contract forbids substituting a global interpreter or another Batch venv."
+  ],
+  "handoff": [
+    "Install or make CPython 3.13 discoverable, then create a new RUN_DIR/venv and rerun the full prescribed preflight before implementing.",
+    "Do not treat this report-only commit as an implementation or independent verification result."
+  ]
+}

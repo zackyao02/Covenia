@@ -1,0 +1,23 @@
+{
+  "batch_id": "BATCH-21",
+  "status": "BLOCKED",
+  "commands": [
+    {
+      "command": "py -3.13 -m venv venv",
+      "exit_status": 1,
+      "stdout": "",
+      "stderr": "No installed Python found!",
+      "result": "BLOCKED"
+    },
+    {
+      "command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
+      "result": "NOT_RUN",
+      "reason": "The required venv does not exist because no CPython interpreter was available."
+    },
+    {
+      "command": "acceptance commands requiring <RUN_DIR>/venv/Scripts/python.exe",
+      "result": "NOT_RUN",
+      "reason": "No isolated interpreter exists; no global interpreter or another batch's venv was used."
+    }
+  ]
+}

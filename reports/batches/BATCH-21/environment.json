@@ -1,0 +1,17 @@
+{
+  "batch_id": "BATCH-21",
+  "run_dir": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w20\\w21",
+  "run_dir_length": 46,
+  "required_venv": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w20\\w21\\venv",
+  "status": "BLOCKED",
+  "preflight": {
+    "requested_command": "py -3.13 -m venv venv",
+    "result": "No installed Python found!",
+    "venv_created": false,
+    "venv_longest_file_path": null,
+    "venv_longest_file_path_length": null,
+    "environment_acceptable": false
+  },
+  "discovered_interpreters": [],
+  "reason": "No CPython interpreter is available to create the required isolated venv."
+}

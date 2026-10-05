@@ -1,0 +1,6 @@
+{
+  "batch_id": "BATCH-21",
+  "status": "NOT_GENERATED",
+  "reason": "No HTTP route or ASGI test was implemented because the mandatory isolated Python environment could not be created.",
+  "contains_secrets": false
+}
