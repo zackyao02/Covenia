@@ -1,0 +1,110 @@
+{
+  "report_version": "1.0",
+  "batch_id": "BATCH-21",
+  "result": "PASS",
+  "verdict": "PASS",
+  "verifier": "审查方（独立验收；实现方为辅助调度器，未参与本验收）",
+  "reviewed_sha": "d474a4564adbe4a37ccbf177c7bb14ca0aff7968",
+  "repair_commit": "69ba7d9a22f3079104ece8e73595f6de28e92a46",
+  "report_commit": "d474a4564adbe4a37ccbf177c7bb14ca0aff7968",
+  "integration_baseline": "5378f46f37e3323ae4e46548f82a92d72432289a",
+  "verified_at": "2026-10-05T22:05:30",
+  "independent_context": true,
+  "verifier_run_dir": "C:/a21",
+  "replay": {
+    "chain": [
+      "04f80a7",
+      "6d1f511",
+      "5e2a017",
+      "5250635",
+      "59e881b"
+    ],
+    "onto": "5378f46",
+    "conflicts": 0,
+    "whole_chain_required": true,
+    "note": "按交接包要求重放整条 5 提交链；单挑修复提交会因 api/test_analyze.py 由 e6bded3 新增而冲突",
+    "resulting_head": "59e881bc1a1b",
+    "isolation": "审查方自建 RUN_DIR 与 venv，未复用实现方 C:/cv21r"
+  },
+  "acceptance_criteria_read_verbatim": [
+    "仅 case_id 即可装载数据；所有输出符合正式 Schema，返回中不含秘密。",
+    "绕过 Challenge 提交原始覆盖不会偷偷生效，行为精确符合契约。",
+    "测试明确区分传输替身测试与尚未运行的真实模型。",
+    "按5.5使用本批绝对隔离venv解释器；新增第三方依赖只增不改、精确钉版本并提交锁文件差异/原因/hash证据；交付前同解释器 pip check 退出0。环境证据缺失或冲突不得PASS。"
+  ],
+  "commands_run": [
+    {
+      "command": "pytest backend/tests/api/test_analyze.py -q",
+      "result": "7 passed in 0.91s",
+      "exit_code": 0
+    },
+    {
+      "command": "tools/contracts/check_contracts.py --strict",
+      "result": "14 schemas / 18 vectors / strict true",
+      "exit_code": 0
+    },
+    {
+      "command": "-m pip check",
+      "result": "No broken requirements found.",
+      "exit_code": 0
+    },
+    {
+      "command": "git diff --check; git status --short",
+      "result": "干净"
+    },
+    {
+      "command": "checks/anti_shortcut_scan.py --git C:/a21/v HEAD backend/src/covenia_b/api/analyze.py",
+      "result": "通过：三项判据均无命中"
+    }
+  ],
+  "repair_items_verified": [
+    {
+      "item": "HTTP 边界校验 result.to_contract() 载荷",
+      "evidence": "api/analyze.py:25 RESPONSE_SCHEMA_NAME=analyze-case-response.schema.json；:76-77 data=result.to_contract(); validate_contract_payload(RESPONSE_SCHEMA_NAME, data)；且该名与 AnalyzeCaseResponse.SCHEMA_NAME 逐字一致",
+      "pass": true
+    },
+    {
+      "item": "ContractValidationError 落入既有安全 INTERNAL_ERROR envelope",
+      "evidence": "api/analyze.py:95-96 注释说明其继承 ValueError 故落入既有安全路径；:130 \"INTERNAL_ERROR\": 500；:103 retryable=False；INTERNAL_ERROR 经核实确在冻结 envelope 的 error.code 枚举内（8 个码之一）",
+      "pass": true
+    },
+    {
+      "item": "新增负向回归测试",
+      "evidence": "test_schema_invalid_service_response_becomes_safe_internal_error：含**对照控制**（先证明校验器接受合法载荷并拒绝非法载荷，注释明言 so this test cannot pass vacuously），再断言 500 / data:null / code=INTERNAL_ERROR / retryable=False / request_id 一致 / 不泄漏 transport_double",
+      "pass": true
+    }
+  ],
+  "criteria_coverage_by_supplied_tests": {
+    "标准1": "test_case_id_only_is_forwarded_with_success_envelope_and_request_id；test_schema_negative_cases_are_enveloped_before_service_execution",
+    "标准2": "test_case_input_requires_explicit_challenge_mode；test_repeated_analysis_is_delegated_without_transport_state_override",
+    "标准3": "test_model_failures_have_safe_distinct_transport_results；test_timeout_is_bounded_and_returns_retryable_envelope"
+  },
+  "lock_file": {
+    "raw_blob_sha256": "602C268B684D60E2D1B8BBFC6820663A622EB24093144A87C111F43D3C06FDAE",
+    "implementer_claim": "602c268b684d60e2d1b8bbfc6820663a622eb24093144a87c111f43d3c06fdae"
+  },
+  "artifact_hashes": {
+    "method": "SHA-256 over raw bytes streamed from git show <sha>:<path>",
+    "backend/src/covenia_b/api/analyze.py": "C8BE83123F190C664CA558A194BBBE7EF3155474481B99ECD2F897FB8463A55B",
+    "backend/tests/api/test_analyze.py": "4715DE4FC93FA6B96D7589C8A9A3F3774869430C84F7B034FD61D6372B8D7532"
+  },
+  "non_blocking_observations": [
+    {
+      "item": "修复采用的是\"既有安全路径\"而非新增错误码",
+      "ruling": "正确。INTERNAL_ERROR 已在冻结枚举内，未新增码、未改契约；符合最小修复原则。"
+    }
+  ],
+  "what_could_not_be_independently_reproduced": [
+    "审查方未自建 ASGI 端到端探针；动态证据来自运行实现方自带的 7 个测试，\"7 passed\" 由审查方亲自复跑确认。",
+    "负向测试的断言内容由审查方逐行阅读确认（含防空过的对照控制），但未另行构造等价探针。",
+    "锁文件差异除 pip check 外未独立复算；哈希已按 blob 口径复算。"
+  ],
+  "findings": [],
+  "minimal_fix_list": [],
+  "blockers": [],
+  "code_modified": false,
+  "next_batch_started": false,
+  "integration_performed": false,
+  "pushed": false,
+  "verifier_scope_declaration": "审查方仅写本报告与其证据；未修改任何实现文件、未集成、未推送。因 Codex 额度耗尽，本验收由审查角色执行而非全新任务线程；该偏离在此显式记录，并请另行安排独立复核本验收本身。"
+}
