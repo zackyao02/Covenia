@@ -1,0 +1,38 @@
+{
+  "report_version": "1.0",
+  "batch_id": "BATCH-20",
+  "result": "PASS",
+  "commit_verified": true,
+  "reviewed_commits": {
+    "implementation_evidence_commit": "550ee722527d63a2d20230129ef912e86bda3792",
+    "implementation_code_commit": "4140835c03a0b80d24b1220c92d62f061feda109",
+    "integration_baseline": "16ee07cb4553ddaad74d0dc54323867c55095923"
+  },
+  "verification_worktree": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w20v1",
+  "independence_declaration": "Created a new verifier branch/worktree from the supplied immutable evidence commit. No implementation worktree or implementation-thread state was modified or used as verification evidence; only the supplied commits, source blobs, and a verifier-authored probe were reviewed.",
+  "commands_run": "reports/batches/BATCH-20/verification-evidence/command-results.json",
+  "passed_checks": [
+    "Commit ancestry is exact: base -> code -> implementation evidence; git diff --check over the reviewed range exited 0.",
+    "All reviewed changed paths are within the BATCH-20 allowlist; no backend/requirements-dev.lock change exists.",
+    "Raw-blob SHA-256 values for all three code/test artifacts match the implementation evidence; see verification-evidence/provenance.json.",
+    "The dedicated C:\\r20\\venv interpreter is isolated (sys.prefix differs from sys.base_prefix); pip check exits 0.",
+    "backend/tests/cache passes: 17 passed.",
+    "Verifier-authored probe confirms failure-only fallback, cached_result=true, original run_id preservation, invalidation for safe text/image hash/source/scope/model revision/prompt/schema/policy, corruption rejection, PII candidate non-persistence, and LIVE zero cache reads/writes.",
+    "Static review confirms the cache value type is CandidateExtraction; it does not contain final DecisionResult, accountability snapshot, deadline, human edit, or event-state fields. Cache admission invokes schema and source validation, and fallback governance output contains neither raw text nor source IDs."
+  ],
+  "failed_checks": [],
+  "scope_violations": [],
+  "regression_risks": [
+    "This Batch deliberately provides a ModelProvider decorator only. Wiring it into BATCH-19 AnalyzeService, including request-context binding and production ExtractionStore/GovernanceSink implementations, remains a separate authorized integration concern and was not claimed here.",
+    "The fallback intentionally accepts only ModelUnavailable. Additional provider failure classes require an explicit contract decision before any future expansion."
+  ],
+  "minimal_fix_request": [],
+  "not_integrated": true,
+  "next_batch_started": false,
+  "verification_evidence": [
+    "reports/batches/BATCH-20/verification-evidence/independent_probe.py",
+    "reports/batches/BATCH-20/verification-evidence/independent-probe-result.json",
+    "reports/batches/BATCH-20/verification-evidence/provenance.json",
+    "reports/batches/BATCH-20/verification-evidence/command-results.json"
+  ]
+}

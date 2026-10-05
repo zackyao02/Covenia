@@ -1,0 +1,31 @@
+{
+  "artifact": "independent-probe-result.json",
+  "batch_id": "BATCH-20",
+  "result": "PASS",
+  "command": "C:\\r20\\venv\\Scripts\\python.exe reports/batches/BATCH-20/verification-evidence/independent_probe.py",
+  "exit_code": 0,
+  "observations": {
+    "direct_cached_result": false,
+    "fallback_cached_result": true,
+    "fallback_origin_run_id_preserved": true,
+    "upstream_calls": 2,
+    "invalidation_reasons": {
+      "safe_text": "CACHE_MISS",
+      "image_hash": "CACHE_MISS",
+      "source_ids": "CACHE_MISS",
+      "scope": "CACHE_MISS",
+      "model_revision": "CACHE_MISS",
+      "prompt_version": "CACHE_MISS",
+      "schema_version": "CACHE_MISS",
+      "policy_version": "CACHE_MISS"
+    },
+    "corrupt_cache_reason": "CACHE_CORRUPT",
+    "pii_candidate_cache_writes": 0,
+    "live_cache_enabled": false,
+    "live_store_reads": 0,
+    "live_store_writes": 0,
+    "event_contains_raw_text": false,
+    "event_contains_source_id": false
+  },
+  "independence": "Probe was authored in verification-evidence and does not import backend/tests/cache/test_extraction_fallback.py."
+}

@@ -1,0 +1,65 @@
+{
+  "artifact": "command-results.json",
+  "batch_id": "BATCH-20",
+  "run_dir": "C:\\r20",
+  "run_dir_length": 6,
+  "venv_relative_depth": 1,
+  "interpreter": "C:\\r20\\venv\\Scripts\\python.exe",
+  "interpreter_path_length": 30,
+  "python_version": "3.13.5",
+  "sys_prefix": "C:\\r20\\venv",
+  "sys_base_prefix": "D:\\python",
+  "commands": [
+    {
+      "name": "interpreter-isolation",
+      "result": "PASS",
+      "observed": "sys.executable equals the required absolute interpreter and sys.prefix differs from sys.base_prefix"
+    },
+    {
+      "name": "lockfile-install",
+      "command": "C:\\r20\\venv\\Scripts\\python.exe -m pip install --no-deps -r backend/requirements-dev.lock",
+      "result": "PASS"
+    },
+    {
+      "name": "editable-local-install",
+      "command": "C:\\r20\\venv\\Scripts\\python.exe -m pip install --no-deps --no-build-isolation -e backend",
+      "result": "PASS",
+      "observed": "covenia-b 0.0.0 appears as an editable project at the BATCH-20 verification worktree and imports successfully"
+    },
+    {
+      "name": "required-imports",
+      "command": "C:\\r20\\venv\\Scripts\\python.exe -c import pytest, jsonschema, covenia_b",
+      "result": "PASS"
+    },
+    {
+      "name": "cache-tests",
+      "command": "C:\\r20\\venv\\Scripts\\python.exe -m pytest backend/tests/cache -q -p no:cacheprovider",
+      "result": "PASS",
+      "observed": "17 passed in 0.56s"
+    },
+    {
+      "name": "independent-probe",
+      "command": "C:\\r20\\venv\\Scripts\\python.exe reports/batches/BATCH-20/verification-evidence/independent_probe.py",
+      "result": "PASS",
+      "observed": "See independent-probe-result.json"
+    },
+    {
+      "name": "pip-check",
+      "command": "C:\\r20\\venv\\Scripts\\python.exe -m pip check",
+      "result": "PASS",
+      "observed": "No broken requirements found."
+    },
+    {
+      "name": "source-lint",
+      "command": "C:\\r20\\venv\\Scripts\\python.exe -m ruff check backend/src/covenia_b/cache backend/tests/cache",
+      "result": "PASS",
+      "observed": "All checks passed!"
+    },
+    {
+      "name": "target-diff-check",
+      "command": "git diff --check 16ee07cb4553ddaad74d0dc54323867c55095923 550ee722527d63a2d20230129ef912e86bda3792",
+      "result": "PASS"
+    }
+  ],
+  "environment_note": "A first venv attempt below the Chinese-named workspace failed during ensurepip. The accepted environment is the dedicated ASCII short path C:\\r20\\venv. A later ordinary-sandbox repeat of the editable installation was denied write access to C:\\r20; it is not an implementation result and did not alter the installed package."
+}

@@ -1,0 +1,43 @@
+{
+  "artifact": "provenance.json",
+  "batch_id": "BATCH-20",
+  "base_integration_commit": "16ee07cb4553ddaad74d0dc54323867c55095923",
+  "code_commit": "4140835c03a0b80d24b1220c92d62f061feda109",
+  "implementation_evidence_commit": "550ee722527d63a2d20230129ef912e86bda3792",
+  "ancestry": {
+    "base_is_ancestor_of_evidence": true,
+    "code_parent": "16ee07cb4553ddaad74d0dc54323867c55095923",
+    "evidence_parent": "4140835c03a0b80d24b1220c92d62f061feda109"
+  },
+  "scope_diff_from_base": [
+    "backend/src/covenia_b/cache/__init__.py",
+    "backend/src/covenia_b/cache/extraction_fallback.py",
+    "backend/tests/cache/test_extraction_fallback.py",
+    "reports/batches/BATCH-20/IMPLEMENTATION_REPORT.json",
+    "reports/batches/BATCH-20/IMPLEMENTATION_REPORT.md",
+    "reports/batches/BATCH-20/cache-invalidation-matrix.json",
+    "reports/batches/BATCH-20/commands.json",
+    "reports/batches/BATCH-20/environment.json",
+    "reports/batches/BATCH-20/fallback-governance.redacted.jsonl",
+    "reports/batches/BATCH-20/pip-check.txt"
+  ],
+  "diff_check_exit_code": 0,
+  "blob_hash_method": "SHA-256 over raw bytes returned by subprocess git show <code_commit>:<path>; no working-copy bytes used.",
+  "code_blobs": [
+    {
+      "path": "backend/src/covenia_b/cache/__init__.py",
+      "byte_length": 789,
+      "sha256": "144a8152ff6fe0338e171a1e32b0de5b17ef0ce91e198123de163d7ba5d23de2"
+    },
+    {
+      "path": "backend/src/covenia_b/cache/extraction_fallback.py",
+      "byte_length": 19510,
+      "sha256": "9bf12936e22c8bb530e93336fef566e5e1b800cce974a1df88ad6446010bc79c"
+    },
+    {
+      "path": "backend/tests/cache/test_extraction_fallback.py",
+      "byte_length": 14587,
+      "sha256": "49d773056eb2b6ab9d0f4d69766bef72ca7f326dd1de4a21d1fbeb5c9b5a4e7d"
+    }
+  ]
+}
