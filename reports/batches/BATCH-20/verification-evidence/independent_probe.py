@@ -76,7 +76,7 @@ def candidate(model_input: SanitizedModelInput, *, run_id: str = "origin-probe-r
     return CandidateExtraction(
         case_id=model_input.case_id,
         model_metadata=ModelMetadata(
-            model_id="Qwen/Qwen2-VL-2B-Instruct",
+            model_id="qwen3-vl-plus",
             model_revision="rev-1",
             prompt_version="prompt-1",
             run_id=run_id,
@@ -97,7 +97,7 @@ def candidate(model_input: SanitizedModelInput, *, run_id: str = "origin-probe-r
 
 def versions(**changes: str) -> CacheVersionSet:
     values = {
-        "model_id": "Qwen/Qwen2-VL-2B-Instruct",
+        "model_id": "qwen3-vl-plus",
         "model_revision": "rev-1",
         "prompt_version": "prompt-1",
         "schema_version": "schema-1",

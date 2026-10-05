@@ -160,7 +160,7 @@ def _candidate() -> CandidateExtraction:
     return CandidateExtraction(
         case_id="case-safe-001",
         model_metadata=ModelMetadata(
-            model_id="Qwen/Qwen2-VL-2B-Instruct",
+            model_id="qwen3-vl-plus",
             model_revision="revision-safe",
             prompt_version="candidate-extraction-v1",
             run_id="run-safe",

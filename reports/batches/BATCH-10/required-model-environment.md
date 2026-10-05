@@ -14,12 +14,12 @@ arguments.
 | --- | --- |
 | `COVENIA_QWEN_ENDPOINT` | `http://` or `https://` endpoint for the team-controlled OpenAI-compatible chat service; no credentials, query, or fragment. |
 | `COVENIA_QWEN_API_KEY` | Optional for an unauthenticated local service; otherwise a single-line ASCII secret used only as `Authorization: Bearer`. |
-| `COVENIA_QWEN_MODEL_ID` | Must be exactly `Qwen/Qwen2-VL-2B-Instruct`; the adapter rejects another value. |
+| `COVENIA_QWEN_MODEL_ID` | Must be exactly `qwen3-vl-plus`; the adapter rejects another value. |
 | `COVENIA_QWEN_MODEL_REVISION` | Required non-empty deployment revision/commit identifier. It is sent in the request and must be echoed by the response body or `x-model-revision` header. |
 | `COVENIA_QWEN_PROMPT_VERSION` | Safe version label recorded in request metadata and provider run metadata. |
 | `COVENIA_QWEN_DEPLOYMENT_ID` | Safe non-secret deployment label for governance metadata. |
 
-The response must contain `model=Qwen/Qwen2-VL-2B-Instruct` and the exact
+The response must contain `model=qwen3-vl-plus` and the exact
 configured revision. A service that omits or changes the revision is rejected;
 the adapter does not infer a revision from a friendly model name or a random
 route. The provider protocol is OpenAI-compatible JSON with one non-streaming

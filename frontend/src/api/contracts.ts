@@ -199,7 +199,7 @@ export interface ExtractedJourney {
   journey_understanding: JourneyUnderstanding;
   source_trace: SourceTrace[];
   model_metadata: {
-    model_id: "Qwen/Qwen2-VL-2B-Instruct";
+    model_id: "qwen3-vl-plus";
     model_revision?: string;
     prompt_version: string;
     run_id: string;

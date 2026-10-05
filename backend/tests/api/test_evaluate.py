@@ -300,7 +300,7 @@ def _journey(case):
                 {"field": "image_observations[0]", "source_type": "IMAGE", "source_id": "image-001"}
             ],
             "model_metadata": {
-                "model_id": "Qwen/Qwen2-VL-2B-Instruct",
+                "model_id": "qwen3-vl-plus",
                 "model_revision": "test",
                 "prompt_version": "test",
                 "run_id": "run-001",

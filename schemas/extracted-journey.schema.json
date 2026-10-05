@@ -133,7 +133,7 @@
       "additionalProperties": false,
       "required": ["model_id", "prompt_version", "run_id", "cached_result"],
       "properties": {
-        "model_id": {"const": "Qwen/Qwen2-VL-2B-Instruct"},
+        "model_id": {"const": "qwen3-vl-plus"},
         "model_revision": {"type": "string"},
         "prompt_version": {"type": "string"},
         "run_id": {"type": "string"},

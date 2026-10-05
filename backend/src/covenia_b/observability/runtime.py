@@ -25,7 +25,7 @@ from typing import Final, Literal, Protocol
 from covenia_b.domain.types import RuntimeMetrics
 from covenia_b.ports.errors import MetricsUnavailable
 
-LOCKED_MODEL_ID: Final[str] = "Qwen/Qwen2-VL-2B-Instruct"
+LOCKED_MODEL_ID: Final[str] = "qwen3-vl-plus"
 _EndpointName = Literal["analyze", "evaluate", "approve", "shipment"]
 _SourcePhase = Literal["MODEL", "RULE"]
 _SAFE_IDENTIFIER = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$")

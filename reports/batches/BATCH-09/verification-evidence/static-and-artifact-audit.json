@@ -5,7 +5,7 @@
   "all_four_metrics_nonnegative_in_sample": true,
   "request_id_to_model_and_rule_source_trace": {
     "model_request_id": "req-09-sample-001",
-    "model_id": "Qwen/Qwen2-VL-2B-Instruct",
+    "model_id": "qwen3-vl-plus",
     "model_source_kinds": ["CHAT", "ORDER"],
     "rule_request_id": "req-09-rule-sample-001",
     "rule_model_is_null": true,

@@ -253,7 +253,7 @@ class SourceTrace(DomainModel):
 
 
 class ModelMetadata(DomainModel):
-    model_id: Literal["Qwen/Qwen2-VL-2B-Instruct"]
+    model_id: Literal["qwen3-vl-plus"]
     model_revision: StrictText | None = None
     prompt_version: StrictText
     run_id: StrictText

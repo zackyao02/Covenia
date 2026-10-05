@@ -340,7 +340,7 @@ def _provider(
 
 def _versions() -> CacheVersionSet:
     return CacheVersionSet(
-        model_id="Qwen/Qwen2-VL-2B-Instruct",
+        model_id="qwen3-vl-plus",
         model_revision="revision-safe-v1",
         prompt_version="candidate-extraction-v1",
         schema_version="candidate-schema-v1",
@@ -378,7 +378,7 @@ def _candidate(
     return CandidateExtraction(
         case_id=model_input.case_id,
         model_metadata=ModelMetadata(
-            model_id="Qwen/Qwen2-VL-2B-Instruct",
+            model_id="qwen3-vl-plus",
             model_revision="revision-safe-v1",
             prompt_version="candidate-extraction-v1",
             run_id=run_id,

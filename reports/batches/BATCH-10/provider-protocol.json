@@ -5,7 +5,7 @@
   "live_inference_performed": false,
   "live_inference_owner": "BATCH-28",
   "model": {
-    "model_id": "Qwen/Qwen2-VL-2B-Instruct",
+    "model_id": "qwen3-vl-plus",
     "revision_required": true,
     "revision_source": "COVENIA_QWEN_MODEL_REVISION and provider response body/header",
     "identity_rule": "request and response must agree with the configured exact model_id and non-empty revision"
@@ -18,7 +18,7 @@
     "response_content_type": "application/json"
   },
   "request": {
-    "model": "Qwen/Qwen2-VL-2B-Instruct",
+    "model": "qwen3-vl-plus",
     "model_revision": "exact configured deployment revision",
     "messages": "system prompt plus one user message whose content is sanitized text followed by data URLs for verified image bytes",
     "stream": false,

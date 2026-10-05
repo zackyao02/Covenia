@@ -117,7 +117,7 @@
     {
       "area": "Qwen provider boundary and model identity/revision",
       "result": "PASS",
-      "evidence": "QwenHttpConfig fixes Qwen/Qwen2-VL-2B-Instruct; the adapter sends and verifies exact model_id and non-empty configured revision from response body/header. Protocol double proves the wire contract only; no live inference was claimed."
+      "evidence": "QwenHttpConfig fixes qwen3-vl-plus; the adapter sends and verifies exact model_id and non-empty configured revision from response body/header. Protocol double proves the wire contract only; no live inference was claimed."
     },
     {
       "area": "Timeout, cancellation, image/request/response limits, and concurrency",

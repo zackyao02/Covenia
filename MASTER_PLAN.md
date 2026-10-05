@@ -59,7 +59,7 @@ C Mock 只可参考 UI 传输和占位设计，不可复制成 B 实现：它从
 
 本次最高基线是 C 分支内标记 APPROVED、批准人 Zack、日期 2026-09-10 的 [PRODUCT-FREEZE.md](https://github.com/zackyao02/Covenia/blob/fd52de8a8e3cb439acfb0ab28740fc8d9de15290/PRODUCT-FREEZE.md)，并有 [FIX-REQUESTS.md](https://github.com/zackyao02/Covenia/blob/fd52de8a8e3cb439acfb0ab28740fc8d9de15290/FIX-REQUESTS.md) 对应。main 的冻结内容较旧；旧 CLAUDE-REVIEW-1.md 的 H1=200 已被明确覆盖，不是仍待投票的选项。
 
-已锁定：四个业务 POST；Qwen/Qwen2-VL-2B-Instruct（不自动切换更高版本）；H1=350；顺序 P0(400)→H1(350)→E1(300)→E2(100)→E0(0)；analyze/evaluate 有服务端 runtime_metrics；保留并忽略 evaluate 五个 deprecated/readOnly 字段；模型只能提供候选事实；未揽收不得送达；揽收不结案；图像/PII/缓存披露必测。
+已锁定：四个业务 POST；qwen3-vl-plus（不自动切换更高版本）；H1=350；顺序 P0(400)→H1(350)→E1(300)→E2(100)→E0(0)；analyze/evaluate 有服务端 runtime_metrics；保留并忽略 evaluate 五个 deprecated/readOnly 字段；模型只能提供候选事实；未揽收不得送达；揽收不结案；图像/PII/缓存披露必测。
 
 ### 2.2 历史冲突登记与已接收裁决
 
@@ -187,7 +187,7 @@ reports/batches/BATCH-xx/     各批报告与脱敏证据
 | X-A-MAPPING | A；集成协调者补登记 | ACCEPTED | BATCH-05 | handoff/a/data-mapping.json；90c83590ad4955e24d6d859c1281b42f53686785 的 reports/batches/X-A-MAPPING/ARCHIVE_REPORT.json 已记 gate_status=ACCEPTED（2026-09-13），BATCH-05 独立验收已核验。补登记回执 reports/batches/X-A-MAPPING/GATE_ACCEPTANCE_RECEIPT.json；原始 blob 74175 B，SHA256 8D76EEAD5757D5618B57107B3725FCF5543D96F0C9FECF6EDEA5FDDD210B5538。工作簿、七业务表、ID/时间/空值/五类工单映射等原验收范围不变；不代签或重复申请产品批准。 |
 | X-A-FIXTURES | A；Zack 审批语义变化 | ACCEPTED | BATCH-06 | 产品负责人于 2026-09-13 接收；回执 `reports/batches/X-A-FIXTURES/GATE_ACCEPTANCE_RECEIPT.json`。三项 Git blob 已按原始字节核验；先前 ground-truth SHA 登记 `0E6E817FC7...` 漏写一个 0，正确值为 `0E6E8170FC7B113EE700087289B027FE93D412AA18C2F39D64D80D01C57C3311`，交付物未变。保留 D07 边界：B 不改 fixtures。 |
 | X-A-IMAGES | 产品负责人 | ACCEPTED | BATCH-28、BATCH-29、BATCH-32 | handoff/a/images-manifest.json + frontend/public/evidence/ 中五个原始团队图；归档提交 e54ffa5fd74b50ca2cca6d4f28a31b88ce9ea842，交付/签认 Zack（产品负责人），2026-09-12。提交内 blob SHA256：s00001-product-overview.jpg=E2C6BBD230F906F113D75F2F582E778B6E79AEA37544C2383F1FFDA15A5295D5；s00001-pump-detail.jpg=4709D7529803846D4FF4E123BFCC034D420449AE23923CB54468BE573BD8CFC7；s00001-package-context.jpg=C734BFB5A70FFA39E10B2535DC8321EACE3C1FB358293FA22B590B9F7B5836BD；s00001-gift-evidence.jpg=E52DF258CDBC5761D175F31985639337F2274211FBEB3DDB82A0B773150AA7F5；s00001-blurred-pump.jpg=634D2B4B0665FAE49DEC286628B13D8116808B3FFF7A39A9DD7CDEA9E7DE3143；handoff/a/images-manifest.json=4D596C87F3483166915E25A0F250292FA9CCE1A654463C09DBFC0EF97310352E。injection_pairs=NOT_STARTED，仅 BATCH-32 后续需要，不阻塞 BATCH-28/BATCH-29。 |
-| X-MODEL | B 与团队算力负责人；Zack 批准费用/换模型 | UNVERIFIED | BATCH-28 | handoff/model/service-manifest.redacted.json（密钥只在环境）；实际 Qwen/Qwen2-VL-2B-Instruct revision、服务地址与调用协议、usage、区域/设备/依赖/许可证登记、可用性与预热记录。；API 密钥、GPU/租用资源、权限、网络若需开通由团队提供；不购买、不换模型掩盖阻塞。 |
+| X-MODEL | B 与团队算力负责人；Zack 批准费用/换模型 | UNVERIFIED | BATCH-28 | handoff/model/service-manifest.redacted.json（密钥只在环境）；实际 qwen3-vl-plus revision、服务地址与调用协议、usage、区域/设备/依赖/许可证登记、可用性与预热记录。；API 密钥、GPU/租用资源、权限、网络若需开通由团队提供；不购买、不换模型掩盖阻塞。 |
 | X-A-TRUTH | A 编写，D 接收，Zack 批准政策含义 | PARTIAL | BATCH-29 | fixtures/ground-truth.json + handoff/a/evaluation-manifest.json；三个 Demo 真值完成冲突同步，20 开发样本的来源/输入/预期/评测口径与 hash 就绪。；10 留出样本另交 D；20/10 是评测样本划分，不等于新增 30 个产品场景。 |
 | X-C-CONTRACT | C | MISSING | BATCH-31 | handoff/c/contract-sync.json + C 已验收 commit；TS 类型与四接口 examples 对齐 BATCH-03，包括 A34/错误映射/模型来源/有限 human_edits。；npm test 与 build 的实际输出、契约版本、请求样例 hash；B 只读接收，不代写 frontend。 |
 | X-C-UI | C；D 独立复验 | MISSING | BATCH-32 | handoff/c/http-ui-ready.json + C UI 修复 commit；通知确认前不入消费者聊天；重试保持同一幂等键；网络失败不显示成功；仅用后端状态。；事件时间随已选择合法支路推进，不在 11:35 未揽收后提交更早 10:10 揽收；禁止前端 reset 状态代替恢复。；http 模式缓存/Challenge 角标与成本条读真实响应；模型来源变化时不残留错误标记；测试及构建通过。 |
@@ -1560,7 +1560,7 @@ backend/requirements-dev.lock 仅在本批新增依赖时按5.5只追加精确�
 
 #### 实施步骤
 
-1. 通过已批准部署方式调用 Qwen/Qwen2-VL-2B-Instruct；实际服务的 model_id/revision 必须可核对，不能用另一模型冒名。
+1. 通过已批准部署方式调用 qwen3-vl-plus；实际服务的 model_id/revision 必须可核对，不能用另一模型冒名。
 2. 序列化文本与真实图片字节，设置请求截止时间、取消、尺寸限制、并发上限；不依赖浏览器图片 URL。
 3. 解析原始输出、usage、耗时、提供方异常，保留可验证运行元数据；不在适配器写证据或规则结论。
 4. 用协议替身检查真正收到图片，覆盖 401/限流/超时/断线/缺 usage；真实服务由 BATCH-28 单独验收。

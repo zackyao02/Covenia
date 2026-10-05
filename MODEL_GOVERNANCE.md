@@ -2,9 +2,9 @@
 
 ## P0 模型
 
-- 默认模型：`Qwen/Qwen2-VL-2B-Instruct`。
+- 默认模型：`qwen3-vl-plus`。
 - 用途：聊天旅程、图片证据、承诺、体验成因和潜在需求的统一结构化抽取。
-- 官方模型页：https://huggingface.co/Qwen/Qwen2-VL-2B-Instruct
+- 官方模型页：https://huggingface.co/qwen3-vl-plus
 - 许可证：Apache-2.0。
 - 推理方式：阿里云算力部署、本地 Transformers，或团队控制的兼容推理服务。
 

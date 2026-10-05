@@ -6,7 +6,7 @@
   "candidate": {
     "case_id": "[SERVER_BOUND_CASE_ID]",
     "model_metadata": {
-      "model_id": "Qwen/Qwen2-VL-2B-Instruct",
+      "model_id": "qwen3-vl-plus",
       "model_revision": "[PROVIDER_BOUND_REVISION]",
       "prompt_version": "candidate-extraction-v1",
       "run_id": "[PROVIDER_BOUND_RUN_ID]",

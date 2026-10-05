@@ -99,7 +99,7 @@ class CapturingProvider:
         return CandidateExtraction(
             case_id=model_input.case_id,
             model_metadata=ModelMetadata(
-                model_id="Qwen/Qwen2-VL-2B-Instruct",
+                model_id="qwen3-vl-plus",
                 model_revision="batch-19-test-revision",
                 prompt_version="batch-19-test-prompt",
                 run_id=f"test-double-{len(self.inputs)}",

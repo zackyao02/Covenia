@@ -138,7 +138,7 @@ def make_journey(
                 {"field": "experience_expression", "source_type": "CHAT", "source_id": "consumer-1"}
             ],
             "model_metadata": {
-                "model_id": "Qwen/Qwen2-VL-2B-Instruct",
+                "model_id": "qwen3-vl-plus",
                 "model_revision": None,
                 "prompt_version": "test",
                 "run_id": "test-run",

@@ -131,7 +131,7 @@
       "required_before": ["BATCH-28"],
       "required_artifact": "handoff/model/service-manifest.redacted.json",
       "required_evidence": [
-        "Actual Qwen/Qwen2-VL-2B-Instruct revision, service address and call protocol, usage, region/device/dependency/license record, availability and warm-up record.",
+        "Actual qwen3-vl-plus revision, service address and call protocol, usage, region/device/dependency/license record, availability and warm-up record.",
         "Secrets remain only in environment variables; keys, GPU/rental resources, network, and permissions are supplied by the team."
       ],
       "observed_path": "handoff/model/service-manifest.redacted.json",

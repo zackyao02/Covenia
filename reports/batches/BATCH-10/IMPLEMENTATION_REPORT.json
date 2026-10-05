@@ -3,7 +3,7 @@
   "batch_id": "BATCH-10",
   "status": "COMPLETED",
   "result": "IMPLEMENTED",
-  "summary": "Implemented a bounded Qwen/Qwen2-VL-2B-Instruct HTTP ModelProvider adapter. It serializes sanitized chat text and verified image bytes, requires exact model identity and revision evidence, enforces total timeout/cancellation/size/concurrency limits, maps provider failures without leaking secrets, parses candidate-only output and exact-or-missing usage, and exposes redacted verifiable run metadata.",
+  "summary": "Implemented a bounded qwen3-vl-plus HTTP ModelProvider adapter. It serializes sanitized chat text and verified image bytes, requires exact model identity and revision evidence, enforces total timeout/cancellation/size/concurrency limits, maps provider failures without leaking secrets, parses candidate-only output and exact-or-missing usage, and exposes redacted verifiable run metadata.",
   "repo_root": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松",
   "worktree": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w10",
   "branch": "codex/covenia-batch-10",

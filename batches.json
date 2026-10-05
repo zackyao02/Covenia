@@ -310,7 +310,7 @@
       ],
       "artifact": "handoff/model/service-manifest.redacted.json（密钥只在环境）",
       "criteria": [
-        "实际 Qwen/Qwen2-VL-2B-Instruct revision、服务地址与调用协议、usage、区域/设备/依赖/许可证登记、可用性与预热记录。",
+        "实际 qwen3-vl-plus revision、服务地址与调用协议、usage、区域/设备/依赖/许可证登记、可用性与预热记录。",
         "API 密钥、GPU/租用资源、权限、网络若需开通由团队提供；不购买、不换模型掩盖阻塞。"
       ]
     },
@@ -1941,7 +1941,7 @@
         "docs/planning/b/**"
       ],
       "implementation_steps": [
-        "通过已批准部署方式调用 Qwen/Qwen2-VL-2B-Instruct；实际服务的 model_id/revision 必须可核对，不能用另一模型冒名。",
+        "通过已批准部署方式调用 qwen3-vl-plus；实际服务的 model_id/revision 必须可核对，不能用另一模型冒名。",
         "序列化文本与真实图片字节，设置请求截止时间、取消、尺寸限制、并发上限；不依赖浏览器图片 URL。",
         "解析原始输出、usage、耗时、提供方异常，保留可验证运行元数据；不在适配器写证据或规则结论。",
         "用协议替身检查真正收到图片，覆盖 401/限流/超时/断线/缺 usage；真实服务由 BATCH-28 单独验收。"

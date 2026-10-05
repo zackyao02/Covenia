@@ -20,7 +20,7 @@
   },
   "existing_approved_baseline_facts": [
     "The approved freeze specifies four business POST endpoints.",
-    "The approved model identifier is Qwen/Qwen2-VL-2B-Instruct; no automatic model upgrade is authorized.",
+    "The approved model identifier is qwen3-vl-plus; no automatic model upgrade is authorized.",
     "H1 priority is 350, with P0(400) then H1(350), E1(300), E2(100), E0(0).",
     "analyze and evaluate expose server-generated runtime_metrics.",
     "The evaluate compatibility fields remain and are ignored by the service.",

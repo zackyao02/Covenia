@@ -2,7 +2,7 @@
 
 Status: **COMPLETED** (implementation evidence only; not independent acceptance)
 
-Implemented a bounded Qwen/Qwen2-VL-2B-Instruct HTTP transport adapter. It
+Implemented a bounded qwen3-vl-plus HTTP transport adapter. It
 serializes sanitized chat text and verified image bytes as data URLs, requires
 an exact response model ID and revision, enforces request/image/response limits,
 total timeout, cancellation, and concurrency bounds, maps provider failures

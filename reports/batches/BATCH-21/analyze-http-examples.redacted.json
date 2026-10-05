@@ -40,7 +40,7 @@
               },
               "source_trace": [],
               "model_metadata": {
-                "model_id": "Qwen/Qwen2-VL-2B-Instruct",
+                "model_id": "qwen3-vl-plus",
                 "prompt_version": "contract-vector-v1",
                 "run_id": "RUN-ANALYZE-001",
                 "cached_result": false
@@ -88,7 +88,7 @@
               "audit_trail": []
             },
             "model_metadata": {
-              "model_id": "Qwen/Qwen2-VL-2B-Instruct",
+              "model_id": "qwen3-vl-plus",
               "prompt_version": "contract-vector-v1",
               "run_id": "RUN-ANALYZE-001",
               "cached_result": false
