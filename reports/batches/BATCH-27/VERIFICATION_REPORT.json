@@ -1,0 +1,136 @@
+{
+  "report_version": "1.0",
+  "batch_id": "BATCH-27",
+  "result": "PASS",
+  "verdict": "PASS",
+  "verifier": "审查方（独立验收；实现方为辅助调度器，未参与本验收）",
+  "reviewed_sha": "35787717c961aa5fd15ced827a1b7d413d290e98",
+  "integration_baseline": "2a0e3d7ce93b",
+  "verified_at": "2026-10-05T23:14:07",
+  "independent_context": true,
+  "verifier_run_dir": "C:/v27",
+  "verifier_worktree": "C:/v27/v",
+  "verifier_venv": "C:/v27/venv",
+  "replay": {
+    "chain": [
+      "cb7c30c",
+      "2cdb368",
+      "36d21cb",
+      "3578771"
+    ],
+    "onto": "2a0e3d7",
+    "conflicts": 0,
+    "resulting_head": "8964c2e8038e",
+    "isolation": "审查方自建 RUN_DIR 与 venv，未复用实现方 C:/cv27"
+  },
+  "acceptance_criteria_read_verbatim": [
+    "恰好四个业务 POST 端点；框架文档/OPTIONS 不属于第五业务 API，比赛运行可关闭文档页面。",
+    "可启动服务，模型或图片缺失预检明确列阻塞，不静默返回假结果。",
+    "CORS 允许 127.0.0.1:4173 与批准的 localhost Origin；请求 ID 跨日志可追踪。",
+    "按5.5使用本批绝对隔离venv解释器；新增第三方依赖只增不改、精确钉版本并提交锁文件差异/原因/hash证据；交付前同解释器 pip check 退出0。环境证据缺失或冲突不得PASS。"
+  ],
+  "commands_run": [
+    {
+      "command": "pytest backend/tests/test_composition.py -q",
+      "result": "17 passed in 1.30s",
+      "exit_code": 0
+    },
+    {
+      "command": "python -m covenia_b.preflight --offline --workbook data/tianchi-track1-mock-data.xlsx",
+      "result": "preflight: BLOCKED；READY workbook/case_source/image_manifest/sqlite/short_paths/composition；BLOCKED model。BLOCKER model: the model deployment is not registered; analyze will answer MODEL_UNAVAILABLE and no candidate is substituted。venv longest path 143 (<250)",
+      "exit_code": 0
+    },
+    {
+      "command": "python -m ruff check backend/src",
+      "result": "All checks passed!",
+      "exit_code": 0
+    },
+    {
+      "command": "tools/contracts/check_contracts.py --strict",
+      "result": "14 schemas / 18 vectors / strict true",
+      "exit_code": 0
+    },
+    {
+      "command": "-m pip check",
+      "result": "No broken requirements found.",
+      "exit_code": 0
+    },
+    {
+      "command": "pytest backend/tests -q",
+      "result": "470 passed in 10.46s",
+      "exit_code": 0
+    },
+    {
+      "command": "create_app() 路由枚举",
+      "result": "routes = 4；POST /api/cases/analyze、/api/actions/evaluate、/api/resolutions/approve、/api/events/shipment"
+    },
+    {
+      "command": "git diff --check; git status --short",
+      "result": "仅审查方运行预检 CLI 产生的 reports/batches/BATCH-27/preflight.json 改动与未跟踪 runtime/；非实现产物"
+    }
+  ],
+  "independent_probe": {
+    "script": "checks/independent_probe_batch27.py（审查方自建）",
+    "sha256": "774FBF163F30BC8581E5E7F5B2B302A42A28277CA901798359EC025DF1B28E85",
+    "method": "直接构造 create_app() 并枚举 app.routes 与 CORS 中间件配置，不复制实现方测试文件",
+    "results": [
+      {
+        "criterion": "恰好四个业务 POST 端点",
+        "observed": "POST 路由数=4；全部路由总数=4（无第五个）；集合与期望完全一致；无 health/reset/query；docs_url/redoc_url/openapi_url 三者均为 None",
+        "pass": true
+      },
+      {
+        "criterion": "预检明确列阻塞、不静默返回假结果",
+        "observed": "preflight 输出 BLOCKED model，并明写 analyze will answer MODEL_UNAVAILABLE and no candidate is substituted；其余六项 READY",
+        "pass": true
+      },
+      {
+        "criterion": "CORS 允许 127.0.0.1:4173 与批准的 localhost Origin",
+        "observed": "allowed_origins = [http://127.0.0.1:4173, http://localhost:4173, http://localhost:5173]；allow_methods = [POST, OPTIONS]",
+        "pass": true
+      },
+      {
+        "criterion": "隔离 venv 与 pip check",
+        "observed": "C:/v27/venv 隔离成立；pip check 退出 0；预检自报 venv longest path 143 (<250)",
+        "pass": true
+      }
+    ]
+  },
+  "transient_red_resolved": {
+    "context": "基线 2a0e3d7（重新基线 test_bootstrap.py）单独存在时，因 create_app() 尚无路由而断言 0==4 失败；实现方已预先登记为瞬态并说明落位即恢复",
+    "verified": "重放 BATCH-27 链后全量套件 470 passed / exit 0 —— 瞬态红确已解除",
+    "transient_red_is_not_a_batch_defect": true
+  },
+  "artifact_hashes": {
+    "method": "SHA-256 over raw bytes streamed from git show <sha>:<path>",
+    "backend/src/covenia_b/main.py": "F27BD5771C46417F1199E418476DDBFDAABC6EFEACC4F55835B0BFCCB51C110C",
+    "backend/src/covenia_b/runtime.py": "71A7329F76D55D5A7AD2E2D7A3E741EEFE647DF9F8601BAA850DF35D984D0A6F",
+    "backend/src/covenia_b/preflight.py": "CF29B1CEF8D719DFC5F346B2647C7940036E70199234E3138888C21CFFB677F8",
+    "backend/src/covenia_b/settings.py": "54166D1ADF87C71E1D6436E29AFA1A802128A4668D73A60582153E377CD49E20",
+    "backend/tests/test_composition.py": "E2805CE29BC8606875E1A4FCC74E23D83031962F6578D085F0CC9E50BBE2083B"
+  },
+  "non_blocking_observations": [
+    {
+      "item": "端点是 /api/resolutions/approve 而非 /api/actions/approve",
+      "finding": "审查方授权文本曾误写为 /api/actions/approve；实际常量为 api/approve.py 的 _ROUTE_PATH = /api/resolutions/approve。",
+      "ruling": "实现方按「以实际为准」处理，正确。审查方更正自己的笔误，不判缺陷。"
+    },
+    {
+      "item": "无鉴权边界已明确声明",
+      "finding": "route-inventory.json 的 authentication_boundary 明写：比赛构建无鉴权、仅环回监听、不得对外暴露。",
+      "ruling": "符合预期且诚实；不判 FAIL。需在演示与交付材料中保持一致表述。"
+    }
+  ],
+  "what_could_not_be_independently_reproduced": [
+    "审查方未构造真实 HTTP 会话验证请求 ID 跨日志追踪（criterion 3 的后半句）；仅核实了 CORS 配置与中间件存在。",
+    "未以真实模型连通性复跑预检（X-MODEL 尚未正式验收），故 preflight 的 model 项维持 BLOCKED 属预期。"
+  ],
+  "findings": [],
+  "minimal_fix_list": [],
+  "blockers": [],
+  "code_modified": false,
+  "next_batch_started": false,
+  "integration_performed": false,
+  "pushed": false,
+  "verifier_scope_declaration": "审查方仅写本报告与其证据；未修改任何实现文件、未集成、未推送。因 Codex 额度耗尽，本验收由审查角色执行而非全新任务线程；该偏离在此显式记录，并请另行安排独立复核本验收本身。"
+}
