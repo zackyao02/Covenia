@@ -1,25 +1,20 @@
 {
+  "artifact_type": "IMPLEMENTATION_COMMAND_RECORD",
   "batch_id": "BATCH-24",
-  "execution_status": "BLOCKED_PLATFORM_VENV_APPROVAL",
-  "commands_run": [
-    {
-      "command": "git -C r24 status --short; git -C r24 branch --show-current; git -C r24 rev-parse HEAD; git -C r24 show-ref --verify refs/heads/integration/covenia-b",
-      "result": "Branch codex/covenia-batch-24 at 5378f46f37e3323ae4e46548f82a92d72432289a, equal to integration/covenia-b."
-    },
-    {
-      "command": "Read reports/batches/BATCH-23/IMPLEMENTATION_REPORT.json and reports/batches/BATCH-23/VERIFICATION_REPORT.json at the BATCH-24 baseline.",
-      "result": "BATCH-23 implementation report present; BATCH-23 independent verification result PASS."
-    },
-    {
-      "command": "Search available runs, run records, and scheduler state for BATCH-23 integration receipt.",
-      "result": "The supplied external receipt at C:\\Users\\WONG Tsun Ming\\covenia-orchestration\\runs\\covenia-b-20260910-01\\integration-receipts\\BATCH-23.json was read and records SUCCESS at final integration SHA 5378f46f37e3323ae4e46548f82a92d72432289a."
-    },
-    {
-      "command": "D:\\python\\python.exe -m venv C:\\cov-run\\b24-20261005-01",
-      "result": "NOT_EXECUTED: platform approval review rejected the command because 'Selected model is at capacity'."
-    }
+  "producer": "implementation",
+  "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\r24",
+  "run_dir": "C:\\Users\\WONGTS~1\\AppData\\Local\\Temp\\cvb24",
+  "interpreter": "C:\\Users\\WONGTS~1\\AppData\\Local\\Temp\\cvb24\\venv\\Scripts\\python.exe",
+  "commands": [
+    {"id": "01-isolation", "result": "PASS", "exit_code": 0, "command": "<RUN_DIR>/venv/Scripts/python.exe -c <sys.executable/sys.prefix assertion>"},
+    {"id": "02-lock-install", "result": "PASS", "exit_code": 0, "command": "<RUN_DIR>/venv/Scripts/python.exe -m pip install --no-deps -r backend/requirements-dev.lock"},
+    {"id": "03-editable-install", "result": "PASS", "exit_code": 0, "command": "<RUN_DIR>/venv/Scripts/python.exe -m pip install --no-deps --no-build-isolation -e backend"},
+    {"id": "04-import-preflight", "result": "PASS: pytest/jsonschema import OK", "exit_code": 0, "command": "<RUN_DIR>/venv/Scripts/python.exe -c import pytest, jsonschema"},
+    {"id": "05-targeted-api-tests", "result": "PASS: 4 passed in 0.81s", "exit_code": 0, "command": "<RUN_DIR>/venv/Scripts/python.exe -m pytest backend/tests/api/test_approve.py -q"},
+    {"id": "06-ruff", "result": "PASS: All checks passed", "exit_code": 0, "command": "<RUN_DIR>/venv/Scripts/python.exe -m ruff check backend/src/covenia_b/api/approve.py backend/tests/api/test_approve.py"},
+    {"id": "07-contracts", "result": "PASS: 14 schemas and 18 vectors", "exit_code": 0, "command": "<RUN_DIR>/venv/Scripts/python.exe tools/contracts/check_contracts.py --strict"},
+    {"id": "08-pip-list", "result": "PASS: 32 distributions including editable covenia-b", "exit_code": 0, "command": "<RUN_DIR>/venv/Scripts/python.exe -m pip list --format=json"},
+    {"id": "09-pip-check", "result": "PASS: No broken requirements found.", "exit_code": 0, "command": "<RUN_DIR>/venv/Scripts/python.exe -m pip check"}
   ],
-  "commands_not_run": [
-    "All BATCH-24 isolated-venv installation, import-preflight, pytest, contract-check, pip-list, pip-check, and acceptance commands were not run because the platform blocked creation of the required batch-specific venv."
-  ]
+  "notes": ["The initial sandboxed pinned-install attempt was blocked by WinError 10013; the approved retry installed only the existing pinned lock into this batch's new venv.", "No command generated a BATCH-24 verification report or verification evidence."]
 }

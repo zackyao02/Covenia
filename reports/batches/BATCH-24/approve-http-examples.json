@@ -1,0 +1,13 @@
+{
+  "batch_id": "BATCH-24",
+  "endpoint": "POST /api/resolutions/approve",
+  "examples_exercised_by": "backend/tests/api/test_approve.py",
+  "scenarios": [
+    {"name": "missing_approver", "http_status": 400, "error_code": "VALIDATION_ERROR", "message": "approver_id is required for approval"},
+    {"name": "extra_human_edit", "http_status": 400, "error_code": "VALIDATION_ERROR"},
+    {"name": "expired_server_candidate", "http_status": 400, "error_code": "VALIDATION_ERROR", "message": "candidate_type is no longer valid for the current server state"},
+    {"name": "same_body_new_request_id_replay", "http_status": 200, "assertion": "second JSON envelope equals first JSON envelope; audit_trail[-1].request_id remains the first UUID"},
+    {"name": "same_key_different_body", "http_status": 409, "error_code": "IDEMPOTENCY_CONFLICT"},
+    {"name": "ledger_unavailable", "http_status": 503, "error_code": "INTERNAL_ERROR", "retryable": true}
+  ]
+}

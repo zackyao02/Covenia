@@ -1,42 +1,22 @@
 {
   "batch_id": "BATCH-24",
-  "status": "BLOCKED",
-  "summary": "BATCH-23 dependency evidence is now verified, but BATCH-24 cannot resume because the platform rejected creation of its required isolated venv before execution. The rejected command was not executed and no existing Batch environment was reused.",
-  "files_changed": [
-    "reports/batches/BATCH-24/IMPLEMENTATION_REPORT.json",
-    "reports/batches/BATCH-24/IMPLEMENTATION_REPORT.md",
-    "reports/batches/BATCH-24/commands.json"
-  ],
-  "tests_run": [],
-  "tests_passed": [],
+  "status": "COMPLETED",
+  "summary": "Implemented the transport-only POST /api/resolutions/approve adapter. It injects one ApprovalService, maps boundary failures to the frozen envelope, preserves the service's first persisted replay body and audit request_id, and does not generate a client-side resolution.",
+  "base_integration_sha": "5378f46f37e3323ae4e46548f82a92d72432289a",
+  "branch": "codex/covenia-batch-24",
+  "code_commit": "ba6f783f873f46ab3607086bac5404c1cdcb5710",
+  "files_changed": ["backend/src/covenia_b/api/approve.py", "backend/tests/api/test_approve.py", "reports/batches/BATCH-24/approve-http-examples.json", "reports/batches/BATCH-24/IMPLEMENTATION_REPORT.json", "reports/batches/BATCH-24/IMPLEMENTATION_REPORT.md", "reports/batches/BATCH-24/commands.json", "reports/batches/BATCH-24/environment.json", "reports/batches/BATCH-24/pip-check.txt"],
+  "tests_run": ["pytest backend/tests/api/test_approve.py -q", "ruff check backend/src/covenia_b/api/approve.py backend/tests/api/test_approve.py", "tools/contracts/check_contracts.py --strict", "pip check"],
+  "tests_passed": ["4 API boundary tests passed", "ruff passed", "strict contract checker validated 14 schemas and 18 vectors", "pip check reported no broken requirements"],
   "tests_failed": [],
   "acceptance_results": [
-    {
-      "criterion": "BATCH-23 implementation report, independent PASS report, and integration receipt must be read before BATCH-24 execution.",
-      "result": "PASS",
-      "evidence": "The supplied external receipt C:\\Users\\WONG Tsun Ming\\covenia-orchestration\\runs\\covenia-b-20260910-01\\integration-receipts\\BATCH-23.json records SUCCESS, final integration SHA 5378f46f37e3323ae4e46548f82a92d72432289a, BATCH-23 independent PASS, smoke pytest 11 passed, clean pip check, scope PASS, and main unmodified/unpushed."
-    },
-    {
-      "criterion": "Use a BATCH-24 absolute isolated venv and run acceptance commands.",
-      "result": "BLOCKED",
-      "evidence": "The requested C:\\cov-run\\b24-20261005-01 venv creation was rejected by the platform approval service with 'Selected model is at capacity'; execution did not start."
-    },
-    {
-      "criterion": "Create no BATCH-24 VERIFICATION_REPORT or verification evidence.",
-      "result": "PASS",
-      "evidence": "This is implementation-side blocker documentation only."
-    }
+    {"criterion": "Missing approver_id is a frozen VALIDATION_ERROR rather than framework 422.", "result": "IMPLEMENTATION_CHECK_PASS", "evidence": "ASGI test asserts HTTP 400, VALIDATION_ERROR, and the frozen message."},
+    {"criterion": "Extra human edits, stale candidates, conflicts, and infrastructure failures have contract envelopes and HTTP mappings.", "result": "IMPLEMENTATION_CHECK_PASS", "evidence": "ASGI tests cover invalid refund edit (400), expired candidate (400), key/body conflict (409), and LedgerUnavailable (503 retryable)."},
+    {"criterion": "Same idempotent request across a new X-Request-Id returns the initial persisted envelope and audit request_id.", "result": "IMPLEMENTATION_CHECK_PASS", "evidence": "ASGI replay test uses two UUID request headers and asserts identical response bodies and the first request ID in the audit trail."},
+    {"criterion": "Batch isolation and dependency integrity.", "result": "IMPLEMENTATION_CHECK_PASS", "evidence": "Fresh BATCH-24 venv passed interpreter isolation, explicit imports, pinned lock install, and pip check. requirements-dev.lock was unchanged."}
   ],
   "commit_hash": null,
-  "remaining_risks": [
-    "The implementation remains unverified because no BATCH-24 isolated environment could be created and the required commands were not run."
-  ],
-  "blockers": [
-    {
-      "owner": "Platform approval service",
-      "required_artifact": "Authorization to create C:\\cov-run\\b24-20261005-01\\venv",
-      "reason": "The approval service was at capacity and rejected the venv command before it executed."
-    }
-  ],
-  "handoff_notes": "The BATCH-23 receipt is now sufficient. Retry the same BATCH-24 task after the platform can authorize creation of its fresh short RUN_DIR venv; do not reuse another Batch environment. No BATCH-24 acceptance test was run and no other Batch was started."
+  "remaining_risks": ["The existing application factory is outside this batch's allowed paths, so a composition owner must call install_approve_router(app, approval_service=...) when wiring the runtime.", "Independent verification, coordinator integration receipt, and integration smoke remain separate required gates."],
+  "blockers": [],
+  "handoff_notes": "Register with install_approve_router exactly once using the process-owned ApprovalService. Do not construct a service or derive a resolution in the client/router. Replay response bodies intentionally retain the first persisted request_id; BATCH-02 request-ID middleware still owns the response header. No BATCH-24 VERIFICATION_REPORT or verification-evidence was generated."
 }

@@ -1,0 +1,24 @@
+{
+  "artifact_type": "IMPLEMENTATION_ENVIRONMENT",
+  "batch_id": "BATCH-24",
+  "repo_root": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\r24",
+  "branch": "codex/covenia-batch-24",
+  "base_integration_sha": "5378f46f37e3323ae4e46548f82a92d72432289a",
+  "run_dir": "C:\\Users\\WONGTS~1\\AppData\\Local\\Temp\\cvb24",
+  "run_dir_length": 42,
+  "venv": "C:\\Users\\WONGTS~1\\AppData\\Local\\Temp\\cvb24\\venv",
+  "venv_is_direct_child_of_run_dir": true,
+  "interpreter": "C:\\Users\\WONGTS~1\\AppData\\Local\\Temp\\cvb24\\venv\\Scripts\\python.exe",
+  "base_interpreter": "D:\\python\\python.exe",
+  "python_version": "3.13.5",
+  "interpreter_isolation_assertion": "PASS: sys.prefix differs from sys.base_prefix and sys.executable resolves to the requested venv interpreter.",
+  "longest_observed_venv_path": "C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\cvb24\\venv\\Lib\\site-packages\\pkg_resources\\tests\\data\\my-test-package_unpacked-egg\\my_test_package-1.0-py3.7.egg\\EGG-INFO\\dependency_links.txt",
+  "longest_observed_venv_path_length": 185,
+  "path_limit": 250,
+  "path_limit_result": "PASS",
+  "requirements_dev_lock": {"changed": false, "baseline_raw_git_blob_sha256": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04", "working_copy_sha256_diagnostic": "886A9FC311F16DA186158EFF8478F3058FF8E0AEFA00091830BBF87863CD0C5D", "git_blob_sha1": "4c3f8019eda3a683a5cf424eaa5dbc69b0cf91ef", "third_party_dependencies_added": []},
+  "setup_history": [
+    {"run_dir": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\r24", "result": "NOT_USED", "reason": "ensurepip failed in the Chinese workspace path before any dependency installation; the partial venv was removed."},
+    {"run_dir": "C:\\Users\\WONGTS~1\\AppData\\Local\\Temp\\cvb24", "result": "USED", "reason": "fresh BATCH-24-only short absolute RUN_DIR with venv directly below it."}
+  ]
+}
