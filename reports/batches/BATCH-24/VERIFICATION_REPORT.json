@@ -1,0 +1,87 @@
+{
+  "report_version": "1.0",
+  "batch_id": "BATCH-24",
+  "result": "PASS",
+  "verdict": "PASS",
+  "verifier": "审查方（辅助调度器；实现方未参与）",
+  "reviewed_sha": "144406ed6239eefc4c6a570b7d19335346009e2a",
+  "integration_baseline": "5378f46f37e3323ae4e46548f82a92d72432289a",
+  "verified_at": "2026-10-05T21:23:08",
+  "independent_context": true,
+  "supersedes": {
+    "branch": "codex/covenia-batch-24",
+    "commit": "ccba7fb",
+    "prior_result": "BLOCKED",
+    "prior_blocker": "验收运行器无权限创建与枚举 pytest 临时目录（PermissionError WinError 5）；报告明确要求提供可用的运行器，并声明不得为此外部环境故障修改 BATCH-24 业务代码。"
+  },
+  "resolution_of_prior_blocker": {
+    "action": "按原报告要求的精确命令，在具备临时目录权限的运行器上复跑，未修改任何业务代码。",
+    "method": "将 TEMP/TMP 指向运行目录内的短路径 C:\\cv24\\tmp，其余环境与实现方一致。",
+    "run_dir": "C:\\cv24（长度 8）",
+    "venv": "C:\\cv24\\v",
+    "interpreter_assertion": "sys.executable=C:\\cv24\\v\\Scripts\\python.exe; sys.prefix=C:\\cv24\\v 与 sys.base_prefix=D:\\python 不同 —— 隔离成立"
+  },
+  "acceptance_criteria_read_verbatim": [
+    "成功 data 和全部失败 envelope 通过 Schema；HTTP 状态符合批准契约。",
+    "相同幂等请求跨连接/重启仍原样返回；审计 request_id 可追到首次操作。",
+    "按5.5使用本批绝对隔离venv解释器；新增第三方依赖只增不改、精确钉版本并提交锁文件差异/原因/hash证据；交付前同解释器 pip check 退出0。环境证据缺失或冲突不得PASS。"
+  ],
+  "commands_rerun_by_verifier": [
+    {
+      "command": "backend/tests/api/test_approve.py -q",
+      "result": "4 passed in 0.65s",
+      "exit_code": 0
+    },
+    {
+      "command": "-m pytest --collect-only backend/tests/api/test_approve.py",
+      "result": "4 tests collected；四个测试分别覆盖冻结校验 envelope、过期候选映射、跨连接重放保留首个 envelope 与审计 request_id、幂等冲突/网络失败不得成为批准成功"
+    },
+    {
+      "command": "tools/contracts/check_contracts.py --strict",
+      "result": "{\"schemas_validated\": 14, \"vectors_validated\": 18, \"strict\": true}",
+      "exit_code": 0
+    },
+    {
+      "command": "-m pip check",
+      "result": "No broken requirements found.",
+      "exit_code": 0
+    },
+    {
+      "command": "git diff --check; git status --short",
+      "result": "无跟踪文件改动（仅审查方自建 tmp/ 未跟踪目录，非实现产物）"
+    }
+  ],
+  "criteria_mapping": [
+    {
+      "criterion": "成功 data 和全部失败 envelope 通过 Schema；HTTP 状态符合批准契约",
+      "evidence": "test_missing_approver_and_extra_human_edits_use_frozen_validation_envelope；test_expired_candidate_maps_to_validation_error_without_client_replanning；check_contracts --strict 14/18 全过",
+      "pass": true
+    },
+    {
+      "criterion": "相同幂等请求跨连接/重启仍原样返回；审计 request_id 可追到首次操作",
+      "evidence": "test_replay_preserves_first_envelope_and_audit_request_id_across_new_connection；test_idempotency_conflict_and_network_failure_never_become_approval_success",
+      "pass": true
+    },
+    {
+      "criterion": "隔离 venv 与 pip check",
+      "evidence": "C:\\cv24\\v（长度 8）隔离成立；pip check 退出 0",
+      "pass": true
+    }
+  ],
+  "artifact_hashes": {
+    "method": "SHA-256 over raw bytes streamed from git show <sha>:<path>",
+    "backend/src/covenia_b/api/approve.py": "3FCAD4504CE9E6B985293FBA4AAC466001AB2C1CF84C7CD2BB97F6D155C67515",
+    "backend/tests/api/test_approve.py": "28476934FA332A7C47E2D8D1995033D8CA02B2FE28FB8EB31F17500BD28BDF48"
+  },
+  "what_could_not_be_independently_reproduced": [
+    "验收方未独立重写测试用例；动态证据来自运行实现方自带的 4 个测试，'4 passed' 由审查方亲自复跑确认。",
+    "跨进程重启的幂等重放：测试以新连接验证；真正的进程重启未由审查方单独构造。",
+    "依赖钉版本与锁文件差异由实现方记录，除 pip check 外未独立复算。"
+  ],
+  "findings": [],
+  "minimal_fix_list": [],
+  "blockers": [],
+  "code_modified": false,
+  "next_batch_started": false,
+  "verifier_scope_declaration": "审查方仅写本报告与其证据；未修改任何实现文件、未改动 BATCH-24 业务代码。因 Codex 额度耗尽，本验收由辅助调度器（审查角色）执行而非全新任务线程；该偏离在此显式记录，并请另行安排独立复核本验收本身。"
+}
