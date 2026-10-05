@@ -1,0 +1,33 @@
+{
+  "gate_id": "X-MODEL",
+  "status": "ACCEPTED",
+  "accepted_by": "产品负责人（Zack）",
+  "accepted_at": "2026-10-05",
+  "recorded_by": "辅助调度器",
+  "recorded_at": "2026-10-05T23:35:00+08:00",
+  "accepted_content": {
+    "model_service": "qwen3-vl-plus",
+    "provider": "阿里云百炼（业务空间专属域名）",
+    "access_path": "本机代理 tools/model-shim/shim.py -> 百炼 OpenAI 兼容端点",
+    "key_management": "仅存于环境变量，不写入任何文件（凭证已声明 api_key_in_this_file: false）"
+  },
+  "acceptance_basis": {
+    "source": "审查方实测 2026-10-05；产品负责人据此接受",
+    "items": [
+      "端点 https://ws-czn4i6tkzgc4so32.cn-beijing.maas.aliyuncs.com/compatible-mode/v1 可达",
+      "key 有效；qwen3-vl-plus 在可用模型列表中",
+      "本机代理转发正常，model 与 model_revision 均正确回显",
+      "多模态实测通过（96x96 测试图 -> 模型正确识别颜色）",
+      "response_format: json_object 被支持",
+      "换模型已落库（c8af0ec），LOCKED_MODEL_ID = \"qwen3-vl-plus\" 与本机代理默认值一致"
+    ]
+  },
+  "required_artifact": "handoff/model/service-manifest.redacted.json",
+  "required_artifact_status": "PRESENT_AND_UPDATED",
+  "still_pending_but_not_blocking_acceptance": [
+    "usage / 区域 / 许可证字段（凭证中仍标『待验证』）—— 须在 BATCH-28 前补齐",
+    "真实连通下的可用性与预热记录 —— 须在 BATCH-28 前补齐"
+  ],
+  "downstream_effect": "X-MODEL 不再阻塞 BATCH-28；但 BATCH-28 仍受 X-A-IMAGES 台账状态影响（见跨线发现 CROSS-LINE-GATE-LEDGER-STALE-X-A-IMAGES）。",
+  "secrets_declaration": "本回执不含任何密钥、令牌或凭据。"
+}
