@@ -1,0 +1,21 @@
+{
+  "batch_id": "BATCH-24",
+  "execution_status": "BLOCKED_BEFORE_IMPLEMENTATION",
+  "commands_run": [
+    {
+      "command": "git -C r24 status --short; git -C r24 branch --show-current; git -C r24 rev-parse HEAD; git -C r24 show-ref --verify refs/heads/integration/covenia-b",
+      "result": "Branch codex/covenia-batch-24 at 5378f46f37e3323ae4e46548f82a92d72432289a, equal to integration/covenia-b."
+    },
+    {
+      "command": "Read reports/batches/BATCH-23/IMPLEMENTATION_REPORT.json and reports/batches/BATCH-23/VERIFICATION_REPORT.json at the BATCH-24 baseline.",
+      "result": "BATCH-23 implementation report present; BATCH-23 independent verification result PASS."
+    },
+    {
+      "command": "Search available runs, run records, and scheduler state for BATCH-23 integration receipt.",
+      "result": "No runs/{run_id}/integration-receipts/BATCH-23.json receipt found."
+    }
+  ],
+  "commands_not_run": [
+    "All BATCH-24 isolated-venv installation, import-preflight, pytest, contract-check, pip-list, pip-check, and acceptance commands were intentionally not run because the direct dependency integration gate is unresolved."
+  ]
+}
