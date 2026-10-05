@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.0",
+  "artifact": "handoff/model/service-manifest.redacted.json",
+  "gate": "X-MODEL",
+  "status": "PENDING_ACCEPTANCE",
+  "generated_by": "辅助调度器（产品负责人 2026-10-05 授权）",
+  "generated_at": "2026-10-06T00:15:00+08:00",
+  "model": {
+    "model_id": "qwen3-vl-plus",
+    "previous_frozen_model": "Qwen/Qwen2-VL-2B-Instruct",
+    "change_authority": "产品负责人（Zack）2026-10-05 授权；为 MASTER_PLAN「不能用另一模型冒名」条款的正式例外，登记的是真实使用的模型。",
+    "modality": "vision-language chat，支持 image_url 输入",
+    "revision": {
+      "status": "PENDING",
+      "note": "QwenHttpProvider._verify_identity() 要求响应中出现 model_revision（body 字段或 x-model-revision 头）。实际取值由本机代理 tools/model-shim/shim.py 回填；具体 revision 口径待模型服务接线后据实登记。"
+    }
+  },
+  "service": {
+    "protocol": "OpenAI-compatible chat completions",
+    "provider": "阿里云百炼（Aliyun Bailian）",
+    "local_proxy": {
+      "path": "tools/model-shim/shim.py",
+      "size_bytes": 5278,
+      "behaviour": "取走自定义字段 -> 用真实 key 转发百炼 -> 响应补回 model 与 model_revision（body + 响应头）",
+      "why_required": "百炼为标准 OpenAI 兼容端点，不回显 model 与 model_revision；无此代理，适配器必然抛 ModelIdentityMismatch。"
+    },
+    "endpoint": {
+      "expected": "http://127.0.0.1:8001/v1/chat/completions",
+      "configured_via": "COVENIA_MODEL_ENDPOINT",
+      "status": "NOT_CONFIGURED",
+      "note": "当前环境未设置该变量；接线在 BATCH-27 交付后进行。"
+    },
+    "listener_scope": "仅环回（本机代理 127.0.0.1），不对外暴露"
+  },
+  "environment_facts_observed_2026_10_05": {
+    "COVENIA_MODEL_API_KEY": "NOT_SET",
+    "COVENIA_MODEL_DEPLOYMENT_ID": "NOT_SET",
+    "COVENIA_MODEL_REVISION": "NOT_SET",
+    "COVENIA_MODEL_ENDPOINT": "NOT_SET",
+    "measurement": "只读检查环境变量是否设置，未读取任何密钥值。"
+  },
+  "usage_region_device_dependency": {
+    "status": "PENDING",
+    "usage": "待验证 —— 需一次真实调用后据实登记 token 用量与调用次数。",
+    "region": "待验证 —— 由百炼账号与部署区域决定。",
+    "device": "托管服务；无本地 GPU（这正是本次换模型的理由）。",
+    "dependency": "依赖百炼服务可达性与网络；本机仅需 COVENIA_MODEL_ENDPOINT 指向本机代理。",
+    "license": "待验证 —— 须以百炼/模型官方页面为准，本方不臆断。"
+  },
+  "availability_and_warmup": {
+    "status": "NOT_RUN",
+    "reason": "四项模型环境变量均未设置，模型服务未接线；未执行任何真实调用，因此不声称任何可用性或预热结论。",
+    "how_to_produce": "接线后执行一次真实 analyze 与一次预热调用，将计费/延迟/失败率写入本文件对应字段。"
+  },
+  "secrets_policy": {
+    "api_key_location": "仅环境变量",
+    "api_key_in_this_file": false,
+    "statement": "本文件不含任何密钥、令牌或凭据；仅登记配置项名称与来源。"
+  },
+  "honesty_statement": "凡本文件标记 PENDING / NOT_RUN / 待验证 的字段，均为尚未取得可核实事实；未以任何默认值或推定值填充。",
+  "gate_receipt": null
+}
