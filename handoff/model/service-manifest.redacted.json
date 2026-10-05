@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "artifact": "handoff/model/service-manifest.redacted.json",
   "gate": "X-MODEL",
-  "status": "PENDING_ACCEPTANCE",
+  "status": "ACCEPTED",
   "generated_by": "辅助调度器（产品负责人 2026-10-05 授权）",
   "generated_at": "2026-10-06T00:15:00+08:00",
   "updated_at": "2026-10-05T23:10:00+08:00",
@@ -37,7 +37,10 @@
       "behaviour": "取走自定义字段 model_revision / metadata -> 用真实 key 转发上游 -> 响应补回 model 与 model_revision（body + 响应头）",
       "why_required": "百炼/DashScope 为标准 OpenAI 兼容端点，不回显 model 与 model_revision；无此代理，适配器必然抛 ModelIdentityMismatch。",
       "forwarding_verified": "审查方实测转发正常，model 与 model_revision 均正确回显。",
-      "key_source_env": ["DASHSCOPE_API_KEY", "COVENIA_MODEL_API_KEY"],
+      "key_source_env": [
+        "DASHSCOPE_API_KEY",
+        "COVENIA_MODEL_API_KEY"
+      ],
       "bind": "http://127.0.0.1:8001（仅环回）"
     },
     "wiring": {
@@ -81,5 +84,11 @@
     "statement": "本文件不含任何密钥、令牌或凭据；仅登记配置项名称与来源。"
   },
   "honesty_statement": "本文件的实测结论均标注来源：审查方实测（转述）或辅助调度器只读观察。凡标记 待验证 的字段仍未取得可核实事实，未以推定值填充。",
-  "gate_receipt": null
+  "gate_receipt": "handoff/model/GATE_ACCEPTANCE_RECEIPT.json",
+  "accepted_by": "产品负责人（Zack）",
+  "accepted_at": "2026-10-05",
+  "still_pending_before_BATCH_28": [
+    "usage/区域/许可证字段（仍标 待验证）",
+    "真实连通下的可用性与预热记录"
+  ]
 }
