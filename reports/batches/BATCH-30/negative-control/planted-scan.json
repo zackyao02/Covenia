@@ -1,0 +1,613 @@
+{
+  "artifact": "reports/batches/BATCH-30/static-scan.json",
+  "batch_id": "BATCH-30",
+  "tool": "tools/verification/check_no_case_branches.py",
+  "tool_version": "no-case-branches-v1",
+  "generated_at": "2026-10-05T15:31:10.945589+00:00",
+  "mode": "worktree",
+  "strict": true,
+  "scanned_root": [
+    "backend/src/covenia_b"
+  ],
+  "scanned_module_count": 67,
+  "status": "FAIL",
+  "judgments": [
+    {
+      "id": "J1_CASE_LITERAL_IN_DECISION",
+      "title": "demo/known case identifier reaches the implementation",
+      "rule": "No implementation module may contain DEMO_001..3, S00001, a known order/evidence identifier, or any identifier of that shape. A literal that also appears in a decision predicate is reported with the detail 'in-decision'."
+    },
+    {
+      "id": "J2_DESCRIPTOR_DECIDES_VERDICT",
+      "title": "file name / view type / model confidence selects a business verdict",
+      "rule": "A non-semantic descriptor may be used for identity, input validation and manifest integrity only, and the illegal value must raise. It may not select a business verdict in a function that has no failing raise."
+    },
+    {
+      "id": "J3_OBSERVED_RESULT_HARDCODED",
+      "title": "an observed image fact is written as a literal",
+      "rule": "Positive observation claims (HIGH, MATCH, True, PRIMARY/GIFT, a non-empty coverage list, integrity_concern=True) may only be derived from measured input, never constructed as literals. Fail-closed defaults are exempt."
+    },
+    {
+      "id": "J4_GROUND_TRUTH_INGRESS",
+      "title": "a decision-path module reads fixtures or ground truth",
+      "rule": "rules/, evidence/, state/, commitments/, model/, privacy/ and services/ must not import or open a fixture, demo-case, or ground-truth artefact by path."
+    },
+    {
+      "id": "J5_PRIVACY_BYPASS_CONFIGURATION",
+      "title": "privacy masking is switched by configuration",
+      "rule": "privacy/sanitizer.py and privacy/boundary.py must not consult settings or the environment to decide whether to mask; masking is unconditional."
+    },
+    {
+      "id": "J6_IDENTITY_SELECTS_DEFAULT",
+      "title": "an identity branch picks a per-input fail-closed default",
+      "rule": "A server observation template must be uniform. Choosing a fail-closed default inside an identity or descriptor branch makes safety input-dependent."
+    },
+    {
+      "id": "J7_REQUEST_STATE_REACHES_RULES",
+      "title": "an untrusted request compatibility field is read",
+      "rule": "accountability_state / evidence_status / active_commitments / prohibited_actions / current_scope / declared_evidence_valid supplied by a client must never be read off a request-shaped object."
+    }
+  ],
+  "per_judgment_hits": {
+    "J1_CASE_LITERAL_IN_DECISION": 1,
+    "J2_DESCRIPTOR_DECIDES_VERDICT": 1,
+    "J3_OBSERVED_RESULT_HARDCODED": 5,
+    "J4_GROUND_TRUTH_INGRESS": 1,
+    "J5_PRIVACY_BYPASS_CONFIGURATION": 0,
+    "J6_IDENTITY_SELECTS_DEFAULT": 0,
+    "J7_REQUEST_STATE_REACHES_RULES": 1
+  },
+  "whitelist": {
+    "purity_subdirs": [
+      "commitments",
+      "evidence",
+      "model",
+      "privacy",
+      "rules",
+      "services",
+      "state"
+    ],
+    "broad_scope_note": "broad scope: only J1 (case identifier) is enforced; configured input paths, manifest file names and diagnostic counters legitimately live in settings/importing/images/preflight/runtime/main",
+    "excluded_dir_parts": [
+      ".git",
+      ".venv",
+      "__pycache__",
+      "node_modules",
+      "venv"
+    ],
+    "excluded_file_pattern": "^(test_|conftest\\.py$)",
+    "identity_and_validation_carve_out": "A descriptor (file name, declared view type) may take part in identity, input validation, and manifest integrity, and its branch may even select a verdict, provided the enclosing function raises on the illegal value; such occurrences are listed under 'suppressed' with their reason.",
+    "fail_closed_carve_out": "UNKNOWN / LOW / False / 0.0 defaults are the safe direction and are not treated as observed results by J3; J6 still forbids selecting them per input.",
+    "pragma": "# no-case-branch-scan: allow <J1..J7> reason=<text> suppresses one hit and is always echoed in this report under 'suppressed'."
+  },
+  "scanned_modules": [
+    {
+      "path": "__init__.py",
+      "sha256": "AB1420F8B2E0344CD537AAAC23A96DF231280ECE00CDCF36753A040C3F7F4F99",
+      "role": "broad"
+    },
+    {
+      "path": "api/analyze.py",
+      "sha256": "C8BE83123F190C664CA558A194BBBE7EF3155474481B99ECD2F897FB8463A55B",
+      "role": "broad"
+    },
+    {
+      "path": "api/approve.py",
+      "sha256": "3FCAD4504CE9E6B985293FBA4AAC466001AB2C1CF84C7CD2BB97F6D155C67515",
+      "role": "broad"
+    },
+    {
+      "path": "api/base.py",
+      "sha256": "D9C194EB3CFCB47FFD8BCF1286CE2DF7CC471A7151C116E0621ADAC5B41AC709",
+      "role": "broad"
+    },
+    {
+      "path": "api/evaluate.py",
+      "sha256": "3ACEF6BA55E8F1541898454BE6D1E3563BADB7F0FA6C679CB2E298A1D4BCF85A",
+      "role": "broad"
+    },
+    {
+      "path": "api/shipment.py",
+      "sha256": "5853476A8EC1F446363EF692C9759A34F21B14347EE37AA6ADF9B69367E228FF",
+      "role": "broad"
+    },
+    {
+      "path": "cache/__init__.py",
+      "sha256": "144A8152FF6FE0338E171A1E32B0DE5B17EF0CE91E198123DE163D7BA5D23DE2",
+      "role": "broad"
+    },
+    {
+      "path": "cache/extraction_fallback.py",
+      "sha256": "9BF12936E22C8BB530E93336FEF566E5E1B800CCE974A1DF88AD6446010BC79C",
+      "role": "broad"
+    },
+    {
+      "path": "commitments/__init__.py",
+      "sha256": "EF738AB3BD45793622C3A583799616E1C203DEE11EBD30AAB8ED80052487A4DB",
+      "role": "purity"
+    },
+    {
+      "path": "commitments/compiler.py",
+      "sha256": "B45D1A9F58B9B7222B5F8671D169A7CD59661DAFF347B7373EDE989722E7FAE6",
+      "role": "purity"
+    },
+    {
+      "path": "commitments/models.py",
+      "sha256": "6E7F804CF61DCE90057E2AF6A8E15BBFE9F935413F79C2302F0176BE4443B921",
+      "role": "purity"
+    },
+    {
+      "path": "domain/__init__.py",
+      "sha256": "1DB984D5180522441D30DABCF903DD0BDC6328D39208B38721A5A25F3D52F44D",
+      "role": "broad"
+    },
+    {
+      "path": "domain/time.py",
+      "sha256": "9A9FCB8DBC2757A9E9445104DA832AA8F7BEFF31150161AF089FF993721AB64F",
+      "role": "broad"
+    },
+    {
+      "path": "domain/types.py",
+      "sha256": "B19E9B55CF98679DCE3AB52B578747A87574FF8B97ED3002B7E61A344D82D84D",
+      "role": "broad"
+    },
+    {
+      "path": "domain/validation.py",
+      "sha256": "2BCA1C720E755A58C19F8565F4A422652EF4CFD4139FB215BC627289DA97D3F2",
+      "role": "broad"
+    },
+    {
+      "path": "evidence/__init__.py",
+      "sha256": "33F190990A0EDC5CA88F4BB581268F6D8A26CF597A7CEDB8731409797C770802",
+      "role": "purity"
+    },
+    {
+      "path": "evidence/aggregation.py",
+      "sha256": "014DC78D3CFC93BEB64CD01B495795E3CDC9EE4EFD5408A8334FF2EBE650C314",
+      "role": "purity"
+    },
+    {
+      "path": "images/__init__.py",
+      "sha256": "E939D5D44C0E3BB7AB37073DE02D5A2E40E1681D404127F166BF954C13F561B0",
+      "role": "broad"
+    },
+    {
+      "path": "images/resolver.py",
+      "sha256": "53D8F918FEFF17145C7A5EB71347AA52116C84CA2B6CF946488F9F0C95803E23",
+      "role": "broad"
+    },
+    {
+      "path": "importing/case_assembler.py",
+      "sha256": "7AB86FF482A09E06DA01B062A0D008554BA3BC0ECA902F7A79292E9EFAE047AD",
+      "role": "broad"
+    },
+    {
+      "path": "importing/case_catalog.py",
+      "sha256": "BA8FC9BA796C5AC47D720808EB0E20BE736917B04C3AC2C5ECBE8172811961F3",
+      "role": "broad"
+    },
+    {
+      "path": "importing/cli.py",
+      "sha256": "54D1A123F65AEFDC3C60A25EDF9DA9342DB273A875C54E4EEB026FD0F3B359DD",
+      "role": "broad"
+    },
+    {
+      "path": "importing/normalization.py",
+      "sha256": "C114F13EA47EA806615737117275F9C0F747DE0A0E9D3EF77D9CA111AEF0DA3E",
+      "role": "broad"
+    },
+    {
+      "path": "importing/workbook.py",
+      "sha256": "6D30982990942910189CE545AD596C8B5A6B8F8D72B3FA1C4A58331236F7D3E5",
+      "role": "broad"
+    },
+    {
+      "path": "main.py",
+      "sha256": "F27BD5771C46417F1199E418476DDBFDAABC6EFEACC4F55835B0BFCCB51C110C",
+      "role": "broad"
+    },
+    {
+      "path": "model/adapters/qwen_http.py",
+      "sha256": "705718C2A92B0B0A13B896AE55D720A2A138DEC74BEE1F8DC75135EA4DEEF9A8",
+      "role": "purity"
+    },
+    {
+      "path": "model/extraction.py",
+      "sha256": "5B08C7212260F5F0ABE93E394923E2C0E7DD46FDBEF78ABE51002F0A6CB4254E",
+      "role": "purity"
+    },
+    {
+      "path": "model/prompts/__init__.py",
+      "sha256": "C79F5486A95CD2FD578C133CA52ABAD2C456A829E04AEF39BFCD1806C98C6AD1",
+      "role": "purity"
+    },
+    {
+      "path": "model/prompts/candidate_extraction.py",
+      "sha256": "95070097A5A873651EA21E8CF9A2399BE85B7C71584D378CBDA3AED2B5D65BD6",
+      "role": "purity"
+    },
+    {
+      "path": "model/provider.py",
+      "sha256": "1C346E30629650D7B6D9FD4E5763573F6F672D499B4CD062061EAB331960BB30",
+      "role": "purity"
+    },
+    {
+      "path": "model/source_validation.py",
+      "sha256": "9E5EEB7C3AB8A5A694EE87B1D8227521C380696B7EE9F406F70A48A982DE9CBA",
+      "role": "purity"
+    },
+    {
+      "path": "observability/__init__.py",
+      "sha256": "4144011EDF0614F96A98D64825837721D5735C097FD54FE4774C8D3F9A8E290D",
+      "role": "broad"
+    },
+    {
+      "path": "observability/runtime.py",
+      "sha256": "162BF560825C0A4C142F78131FEE9B75B2D6644BF5CB9DF18E8A06B1C8FCB5FF",
+      "role": "broad"
+    },
+    {
+      "path": "ports/__init__.py",
+      "sha256": "EF303FB43CAA8D4C76077AC77BCA5B288FAAE1C7D50805B75D073D1FAE1B8A65",
+      "role": "broad"
+    },
+    {
+      "path": "ports/clock.py",
+      "sha256": "69338C305FDED1A4A44465C96DFC2AC767A62B69050D0082A2400425AD3ADD6A",
+      "role": "broad"
+    },
+    {
+      "path": "ports/contracts.py",
+      "sha256": "FF0189B0AC268BC46D6B02F9712BFC042B37D160AD4115709C8706D18E69FC9F",
+      "role": "broad"
+    },
+    {
+      "path": "ports/errors.py",
+      "sha256": "471B9927A8605C9F4AE8A2372CA36DE635029BA34BA772D655FD265485457175",
+      "role": "broad"
+    },
+    {
+      "path": "ports/wiring.py",
+      "sha256": "8C2B61296ECA670FD6DC8B4D5B7F07FDECF923AD69564FCBD11E30415A0D1EFC",
+      "role": "broad"
+    },
+    {
+      "path": "preflight.py",
+      "sha256": "CF29B1CEF8D719DFC5F346B2647C7940036E70199234E3138888C21CFFB677F8",
+      "role": "broad"
+    },
+    {
+      "path": "privacy/__init__.py",
+      "sha256": "6F627399676A7233471AE5749493A45ECD00ED53EDCF5DCD4BB3A5E174292423",
+      "role": "purity"
+    },
+    {
+      "path": "privacy/boundary.py",
+      "sha256": "E065373FAC1A61B85545D0900334024D050B40723245ED0274F5615D8A47095B",
+      "role": "purity"
+    },
+    {
+      "path": "privacy/sanitizer.py",
+      "sha256": "549B63B9C3E3734854112E586A7D3634D63F2ECCAE8F24E32FF85AD3D99CC9CA",
+      "role": "purity"
+    },
+    {
+      "path": "receipts/__init__.py",
+      "sha256": "F208D7BEDFFDE6AA2DC1E65880F42AA5BDCCEFB662A96D4C682BAF48EA0A78EF",
+      "role": "broad"
+    },
+    {
+      "path": "receipts/projection.py",
+      "sha256": "DE2C0F80FF36D41FD9AF6E8EA24358493286C7176E7C7D4CB8DEF0DC351EF8AD",
+      "role": "broad"
+    },
+    {
+      "path": "resolutions/planner.py",
+      "sha256": "BF422979F9712DCBFAEEEE84B7533C142BCDB56EC66F2CC09AE5DEF8B6853727",
+      "role": "broad"
+    },
+    {
+      "path": "resolutions/reply_templates.py",
+      "sha256": "3D90CE9F71D1328665B458DB4F3A5D569A53B52255C76A5F30FE19CFB9939AB8",
+      "role": "broad"
+    },
+    {
+      "path": "rules/__init__.py",
+      "sha256": "049C1DE1ACDE8ABB57132EEE29D7D7BFCE59347D6AD4EA405B52D5AB8F66A891",
+      "role": "purity"
+    },
+    {
+      "path": "rules/engine.py",
+      "sha256": "F019E6FBB036601D133DF365DCCE5A25F88FBD0F02429DC9CA70F3AC2EC4F6C7",
+      "role": "purity"
+    },
+    {
+      "path": "runtime.py",
+      "sha256": "71A7329F76D55D5A7AD2E2D7A3E741EEFE647DF9F8601BAA850DF35D984D0A6F",
+      "role": "broad"
+    },
+    {
+      "path": "services/analyze.py",
+      "sha256": "4D04996882B2D905D2E52763DA378CDBFBF63A8B1DC18D5CB5160E81DA4A7A60",
+      "role": "purity"
+    },
+    {
+      "path": "services/approve.py",
+      "sha256": "565456E33DF83D68ECAE09A3859D45DACB78383040543459D2BC19D7B6F03530",
+      "role": "purity"
+    },
+    {
+      "path": "services/evaluate.py",
+      "sha256": "E90F72518FA53C7097F4425806E6986D732C429022591820F47922FC5E0AF5EE",
+      "role": "purity"
+    },
+    {
+      "path": "services/fact_loader.py",
+      "sha256": "9BCCD2ADD642990EE0FAC5891F48ADE2021D6ADACC331047BA0EE406C1847903",
+      "role": "purity"
+    },
+    {
+      "path": "services/shipment.py",
+      "sha256": "F10376450B3A0F377ED3A9B56335AFE5E4F8518B0177D2351833CCAAEBEFA96A",
+      "role": "purity"
+    },
+    {
+      "path": "settings.py",
+      "sha256": "54166D1ADF87C71E1D6436E29AFA1A802128A4668D73A60582153E377CD49E20",
+      "role": "broad"
+    },
+    {
+      "path": "shipments/__init__.py",
+      "sha256": "D87D74376FE95C435A0DECB9A9D0E5951D4329560983401351410F86A5770979",
+      "role": "broad"
+    },
+    {
+      "path": "shipments/models.py",
+      "sha256": "A784B5AD35D44109CF9EAB6F9F1294D6C3862EE4870F2F3FAF32C814D896E018",
+      "role": "broad"
+    },
+    {
+      "path": "shipments/reducer.py",
+      "sha256": "BFFC9D2C8EB85401B4580E1453F5FE5F5C1B6709541B349C034E2F3BE9EDDB91",
+      "role": "broad"
+    },
+    {
+      "path": "state/__init__.py",
+      "sha256": "31C55BEF468919D2D12797219514C4E62A654CA17109D70F69509A21EAF5D13A",
+      "role": "purity"
+    },
+    {
+      "path": "state/builder.py",
+      "sha256": "2468B65238CD1F30D730793D61C94D280661188DCE26A49ED3C7DEA199E4534B",
+      "role": "purity"
+    },
+    {
+      "path": "state/models.py",
+      "sha256": "DE41EBBBFCC68CE220899BCBDC08DB3548843844584F2E51DBCE462421BBA643",
+      "role": "purity"
+    },
+    {
+      "path": "storage/__init__.py",
+      "sha256": "917BE83BAA9B54F661099B50821C7A0D2C8FFFDA0ABE6893F43C6C8184311070",
+      "role": "broad"
+    },
+    {
+      "path": "storage/admin.py",
+      "sha256": "BA9D61701F109011DB627B9FE3F2FCA132DEBAA1E088A60A0B740D5B9143B502",
+      "role": "broad"
+    },
+    {
+      "path": "storage/codec.py",
+      "sha256": "E8913EFC35998CDF3D43B7E18425F2573B9FEC6D21BE24ABF4D06B4AD4B0CF48",
+      "role": "broad"
+    },
+    {
+      "path": "storage/models.py",
+      "sha256": "2D8EBE2E56C981DC4268716E88C9B71DFA094F0C8F74F196DD6359CB8887896F",
+      "role": "broad"
+    },
+    {
+      "path": "storage/schema.py",
+      "sha256": "F956235D7129FAD33C65A2F99F5B6D30E3A0B5681B859C05D0E87A17E3592827",
+      "role": "broad"
+    },
+    {
+      "path": "storage/sqlite.py",
+      "sha256": "8719E0DB9C296F99E7C69AF540CD50E8BF7CFEBEB14D76BEB6FFB454CE5222B0",
+      "role": "broad"
+    }
+  ],
+  "hits": [
+    {
+      "judgment": "J1_CASE_LITERAL_IN_DECISION",
+      "path": "rules/engine.py",
+      "line": 247,
+      "column": 24,
+      "detail": "case identifier literal 'DEMO_001' in-decision (selects behaviour)",
+      "snippet": "if state.case_id == \"DEMO_001\":"
+    },
+    {
+      "judgment": "J2_DESCRIPTOR_DECIDES_VERDICT",
+      "path": "rules/engine.py",
+      "line": 253,
+      "column": 4,
+      "detail": "descriptor ['file_name'] selects verdict ['GIFT'] without a failing raise",
+      "snippet": "if entry.file_name.endswith(\"_gift.png\"):"
+    },
+    {
+      "judgment": "J3_OBSERVED_RESULT_HARDCODED",
+      "path": "rules/engine.py",
+      "line": 261,
+      "column": 20,
+      "detail": "observation literal readability=HIGH is not derived from measured input",
+      "snippet": "readability=\"HIGH\","
+    },
+    {
+      "judgment": "J3_OBSERVED_RESULT_HARDCODED",
+      "path": "rules/engine.py",
+      "line": 262,
+      "column": 18,
+      "detail": "observation literal sku_match=MATCH is not derived from measured input",
+      "snippet": "sku_match=\"MATCH\","
+    },
+    {
+      "judgment": "J3_OBSERVED_RESULT_HARDCODED",
+      "path": "rules/engine.py",
+      "line": 263,
+      "column": 29,
+      "detail": "observation literal product_identifiable=True is not derived from measured input",
+      "snippet": "product_identifiable=True,"
+    },
+    {
+      "judgment": "J3_OBSERVED_RESULT_HARDCODED",
+      "path": "rules/engine.py",
+      "line": 264,
+      "column": 22,
+      "detail": "observation literal issue_visible=True is not derived from measured input",
+      "snippet": "issue_visible=True,"
+    },
+    {
+      "judgment": "J3_OBSERVED_RESULT_HARDCODED",
+      "path": "rules/engine.py",
+      "line": 265,
+      "column": 17,
+      "detail": "observation literal coverage=<non-empty literal> is not derived from measured input",
+      "snippet": "coverage=[\"DAMAGE_DETAIL\"],"
+    },
+    {
+      "judgment": "J7_REQUEST_STATE_REACHES_RULES",
+      "path": "services/analyze.py",
+      "line": 682,
+      "column": 7,
+      "detail": "untrusted request field request.evidence_status is read",
+      "snippet": "if request.evidence_status == \"VALID\":"
+    },
+    {
+      "judgment": "J4_GROUND_TRUTH_INGRESS",
+      "path": "services/analyze.py",
+      "line": 691,
+      "column": 28,
+      "detail": "decision-path module references 'fixtures/ground-truth.json'",
+      "snippet": "payload = _planted_path(\"fixtures/ground-truth.json\").read_text(encoding=\"utf-8\")"
+    }
+  ],
+  "suppressed": [],
+  "docstring_case_literals": [],
+  "self_test": {
+    "passed": true,
+    "checks": [
+      {
+        "case": "rules/clean_derived.py",
+        "expected_judgments": [],
+        "observed_judgments": [],
+        "literal_blacklist_would_find_it": false,
+        "expect_clean": true,
+        "ok": true
+      },
+      {
+        "case": "rules/literal_branch.py",
+        "expected_judgments": [
+          "J1_CASE_LITERAL_IN_DECISION"
+        ],
+        "observed_judgments": [
+          "J1_CASE_LITERAL_IN_DECISION"
+        ],
+        "literal_blacklist_would_find_it": true,
+        "expect_clean": false,
+        "ok": true
+      },
+      {
+        "case": "services/descriptor_branch.py",
+        "expected_judgments": [
+          "J2_DESCRIPTOR_DECIDES_VERDICT"
+        ],
+        "observed_judgments": [
+          "J2_DESCRIPTOR_DECIDES_VERDICT"
+        ],
+        "literal_blacklist_would_find_it": false,
+        "expect_clean": false,
+        "ok": true
+      },
+      {
+        "case": "services/hardcoded_observation.py",
+        "expected_judgments": [
+          "J3_OBSERVED_RESULT_HARDCODED"
+        ],
+        "observed_judgments": [
+          "J3_OBSERVED_RESULT_HARDCODED"
+        ],
+        "literal_blacklist_would_find_it": false,
+        "expect_clean": false,
+        "ok": true
+      },
+      {
+        "case": "state/fixture_ingress.py",
+        "expected_judgments": [
+          "J4_GROUND_TRUTH_INGRESS"
+        ],
+        "observed_judgments": [
+          "J4_GROUND_TRUTH_INGRESS"
+        ],
+        "literal_blacklist_would_find_it": false,
+        "expect_clean": false,
+        "ok": true
+      },
+      {
+        "case": "privacy/sanitizer.py",
+        "expected_judgments": [
+          "J5_PRIVACY_BYPASS_CONFIGURATION"
+        ],
+        "observed_judgments": [
+          "J5_PRIVACY_BYPASS_CONFIGURATION"
+        ],
+        "literal_blacklist_would_find_it": false,
+        "expect_clean": false,
+        "ok": true
+      },
+      {
+        "case": "services/identity_default.py",
+        "expected_judgments": [
+          "J6_IDENTITY_SELECTS_DEFAULT"
+        ],
+        "observed_judgments": [
+          "J6_IDENTITY_SELECTS_DEFAULT"
+        ],
+        "literal_blacklist_would_find_it": false,
+        "expect_clean": false,
+        "ok": true
+      },
+      {
+        "case": "services/request_state.py",
+        "expected_judgments": [
+          "J7_REQUEST_STATE_REACHES_RULES"
+        ],
+        "observed_judgments": [
+          "J7_REQUEST_STATE_REACHES_RULES"
+        ],
+        "literal_blacklist_would_find_it": false,
+        "expect_clean": false,
+        "ok": true
+      },
+      {
+        "case": "rules/validator_raises.py",
+        "expected_judgments": [],
+        "observed_judgments": [],
+        "literal_blacklist_would_find_it": false,
+        "expect_clean": true,
+        "ok": true
+      },
+      {
+        "case": "on-disk-planted-corpus",
+        "expected_judgments": [
+          "<aggregate of the planted corpus>"
+        ],
+        "observed_judgments": [
+          "12 hits across 9 planted modules"
+        ],
+        "literal_blacklist_would_find_it": false,
+        "expect_clean": false,
+        "ok": true
+      }
+    ]
+  }
+}

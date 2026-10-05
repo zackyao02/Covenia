@@ -1,0 +1,100 @@
+{
+  "artifact": "reports/batches/BATCH-30/negative-control/planted-mutation.json",
+  "batch_id": "BATCH-30",
+  "generated_at": "2026-10-05T15:31:11.181018+00:00",
+  "purpose": "Negative control for tools/verification/check_no_case_branches.py: plant an identity-branching / hardcoded shortcut, prove the auditor exits non-zero and names the judgements, then restore the production source byte-for-byte.",
+  "repo_head_at_demo": "b22cc46f43d9995ab196511562aa3e6e007dc565",
+  "python_executable": "C:\\cv30\\venv\\Scripts\\python.exe",
+  "scanner": "tools/verification/check_no_case_branches.py",
+  "scanner_command": [
+    "C:\\cv30\\venv\\Scripts\\python.exe",
+    "tools/verification/check_no_case_branches.py",
+    "--strict"
+  ],
+  "scanner_exit_code_while_mutated": 1,
+  "scanner_stdout_while_mutated": "no-case-branches-v1: scanned 67 modules under ['backend/src/covenia_b'] (worktree)\r\njudgements:\r\n  J1_CASE_LITERAL_IN_DECISION        1 hit(s)  demo/known case identifier reaches the implementation\r\n  J2_DESCRIPTOR_DECIDES_VERDICT      1 hit(s)  file name / view type / model confidence selects a business verdict\r\n  J3_OBSERVED_RESULT_HARDCODED       5 hit(s)  an observed image fact is written as a literal\r\n  J4_GROUND_TRUTH_INGRESS            1 hit(s)  a decision-path module reads fixtures or ground truth\r\n  J5_PRIVACY_BYPASS_CONFIGURATION    0 hit(s)  privacy masking is switched by configuration\r\n  J6_IDENTITY_SELECTS_DEFAULT        0 hit(s)  an identity branch picks a per-input fail-closed default\r\n  J7_REQUEST_STATE_REACHES_RULES     1 hit(s)  an untrusted request compatibility field is read\r\nsuppressed (documented allowances): 0\r\nnegative control: reproduced (10 planted cases)\r\n  ok  rules/clean_derived.py                     literal-blacklist-finds=False judged=clean\r\n  ok  rules/literal_branch.py                    literal-blacklist-finds=True  judged=J1_CASE_LITERAL_IN_DECISION\r\n  ok  services/descriptor_branch.py              literal-blacklist-finds=False judged=J2_DESCRIPTOR_DECIDES_VERDICT\r\n  ok  services/hardcoded_observation.py          literal-blacklist-finds=False judged=J3_OBSERVED_RESULT_HARDCODED\r\n  ok  state/fixture_ingress.py                   literal-blacklist-finds=False judged=J4_GROUND_TRUTH_INGRESS\r\n  ok  privacy/sanitizer.py                       literal-blacklist-finds=False judged=J5_PRIVACY_BYPASS_CONFIGURATION\r\n  ok  services/identity_default.py               literal-blacklist-finds=False judged=J6_IDENTITY_SELECTS_DEFAULT\r\n  ok  services/request_state.py                  literal-blacklist-finds=False judged=J7_REQUEST_STATE_REACHES_RULES\r\n  ok  rules/validator_raises.py                  literal-blacklist-finds=False judged=clean\r\n  ok  on-disk-planted-corpus                     literal-blacklist-finds=False judged=12 hits across 9 planted modules\r\nHIT J1_CASE_LITERAL_IN_DECISION rules/engine.py:247:24 case identifier literal 'DEMO_001' in-decision (selects behaviour)\r\n    if state.case_id == \"DEMO_001\":\r\nHIT J2_DESCRIPTOR_DECIDES_VERDICT rules/engine.py:253:4 descriptor ['file_name'] selects verdict ['GIFT'] without a failing raise\r\n    if entry.file_name.endswith(\"_gift.png\"):\r\nHIT J3_OBSERVED_RESULT_HARDCODED rules/engine.py:261:20 observation literal readability=HIGH is not derived from measured input\r\n    readability=\"HIGH\",\r\nHIT J3_OBSERVED_RESULT_HARDCODED rules/engine.py:262:18 observation literal sku_match=MATCH is not derived from measured input\r\n    sku_match=\"MATCH\",\r\nHIT J3_OBSERVED_RESULT_HARDCODED rules/engine.py:263:29 observation literal product_identifiable=True is not derived from measured input\r\n    product_identifiable=True,\r\nHIT J3_OBSERVED_RESULT_HARDCODED rules/engine.py:264:22 observation literal issue_visible=True is not derived from measured input\r\n    issue_visible=True,\r\nHIT J3_OBSERVED_RESULT_HARDCODED rules/engine.py:265:17 observation literal coverage=<non-empty literal> is not derived from measured input\r\n    coverage=[\"DAMAGE_DETAIL\"],\r\nHIT J7_REQUEST_STATE_REACHES_RULES services/analyze.py:682:7 untrusted request field request.evidence_status is read\r\n    if request.evidence_status == \"VALID\":\r\nHIT J4_GROUND_TRUTH_INGRESS services/analyze.py:691:28 decision-path module references 'fixtures/ground-truth.json'\r\n    payload = _planted_path(\"fixtures/ground-truth.json\").read_text(encoding=\"utf-8\")\r\n========================================================================\r\nno-case-branches-v1: FAIL  (hits=9, suppressed=0, modules=67, self_test=True)\r\n",
+  "scanner_stderr_while_mutated": "",
+  "observed_judgments_while_mutated": [
+    "J1_CASE_LITERAL_IN_DECISION",
+    "J2_DESCRIPTOR_DECIDES_VERDICT",
+    "J3_OBSERVED_RESULT_HARDCODED",
+    "J4_GROUND_TRUTH_INGRESS",
+    "J7_REQUEST_STATE_REACHES_RULES"
+  ],
+  "expected_judgments_while_mutated": [
+    "J1_CASE_LITERAL_IN_DECISION",
+    "J2_DESCRIPTOR_DECIDES_VERDICT",
+    "J3_OBSERVED_RESULT_HARDCODED",
+    "J4_GROUND_TRUTH_INGRESS",
+    "J7_REQUEST_STATE_REACHES_RULES"
+  ],
+  "targets": [
+    {
+      "path": "backend/src/covenia_b/rules/engine.py",
+      "committed_blob_sha256": "27F9488F0BAB128207678F7A17F71466D8567B8BEDD0FBC30955960AF678550C",
+      "governed_lf_sha256_before_plant": "27F9488F0BAB128207678F7A17F71466D8567B8BEDD0FBC30955960AF678550C",
+      "worktree_raw_sha256_before_plant": "92972F3A226D70179E570B0E07DF2EEB8FC3FD0FBB4D1AA49AD74337C9B2B6ED",
+      "governed_lf_sha256_after_restore": "27F9488F0BAB128207678F7A17F71466D8567B8BEDD0FBC30955960AF678550C",
+      "worktree_raw_sha256_after_restore": "92972F3A226D70179E570B0E07DF2EEB8FC3FD0FBB4D1AA49AD74337C9B2B6ED",
+      "git_status_after_restore": "",
+      "restored_byte_identical": true,
+      "expected_judgments": [
+        "J1_CASE_LITERAL_IN_DECISION",
+        "J2_DESCRIPTOR_DECIDES_VERDICT",
+        "J3_OBSERVED_RESULT_HARDCODED"
+      ],
+      "reported_hit_lines": [
+        247,
+        253,
+        261,
+        262,
+        263,
+        264,
+        265
+      ],
+      "four_case_literals_in_planted_text": 1
+    },
+    {
+      "path": "backend/src/covenia_b/services/analyze.py",
+      "committed_blob_sha256": "7979C77BB2E6128C553B557B2A3DAA5AFB69635062240F927D02ECDF97316C49",
+      "governed_lf_sha256_before_plant": "7979C77BB2E6128C553B557B2A3DAA5AFB69635062240F927D02ECDF97316C49",
+      "worktree_raw_sha256_before_plant": "A13AC23FB243A31E77589CF15FE041287F89984D20FC6CF775A482ED69CE2A13",
+      "governed_lf_sha256_after_restore": "7979C77BB2E6128C553B557B2A3DAA5AFB69635062240F927D02ECDF97316C49",
+      "worktree_raw_sha256_after_restore": "A13AC23FB243A31E77589CF15FE041287F89984D20FC6CF775A482ED69CE2A13",
+      "git_status_after_restore": "",
+      "restored_byte_identical": true,
+      "expected_judgments": [
+        "J4_GROUND_TRUTH_INGRESS",
+        "J7_REQUEST_STATE_REACHES_RULES"
+      ],
+      "reported_hit_lines": [
+        682,
+        691
+      ],
+      "four_case_literals_in_planted_text": 0
+    }
+  ],
+  "line_ending_governance": {
+    "core_autocrlf": "file:C:/Program Files/Git/etc/gitconfig\ttrue",
+    "git_ls_files_eol": [
+      "i/lf    w/crlf  attr/                 \tbackend/src/covenia_b/rules/engine.py",
+      "i/lf    w/crlf  attr/                 \tbackend/src/covenia_b/services/analyze.py"
+    ],
+    "rule": "MASTER_PLAN 5.5-8: file-hash verification uses the blob bytes from git show <sha>:<path>; the worktree is CRLF because core.autocrlf=true, so the worktree comparison is made on the LF-normalised content, which is the inverse of the checkout filter and therefore equals the blob hash."
+  },
+  "literal_only_comparison": {
+    "note": "A literal-only scanner would have found only the DEMO_001 plant. Every other planted shortcut contains none of the four forbidden identifiers.",
+    "plants_matched_by_a_four_literal_blacklist": 1,
+    "plants_missed_by_a_four_literal_blacklist": 4
+  },
+  "restore_verification": {
+    "all_targets_restored_byte_identical": true,
+    "git_status_lines_for_targets_after_restore": [],
+    "git_status_clean_for_targets": true,
+    "crash_recovery_backup_dir_outside_repo": "C:\\cv30\\tmp\\batch30-planted-backup-hg76689w",
+    "note": "Restoration is performed in a finally block from bytes held in memory and mirrored to a directory outside the repository. The report never commits production source text. '' means git reports no change for the path."
+  },
+  "error": null,
+  "negative_control_demonstrated": true,
+  "conclusion": "check_no_case_branches.py exits 1 and names identity-branch, hardcoded-observation, request-state and ground-truth shortcuts that a four-literal blacklist misses; the production source is byte-identical afterwards."
+}

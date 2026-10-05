@@ -1,0 +1,1483 @@
+{
+  "artifact": "reports/batches/BATCH-30/security-matrix.json",
+  "batch_id": "BATCH-30",
+  "title": "Three-decision matrix, perturbation sweep and A34 override invariance",
+  "generated_at": "2026-10-05T15:29:48.096921+00:00",
+  "random_seed": 30001,
+  "perturbations_per_combination": 6,
+  "combination_count": 108,
+  "axes": {
+    "evidence_status": [
+      "VALID",
+      "MISMATCHED",
+      "NEED_HUMAN_REVIEW"
+    ],
+    "issue_type": [
+      "PACKAGE_DAMAGE",
+      "LOGISTICS_STALLED",
+      "ADVERSE_REACTION"
+    ],
+    "action_type": [
+      "ASK_EVIDENCE",
+      "CHECK_REPLACEMENT_PROGRESS",
+      "CREATE_FOLLOW_UP_TASK",
+      "CLOSE_CASE",
+      "SHIFT_FOLLOW_UP_TO_CONSUMER",
+      "REPEAT_EXPLANATION_REQUEST"
+    ],
+    "prohibited_actions_present": [
+      false,
+      true
+    ]
+  },
+  "prohibition_set_when_present": [
+    "CLOSE_BEFORE_RESOLUTION",
+    "SHIFT_FOLLOW_UP_TO_CONSUMER",
+    "ASK_REPEAT_EXPLANATION",
+    "ASK_SAME_EVIDENCE"
+  ],
+  "decision_distribution": {
+    "INTERVENE": 31,
+    "ALLOW": 32,
+    "HUMAN_REVIEW": 45
+  },
+  "rule_distribution": {
+    "E1": 4,
+    "E0_NO_RULE_MATCHED": 28,
+    "P0_PROHIBITED_ACTION": 27,
+    "H1": 45,
+    "E2": 4
+  },
+  "truth_table_source": "Derived in the test module from the frozen firewall semantics (contract_hits in integration/tests/test_security_and_generalization.py), not from the engine implementation, so an implementation edit cannot silently rewrite it.",
+  "perturbation_sweep": {
+    "what_is_perturbed": [
+      "case_id, action_id",
+      "current_scope.order_id / sku_id / fulfillment_item_id (state and requested_scope together)",
+      "traceable_service_fact source_ids and statements",
+      "consumer_expression narrative text",
+      "prohibited_actions order (order-only permutation)"
+    ],
+    "what_is_held_fixed": [
+      "evidence_status",
+      "issue_type",
+      "action_type",
+      "the presence (not the order) of each prohibition",
+      "every scope value on both sides of the comparison"
+    ],
+    "invariant_asserted": "decision, rule_id, rule_priority, matched/suppressed rule ids, fact_trace and reason are identical, and a JSON round-trip of both objects reproduces the same result.",
+    "falsifiability_control": "test_changed_facts_do_change_the_decision proves the invariant is not vacuous: changing evidence_status or the prohibition set does change the selected rule."
+  },
+  "a34_property": {
+    "requirement": "PRODUCT-FREEZE A34: challenge_overrides present while challenge_mode is absent or false must be ignored; the output equals the no-override output and the response echoes challenge_mode: false.",
+    "asserted_for_every_combination": true,
+    "non_vacuity_control": "test_a34_service_level_ignore_with_an_enabling_control re-sends the same override payload with challenge_mode=true and proves the payload is then applied, so the ignore is caused by the flag rather than by an inert payload."
+  },
+  "matrix": [
+    {
+      "evidence_status": "VALID",
+      "issue_type": "PACKAGE_DAMAGE",
+      "action_type": "ASK_EVIDENCE",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [
+        "E1"
+      ],
+      "expected_rule_id": "E1",
+      "expected_decision": "INTERVENE",
+      "expected_rule_priority": 300,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "VALID",
+      "issue_type": "PACKAGE_DAMAGE",
+      "action_type": "ASK_EVIDENCE",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "E1"
+      ],
+      "expected_rule_id": "E1",
+      "expected_decision": "INTERVENE",
+      "expected_rule_priority": 300,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "VALID",
+      "issue_type": "PACKAGE_DAMAGE",
+      "action_type": "CHECK_REPLACEMENT_PROGRESS",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [],
+      "expected_rule_id": "E0_NO_RULE_MATCHED",
+      "expected_decision": "ALLOW",
+      "expected_rule_priority": 0,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "VALID",
+      "issue_type": "PACKAGE_DAMAGE",
+      "action_type": "CHECK_REPLACEMENT_PROGRESS",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [],
+      "expected_rule_id": "E0_NO_RULE_MATCHED",
+      "expected_decision": "ALLOW",
+      "expected_rule_priority": 0,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "VALID",
+      "issue_type": "PACKAGE_DAMAGE",
+      "action_type": "CREATE_FOLLOW_UP_TASK",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [],
+      "expected_rule_id": "E0_NO_RULE_MATCHED",
+      "expected_decision": "ALLOW",
+      "expected_rule_priority": 0,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "VALID",
+      "issue_type": "PACKAGE_DAMAGE",
+      "action_type": "CREATE_FOLLOW_UP_TASK",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [],
+      "expected_rule_id": "E0_NO_RULE_MATCHED",
+      "expected_decision": "ALLOW",
+      "expected_rule_priority": 0,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "VALID",
+      "issue_type": "PACKAGE_DAMAGE",
+      "action_type": "CLOSE_CASE",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [],
+      "expected_rule_id": "E0_NO_RULE_MATCHED",
+      "expected_decision": "ALLOW",
+      "expected_rule_priority": 0,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "VALID",
+      "issue_type": "PACKAGE_DAMAGE",
+      "action_type": "CLOSE_CASE",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "P0_PROHIBITED_ACTION"
+      ],
+      "expected_rule_id": "P0_PROHIBITED_ACTION",
+      "expected_decision": "INTERVENE",
+      "expected_rule_priority": 400,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "VALID",
+      "issue_type": "PACKAGE_DAMAGE",
+      "action_type": "SHIFT_FOLLOW_UP_TO_CONSUMER",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [],
+      "expected_rule_id": "E0_NO_RULE_MATCHED",
+      "expected_decision": "ALLOW",
+      "expected_rule_priority": 0,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "VALID",
+      "issue_type": "PACKAGE_DAMAGE",
+      "action_type": "SHIFT_FOLLOW_UP_TO_CONSUMER",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "P0_PROHIBITED_ACTION"
+      ],
+      "expected_rule_id": "P0_PROHIBITED_ACTION",
+      "expected_decision": "INTERVENE",
+      "expected_rule_priority": 400,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "VALID",
+      "issue_type": "PACKAGE_DAMAGE",
+      "action_type": "REPEAT_EXPLANATION_REQUEST",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [],
+      "expected_rule_id": "E0_NO_RULE_MATCHED",
+      "expected_decision": "ALLOW",
+      "expected_rule_priority": 0,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "VALID",
+      "issue_type": "PACKAGE_DAMAGE",
+      "action_type": "REPEAT_EXPLANATION_REQUEST",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "P0_PROHIBITED_ACTION"
+      ],
+      "expected_rule_id": "P0_PROHIBITED_ACTION",
+      "expected_decision": "INTERVENE",
+      "expected_rule_priority": 400,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "VALID",
+      "issue_type": "LOGISTICS_STALLED",
+      "action_type": "ASK_EVIDENCE",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [
+        "E1"
+      ],
+      "expected_rule_id": "E1",
+      "expected_decision": "INTERVENE",
+      "expected_rule_priority": 300,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "VALID",
+      "issue_type": "LOGISTICS_STALLED",
+      "action_type": "ASK_EVIDENCE",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "E1"
+      ],
+      "expected_rule_id": "E1",
+      "expected_decision": "INTERVENE",
+      "expected_rule_priority": 300,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "VALID",
+      "issue_type": "LOGISTICS_STALLED",
+      "action_type": "CHECK_REPLACEMENT_PROGRESS",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [],
+      "expected_rule_id": "E0_NO_RULE_MATCHED",
+      "expected_decision": "ALLOW",
+      "expected_rule_priority": 0,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "VALID",
+      "issue_type": "LOGISTICS_STALLED",
+      "action_type": "CHECK_REPLACEMENT_PROGRESS",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [],
+      "expected_rule_id": "E0_NO_RULE_MATCHED",
+      "expected_decision": "ALLOW",
+      "expected_rule_priority": 0,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "VALID",
+      "issue_type": "LOGISTICS_STALLED",
+      "action_type": "CREATE_FOLLOW_UP_TASK",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [],
+      "expected_rule_id": "E0_NO_RULE_MATCHED",
+      "expected_decision": "ALLOW",
+      "expected_rule_priority": 0,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "VALID",
+      "issue_type": "LOGISTICS_STALLED",
+      "action_type": "CREATE_FOLLOW_UP_TASK",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [],
+      "expected_rule_id": "E0_NO_RULE_MATCHED",
+      "expected_decision": "ALLOW",
+      "expected_rule_priority": 0,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "VALID",
+      "issue_type": "LOGISTICS_STALLED",
+      "action_type": "CLOSE_CASE",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [],
+      "expected_rule_id": "E0_NO_RULE_MATCHED",
+      "expected_decision": "ALLOW",
+      "expected_rule_priority": 0,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "VALID",
+      "issue_type": "LOGISTICS_STALLED",
+      "action_type": "CLOSE_CASE",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "P0_PROHIBITED_ACTION"
+      ],
+      "expected_rule_id": "P0_PROHIBITED_ACTION",
+      "expected_decision": "INTERVENE",
+      "expected_rule_priority": 400,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "VALID",
+      "issue_type": "LOGISTICS_STALLED",
+      "action_type": "SHIFT_FOLLOW_UP_TO_CONSUMER",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [],
+      "expected_rule_id": "E0_NO_RULE_MATCHED",
+      "expected_decision": "ALLOW",
+      "expected_rule_priority": 0,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "VALID",
+      "issue_type": "LOGISTICS_STALLED",
+      "action_type": "SHIFT_FOLLOW_UP_TO_CONSUMER",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "P0_PROHIBITED_ACTION"
+      ],
+      "expected_rule_id": "P0_PROHIBITED_ACTION",
+      "expected_decision": "INTERVENE",
+      "expected_rule_priority": 400,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "VALID",
+      "issue_type": "LOGISTICS_STALLED",
+      "action_type": "REPEAT_EXPLANATION_REQUEST",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [],
+      "expected_rule_id": "E0_NO_RULE_MATCHED",
+      "expected_decision": "ALLOW",
+      "expected_rule_priority": 0,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "VALID",
+      "issue_type": "LOGISTICS_STALLED",
+      "action_type": "REPEAT_EXPLANATION_REQUEST",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "P0_PROHIBITED_ACTION"
+      ],
+      "expected_rule_id": "P0_PROHIBITED_ACTION",
+      "expected_decision": "INTERVENE",
+      "expected_rule_priority": 400,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "VALID",
+      "issue_type": "ADVERSE_REACTION",
+      "action_type": "ASK_EVIDENCE",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [
+        "H1",
+        "E1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": [
+        "E1"
+      ]
+    },
+    {
+      "evidence_status": "VALID",
+      "issue_type": "ADVERSE_REACTION",
+      "action_type": "ASK_EVIDENCE",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "H1",
+        "E1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": [
+        "E1"
+      ]
+    },
+    {
+      "evidence_status": "VALID",
+      "issue_type": "ADVERSE_REACTION",
+      "action_type": "CHECK_REPLACEMENT_PROGRESS",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [
+        "H1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "VALID",
+      "issue_type": "ADVERSE_REACTION",
+      "action_type": "CHECK_REPLACEMENT_PROGRESS",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "H1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "VALID",
+      "issue_type": "ADVERSE_REACTION",
+      "action_type": "CREATE_FOLLOW_UP_TASK",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [
+        "H1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "VALID",
+      "issue_type": "ADVERSE_REACTION",
+      "action_type": "CREATE_FOLLOW_UP_TASK",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "H1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "VALID",
+      "issue_type": "ADVERSE_REACTION",
+      "action_type": "CLOSE_CASE",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [
+        "H1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "VALID",
+      "issue_type": "ADVERSE_REACTION",
+      "action_type": "CLOSE_CASE",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "P0_PROHIBITED_ACTION",
+        "H1"
+      ],
+      "expected_rule_id": "P0_PROHIBITED_ACTION",
+      "expected_decision": "INTERVENE",
+      "expected_rule_priority": 400,
+      "expected_suppressed_rule_ids": [
+        "H1"
+      ]
+    },
+    {
+      "evidence_status": "VALID",
+      "issue_type": "ADVERSE_REACTION",
+      "action_type": "SHIFT_FOLLOW_UP_TO_CONSUMER",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [
+        "H1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "VALID",
+      "issue_type": "ADVERSE_REACTION",
+      "action_type": "SHIFT_FOLLOW_UP_TO_CONSUMER",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "P0_PROHIBITED_ACTION",
+        "H1"
+      ],
+      "expected_rule_id": "P0_PROHIBITED_ACTION",
+      "expected_decision": "INTERVENE",
+      "expected_rule_priority": 400,
+      "expected_suppressed_rule_ids": [
+        "H1"
+      ]
+    },
+    {
+      "evidence_status": "VALID",
+      "issue_type": "ADVERSE_REACTION",
+      "action_type": "REPEAT_EXPLANATION_REQUEST",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [
+        "H1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "VALID",
+      "issue_type": "ADVERSE_REACTION",
+      "action_type": "REPEAT_EXPLANATION_REQUEST",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "P0_PROHIBITED_ACTION",
+        "H1"
+      ],
+      "expected_rule_id": "P0_PROHIBITED_ACTION",
+      "expected_decision": "INTERVENE",
+      "expected_rule_priority": 400,
+      "expected_suppressed_rule_ids": [
+        "H1"
+      ]
+    },
+    {
+      "evidence_status": "MISMATCHED",
+      "issue_type": "PACKAGE_DAMAGE",
+      "action_type": "ASK_EVIDENCE",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [
+        "E2"
+      ],
+      "expected_rule_id": "E2",
+      "expected_decision": "ALLOW",
+      "expected_rule_priority": 100,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "MISMATCHED",
+      "issue_type": "PACKAGE_DAMAGE",
+      "action_type": "ASK_EVIDENCE",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "E2"
+      ],
+      "expected_rule_id": "E2",
+      "expected_decision": "ALLOW",
+      "expected_rule_priority": 100,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "MISMATCHED",
+      "issue_type": "PACKAGE_DAMAGE",
+      "action_type": "CHECK_REPLACEMENT_PROGRESS",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [],
+      "expected_rule_id": "E0_NO_RULE_MATCHED",
+      "expected_decision": "ALLOW",
+      "expected_rule_priority": 0,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "MISMATCHED",
+      "issue_type": "PACKAGE_DAMAGE",
+      "action_type": "CHECK_REPLACEMENT_PROGRESS",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [],
+      "expected_rule_id": "E0_NO_RULE_MATCHED",
+      "expected_decision": "ALLOW",
+      "expected_rule_priority": 0,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "MISMATCHED",
+      "issue_type": "PACKAGE_DAMAGE",
+      "action_type": "CREATE_FOLLOW_UP_TASK",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [],
+      "expected_rule_id": "E0_NO_RULE_MATCHED",
+      "expected_decision": "ALLOW",
+      "expected_rule_priority": 0,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "MISMATCHED",
+      "issue_type": "PACKAGE_DAMAGE",
+      "action_type": "CREATE_FOLLOW_UP_TASK",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [],
+      "expected_rule_id": "E0_NO_RULE_MATCHED",
+      "expected_decision": "ALLOW",
+      "expected_rule_priority": 0,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "MISMATCHED",
+      "issue_type": "PACKAGE_DAMAGE",
+      "action_type": "CLOSE_CASE",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [],
+      "expected_rule_id": "E0_NO_RULE_MATCHED",
+      "expected_decision": "ALLOW",
+      "expected_rule_priority": 0,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "MISMATCHED",
+      "issue_type": "PACKAGE_DAMAGE",
+      "action_type": "CLOSE_CASE",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "P0_PROHIBITED_ACTION"
+      ],
+      "expected_rule_id": "P0_PROHIBITED_ACTION",
+      "expected_decision": "INTERVENE",
+      "expected_rule_priority": 400,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "MISMATCHED",
+      "issue_type": "PACKAGE_DAMAGE",
+      "action_type": "SHIFT_FOLLOW_UP_TO_CONSUMER",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [],
+      "expected_rule_id": "E0_NO_RULE_MATCHED",
+      "expected_decision": "ALLOW",
+      "expected_rule_priority": 0,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "MISMATCHED",
+      "issue_type": "PACKAGE_DAMAGE",
+      "action_type": "SHIFT_FOLLOW_UP_TO_CONSUMER",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "P0_PROHIBITED_ACTION"
+      ],
+      "expected_rule_id": "P0_PROHIBITED_ACTION",
+      "expected_decision": "INTERVENE",
+      "expected_rule_priority": 400,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "MISMATCHED",
+      "issue_type": "PACKAGE_DAMAGE",
+      "action_type": "REPEAT_EXPLANATION_REQUEST",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [],
+      "expected_rule_id": "E0_NO_RULE_MATCHED",
+      "expected_decision": "ALLOW",
+      "expected_rule_priority": 0,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "MISMATCHED",
+      "issue_type": "PACKAGE_DAMAGE",
+      "action_type": "REPEAT_EXPLANATION_REQUEST",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "P0_PROHIBITED_ACTION"
+      ],
+      "expected_rule_id": "P0_PROHIBITED_ACTION",
+      "expected_decision": "INTERVENE",
+      "expected_rule_priority": 400,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "MISMATCHED",
+      "issue_type": "LOGISTICS_STALLED",
+      "action_type": "ASK_EVIDENCE",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [
+        "E2"
+      ],
+      "expected_rule_id": "E2",
+      "expected_decision": "ALLOW",
+      "expected_rule_priority": 100,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "MISMATCHED",
+      "issue_type": "LOGISTICS_STALLED",
+      "action_type": "ASK_EVIDENCE",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "E2"
+      ],
+      "expected_rule_id": "E2",
+      "expected_decision": "ALLOW",
+      "expected_rule_priority": 100,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "MISMATCHED",
+      "issue_type": "LOGISTICS_STALLED",
+      "action_type": "CHECK_REPLACEMENT_PROGRESS",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [],
+      "expected_rule_id": "E0_NO_RULE_MATCHED",
+      "expected_decision": "ALLOW",
+      "expected_rule_priority": 0,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "MISMATCHED",
+      "issue_type": "LOGISTICS_STALLED",
+      "action_type": "CHECK_REPLACEMENT_PROGRESS",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [],
+      "expected_rule_id": "E0_NO_RULE_MATCHED",
+      "expected_decision": "ALLOW",
+      "expected_rule_priority": 0,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "MISMATCHED",
+      "issue_type": "LOGISTICS_STALLED",
+      "action_type": "CREATE_FOLLOW_UP_TASK",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [],
+      "expected_rule_id": "E0_NO_RULE_MATCHED",
+      "expected_decision": "ALLOW",
+      "expected_rule_priority": 0,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "MISMATCHED",
+      "issue_type": "LOGISTICS_STALLED",
+      "action_type": "CREATE_FOLLOW_UP_TASK",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [],
+      "expected_rule_id": "E0_NO_RULE_MATCHED",
+      "expected_decision": "ALLOW",
+      "expected_rule_priority": 0,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "MISMATCHED",
+      "issue_type": "LOGISTICS_STALLED",
+      "action_type": "CLOSE_CASE",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [],
+      "expected_rule_id": "E0_NO_RULE_MATCHED",
+      "expected_decision": "ALLOW",
+      "expected_rule_priority": 0,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "MISMATCHED",
+      "issue_type": "LOGISTICS_STALLED",
+      "action_type": "CLOSE_CASE",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "P0_PROHIBITED_ACTION"
+      ],
+      "expected_rule_id": "P0_PROHIBITED_ACTION",
+      "expected_decision": "INTERVENE",
+      "expected_rule_priority": 400,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "MISMATCHED",
+      "issue_type": "LOGISTICS_STALLED",
+      "action_type": "SHIFT_FOLLOW_UP_TO_CONSUMER",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [],
+      "expected_rule_id": "E0_NO_RULE_MATCHED",
+      "expected_decision": "ALLOW",
+      "expected_rule_priority": 0,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "MISMATCHED",
+      "issue_type": "LOGISTICS_STALLED",
+      "action_type": "SHIFT_FOLLOW_UP_TO_CONSUMER",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "P0_PROHIBITED_ACTION"
+      ],
+      "expected_rule_id": "P0_PROHIBITED_ACTION",
+      "expected_decision": "INTERVENE",
+      "expected_rule_priority": 400,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "MISMATCHED",
+      "issue_type": "LOGISTICS_STALLED",
+      "action_type": "REPEAT_EXPLANATION_REQUEST",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [],
+      "expected_rule_id": "E0_NO_RULE_MATCHED",
+      "expected_decision": "ALLOW",
+      "expected_rule_priority": 0,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "MISMATCHED",
+      "issue_type": "LOGISTICS_STALLED",
+      "action_type": "REPEAT_EXPLANATION_REQUEST",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "P0_PROHIBITED_ACTION"
+      ],
+      "expected_rule_id": "P0_PROHIBITED_ACTION",
+      "expected_decision": "INTERVENE",
+      "expected_rule_priority": 400,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "MISMATCHED",
+      "issue_type": "ADVERSE_REACTION",
+      "action_type": "ASK_EVIDENCE",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [
+        "H1",
+        "E2"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": [
+        "E2"
+      ]
+    },
+    {
+      "evidence_status": "MISMATCHED",
+      "issue_type": "ADVERSE_REACTION",
+      "action_type": "ASK_EVIDENCE",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "H1",
+        "E2"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": [
+        "E2"
+      ]
+    },
+    {
+      "evidence_status": "MISMATCHED",
+      "issue_type": "ADVERSE_REACTION",
+      "action_type": "CHECK_REPLACEMENT_PROGRESS",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [
+        "H1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "MISMATCHED",
+      "issue_type": "ADVERSE_REACTION",
+      "action_type": "CHECK_REPLACEMENT_PROGRESS",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "H1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "MISMATCHED",
+      "issue_type": "ADVERSE_REACTION",
+      "action_type": "CREATE_FOLLOW_UP_TASK",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [
+        "H1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "MISMATCHED",
+      "issue_type": "ADVERSE_REACTION",
+      "action_type": "CREATE_FOLLOW_UP_TASK",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "H1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "MISMATCHED",
+      "issue_type": "ADVERSE_REACTION",
+      "action_type": "CLOSE_CASE",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [
+        "H1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "MISMATCHED",
+      "issue_type": "ADVERSE_REACTION",
+      "action_type": "CLOSE_CASE",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "P0_PROHIBITED_ACTION",
+        "H1"
+      ],
+      "expected_rule_id": "P0_PROHIBITED_ACTION",
+      "expected_decision": "INTERVENE",
+      "expected_rule_priority": 400,
+      "expected_suppressed_rule_ids": [
+        "H1"
+      ]
+    },
+    {
+      "evidence_status": "MISMATCHED",
+      "issue_type": "ADVERSE_REACTION",
+      "action_type": "SHIFT_FOLLOW_UP_TO_CONSUMER",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [
+        "H1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "MISMATCHED",
+      "issue_type": "ADVERSE_REACTION",
+      "action_type": "SHIFT_FOLLOW_UP_TO_CONSUMER",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "P0_PROHIBITED_ACTION",
+        "H1"
+      ],
+      "expected_rule_id": "P0_PROHIBITED_ACTION",
+      "expected_decision": "INTERVENE",
+      "expected_rule_priority": 400,
+      "expected_suppressed_rule_ids": [
+        "H1"
+      ]
+    },
+    {
+      "evidence_status": "MISMATCHED",
+      "issue_type": "ADVERSE_REACTION",
+      "action_type": "REPEAT_EXPLANATION_REQUEST",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [
+        "H1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "MISMATCHED",
+      "issue_type": "ADVERSE_REACTION",
+      "action_type": "REPEAT_EXPLANATION_REQUEST",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "P0_PROHIBITED_ACTION",
+        "H1"
+      ],
+      "expected_rule_id": "P0_PROHIBITED_ACTION",
+      "expected_decision": "INTERVENE",
+      "expected_rule_priority": 400,
+      "expected_suppressed_rule_ids": [
+        "H1"
+      ]
+    },
+    {
+      "evidence_status": "NEED_HUMAN_REVIEW",
+      "issue_type": "PACKAGE_DAMAGE",
+      "action_type": "ASK_EVIDENCE",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [
+        "H1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "NEED_HUMAN_REVIEW",
+      "issue_type": "PACKAGE_DAMAGE",
+      "action_type": "ASK_EVIDENCE",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "H1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "NEED_HUMAN_REVIEW",
+      "issue_type": "PACKAGE_DAMAGE",
+      "action_type": "CHECK_REPLACEMENT_PROGRESS",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [
+        "H1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "NEED_HUMAN_REVIEW",
+      "issue_type": "PACKAGE_DAMAGE",
+      "action_type": "CHECK_REPLACEMENT_PROGRESS",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "H1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "NEED_HUMAN_REVIEW",
+      "issue_type": "PACKAGE_DAMAGE",
+      "action_type": "CREATE_FOLLOW_UP_TASK",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [
+        "H1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "NEED_HUMAN_REVIEW",
+      "issue_type": "PACKAGE_DAMAGE",
+      "action_type": "CREATE_FOLLOW_UP_TASK",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "H1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "NEED_HUMAN_REVIEW",
+      "issue_type": "PACKAGE_DAMAGE",
+      "action_type": "CLOSE_CASE",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [
+        "H1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "NEED_HUMAN_REVIEW",
+      "issue_type": "PACKAGE_DAMAGE",
+      "action_type": "CLOSE_CASE",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "P0_PROHIBITED_ACTION",
+        "H1"
+      ],
+      "expected_rule_id": "P0_PROHIBITED_ACTION",
+      "expected_decision": "INTERVENE",
+      "expected_rule_priority": 400,
+      "expected_suppressed_rule_ids": [
+        "H1"
+      ]
+    },
+    {
+      "evidence_status": "NEED_HUMAN_REVIEW",
+      "issue_type": "PACKAGE_DAMAGE",
+      "action_type": "SHIFT_FOLLOW_UP_TO_CONSUMER",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [
+        "H1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "NEED_HUMAN_REVIEW",
+      "issue_type": "PACKAGE_DAMAGE",
+      "action_type": "SHIFT_FOLLOW_UP_TO_CONSUMER",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "P0_PROHIBITED_ACTION",
+        "H1"
+      ],
+      "expected_rule_id": "P0_PROHIBITED_ACTION",
+      "expected_decision": "INTERVENE",
+      "expected_rule_priority": 400,
+      "expected_suppressed_rule_ids": [
+        "H1"
+      ]
+    },
+    {
+      "evidence_status": "NEED_HUMAN_REVIEW",
+      "issue_type": "PACKAGE_DAMAGE",
+      "action_type": "REPEAT_EXPLANATION_REQUEST",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [
+        "H1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "NEED_HUMAN_REVIEW",
+      "issue_type": "PACKAGE_DAMAGE",
+      "action_type": "REPEAT_EXPLANATION_REQUEST",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "P0_PROHIBITED_ACTION",
+        "H1"
+      ],
+      "expected_rule_id": "P0_PROHIBITED_ACTION",
+      "expected_decision": "INTERVENE",
+      "expected_rule_priority": 400,
+      "expected_suppressed_rule_ids": [
+        "H1"
+      ]
+    },
+    {
+      "evidence_status": "NEED_HUMAN_REVIEW",
+      "issue_type": "LOGISTICS_STALLED",
+      "action_type": "ASK_EVIDENCE",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [
+        "H1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "NEED_HUMAN_REVIEW",
+      "issue_type": "LOGISTICS_STALLED",
+      "action_type": "ASK_EVIDENCE",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "H1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "NEED_HUMAN_REVIEW",
+      "issue_type": "LOGISTICS_STALLED",
+      "action_type": "CHECK_REPLACEMENT_PROGRESS",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [
+        "H1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "NEED_HUMAN_REVIEW",
+      "issue_type": "LOGISTICS_STALLED",
+      "action_type": "CHECK_REPLACEMENT_PROGRESS",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "H1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "NEED_HUMAN_REVIEW",
+      "issue_type": "LOGISTICS_STALLED",
+      "action_type": "CREATE_FOLLOW_UP_TASK",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [
+        "H1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "NEED_HUMAN_REVIEW",
+      "issue_type": "LOGISTICS_STALLED",
+      "action_type": "CREATE_FOLLOW_UP_TASK",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "H1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "NEED_HUMAN_REVIEW",
+      "issue_type": "LOGISTICS_STALLED",
+      "action_type": "CLOSE_CASE",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [
+        "H1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "NEED_HUMAN_REVIEW",
+      "issue_type": "LOGISTICS_STALLED",
+      "action_type": "CLOSE_CASE",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "P0_PROHIBITED_ACTION",
+        "H1"
+      ],
+      "expected_rule_id": "P0_PROHIBITED_ACTION",
+      "expected_decision": "INTERVENE",
+      "expected_rule_priority": 400,
+      "expected_suppressed_rule_ids": [
+        "H1"
+      ]
+    },
+    {
+      "evidence_status": "NEED_HUMAN_REVIEW",
+      "issue_type": "LOGISTICS_STALLED",
+      "action_type": "SHIFT_FOLLOW_UP_TO_CONSUMER",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [
+        "H1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "NEED_HUMAN_REVIEW",
+      "issue_type": "LOGISTICS_STALLED",
+      "action_type": "SHIFT_FOLLOW_UP_TO_CONSUMER",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "P0_PROHIBITED_ACTION",
+        "H1"
+      ],
+      "expected_rule_id": "P0_PROHIBITED_ACTION",
+      "expected_decision": "INTERVENE",
+      "expected_rule_priority": 400,
+      "expected_suppressed_rule_ids": [
+        "H1"
+      ]
+    },
+    {
+      "evidence_status": "NEED_HUMAN_REVIEW",
+      "issue_type": "LOGISTICS_STALLED",
+      "action_type": "REPEAT_EXPLANATION_REQUEST",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [
+        "H1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "NEED_HUMAN_REVIEW",
+      "issue_type": "LOGISTICS_STALLED",
+      "action_type": "REPEAT_EXPLANATION_REQUEST",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "P0_PROHIBITED_ACTION",
+        "H1"
+      ],
+      "expected_rule_id": "P0_PROHIBITED_ACTION",
+      "expected_decision": "INTERVENE",
+      "expected_rule_priority": 400,
+      "expected_suppressed_rule_ids": [
+        "H1"
+      ]
+    },
+    {
+      "evidence_status": "NEED_HUMAN_REVIEW",
+      "issue_type": "ADVERSE_REACTION",
+      "action_type": "ASK_EVIDENCE",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [
+        "H1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "NEED_HUMAN_REVIEW",
+      "issue_type": "ADVERSE_REACTION",
+      "action_type": "ASK_EVIDENCE",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "H1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "NEED_HUMAN_REVIEW",
+      "issue_type": "ADVERSE_REACTION",
+      "action_type": "CHECK_REPLACEMENT_PROGRESS",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [
+        "H1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "NEED_HUMAN_REVIEW",
+      "issue_type": "ADVERSE_REACTION",
+      "action_type": "CHECK_REPLACEMENT_PROGRESS",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "H1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "NEED_HUMAN_REVIEW",
+      "issue_type": "ADVERSE_REACTION",
+      "action_type": "CREATE_FOLLOW_UP_TASK",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [
+        "H1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "NEED_HUMAN_REVIEW",
+      "issue_type": "ADVERSE_REACTION",
+      "action_type": "CREATE_FOLLOW_UP_TASK",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "H1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "NEED_HUMAN_REVIEW",
+      "issue_type": "ADVERSE_REACTION",
+      "action_type": "CLOSE_CASE",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [
+        "H1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "NEED_HUMAN_REVIEW",
+      "issue_type": "ADVERSE_REACTION",
+      "action_type": "CLOSE_CASE",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "P0_PROHIBITED_ACTION",
+        "H1"
+      ],
+      "expected_rule_id": "P0_PROHIBITED_ACTION",
+      "expected_decision": "INTERVENE",
+      "expected_rule_priority": 400,
+      "expected_suppressed_rule_ids": [
+        "H1"
+      ]
+    },
+    {
+      "evidence_status": "NEED_HUMAN_REVIEW",
+      "issue_type": "ADVERSE_REACTION",
+      "action_type": "SHIFT_FOLLOW_UP_TO_CONSUMER",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [
+        "H1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "NEED_HUMAN_REVIEW",
+      "issue_type": "ADVERSE_REACTION",
+      "action_type": "SHIFT_FOLLOW_UP_TO_CONSUMER",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "P0_PROHIBITED_ACTION",
+        "H1"
+      ],
+      "expected_rule_id": "P0_PROHIBITED_ACTION",
+      "expected_decision": "INTERVENE",
+      "expected_rule_priority": 400,
+      "expected_suppressed_rule_ids": [
+        "H1"
+      ]
+    },
+    {
+      "evidence_status": "NEED_HUMAN_REVIEW",
+      "issue_type": "ADVERSE_REACTION",
+      "action_type": "REPEAT_EXPLANATION_REQUEST",
+      "prohibited_actions_present": false,
+      "expected_matched_rule_ids": [
+        "H1"
+      ],
+      "expected_rule_id": "H1",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_priority": 350,
+      "expected_suppressed_rule_ids": []
+    },
+    {
+      "evidence_status": "NEED_HUMAN_REVIEW",
+      "issue_type": "ADVERSE_REACTION",
+      "action_type": "REPEAT_EXPLANATION_REQUEST",
+      "prohibited_actions_present": true,
+      "expected_matched_rule_ids": [
+        "P0_PROHIBITED_ACTION",
+        "H1"
+      ],
+      "expected_rule_id": "P0_PROHIBITED_ACTION",
+      "expected_decision": "INTERVENE",
+      "expected_rule_priority": 400,
+      "expected_suppressed_rule_ids": [
+        "H1"
+      ]
+    }
+  ],
+  "honesty_statement": "This matrix is a rule- and request-level contract check. It does not claim that a real model was invoked; pixel-level image-injection pairing against the real model belongs to BATCH-32 with the A materials."
+}
