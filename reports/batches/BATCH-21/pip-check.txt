@@ -1,4 +1,1 @@
-BLOCKED: pip check was not run.
-
-Reason: the required isolated interpreter at RUN_DIR/venv/Scripts/python.exe could not be created because `py -3.13` returned `No installed Python found!`.
-No global interpreter and no other Batch venv were used.
+No broken requirements found.

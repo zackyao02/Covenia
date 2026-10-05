@@ -1,23 +1,22 @@
 {
   "batch_id": "BATCH-21",
-  "status": "BLOCKED",
+  "interpreter": "C:\\r21b\\venv\\Scripts\\python.exe",
   "commands": [
-    {
-      "command": "py -3.13 -m venv venv",
-      "exit_status": 1,
-      "stdout": "",
-      "stderr": "No installed Python found!",
-      "result": "BLOCKED"
-    },
-    {
-      "command": "& \"<RUN_DIR>/venv/Scripts/python.exe\" -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix\" \"<RUN_DIR>/venv/Scripts/python.exe\"",
-      "result": "NOT_RUN",
-      "reason": "The required venv does not exist because no CPython interpreter was available."
-    },
-    {
-      "command": "acceptance commands requiring <RUN_DIR>/venv/Scripts/python.exe",
-      "result": "NOT_RUN",
-      "reason": "No isolated interpreter exists; no global interpreter or another batch's venv was used."
-    }
+    {"command": "D:\\python\\python.exe -m venv C:\\r21b\\venv", "exit_code": 0, "result": "created final isolated venv"},
+    {"command": "venv interpreter identity assertion", "exit_code": 0, "result": "C:\\r21b\\venv\\Scripts\\python.exe; CPython 3.13.5; isolated=true"},
+    {"command": "python -m pip install --no-deps -r backend/requirements-dev.lock", "exit_code": 0, "result": "installed pinned dependencies in BATCH-21 venv"},
+    {"command": "python -m pip install --no-deps --no-build-isolation -e backend", "exit_code": 0, "result": "editable covenia-b installed"},
+    {"command": "python -c import pytest, jsonschema", "exit_code": 0, "result": "pytest/jsonschema import OK"},
+    {"command": "python -m pytest backend/tests/api/test_analyze.py -q", "exit_code": 0, "result": "6 passed"},
+    {"command": "python tools/contracts/check_contracts.py --strict", "exit_code": 0, "result": "14 schemas and 18 vectors validated"},
+    {"command": "python -m pip list --format=json", "exit_code": 0, "result": "captured; includes httpx==0.28.1, httpcore==1.0.7, certifi==2025.1.31"},
+    {"command": "python -m pip check", "exit_code": 0, "result": "No broken requirements found."},
+    {"command": "python -m ruff check backend/src/covenia_b/api/analyze.py backend/tests/api/test_analyze.py", "exit_code": 0, "result": "All checks passed!"},
+    {"command": "git diff --check", "exit_code": 0, "result": "clean"},
+    {"command": "git status --short", "exit_code": 0, "result": "clean before report evidence commit"}
+  ],
+  "notes": [
+    "The final evidence environment was created only by D:\\python\\python.exe and every final pip/pytest/ruff/contract command used its venv absolute interpreter.",
+    "Pytest emitted two non-fatal cache-write warnings because backend/.pytest_cache was not writable; all six tests completed successfully."
   ]
 }

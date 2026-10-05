@@ -1,6 +1,37 @@
 {
   "batch_id": "BATCH-21",
-  "status": "NOT_GENERATED",
-  "reason": "No HTTP route or ASGI test was implemented because the mandatory isolated Python environment could not be created.",
-  "contains_secrets": false
+  "classification": "implementation_examples_redacted",
+  "examples": [
+    {
+      "name": "case_id_only_transport_double",
+      "request": {"case_id": "case-001"},
+      "response": {
+        "status": 200,
+        "body": {
+          "data": {"transport_double": true},
+          "error": null,
+          "request_id": "6dfc4c88-a6f3-4211-bb8a-a1d4f23de939"
+        }
+      },
+      "model_execution": "NOT_RUN; ASGI transport double only"
+    },
+    {
+      "name": "unavailable_model",
+      "request": {"case_id": "case-001"},
+      "response": {
+        "status": 503,
+        "body": {
+          "data": null,
+          "error": {
+            "code": "MODEL_UNAVAILABLE",
+            "message": "model provider is unavailable",
+            "retryable": true
+          },
+          "request_id": "model-request-001"
+        }
+      },
+      "model_execution": "NOT_RUN; labelled transport double raises service error"
+    }
+  ],
+  "redaction": "No prompts, credentials, raw conversations, image bytes, source identifiers, or live model output are included."
 }

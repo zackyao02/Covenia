@@ -1,7 +1,7 @@
 # BATCH-21 implementation report
 
-Status: `BLOCKED`
+Status: `COMPLETED` implementation evidence only. Commit: `e5bded363a7ededc12ee8451345794eb6c2097d0`.
 
-The mandatory command `py -3.13 -m venv venv` returned `No installed Python found!`. No discoverable `python`, `python3`, or `py` executable was available. The required isolated environment therefore does not exist, so no implementation, test, dependency installation, contract check, or `pip check` was run.
+This batch adds an unregistered, dependency-injected ASGI router factory for `POST /api/cases/analyze`. It validates the frozen request model before invoking the service, uses the existing request-ID seam, envelopes every result, preserves response runtime metrics and cache provenance from the service projection, maps safe model errors, and limits the awaited analysis to 20 seconds.
 
-No global interpreter or another Batch's venv was used. This report does not assert implementation completion, independent verification, integration, or acceptance. `VERIFICATION_REPORT.json` was intentionally not created because it belongs to the independent verifier.
+The six ASGI/TestClient tests pass using labelled transport doubles. They are not real-model tests. The strict contract checker validates 14 schemas and 18 vectors; `pip check` passes in the fresh `C:\r21b\venv` interpreter, created only with `D:\python\python.exe -m venv`. `VERIFICATION_REPORT.json` and verification evidence were intentionally not created because they are verifier-owned and forbidden by this Batch's scope.

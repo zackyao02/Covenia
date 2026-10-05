@@ -1,17 +1,16 @@
 {
   "batch_id": "BATCH-21",
-  "run_dir": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w20\\w21",
-  "run_dir_length": 46,
-  "required_venv": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w20\\w21\\venv",
-  "status": "BLOCKED",
-  "preflight": {
-    "requested_command": "py -3.13 -m venv venv",
-    "result": "No installed Python found!",
-    "venv_created": false,
-    "venv_longest_file_path": null,
-    "venv_longest_file_path_length": null,
-    "environment_acceptable": false
-  },
-  "discovered_interpreters": [],
-  "reason": "No CPython interpreter is available to create the required isolated venv."
+  "venv_creator": "D:\\python\\python.exe -m venv C:\\r21b\\venv",
+  "run_dir": "C:\\r21b",
+  "python_executable": "C:\\r21b\\venv\\Scripts\\python.exe",
+  "python_version": "3.13.5",
+  "isolated_venv": true,
+  "base_integration_sha": "5378f46f37e3323ae4e46548f82a92d72432289a",
+  "branch": "codex/covenia-batch-21",
+  "dependency_lock": {
+    "path": "backend/requirements-dev.lock",
+    "sha256_raw_git_blob": "602c268b684d60e2d1b8bbfc6820663a622eb24093144a87c111f43d3c06fdae",
+    "additions": ["certifi==2025.1.31", "httpcore==1.0.7", "httpx==0.28.1"],
+    "reason": "FastAPI TestClient requires the explicit HTTP client and its missing direct closure pins."
+  }
 }
