@@ -3,14 +3,14 @@
   "batch_id": "BATCH-30",
   "tool": "tools/verification/check_no_case_branches.py",
   "tool_version": "no-case-branches-v1",
-  "generated_at": "2026-10-05T15:33:42.716285+00:00",
+  "generated_at": "2026-10-05T15:33:21.437527+00:00",
   "mode": "worktree",
   "strict": true,
   "scanned_root": [
     "backend/src/covenia_b"
   ],
   "scanned_module_count": 67,
-  "status": "FAIL",
+  "status": "PASS",
   "judgments": [
     {
       "id": "J1_CASE_LITERAL_IN_DECISION",
@@ -49,13 +49,13 @@
     }
   ],
   "per_judgment_hits": {
-    "J1_CASE_LITERAL_IN_DECISION": 1,
-    "J2_DESCRIPTOR_DECIDES_VERDICT": 1,
-    "J3_OBSERVED_RESULT_HARDCODED": 5,
-    "J4_GROUND_TRUTH_INGRESS": 1,
+    "J1_CASE_LITERAL_IN_DECISION": 0,
+    "J2_DESCRIPTOR_DECIDES_VERDICT": 0,
+    "J3_OBSERVED_RESULT_HARDCODED": 0,
+    "J4_GROUND_TRUTH_INGRESS": 0,
     "J5_PRIVACY_BYPASS_CONFIGURATION": 0,
     "J6_IDENTITY_SELECTS_DEFAULT": 0,
-    "J7_REQUEST_STATE_REACHES_RULES": 1
+    "J7_REQUEST_STATE_REACHES_RULES": 0
   },
   "whitelist": {
     "purity_subdirs": [
@@ -318,7 +318,7 @@
     },
     {
       "path": "rules/engine.py",
-      "sha256": "F019E6FBB036601D133DF365DCCE5A25F88FBD0F02429DC9CA70F3AC2EC4F6C7",
+      "sha256": "27F9488F0BAB128207678F7A17F71466D8567B8BEDD0FBC30955960AF678550C",
       "role": "purity"
     },
     {
@@ -328,7 +328,7 @@
     },
     {
       "path": "services/analyze.py",
-      "sha256": "4D04996882B2D905D2E52763DA378CDBFBF63A8B1DC18D5CB5160E81DA4A7A60",
+      "sha256": "7979C77BB2E6128C553B557B2A3DAA5AFB69635062240F927D02ECDF97316C49",
       "role": "purity"
     },
     {
@@ -417,80 +417,7 @@
       "role": "broad"
     }
   ],
-  "hits": [
-    {
-      "judgment": "J1_CASE_LITERAL_IN_DECISION",
-      "path": "rules/engine.py",
-      "line": 247,
-      "column": 24,
-      "detail": "case identifier literal 'DEMO_001' in-decision (selects behaviour)",
-      "snippet": "if state.case_id == \"DEMO_001\":"
-    },
-    {
-      "judgment": "J2_DESCRIPTOR_DECIDES_VERDICT",
-      "path": "rules/engine.py",
-      "line": 253,
-      "column": 4,
-      "detail": "descriptor ['file_name'] selects verdict ['GIFT'] without a failing raise",
-      "snippet": "if entry.file_name.endswith(\"_gift.png\"):"
-    },
-    {
-      "judgment": "J3_OBSERVED_RESULT_HARDCODED",
-      "path": "rules/engine.py",
-      "line": 261,
-      "column": 20,
-      "detail": "observation literal readability=HIGH is not derived from measured input",
-      "snippet": "readability=\"HIGH\","
-    },
-    {
-      "judgment": "J3_OBSERVED_RESULT_HARDCODED",
-      "path": "rules/engine.py",
-      "line": 262,
-      "column": 18,
-      "detail": "observation literal sku_match=MATCH is not derived from measured input",
-      "snippet": "sku_match=\"MATCH\","
-    },
-    {
-      "judgment": "J3_OBSERVED_RESULT_HARDCODED",
-      "path": "rules/engine.py",
-      "line": 263,
-      "column": 29,
-      "detail": "observation literal product_identifiable=True is not derived from measured input",
-      "snippet": "product_identifiable=True,"
-    },
-    {
-      "judgment": "J3_OBSERVED_RESULT_HARDCODED",
-      "path": "rules/engine.py",
-      "line": 264,
-      "column": 22,
-      "detail": "observation literal issue_visible=True is not derived from measured input",
-      "snippet": "issue_visible=True,"
-    },
-    {
-      "judgment": "J3_OBSERVED_RESULT_HARDCODED",
-      "path": "rules/engine.py",
-      "line": 265,
-      "column": 17,
-      "detail": "observation literal coverage=<non-empty literal> is not derived from measured input",
-      "snippet": "coverage=[\"DAMAGE_DETAIL\"],"
-    },
-    {
-      "judgment": "J7_REQUEST_STATE_REACHES_RULES",
-      "path": "services/analyze.py",
-      "line": 682,
-      "column": 7,
-      "detail": "untrusted request field request.evidence_status is read",
-      "snippet": "if request.evidence_status == \"VALID\":"
-    },
-    {
-      "judgment": "J4_GROUND_TRUTH_INGRESS",
-      "path": "services/analyze.py",
-      "line": 691,
-      "column": 28,
-      "detail": "decision-path module references 'fixtures/ground-truth.json'",
-      "snippet": "payload = _planted_path(\"fixtures/ground-truth.json\").read_text(encoding=\"utf-8\")"
-    }
-  ],
+  "hits": [],
   "suppressed": [],
   "docstring_case_literals": [],
   "self_test": {

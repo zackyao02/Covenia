@@ -1,0 +1,224 @@
+{
+  "artifact": "reports/batches/BATCH-30/environment.json",
+  "batch_id": "BATCH-30",
+  "branch": "codex/covenia-batch-30-aux",
+  "base_integration_sha": "b22cc46f43d9995ab196511562aa3e6e007dc565",
+  "code_commit": "9860ddc4bcd8dc0c368766ca0a358fbc3ca6a664",
+  "run_dir": "C:\\cv30",
+  "run_dir_path_length": 7,
+  "venv_layout": "<RUN_DIR>/venv (MASTER_PLAN 5.5-9 one-level convention)",
+  "venv_creator": "pre-created by the dispatcher; this batch did not create a new venv",
+  "python_executable": "C:\\cv30\\venv\\Scripts\\python.exe",
+  "python_version": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]",
+  "sys_prefix": "C:\\cv30\\venv",
+  "sys_base_prefix": "D:\\python",
+  "pyvenv_cfg": [
+    "home = D:\\python",
+    "include-system-site-packages = false",
+    "version = 3.13.5",
+    "executable = D:\\python\\python.exe",
+    "command = D:\\python\\python.exe -m venv C:\\cv30\\venv"
+  ],
+  "include_system_site_packages_false": true,
+  "isolated_venv": true,
+  "identity_assertion": "Path(sys.executable).resolve() == Path('C:\\\\cv30\\\\venv\\\\Scripts\\\\python.exe').resolve() and sys.prefix != sys.base_prefix -> passed",
+  "identity_exit_code": 0,
+  "pip_version": "pip 25.1.1 from C:\\cv30\\venv\\Lib\\site-packages\\pip (python 3.13)",
+  "installed_packages": [
+    {
+      "name": "annotated-types",
+      "version": "0.7.0"
+    },
+    {
+      "name": "anyio",
+      "version": "4.8.0"
+    },
+    {
+      "name": "attrs",
+      "version": "26.1.0"
+    },
+    {
+      "name": "build",
+      "version": "1.2.2.post1"
+    },
+    {
+      "name": "certifi",
+      "version": "2025.1.31"
+    },
+    {
+      "name": "click",
+      "version": "8.1.8"
+    },
+    {
+      "name": "colorama",
+      "version": "0.4.6"
+    },
+    {
+      "name": "covenia-b",
+      "version": "0.0.0",
+      "editable_project_location": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w30\\backend"
+    },
+    {
+      "name": "fastapi",
+      "version": "0.115.6"
+    },
+    {
+      "name": "h11",
+      "version": "0.14.0"
+    },
+    {
+      "name": "httpcore",
+      "version": "1.0.7"
+    },
+    {
+      "name": "httpx",
+      "version": "0.28.1"
+    },
+    {
+      "name": "idna",
+      "version": "3.10"
+    },
+    {
+      "name": "iniconfig",
+      "version": "2.0.0"
+    },
+    {
+      "name": "jsonschema",
+      "version": "4.25.0"
+    },
+    {
+      "name": "jsonschema-specifications",
+      "version": "2025.9.1"
+    },
+    {
+      "name": "packaging",
+      "version": "24.2"
+    },
+    {
+      "name": "pip",
+      "version": "25.1.1"
+    },
+    {
+      "name": "pluggy",
+      "version": "1.5.0"
+    },
+    {
+      "name": "pydantic",
+      "version": "2.10.5"
+    },
+    {
+      "name": "pydantic_core",
+      "version": "2.27.2"
+    },
+    {
+      "name": "pydantic-settings",
+      "version": "2.7.1"
+    },
+    {
+      "name": "pyproject_hooks",
+      "version": "1.2.0"
+    },
+    {
+      "name": "pytest",
+      "version": "8.3.4"
+    },
+    {
+      "name": "python-dotenv",
+      "version": "1.0.1"
+    },
+    {
+      "name": "referencing",
+      "version": "0.37.0"
+    },
+    {
+      "name": "rpds-py",
+      "version": "2026.6.3"
+    },
+    {
+      "name": "ruff",
+      "version": "0.8.4"
+    },
+    {
+      "name": "setuptools",
+      "version": "75.8.0"
+    },
+    {
+      "name": "sniffio",
+      "version": "1.3.1"
+    },
+    {
+      "name": "starlette",
+      "version": "0.41.3"
+    },
+    {
+      "name": "typing_extensions",
+      "version": "4.12.2"
+    },
+    {
+      "name": "uvicorn",
+      "version": "0.34.0"
+    },
+    {
+      "name": "wheel",
+      "version": "0.45.1"
+    }
+  ],
+  "installed_package_count": 34,
+  "temp_environment": {
+    "TEMP": "C:\\cv30\\tmp",
+    "TMP": "C:\\cv30\\tmp",
+    "reason": "without an isolated writable temp directory pytest fails with WinError 5 on this host; every recorded command ran with TEMP/TMP set to the batch temp directory"
+  },
+  "venv_longest_path": {
+    "length": 144,
+    "path": "C:\\cv30\\venv\\Lib\\site-packages\\pkg_resources\\tests\\data\\my-test-package_unpacked-egg\\my_test_package-1.0-py3.7.egg\\EGG-INFO\\dependency_links.txt",
+    "limit": 250
+  },
+  "repository_root": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w30",
+  "repository_root_length": 42,
+  "short_path_check": {
+    "command": "C:\\cv30\\venv\\Scripts\\python.exe tools/preflight/shortpath_check.py --repo . --run-dir C:\\cv30",
+    "exit_code": 0,
+    "verdict": "PASS",
+    "stdout": "shortpath preflight\n  repo  : C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w30  (root length 42)\n  limit : >= 250 characters is a failure\n\nreal measurements (verdict-bearing):\n  OK   disk (os.walk)                      185  C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w30\\reports\\batches\\BATCH-09\\verification-history\\round-1\\verification-\n  OK   tracked (core.quotepath=false)      185  C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w30\\reports\\batches\\BATCH-09\\verification-history\\round-1\\verification-\n  OK   venv (MASTER_PLAN 5.5-9)            144  C:\\cv30\\venv\\Lib\\site-packages\\pkg_resources\\tests\\data\\my-test-package_unpacked-egg\\my_test_package-1.0-py3.7\n\nfor contrast (NOT used for the verdict):\n  OK   tracked (NAIVE, defective)          245  C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w30\\\"\\350\\265\\233\\351\\242\\230 1\\357\\274\\232\\346\\225\\260\\346\\215\\256\\345  [informational only]\n\nverdict: PASS\n"
+  },
+  "git_core_autocrlf": {
+    "origin_and_value": "file:C:/Program Files/Git/etc/gitconfig\ttrue",
+    "exit_code": 0,
+    "note": "not a failure; recorded per MASTER_PLAN 5.5-7"
+  },
+  "git_ls_files_eol": {
+    "backend/requirements-dev.lock": "i/lf    w/crlf  attr/                 \tbackend/requirements-dev.lock",
+    "note": "i/lf w/crlf: the repository stores LF blobs and the controlled checkout is CRLF. All hash verification in this batch therefore compares the LF-normalised worktree content with the git show blob bytes (MASTER_PLAN 5.5-8), never a raw worktree hash."
+  },
+  "dependency_lock": {
+    "path": "backend/requirements-dev.lock",
+    "status": "UNCHANGED",
+    "sha256_raw_git_blob_base": "602C268B684D60E2D1B8BBFC6820663A622EB24093144A87C111F43D3C06FDAE",
+    "sha256_raw_git_blob_after": "602C268B684D60E2D1B8BBFC6820663A622EB24093144A87C111F43D3C06FDAE",
+    "bytes_worktree_crlf": 759,
+    "bytes_git_blob_lf": 725,
+    "append_only_diff": "",
+    "appended_lines": [],
+    "reason": "no third-party dependency was needed: the auditor, the integration suite and the negative-control driver use only the Python standard library, pytest, jsonschema, pydantic and the already-pinned fastapi/starlette set. The lock file was not written, not reformatted and not reordered in this batch."
+  },
+  "install_commands": [
+    {
+      "command": "C:\\cv30\\venv\\Scripts\\python.exe -m pip install --no-deps -r backend/requirements-dev.lock",
+      "exit_code": 0
+    },
+    {
+      "command": "C:\\cv30\\venv\\Scripts\\python.exe -m pip install --no-deps --no-build-isolation -e backend",
+      "exit_code": 0
+    }
+  ],
+  "pip_check": {
+    "command": "C:\\cv30\\venv\\Scripts\\python.exe -m pip check",
+    "exit_code": 0,
+    "stdout": "No broken requirements found.\n",
+    "stderr": ""
+  },
+  "generated_at": "2026-10-05T15:34:20.791778+00:00",
+  "honesty_statement_zh": "本批由辅助调度器实现，非独立实现方；验收须由他方完成。",
+  "honesty_statement_en": "Implemented by the auxiliary dispatcher, not by an independent implementer; acceptance must be performed by another party."
+}

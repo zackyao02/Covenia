@@ -1,0 +1,14 @@
+BATCH-30 dependency consistency check
+generated_at: 2026-10-05T15:34:20.791778+00:00
+interpreter: C:\cv30\venv\Scripts\python.exe
+working_directory: C:\Users\WONG Tsun Ming\Desktop\欧莱雅黑客松\w30
+temporary_directory: C:\cv30\tmp
+command: C:\cv30\venv\Scripts\python.exe -m pip check
+exit_code: 0
+----- stdout -----
+No broken requirements found.
+----- stderr -----
+----- note -----
+pip check proves only that the installed distributions declare consistent requirements. It does not prove that pytest/jsonschema are importable, which is why the import-preflight command is recorded separately, and it does not replace any business test.
+import-preflight exit_code: 0 stdout: pytest/jsonschema import OK
+pip-list-json exit_code: 0

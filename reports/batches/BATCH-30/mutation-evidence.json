@@ -1,0 +1,102 @@
+{
+  "artifact": "reports/batches/BATCH-30/mutation-evidence.json",
+  "batch_id": "BATCH-30",
+  "generated_at": "2026-10-05T15:34:20.791778+00:00",
+  "code_commit": "9860ddc4bcd8dc0c368766ca0a358fbc3ca6a664",
+  "purpose": "Record what was mutated, what failure was expected, what failure was actually observed, and how the scene was restored, for every negative control in this batch. An arbitrary error or timeout is never counted as a caught defect.",
+  "levels": [
+    {
+      "level": "tool",
+      "name": "check_no_case_branches.py --self-test",
+      "mutations": [
+        "a branch on the literal DEMO_001",
+        "a branch on a file name that returns a business verdict",
+        "a hardcoded positive image observation",
+        "a fixture / ground-truth read from a decision-path module",
+        "a configuration switch that disables privacy masking",
+        "an identity branch that selects a fail-closed default",
+        "an untrusted request compatibility field read inside a branch"
+      ],
+      "expected": "the auditor reports each planted judgement and exits 1",
+      "observed": "self_test.passed=True; 9 planted modules judged exactly as expected, plus an on-disk planted corpus producing 12 hits; every planted case except the DEMO_001 one is invisible to a four-literal blacklist",
+      "restored": "the planted corpus lives in a temporary directory and is removed",
+      "evidence": "static-scan.json:self_test"
+    },
+    {
+      "level": "production-source",
+      "name": "reports/batches/BATCH-30/negative-control/planted_mutation_demo.py",
+      "mutations": [
+        "backend/src/covenia_b/rules/engine.py: DEMO_001 branch, file-name branch, hardcoded positive image observation",
+        "backend/src/covenia_b/services/analyze.py: untrusted request field read, ground-truth artefact read"
+      ],
+      "expected": "the auditor exits 1 and reports J1, J2, J3, J4 and J7 while the production tests remain importable because the plants are inert definitions",
+      "observed": "scanner exit code 1; 9 hits; judgements J1(1) J2(1) J3(5) J4(1) J7(1); a four-literal blacklist would have matched exactly one of the five judgement classes",
+      "restored": "both files were restored from in-memory bytes in a finally block and verified: byte-identical, LF-normalised sha256 equal to the git show blob sha256, and git status --porcelain empty for both paths",
+      "restored_hashes": {
+        "backend/src/covenia_b/rules/engine.py": {
+          "committed_blob_sha256": "27F9488F0BAB128207678F7A17F71466D8567B8BEDD0FBC30955960AF678550C",
+          "after_restore_governed_lf_sha256": "27F9488F0BAB128207678F7A17F71466D8567B8BEDD0FBC30955960AF678550C",
+          "git_status_after_restore": ""
+        },
+        "backend/src/covenia_b/services/analyze.py": {
+          "committed_blob_sha256": "7979C77BB2E6128C553B557B2A3DAA5AFB69635062240F927D02ECDF97316C49",
+          "after_restore_governed_lf_sha256": "7979C77BB2E6128C553B557B2A3DAA5AFB69635062240F927D02ECDF97316C49",
+          "git_status_after_restore": ""
+        }
+      },
+      "evidence": "negative-control/planted-mutation.json, negative-control/planted-scan.json"
+    },
+    {
+      "level": "in-suite",
+      "name": "pytest -m mutation",
+      "command": "C:\\cv30\\venv\\Scripts\\python.exe -m pytest integration/tests/test_security_and_generalization.py -q -m mutation",
+      "exit_code": 0,
+      "observed": "3 passed, 384 deselected, 3 warnings in 0.56s",
+      "controls": [
+        {
+          "test": "test_mutation_disabling_pii_masking_makes_the_security_assertion_fail",
+          "mutation": "covenia_b.privacy.sanitizer.redact_text and covenia_b.privacy.boundary.redact_text replaced by a mutant that keeps the RedactedText type and removes every redaction",
+          "expected_failure": "the inner assertion 'PII must never reach the provider' raises AssertionError because the raw phone reaches the provider",
+          "observed_failure": "AssertionError matched 'PII must never reach the provider'; pii_masked_count was 0 inside the mutation",
+          "restore_proof": "after monkeypatch.context() exits, the same case input is masked again (pii_masked_count >= 1 and the digits are absent), so the control is not vacuous"
+        },
+        {
+          "test": "test_mutation_forged_projection_reaches_provider_when_both_layers_are_removed",
+          "mutation": "SanitizationResult._has_generated_projection forced to True and the defense-in-depth text probe in covenia_b.privacy.boundary replaced by the no-op redactor",
+          "expected_failure": "the inner assertion 'the privacy boundary must refuse a forged projection' raises AssertionError",
+          "observed_failure": "AssertionError matched 'must refuse a forged projection'; the provider captured exactly one input containing the raw phone",
+          "restore_proof": "a fresh forged result is refused again with UnsafeModelInputError and the provider captures nothing"
+        },
+        {
+          "test": "test_mutation_replaced_projection_is_only_lethal_when_both_gates_are_removed",
+          "mutation": "the same two gates removed, driving a projection whose model_input identity was replaced by an opaque field-value payload",
+          "expected_failure": "the inner assertion 'so this test cannot pass vacuously' raises AssertionError",
+          "observed_failure": "AssertionError matched 'so this test cannot pass vacuously'",
+          "restore_proof": "the unmutated boundary refuses the replaced projection with UnsafeModelInputError before any capture"
+        }
+      ]
+    }
+  ],
+  "what_was_not_mutated": [
+    "no production source file is modified by the committed revision (see production_source_unchanged below)",
+    "no publicly reachable backdoor, debug route, or environment switch was added",
+    "the storage layer, schemas, fixtures, frontend and other batches were not touched"
+  ],
+  "production_source_unchanged": {
+    "base_integration_sha": "b22cc46f43d9995ab196511562aa3e6e007dc565",
+    "code_commit": "9860ddc4bcd8dc0c368766ca0a358fbc3ca6a664",
+    "diff_of_protected_trees": "git diff --stat b22cc46..9860ddc -- backend/src schemas frontend fixtures data docs MASTER_PLAN.md batches.json -> empty",
+    "name_status_of_code_commit": [
+      "A integration/tests/test_security_and_generalization.py",
+      "A reports/batches/BATCH-30/negative-control/planted-mutation.json",
+      "A reports/batches/BATCH-30/negative-control/planted-scan.json",
+      "A reports/batches/BATCH-30/negative-control/planted_mutation_demo.py",
+      "A reports/batches/BATCH-30/security-matrix.json",
+      "A tools/verification/check_no_case_branches.py"
+    ],
+    "statement": "The code commit adds files only. No implementation file was added, modified or deleted, which is the strongest available proof that the temporary mutation was fully reverted."
+  },
+  "real_model_statement": "Every substitution here is a test double. Image pixel-level injection pairing against the real model is BATCH-32's obligation with the A materials and is not satisfied, weakened or replaced by this batch.",
+  "honesty_statement_zh": "本批由辅助调度器实现，非独立实现方；验收须由他方完成。",
+  "honesty_statement_en": "Implemented by the auxiliary dispatcher, not by an independent implementer; acceptance must be performed by another party."
+}

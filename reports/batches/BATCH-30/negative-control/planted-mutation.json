@@ -1,9 +1,9 @@
 {
   "artifact": "reports/batches/BATCH-30/negative-control/planted-mutation.json",
   "batch_id": "BATCH-30",
-  "generated_at": "2026-10-05T15:31:11.181018+00:00",
+  "generated_at": "2026-10-05T15:33:42.952102+00:00",
   "purpose": "Negative control for tools/verification/check_no_case_branches.py: plant an identity-branching / hardcoded shortcut, prove the auditor exits non-zero and names the judgements, then restore the production source byte-for-byte.",
-  "repo_head_at_demo": "b22cc46f43d9995ab196511562aa3e6e007dc565",
+  "repo_head_at_demo": "9860ddc4bcd8dc0c368766ca0a358fbc3ca6a664",
   "python_executable": "C:\\cv30\\venv\\Scripts\\python.exe",
   "scanner": "tools/verification/check_no_case_branches.py",
   "scanner_command": [
@@ -91,7 +91,7 @@
     "all_targets_restored_byte_identical": true,
     "git_status_lines_for_targets_after_restore": [],
     "git_status_clean_for_targets": true,
-    "crash_recovery_backup_dir_outside_repo": "C:\\cv30\\tmp\\batch30-planted-backup-hg76689w",
+    "crash_recovery_backup_dir_outside_repo": "C:\\cv30\\tmp\\batch30-planted-backup-m9blwjgn",
     "note": "Restoration is performed in a finally block from bytes held in memory and mirrored to a directory outside the repository. The report never commits production source text. '' means git reports no change for the path."
   },
   "error": null,
