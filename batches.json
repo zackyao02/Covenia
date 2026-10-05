@@ -304,7 +304,7 @@
     {
       "id": "X-MODEL",
       "owner": "B 与团队算力负责人；Zack 批准费用/换模型",
-      "status": "UNVERIFIED",
+      "status": "ACCEPTED",
       "required_before": [
         "BATCH-28"
       ],
@@ -312,7 +312,12 @@
       "criteria": [
         "实际 qwen3-vl-plus revision、服务地址与调用协议、usage、区域/设备/依赖/许可证登记、可用性与预热记录。",
         "API 密钥、GPU/租用资源、权限、网络若需开通由团队提供；不购买、不换模型掩盖阻塞。"
-      ]
+      ],
+      "accepted_by": "产品负责人（Zack）",
+      "accepted_at": "2026-10-05",
+      "receipt": "handoff/model/GATE_ACCEPTANCE_RECEIPT.json",
+      "status_note": "2026-10-05 产品负责人接受：审查方实测端点可达、key 有效、qwen3-vl-plus 在可用模型列表中、本机代理转发与 model/model_revision 回显正常、96x96 多模态识别颜色通过、response_format json_object 支持；换模型 c8af0ec 已落库，LOCKED_MODEL_ID 与代理默认值一致。usage/区域/许可证字段与真实连通下的可用性/预热记录仍待补齐，须在 BATCH-28 前完成。",
+      "ledger_sync_note": "本条为台账同步：与 docs/planning/b/external-gates.json 的 ACCEPTED 对齐，非新裁决。"
     },
     {
       "id": "X-A-TRUTH",

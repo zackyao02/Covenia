@@ -51,7 +51,7 @@
     {
       "id": "X-FREEZE",
       "owner": "Zack; B/C co-sign interface; A co-sign facts",
-      "status": "MISSING",
+      "status": "ACCEPTED",
       "required_before": ["BATCH-03"],
       "required_artifact": "docs/approvals/b-decisions.json plus an approved PRODUCT-FREEZE.md commit",
       "required_evidence": [
@@ -59,13 +59,16 @@
         "Already-approved H1=350 and four-endpoint facts may be cited but do not substitute for unresolved decisions."
       ],
       "observed_path": "docs/approvals/b-decisions.json",
-      "observed_in_reviewed_base": false,
-      "receipt": null
+      "observed_in_reviewed_base": true,
+      "receipt": "docs/approvals/b-decisions.json",
+      "accepted_by": "产品负责人（Zack）",
+      "accepted_at": "2026-09-10",
+      "ledger_sync_note": "台账同步：batches.json 记 ACCEPTED、approved_by=Zack、approved_date=2026-09-10、artifact_sha256=3ACAD4A113EB595BCED29025AF884A4C5EA2835E90E38D0E897298F91DB371DA；docs/approvals/b-decisions.json 在集成 HEAD 上。非新裁决。"
     },
     {
       "id": "X-A-MAPPING",
       "owner": "A",
-      "status": "MISSING",
+      "status": "ACCEPTED",
       "required_before": ["BATCH-05"],
       "required_artifact": "handoff/a/data-mapping.json",
       "required_evidence": [
@@ -73,8 +76,12 @@
         "Five work-order classes and expected-count provenance."
       ],
       "observed_path": "handoff/a/data-mapping.json",
-      "observed_in_reviewed_base": false,
-      "receipt": null
+      "observed_in_reviewed_base": true,
+      "receipt": "reports/batches/X-A-MAPPING/GATE_ACCEPTANCE_RECEIPT.json",
+      "integration_receipt": "integration-receipts/X-A-MAPPING.json",
+      "accepted_by": "产品负责人（Zack）",
+      "accepted_at": "2026-09-13",
+      "ledger_sync_note": "台账同步：batches.json 记 ACCEPTED、source_acceptance_date=2026-09-13、archive_integration_commit=90c83590（HEAD 祖先）；ARCHIVE_REPORT 与 GATE_ACCEPTANCE_RECEIPT 均在库，集成回执 status=SUCCESS。非新裁决。"
     },
     {
       "id": "X-A-FIXTURES",
@@ -112,7 +119,7 @@
     {
       "id": "X-A-IMAGES",
       "owner": "A",
-      "status": "MISSING",
+      "status": "ACCEPTED",
       "required_before": ["BATCH-28", "BATCH-29", "BATCH-32"],
       "required_artifact": "handoff/a/images-manifest.json plus five original team images under frontend/public/evidence/ and independent injection-pair images",
       "required_evidence": [
@@ -120,9 +127,13 @@
         "Injection pairs retain the same base pixels; B and C reference the registered bytes, not placeholders."
       ],
       "observed_path": "handoff/a/images-manifest.json",
-      "observed_in_reviewed_base": false,
+      "observed_in_reviewed_base": true,
       "additional_observation": "frontend/public/evidence/ contained README.md only during this check.",
-      "receipt": null
+      "receipt": "reports/batches/X-A-IMAGES/ARCHIVE_REPORT.json",
+      "integration_receipt": "integration-receipts/X-A-IMAGES.json",
+      "accepted_by": "产品负责人（Zack）",
+      "accepted_at": "2026-09-12",
+      "ledger_sync_note": "本条为台账同步：handoff/a/images-manifest.json 记 status=ACCEPTED、missing_files=[]、accepted_by=Zack、accepted_at=2026-09-12（『5 张团队合成证据图全部认可，可用于 BATCH-28/29/32』），ARCHIVE_REPORT 记 gate_status=ACCEPTED、blockers=[]，集成回执 SUCCESS @ e54ffa5f。非新裁决。"
     },
     {
       "id": "X-MODEL",
