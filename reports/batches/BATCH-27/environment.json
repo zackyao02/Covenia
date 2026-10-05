@@ -1,0 +1,209 @@
+{
+  "batch_id": "BATCH-27",
+  "branch": "codex/covenia-batch-27-aux",
+  "base_integration_sha": "f259e9b7101172be144f70a46f495593a07754d0",
+  "code_commit": "cb7c30cbcdb9cf91b42daf165a9f5f2d506d218b",
+  "run_dir": "C:\\cv27",
+  "run_dir_path_length": 7,
+  "venv_layout": "<RUN_DIR>/venv (MASTER_PLAN 5.5-9 one-level convention)",
+  "venv_creator": "D:\\python\\python.exe -m venv C:\\cv27\\venv (pre-created by the dispatcher)",
+  "python_executable": "C:\\cv27\\venv\\Scripts\\python.exe",
+  "python_version": "3.13.5",
+  "sys_prefix": "C:\\cv27\\venv",
+  "pyvenv_cfg": {
+    "home": "D:\\python",
+    "include-system-site-packages": "false",
+    "version": "3.13.5"
+  },
+  "isolated_venv": true,
+  "identity_assertion": "Path(sys.executable).resolve() == Path('C:\\\\cv27\\\\venv\\\\Scripts\\\\python.exe').resolve() and sys.prefix != sys.base_prefix -> True (exit 0)",
+  "pip_version": "pip 25.1.1 from C:\\cv27\\venv\\Lib\\site-packages\\pip (python 3.13)",
+  "pip_version_exit_code": 0,
+  "pip_list_exit_code": 0,
+  "installed_packages": [
+    {
+      "name": "annotated-types",
+      "version": "0.7.0"
+    },
+    {
+      "name": "anyio",
+      "version": "4.8.0"
+    },
+    {
+      "name": "attrs",
+      "version": "26.1.0"
+    },
+    {
+      "name": "build",
+      "version": "1.2.2.post1"
+    },
+    {
+      "name": "certifi",
+      "version": "2025.1.31"
+    },
+    {
+      "name": "click",
+      "version": "8.1.8"
+    },
+    {
+      "name": "colorama",
+      "version": "0.4.6"
+    },
+    {
+      "name": "covenia-b",
+      "version": "0.0.0",
+      "editable_project_location": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w27\\backend"
+    },
+    {
+      "name": "fastapi",
+      "version": "0.115.6"
+    },
+    {
+      "name": "h11",
+      "version": "0.14.0"
+    },
+    {
+      "name": "httpcore",
+      "version": "1.0.7"
+    },
+    {
+      "name": "httpx",
+      "version": "0.28.1"
+    },
+    {
+      "name": "idna",
+      "version": "3.10"
+    },
+    {
+      "name": "iniconfig",
+      "version": "2.0.0"
+    },
+    {
+      "name": "jsonschema",
+      "version": "4.25.0"
+    },
+    {
+      "name": "jsonschema-specifications",
+      "version": "2025.9.1"
+    },
+    {
+      "name": "packaging",
+      "version": "24.2"
+    },
+    {
+      "name": "pip",
+      "version": "25.1.1"
+    },
+    {
+      "name": "pluggy",
+      "version": "1.5.0"
+    },
+    {
+      "name": "pydantic",
+      "version": "2.10.5"
+    },
+    {
+      "name": "pydantic_core",
+      "version": "2.27.2"
+    },
+    {
+      "name": "pydantic-settings",
+      "version": "2.7.1"
+    },
+    {
+      "name": "pyproject_hooks",
+      "version": "1.2.0"
+    },
+    {
+      "name": "pytest",
+      "version": "8.3.4"
+    },
+    {
+      "name": "python-dotenv",
+      "version": "1.0.1"
+    },
+    {
+      "name": "referencing",
+      "version": "0.37.0"
+    },
+    {
+      "name": "rpds-py",
+      "version": "2026.6.3"
+    },
+    {
+      "name": "ruff",
+      "version": "0.8.4"
+    },
+    {
+      "name": "setuptools",
+      "version": "75.8.0"
+    },
+    {
+      "name": "sniffio",
+      "version": "1.3.1"
+    },
+    {
+      "name": "starlette",
+      "version": "0.41.3"
+    },
+    {
+      "name": "typing_extensions",
+      "version": "4.12.2"
+    },
+    {
+      "name": "uvicorn",
+      "version": "0.34.0"
+    },
+    {
+      "name": "wheel",
+      "version": "0.45.1"
+    }
+  ],
+  "installed_package_count": 34,
+  "temp_environment": {
+    "TEMP": "C:\\cv27\\tmp",
+    "TMP": "C:\\cv27\\tmp",
+    "reason": "without an isolated writable temp directory pytest fails with WinError 5"
+  },
+  "venv_longest_path": {
+    "length": 144,
+    "path": "C:\\cv27\\venv\\Lib\\site-packages\\pkg_resources\\tests\\data\\my-test-package_unpacked-egg\\my_test_package-1.0-py3.7.egg\\EGG-INFO\\dependency_links.txt",
+    "limit": 250
+  },
+  "repository_root": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w27",
+  "repository_root_length": 42,
+  "short_path_note": "shortpath_check.py measures real disk paths and tracked paths with git -c core.quotepath=false; the escaped-name measurement is printed for contrast only, inheriting CROSS-LINE-PREFLIGHT-QUOTEPATH-20261005.",
+  "git_core_autocrlf": {
+    "value": "true",
+    "origin": "file:C:/Program Files/Git/etc/gitconfig\ttrue",
+    "exit_code": 0,
+    "note": "not a failure; recorded per MASTER_PLAN 5.5-7"
+  },
+  "dependency_lock": {
+    "path": "backend/requirements-dev.lock",
+    "status": "UNCHANGED",
+    "sha256_raw_git_blob_before": "602C268B684D60E2D1B8BBFC6820663A622EB24093144A87C111F43D3C06FDAE",
+    "sha256_raw_git_blob_after": "602C268B684D60E2D1B8BBFC6820663A622EB24093144A87C111F43D3C06FDAE",
+    "bytes": 725,
+    "append_only_diff": "",
+    "append_only_diff_exit_code": 0,
+    "appended_lines": [],
+    "reason": "no third-party dependency was needed: the composition root, preflight and tests use only the already-pinned fastapi/starlette/pydantic-settings/uvicorn/sqlite3(stdlib)/httpx(TestClient) set. BATCH-21's appended certifi/httpcore/httpx pins are preserved."
+  },
+  "install_commands": [
+    {
+      "command": "\"C:\\cv27\\venv\\Scripts\\python.exe\" -m pip install --no-deps -r backend/requirements-dev.lock",
+      "exit_code": 0
+    },
+    {
+      "command": "\"C:\\cv27\\venv\\Scripts\\python.exe\" -m pip install --no-deps --no-build-isolation -e backend",
+      "exit_code": 0
+    }
+  ],
+  "pip_check": {
+    "command": "\"C:\\cv27\\venv\\Scripts\\python.exe\" -m pip check",
+    "exit_code": 0,
+    "stdout": "No broken requirements found.\n"
+  },
+  "generated_at": "2026-10-05T14:20:31.999486+00:00"
+}

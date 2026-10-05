@@ -1,0 +1,105 @@
+{
+  "all_mounted_operations": [
+    {
+      "method": "POST",
+      "name": "evaluate_action",
+      "path": "/api/actions/evaluate"
+    },
+    {
+      "method": "POST",
+      "name": "analyze_case",
+      "path": "/api/cases/analyze"
+    },
+    {
+      "method": "POST",
+      "name": "record_shipment_event",
+      "path": "/api/events/shipment"
+    },
+    {
+      "method": "POST",
+      "name": "approve_resolution",
+      "path": "/api/resolutions/approve"
+    }
+  ],
+  "artifact": "reports/batches/BATCH-27/route-inventory.json",
+  "authentication_boundary": "The competition build has no authentication or authorization boundary. The listener is loopback-only (COVENIA_LISTEN_HOST defaults to 127.0.0.1); any local process that can reach the port may call all four endpoints. Do not expose this process beyond the local host.",
+  "batch_id": "BATCH-27",
+  "business_post_route_count": 4,
+  "business_post_routes": [
+    {
+      "method": "POST",
+      "name": "evaluate_action",
+      "path": "/api/actions/evaluate"
+    },
+    {
+      "method": "POST",
+      "name": "analyze_case",
+      "path": "/api/cases/analyze"
+    },
+    {
+      "method": "POST",
+      "name": "record_shipment_event",
+      "path": "/api/events/shipment"
+    },
+    {
+      "method": "POST",
+      "name": "approve_resolution",
+      "path": "/api/resolutions/approve"
+    }
+  ],
+  "contract_source": "docs/05-api-and-ui.md section 1 (frozen four-endpoint baseline)",
+  "cors": {
+    "allow_credentials": false,
+    "allow_headers": [
+      "Content-Type",
+      "X-Request-Id"
+    ],
+    "allow_methods": [
+      "POST",
+      "OPTIONS"
+    ],
+    "allowed_origins": [
+      "http://127.0.0.1:4173",
+      "http://localhost:4173",
+      "http://localhost:5173"
+    ],
+    "options_note": "CORS preflight is answered by Starlette's CORSMiddleware before routing, so no OPTIONS route exists in the mounted route table; it is framework behaviour for the four POST routes, not a fifth business API."
+  },
+  "documentation_routes": {
+    "docs_url": null,
+    "openapi_route_mounted": false,
+    "openapi_url": null,
+    "redoc_url": null,
+    "statement": "The interactive documentation endpoints are disabled by construction (docs_url=redoc_url=openapi_url=None on the application factory), so no fifth business API and no schema UI is served. Setting any of those arguments would re-open them; competition runs keep them closed."
+  },
+  "expected_business_routes": [
+    {
+      "method": "POST",
+      "path": "/api/cases/analyze"
+    },
+    {
+      "method": "POST",
+      "path": "/api/actions/evaluate"
+    },
+    {
+      "method": "POST",
+      "path": "/api/resolutions/approve"
+    },
+    {
+      "method": "POST",
+      "path": "/api/events/shipment"
+    }
+  ],
+  "model_provider": {
+    "blocker_behaviour": "An unregistered deployment yields MODEL_UNAVAILABLE (503) from analyze; no synthetic or cached candidate is returned.",
+    "configured": false,
+    "missing_settings": [
+      "model_deployment_id"
+    ]
+  },
+  "runtime_notices": [
+    "model deployment is not registered; analyze answers MODEL_UNAVAILABLE (missing: model_deployment_id)",
+    "extraction cache is disabled; every analyze calls the model provider",
+    "verified extractions are process-owned and in memory; after a restart analyze must run again before evaluate"
+  ]
+}

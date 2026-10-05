@@ -1,0 +1,161 @@
+{
+  "batch_id": "BATCH-27",
+  "interpreter": "C:\\cv27\\venv\\Scripts\\python.exe",
+  "working_directory": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w27",
+  "temporary_directory": "C:\\cv27\\tmp",
+  "note": "Commands run before the implementation commit; git status therefore lists the BATCH-27 code, test and report paths.",
+  "commands": [
+    {
+      "name": "interpreter-identity",
+      "command": "C:\\cv27\\venv\\Scripts\\python.exe -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" C:\\cv27\\venv\\Scripts\\python.exe",
+      "argv": [
+        "C:\\cv27\\venv\\Scripts\\python.exe",
+        "-c",
+        "import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)",
+        "C:\\cv27\\venv\\Scripts\\python.exe"
+      ],
+      "exit_code": 0,
+      "stdout": "C:\\cv27\\venv\\Scripts\\python.exe\n3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]\n",
+      "stderr": ""
+    },
+    {
+      "name": "lock-install",
+      "command": "C:\\cv27\\venv\\Scripts\\python.exe -m pip install --no-deps -r backend/requirements-dev.lock",
+      "argv": [
+        "C:\\cv27\\venv\\Scripts\\python.exe",
+        "-m",
+        "pip",
+        "install",
+        "--no-deps",
+        "-r",
+        "backend/requirements-dev.lock"
+      ],
+      "exit_code": 0,
+      "stdout": "Requirement already satisfied: annotated-types==0.7.0 in c:\\cv27\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 3)) (0.7.0)\nRequirement already satisfied: anyio==4.8.0 in c:\\cv27\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 4)) (4.8.0)\nRequirement already satisfied: attrs==26.1.0 in c:\\cv27\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 5)) (26.1.0)\nRequirement already satisfied: build==1.2.2.post1 in c:\\cv27\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 6)) (1.2.2.post1)\nRequirement already satisfied: certifi==2025.1.31 in c:\\cv27\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 7)) (2025.1.31)\nRequirement already satisfied: click==8.1.8 in c:\\cv27\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 8)) (8.1.8)\nRequirement already satisfied: colorama==0.4.6 in c:\\cv27\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 9)) (0.4.6)\nRequirement already satisfied: fastapi==0.115.6 in c:\\cv27\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 10)) (0.115.6)\nRequirement already satisfied: h11==0.14.0 in c:\\cv27\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 11)) (0.14.0)\nRequirement already satisfied: httpcore==1.0.7 in c:\\cv27\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 12)) (1.0.7)\nRequirement already satisfied: httpx==0.28.1 in c:\\cv27\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 13)) (0.28.1)\nRequirement already satisfied: idna==3.10 in c:\\cv27\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 14)) (3.10)\nRequirement already satisfied: iniconfig==2.0.0 in c:\\cv27\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 15)) (2.0.0)\nRequirement already satisfied: jsonschema==4.25.0 in c:\\cv27\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 16)) (4.25.0)\nRequirement already satisfied: jsonschema-specifications==2025.9.1 in c:\\cv27\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 17)) (2025.9.1)\nRequirement already satisfied: packaging==24.2 in c:\\cv27\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 18)) (24.2)\nRequirement already satisfied: pluggy==1.5.0 in c:\\cv27\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 19)) (1.5.0)\nRequirement already satisfied: pydantic==2.10.5 in c:\\cv27\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 20)) (2.10.5)\nRequirement already satisfied: pydantic-core==2.27.2 in c:\\cv27\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 21)) (2.27.2)\nRequirement already satisfied: pydantic-settings==2.7.1 in c:\\cv27\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 22)) (2.7.1)\nRequirement already satisfied: pyproject-hooks==1.2.0 in c:\\cv27\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 23)) (1.2.0)\nRequirement already satisfied: pytest==8.3.4 in c:\\cv27\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 24)) (8.3.4)\nRequirement already satisfied: python-dotenv==1.0.1 in c:\\cv27\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 25)) (1.0.1)\nRequirement already satisfied: referencing==0.37.0 in c:\\cv27\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 26)) (0.37.0)\nRequirement already satisfied: rpds-py==2026.6.3 in c:\\cv27\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 27)) (2026.6.3)\nRequirement already satisfied: ruff==0.8.4 in c:\\cv27\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 28)) (0.8.4)\nRequirement already satisfied: setuptools==75.8.0 in c:\\cv27\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 29)) (75.8.0)\nRequirement already satisfied: sniffio==1.3.1 in c:\\cv27\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 30)) (1.3.1)\nRequirement already satisfied: starlette==0.41.3 in c:\\cv27\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 31)) (0.41.3)\nRequirement already satisfied: typing-extensions==4.12.2 in c:\\cv27\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 32)) (4.12.2)\nRequirement already satisfied: uvicorn==0.34.0 in c:\\cv27\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 33)) (0.34.0)\nRequirement already satisfied: wheel==0.45.1 in c:\\cv27\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 34)) (0.45.1)\n",
+      "stderr": "\n[notice] A new release of pip is available: 25.1.1 -> 26.2.1\n[notice] To update, run: C:\\cv27\\venv\\Scripts\\python.exe -m pip install --upgrade pip\n"
+    },
+    {
+      "name": "editable-install",
+      "command": "C:\\cv27\\venv\\Scripts\\python.exe -m pip install --no-deps --no-build-isolation -e backend",
+      "argv": [
+        "C:\\cv27\\venv\\Scripts\\python.exe",
+        "-m",
+        "pip",
+        "install",
+        "--no-deps",
+        "--no-build-isolation",
+        "-e",
+        "backend"
+      ],
+      "exit_code": 0,
+      "stdout": "Obtaining file:///C:/Users/WONG%20Tsun%20Ming/Desktop/%E6%AC%A7%E8%8E%B1%E9%9B%85%E9%BB%91%E5%AE%A2%E6%9D%BE/w27/backend\n  Checking if build backend supports build_editable: started\n  Checking if build backend supports build_editable: finished with status 'done'\n  Preparing editable metadata (pyproject.toml): started\n  Preparing editable metadata (pyproject.toml): finished with status 'done'\nBuilding wheels for collected packages: covenia-b\n  Building editable for covenia-b (pyproject.toml): started\n  Building editable for covenia-b (pyproject.toml): finished with status 'done'\n  Created wheel for covenia-b: filename=covenia_b-0.0.0-0.editable-py3-none-any.whl size=2802 sha256=82201eea54d43d0e711e7519a6407ff4c5ba9af24d0827c5dc0a0e63dbebf89b\n  Stored in directory: C:\\cv27\\tmp\\pip-ephem-wheel-cache-19m5hsqd\\wheels\\ff\\5d\\08\\faab63655139391b92e75ee67c3106efc3e88b1e52d6416fc6\nSuccessfully built covenia-b\nInstalling collected packages: covenia-b\n  Attempting uninstall: covenia-b\n    Found existing installation: covenia-b 0.0.0\n    Uninstalling covenia-b-0.0.0:\n      Successfully uninstalled covenia-b-0.0.0\nSuccessfully installed covenia-b-0.0.0\n",
+      "stderr": "\n[notice] A new release of pip is available: 25.1.1 -> 26.2.1\n[notice] To update, run: C:\\cv27\\venv\\Scripts\\python.exe -m pip install --upgrade pip\n"
+    },
+    {
+      "name": "import-preflight",
+      "command": "C:\\cv27\\venv\\Scripts\\python.exe -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "argv": [
+        "C:\\cv27\\venv\\Scripts\\python.exe",
+        "-c",
+        "import pytest, jsonschema; print('pytest/jsonschema import OK')"
+      ],
+      "exit_code": 0,
+      "stdout": "pytest/jsonschema import OK\n",
+      "stderr": ""
+    },
+    {
+      "name": "composition-tests",
+      "command": "C:\\cv27\\venv\\Scripts\\python.exe -m pytest backend/tests/test_composition.py -q",
+      "argv": [
+        "C:\\cv27\\venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "backend/tests/test_composition.py",
+        "-q"
+      ],
+      "exit_code": 0,
+      "stdout": ".................                                                        [100%]\n17 passed in 0.94s\n",
+      "stderr": ""
+    },
+    {
+      "name": "startup-preflight",
+      "command": "C:\\cv27\\venv\\Scripts\\python.exe -m covenia_b.preflight --offline --workbook data/tianchi-track1-mock-data.xlsx",
+      "argv": [
+        "C:\\cv27\\venv\\Scripts\\python.exe",
+        "-m",
+        "covenia_b.preflight",
+        "--offline",
+        "--workbook",
+        "data/tianchi-track1-mock-data.xlsx"
+      ],
+      "exit_code": 0,
+      "stdout": "preflight: BLOCKED\n  READY   workbook\n  READY   case_source\n  READY   image_manifest\n  READY   sqlite\n  BLOCKED model\n  READY   short_paths\n  READY   composition\n  BLOCKER model: the model deployment is not registered; analyze will answer MODEL_UNAVAILABLE and no candidate is substituted\n  venv longest path: 144 (< 250)\n  interpreter: C:\\cv27\\venv\\Scripts\\python.exe\n  report: reports\\batches\\BATCH-27\\preflight.json\n  routes: reports\\batches\\BATCH-27\\route-inventory.json\n",
+      "stderr": ""
+    },
+    {
+      "name": "ruff",
+      "command": "C:\\cv27\\venv\\Scripts\\python.exe -m ruff check backend/src",
+      "argv": [
+        "C:\\cv27\\venv\\Scripts\\python.exe",
+        "-m",
+        "ruff",
+        "check",
+        "backend/src"
+      ],
+      "exit_code": 0,
+      "stdout": "All checks passed!\n",
+      "stderr": ""
+    },
+    {
+      "name": "pip-list",
+      "command": "C:\\cv27\\venv\\Scripts\\python.exe -m pip list --format=json",
+      "argv": [
+        "C:\\cv27\\venv\\Scripts\\python.exe",
+        "-m",
+        "pip",
+        "list",
+        "--format=json"
+      ],
+      "exit_code": 0,
+      "stdout": "[{\"name\": \"annotated-types\", \"version\": \"0.7.0\"}, {\"name\": \"anyio\", \"version\": \"4.8.0\"}, {\"name\": \"attrs\", \"version\": \"26.1.0\"}, {\"name\": \"build\", \"version\": \"1.2.2.post1\"}, {\"name\": \"certifi\", \"version\": \"2025.1.31\"}, {\"name\": \"click\", \"version\": \"8.1.8\"}, {\"name\": \"colorama\", \"version\": \"0.4.6\"}, {\"name\": \"covenia-b\", \"version\": \"0.0.0\", \"editable_project_location\": \"C:\\\\Users\\\\WONG Tsun Ming\\\\Desktop\\\\\\u6b27\\u83b1\\u96c5\\u9ed1\\u5ba2\\u677e\\\\w27\\\\backend\"}, {\"name\": \"fastapi\", \"version\": \"0.115.6\"}, {\"name\": \"h11\", \"version\": \"0.14.0\"}, {\"name\": \"httpcore\", \"version\": \"1.0.7\"}, {\"name\": \"httpx\", \"version\": \"0.28.1\"}, {\"name\": \"idna\", \"version\": \"3.10\"}, {\"name\": \"iniconfig\", \"version\": \"2.0.0\"}, {\"name\": \"jsonschema\", \"version\": \"4.25.0\"}, {\"name\": \"jsonschema-specifications\", \"version\": \"2025.9.1\"}, {\"name\": \"packaging\", \"version\": \"24.2\"}, {\"name\": \"pip\", \"version\": \"25.1.1\"}, {\"name\": \"pluggy\", \"version\": \"1.5.0\"}, {\"name\": \"pydantic\", \"version\": \"2.10.5\"}, {\"name\": \"pydantic_core\", \"version\": \"2.27.2\"}, {\"name\": \"pydantic-settings\", \"version\": \"2.7.1\"}, {\"name\": \"pyproject_hooks\", \"version\": \"1.2.0\"}, {\"name\": \"pytest\", \"version\": \"8.3.4\"}, {\"name\": \"python-dotenv\", \"version\": \"1.0.1\"}, {\"name\": \"referencing\", \"version\": \"0.37.0\"}, {\"name\": \"rpds-py\", \"version\": \"2026.6.3\"}, {\"name\": \"ruff\", \"version\": \"0.8.4\"}, {\"name\": \"setuptools\", \"version\": \"75.8.0\"}, {\"name\": \"sniffio\", \"version\": \"1.3.1\"}, {\"name\": \"starlette\", \"version\": \"0.41.3\"}, {\"name\": \"typing_extensions\", \"version\": \"4.12.2\"}, {\"name\": \"uvicorn\", \"version\": \"0.34.0\"}, {\"name\": \"wheel\", \"version\": \"0.45.1\"}]\n",
+      "stderr": ""
+    },
+    {
+      "name": "pip-check",
+      "command": "C:\\cv27\\venv\\Scripts\\python.exe -m pip check",
+      "argv": [
+        "C:\\cv27\\venv\\Scripts\\python.exe",
+        "-m",
+        "pip",
+        "check"
+      ],
+      "exit_code": 0,
+      "stdout": "No broken requirements found.\n",
+      "stderr": ""
+    },
+    {
+      "name": "git-diff-check",
+      "command": "git diff --check",
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "warning: in the working copy of 'backend/src/covenia_b/main.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'backend/src/covenia_b/settings.py', LF will be replaced by CRLF the next time Git touches it\n"
+    },
+    {
+      "name": "git-status",
+      "command": "git status --short",
+      "argv": [
+        "git",
+        "status",
+        "--short"
+      ],
+      "exit_code": 0,
+      "stdout": " M backend/src/covenia_b/main.py\n M backend/src/covenia_b/settings.py\n?? backend/src/covenia_b/preflight.py\n?? backend/src/covenia_b/runtime.py\n?? backend/tests/test_composition.py\n?? reports/batches/BATCH-27/\n?? runtime/\n",
+      "stderr": ""
+    }
+  ]
+}

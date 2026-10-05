@@ -1,0 +1,281 @@
+{
+  "batch_id": "BATCH-27",
+  "title": "四接口组合根与启动预检",
+  "status": "IMPLEMENTED (implementation evidence only; not an acceptance verdict)",
+  "disclaimer": "本批由辅助调度器实现，非独立实现方；验收须由他方完成。",
+  "produced_by": "auxiliary dispatcher implementation executor (辅助调度器实现执行者)",
+  "produced_at": "2026-10-05T14:20:32.000153+00:00",
+  "branch": "codex/covenia-batch-27-aux",
+  "base_integration_sha": "f259e9b7101172be144f70a46f495593a07754d0",
+  "code_commit": "cb7c30cbcdb9cf91b42daf165a9f5f2d506d218b",
+  "code_commit_message": "feat(runtime): wire the four endpoints behind a single composition root",
+  "code_paths": [
+    "backend/src/covenia_b/main.py",
+    "backend/src/covenia_b/settings.py",
+    "backend/src/covenia_b/runtime.py",
+    "backend/src/covenia_b/preflight.py",
+    "backend/tests/test_composition.py"
+  ],
+  "code_artifact_hashes_raw_git_blob": [
+    {
+      "path": "backend/src/covenia_b/main.py",
+      "revision": "cb7c30cbcdb9cf91b42daf165a9f5f2d506d218b",
+      "bytes": 2426,
+      "sha256_raw_git_blob": "F27BD5771C46417F1199E418476DDBFDAABC6EFEACC4F55835B0BFCCB51C110C"
+    },
+    {
+      "path": "backend/src/covenia_b/settings.py",
+      "revision": "cb7c30cbcdb9cf91b42daf165a9f5f2d506d218b",
+      "bytes": 3155,
+      "sha256_raw_git_blob": "54166D1ADF87C71E1D6436E29AFA1A802128A4668D73A60582153E377CD49E20"
+    },
+    {
+      "path": "backend/src/covenia_b/runtime.py",
+      "revision": "cb7c30cbcdb9cf91b42daf165a9f5f2d506d218b",
+      "bytes": 32311,
+      "sha256_raw_git_blob": "71A7329F76D55D5A7AD2E2D7A3E741EEFE647DF9F8601BAA850DF35D984D0A6F"
+    },
+    {
+      "path": "backend/src/covenia_b/preflight.py",
+      "revision": "cb7c30cbcdb9cf91b42daf165a9f5f2d506d218b",
+      "bytes": 19452,
+      "sha256_raw_git_blob": "CF29B1CEF8D719DFC5F346B2647C7940036E70199234E3138888C21CFFB677F8"
+    },
+    {
+      "path": "backend/tests/test_composition.py",
+      "revision": "cb7c30cbcdb9cf91b42daf165a9f5f2d506d218b",
+      "bytes": 29299,
+      "sha256_raw_git_blob": "E9D6ED9EC8C36FFE44C05519E77899C7A67AB0CD16B6179A64100185F4ED5246"
+    }
+  ],
+  "report_artifact_hashes_worktree": [
+    {
+      "path": "reports/batches/BATCH-27/route-inventory.json",
+      "bytes": 3444,
+      "sha256_worktree_lf_bytes": "56941E1E2FEC82CE58EA87A6A276BC60529B1D0868B0117E7E8E719914D9AE61"
+    },
+    {
+      "path": "reports/batches/BATCH-27/preflight.json",
+      "bytes": 11482,
+      "sha256_worktree_lf_bytes": "CE17DD2D705D47952F322232447972383417812E501799EE17BCD2226E06B51B"
+    },
+    {
+      "path": "reports/batches/BATCH-27/preflight-variants.json",
+      "bytes": 24194,
+      "sha256_worktree_lf_bytes": "81149CA1D72CA2E66DED749528EFF32DCB184D6E5E568ADDF64067DC8B0F17A2"
+    },
+    {
+      "path": "reports/batches/BATCH-27/commands.json",
+      "bytes": 14017,
+      "sha256_worktree_lf_bytes": "1530C10F5DFD21025C99744E7DC735F8CE06AEEE630596BEB7BC584DD13AEECC"
+    },
+    {
+      "path": "reports/batches/BATCH-27/pip-check.txt",
+      "bytes": 118,
+      "sha256_worktree_lf_bytes": "A1CF14A9A26E92E3E0339C35BDEC8EAD2DBF292447FBF8DAD6D51862BCD84A25"
+    }
+  ],
+  "forbidden_output": {
+    "reports/batches/BATCH-27/VERIFICATION_REPORT.json": "NOT WRITTEN",
+    "reports/batches/BATCH-27/verification-evidence/**": "NOT WRITTEN",
+    "note": "the verifier owns those paths and this batch never creates them"
+  },
+  "what_changed": [
+    "backend/src/covenia_b/runtime.py (new): the single composition root. It injects the process-owned SQLite ledger, clock, model provider, bound image resolver, verified-journey store, metrics sink and workbook-backed case source into the four reviewed router factories, installs CORS and the request-ID trace middleware, and refuses to compose anything other than the frozen four POST routes.",
+    "backend/src/covenia_b/main.py: create_app now returns the composed application (previously an empty scaffold) and python -m covenia_b.main serves it on a loopback-only listener.",
+    "backend/src/covenia_b/settings.py: added the local data paths, model deployment identity, service budgets, listen host/port and the approved CORS origin list; existing field names and defaults are unchanged and no secret is stored.",
+    "backend/src/covenia_b/preflight.py (new): the CLI startup preflight and the route-inventory producer.",
+    "backend/tests/test_composition.py (new): 17 tests over the composed application."
+  ],
+  "endpoints": [
+    {
+      "method": "POST",
+      "name": "evaluate_action",
+      "path": "/api/actions/evaluate"
+    },
+    {
+      "method": "POST",
+      "name": "analyze_case",
+      "path": "/api/cases/analyze"
+    },
+    {
+      "method": "POST",
+      "name": "record_shipment_event",
+      "path": "/api/events/shipment"
+    },
+    {
+      "method": "POST",
+      "name": "approve_resolution",
+      "path": "/api/resolutions/approve"
+    }
+  ],
+  "endpoint_count": 4,
+  "documentation_routes": {
+    "docs_url": null,
+    "openapi_route_mounted": false,
+    "openapi_url": null,
+    "redoc_url": null,
+    "statement": "The interactive documentation endpoints are disabled by construction (docs_url=redoc_url=openapi_url=None on the application factory), so no fifth business API and no schema UI is served. Setting any of those arguments would re-open them; competition runs keep them closed."
+  },
+  "cors": {
+    "allow_credentials": false,
+    "allow_headers": [
+      "Content-Type",
+      "X-Request-Id"
+    ],
+    "allow_methods": [
+      "POST",
+      "OPTIONS"
+    ],
+    "allowed_origins": [
+      "http://127.0.0.1:4173",
+      "http://localhost:4173",
+      "http://localhost:5173"
+    ],
+    "options_note": "CORS preflight is answered by Starlette's CORSMiddleware before routing, so no OPTIONS route exists in the mounted route table; it is framework behaviour for the four POST routes, not a fifth business API."
+  },
+  "authentication_boundary": "The competition build has no authentication or authorization boundary. The listener is loopback-only (COVENIA_LISTEN_HOST defaults to 127.0.0.1); any local process that can reach the port may call all four endpoints. Do not expose this process beyond the local host.",
+  "route_inventory_artifact": "reports/batches/BATCH-27/route-inventory.json",
+  "preflight_output_actual": "preflight: BLOCKED\n  READY   workbook\n  READY   case_source\n  READY   image_manifest\n  READY   sqlite\n  BLOCKED model\n  READY   short_paths\n  READY   composition\n  BLOCKER model: the model deployment is not registered; analyze will answer MODEL_UNAVAILABLE and no candidate is substituted\n  venv longest path: 144 (< 250)\n  interpreter: C:\\cv27\\venv\\Scripts\\python.exe\n  report: reports\\batches\\BATCH-27\\preflight.json\n  routes: reports\\batches\\BATCH-27\\route-inventory.json\n",
+  "preflight_status": "BLOCKED",
+  "preflight_blockers": [
+    "model: the model deployment is not registered; analyze will answer MODEL_UNAVAILABLE and no candidate is substituted"
+  ],
+  "preflight_artifact": "reports/batches/BATCH-27/preflight.json",
+  "acceptance_commands": [
+    {
+      "name": "interpreter-identity",
+      "command": "C:\\cv27\\venv\\Scripts\\python.exe -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" C:\\cv27\\venv\\Scripts\\python.exe",
+      "exit_code": 0,
+      "result": "C:\\cv27\\venv\\Scripts\\python.exe | 3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]"
+    },
+    {
+      "name": "lock-install",
+      "command": "C:\\cv27\\venv\\Scripts\\python.exe -m pip install --no-deps -r backend/requirements-dev.lock",
+      "exit_code": 0,
+      "result": "Requirement already satisfied: wheel==0.45.1 in c:\\cv27\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 34)) (0.45.1)"
+    },
+    {
+      "name": "editable-install",
+      "command": "C:\\cv27\\venv\\Scripts\\python.exe -m pip install --no-deps --no-build-isolation -e backend",
+      "exit_code": 0,
+      "result": "Successfully installed covenia-b-0.0.0"
+    },
+    {
+      "name": "import-preflight",
+      "command": "C:\\cv27\\venv\\Scripts\\python.exe -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "exit_code": 0,
+      "result": "pytest/jsonschema import OK"
+    },
+    {
+      "name": "composition-tests",
+      "command": "C:\\cv27\\venv\\Scripts\\python.exe -m pytest backend/tests/test_composition.py -q",
+      "exit_code": 0,
+      "result": "17 passed in 0.94s"
+    },
+    {
+      "name": "startup-preflight",
+      "command": "C:\\cv27\\venv\\Scripts\\python.exe -m covenia_b.preflight --offline --workbook data/tianchi-track1-mock-data.xlsx",
+      "exit_code": 0,
+      "result": "preflight: BLOCKED |   routes: reports\\batches\\BATCH-27\\route-inventory.json"
+    },
+    {
+      "name": "ruff",
+      "command": "C:\\cv27\\venv\\Scripts\\python.exe -m ruff check backend/src",
+      "exit_code": 0,
+      "result": "All checks passed!"
+    },
+    {
+      "name": "pip-list",
+      "command": "C:\\cv27\\venv\\Scripts\\python.exe -m pip list --format=json",
+      "exit_code": 0,
+      "result": "34 distributions"
+    },
+    {
+      "name": "pip-check",
+      "command": "C:\\cv27\\venv\\Scripts\\python.exe -m pip check",
+      "exit_code": 0,
+      "result": "No broken requirements found."
+    },
+    {
+      "name": "git-diff-check",
+      "command": "git diff --check",
+      "exit_code": 0,
+      "result": "no output"
+    },
+    {
+      "name": "git-status",
+      "command": "git status --short",
+      "exit_code": 0,
+      "result": "7 worktree entries"
+    }
+  ],
+  "acceptance_commands_note": "Every command used the absolute isolated interpreter C:\\cv27\\venv\\Scripts\\python.exe with TEMP=TMP=C:\\cv27\\tmp, from the repository root. Raw stdout/stderr and exit codes are in commands.json.",
+  "acceptance_criteria_evidence": [
+    {
+      "criterion": "恰好四个业务 POST 端点；框架文档/OPTIONS 不属于第五业务 API，比赛运行可关闭文档页面。",
+      "evidence": [
+        "route-inventory.json: business_post_routes has exactly four entries (POST /api/cases/analyze, POST /api/actions/evaluate, POST /api/resolutions/approve, POST /api/events/shipment); all_mounted_operations equals the same four.",
+        "runtime.verify_single_composition() raises RuntimeConfigurationError unless the mounted table equals the frozen expectation set, so a fifth route cannot be composed silently.",
+        "The application is constructed with docs_url=redoc_url=openapi_url=None; test_documentation_and_schema_routes_are_closed_at_construction asserts /docs, /redoc and /openapi.json all answer 404.",
+        "OPTIONS is answered by Starlette CORSMiddleware before routing, so the mounted table contains no OPTIONS route; the report states this and the CORS test exercises a real preflight."
+      ],
+      "verdict_owner": "independent verifier"
+    },
+    {
+      "criterion": "可启动服务，模型或图片缺失预检明确列阻塞，不静默返回假结果。",
+      "evidence": [
+        "preflight.json in this environment: status BLOCKED with the single blocker 'model: the model deployment is not registered; analyze will answer MODEL_UNAVAILABLE and no candidate is substituted' (missing_settings: COVENIA_MODEL_DEPLOYMENT_ID).",
+        "preflight-variants.json: with COVENIA_MODEL_DEPLOYMENT_ID and COVENIA_MODEL_REVISION registered the same command reports READY offline, and without --offline it reports BLOCKED because the registered endpoint is unreachable -- the model check is a real gate, not a constant.",
+        "test_an_unregistered_model_deployment_is_a_blocker_not_a_substitute: analyze answers 503 MODEL_UNAVAILABLE (retryable) with data=null, no ledger snapshot and an empty verified-journey store.",
+        "Image inputs are checked the same way: the manifest status, the per-image no-PII declaration, file presence and declared sha256/byte length are all blocking checks in check_image_manifest().",
+        "A missing workbook, catalog or image manifest is turned into a typed port error by the lazy adapters instead of a fabricated candidate."
+      ],
+      "verdict_owner": "independent verifier"
+    },
+    {
+      "criterion": "CORS 允许 127.0.0.1:4173 与批准的 localhost Origin；请求 ID 跨日志可追踪。",
+      "evidence": [
+        "route-inventory.json cors.allowed_origins = ['http://127.0.0.1:4173', 'http://localhost:4173', 'http://localhost:5173'], allow_credentials=false, allow_methods=['POST','OPTIONS'].",
+        "test_cors_preflight_allows_the_approved_origin_and_refuses_another: the approved origin receives access-control-allow-origin and a disallowed origin receives 400 with no allow-origin header.",
+        "test_request_id_is_returned_logged_and_traceable: the client X-Request-Id is echoed in the response header, in the error envelope, and appended to runtime/logs/requests.jsonl; no request body or PII is logged."
+      ],
+      "verdict_owner": "independent verifier"
+    },
+    {
+      "criterion": "按5.5使用本批绝对隔离venv解释器；新增第三方依赖只增不改、精确钉版本并提交锁文件差异/原因/hash证据；交付前同解释器 pip check 退出0。",
+      "evidence": [
+        "Interpreter: C:\\cv27\\venv\\Scripts\\python.exe; sys.prefix=C:\\cv27\\venv; include-system-site-packages=false; identity assertion exit 0.",
+        "environment.json: dependency lock status UNCHANGED with identical raw git-blob SHA-256 before and after (602C268B684D60E2D1B8BBFC6820663A622EB24093144A87C111F43D3C06FDAE), an empty append-only diff and a recorded reason; no name==version line was added, removed or re-pinned.",
+        "environment.json: pip check exit 0 ('No broken requirements found.') and pip list --format=json captured with the same interpreter.",
+        "venv longest real path 144 < 250 (MASTER_PLAN 5.5-9), measured by the shared repaired short-path tool inside preflight.json."
+      ],
+      "verdict_owner": "independent verifier"
+    }
+  ],
+  "known_limits_and_handoff": [
+    "backend/tests/test_bootstrap.py::test_application_factory_has_no_business_or_documentation_routes still asserts the pre-composition scaffold (application.routes == []). That file is outside BATCH-27's allowed_paths, so it was not edited and now fails (1 failed, 3 passed). An authorized owner of backend/tests/test_bootstrap.py must re-baseline that assertion; it is a deliberate consequence of composing the four endpoints, not a hidden change.",
+    "Cross-batch evidence gap (not fixable inside this batch's read-only modules): services/analyze.py::_server_image_observations always emits readability='UNKNOWN', and evidence/aggregation.py treats readability != 'HIGH' as missing coverage, so every analyzed case with an evidence image lands on evidence_status=NEED_HUMAN_REVIEW. services/approve.py::_current_fulfillment_candidate requires evidence_status == 'VALID', therefore analyze -> approve -> shipment is not reachable from a real analyze response. The composition test drives approve and shipment from a seeded ledger snapshot (the same technique as the reviewed BATCH-24/26 tests) and does not fake the missing rule. BATCH-19/23 owners must decide the intended production bridge.",
+    "The verified-journey seam is process-owned and in memory: after a restart, analyze must run again before evaluate. The persisted ledger alone cannot supply a verified extraction and this root does not invent one.",
+    "cache_mode other than 'disabled' has no locked ExtractionStore adapter yet, so the composition root records that as a notice and calls the provider directly; it never serves a cached candidate.",
+    "There is no authentication or authorization boundary (competition build); the listener is loopback-only and must not be exposed beyond the local host.",
+    "runtime/covenia.sqlite3 and runtime/logs/requests.jsonl appear as untracked files after a live/preflight run; they are runtime artifacts and are intentionally not committed (.gitignore does not cover the repository-root runtime/ directory)."
+  ],
+  "demo_reset_method": "Offline only: stop the process, move runtime/covenia.sqlite3 aside with a timestamped name (or point COVENIA_SQLITE_PATH at a fresh isolated directory), and restart; covenia_b.storage.admin provides local backup/restore. No reset, health or query HTTP endpoint exists, and the route table proves it.",
+  "runbook": {
+    "start": "\"C:\\cv27\\venv\\Scripts\\python.exe\" -m covenia_b.main --host 127.0.0.1 --port 8000   # or: \"C:\\cv27\\venv\\Scripts\\python.exe\" -m uvicorn covenia_b.main:app --host 127.0.0.1 --port 8000",
+    "preflight": "\"C:\\cv27\\venv\\Scripts\\python.exe\" -m covenia_b.preflight --offline --workbook data/tianchi-track1-mock-data.xlsx",
+    "environment_variables": [
+      "COVENIA_MODEL_ENDPOINT (default http://127.0.0.1:8001)",
+      "COVENIA_MODEL_DEPLOYMENT_ID (empty = unregistered model = analyze 503)",
+      "COVENIA_MODEL_REVISION",
+      "COVENIA_MODEL_PROMPT_VERSION (default candidate-extraction-v1)",
+      "COVENIA_MODEL_API_KEY (read in runtime, never stored in Settings)",
+      "COVENIA_SQLITE_PATH, COVENIA_REQUEST_LOG_PATH, COVENIA_WORKBOOK_PATH, COVENIA_DEMO_CASES_PATH, COVENIA_CASE_MANIFEST_PATH, COVENIA_IMAGE_MANIFEST_PATH, COVENIA_IMAGE_EVIDENCE_ROOT",
+      "COVENIA_ALLOWED_ORIGINS (comma separated), COVENIA_ALLOWED_ORIGIN",
+      "COVENIA_LISTEN_HOST, COVENIA_LISTEN_PORT, COVENIA_DEMO_CLOCK",
+      "COVENIA_ANALYSIS_TIMEOUT_SECONDS (<=20), COVENIA_EVALUATE_BUDGET_SECONDS"
+    ]
+  },
+  "no_verification_conclusion": "No PASS/FAIL is asserted here. Every criterion row above lists implementation evidence only; the independent verifier owns the verdict."
+}

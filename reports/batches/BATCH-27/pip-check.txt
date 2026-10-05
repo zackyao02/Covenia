@@ -1,0 +1,5 @@
+command: C:\cv27\venv\Scripts\python.exe -m pip check
+exit_code: 0
+stdout:
+No broken requirements found.
+stderr:

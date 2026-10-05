@@ -1,0 +1,578 @@
+{
+  "artifact": "reports/batches/BATCH-27/preflight-variants.json",
+  "batch_id": "BATCH-27",
+  "commands": {
+    "registered_deployment_offline": "COVENIA_MODEL_DEPLOYMENT_ID=local-compose-1 COVENIA_MODEL_REVISION=qwen2-vl-2b-instruct-rev1 \"C:\\cv27\\venv\\Scripts\\python.exe\" -m covenia_b.preflight --offline --workbook data/tianchi-track1-mock-data.xlsx --report-dir C:\\cv27\\tmp\\preflight-registered",
+    "registered_deployment_online_unreachable": "COVENIA_MODEL_DEPLOYMENT_ID=local-compose-1 COVENIA_MODEL_REVISION=qwen2-vl-2b-instruct-rev1 \"C:\\cv27\\venv\\Scripts\\python.exe\" -m covenia_b.preflight --workbook data/tianchi-track1-mock-data.xlsx --report-dir C:\\cv27\\tmp\\preflight-online"
+  },
+  "purpose": "Supplementary preflight behaviour with a registered deployment, proving the model check is a real gate rather than a constant.",
+  "registered_deployment_offline": {
+    "artifact": "reports/batches/BATCH-27/preflight.json",
+    "batch_id": "BATCH-27",
+    "blockers": [],
+    "checks": [
+      {
+        "id": "workbook",
+        "path": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w27\\data\\tianchi-track1-mock-data.xlsx",
+        "record_counts": {
+          "conversation_count": 138,
+          "image_message_count": 29,
+          "message_count": 998,
+          "order_count": 113,
+          "ticket_count_by_sheet": {
+            "不良反应工单": 10,
+            "售后退货工单": 18,
+            "物流工单": 15,
+            "线下打款工单": 13,
+            "补发换货工单": 24
+          },
+          "ticket_count_total": 80
+        },
+        "required": true,
+        "sha256": "B5AC027E863C5580DAB39C8F459E4698D65E9FBEC29832C9915448F2087307B7",
+        "sheets": [
+          "数据说明",
+          "聊天记录",
+          "订单",
+          "补发换货工单",
+          "线下打款工单",
+          "物流工单",
+          "不良反应工单",
+          "售后退货工单"
+        ],
+        "status": "READY"
+      },
+      {
+        "case_ids": [
+          "DEMO_001",
+          "DEMO_002",
+          "DEMO_003"
+        ],
+        "demo_cases": "fixtures\\demo-cases.json",
+        "id": "case_source",
+        "manifest": "handoff\\a\\cases-manifest.json",
+        "required": true,
+        "status": "READY",
+        "workbook": "data\\tianchi-track1-mock-data.xlsx"
+      },
+      {
+        "evidence_root": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w27\\frontend\\public\\evidence",
+        "id": "image_manifest",
+        "image_count": 5,
+        "images": [
+          {
+            "bytes": 71574,
+            "evidence_id": "S00001_IMG_PRODUCT_OVERVIEW",
+            "file_name": "s00001-product-overview.jpg",
+            "no_pii_declaration": true,
+            "sha256": "E2C6BBD230F906F113D75F2F582E778B6E79AEA37544C2383F1FFDA15A5295D5",
+            "status": "READY"
+          },
+          {
+            "bytes": 66764,
+            "evidence_id": "S00001_IMG_PUMP_DETAIL",
+            "file_name": "s00001-pump-detail.jpg",
+            "no_pii_declaration": true,
+            "sha256": "4709D7529803846D4FF4E123BFCC034D420449AE23923CB54468BE573BD8CFC7",
+            "status": "READY"
+          },
+          {
+            "bytes": 129230,
+            "evidence_id": "S00001_IMG_PACKAGE_CONTEXT",
+            "file_name": "s00001-package-context.jpg",
+            "no_pii_declaration": true,
+            "sha256": "C734BFB5A70FFA39E10B2535DC8321EACE3C1FB358293FA22B590B9F7B5836BD",
+            "status": "READY"
+          },
+          {
+            "bytes": 130254,
+            "evidence_id": "S00001_IMG_GIFT_EVIDENCE",
+            "file_name": "s00001-gift-evidence.jpg",
+            "no_pii_declaration": true,
+            "sha256": "E52DF258CDBC5761D175F31985639337F2274211FBEB3DDB82A0B773150AA7F5",
+            "status": "READY"
+          },
+          {
+            "bytes": 55664,
+            "evidence_id": "S00001_IMG_BLURRED_PUMP",
+            "file_name": "s00001-blurred-pump.jpg",
+            "no_pii_declaration": true,
+            "sha256": "634D2B4B0665FAE49DEC286628B13D8116808B3FFF7A39A9DD7CDEA9E7DE3143",
+            "status": "READY"
+          }
+        ],
+        "manifest": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w27\\handoff\\a\\images-manifest.json",
+        "manifest_sha256": "4D596C87F3483166915E25A0F250292FA9CCE1A654463C09DBFC0EF97310352E",
+        "required": true,
+        "status": "READY"
+      },
+      {
+        "id": "sqlite",
+        "journal_mode": "wal",
+        "path": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w27\\runtime\\covenia.sqlite3",
+        "required": true,
+        "schema": "VALIDATED",
+        "status": "READY",
+        "writable": true
+      },
+      {
+        "api_key_present": false,
+        "deployment_id_configured": true,
+        "endpoint": "http://127.0.0.1:8001",
+        "id": "model",
+        "model_revision": "qwen2-vl-2b-instruct-rev1",
+        "offline": true,
+        "prompt_version": "candidate-extraction-v1",
+        "required": true,
+        "status": "READY",
+        "warmup": {
+          "performed": false,
+          "reason": "offline mode never contacts the model endpoint",
+          "required": true
+        }
+      },
+      {
+        "id": "short_paths",
+        "measured": "real filesystem paths (os.walk + git -c core.quotepath=false)",
+        "repository_root": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w27",
+        "required": true,
+        "run_dir": "C:\\cv27",
+        "status": "READY",
+        "tool": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w27\\tools\\preflight\\shortpath_check.py",
+        "tool_exit_code": 0,
+        "tool_stdout": "shortpath preflight\n  repo  : C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w27  (root length 42)\n  limit : >= 250 characters is a failure\n\nreal measurements (verdict-bearing):\n  OK   disk (os.walk)                      185  C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w27\\reports\\batches\\BATCH-09\\verification-history\\round-1\\verification-\n  OK   tracked (core.quotepath=false)      185  C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w27\\reports\\batches\\BATCH-09\\verification-history\\round-1\\verification-\n  OK   venv (MASTER_PLAN 5.5-9)            144  C:\\cv27\\venv\\Lib\\site-packages\\pkg_resources\\tests\\data\\my-test-package_unpacked-egg\\my_test_package-1.0-py3.7\n\nfor contrast (NOT used for the verdict):\n  OK   tracked (NAIVE, defective)          245  C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w27\\\"\\350\\265\\233\\351\\242\\230 1\\357\\274\\232\\346\\225\\260\\346\\215\\256\\345  [informational only]\n\nverdict: PASS\n",
+        "venv": {
+          "length": 144,
+          "limit": 250,
+          "path": "C:\\cv27\\venv\\Lib\\site-packages\\pkg_resources\\tests\\data\\my-test-package_unpacked-egg\\my_test_package-1.0-py3.7.egg\\EGG-INFO\\dependency_links.txt"
+        }
+      },
+      {
+        "allowed_origins": [
+          "http://127.0.0.1:4173",
+          "http://localhost:4173",
+          "http://localhost:5173"
+        ],
+        "business_post_route_count": 4,
+        "business_post_routes": [
+          "POST /api/actions/evaluate",
+          "POST /api/cases/analyze",
+          "POST /api/events/shipment",
+          "POST /api/resolutions/approve"
+        ],
+        "documentation_routes_disabled": true,
+        "id": "composition",
+        "model_provider_configured": true,
+        "required": true,
+        "status": "READY"
+      }
+    ],
+    "environment": {
+      "isolated_venv": true,
+      "python_executable": "C:\\cv27\\venv\\Scripts\\python.exe",
+      "python_version": "3.13.5",
+      "run_dir": "C:\\cv27",
+      "sys_prefix": "C:\\cv27\\venv",
+      "temp_dir": "C:\\cv27\\tmp",
+      "venv_longest_path": {
+        "length": 144,
+        "limit": 250,
+        "path": "C:\\cv27\\venv\\Lib\\site-packages\\pkg_resources\\tests\\data\\my-test-package_unpacked-egg\\my_test_package-1.0-py3.7.egg\\EGG-INFO\\dependency_links.txt"
+      },
+      "working_directory": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w27"
+    },
+    "generated_at": "2026-10-05T14:19:50.405710+00:00",
+    "honesty_statement": "Missing inputs are reported as blockers. The preflight never returns a synthetic candidate, a cached extraction, or a substitute case result.",
+    "offline": true,
+    "route_inventory": {
+      "all_mounted_operations": [
+        {
+          "method": "POST",
+          "name": "evaluate_action",
+          "path": "/api/actions/evaluate"
+        },
+        {
+          "method": "POST",
+          "name": "analyze_case",
+          "path": "/api/cases/analyze"
+        },
+        {
+          "method": "POST",
+          "name": "record_shipment_event",
+          "path": "/api/events/shipment"
+        },
+        {
+          "method": "POST",
+          "name": "approve_resolution",
+          "path": "/api/resolutions/approve"
+        }
+      ],
+      "artifact": "reports/batches/BATCH-27/route-inventory.json",
+      "authentication_boundary": "The competition build has no authentication or authorization boundary. The listener is loopback-only (COVENIA_LISTEN_HOST defaults to 127.0.0.1); any local process that can reach the port may call all four endpoints. Do not expose this process beyond the local host.",
+      "batch_id": "BATCH-27",
+      "business_post_route_count": 4,
+      "business_post_routes": [
+        {
+          "method": "POST",
+          "name": "evaluate_action",
+          "path": "/api/actions/evaluate"
+        },
+        {
+          "method": "POST",
+          "name": "analyze_case",
+          "path": "/api/cases/analyze"
+        },
+        {
+          "method": "POST",
+          "name": "record_shipment_event",
+          "path": "/api/events/shipment"
+        },
+        {
+          "method": "POST",
+          "name": "approve_resolution",
+          "path": "/api/resolutions/approve"
+        }
+      ],
+      "contract_source": "docs/05-api-and-ui.md section 1 (frozen four-endpoint baseline)",
+      "cors": {
+        "allow_credentials": false,
+        "allow_headers": [
+          "Content-Type",
+          "X-Request-Id"
+        ],
+        "allow_methods": [
+          "POST",
+          "OPTIONS"
+        ],
+        "allowed_origins": [
+          "http://127.0.0.1:4173",
+          "http://localhost:4173",
+          "http://localhost:5173"
+        ],
+        "options_note": "CORS preflight is answered by Starlette's CORSMiddleware before routing, so no OPTIONS route exists in the mounted route table; it is framework behaviour for the four POST routes, not a fifth business API."
+      },
+      "documentation_routes": {
+        "docs_url": null,
+        "openapi_route_mounted": false,
+        "openapi_url": null,
+        "redoc_url": null,
+        "statement": "The interactive documentation endpoints are disabled by construction (docs_url=redoc_url=openapi_url=None on the application factory), so no fifth business API and no schema UI is served. Setting any of those arguments would re-open them; competition runs keep them closed."
+      },
+      "expected_business_routes": [
+        {
+          "method": "POST",
+          "path": "/api/cases/analyze"
+        },
+        {
+          "method": "POST",
+          "path": "/api/actions/evaluate"
+        },
+        {
+          "method": "POST",
+          "path": "/api/resolutions/approve"
+        },
+        {
+          "method": "POST",
+          "path": "/api/events/shipment"
+        }
+      ],
+      "model_provider": {
+        "blocker_behaviour": "An unregistered deployment yields MODEL_UNAVAILABLE (503) from analyze; no synthetic or cached candidate is returned.",
+        "configured": true,
+        "missing_settings": []
+      },
+      "runtime_notices": [
+        "extraction cache is disabled; every analyze calls the model provider",
+        "verified extractions are process-owned and in memory; after a restart analyze must run again before evaluate"
+      ]
+    },
+    "route_inventory_artifact": "reports/batches/BATCH-27/route-inventory.json",
+    "status": "READY"
+  },
+  "registered_deployment_online_unreachable": {
+    "artifact": "reports/batches/BATCH-27/preflight.json",
+    "batch_id": "BATCH-27",
+    "blockers": [
+      "model: the registered model endpoint is not reachable"
+    ],
+    "checks": [
+      {
+        "id": "workbook",
+        "path": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w27\\data\\tianchi-track1-mock-data.xlsx",
+        "record_counts": {
+          "conversation_count": 138,
+          "image_message_count": 29,
+          "message_count": 998,
+          "order_count": 113,
+          "ticket_count_by_sheet": {
+            "不良反应工单": 10,
+            "售后退货工单": 18,
+            "物流工单": 15,
+            "线下打款工单": 13,
+            "补发换货工单": 24
+          },
+          "ticket_count_total": 80
+        },
+        "required": true,
+        "sha256": "B5AC027E863C5580DAB39C8F459E4698D65E9FBEC29832C9915448F2087307B7",
+        "sheets": [
+          "数据说明",
+          "聊天记录",
+          "订单",
+          "补发换货工单",
+          "线下打款工单",
+          "物流工单",
+          "不良反应工单",
+          "售后退货工单"
+        ],
+        "status": "READY"
+      },
+      {
+        "case_ids": [
+          "DEMO_001",
+          "DEMO_002",
+          "DEMO_003"
+        ],
+        "demo_cases": "fixtures\\demo-cases.json",
+        "id": "case_source",
+        "manifest": "handoff\\a\\cases-manifest.json",
+        "required": true,
+        "status": "READY",
+        "workbook": "data\\tianchi-track1-mock-data.xlsx"
+      },
+      {
+        "evidence_root": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w27\\frontend\\public\\evidence",
+        "id": "image_manifest",
+        "image_count": 5,
+        "images": [
+          {
+            "bytes": 71574,
+            "evidence_id": "S00001_IMG_PRODUCT_OVERVIEW",
+            "file_name": "s00001-product-overview.jpg",
+            "no_pii_declaration": true,
+            "sha256": "E2C6BBD230F906F113D75F2F582E778B6E79AEA37544C2383F1FFDA15A5295D5",
+            "status": "READY"
+          },
+          {
+            "bytes": 66764,
+            "evidence_id": "S00001_IMG_PUMP_DETAIL",
+            "file_name": "s00001-pump-detail.jpg",
+            "no_pii_declaration": true,
+            "sha256": "4709D7529803846D4FF4E123BFCC034D420449AE23923CB54468BE573BD8CFC7",
+            "status": "READY"
+          },
+          {
+            "bytes": 129230,
+            "evidence_id": "S00001_IMG_PACKAGE_CONTEXT",
+            "file_name": "s00001-package-context.jpg",
+            "no_pii_declaration": true,
+            "sha256": "C734BFB5A70FFA39E10B2535DC8321EACE3C1FB358293FA22B590B9F7B5836BD",
+            "status": "READY"
+          },
+          {
+            "bytes": 130254,
+            "evidence_id": "S00001_IMG_GIFT_EVIDENCE",
+            "file_name": "s00001-gift-evidence.jpg",
+            "no_pii_declaration": true,
+            "sha256": "E52DF258CDBC5761D175F31985639337F2274211FBEB3DDB82A0B773150AA7F5",
+            "status": "READY"
+          },
+          {
+            "bytes": 55664,
+            "evidence_id": "S00001_IMG_BLURRED_PUMP",
+            "file_name": "s00001-blurred-pump.jpg",
+            "no_pii_declaration": true,
+            "sha256": "634D2B4B0665FAE49DEC286628B13D8116808B3FFF7A39A9DD7CDEA9E7DE3143",
+            "status": "READY"
+          }
+        ],
+        "manifest": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w27\\handoff\\a\\images-manifest.json",
+        "manifest_sha256": "4D596C87F3483166915E25A0F250292FA9CCE1A654463C09DBFC0EF97310352E",
+        "required": true,
+        "status": "READY"
+      },
+      {
+        "id": "sqlite",
+        "journal_mode": "wal",
+        "path": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w27\\runtime\\covenia.sqlite3",
+        "required": true,
+        "schema": "VALIDATED",
+        "status": "READY",
+        "writable": true
+      },
+      {
+        "api_key_present": false,
+        "deployment_id_configured": true,
+        "endpoint": "http://127.0.0.1:8001",
+        "id": "model",
+        "model_revision": "qwen2-vl-2b-instruct-rev1",
+        "offline": false,
+        "prompt_version": "candidate-extraction-v1",
+        "reason": "the registered model endpoint is not reachable",
+        "required": true,
+        "status": "BLOCKED",
+        "warmup": {
+          "performed": false,
+          "reason": "tcp 127.0.0.1:8001 unreachable (TimeoutError)",
+          "required": true
+        }
+      },
+      {
+        "id": "short_paths",
+        "measured": "real filesystem paths (os.walk + git -c core.quotepath=false)",
+        "repository_root": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w27",
+        "required": true,
+        "run_dir": "C:\\cv27",
+        "status": "READY",
+        "tool": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w27\\tools\\preflight\\shortpath_check.py",
+        "tool_exit_code": 0,
+        "tool_stdout": "shortpath preflight\n  repo  : C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w27  (root length 42)\n  limit : >= 250 characters is a failure\n\nreal measurements (verdict-bearing):\n  OK   disk (os.walk)                      185  C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w27\\reports\\batches\\BATCH-09\\verification-history\\round-1\\verification-\n  OK   tracked (core.quotepath=false)      185  C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w27\\reports\\batches\\BATCH-09\\verification-history\\round-1\\verification-\n  OK   venv (MASTER_PLAN 5.5-9)            144  C:\\cv27\\venv\\Lib\\site-packages\\pkg_resources\\tests\\data\\my-test-package_unpacked-egg\\my_test_package-1.0-py3.7\n\nfor contrast (NOT used for the verdict):\n  OK   tracked (NAIVE, defective)          245  C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w27\\\"\\350\\265\\233\\351\\242\\230 1\\357\\274\\232\\346\\225\\260\\346\\215\\256\\345  [informational only]\n\nverdict: PASS\n",
+        "venv": {
+          "length": 144,
+          "limit": 250,
+          "path": "C:\\cv27\\venv\\Lib\\site-packages\\pkg_resources\\tests\\data\\my-test-package_unpacked-egg\\my_test_package-1.0-py3.7.egg\\EGG-INFO\\dependency_links.txt"
+        }
+      },
+      {
+        "allowed_origins": [
+          "http://127.0.0.1:4173",
+          "http://localhost:4173",
+          "http://localhost:5173"
+        ],
+        "business_post_route_count": 4,
+        "business_post_routes": [
+          "POST /api/actions/evaluate",
+          "POST /api/cases/analyze",
+          "POST /api/events/shipment",
+          "POST /api/resolutions/approve"
+        ],
+        "documentation_routes_disabled": true,
+        "id": "composition",
+        "model_provider_configured": true,
+        "required": true,
+        "status": "READY"
+      }
+    ],
+    "environment": {
+      "isolated_venv": true,
+      "python_executable": "C:\\cv27\\venv\\Scripts\\python.exe",
+      "python_version": "3.13.5",
+      "run_dir": "C:\\cv27",
+      "sys_prefix": "C:\\cv27\\venv",
+      "temp_dir": "C:\\cv27\\tmp",
+      "venv_longest_path": {
+        "length": 144,
+        "limit": 250,
+        "path": "C:\\cv27\\venv\\Lib\\site-packages\\pkg_resources\\tests\\data\\my-test-package_unpacked-egg\\my_test_package-1.0-py3.7.egg\\EGG-INFO\\dependency_links.txt"
+      },
+      "working_directory": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w27"
+    },
+    "generated_at": "2026-10-05T14:19:53.863596+00:00",
+    "honesty_statement": "Missing inputs are reported as blockers. The preflight never returns a synthetic candidate, a cached extraction, or a substitute case result.",
+    "offline": false,
+    "route_inventory": {
+      "all_mounted_operations": [
+        {
+          "method": "POST",
+          "name": "evaluate_action",
+          "path": "/api/actions/evaluate"
+        },
+        {
+          "method": "POST",
+          "name": "analyze_case",
+          "path": "/api/cases/analyze"
+        },
+        {
+          "method": "POST",
+          "name": "record_shipment_event",
+          "path": "/api/events/shipment"
+        },
+        {
+          "method": "POST",
+          "name": "approve_resolution",
+          "path": "/api/resolutions/approve"
+        }
+      ],
+      "artifact": "reports/batches/BATCH-27/route-inventory.json",
+      "authentication_boundary": "The competition build has no authentication or authorization boundary. The listener is loopback-only (COVENIA_LISTEN_HOST defaults to 127.0.0.1); any local process that can reach the port may call all four endpoints. Do not expose this process beyond the local host.",
+      "batch_id": "BATCH-27",
+      "business_post_route_count": 4,
+      "business_post_routes": [
+        {
+          "method": "POST",
+          "name": "evaluate_action",
+          "path": "/api/actions/evaluate"
+        },
+        {
+          "method": "POST",
+          "name": "analyze_case",
+          "path": "/api/cases/analyze"
+        },
+        {
+          "method": "POST",
+          "name": "record_shipment_event",
+          "path": "/api/events/shipment"
+        },
+        {
+          "method": "POST",
+          "name": "approve_resolution",
+          "path": "/api/resolutions/approve"
+        }
+      ],
+      "contract_source": "docs/05-api-and-ui.md section 1 (frozen four-endpoint baseline)",
+      "cors": {
+        "allow_credentials": false,
+        "allow_headers": [
+          "Content-Type",
+          "X-Request-Id"
+        ],
+        "allow_methods": [
+          "POST",
+          "OPTIONS"
+        ],
+        "allowed_origins": [
+          "http://127.0.0.1:4173",
+          "http://localhost:4173",
+          "http://localhost:5173"
+        ],
+        "options_note": "CORS preflight is answered by Starlette's CORSMiddleware before routing, so no OPTIONS route exists in the mounted route table; it is framework behaviour for the four POST routes, not a fifth business API."
+      },
+      "documentation_routes": {
+        "docs_url": null,
+        "openapi_route_mounted": false,
+        "openapi_url": null,
+        "redoc_url": null,
+        "statement": "The interactive documentation endpoints are disabled by construction (docs_url=redoc_url=openapi_url=None on the application factory), so no fifth business API and no schema UI is served. Setting any of those arguments would re-open them; competition runs keep them closed."
+      },
+      "expected_business_routes": [
+        {
+          "method": "POST",
+          "path": "/api/cases/analyze"
+        },
+        {
+          "method": "POST",
+          "path": "/api/actions/evaluate"
+        },
+        {
+          "method": "POST",
+          "path": "/api/resolutions/approve"
+        },
+        {
+          "method": "POST",
+          "path": "/api/events/shipment"
+        }
+      ],
+      "model_provider": {
+        "blocker_behaviour": "An unregistered deployment yields MODEL_UNAVAILABLE (503) from analyze; no synthetic or cached candidate is returned.",
+        "configured": true,
+        "missing_settings": []
+      },
+      "runtime_notices": [
+        "extraction cache is disabled; every analyze calls the model provider",
+        "verified extractions are process-owned and in memory; after a restart analyze must run again before evaluate"
+      ]
+    },
+    "route_inventory_artifact": "reports/batches/BATCH-27/route-inventory.json",
+    "status": "BLOCKED"
+  }
+}
