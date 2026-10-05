@@ -108,16 +108,64 @@ E90F72518FA53C7097F4425806E6986D732C429022591820F47922FC5E0AF5EE  backend/src/co
 3. 第三方依赖钉版本与锁文件差异由实现方记录，除 pip check 与范围审计外未独立复算锁内容。
 4. **本轮发现并已自我更正一处方法学误判**：初版探针断言弃用字段必须为 `None`，实测被保留；经静态核验服务端从不读取该字段，故更正为「保留但不采信」而非缺陷 —— **不据此判 FAIL**。
 
-## 九、回归风险
+## 九、方法学更正记录（MC-BATCH22-ACCOUNTABILITY-STATE-20261005）
+
+> 产品负责人 2026-10-05 明确要求：本更正过程须写进验收报告，作为**方法学记录**。
+
+| 项 | 值 |
+|---|---|
+| 编号 | `MC-BATCH22-ACCOUNTABILITY-STATE-20261005` |
+| 状态 | **SELF_CORRECTED_BEFORE_VERDICT**（定稿前自我更正） |
+| 对结论影响 | **无** —— 未改变 PASS，也未放宽任何标准 |
+
+### 经过
+
+1. 自建探针初版断言：请求中的弃用字段 `accountability_state` 解析后**必须为 `None`**（理由：不得被采信）。
+2. 实测：该字段**被保留**，值为探针注入的 `{'decision': 'INTERVENE', 'rule_id': 'P0_PROHIBITED_ACTION'}` → 初版探针报 **1 项 FAIL**（13 项中 1 项）。
+3. **不据单次失败下结论**，先做静态核验：全 `backend/src` 搜索 `accountability_state` 的出现位置。
+
+### 定案证据
+
+文件 `backend/src/covenia_b/services/evaluate.py`，全部出现处：
+
+| 行 | 内容 | 性质 |
+|---|---|---|
+| 35 | `from covenia_b.state import build_accountability_state` | 导入，非读取请求字段 |
+| 124 | `if snapshot is None or snapshot.accountability_state is None` | 读**服务端账本快照** |
+| 137 | `rebuilt = build_accountability_state(...)` | 由 `case/journey/evidence/compilation/snapshot` 重建，**不含请求字段** |
+
+→ 实现**从不读取** `request.accountability_state`；冻结 schema 亦将其声明为 `deprecated` / `readOnly` 的兼容字段。
+
+### 更正后的政策表述
+
+> 弃用字段「**保留但不采信**」：解析层保留以维持兼容，决策层完全以服务端事实（case / journey / evidence / compilation / ledger snapshot）为准。
+
+更正后两项断言均 PASS：
+
+- 「弃用字段被保留（冻结 schema 声明的兼容语义，**非缺陷**）」
+- 「服务端不读取请求侧弃用字段（**保留但不采信**）」（静态核验无 `request.<field>` / `parsed.<field>` 读取）
+
+### 为何这是方法学记录、而非放水
+
+1. **不是把不达标写成达标**：「不采信」主张有静态调用点证据支撑，另有动态探针佐证（注入伪造值仍返回服务端结论）。
+2. **未删减标准**：四条 `acceptance_criteria` 逐条映射且全部 PASS，原文完整引用见第三节。
+3. **误判保留在案**而非抹除，供后续验收对照。
+4. **项目先例**：`PROJECT_STATUS.md` 记录过同类陷阱 ——「第三次误判：报 P0 规则消失，实为有意的成功/错误分离」。审查方对自身结论的证伪义务由此确立。
+
+### 建议常设规则
+
+> 凡「某字段必须为 X」类断言，先区分【**保留/呈现**】与【**采信/参与判定**】两种语义，并以**调用点证据**判定后者；**不得以字段存在或非空直接判缺陷**。
+
+## 十、回归风险
 
 1. 本批测试直接驱动路由端点；**应用装配（`main.py` 路由注册）不在本批 `allowed_paths` 内**，须由 BATCH-27 承担。
 2. 集成级已知问题（**非本批缺陷**）：BATCH-24 引入的 `backend/tests/api/test_approve.py` 与 BATCH-23 的 `backend/tests/services/test_approve.py` 模块同名，导致全量 `pytest` 收集失败；见 `_aux/findings/CROSS-LINE-TESTMODULE-COLLISION-20261005.md`。
 
-## 十、结论
+## 十一、结论
 
 **findings: 无 · minimal_fix_list: 无 · blockers: 无 · code_modified: false · next_batch_started: false**
 
-## 十一、验收方独立性偏离声明（依规约 §六 必须写明）
+## 十二、验收方独立性偏离声明（依规约 §六 必须写明）
 
 本验收由**辅助调度器（审查角色）**执行，**而非全新独立任务线程**，因 Codex 额度耗尽。
 该偏离在此显式记录，并请另行安排**独立复核本验收本身**（复验验收）。

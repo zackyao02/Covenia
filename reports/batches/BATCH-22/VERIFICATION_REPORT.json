@@ -141,6 +141,39 @@
     "第三方依赖钉版本与锁文件差异由实现方记录，除 pip check 与范围审计外未独立复算锁内容。",
     "本轮发现并已自我更正一处方法学误判：初版探针断言弃用字段必须为 None，实测被保留；经静态核验服务端从不读取该字段，故更正为『保留但不采信』而非缺陷 —— 不据此判 FAIL。"
   ],
+  "methodology_correction": {
+    "id": "MC-BATCH22-ACCOUNTABILITY-STATE-20261005",
+    "recorded_at": "2026-10-05T21:58:00+08:00",
+    "status": "SELF_CORRECTED_BEFORE_VERDICT",
+    "verdict_impact": "无。该更正发生在定稿之前，未改变 PASS 结论，也未放宽任何标准。",
+    "what_happened": [
+      "自建探针初版断言：请求中的弃用字段 accountability_state 在解析后必须为 None（理由：『不得被采信』）。",
+      "实测结果：该字段被保留，值为探针注入的 {'decision': 'INTERVENE', 'rule_id': 'P0_PROHIBITED_ACTION'}。初版探针因此报 1 项 FAIL（13 项中 1 项失败）。",
+      "证伪过程：不直接下结论，先做静态核验 —— 全 backend/src 搜索 accountability_state 的出现位置。"
+    ],
+    "evidence_that_settled_it": {
+      "file": "backend/src/covenia_b/services/evaluate.py",
+      "occurrences": [
+        "line 35: from covenia_b.state import build_accountability_state（导入，非读取请求字段）",
+        "line 124: if snapshot is None or snapshot.accountability_state is None（读的是服务端账本快照）",
+        "line 137: rebuilt = build_accountability_state(...)（由 case/journey/evidence/compilation/snapshot 重建，不含请求字段）"
+      ],
+      "conclusion": "实现从不读取 request.accountability_state；冻结 schema 亦将其声明为 deprecated/readOnly 的兼容字段（EvaluateActionRequest.accountability_state: Any | None = None）。"
+    },
+    "corrected_policy_statement": "弃用字段『保留但不采信』—— 解析层保留以维持兼容，决策层完全以服务端事实（case / journey / evidence / compilation / ledger snapshot）为准。",
+    "corrected_assertions": [
+      "『弃用字段被保留（冻结 schema 声明的兼容语义，非缺陷）』 -> PASS",
+      "『服务端不读取请求侧弃用字段（保留但不采信）』 -> PASS（静态核验 services/evaluate.py 无 request.<field> / parsed.<field> 读取）"
+    ],
+    "reclassified": "原判 FAIL 的观测项被重新归类为『兼容语义下的预期行为』，非实现缺陷。",
+    "why_this_is_a_methodology_record_not_a_waiver": [
+      "不是把不达标写成达标：弃用字段的『不采信』主张有静态调用点证据支撑，且有动态探针佐证（伪造值仍返回服务端结论）。",
+      "未删减验收标准：四条 acceptance_criteria 逐条映射且全部 PASS，标准原文完整引用在报告中。",
+      "误判被保留在记录中而非抹除，供后续验收对照。"
+    ],
+    "project_precedent": "本项目已有同类陷阱：PROJECT_STATUS.md 记录的『第三次误判 —— 报 P0 规则消失，实为有意的成功/错误分离』。审查方对自身结论的证伪义务由此确立。",
+    "standing_rule_proposed": "凡『某字段必须为 X』类断言，先区分【保留/呈现】与【采信/参与判定】两种语义，并以调用点证据判定后者；不得以字段存在或非空直接判缺陷。"
+  },
   "regression_risks": [
     "本批测试直接驱动路由端点；应用装配（main.py 路由注册）不在本批 allowed_paths 内，须由 BATCH-27 承担。",
     "集成级已知问题（非本批缺陷）：BATCH-24 引入的 backend/tests/api/test_approve.py 与 BATCH-23 的 backend/tests/services/test_approve.py 模块同名，导致全量 pytest 收集失败；见 _aux/findings/CROSS-LINE-TESTMODULE-COLLISION-20261005.json。"
