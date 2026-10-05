@@ -1,0 +1,15 @@
+{
+  "batch_id": "BATCH-22",
+  "interpreter": "C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\b22\\venv\\Scripts\\python.exe",
+  "commands": [
+    {"command": "isolated interpreter assertion", "result": "PASS; Python 3.13.5; longest venv path 153 < 250"},
+    {"command": "python -m pip install --no-deps -r backend/requirements-dev.lock", "result": "PASS after approved sandbox-network retry; lock unchanged"},
+    {"command": "python -m pip install --no-deps --no-build-isolation -e backend", "result": "PASS"},
+    {"command": "python -c import pytest, jsonschema", "result": "PASS"},
+    {"command": "python -m pytest backend/tests/api/test_evaluate.py -q", "result": "PASS; 3 passed"},
+    {"command": "python tools/contracts/check_contracts.py --strict", "result": "PASS; 14 schemas and 18 vectors validated"},
+    {"command": "python -m pip check", "result": "PASS; No broken requirements found"},
+    {"command": "python -m ruff check backend/src/covenia_b/services/evaluate.py backend/src/covenia_b/api/evaluate.py backend/tests/api/test_evaluate.py", "result": "PASS"},
+    {"command": "git diff --check", "result": "PASS"}
+  ]
+}

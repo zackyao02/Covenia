@@ -1,0 +1,16 @@
+{
+  "batch_id": "BATCH-22",
+  "transport": "POST /evaluate via create_evaluate_router",
+  "cases": [
+    {"name": "E0 progress query", "request": "CHECK_REPLACEMENT_PROGRESS", "expected": "200 ALLOW/E0_NO_RULE_MATCHED", "observed": "PASS"},
+    {"name": "E1 duplicate evidence", "request": "ASK_EVIDENCE in authoritative current scope", "expected": "200 INTERVENE/E1", "observed": "PASS"},
+    {"name": "H1 challenge observation", "request": "challenge_mode:true plus LOW readability", "expected": "200 HUMAN_REVIEW/H1", "observed": "PASS"},
+    {"name": "P0 prohibited action", "request": "CLOSE_CASE", "expected": "400 P0_PROHIBITED_ACTION envelope", "observed": "PASS"},
+    {"name": "unanalysed case", "request": "no current ledger state", "expected": "422 VALIDATION_ERROR envelope", "observed": "PASS"},
+    {"name": "forged compatibility fields", "request": "five compatibility fields and disabled override", "expected": "ignored; same authoritative E0 result", "observed": "PASS"}
+  ],
+  "notes": [
+    "Challenge overrides are ignored unless challenge_mode is exactly true.",
+    "Challenge snapshots are rebuilt in memory and never call ledger.save."
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "batch_id": "BATCH-22",
+  "status": "COMPLETED",
+  "base_integration_sha": "5378f46f37e3323ae4e46548f82a92d72432289a",
+  "branch": "codex/covenia-batch-22",
+  "summary": [
+    "Added a read-only evaluate service that rebuilds state from CaseSource, a verified extraction, and the current ledger snapshot; request compatibility state is never a fact source.",
+    "Added an injectable FastAPI POST /evaluate router that returns frozen envelopes, maps P0 to 400, rejects unanalysed cases, and maps non-rule service failures without exposing internals.",
+    "Challenge image observation overrides apply only when challenge_mode is explicitly true and are evaluated only in memory; no ledger write occurs."
+  ],
+  "files_changed": [
+    "backend/src/covenia_b/services/evaluate.py",
+    "backend/src/covenia_b/api/evaluate.py",
+    "backend/tests/api/test_evaluate.py",
+    "reports/batches/BATCH-22/evaluate-http-matrix.json",
+    "reports/batches/BATCH-22/IMPLEMENTATION_REPORT.json",
+    "reports/batches/BATCH-22/IMPLEMENTATION_REPORT.md",
+    "reports/batches/BATCH-22/commands.json",
+    "reports/batches/BATCH-22/environment.json",
+    "reports/batches/BATCH-22/pip-check.txt"
+  ],
+  "tests_run": [
+    "pytest backend/tests/api/test_evaluate.py -q: 3 passed",
+    "tools/contracts/check_contracts.py --strict: 14 schemas and 18 vectors validated",
+    "ruff check evaluate service, adapter, and tests: passed",
+    "pip check: No broken requirements found"
+  ],
+  "scope_controls": {
+    "main_modified": false,
+    "requirements_dev_lock_modified": false,
+    "verification_report_written": false,
+    "other_batches_started": []
+  },
+  "remaining_gates": [
+    "Independent verification is not performed or claimed by this implementation report.",
+    "main.py is outside this Batch allowlist, so create_evaluate_router must be explicitly composed by a later authorized application-wiring change."
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "batch_id": "BATCH-22",
+  "run_dir": "C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\b22",
+  "venv_python": "C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\b22\\venv\\Scripts\\python.exe",
+  "python_version": "3.13.5",
+  "isolated_venv_assertion": "PASS",
+  "venv_longest_path_length": 153,
+  "path_length_limit": 250,
+  "requirements_dev_lock_modified": false,
+  "new_third_party_dependencies": false
+}
