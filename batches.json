@@ -4210,7 +4210,8 @@
           ],
           "when": "Adding scoped third-party dependencies, or BATCH-02 initializing the absent lock; otherwise read-only"
         }
-      ]
+      ],
+      "path_preflight_requirement": "路径预检必须继承修正后的口径：以真实磁盘路径长度计量，不得使用 git ls-files 的转义名（core.quotepath 会把中文文件名转成八进制转义而虚增长度）。历史教训：CROSS-LINE-PREFLIGHT-QUOTEPATH-20261005 曾因此造成两次假阻塞。"
     },
     {
       "id": "BATCH-28",
