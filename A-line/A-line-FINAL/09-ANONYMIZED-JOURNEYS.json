@@ -1,0 +1,153 @@
+{
+  "file_id": "A-09",
+  "title": "真实匿名售后旅程",
+  "version": "1.0.0",
+  "date": "2026-10-05",
+  "status": "COMPLETED",
+  "target": "3-5",
+  "completed": 5,
+  "data_label": "REAL_RESEARCH",
+  "owner": "A 线 数据与调研",
+  "source": "08-INTERVIEW-RECORDS.json",
+  "disclaimer": "消费者自述，未经商家侧核实；只用于陈述用户体验事实，不能推导发生率或产品效果数字。",
+  "journeys": [
+    {
+      "id": "J-01",
+      "source_interview": "C-01",
+      "acquisition": "当事人自述（消费者匿名深访）",
+      "consent": "口头同意；书面同意待补齐",
+      "category": "唇釉（美妆）",
+      "is_beauty": true,
+      "timeline": [
+        "在美妆集合店低价购入唇釉",
+        "发现包装字体与印刷细节异常",
+        "到官方旗舰店对比，确认若干细节不同",
+        "无法据此判定真伪",
+        "未联系客服，直接以七天无理由退货结束"
+      ],
+      "evidence_submitted": {"first": 0, "repeated": 0},
+      "promise_text": null,
+      "promise_fulfilled": "NOT_APPLICABLE",
+      "breakpoint": "消费者预判交涉成功率不高，主动放弃维权，连第一条证据都没有提交",
+      "conclusions": [
+        "举证成本与结果不确定性会让一部分消费者直接放弃交涉，而不是投诉",
+        "消费者认为第一次提供证据是自己的责任，重复提供才不合理"
+      ],
+      "status": "COMPLETED"
+    },
+    {
+      "id": "J-02",
+      "source_interview": "C-02",
+      "acquisition": "当事人自述（消费者匿名深访）",
+      "consent": "口头同意；书面同意待补齐",
+      "category": "运动鞋维修（非美妆）",
+      "is_beauty": false,
+      "timeline": [
+        "送修",
+        "商家自行更换维修材料，未事先征得同意",
+        "消费者收货后发现异常",
+        "反复询问，商家仅回复照片上看差不多",
+        "始终未获得材料变更的明确说明"
+      ],
+      "evidence_submitted": {"first": 1, "repeated": 0, "note": "商家侧拍照为主，消费者就同一问题多次追问"},
+      "promise_text": "维修保证（具体材料与时限未明确告知）",
+      "promise_fulfilled": "UNKNOWN",
+      "breakpoint": "处理方式被单方面变更且未留痕，消费者无法确认自己拿到的是什么",
+      "conclusions": [
+        "处理方式的变更必须事前告知并留痕",
+        "照片上看差不多这类模糊回复不能替代明确结论"
+      ],
+      "status": "COMPLETED",
+      "notes": "原始访谈转写稿部分段落不完整，仅保留可确认内容"
+    },
+    {
+      "id": "J-03",
+      "source_interview": "C-03",
+      "acquisition": "当事人自述（消费者匿名深访）",
+      "consent": "口头同意；书面同意待补齐",
+      "category": "外卖（非美妆）",
+      "is_beauty": false,
+      "timeline": [
+        "下单后约 30 分钟被取消或送错",
+        "客服要求提交订单列表、截屏与实物照片",
+        "反复核对约 10 分钟",
+        "承诺补偿券",
+        "约 5 小时后仍未到账",
+        "消费者主动追问",
+        "被告知申诉已结束，只能转门店",
+        "无下文"
+      ],
+      "evidence_submitted": {"first": 1, "repeated": "multiple", "note": "首次为截屏 + 实物照片，此后被反复要求核对多遍"},
+      "promise_text": "稍后会补给你（补偿券）",
+      "promise_deadline": null,
+      "promise_fulfilled": "NO",
+      "breakpoint": "承诺超时 + 假性结案；已提交的信息被反复索取，责任被推回消费者",
+      "conclusions": [
+        "同一案例可同时出现重复举证、承诺超时与假性结案",
+        "承诺作出后，追踪责任应留在品牌侧",
+        "主动提前说明能显著降低情绪恶化"
+      ],
+      "status": "COMPLETED"
+    },
+    {
+      "id": "J-04",
+      "source_interview": "C-04",
+      "acquisition": "当事人自述（消费者匿名深访）",
+      "consent": "口头同意；书面同意待补齐",
+      "category": "淘宝衣服质量退货（非美妆）",
+      "is_beauty": false,
+      "timeline": [
+        "收货后质量问题",
+        "联系卖家，卖家不同意退货",
+        "转找平台售后介入",
+        "最终退款成功"
+      ],
+      "evidence_submitted": {"first": 1, "repeated": 0},
+      "promise_text": "平台介入后退款",
+      "promise_fulfilled": "YES",
+      "breakpoint": "一线客服拒绝，必须升级到平台才能解决；消费者最不满的是找不到客服",
+      "conclusions": [
+        "升级路径缺失本身就是中断点",
+        "存在反例：部分消费者并不反感重复提交材料（对外材料须保留）"
+      ],
+      "status": "COMPLETED",
+      "is_counterexample": true
+    },
+    {
+      "id": "J-05",
+      "source_interview": "C-05",
+      "acquisition": "当事人自述（消费者匿名深访）",
+      "consent": "口头同意；书面同意待补齐",
+      "category": "限量圣诞日历（美妆/礼品）",
+      "is_beauty": true,
+      "timeline": [
+        "预定价 4000+",
+        "商品涨价至 7000+",
+        "卖家以货被海关扣了为由迟迟不发货",
+        "消费者发现店铺仍在加价售卖且有新评价",
+        "截图举证（店铺仍在售 + 评价）",
+        "咨询律师并检索案例",
+        "维权成功，最终发货"
+      ],
+      "evidence_submitted": {"first": 1, "repeated": true, "note": "截图举证；因更换客服被要求重复提交"},
+      "promise_text": "承诺发货（以海关扣货为由未按时兑现）",
+      "promise_fulfilled": "NO",
+      "breakpoint": "承诺超时 + 理由与仍在售的事实矛盾 + 换客服导致的重复举证",
+      "conclusions": [
+        "承诺未到截止时间就应主动预警，而不是等到逾期被追问",
+        "跨客服的证据恢复是刚需",
+        "美妆/礼品品类同样存在此类责任断点"
+      ],
+      "status": "COMPLETED"
+    }
+  ],
+  "summary": {
+    "total": 5,
+    "beauty_related": ["J-01", "J-05"],
+    "with_repeat_evidence": ["J-03", "J-05"],
+    "with_commitment_breach": ["J-03", "J-05"],
+    "with_false_closed_loop": ["J-03"],
+    "counterexample": ["J-04"],
+    "recommended_main_demo": {"primary": "J-05", "reason": "美妆品类 + 承诺超时 + 换客服重复举证，最贴合跨客服证据恢复与承诺追踪", "alternative": "J-03", "alternative_reason": "三痛点同现，叙事最强，但品类为非美妆，使用需注明"}
+  }
+}

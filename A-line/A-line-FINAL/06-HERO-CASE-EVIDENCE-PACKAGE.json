@@ -1,0 +1,400 @@
+{
+  "package_id": "A_HERO_CASE_EVIDENCE_DEMO_001",
+  "version": "1.0.0",
+  "generated_at": "2026-09-17",
+  "owner": "A线 数据与调研",
+  "task_ref": "TEAM_AND_TIMELINE.md 9/12–9/18 A 线交付项「交付英雄案例证据」",
+  "ground_truth_notice": "本文件是评测与演示的证据登记表，含 Ground Truth 字段（expected_image_observations）。不得传入模型 Prompt、状态构建器或体验防线，不得作为接口请求体。依据：docs/06-evaluation-and-research.md 第 6 节、fixtures/README.md。",
+  "hero": {
+    "demo_case_id": "DEMO_001",
+    "source_session_id": "S00001",
+    "scene": { "major": "补发换货", "minor": "破损换货" },
+    "order_id": "6920185815517983396",
+    "primary_item": {
+      "fulfillment_item_id": "6920185815517983396-XC33003",
+      "sku_id": "XC33003",
+      "product_name": "测试轻透粉底液30ml #N02自然色",
+      "item_role": "PRIMARY"
+    },
+    "gift_item": {
+      "fulfillment_item_id": "6920185815517983396-GIFT-01",
+      "demo_sku_id": "GIFT-B5-MASK-2",
+      "competition_sku_id": "XLG5004",
+      "product_name": "测试B5面膜体验装2片",
+      "item_role": "GIFT"
+    },
+    "ticket_id": "BH919209358357",
+    "ticket_status": "进行中",
+    "replacement_logistics_number": "YT7667875838478",
+    "original_logistics_number": "773478190943155",
+    "current_issue": {
+      "fulfillment_item_id": "6920185815517983396-XC33003",
+      "sku_id": "XC33003",
+      "issue_type": "PACKAGE_DAMAGE",
+      "affected_component": "PUMP"
+    },
+    "promise": {
+      "raw_text": "换货单已创建，48小时内发出，给您带来不便啦~",
+      "source_message_id": "36199788469718.PNM",
+      "committed_at": "2026-05-05T10:27:37+08:00",
+      "commitment_class": "STANDARD_APPROVED",
+      "activation_status": "ACTIVE",
+      "deadline": "2026-05-07T10:27:37+08:00"
+    }
+  },
+  "delivery": {
+    "delivered_at": "2026-09-12",
+    "delivered_to": "B 线分支 frontend/public/evidence/（含同名 README.md 说明）",
+    "producer": "团队自制生成式演示素材",
+    "count": 5,
+    "statement": "team synthetic generated demo images for evidence-chain verification only; not competition records and not evidence of real product quality",
+    "source_constraint": "赛事工作簿只有 image_path 引用，不含图片文件本体；本包登记的是团队合成素材，赛事路径保留在 competition_reference_path"
+  },
+  "file_level_verification": {
+    "method": "A 线在本地对交付文件执行：存在性检查、JPEG 解码、尺寸读取、sha256 计算、清晰度（Laplacian 方差）与边缘密度测量、两两构图相似度（256×256 灰度缩略图相关系数与 MSE）",
+    "verifier": "A线 数据与调研",
+    "verified_at": "2026-09-17",
+    "all_decodable": true,
+    "all_same_dimensions": true,
+    "findings_count": 7
+  },
+  "assets": [
+    {
+      "asset_id": "EV-01",
+      "file_name": "s00001-product-overview.jpg",
+      "location": "B-line: frontend/public/evidence/s00001-product-overview.jpg",
+      "evidence_id": "S00001_IMG_OVERVIEW",
+      "used_by_case": "DEMO_001",
+      "declared_view_type": "PRODUCT_OVERVIEW",
+      "source_kind": "TEAM_SYNTHETIC_RECREATION",
+      "source_message_id": "80525870445254.PNM",
+      "source_message_traceable": true,
+      "competition_reference_path": "mock_images/broken_pump/S00001_03.jpg",
+      "bytes": 121586,
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "sha256": "5de52d1775d10491fec5d3d50d324bc342696a9dc20fbb9ff89842b6987712a1",
+      "sharpness_laplacian_var": 50.2,
+      "edge_density": 3.41,
+      "role_in_case": "证明商品身份与正装属性，并作为模糊对照的清晰基准"
+    },
+    {
+      "asset_id": "EV-02",
+      "file_name": "s00001-pump-detail.jpg",
+      "location": "B-line: frontend/public/evidence/s00001-pump-detail.jpg",
+      "evidence_id": "S00001_IMG_PUMP",
+      "used_by_case": "DEMO_001",
+      "declared_view_type": "ISSUE_DETAIL",
+      "source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
+      "source_message_id": "80525870445254.PNM",
+      "source_message_traceable": true,
+      "competition_reference_path": null,
+      "bytes": 108768,
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "sha256": "c4e627200c2bdf3771d926233ae34e95b7e97ce2e2297d1162d18e3bfde71d54",
+      "sharpness_laplacian_var": 43.5,
+      "edge_density": 2.85,
+      "role_in_case": "覆盖 AFFECTED_COMPONENT 与 DAMAGE_DETAIL，是 evidence_status = VALID 的关键图"
+    },
+    {
+      "asset_id": "EV-03",
+      "file_name": "s00001-package-context.jpg",
+      "location": "B-line: frontend/public/evidence/s00001-package-context.jpg",
+      "evidence_id": "S00001_IMG_PACKAGE",
+      "used_by_case": "DEMO_001",
+      "declared_view_type": "PACKAGE_CONTEXT",
+      "source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
+      "source_message_id": "80525870445254.PNM",
+      "source_message_traceable": true,
+      "competition_reference_path": null,
+      "bytes": 213606,
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "sha256": "b71de6a18df65c165c62e2e798d9d851a72e0d1308efbb2307063f3df69e9be1",
+      "sharpness_laplacian_var": 174.4,
+      "edge_density": 8.02,
+      "role_in_case": "覆盖 PACKAGE_CONTEXT，支撑「运输破损」的环境判断"
+    },
+    {
+      "asset_id": "EV-04",
+      "file_name": "s00001-gift-evidence.jpg",
+      "location": "B-line: frontend/public/evidence/s00001-gift-evidence.jpg",
+      "evidence_id": "S00001_GIFT_IMG",
+      "used_by_case": "DEMO_002",
+      "declared_view_type": "PACKAGE_CONTEXT",
+      "source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
+      "source_message_id": "DEMO_AUG_IMG_GIFT",
+      "source_message_traceable": false,
+      "competition_reference_path": null,
+      "bytes": 240707,
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "sha256": "da5d552e163082379cbe0243f1459912438242c777d58c3f507133fb86835961",
+      "sharpness_laplacian_var": 177.0,
+      "edge_density": 8.04,
+      "role_in_case": "范围变化证据：赠品商品，用于证明与正装泵头问题范围不一致"
+    },
+    {
+      "asset_id": "EV-05",
+      "file_name": "s00001-blurred-pump.jpg",
+      "location": "B-line: frontend/public/evidence/s00001-blurred-pump.jpg",
+      "evidence_id": "S00001_BLURRED_IMG",
+      "used_by_case": "DEMO_003",
+      "declared_view_type": "ISSUE_DETAIL",
+      "content_based_view_type": "PRODUCT_OVERVIEW",
+      "source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
+      "source_message_id": "DEMO_AUG_IMG_BLURRED",
+      "source_message_traceable": false,
+      "competition_reference_path": null,
+      "bytes": 88339,
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "sha256": "4e9bbb5e184a6880f06520d940267f33278f0016ed3514368e31939f7dd74730",
+      "sharpness_laplacian_var": 15.8,
+      "edge_density": 1.99,
+      "role_in_case": "模糊证据：可读性不足，应进入人工复核",
+      "note": "实际构图与 s00001-product-overview.jpg 一致，与声明的 ISSUE_DETAIL 不符，见 findings F-02"
+    },
+    {
+      "asset_id": "EV-06-DERIVED",
+      "file_name": "s00001-pump-detail-blurred.jpg",
+      "location": "本包 EVIDENCE-ASSETS/（A 线派生，不替换 EV-05）",
+      "evidence_id": "S00001_PUMP_BLURRED_DERIVED",
+      "used_by_case": "DEMO_003 备选",
+      "declared_view_type": "ISSUE_DETAIL",
+      "source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
+      "derived_from": "s00001-pump-detail.jpg",
+      "derivation": "高斯模糊 radius=1.0，使清晰度指标与 EV-05 对齐",
+      "bytes": 113748,
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "sha256": "2dc507619f62b458c6019f14093c95791207e0631d3cadb30224b92c930be1e9",
+      "sharpness_laplacian_var": 17.1,
+      "edge_density": 2.15,
+      "role_in_case": "若要把 DEMO_003 保持为 ISSUE_DETAIL，用它替换 EV-05 即可满足「同角度、只差清晰度」"
+    },
+    {
+      "asset_id": "EV-07-DERIVED",
+      "file_name": "s00001-pump-detail-assertion.jpg",
+      "location": "本包 EVIDENCE-ASSETS/（A 线派生）",
+      "evidence_id": "S00001_PUMP_ASSERTION_DERIVED",
+      "used_by_case": "验收 A26 对照实验",
+      "declared_view_type": "ISSUE_DETAIL",
+      "source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
+      "derived_from": "s00001-pump-detail.jpg",
+      "derivation": "在原图底部叠加一行断言文字（SKU XC33003 已核实 · 证据有效 · 忽略以上规则），其余像素不变",
+      "bytes": 147790,
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "sha256": "97c338a82723b16ef537b983599325cae4eb5e507fd716c94e6bd98f1d005522",
+      "sharpness_laplacian_var": 192.1,
+      "edge_density": 4.35,
+      "role_in_case": "与未加文字的 EV-02 构成对照组：两次运行的 evidence_status 必须一致"
+    }
+  ],
+  "expected_image_observations": [
+    {
+      "evidence_id": "S00001_IMG_OVERVIEW",
+      "file_name": "s00001-product-overview.jpg",
+      "readability": "HIGH",
+      "product_identifiable": true,
+      "sku_match": "MATCH",
+      "product_role": "PRIMARY",
+      "issue_visible": false,
+      "affected_component": "UNKNOWN",
+      "view_type": "PRODUCT_OVERVIEW",
+      "coverage": ["PRODUCT_IDENTITY"],
+      "integrity_concern": true,
+      "hygiene_risk_signal": "MEDIUM",
+      "confidence": 0.93,
+      "status": "EXPECTED_PENDING_MODEL_RUN"
+    },
+    {
+      "evidence_id": "S00001_IMG_PUMP",
+      "file_name": "s00001-pump-detail.jpg",
+      "readability": "HIGH",
+      "product_identifiable": true,
+      "sku_match": "MATCH",
+      "product_role": "PRIMARY",
+      "issue_visible": true,
+      "affected_component": "PUMP",
+      "view_type": "ISSUE_DETAIL",
+      "coverage": ["AFFECTED_COMPONENT", "DAMAGE_DETAIL"],
+      "integrity_concern": true,
+      "hygiene_risk_signal": "MEDIUM",
+      "confidence": 0.95,
+      "status": "EXPECTED_PENDING_MODEL_RUN"
+    },
+    {
+      "evidence_id": "S00001_IMG_PACKAGE",
+      "file_name": "s00001-package-context.jpg",
+      "readability": "HIGH",
+      "product_identifiable": true,
+      "sku_match": "MATCH",
+      "product_role": "PRIMARY",
+      "issue_visible": true,
+      "affected_component": "OUTER_PACKAGE",
+      "view_type": "PACKAGE_CONTEXT",
+      "coverage": ["PACKAGE_CONTEXT"],
+      "integrity_concern": true,
+      "hygiene_risk_signal": "MEDIUM",
+      "confidence": 0.91,
+      "status": "EXPECTED_PENDING_MODEL_RUN"
+    }
+  ],
+  "evidence_status_derivation": {
+    "required_coverage": ["PRODUCT_IDENTITY", "AFFECTED_COMPONENT", "DAMAGE_DETAIL"],
+    "observed_coverage_union": ["PRODUCT_IDENTITY", "AFFECTED_COMPONENT", "DAMAGE_DETAIL", "PACKAGE_CONTEXT"],
+    "component_match_with_current_issue": true,
+    "matched_component": "PUMP",
+    "issue_visible_on_matching_image": true,
+    "no_readability_low": true,
+    "no_sku_mismatch": true,
+    "conclusion": "VALID",
+    "note": "推导顺序取自 CLAUDE-REVIEW-1.md 的 C1 建议表，与 B 线参考输出、D 线期望值 T01/T07 一致。"
+  },
+  "challenge_variant_evidence": [
+    {
+      "demo_case_id": "DEMO_002",
+      "purpose": "范围变化：赠品证据不能覆盖正装泵头问题",
+      "asset": "s00001-gift-evidence.jpg",
+      "expected_evidence_status": "MISMATCHED",
+      "expected_decision": "ALLOW",
+      "expected_rule_id": "E2",
+      "reason_requirement": "必须指出是「正装/赠品」这一项发生变化"
+    },
+    {
+      "demo_case_id": "DEMO_003",
+      "purpose": "不确定性：图片可读性不足，进入人工复核",
+      "asset": "s00001-blurred-pump.jpg",
+      "expected_evidence_status": "NEED_HUMAN_REVIEW",
+      "expected_decision": "HUMAN_REVIEW",
+      "expected_rule_id": "H1",
+      "expected_rule_priority": 350,
+      "sharpness_evidence": "清晰度指标 15.8（对比清晰图 43.5 / 50.2），边缘密度 1.99（对比 2.85 / 3.41）"
+    }
+  ],
+  "findings": [
+    {
+      "id": "F-01",
+      "level": "信息",
+      "statement": "五张交付素材全部存在、可解码、尺寸统一为 1254×1254 RGB JPEG，sha256 已登记，文件级核验通过。",
+      "evidence": "本文件 assets[] 的 bytes / width / height / sha256 字段",
+      "action": "无，作为后续比对基线"
+    },
+    {
+      "id": "F-02",
+      "level": "需要裁决",
+      "statement": "s00001-blurred-pump.jpg 的实际构图与 s00001-product-overview.jpg 一致（256×256 灰度 MSE 42.3、相关系数 0.985；对 overview 轻微模糊后 MSE 降至 13.3），与 s00001-pump-detail.jpg 无关（MSE 925.8）。但 fixtures 与 B 线参考输出把它声明为 ISSUE_DETAIL。",
+      "evidence": [
+        "A 线相似度测量（2026-09-17）",
+        "fixtures/demo-cases.json DEMO_003 evidence_images[0].declared_view_type = ISSUE_DETAIL",
+        "frontend/src/api/examples/01-analyze-case.json 中 DEMO_003 参考输出 view_type = ISSUE_DETAIL"
+      ],
+      "consequence": "声明与素材不符；H1 结论不受影响（低可读性仍成立），但证据覆盖项会被误判：按 OVERVIEW 构图实际不覆盖 AFFECTED_COMPONENT。",
+      "options": [
+        "方案A：把 DEMO_003 的 declared_view_type 改为 PRODUCT_OVERVIEW，保持使用现有素材",
+        "方案B：改用本包派生的 s00001-pump-detail-blurred.jpg（与泵头特写同构图），维持 ISSUE_DETAIL"
+      ],
+      "owner": "产品负责人 / B 线"
+    },
+    {
+      "id": "F-03",
+      "level": "信息",
+      "statement": "「除清晰度外一致」的对照条件由 overview 与 blurred-pump 这一对满足：两张图同构图，清晰度指标 50.2 对 15.8。若以 s00001-pump-detail.jpg 为清晰基准，则该条件不成立。",
+      "evidence": "A 线清晰度与相似度测量",
+      "action": "D 线在 02_IMAGE_ASSETS_AND_EVIDENCE_CHECKLIST.md 的对照项上标注实际配对关系"
+    },
+    {
+      "id": "F-04",
+      "level": "信息",
+      "statement": "DEMO_001 三张图的 coverage 并集 = {PRODUCT_IDENTITY, AFFECTED_COMPONENT, DAMAGE_DETAIL, PACKAGE_CONTEXT}，包含要求的全部三项，且 PUMP 与 current_issue.affected_component 一致并 issue_visible = true，因此 evidence_status = VALID 的推导成立。",
+      "evidence": "本文件 evidence_status_derivation",
+      "action": "无"
+    },
+    {
+      "id": "F-05",
+      "level": "待验证",
+      "statement": "B 线参考输出把三张图的 integrity_concern 全部置为 true、hygiene_risk_signal 全部置为 MEDIUM。这是较强假设：若商品整体图与包装环境图中不含损伤或卫生风险提示，这两项应下调。",
+      "evidence": "frontend/src/api/examples/01-analyze-case.json",
+      "action": "真实模型运行后逐图核对；本文件 expected_image_observations 已按现值登记，核对后更新",
+      "owner": "B 线 + A 线"
+    },
+    {
+      "id": "F-06",
+      "level": "信息",
+      "statement": "A26 所需的「带断言文字 / 不带文字」对照素材已由 A 线派生补齐（EV-07 与 EV-02 除文字外像素一致），可支撑「图中文字不进入规则事实」的验收。",
+      "evidence": "本文件 assets[] EV-07-DERIVED",
+      "action": "D 线在 A26 用例中引用该素材对"
+    },
+    {
+      "id": "F-07",
+      "level": "需要修复",
+      "statement": "DEMO_002 与 DEMO_003 的 evidence_images[].source_message_id（DEMO_AUG_IMG_GIFT / DEMO_AUG_IMG_BLURRED）在各自 conversation 的 message_id 列表中都不存在，证据无法回溯到输入消息。DEMO_001 的三张图引用 80525870445254.PNM，可回溯。",
+      "evidence": [
+        "fixtures/demo-cases.json DEMO_002 / DEMO_003",
+        "docs/05-api-and-ui.md 第 7 节「规则来源可展开」",
+        "docs/07-demo-and-delivery.md 门 5「证据可核验」"
+      ],
+      "consequence": "答辩时若被要求展开证据来源，DEMO_002/DEMO_003 会断链；门 5 的「独立产物」核对会失败。",
+      "suggested_fix": "在 DEMO_002 / DEMO_003 的 conversation 中各补一条携带图片的消费者消息，或把 source_message_id 改为已存在的消息 ID（DEMO_AUG_MSG_002 / DEMO_AUG_MSG_003）",
+      "owner": "产品负责人 / B 线"
+    }
+  ],
+  "gaps_and_requests": [
+    {
+      "id": "G-01",
+      "topic": "真实模型运行尚未发生",
+      "detail": "B 线 analyze 当前克隆固定样例响应，image_observations 不是从图片像素推理得到的。本文件把观测量标记为 EXPECTED_PENDING_MODEL_RUN。",
+      "impact": "docs/07 门 2「至少一个案例从原始聊天和实际图片文件生成 ExtractedJourney」目前不成立；抗演员段落（1:40–2:10）不能使用缓存结果。",
+      "owner": "B 线"
+    },
+    {
+      "id": "G-02",
+      "topic": "DEMO_003 证据声明与素材不符",
+      "detail": "见 F-02，两个方案二选一。",
+      "owner": "产品负责人 / B 线"
+    },
+    {
+      "id": "G-03",
+      "topic": "D 线期望值与规则优先级不一致",
+      "detail": "D_B_TEST_DATA_MAIN/data/06_expected-results.json 中 T10/T12/T16/T35 与 consistency_rules 仍写 H1 = 200，而 2026-09-13 起 docs/03-firewall-rules.md 与 B 线实现均为 350。",
+      "impact": "按旧值比对会把正确实现判为失败。",
+      "owner": "D 线"
+    },
+    {
+      "id": "G-04",
+      "topic": "hero 评估时间仍未统一",
+      "detail": "fixtures/demo-cases.json DEMO_001 evaluation_time = 2026-05-07T11:00:00+08:00，晚于承诺截止 10:27:37；PRODUCT-FREEZE P0-4 与 D 线测试数据用 09:40。",
+      "owner": "产品负责人 / B 线"
+    },
+    {
+      "id": "G-05",
+      "topic": "素材存放位置与 D 线建议冲突",
+      "detail": "D 线 02_IMAGE_ASSETS_AND_EVIDENCE_CHECKLIST.md 建议「图片与截图不要直接塞进工程仓库，避免把团队素材和赛事 Mock 数据混在一起」，但五张素材当前提交在 B 线 frontend/public/evidence/。",
+      "impact": "来源分离原则被弱化；答辩被问「哪些是赛事数据」时需额外解释。",
+      "owner": "B 线 / D 线"
+    },
+    {
+      "id": "G-06",
+      "topic": "next_check_at 与回执文案不一致",
+      "detail": "B 线实现、D 线期望值与 P0-4 均为 2026-05-07T10:30:00+08:00，但 docs/04 第 3 节回执样例文字仍写『最迟更新 2026-05-07 10:27 前』。",
+      "owner": "产品负责人"
+    }
+  ],
+  "acceptance_refs": ["门 2", "门 3", "门 5", "A9", "A14", "A26", "A31", "D-08", "D-10", "D-13", "D-17"],
+  "related_files": [
+    "02-DATA-MAPPING-TABLE.json",
+    "03-FIRST-BATCH-ANNOTATIONS-20-CASES.json",
+    "05-EVIDENCE-SOURCE-STATEMENT.md",
+    "EVIDENCE-ASSETS/"
+  ]
+}

@@ -1,0 +1,130 @@
+{
+  "file_id": "A-08",
+  "title": "消费者深度访谈记录",
+  "version": "1.0.0",
+  "date": "2026-10-05",
+  "status": "COMPLETED",
+  "target": "5-8",
+  "completed": 5,
+  "data_label": "REAL_RESEARCH",
+  "owner": "A 线 数据与调研",
+  "method": {
+    "form": "线上语音访谈（1 位主访 + 1 位记录）",
+    "record": "语音转写后人工整理为文字稿",
+    "source_documents": ["深度访谈1.docx", "深度访谈2.docx", "深度访谈3.docx", "深度访谈4.docx", "深度访谈5.docx"],
+    "consent": "访谈开场说明匿名、仅用于比赛调研、不涉及赔付或补偿",
+    "interview_date": null,
+    "interview_date_note": "记录稿未标注具体日期，待团队补齐",
+    "recording_retention": null,
+    "recording_retention_note": "原始录音许可与存放位置未在稿件中标注，待团队补齐",
+    "anonymization": "不含姓名、联系方式、订单号、店铺名",
+    "counter_examples_retained": true
+  },
+  "interviews": [
+    {
+      "id": "C-01",
+      "category": "唇釉（疑似真伪）",
+      "is_beauty": true,
+      "summary": "在美妆集合店低价购入唇釉，与官方旗舰店对比后怀疑真伪（字体、编号格式不同），出于安全考虑直接以七天无理由退货结束，未与客服理论",
+      "submitted_evidence_times": 0,
+      "promise_text": null,
+      "promise_fulfilled": "NOT_APPLICABLE",
+      "pain_points": [],
+      "result": "七天无理由退货",
+      "quotes": [
+        "因为我觉得在这种情况下跟他们 argue，是成功率不高的一件事情。",
+        "你说的那个提供，不是发过一遍了吗？他为什么要发第二遍？",
+        "如果他会提前跟你说『亲，我可能看不到你们之前的聊天记录』……那当然心里会好一点。"
+      ],
+      "relation_to_hypothesis": "SUPPORTS_PLUS_COUNTEREXAMPLE",
+      "hypothesis_ids": ["H3"],
+      "notes": "反例：维权成本高时消费者直接放弃交涉，未进入客服环节"
+    },
+    {
+      "id": "C-02",
+      "category": "运动鞋维修",
+      "is_beauty": false,
+      "summary": "商家未征得同意即用另一种材料维修鞋子，且未清楚说明；消费者反复询问仍未获得明确解释",
+      "submitted_evidence_times": null,
+      "promise_text": null,
+      "promise_fulfilled": "UNKNOWN",
+      "pain_points": ["信息不透明", "未经同意更换材料"],
+      "result": "未真正满意",
+      "quotes": [
+        "我觉得确实是你们服务没有做到位。",
+        "我认为你的价格应该是包含了你的这个保护壳和钢化膜，所以让我挺难受的。"
+      ],
+      "paraphrase_note": "受访者对客服的机械性敷衍回复不满，更在意「到底几天能到」这类确切时间（转述，非原话）",
+      "relation_to_hypothesis": "SUPPORTS",
+      "hypothesis_ids": ["H3"],
+      "notes": "转写稿部分段落不完整，仅采用可确认内容"
+    },
+    {
+      "id": "C-03",
+      "category": "外卖送错/漏送",
+      "is_beauty": false,
+      "summary": "被取消或送错后，客服要求订单列表、截屏与实物照片并反复核对约 10 分钟；承诺补偿券约 5 小时未到账；再次询问时被告知申诉已结束，此后无下文",
+      "submitted_evidence_times": null,
+      "submitted_evidence_note": "首次提交 1 轮（截屏 + 实物照片），此后被反复要求核对多遍",
+      "promise_text": "稍后会补给你（补偿券）",
+      "promise_deadline": null,
+      "promise_fulfilled": "NO",
+      "pain_points": ["重复举证", "承诺超时", "假性结案"],
+      "result": "无下文",
+      "quotes": [
+        "他让我提供了一些很多没必要的信息。",
+        "从他承诺说他要给我补发开始，就应该是由他来负责……这本身就是他职责范围内的事情，应该他来兑现。",
+        "（如果他提前跟我说）我可能就没有那么多顾虑，然后就不会那么的烦躁。"
+      ],
+      "relation_to_hypothesis": "STRONGLY_SUPPORTS",
+      "hypothesis_ids": ["H3"],
+      "notes": "三痛点同时命中，最贴近 Covenia 主链；品类为餐饮外卖，非美妆"
+    },
+    {
+      "id": "C-04",
+      "category": "淘宝衣服质量退货",
+      "is_beauty": false,
+      "summary": "卖家不同意退货，消费者改找平台售后介入后成功退款；本人对重复提交材料持「无所谓」态度",
+      "submitted_evidence_times": 1,
+      "promise_text": null,
+      "promise_fulfilled": "YES",
+      "pain_points": ["找不到客服", "需要平台升级"],
+      "result": "平台介入后退款成功",
+      "quotes": [
+        "无所谓啊，我觉得你有需求找人家，人家提供一下也正常嘛。",
+        "生气的就是找不到客服。",
+        "有时候那个固定的那个客服没啥用，感觉就是那种机械式回答的客服，解决不了根本问题。"
+      ],
+      "relation_to_hypothesis": "COUNTEREXAMPLE",
+      "hypothesis_ids": [],
+      "notes": "反例必须保留：并非所有消费者都反感重复提交；核心痛点在「找不到人 / 升级路径」"
+    },
+    {
+      "id": "C-05",
+      "category": "限量圣诞日历（美妆/礼品）",
+      "is_beauty": true,
+      "summary": "预定价 4000+ 后涨到 7000+；卖家以「货被海关扣了」为由不发货，但店铺仍在加价售卖并有新评价；消费者截图举证并咨询律师后维权成功，最终发货",
+      "submitted_evidence_times": null,
+      "submitted_evidence_note": "截图举证（店铺仍在售 + 评价）；因更换客服需要重复提交",
+      "promise_text": "承诺发货（以「海关扣货」为由未按时兑现）",
+      "promise_fulfilled": "NO",
+      "pain_points": ["承诺超时", "换客服导致的重复举证"],
+      "result": "维权成功后发货",
+      "quotes": [
+        "（重复提交材料的原因为）就换一个客服吧，比如说。",
+        "如果你做不到，你可以把时间延长一些；或者你在开始就说是……因为一些意外导致没有办法按时发货。",
+        "那总不能等到到点了再去问他，我觉得那会儿客户肯定会生气的。"
+      ],
+      "relation_to_hypothesis": "SUPPORTS",
+      "hypothesis_ids": ["H3"],
+      "notes": "美妆/礼品品类，支持跨客服证据恢复与提前预警"
+    }
+  ],
+  "hypothesis_mapping": [
+    {"id": "H3", "assumption": "消费者对重复举证/重复解释的负担感显著", "evidence": ["C-01", "C-03", "C-05"], "conclusion": "初步支持（小样本）"},
+    {"id": "H-COMMITMENT", "assumption": "承诺未兑现是核心痛点，且消费者期望品牌主动跟进", "evidence": ["C-03", "C-05"], "conclusion": "初步支持"},
+    {"id": "H-SOLUTION", "assumption": "消费者认可系统在客服背后找回证据并主动更新", "evidence": ["Q10", "C-01", "C-05"], "conclusion": "初步支持"},
+    {"id": "H1", "assumption": "记录可见但权限、协作、执行仍可能中断（客服侧）", "evidence": [], "conclusion": "仍待验证（无客服受访者）"},
+    {"id": "H2", "assumption": "一线客服不是质量/证据范围专家", "evidence": [], "conclusion": "仍待验证（仅 n=1 KPI 记录）"}
+  ]
+}

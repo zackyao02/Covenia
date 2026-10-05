@@ -1,0 +1,226 @@
+{
+  "file_id": "A-07",
+  "title": "消费者短问卷结果",
+  "version": "1.0.0",
+  "date": "2026-10-05",
+  "status": "COMPLETED",
+  "data_label": "REAL_RESEARCH",
+  "owner": "A 线 数据与调研",
+  "source": {
+    "platform": "问卷星 (wjx.cn)",
+    "instrument_name": "「欧莱雅黑客松」美妆客服体验调查问卷 Beauty Customer Service Experience Survey",
+    "document": "「欧莱雅黑客松」美妆客服体验调查问卷Beauty Customer Service Experience Survey－默认报告.docx",
+    "field_period": null,
+    "field_period_note": "问卷实际发放起止日期未在报告中标注，待补齐",
+    "exported_at": "2026-10-05",
+    "privacy": "匿名收集，不采集姓名、联系方式、品牌、店铺、订单号与地址"
+  },
+  "sample": {
+    "total_responses": 73,
+    "with_aftersales_experience": 56,
+    "without_aftersales_experience": 17,
+    "base_n": {
+      "Q3": 56,
+      "Q4": 56,
+      "Q5": 56,
+      "Q6": 73,
+      "Q7": 73,
+      "Q8": 73,
+      "Q10": 73,
+      "Q11": 73,
+      "Q12": 73
+    },
+    "sampling_method": "便利抽样（团队社交圈与消费者社群转发），非概率抽样",
+    "planned_minimum": 80,
+    "meets_planned_minimum": false,
+    "open_text_not_in_report": ["Q2", "Q9", "Q13", "Q15"]
+  },
+  "questions": [
+    {
+      "id": "Q1",
+      "type": "single",
+      "base_n": 73,
+      "question": "过去一年里，你是否有过售后客服沟通经历？",
+      "options": [
+        {"label": "是 Yes", "count": 56, "percent": 76.71},
+        {"label": "否 No", "count": 17, "percent": 23.29}
+      ]
+    },
+    {
+      "id": "Q2",
+      "type": "open_text",
+      "base_n": 73,
+      "question": "请回忆过去一年里印象最深的一次售后沟通经历，用一两句话描述发生了什么",
+      "raw_text_included": false
+    },
+    {
+      "id": "Q3",
+      "type": "multi",
+      "base_n": 56,
+      "question": "那一次，你经历过以下哪些情况？",
+      "options": [
+        {"label": "被要求重复解释问题", "count": 17, "percent": 30.36},
+        {"label": "被要求重新上传照片/凭证", "count": 23, "percent": 41.07},
+        {"label": "问题没进展，需要我主动催促", "count": 28, "percent": 50.0},
+        {"label": "承诺时限超时没有兑现", "count": 9, "percent": 16.07},
+        {"label": "显示「已解决」但实际没解决", "count": 10, "percent": 17.86},
+        {"label": "都没有", "count": 13, "percent": 23.21}
+      ],
+      "derived": [
+        {"label": "至少遇到一项痛点", "count": 43, "percent": 76.79, "formula": "(56 - 13) / 56"}
+      ]
+    },
+    {
+      "id": "Q4",
+      "type": "single",
+      "base_n": 56,
+      "question": "那次经历最终的结果是：",
+      "options": [
+        {"label": "真正解决", "count": 32, "percent": 57.14},
+        {"label": "表面解决（显示完成，实际差一点）", "count": 18, "percent": 32.14},
+        {"label": "没解决，不了了之", "count": 6, "percent": 10.71},
+        {"label": "仍在处理中", "count": 0, "percent": 0.0}
+      ],
+      "derived": [
+        {"label": "未真正解决", "count": 24, "percent": 42.86, "formula": "32.14% + 10.71%"}
+      ]
+    },
+    {
+      "id": "Q5",
+      "type": "scale_1_5",
+      "base_n": 56,
+      "question": "请给那次整体体验打分",
+      "mean": 3.46,
+      "options": [
+        {"label": "很不满意 (1)", "count": 5, "percent": 8.93},
+        {"label": "不满意 (2)", "count": 7, "percent": 12.5},
+        {"label": "一般 (3)", "count": 16, "percent": 28.57},
+        {"label": "满意 (4)", "count": 13, "percent": 23.21},
+        {"label": "很满意 (5)", "count": 15, "percent": 26.79}
+      ]
+    },
+    {
+      "id": "Q6",
+      "type": "matrix_single",
+      "base_n": 73,
+      "question": "根据你的网购经历，请估计以下五种情况出现的可能性",
+      "columns": ["很可能", "可能", "不太可能", "完全不可能"],
+      "rows": [
+        {"item": "重复解释", "counts": [23, 31, 13, 6], "percents": [31.51, 42.47, 17.81, 8.22], "likely_or_possible": {"count": 54, "percent": 73.97}},
+        {"item": "重复索证", "counts": [19, 31, 19, 4], "percents": [26.03, 42.47, 26.03, 5.48], "likely_or_possible": {"count": 50, "percent": 68.49}},
+        {"item": "主动催促", "counts": [31, 28, 8, 6], "percents": [42.47, 38.36, 10.96, 8.22], "likely_or_possible": {"count": 59, "percent": 80.82}},
+        {"item": "承诺超时", "counts": [9, 38, 18, 8], "percents": [12.33, 52.05, 24.66, 10.96], "likely_or_possible": {"count": 47, "percent": 64.38}},
+        {"item": "假性解决", "counts": [9, 31, 23, 10], "percents": [12.33, 42.47, 31.51, 13.7], "likely_or_possible": {"count": 40, "percent": 54.79}}
+      ]
+    },
+    {
+      "id": "Q7",
+      "type": "matrix_single",
+      "base_n": 73,
+      "question": "以上情况一旦发生，对你的困扰程度（1=完全不困扰，5=非常困扰）",
+      "columns": ["1", "2", "3", "4", "5"],
+      "rows": [
+        {"item": "重复解释", "counts": [9, 9, 16, 26, 13], "mean": 3.34, "four_or_five": {"count": 39, "percent": 53.42}},
+        {"item": "重复索证", "counts": [7, 16, 13, 14, 23], "mean": 3.41, "four_or_five": {"count": 37, "percent": 50.68}},
+        {"item": "主动催促", "counts": [7, 9, 9, 21, 27], "mean": 3.71, "four_or_five": {"count": 48, "percent": 65.75}},
+        {"item": "承诺超时", "counts": [5, 9, 10, 27, 22], "mean": 3.71, "four_or_five": {"count": 49, "percent": 67.12}},
+        {"item": "假性解决", "counts": [5, 7, 12, 15, 34], "mean": 3.9, "four_or_five": {"count": 49, "percent": 67.12}}
+      ],
+      "mean_note": "均值由 A 线根据分布计算，非问卷星直接给出"
+    },
+    {
+      "id": "Q8",
+      "type": "multi",
+      "base_n": 73,
+      "question": "遇到这类情况后，你通常会怎么做？",
+      "options": [
+        {"label": "主动投诉或给差评", "count": 51, "percent": 69.86},
+        {"label": "以后不买这个品牌", "count": 39, "percent": 53.42},
+        {"label": "继续等待/沟通", "count": 38, "percent": 52.05},
+        {"label": "放弃沟通，自认倒霉", "count": 9, "percent": 12.33},
+        {"label": "放弃沟通，但认为影响不大", "count": 9, "percent": 12.33}
+      ]
+    },
+    {
+      "id": "Q9",
+      "type": "open_text",
+      "base_n": 73,
+      "question": "假设你是人工客服，如果客户向你抱怨遇到以上 5 种售后痛点，你会怎么做？",
+      "raw_text_included": false
+    },
+    {
+      "id": "Q10",
+      "type": "scale_1_5",
+      "base_n": 73,
+      "question": "请给这条回复打分（系统帮客服找回旧证据、无需重复上传、主动同步进度的情景回复）",
+      "mean": 4.0,
+      "options": [
+        {"label": "很不满意 (1)", "count": 0, "percent": 0.0},
+        {"label": "不满意 (2)", "count": 3, "percent": 4.11},
+        {"label": "一般 (3)", "count": 15, "percent": 20.55},
+        {"label": "满意 (4)", "count": 34, "percent": 46.58},
+        {"label": "很满意 (5)", "count": 21, "percent": 28.77}
+      ],
+      "derived": [
+        {"label": "满意＋很满意", "count": 55, "percent": 75.34}
+      ]
+    },
+    {
+      "id": "Q11",
+      "type": "single",
+      "base_n": 73,
+      "question": "这种情况下，你更希望客服怎么做？",
+      "options": [
+        {"label": "先道歉安抚情绪，再给方案", "count": 43, "percent": 58.9},
+        {"label": "直接给方案，少说套话", "count": 29, "percent": 39.73},
+        {"label": "联系客服主管", "count": 1, "percent": 1.37},
+        {"label": "无所谓", "count": 0, "percent": 0.0}
+      ]
+    },
+    {
+      "id": "Q12",
+      "type": "multi",
+      "base_n": 73,
+      "question": "当消费者打出「算了」「随便吧」这类话时，ta 的真实想法更接近？",
+      "options": [
+        {"label": "失望，不想继续吵", "count": 55, "percent": 75.34},
+        {"label": "气话，希望被挽留", "count": 23, "percent": 31.51},
+        {"label": "懒得浪费时间", "count": 20, "percent": 27.4},
+        {"label": "给对方最后一次机会", "count": 19, "percent": 26.03},
+        {"label": "真的放弃，不想再争取", "count": 12, "percent": 16.44}
+      ]
+    },
+    {
+      "id": "Q13",
+      "type": "open_text",
+      "base_n": 73,
+      "question": "（开放题）如果你是客服，顾客已经发过照片却对你说「算了」，你会怎么回复或处理？",
+      "raw_text_included": false
+    },
+    {
+      "id": "Q15",
+      "type": "open_text",
+      "base_n": 73,
+      "question": "（选做）你是否愿意接受一次 15 分钟左右的深度访谈？",
+      "raw_text_included": false
+    }
+  ],
+  "key_statistics": [
+    {"id": "S-1", "value": "76.79%", "statement": "有售后经历的 56 人中，至少遇到一项五类痛点的比例", "base": "Q3, n=56"},
+    {"id": "S-2", "value": "50.00% / 41.07%", "statement": "遇到「问题没进展需主动催促」/ 被要求重新上传已提交的照片或凭证", "base": "Q3, n=56"},
+    {"id": "S-3", "value": "57.14% / 42.86%", "statement": "经历真正解决 / 表面解决或不了了之", "base": "Q4, n=56"},
+    {"id": "S-4", "value": "4.00", "statement": "情景回复平均分（满意＋很满意 75.34%）", "base": "Q10, n=73"}
+  ],
+  "can_claim": [
+    "73 份匿名问卷中，有过售后经历的 56 人里 76.79% 至少遇到一项五类痛点。",
+    "50% 的有经历者遇到过「问题没进展、需要自己主动催」。",
+    "假性解决的平均困扰程度最高（3.90 / 5），46.58% 打 5 分。",
+    "能主动找回旧证据、免去重复上传并主动同步进度的情景回复平均 4.00 分，75.34% 满意或很满意。"
+  ],
+  "cannot_claim": [
+    "不能把 76.79% 说成全体消费者都会遇到售后痛点。",
+    "不能把 41.07% 说成重复索证的总体发生率。",
+    "不能用本问卷推导 Covenia 的效果数字（如未解决率下降 42.86%）。",
+    "不能用本样本单独代表美妆人群。"
+  ]
+}
