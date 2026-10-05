@@ -127,7 +127,7 @@
     {
       "id": "X-MODEL",
       "owner": "B and team compute owner; Zack approves cost/model changes",
-      "status": "PENDING_ACCEPTANCE",
+      "status": "ACCEPTED",
       "required_before": ["BATCH-28"],
       "required_artifact": "handoff/model/service-manifest.redacted.json",
       "required_evidence": [
@@ -137,7 +137,11 @@
       "observed_path": "handoff/model/service-manifest.redacted.json",
       "observed_in_reviewed_base": true,
       "status_note": "产品负责人 2026-10-05 授权换模型为 qwen3-vl-plus；凭证 handoff/model/service-manifest.redacted.json 已生成（PENDING_ACCEPTANCE）。模型环境变量尚未设置，可用性与预热记录标记 NOT_RUN，未臆造。",
-      "receipt": null
+      "receipt": "handoff/model/GATE_ACCEPTANCE_RECEIPT.json",
+      "accepted_by": "产品负责人（Zack）",
+      "accepted_at": "2026-10-05",
+      "acceptance_basis": "审查方实测 2026-10-05：端点可达、key 有效、模型在列、本机代理转发与 model/model_revision 回显正常、96x96 多模态识别颜色通过、json_object 支持；换模型 c8af0ec 已落库。",
+      "still_pending_not_blocking": "usage/区域/许可证字段与真实连通下的可用性/预热记录，须在 BATCH-28 前补齐。"
     },
     {
       "id": "X-A-TRUTH",
