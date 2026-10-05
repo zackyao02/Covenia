@@ -12,5 +12,34 @@
     "sha256_raw_git_blob": "602c268b684d60e2d1b8bbfc6820663a622eb24093144a87c111f43d3c06fdae",
     "additions": ["certifi==2025.1.31", "httpcore==1.0.7", "httpx==0.28.1"],
     "reason": "FastAPI TestClient requires the explicit HTTP client and its missing direct closure pins."
+  },
+  "repair_2": {
+    "performed_by": "auxiliary dispatcher repair executor (辅助调度器); not the independent implementer",
+    "run_dir": "C:\\cv21r",
+    "run_dir_path_length": 7,
+    "isolated_venv": true,
+    "venv_creator": "pre-created by the auxiliary dispatcher from the isolated run directory C:\\cv21r; not rebuilt by this agent",
+    "python_executable": "C:\\cv21r\\venv\\Scripts\\python.exe",
+    "sys_prefix": "C:\\cv21r\\venv",
+    "python_version": "3.13.5",
+    "branch": "codex/covenia-batch-21-repair-2",
+    "baseline_commit": "35d03b541f3e5d95d253bbeb9c3477812ddf3ea7",
+    "repair_commit": "69ba7d9a22f3079104ece8e73595f6de28e92a46",
+    "temp_environment": {
+      "TEMP": "C:\\cv21r\\tmp",
+      "TMP": "C:\\cv21r\\tmp",
+      "reason": "Without an isolated writable temp directory pytest fails with WinError 5 in this environment."
+    },
+    "identity_assertion": "Path(sys.executable).resolve() == Path('C:\\\\cv21r\\\\venv\\\\Scripts\\\\python.exe').resolve() and sys.prefix != sys.base_prefix -> true",
+    "dependency_lock": {
+      "path": "backend/requirements-dev.lock",
+      "status": "UNCHANGED",
+      "sha256_raw_git_blob_before": "602c268b684d60e2d1b8bbfc6820663a622eb24093144a87c111f43d3c06fdae",
+      "sha256_raw_git_blob_after": "602c268b684d60e2d1b8bbfc6820663a622eb24093144a87c111f43d3c06fdae",
+      "baseline_branch_additions_retained": ["certifi==2025.1.31", "httpcore==1.0.7", "httpx==0.28.1"],
+      "appended_lines": [],
+      "diff": "empty; no dependency was added, removed, or re-pinned by this repair",
+      "reason": "The repair reuses the already-pinned jsonschema==4.25.0 and referencing==0.37.0 through the existing covenia_b.domain.validation helper; no new dependency was needed."
+    }
   }
 }

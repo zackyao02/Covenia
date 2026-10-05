@@ -18,5 +18,52 @@
   "notes": [
     "The final evidence environment was created only by D:\\python\\python.exe and every final pip/pytest/ruff/contract command used its venv absolute interpreter.",
     "Pytest emitted two non-fatal cache-write warnings because backend/.pytest_cache was not writable; all six tests completed successfully."
-  ]
+  ],
+  "repair_2": {
+    "performed_by": "auxiliary dispatcher repair executor (辅助调度器); not the independent implementer and not a verifier",
+    "repair_commit": "69ba7d9a22f3079104ece8e73595f6de28e92a46",
+    "baseline_commit": "35d03b541f3e5d95d253bbeb9c3477812ddf3ea7",
+    "branch": "codex/covenia-batch-21-repair-2",
+    "run_dir": "C:\\cv21r",
+    "interpreter": "C:\\cv21r\\venv\\Scripts\\python.exe",
+    "environment_note": "$env:TEMP and $env:TMP were set to C:\\cv21r\\tmp for every command, without which pytest fails with WinError 5 in this environment.",
+    "commands": [
+      {"command": "C:\\cv21r\\venv\\Scripts\\python.exe -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" C:\\cv21r\\venv\\Scripts\\python.exe", "exit_code": 0, "result": "C:\\cv21r\\venv\\Scripts\\python.exe; CPython 3.13.5; isolated=true"},
+      {"command": "C:\\cv21r\\venv\\Scripts\\python.exe -m pip install --no-deps -r backend/requirements-dev.lock", "exit_code": 0, "result": "32 pinned distributions installed/verified from the unchanged lock"},
+      {"command": "C:\\cv21r\\venv\\Scripts\\python.exe -m pip install --no-deps --no-build-isolation -e backend", "exit_code": 0, "result": "Successfully installed covenia-b-0.0.0"},
+      {"command": "C:\\cv21r\\venv\\Scripts\\python.exe -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"", "exit_code": 0, "result": "pytest/jsonschema import OK"},
+      {"command": "C:\\cv21r\\venv\\Scripts\\python.exe -m pytest backend/tests/api/test_analyze.py -q", "exit_code": 0, "result": "7 passed (6 pre-existing + 1 new negative regression)"},
+      {"command": "C:\\cv21r\\venv\\Scripts\\python.exe tools/contracts/check_contracts.py --strict", "exit_code": 0, "result": "{\"lock\": \"docs/contracts/b-contract-lock.json\", \"schemas_validated\": 14, \"strict\": true, \"vectors_validated\": 18}"},
+      {"command": "C:\\cv21r\\venv\\Scripts\\python.exe -m pip list --format=json", "exit_code": 0, "result": "34 distributions listed; jsonschema==4.25.0, pytest==8.3.4, fastapi==0.115.6, httpx==0.28.1"},
+      {"command": "C:\\cv21r\\venv\\Scripts\\python.exe -m pip check", "exit_code": 0, "result": "No broken requirements found."},
+      {"command": "C:\\cv21r\\venv\\Scripts\\python.exe -m ruff check backend/src/covenia_b/api/analyze.py backend/tests/api/test_analyze.py", "exit_code": 0, "result": "All checks passed!"},
+      {"command": "C:\\cv21r\\venv\\Scripts\\python.exe -m ruff format --check backend/src/covenia_b/api/analyze.py backend/tests/api/test_analyze.py", "exit_code": 0, "result": "2 files already formatted"},
+      {"command": "git diff --check", "exit_code": 0, "result": "clean"},
+      {"command": "git status --short", "exit_code": 0, "result": "only backend/src/covenia_b/api/analyze.py and backend/tests/api/test_analyze.py modified before the repair commit"}
+    ],
+    "pre_fix_probe": {
+      "command": "C:\\cv21r\\venv\\Scripts\\python.exe - (stdin ASGI script, TestClient, raise_server_exceptions=False) POST /api/cases/analyze with a service double whose to_contract() returns {\"transport_double\": true}",
+      "exit_code": 0,
+      "result": "HTTP 200; body {\"data\":{\"transport_double\":true},\"error\":null,\"request_id\":\"<uuid4>\"} - reproduces the verifier finding before the fix"
+    },
+    "post_fix_probe": {
+      "command": "identical stdin ASGI script after the fix",
+      "exit_code": 0,
+      "result": "HTTP 500; body {\"data\":null,\"error\":{\"code\":\"INTERNAL_ERROR\",\"message\":\"analysis response could not be safely serialized\",\"retryable\":false},\"request_id\":\"<uuid4>\"}; the invalid payload and validation detail are absent"
+    },
+    "mutation_check": {
+      "command": "validate_contract_payload(RESPONSE_SCHEMA_NAME, data) temporarily replaced by a no-op, then C:\\cv21r\\venv\\Scripts\\python.exe -m pytest backend/tests/api/test_analyze.py -q",
+      "exit_code": 1,
+      "result": "1 failed, 6 passed; test_schema_invalid_service_response_becomes_safe_internal_error failed with assert 200 == 500. The line was restored and the suite re-run green (7 passed)."
+    },
+    "supplementary_suite": [
+      {"command": "C:\\cv21r\\venv\\Scripts\\python.exe -m pytest backend/tests -q", "exit_code": 2, "result": "collection error: backend/tests/api/test_analyze.py and backend/tests/services/test_analyze.py share a basename; both files exist unchanged at baseline commit 35d03b5, so this is a pre-existing repository condition, not a repair regression"},
+      {"command": "C:\\cv21r\\venv\\Scripts\\python.exe -m pytest backend/tests -q --import-mode=importlib", "exit_code": 0, "result": "436 passed"}
+    ],
+    "notes": [
+      "Every pip/pytest/ruff/contract command used the absolute interpreter C:\\cv21r\\venv\\Scripts\\python.exe; no bare python, pytest, or pip invocation was used.",
+      "The first pip network call in this run directory can fail with WINERROR 10013; no such failure occurred in this run (exit 0 on the first attempt).",
+      "backend/requirements-dev.lock was not modified: no new third-party dependency was required (UNCHANGED)."
+    ]
+  }
 }

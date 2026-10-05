@@ -1,1 +1,7 @@
-No broken requirements found.
+Repair run evidence (codex/covenia-batch-21-repair-2).
+interpreter: C:\cv21r\venv\Scripts\python.exe
+command: C:\cv21r\venv\Scripts\python.exe -m pip check
+exit_code: 0
+output: No broken requirements found.
+
+This supersedes the earlier C:\r21b\venv run recorded for commit e5bded3; the output is identical.

@@ -38,5 +38,68 @@
   ],
   "blockers": [],
   "handoff_notes": "Import create_analyze_router from covenia_b.api.analyze and inject an AnalyzeService in a separately authorized main-wiring change. The router preserves model_metadata.cached_result provenance through the frozen service response and does not maintain its own cache or historical state. The final evidence venv was C:\\r21b\\venv, created only by D:\\python\\python.exe; recreate a fresh downstream venv and do not reuse it.",
-  "scope_controls": {"main_modified": false, "other_batches_started": [], "verification_report_written": false, "forbidden_paths_modified": false}
+  "scope_controls": {"main_modified": false, "other_batches_started": [], "verification_report_written": false, "forbidden_paths_modified": false},
+  "repair": {
+    "performed_by": "auxiliary dispatcher repair executor (辅助调度器)",
+    "independence_statement": "本批由辅助调度器修复，非独立实现方；验收须由他方完成。",
+    "repair_scope_basis": "reports/batches/BATCH-21/VERIFICATION_REPORT.json at 031c43d37d170adbcae2ec1c35de8868e6573424 (branch codex/verify-batch-21-ascii), findings and minimal_fix_request, plus the product-owner repair decision",
+    "branch": "codex/covenia-batch-21-repair-2",
+    "baseline_commit": "35d03b541f3e5d95d253bbeb9c3477812ddf3ea7",
+    "repair_commit": "69ba7d9a22f3079104ece8e73595f6de28e92a46",
+    "repair_commit_message": "fix(analyze): validate response contract at the HTTP boundary",
+    "report_commit": null,
+    "report_commit_note": "This report is committed in a separate docs commit whose SHA cannot be embedded in this file; the auxiliary dispatcher reports it in the batch receipt.",
+    "change_summary": "create_analyze_router now re-validates the exact result.to_contract() payload against the locked analyze-case-response.schema.json at the HTTP boundary, using the existing covenia_b.domain.validation.validate_contract_payload helper. A schema-invalid service projection raises ContractValidationError (a ValueError subclass), so it is mapped by the pre-existing handler onto the existing safe INTERNAL_ERROR envelope (HTTP 500, data=null, retryable=false) with a fixed message; no new error code, contract change, schema change, or route registration was introduced.",
+    "repaired_code_artifacts": [
+      {"path": "backend/src/covenia_b/api/analyze.py", "sha256_raw_git_blob": "c8be83123f190c664ca558a194bbbe7ef3155474481b99ecd2f897fb8463a55b", "bytes": 5243, "sha256_worktree_crlf": "d24aff58d170e82b24a52f04c7adb4069697d62077c6403da94426a7f9ef94e2", "worktree_bytes": 5401, "hash_basis": "raw git blob at repair_commit; worktree hash included because this checkout materializes CRLF"},
+      {"path": "backend/tests/api/test_analyze.py", "sha256_raw_git_blob": "4715de4fc93fa6b96d7589c8a9a3f3774869430c84f7b034fd61d6372b8d7532", "bytes": 7812, "sha256_worktree_crlf": "4110c9eb545d9648a9ca90e907604ba77b0988ec63ca58b27b317d26b212163e", "worktree_bytes": 8023, "hash_basis": "raw git blob at repair_commit; worktree hash included because this checkout materializes CRLF"},
+      {"path": "backend/requirements-dev.lock", "sha256_raw_git_blob": "602c268b684d60e2d1b8bbfc6820663a622eb24093144a87c111f43d3c06fdae", "bytes": 725, "status": "UNCHANGED; byte-identical to the baseline blob and to the hash recorded by the verifier", "sha256_worktree_crlf": "a7524fec02641fe9edcf300be27ee17969ca1188630d3d411162d6bba26d447f", "worktree_bytes": 759}
+    ],
+    "findings_addressed": [
+      {
+        "finding": "Formal response-schema boundary: create_analyze_router trusted result.to_contract() without validating it against analyze-case-response.schema.json; an invalid {'transport_double': true} projection was returned with HTTP 200.",
+        "status": "FIXED_IN_REPAIR_COMMIT",
+        "evidence": "Pre-fix ASGI probe returned HTTP 200 with {\"data\":{\"transport_double\":true},\"error\":null}; the identical post-fix probe returns HTTP 500 {\"data\":null,\"error\":{\"code\":\"INTERNAL_ERROR\",\"message\":\"analysis response could not be safely serialized\",\"retryable\":false}}; the new negative regression test covers exactly this case."
+      },
+      {
+        "finding": "Required BATCH-20 integration receipt was not located; the dependency handoff is incomplete.",
+        "status": "NOT_ADDRESSED_OUT_OF_SCOPE",
+        "evidence": "Coordinator-owned artifact under runs/{run_id}/integration-receipts/BATCH-20.json; it is outside this batch's allowed_paths (backend/src/covenia_b/api/analyze.py, backend/tests/api/test_analyze.py, reports/batches/BATCH-21/**, backend/requirements-dev.lock). It must be produced by the coordinator/integration owner, not by this repair."
+      }
+    ],
+    "negative_regression_test": {
+      "name": "test_schema_invalid_service_response_becomes_safe_internal_error",
+      "location": "backend/tests/api/test_analyze.py",
+      "assertions": "The locked analyze-case-response schema accepts the locked BATCH-03 analyze-live-success payload and rejects {'transport_double': true}; a service double returning the invalid projection yields HTTP 500, data=null, error.code=INTERNAL_ERROR, error.retryable=false, a matching X-Request-Id header, and a body that does not contain the invalid payload.",
+      "valid_payload_provenance": "tests/contract-vectors/analyze.json, vector analyze-live-success, response.data (locked BATCH-03 contract vector)",
+      "mutation_evidence": "With the new validation call temporarily replaced by a no-op, pytest reported '1 failed, 6 passed' and the new test failed with 'assert 200 == 500'; the call was restored and the suite re-ran green."
+    },
+    "dependency_lock": {
+      "path": "backend/requirements-dev.lock",
+      "status": "UNCHANGED",
+      "before_sha256": "602c268b684d60e2d1b8bbfc6820663a622eb24093144a87c111f43d3c06fdae",
+      "after_sha256": "602c268b684d60e2d1b8bbfc6820663a622eb24093144a87c111f43d3c06fdae",
+      "appended_lines": [],
+      "retained_baseline_additions": ["certifi==2025.1.31", "httpcore==1.0.7", "httpx==0.28.1"]
+    },
+    "commands_evidence": "reports/batches/BATCH-21/commands.json (repair_2) and reports/batches/BATCH-21/pip-check.txt",
+    "environment_evidence": "reports/batches/BATCH-21/environment.json (repair_2)",
+    "test_results": {
+      "focused": "C:\\cv21r\\venv\\Scripts\\python.exe -m pytest backend/tests/api/test_analyze.py -q -> 7 passed, exit 0",
+      "strict_contracts": "14 schemas and 18 vectors validated, exit 0",
+      "pip_check": "No broken requirements found., exit 0",
+      "lint": "ruff check and ruff format --check on both changed files, exit 0",
+      "supplementary_full_suite": "436 passed with --import-mode=importlib; the default import mode aborts on a pre-existing duplicate test-module basename (backend/tests/api/test_analyze.py vs backend/tests/services/test_analyze.py) that already existed at the baseline commit"
+    },
+    "scope_controls": {
+      "allowed_paths_only": true,
+      "contracts_or_schemas_modified": false,
+      "main_or_settings_modified": false,
+      "other_batches_modified": false,
+      "integration_branch_touched": false,
+      "verification_report_written": false,
+      "git_push_performed": false
+    },
+    "verification_status": "NOT_PERFORMED_BY_THIS_AGENT; independent verification is required and no acceptance conclusion is asserted here."
+  }
 }
