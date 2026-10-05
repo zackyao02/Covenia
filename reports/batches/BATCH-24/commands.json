@@ -1,6 +1,6 @@
 {
   "batch_id": "BATCH-24",
-  "execution_status": "BLOCKED_BEFORE_IMPLEMENTATION",
+  "execution_status": "BLOCKED_PLATFORM_VENV_APPROVAL",
   "commands_run": [
     {
       "command": "git -C r24 status --short; git -C r24 branch --show-current; git -C r24 rev-parse HEAD; git -C r24 show-ref --verify refs/heads/integration/covenia-b",
@@ -12,10 +12,14 @@
     },
     {
       "command": "Search available runs, run records, and scheduler state for BATCH-23 integration receipt.",
-      "result": "No runs/{run_id}/integration-receipts/BATCH-23.json receipt found."
+      "result": "The supplied external receipt at C:\\Users\\WONG Tsun Ming\\covenia-orchestration\\runs\\covenia-b-20260910-01\\integration-receipts\\BATCH-23.json was read and records SUCCESS at final integration SHA 5378f46f37e3323ae4e46548f82a92d72432289a."
+    },
+    {
+      "command": "D:\\python\\python.exe -m venv C:\\cov-run\\b24-20261005-01",
+      "result": "NOT_EXECUTED: platform approval review rejected the command because 'Selected model is at capacity'."
     }
   ],
   "commands_not_run": [
-    "All BATCH-24 isolated-venv installation, import-preflight, pytest, contract-check, pip-list, pip-check, and acceptance commands were intentionally not run because the direct dependency integration gate is unresolved."
+    "All BATCH-24 isolated-venv installation, import-preflight, pytest, contract-check, pip-list, pip-check, and acceptance commands were not run because the platform blocked creation of the required batch-specific venv."
   ]
 }

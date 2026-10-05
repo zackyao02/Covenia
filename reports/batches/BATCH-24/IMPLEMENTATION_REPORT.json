@@ -1,7 +1,7 @@
 {
   "batch_id": "BATCH-24",
   "status": "BLOCKED",
-  "summary": "BATCH-24 was not implemented. The mandatory BATCH-23 integration receipt was not present in the declared runs/{run_id}/integration-receipts/BATCH-23.json location or the available scheduler state, so the dependency gate cannot be established.",
+  "summary": "BATCH-23 dependency evidence is now verified, but BATCH-24 cannot resume because the platform rejected creation of its required isolated venv before execution. The rejected command was not executed and no existing Batch environment was reused.",
   "files_changed": [
     "reports/batches/BATCH-24/IMPLEMENTATION_REPORT.json",
     "reports/batches/BATCH-24/IMPLEMENTATION_REPORT.md",
@@ -13,13 +13,13 @@
   "acceptance_results": [
     {
       "criterion": "BATCH-23 implementation report, independent PASS report, and integration receipt must be read before BATCH-24 execution.",
-      "result": "BLOCKED",
-      "evidence": "reports/batches/BATCH-23/IMPLEMENTATION_REPORT.json and reports/batches/BATCH-23/VERIFICATION_REPORT.json are present at HEAD 5378f46f37e3323ae4e46548f82a92d72432289a; no BATCH-23 integration receipt was found under the declared runs location or available scheduler state."
+      "result": "PASS",
+      "evidence": "The supplied external receipt C:\\Users\\WONG Tsun Ming\\covenia-orchestration\\runs\\covenia-b-20260910-01\\integration-receipts\\BATCH-23.json records SUCCESS, final integration SHA 5378f46f37e3323ae4e46548f82a92d72432289a, BATCH-23 independent PASS, smoke pytest 11 passed, clean pip check, scope PASS, and main unmodified/unpushed."
     },
     {
       "criterion": "Use a BATCH-24 absolute isolated venv and run acceptance commands.",
-      "result": "NOT_RUN",
-      "evidence": "No environment was created because the prerequisite integration gate is unresolved."
+      "result": "BLOCKED",
+      "evidence": "The requested C:\\cov-run\\b24-20261005-01 venv creation was rejected by the platform approval service with 'Selected model is at capacity'; execution did not start."
     },
     {
       "criterion": "Create no BATCH-24 VERIFICATION_REPORT or verification evidence.",
@@ -29,14 +29,14 @@
   ],
   "commit_hash": null,
   "remaining_risks": [
-    "Beginning HTTP implementation without the BATCH-23 integration receipt could consume a dependency that has not completed the required coordinator integration and smoke-test gate."
+    "The implementation remains unverified because no BATCH-24 isolated environment could be created and the required commands were not run."
   ],
   "blockers": [
     {
-      "owner": "BATCH-23 integration coordinator",
-      "required_artifact": "runs/{run_id}/integration-receipts/BATCH-23.json",
-      "reason": "The scheduler package requires a separate integration receipt in addition to BATCH-23 implementation and independent PASS reports."
+      "owner": "Platform approval service",
+      "required_artifact": "Authorization to create C:\\cov-run\\b24-20261005-01\\venv",
+      "reason": "The approval service was at capacity and rejected the venv command before it executed."
     }
   ],
-  "handoff_notes": "Publish the BATCH-23 integration receipt with its final integration SHA and smoke-test result, then create a fresh BATCH-24 execution attempt using its own short RUN_DIR and isolated venv. No BATCH-24 code was changed, no tests were executed, and no other Batch was started."
+  "handoff_notes": "The BATCH-23 receipt is now sufficient. Retry the same BATCH-24 task after the platform can authorize creation of its fresh short RUN_DIR venv; do not reuse another Batch environment. No BATCH-24 acceptance test was run and no other Batch was started."
 }
