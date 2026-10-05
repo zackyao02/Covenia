@@ -1,0 +1,37 @@
+{
+  "batch_id": "BATCH-22",
+  "result": "BLOCKED",
+  "commit_verified": "d86969094bd8416de3f671af2dd0c82ab31a92d5",
+  "commands_run": [
+    "git diff-tree --no-commit-id --name-status -r d86969094bd8416de3f671af2dd0c82ab31a92d5",
+    "git diff --check 5378f46f37e3323ae4e46548f82a92d72432289a d86969094bd8416de3f671af2dd0c82ab31a92d5",
+    "C:\\r22\\venv\\Scripts\\python.exe -c <prefix assertion>",
+    "C:\\r22\\venv\\Scripts\\python.exe -m pip install --no-deps -r backend/requirements-dev.lock",
+    "C:\\r22\\venv\\Scripts\\python.exe -m pip install --no-deps --no-build-isolation -e backend",
+    "C:\\r22\\venv\\Scripts\\python.exe -c import pytest, jsonschema",
+    "C:\\r22\\venv\\Scripts\\python.exe -m pytest backend/tests/api/test_evaluate.py -q",
+    "C:\\r22\\venv\\Scripts\\python.exe tools/contracts/check_contracts.py --strict",
+    "C:\\r22\\venv\\Scripts\\python.exe -m pip list --format=json",
+    "C:\\r22\\venv\\Scripts\\python.exe -m pip check",
+    "C:\\r22\\venv\\Scripts\\python.exe reports/batches/BATCH-22/verification-evidence/independent_probe.py"
+  ],
+  "passed_checks": [
+    "The verified commit has the supplied integration baseline 5378f46f37e3323ae4e46548f82a92d72432289a as its parent and changes only the BATCH-22 allowlisted implementation/evidence paths.",
+    "No backend/requirements-dev.lock change is present in the implementation commit.",
+    "The isolated venv assertion passed: executable C:\\r22\\venv\\Scripts\\python.exe, sys.prefix C:\\r22\\venv, longest prechecked path 97 (<250).",
+    "Locked dependency installation, editable backend installation, pytest/jsonschema imports, pip list, and pip check all passed under the venv interpreter.",
+    "backend/tests/api/test_evaluate.py passed: 3 passed.",
+    "Strict contracts passed: 14 schemas and 18 vectors validated.",
+    "Independent probe confirmed E0 ALLOW is invariant for a different case ID with identical authoritative facts; disabled challenge reports false/VALID and no ledger save occurs."
+  ],
+  "failed_checks": [
+    "Required dependency artifacts for BATCH-16 and BATCH-20 are absent from the verified commit and its specified integration baseline: both IMPLEMENTATION_REPORT.json and VERIFICATION_REPORT.json paths are missing.",
+    "No runs/{run_id}/integration-receipts/BATCH-16.json or BATCH-20.json was available in the verified checkout. Although reports exist on other Git refs, they are not provenance for this baseline."
+  ],
+  "scope_violations": [],
+  "regression_risks": [
+    "BATCH-22 cannot be accepted or integrated from this commit because its declared BATCH-16 and BATCH-20 dependency evidence and integration receipts are not present on the verified lineage.",
+    "The provided test suite exercises the router endpoint directly; application composition remains outside the BATCH-22 allowlist, so deployment-level route wiring must be accepted in its separately authorized batch."
+  ],
+  "minimal_fix_request": "Coordinator must provide a lineage containing independently accepted BATCH-16 and BATCH-20 artifacts plus their run-specific integration receipts, or explicitly revise the approved dependency package. Re-run independent acceptance from that immutable base. Platform retry time: 无时间可用。"
+}

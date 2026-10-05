@@ -1,0 +1,18 @@
+﻿== BATCH-22 适配器边界自建探针 ==
+PASS 成功路径 HTTP 200                                              status=200
+PASS 成功信封 error 为 None                                          null
+PASS 成功信封 data 为服务端结果                                           
+PASS 成功信封回带 request_id                                          aux-rid-0001
+PASS 伪造客户端状态仍返回成功（服务端为准）                                        
+PASS 弃用字段被保留（冻结 schema 声明的兼容语义，非缺陷）                             accountability_state={'decision': 'INTERVENE', 'rule_id': 'P0_PROHIBITED_ACTION'}
+PASS 服务端不读取请求侧弃用字段（保留但不采信）                                      services/evaluate.py 命中读取: 无
+PASS P0 HTTP 状态为 400                                            status=400
+PASS P0 错误码为 P0_PROHIBITED_ACTION                               P0_PROHIBITED_ACTION
+PASS P0 信封 data 为 None（不在成功体）                                   
+PASS P0 信封 error.code 非空                                        
+PASS 未分析映射为 422                                                 status=422
+PASS 未分析错误码为 VALIDATION_ERROR                                   VALIDATION_ERROR
+PASS 非法请求映射为 422 SCHEMA_INVALID                                 status=422 code=SCHEMA_INVALID
+
+合计 14 项，失败 0 项
+

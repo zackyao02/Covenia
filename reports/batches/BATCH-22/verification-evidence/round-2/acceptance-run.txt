@@ -1,0 +1,29 @@
+﻿== BATCH-22 第二轮独立验收 @ 795928e611e9ce6f35c3d07afaa34911b41b5981 ==
+-- editable 安装 --
+Successfully built covenia-b
+Installing collected packages: covenia-b
+Successfully installed covenia-b-0.0.0
+  exit=0
+-- 导入预检 --
+python.exe : <string>:1: DeprecationWarning: Accessing jsonschema.__version__ is deprecated and will be removed in a fu
+ture release. Use importlib.metadata directly to query for jsonschema's version.
+所在位置 行:1 字符: 634
++ ...  --"; Say ((& $py -c "import pytest,jsonschema;print('OK',pytest.__ve ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (<string>:1: Dep...hema's version.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+OK 8.3.4 4.25.0
+-- pytest backend/tests/api/test_evaluate.py --
+...                                                                      [100%]
+3 passed in 0.84s
+  exit=0
+-- check_contracts --strict --
+{"lock": "docs/contracts/b-contract-lock.json", "schemas_validated": 14, "strict": true, "vectors_validated": 18}
+  exit=0
+-- pip check --
+No broken requirements found.
+  exit=0
+-- git --
+  diff-check exit=0
+  status=[]
