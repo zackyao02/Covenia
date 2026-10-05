@@ -1,0 +1,71 @@
+{
+  "batch_id": "BATCH-23",
+  "result": "PASS",
+  "verified_at": "2026-10-05T20:14:43.4473117+08:00",
+  "commit_verified": {
+    "implementation_commit": "99c661abd63973cb590f5fa4ff717b72e6e328b0",
+    "implementation_commit_present": true,
+    "final_evidence_commit": "1af1cf79bbc2bdaa9555df951c707a80f4c6cd10",
+    "final_evidence_commit_present": true,
+    "integration_baseline": "16ee07cb4553ddaad74d0dc54323867c55095923",
+    "integration_baseline_present": true,
+    "verification_start_head": "1af1cf79bbc2bdaa9555df951c707a80f4c6cd10",
+    "ancestry_verified": true,
+    "raw_blob_verification_evidence": "verification-evidence/scope-and-blobs.json"
+  },
+  "commands_run": [
+    "git show --no-patch and git diff --name-status for the specified commits",
+    "git show <implementation-commit>:<allowed-path> | git hash-object --stdin",
+    "<RUN_DIR>/venv/Scripts/python.exe interpreter isolation assertion",
+    "<RUN_DIR>/venv/Scripts/python.exe -m pip install --no-deps -r backend/requirements-dev.lock",
+    "<RUN_DIR>/venv/Scripts/python.exe -m pip install --no-deps --no-build-isolation -e backend",
+    "<RUN_DIR>/venv/Scripts/python.exe -c import pytest, jsonschema",
+    "<RUN_DIR>/venv/Scripts/python.exe -m pytest backend/tests/services/test_approve.py -q",
+    "<RUN_DIR>/venv/Scripts/python.exe -m pip list --format=json",
+    "<RUN_DIR>/venv/Scripts/python.exe -m pip check",
+    "git diff --check",
+    "git status --short"
+  ],
+  "passed_checks": [
+    {
+      "check": "isolated_environment",
+      "detail": "New CPython 3.13.5 venv; RUN_DIR length 47, venv is one level below RUN_DIR, longest observed run path length 184, and sys.prefix differs from sys.base_prefix."
+    },
+    {
+      "check": "dependency_integrity",
+      "detail": "Pinned lock installed under the verifier interpreter; pytest/jsonschema import preflight passed; pip check returned No broken requirements found."
+    },
+    {
+      "check": "targeted_service_tests",
+      "detail": "backend/tests/services/test_approve.py: 11 passed."
+    },
+    {
+      "check": "approval_authorization_and_server_fact_validation",
+      "detail": "Review and tests cover non-empty approver_id, server-side candidate revalidation, high-risk/stale rejection, and rejection of client approved_at, refund, responsibility, and arbitrary status fields."
+    },
+    {
+      "check": "projection_and_transaction_boundary",
+      "detail": "Review and tests cover Clock-derived approval time, synchronized obligation/compiled responsibility/receipt/notification projection, persisted first complete response, and rollback when response persistence fails."
+    },
+    {
+      "check": "idempotency",
+      "detail": "Same-key replay returns the first response and request_id without an extra audit entry; same-key different body raises IDEMPOTENCY_CONFLICT."
+    },
+    {
+      "check": "scope_and_blob_provenance",
+      "detail": "git show raw-blob verification passed for both implementation files; baseline-to-final changed paths are all in the allowed scope; requirements-dev.lock did not change; git diff --check passed."
+    }
+  ],
+  "failed_checks": [],
+  "scope_violations": [],
+  "regression_risks": [
+    "Acceptance executed the required targeted approval-service test file, not the repository-wide test suite; no failure was observed within the required scope.",
+    "The approval service depends on the pre-existing BATCH-18 transaction repository contract; this acceptance verified its behavior through the supplied SQLite repository tests and did not re-accept dependency batches."
+  ],
+  "minimal_fix_request": null,
+  "evidence": [
+    "verification-evidence/scope-and-blobs.json",
+    "verification-evidence/environment-and-commands.json"
+  ],
+  "integration_action": "NONE: PASS is returned only. No integration, merge, scheduler action, or other Batch was started."
+}

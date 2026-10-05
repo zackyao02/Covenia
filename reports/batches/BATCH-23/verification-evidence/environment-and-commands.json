@@ -1,0 +1,66 @@
+{
+  "batch_id": "BATCH-23",
+  "run_dir": "C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\cv23",
+  "run_dir_length": 47,
+  "venv_relative_path": "venv",
+  "venv_depth": 1,
+  "longest_observed_run_path_length": 184,
+  "interpreter": {
+    "executable": "C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\cv23\\venv\\Scripts\\python.exe",
+    "sys_prefix": "C:\\Users\\WONG Tsun Ming\\AppData\\Local\\Temp\\cv23\\venv",
+    "sys_base_prefix": "D:\\python",
+    "version": "3.13.5",
+    "isolated_venv": true
+  },
+  "bootstrap_note": "The Windows py launcher had no registered interpreter. The verifier created this new CPython 3.13.5 venv from D:\\python\\python.exe; no prior Batch venv was reused.",
+  "commands": [
+    {
+      "command": "<RUN_DIR>/venv/Scripts/python.exe -c interpreter identity and isolation assertion",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "command": "<RUN_DIR>/venv/Scripts/python.exe -m pip install --no-deps -r backend/requirements-dev.lock",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "command": "<RUN_DIR>/venv/Scripts/python.exe -m pip install --no-deps --no-build-isolation -e backend",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "command": "<RUN_DIR>/venv/Scripts/python.exe -c import pytest, jsonschema",
+      "stdout": "pytest/jsonschema import OK",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "command": "<RUN_DIR>/venv/Scripts/python.exe -m pytest backend/tests/services/test_approve.py -q",
+      "stdout": "11 passed in 1.06s",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "command": "<RUN_DIR>/venv/Scripts/python.exe -m pip list --format=json",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "command": "<RUN_DIR>/venv/Scripts/python.exe -m pip check",
+      "stdout": "No broken requirements found.",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "command": "git diff --check 16ee07cb4553ddaad74d0dc54323867c55095923 1af1cf79bbc2bdaa9555df951c707a80f4c6cd10",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "command": "git status --short",
+      "result": "PASS",
+      "detail": "Before committing the independent acceptance artifact, only reports/batches/BATCH-23/VERIFICATION_REPORT.json and reports/batches/BATCH-23/verification-evidence/** were untracked."
+    }
+  ]
+}

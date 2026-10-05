@@ -1,0 +1,42 @@
+{
+  "batch_id": "BATCH-23",
+  "verification_basis": {
+    "integration_baseline": "16ee07cb4553ddaad74d0dc54323867c55095923",
+    "implementation_commit": "99c661abd63973cb590f5fa4ff717b72e6e328b0",
+    "final_evidence_commit": "1af1cf79bbc2bdaa9555df951c707a80f4c6cd10"
+  },
+  "ancestry": {
+    "integration_baseline_is_ancestor_of_implementation": true,
+    "implementation_is_ancestor_of_final_evidence": true,
+    "final_evidence_is_verification_head_before_report": true
+  },
+  "git_show_blob_verification": [
+    {
+      "command": "git show 99c661abd63973cb590f5fa4ff717b72e6e328b0:backend/src/covenia_b/services/approve.py | git hash-object --stdin",
+      "path": "backend/src/covenia_b/services/approve.py",
+      "git_blob_oid": "ff1728a211a1b8af0aaa95670599f728ed34216c",
+      "result": "PASS"
+    },
+    {
+      "command": "git show 99c661abd63973cb590f5fa4ff717b72e6e328b0:backend/tests/services/test_approve.py | git hash-object --stdin",
+      "path": "backend/tests/services/test_approve.py",
+      "git_blob_oid": "5efa5a187f3965ad5d20447a6f3dc82656c7b5a4",
+      "result": "PASS"
+    }
+  ],
+  "range_scope_command": "git diff --name-status 16ee07cb4553ddaad74d0dc54323867c55095923 1af1cf79bbc2bdaa9555df951c707a80f4c6cd10",
+  "changed_paths": [
+    "backend/src/covenia_b/services/approve.py",
+    "backend/tests/services/test_approve.py",
+    "reports/batches/BATCH-23/IMPLEMENTATION_REPORT.json",
+    "reports/batches/BATCH-23/IMPLEMENTATION_REPORT.md",
+    "reports/batches/BATCH-23/approval-audit-examples.json",
+    "reports/batches/BATCH-23/commands.json",
+    "reports/batches/BATCH-23/environment.json",
+    "reports/batches/BATCH-23/idempotency-evidence.json",
+    "reports/batches/BATCH-23/pip-check.txt"
+  ],
+  "all_changed_paths_within_user_allowed_scope": true,
+  "requirements_dev_lock_changed": false,
+  "range_diff_check_exit_code": 0
+}
