@@ -1,0 +1,119 @@
+{
+  "report_version": "1.0",
+  "batch_id": "BATCH-26",
+  "result": "PASS",
+  "verdict": "PASS",
+  "verifier": "审查方（独立验收；实现方为辅助调度器，未参与本验收）",
+  "reviewed_sha": "befe221b41710b6d7903c315830665348edabc33",
+  "implementation_commit": "ff0ea6665583001090a9fd9a74b355ebed3ec7e9",
+  "report_commit": "befe221b41710b6d7903c315830665348edabc33",
+  "integration_baseline": "392b8cbdddb1",
+  "verified_at": "2026-10-05T22:00:42",
+  "independent_context": true,
+  "verifier_run_dir": "C:/a26",
+  "verifier_worktree": "C:/a26/v",
+  "verifier_venv": "C:/a26/venv",
+  "replay": {
+    "chain": [
+      "ff0ea66",
+      "befe221"
+    ],
+    "onto": "392b8cb",
+    "conflicts": 0,
+    "resulting_head": "f18bb49d0339",
+    "isolation": "审查方自建 RUN_DIR 与 venv，未复用实现方 C:/cv26"
+  },
+  "acceptance_criteria_read_verbatim": [
+    "批准→未揽收→稍后揽收→送达 和 批准→按时揽收→送达 两个独立序列通过。",
+    "直接送达/倒序/相同 event_id 异体/重复键/并发/故障回滚可复现。",
+    "返回相同首个 response/request_id 不增加 audit_trail。",
+    "按5.5使用本批绝对隔离venv解释器；新增第三方依赖只增不改、精确钉版本并提交锁文件差异/原因/hash证据；交付前同解释器 pip check 退出0。环境证据缺失或冲突不得PASS。"
+  ],
+  "commands_run": [
+    {
+      "command": "pytest backend/tests/api/test_shipment.py -q",
+      "result": "10 passed in 1.30s",
+      "exit_code": 0,
+      "note": "测试自身即集成级：真实 ASGI 应用 + 真实 BATCH-18 SQLite 事务 + 真实 BATCH-26 服务"
+    },
+    {
+      "command": "tools/contracts/check_contracts.py --strict",
+      "result": "14 schemas / 18 vectors / strict true",
+      "exit_code": 0
+    },
+    {
+      "command": "-m pip check",
+      "result": "No broken requirements found.",
+      "exit_code": 0
+    },
+    {
+      "command": "git diff --check; git status --short",
+      "result": "干净"
+    },
+    {
+      "command": "checks/anti_shortcut_scan.py（A33 三判据）",
+      "result": "通过：三项判据均无命中"
+    }
+  ],
+  "independent_probe": {
+    "script": "checks/independent_probe_batch26.py（审查方自建，不使用实现方测试文件）",
+    "sha256": "79F9B91DCDA3449827CF6DDECB01C702D8EA407C46ACB0E5D2EEADABD0A9C56E",
+    "method": "真实 SQLiteLedgerRepository + 真实 ShipmentEventService，自建账本与请求",
+    "results": [
+      {
+        "criterion": "返回相同首个 response/request_id 不增加 audit_trail",
+        "observed": "第1次 replayed=False status=200 request_id=REQ-PROBE-1 audit=2；第2次 replayed=True status=200 request_id=REQ-PROBE-1 audit=2；两次响应逐字节相同、request_id 相同、audit 未增",
+        "pass": true
+      },
+      {
+        "criterion": "相同 event_id 异体必须冲突",
+        "observed": "ShipmentIdempotencyConflictError: event_id was already recorded with different event content；audit 未增",
+        "pass": true
+      },
+      {
+        "criterion": "相同幂等键内容不同必须冲突",
+        "observed": "ShipmentIdempotencyConflictError: The idempotency key was already used with a different normalized body；audit 未增",
+        "pass": true
+      }
+    ],
+    "verifier_probe_bugs_found_and_fixed": [
+      "初版 idempotency_key 用 6 字符 K-DIFF，被 NonEmptyText 的 8 字符下限正确拒绝 —— 属探针缺陷，非实现缺陷"
+    ]
+  },
+  "lock_file": {
+    "raw_blob_sha256": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+    "same_as_baseline": true,
+    "implementer_claim": "177865457F146985726B02EF5C640363...",
+    "claim_verified": true
+  },
+  "artifact_hashes": {
+    "method": "SHA-256 over raw bytes streamed from git show <sha>:<path>",
+    "backend/src/covenia_b/services/shipment.py": "F10376450B3A0F377ED3A9B56335AFE5E4F8518B0177D2351833CCAAEBEFA96A",
+    "backend/src/covenia_b/api/shipment.py": "5853476A8EC1F446363EF692C9759A34F21B14347EE37AA6ADF9B69367E228FF",
+    "backend/tests/api/test_shipment.py": "06B2106CBB1F2D064225A6DEDA229B085E3B410141C00A7E810F26B5DE7E491A"
+  },
+  "non_blocking_observations": [
+    {
+      "item": "路由未装入默认应用",
+      "finding": "main.py（26 行）未调用 install_shipment_router；实现方自陈属实。",
+      "ruling": "不判本批 FAIL。应用装配归 BATCH-27。验收方已独立确认该陈述为真。"
+    },
+    {
+      "item": "冲突文案依赖",
+      "finding": "services/shipment.py:435 以文本匹配区分两类冲突，依赖 BATCH-18 的错误文案。",
+      "ruling": "不判本批 FAIL（探针已实测两类冲突各自正确触发）；登记为跨线风险：BATCH-18 若改文案须同步此处。建议转跨线问题单。"
+    }
+  ],
+  "what_could_not_be_independently_reproduced": [
+    "并发读写的真实竞态：所提供并发测试在同一进程内构造，审查方未以多进程真并发复现。",
+    "与 BATCH-18 真实落盘行为的完整交互：探针使用真实 SQLiteLedgerRepository，但仅覆盖单进程单连接路径。"
+  ],
+  "findings": [],
+  "minimal_fix_list": [],
+  "blockers": [],
+  "code_modified": false,
+  "next_batch_started": false,
+  "integration_performed": false,
+  "pushed": false,
+  "verifier_scope_declaration": "审查方仅写本报告与其证据；未修改任何实现文件、未集成、未推送。因 Codex 额度耗尽，本验收由审查角色执行而非全新任务线程；该偏离在此显式记录，并请另行安排独立复核本验收本身。"
+}
