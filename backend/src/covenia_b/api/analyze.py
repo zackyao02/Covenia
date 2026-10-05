@@ -17,10 +17,12 @@ from pydantic import ValidationError
 
 from covenia_b.api.base import REQUEST_ID_HEADER, normalize_request_id
 from covenia_b.domain.types import AnalyzeCaseRequest, AnalyzeCaseResponse
+from covenia_b.domain.validation import validate_contract_payload
 from covenia_b.services.analyze import AnalysisServiceError
 
 ANALYZE_PATH = "/api/cases/analyze"
 DEFAULT_ANALYSIS_TIMEOUT_SECONDS = 20.0
+RESPONSE_SCHEMA_NAME = "analyze-case-response.schema.json"
 
 
 class AnalyzeCallable(Protocol):
@@ -67,9 +69,12 @@ def create_analyze_router(
                 analysis_service.analyze(parsed, request_id=request_id),
                 timeout=timeout_seconds,
             )
-            # AnalyzeService validates this projection before returning.  Calling
-            # it here preserves the frozen JSON representation at the boundary.
+            # AnalyzeService validates this projection before returning, but the
+            # service is a replaceable seam: re-validate the exact payload at the
+            # HTTP boundary so no client can receive data outside the frozen
+            # analyze-case-response contract.
             data = result.to_contract()
+            validate_contract_payload(RESPONSE_SCHEMA_NAME, data)
         except TimeoutError:
             return _error_response(
                 request_id=request_id,
@@ -87,6 +92,9 @@ def create_analyze_router(
                 retryable=error.retryable,
             )
         except (TypeError, ValueError):
+            # ContractValidationError subclasses ValueError, so a schema-invalid
+            # service projection lands on this existing safe INTERNAL_ERROR
+            # envelope instead of reaching the client as a 200 success.
             return _error_response(
                 request_id=request_id,
                 code="INTERNAL_ERROR",

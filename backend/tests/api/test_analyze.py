@@ -3,27 +3,52 @@
 from __future__ import annotations
 
 import asyncio
-from collections.abc import Awaitable
+import json
+from collections.abc import Awaitable, Mapping
+from copy import deepcopy
+from pathlib import Path
 from typing import Any
 
+import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
-from covenia_b.api.analyze import create_analyze_router
+from covenia_b.api.analyze import RESPONSE_SCHEMA_NAME, create_analyze_router
 from covenia_b.api.base import REQUEST_ID_HEADER, install_api_seams
 from covenia_b.domain.types import AnalyzeCaseRequest
+from covenia_b.domain.validation import ContractValidationError, validate_contract_payload
 from covenia_b.services.analyze import AnalysisModelOutputError, AnalysisModelUnavailable
+
+_REPO_ROOT = Path(__file__).resolve().parents[3]
+_ANALYZE_VECTOR_PATH = _REPO_ROOT / "tests" / "contract-vectors" / "analyze.json"
+_LOCKED_SUCCESS_VECTOR_ID = "analyze-live-success"
+
+# Deliberately outside analyze-case-response.schema.json: the regression payload
+# for an invalid service projection at the HTTP boundary.
+INVALID_RESPONSE_PAYLOAD: dict[str, Any] = {"transport_double": True}
+
+
+def _locked_success_payload() -> dict[str, Any]:
+    """Return the locked BATCH-03 success data for ``POST /api/cases/analyze``."""
+
+    vectors = json.loads(_ANALYZE_VECTOR_PATH.read_text(encoding="utf-8"))["vectors"]
+    vector = next(item for item in vectors if item["id"] == _LOCKED_SUCCESS_VECTOR_ID)
+    return vector["response"]["data"]
 
 
 class _ContractResponse:
+    def __init__(self, payload: Mapping[str, Any]) -> None:
+        self._payload = payload
+
     def to_contract(self) -> dict[str, Any]:
-        # A transport double: response-contract validation remains service-owned.
-        return {"transport_double": True}
+        # A transport double: the HTTP boundary owns response-contract validation.
+        return deepcopy(dict(self._payload))
 
 
 class _ServiceDouble:
-    def __init__(self, outcome: object) -> None:
+    def __init__(self, outcome: object, *, payload: Mapping[str, Any] | None = None) -> None:
         self.outcome = outcome
+        self.payload = _locked_success_payload() if payload is None else payload
         self.requests: list[AnalyzeCaseRequest] = []
         self.request_ids: list[str | None] = []
 
@@ -38,7 +63,7 @@ class _ServiceDouble:
                 raise self.outcome
             if self.outcome == "wait":
                 await asyncio.sleep(0.02)
-            return _ContractResponse()
+            return _ContractResponse(self.payload)
 
         return invoke()
 
@@ -52,6 +77,7 @@ def _client(service: _ServiceDouble, *, timeout: float = 20.0) -> TestClient:
 
 def test_case_id_only_is_forwarded_with_success_envelope_and_request_id() -> None:
     service = _ServiceDouble(outcome="ok")
+    payload = _locked_success_payload()
 
     response = _client(service).post(
         "/api/cases/analyze",
@@ -61,12 +87,38 @@ def test_case_id_only_is_forwarded_with_success_envelope_and_request_id() -> Non
 
     assert response.status_code == 200
     assert response.json() == {
-        "data": {"transport_double": True},
+        "data": payload,
         "error": None,
         "request_id": "6dfc4c88-a6f3-4211-bb8a-a1d4f23de939",
     }
     assert service.requests[0].case_input is None
     assert response.headers[REQUEST_ID_HEADER] == response.json()["request_id"]
+
+
+def test_schema_invalid_service_response_becomes_safe_internal_error() -> None:
+    """Regression: a service projection outside the frozen contract must not reach the client."""
+
+    # Control: the boundary validator accepts the locked success payload and
+    # rejects the invalid projection, so this test cannot pass vacuously.
+    validate_contract_payload(RESPONSE_SCHEMA_NAME, _locked_success_payload())
+    with pytest.raises(ContractValidationError):
+        validate_contract_payload(RESPONSE_SCHEMA_NAME, INVALID_RESPONSE_PAYLOAD)
+
+    service = _ServiceDouble(outcome="ok", payload=INVALID_RESPONSE_PAYLOAD)
+
+    response = _client(service).post("/api/cases/analyze", json={"case_id": "case-001"})
+
+    body = response.json()
+    assert response.status_code == 500
+    assert body["data"] is None
+    assert body["error"] == {
+        "code": "INTERNAL_ERROR",
+        "message": "analysis response could not be safely serialized",
+        "retryable": False,
+    }
+    assert response.headers[REQUEST_ID_HEADER] == body["request_id"]
+    assert service.requests[0].case_id == "case-001"
+    assert "transport_double" not in response.text
 
 
 def test_schema_negative_cases_are_enveloped_before_service_execution() -> None:
