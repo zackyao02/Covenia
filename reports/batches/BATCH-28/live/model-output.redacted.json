@@ -1,0 +1,318 @@
+{
+  "artifact": "reports/batches/BATCH-28/live/model-output.redacted.json",
+  "attempts": [
+    {
+      "attempt": 1,
+      "candidate_accepted": false,
+      "candidate_promise_texts": [
+        "换货单已创建，48小时内发出",
+        "先给您发全新的，收到后用包裹里的面单把坏的寄回就好，运费我们出"
+      ],
+      "failure_reason": "the server-side source validator refused the candidate",
+      "image_sha256s": [
+        "e2c6bbd230f906f113d75f2f582e778b6e79aea37544c2383f1ffda15a5295d5",
+        "4709d7529803846d4ff4e123bfcc034d420449ae23923cb54468be573bd8cfc7",
+        "c734bfb5a70ffa39e10b2535dc8321eace3c1fb358293fa22b590b9f7b5836bd"
+      ],
+      "observations": [
+        "The pump head of the foundation bottle is visibly cracked and damaged, with foundation product oozing from the fracture.",
+        "The cardboard packaging box shows a crushed corner, indicating possible transit damage.",
+        "The agent stated: '换货单已创建，48小时内发出' (The replacement order has been created and will be shipped within 48 hours).",
+        "The agent previously stated: '先给您发全新的，收到后用包裹里的面单把坏的寄回就好，运费我们出' (We will first send you a brand-new one; after you receive it, please return the defective item using the return label included in the package—we will cover the shipping cost)."
+      ],
+      "outcome": "SOURCE_REJECTED",
+      "provider_reported_duration_ms": 8154,
+      "provider_request_id": "chatcmpl-2b7ccf5a-0b90-91db-9da6-51c039fc6d80",
+      "rejection_code": "MISSING_FIELD_TRACE",
+      "rejection_stage": null,
+      "request_bytes": 360282,
+      "request_sha256": "b7fe41ce132fa8e9fd652bb129ed70985c509e06f87fdf222355c82fefbf80e6",
+      "response_bytes": 2064,
+      "response_sha256": "3eae5aa8eeeee86f8af02caa321f221ffde5f10a8de64e1ac5c54876d87e5072",
+      "source_trace": [
+        {
+          "field": "observations[0]",
+          "source_id": "S00001_IMG_PUMP_DETAIL",
+          "source_type": "IMAGE"
+        },
+        {
+          "field": "observations[1]",
+          "source_id": "S00001_IMG_PACKAGE_CONTEXT",
+          "source_type": "IMAGE"
+        },
+        {
+          "field": "observations[2]",
+          "source_id": "36199788469718.PNM",
+          "source_type": "CHAT"
+        },
+        {
+          "field": "observations[3]",
+          "source_id": "22703823958720.PNM",
+          "source_type": "CHAT"
+        }
+      ],
+      "stage": "INITIAL",
+      "started_at": "2026-10-05T16:26:00.386034+00:00",
+      "status_code": 200,
+      "usage": {
+        "input_tokens": 5589,
+        "output_tokens": 374
+      },
+      "usage_note": null,
+      "usage_status": "EXACT",
+      "wall_ms": 8155
+    },
+    {
+      "attempt": 2,
+      "candidate_accepted": false,
+      "candidate_promise_texts": [
+        "换货单已创建，48小时内发出",
+        "先给您发全新的，收到后用包裹里的面单把坏的寄回就好，运费我们出"
+      ],
+      "failure_reason": "the server-side source validator refused the candidate",
+      "image_sha256s": [
+        "e2c6bbd230f906f113d75f2f582e778b6e79aea37544c2383f1ffda15a5295d5",
+        "4709d7529803846d4ff4e123bfcc034d420449ae23923cb54468be573bd8cfc7",
+        "c734bfb5a70ffa39e10b2535dc8321eace3c1fb358293fa22b590b9f7b5836bd"
+      ],
+      "observations": [
+        "The pump head of the foundation bottle is visibly cracked and damaged, with foundation product oozing from the fracture.",
+        "The cardboard packaging box shows a crushed corner, indicating possible transit damage.",
+        "The agent stated: '换货单已创建，48小时内发出' (The replacement order has been created and will be shipped within 48 hours).",
+        "The agent stated: '先给您发全新的，收到后用包裹里的面单把坏的寄回就好，运费我们出' (We will first send you a brand-new item; after you receive it, please return the defective one using the return label included in the package—we will cover the shipping cost)."
+      ],
+      "outcome": "SOURCE_REJECTED",
+      "provider_reported_duration_ms": 7892,
+      "provider_request_id": "chatcmpl-897a8f89-54ce-9d60-ab43-0bea34b608f5",
+      "rejection_code": "MISSING_FIELD_TRACE",
+      "rejection_stage": null,
+      "request_bytes": 360282,
+      "request_sha256": "b7fc031be0f2ca412a8d46f337dab9de8d5831b7d9124926f8a6dd5807bac9a0",
+      "response_bytes": 2053,
+      "response_sha256": "16375961be8843258c9fe6fcb9e44fb663f3115691bf4be482ebfbbb65c6a202",
+      "source_trace": [
+        {
+          "field": "observations[0]",
+          "source_id": "S00001_IMG_PUMP_DETAIL",
+          "source_type": "IMAGE"
+        },
+        {
+          "field": "observations[1]",
+          "source_id": "S00001_IMG_PACKAGE_CONTEXT",
+          "source_type": "IMAGE"
+        },
+        {
+          "field": "observations[2]",
+          "source_id": "36199788469718.PNM",
+          "source_type": "CHAT"
+        },
+        {
+          "field": "observations[3]",
+          "source_id": "22703823958720.PNM",
+          "source_type": "CHAT"
+        }
+      ],
+      "stage": "INITIAL",
+      "started_at": "2026-10-05T16:26:08.543996+00:00",
+      "status_code": 200,
+      "usage": {
+        "input_tokens": 5589,
+        "output_tokens": 373
+      },
+      "usage_note": null,
+      "usage_status": "EXACT",
+      "wall_ms": 7893
+    }
+  ],
+  "batch_id": "BATCH-28",
+  "budget": {
+    "case_load_ms": 43,
+    "frozen_analysis_budget_seconds": 20.0,
+    "measurement_boundary": "model_bound_ms covers the model call and its source validation, which is the part of one analyze request the 20s budget must cover; case_load_ms is reported separately and is not a model cost",
+    "measurement_source": "perf_counter around the real provider call plus the provider's own reported duration_ms; no value is estimated",
+    "model_bound_ms": 16052,
+    "model_bound_seconds": 16.052,
+    "provider_reported_duration_ms": [
+      8154,
+      7892
+    ],
+    "provider_wall_ms": [
+      8155,
+      7893
+    ],
+    "status": "NOT_ACHIEVED_OUTPUT_REJECTED"
+  },
+  "configuration": {
+    "api_key_present_in_environment": false,
+    "api_key_value_recorded": false,
+    "attempts_requested": 2,
+    "cache_adapter_exists": false,
+    "cache_mode_setting": "disabled",
+    "cache_statement": "no ExtractionStore/cache adapter is wired anywhere in this repository, so every attempt below is a real HTTP request and cached_result is false by construction",
+    "deployment_id": "ws-czn4i6tkzgc4so32",
+    "disable_cache_requested": true,
+    "endpoint": "http://127.0.0.1:8001/v1/chat/completions",
+    "endpoint_port_confirmed_closed": false,
+    "endpoint_probe": {
+      "detail": "tcp 127.0.0.1:8001 reachable",
+      "endpoint": "http://127.0.0.1:8001/v1/chat/completions",
+      "host": "127.0.0.1",
+      "port": 8001,
+      "tcp_reachable": true
+    },
+    "endpoint_probe_skipped": false,
+    "frozen_analysis_budget_seconds": 20.0,
+    "frozen_prompt_manifest": {
+      "candidate_output_fields": [
+        "observations",
+        "source_trace",
+        "candidate_promise_texts"
+      ],
+      "candidate_prompt_sha256": "743d8c9668739b29a926261b5e99cf227eeb7cddda24d49a9e6b5fcb5ae34f5e",
+      "prompt_version": "candidate-extraction-v1",
+      "schema_repair_prompt_sha256": "e3eba756c7e2e14411e93677b83c6b58a20a2fddcc1a9f75678651f5cdf5ab18"
+    },
+    "model_id": "qwen3-vl-plus",
+    "model_revision": "qwen3-vl-plus-2025-12-19",
+    "prompt_version": "candidate-extraction-v1",
+    "prompt_version_matches_manifest": true,
+    "require_live_requested": true,
+    "timeout_seconds": 20.0
+  },
+  "generated_at": "2026-10-05T16:26:00.034328+00:00",
+  "input_binding": {
+    "assembled_evidence_images": [
+      {
+        "evidence_id": "S00001_IMG_OVERVIEW",
+        "file_name": "s00001-product-overview.jpg",
+        "rejection": "ImagePathRejected",
+        "rejection_code": "evidence_id_unregistered",
+        "resolvable_by_production_resolver": false
+      },
+      {
+        "evidence_id": "S00001_IMG_PUMP",
+        "file_name": "s00001-pump-detail.jpg",
+        "rejection": "ImagePathRejected",
+        "rejection_code": "evidence_id_unregistered",
+        "resolvable_by_production_resolver": false
+      },
+      {
+        "evidence_id": "S00001_IMG_PACKAGE",
+        "file_name": "s00001-package-context.jpg",
+        "rejection": "ImagePathRejected",
+        "rejection_code": "evidence_id_unregistered",
+        "resolvable_by_production_resolver": false
+      }
+    ],
+    "case_id": "DEMO_001",
+    "cross_artifact_discrepancy": "fixtures/demo-cases.json declares S00001_IMG_OVERVIEW / S00001_IMG_PUMP / S00001_IMG_PACKAGE while handoff/a/images-manifest.json registers S00001_IMG_PRODUCT_OVERVIEW / S00001_IMG_PUMP_DETAIL / S00001_IMG_PACKAGE_CONTEXT. Only file_name agrees, so the production resolver rejects the assembled case as-is. This batch may not edit either artifact; the accepted registry is treated as the authority and every remap is listed above.",
+    "declared_source_ids": [
+      "6920185815517983396",
+      "20974795108539.PNM",
+      "51831669257761.PNM",
+      "80525870445254.PNM",
+      "22703823958720.PNM",
+      "94357468399952.PNM",
+      "36199788469718.PNM",
+      "DEMO_AUG_MSG_001",
+      "BH919209358357",
+      "S00001_IMG_PRODUCT_OVERVIEW",
+      "S00001_IMG_PUMP_DETAIL",
+      "S00001_IMG_PACKAGE_CONTEXT"
+    ],
+    "evaluation_time": "2026-05-07T09:40:00+08:00",
+    "image_sha256s_sent": [
+      "e2c6bbd230f906f113d75f2f582e778b6e79aea37544c2383f1ffda15a5295d5",
+      "4709d7529803846d4ff4e123bfcc034d420449ae23923cb54468be573bd8cfc7",
+      "c734bfb5a70ffa39e10b2535dc8321eace3c1fb358293fa22b590b9f7b5836bd"
+    ],
+    "observation_json_sent_as_image": false,
+    "observation_json_statement": "the provider request carries the sanitized chat text as the single text part and each verified image as an image_url data part; no observation JSON, candidate, or derived label is serialized into the request",
+    "pii_masked_count": 0,
+    "provider_content_parts": [
+      "text",
+      "image_url",
+      "image_url",
+      "image_url"
+    ],
+    "provider_request_contains_image_url_parts": 3,
+    "registry_remaps": [
+      {
+        "accepted_evidence_id": "S00001_IMG_PRODUCT_OVERVIEW",
+        "assembled_evidence_id": "S00001_IMG_OVERVIEW",
+        "effect": "the assembled case named an evidence ID that the accepted registry does not contain; the registry's own ID is used so the production resolver can verify the bytes",
+        "file_name": "s00001-product-overview.jpg",
+        "match_key": "file_name"
+      },
+      {
+        "accepted_evidence_id": "S00001_IMG_PUMP_DETAIL",
+        "assembled_evidence_id": "S00001_IMG_PUMP",
+        "effect": "the assembled case named an evidence ID that the accepted registry does not contain; the registry's own ID is used so the production resolver can verify the bytes",
+        "file_name": "s00001-pump-detail.jpg",
+        "match_key": "file_name"
+      },
+      {
+        "accepted_evidence_id": "S00001_IMG_PACKAGE_CONTEXT",
+        "assembled_evidence_id": "S00001_IMG_PACKAGE",
+        "effect": "the assembled case named an evidence ID that the accepted registry does not contain; the registry's own ID is used so the production resolver can verify the bytes",
+        "file_name": "s00001-package-context.jpg",
+        "match_key": "file_name"
+      }
+    ],
+    "resolved_provider_images": [
+      {
+        "byte_length": 71574,
+        "content_sha256": "e2c6bbd230f906f113d75f2f582e778b6e79aea37544c2383f1ffda15a5295d5",
+        "declared_view_type": "PRODUCT_OVERVIEW",
+        "evidence_id": "S00001_IMG_PRODUCT_OVERVIEW",
+        "height": 1254,
+        "media_type": "image/jpeg",
+        "provenance_source_kind": "TEAM_SYNTHETIC_RECREATION",
+        "provenance_source_message_id": "80525870445254.PNM",
+        "width": 1254
+      },
+      {
+        "byte_length": 66764,
+        "content_sha256": "4709d7529803846d4ff4e123bfcc034d420449ae23923cb54468be573bd8cfc7",
+        "declared_view_type": "ISSUE_DETAIL",
+        "evidence_id": "S00001_IMG_PUMP_DETAIL",
+        "height": 1254,
+        "media_type": "image/jpeg",
+        "provenance_source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
+        "provenance_source_message_id": "80525870445254.PNM",
+        "width": 1254
+      },
+      {
+        "byte_length": 129230,
+        "content_sha256": "c734bfb5a70ffa39e10b2535dc8321eace3c1fb358293fa22b590b9f7b5836bd",
+        "declared_view_type": "PACKAGE_CONTEXT",
+        "evidence_id": "S00001_IMG_PACKAGE_CONTEXT",
+        "height": 1254,
+        "media_type": "image/jpeg",
+        "provenance_source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
+        "provenance_source_message_id": "80525870445254.PNM",
+        "width": 1254
+      }
+    ],
+    "source_session_id": "S00001"
+  },
+  "stages": {
+    "accountability_state": "NOT_REACHED",
+    "candidate_schema": "PASS",
+    "extracted_journey": "NOT_REACHED",
+    "facts_and_image_binding": "PASS",
+    "real_http_call": "PASS",
+    "source_validation": "FAIL"
+  },
+  "statement": "本批由辅助调度器实现，非独立实现方；验收须由他方完成。 This artifact records one real, uncached multimodal extraction attempt against the registered Qwen deployment. It is implementation evidence, not a verification verdict.",
+  "status": "MODEL_OUTPUT_REJECTED",
+  "summary": {
+    "accepted_attempt": null,
+    "attempts": 2,
+    "last_failure_reason": "the server-side source validator refused the candidate",
+    "last_outcome": "SOURCE_REJECTED",
+    "last_rejection_code": "MISSING_FIELD_TRACE"
+  },
+  "tool": "tools/verification/live_smoke.py",
+  "tool_version": "live-smoke-v1"
+}

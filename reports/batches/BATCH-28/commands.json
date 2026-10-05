@@ -1,0 +1,280 @@
+{
+  "artifact": "reports/batches/BATCH-28/commands.json",
+  "base_sha": "c2246645540b5f277c0c46c4d0388d01fc2eb05e",
+  "batch_id": "BATCH-28",
+  "commands": [
+    {
+      "command": [
+        "C:\\cv28\\venv\\Scripts\\python.exe",
+        "-c",
+        "import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version); print(sys.prefix)",
+        "C:\\cv28\\venv\\Scripts\\python.exe"
+      ],
+      "command_line": "C:\\cv28\\venv\\Scripts\\python.exe -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version); print(sys.prefix)\" C:\\cv28\\venv\\Scripts\\python.exe",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w28",
+      "exit_code": 0,
+      "name": "interpreter",
+      "started_at": "2026-10-05T16:25:55.275415+00:00",
+      "stderr": "",
+      "stdout": "C:\\cv28\\venv\\Scripts\\python.exe\r\n3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]\r\nC:\\cv28\\venv\r\n",
+      "verdict": "AS_EXPECTED"
+    },
+    {
+      "command": [
+        "C:\\cv28\\venv\\Scripts\\python.exe",
+        "-m",
+        "pip",
+        "install",
+        "--no-deps",
+        "-r",
+        "backend/requirements-dev.lock"
+      ],
+      "command_line": "C:\\cv28\\venv\\Scripts\\python.exe -m pip install --no-deps -r backend/requirements-dev.lock",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w28",
+      "exit_code": 0,
+      "name": "lock_install",
+      "started_at": "2026-10-05T16:25:55.328931+00:00",
+      "stderr": "\r\n[notice] A new release of pip is available: 25.1.1 -> 26.2.1\r\n[notice] To update, run: C:\\cv28\\venv\\Scripts\\python.exe -m pip install --upgrade pip\r\n",
+      "stdout": "Requirement already satisfied: annotated-types==0.7.0 in c:\\cv28\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 3)) (0.7.0)\r\nRequirement already satisfied: anyio==4.8.0 in c:\\cv28\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 4)) (4.8.0)\r\nRequirement already satisfied: attrs==26.1.0 in c:\\cv28\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 5)) (26.1.0)\r\nRequirement already satisfied: build==1.2.2.post1 in c:\\cv28\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 6)) (1.2.2.post1)\r\nRequirement already satisfied: certifi==2025.1.31 in c:\\cv28\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 7)) (2025.1.31)\r\nRequirement already satisfied: click==8.1.8 in c:\\cv28\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 8)) (8.1.8)\r\nRequirement already satisfied: colorama==0.4.6 in c:\\cv28\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 9)) (0.4.6)\r\nRequirement already satisfied: fastapi==0.115.6 in c:\\cv28\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 10)) (0.115.6)\r\nRequirement already satisfied: h11==0.14.0 in c:\\cv28\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 11)) (0.14.0)\r\nRequirement already satisfied: httpcore==1.0.7 in c:\\cv28\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 12)) (1.0.7)\r\nRequirement already satisfied: httpx==0.28.1 in c:\\cv28\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 13)) (0.28.1)\r\nRequirement already satisfied: idna==3.10 in c:\\cv28\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 14)) (3.10)\r\nRequirement already satisfied: iniconfig==2.0.0 in c:\\cv28\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 15)) (2.0.0)\r\nRequirement already satisfied: jsonschema==4.25.0 in c:\\cv28\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 16)) (4.25.0)\r\nRequirement already satisfied: jsonschema-specifications==2025.9.1 in c:\\cv28\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 17)) (2025.9.1)\r\nRequirement already satisfied: packaging==24.2 in c:\\cv28\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 18)) (24.2)\r\nRequirement already satisfied: pluggy==1.5.0 in c:\\cv28\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 19)) (1.5.0)\r\nRequirement already satisfied: pydantic==2.10.5 in c:\\cv28\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 20)) (2.10.5)\r\nRequirement already satisfied: pydantic-core==2.27.2 in c:\\cv28\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 21)) (2.27.2)\r\nRequirement already satisfied: pydantic-settings==2.7.1 in c:\\cv28\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 22)) (2.7.1)\r\nRequirement already satisfied: pyproject-hooks==1.2.0 in c:\\cv28\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 23)) (1.2.0)\r\nRequirement already satisfied: pytest==8.3.4 in c:\\cv28\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 24)) (8.3.4)\r\nRequirement already satisfied: python-dotenv==1.0.1 in c:\\cv28\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 25)) (1.0.1)\r\nRequirement already satisfied: referencing==0.37.0 in c:\\cv28\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 26)) (0.37.0)\r\nRequirement already satisfied: rpds-py==2026.6.3 in c:\\cv28\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 27)) (2026.6.3)\r\nRequirement already satisfied: ruff==0.8.4 in c:\\cv28\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 28)) (0.8.4)\r\nRequirement already satisfied: setuptools==75.8.0 in c:\\cv28\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 29)) (75.8.0)\r\nRequirement already satisfied: sniffio==1.3.1 in c:\\cv28\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 30)) (1.3.1)\r\nRequirement already satisfied: starlette==0.41.3 in c:\\cv28\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 31)) (0.41.3)\r\nRequirement already satisfied: typing-extensions==4.12.2 in c:\\cv28\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 32)) (4.12.2)\r\nRequirement already satisfied: uvicorn==0.34.0 in c:\\cv28\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 33)) (0.34.0)\r\nRequirement already satisfied: wheel==0.45.1 in c:\\cv28\\venv\\lib\\site-packages (from -r backend/requirements-dev.lock (line 34)) (0.45.1)\r\n",
+      "verdict": "AS_EXPECTED"
+    },
+    {
+      "command": [
+        "C:\\cv28\\venv\\Scripts\\python.exe",
+        "-m",
+        "pip",
+        "install",
+        "--no-deps",
+        "--no-build-isolation",
+        "-e",
+        "backend"
+      ],
+      "command_line": "C:\\cv28\\venv\\Scripts\\python.exe -m pip install --no-deps --no-build-isolation -e backend",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w28",
+      "exit_code": 0,
+      "name": "editable_install",
+      "started_at": "2026-10-05T16:25:56.817885+00:00",
+      "stderr": "\r\n[notice] A new release of pip is available: 25.1.1 -> 26.2.1\r\n[notice] To update, run: C:\\cv28\\venv\\Scripts\\python.exe -m pip install --upgrade pip\r\n",
+      "stdout": "Obtaining file:///C:/Users/WONG%20Tsun%20Ming/Desktop/%E6%AC%A7%E8%8E%B1%E9%9B%85%E9%BB%91%E5%AE%A2%E6%9D%BE/w28/backend\r\n  Checking if build backend supports build_editable: started\r\n  Checking if build backend supports build_editable: finished with status 'done'\r\n  Preparing editable metadata (pyproject.toml): started\r\n  Preparing editable metadata (pyproject.toml): finished with status 'done'\r\nBuilding wheels for collected packages: covenia-b\r\n  Building editable for covenia-b (pyproject.toml): started\r\n  Building editable for covenia-b (pyproject.toml): finished with status 'done'\r\n  Created wheel for covenia-b: filename=covenia_b-0.0.0-0.editable-py3-none-any.whl size=2803 sha256=61fd0f37a5c246621c3d7f7515920202b840edcd1968072d2c0ccdb881298698\r\n  Stored in directory: C:\\cv28\\tmp\\pip-ephem-wheel-cache-3504ijkz\\wheels\\26\\41\\df\\f97ba921e457be127940b6c446843eb1034876afe579ae0193\r\nSuccessfully built covenia-b\r\nInstalling collected packages: covenia-b\r\n  Attempting uninstall: covenia-b\r\n    Found existing installation: covenia-b 0.0.0\r\n    Uninstalling covenia-b-0.0.0:\r\n      Successfully uninstalled covenia-b-0.0.0\r\nSuccessfully installed covenia-b-0.0.0\r\n",
+      "verdict": "AS_EXPECTED"
+    },
+    {
+      "command": [
+        "C:\\cv28\\venv\\Scripts\\python.exe",
+        "-c",
+        "import pytest, jsonschema; print('pytest/jsonschema import OK')"
+      ],
+      "command_line": "C:\\cv28\\venv\\Scripts\\python.exe -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w28",
+      "exit_code": 0,
+      "name": "import_precheck",
+      "started_at": "2026-10-05T16:25:59.375937+00:00",
+      "stderr": "",
+      "stdout": "pytest/jsonschema import OK\r\n",
+      "verdict": "AS_EXPECTED"
+    },
+    {
+      "command": [
+        "C:\\cv28\\venv\\Scripts\\python.exe",
+        "tools/verification/live_smoke.py",
+        "--require-live",
+        "--disable-cache",
+        "--output",
+        "reports/batches/BATCH-28/live"
+      ],
+      "command_line": "C:\\cv28\\venv\\Scripts\\python.exe tools/verification/live_smoke.py --require-live --disable-cache --output reports/batches/BATCH-28/live",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w28",
+      "exit_code": 1,
+      "name": "live_smoke",
+      "started_at": "2026-10-05T16:25:59.636550+00:00",
+      "stderr": "",
+      "stdout": "mode: --disable-cache asserted; no cache adapter exists, every attempt is a real call\r\nlive-smoke-v1: MODEL_OUTPUT_REJECTED\r\n  PASS        facts_and_image_binding\r\n  PASS        real_http_call\r\n  PASS        candidate_schema\r\n  FAIL        source_validation\r\n  NOT_REACHED extracted_journey\r\n  NOT_REACHED accountability_state\r\n  attempt 1: SOURCE_REJECTED status=200 wall_ms=8155 provider_ms=8154 usage={'input_tokens': 5589, 'output_tokens': 374} (EXACT)\r\n  attempt 2: SOURCE_REJECTED status=200 wall_ms=7893 provider_ms=7892 usage={'input_tokens': 5589, 'output_tokens': 373} (EXACT)\r\n  budget: NOT_ACHIEVED_OUTPUT_REJECTED model_bound_ms=16052 frozen=20.0s\r\n  artifacts: C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w28\\reports\\batches\\BATCH-28\\live\r\n========================================================================\r\nlive-smoke-v1: MODEL_OUTPUT_REJECTED  (exit=1, attempts=2, budget=NOT_ACHIEVED_OUTPUT_REJECTED)\r\n",
+      "verdict": "UNEXPECTED"
+    },
+    {
+      "command": [
+        "C:\\cv28\\venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "backend/tests/live/test_real_extraction.py",
+        "-q",
+        "-m",
+        "live"
+      ],
+      "command_line": "C:\\cv28\\venv\\Scripts\\python.exe -m pytest backend/tests/live/test_real_extraction.py -q -m live",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w28",
+      "exit_code": 1,
+      "name": "live_pytest",
+      "started_at": "2026-10-05T16:26:16.966525+00:00",
+      "stderr": "",
+      "stdout": ".F..F..                                                                  [100%]\r\n================================== FAILURES ===================================\r\n______ test_real_endpoint_answered_and_the_run_stayed_inside_the_budget _______\r\n\r\nlive_run = {'command': ['C:\\\\cv28\\\\venv\\\\Scripts\\\\python.exe', 'C:\\\\Users\\\\WONG Tsun Ming\\\\Desktop\\\\ŷ���źڿ���\\\\w28\\\\tools\\\\verificat... ...}, 'exit_code': 1, 'output_dir': WindowsPath('C:/cv28/tmp/pytest-of-WONG Tsun Ming/pytest-4/batch-28-live-0'), ...}\r\n\r\n    def test_real_endpoint_answered_and_the_run_stayed_inside_the_budget(\r\n        live_run: dict[str, object],\r\n    ) -> None:\r\n        \"\"\"A real 200 response inside 20 seconds is the whole point of the batch.\"\"\"\r\n    \r\n        document = _document_of(live_run)\r\n        attempts = document[\"attempts\"]\r\n        assert attempts, \"the run recorded no attempt at all\"\r\n    \r\n        # The transport and budget measurements are checked first so that a rejected\r\n        # candidate still leaves behind the two facts the report needs: the endpoint\r\n        # really answered, and the real cost was inside the frozen budget.\r\n        answered = [item for item in attempts if item[\"status_code\"] == 200]\r\n        assert answered, \"no attempt reached the registered endpoint with HTTP 200\"\r\n        for attempt in answered:\r\n            assert attempt[\"provider_request_id\"], (\r\n                \"a 200 response without a provider request id cannot be bound to a real call\"\r\n            )\r\n            assert attempt[\"request_sha256\"] and attempt[\"response_sha256\"]\r\n            assert attempt[\"wall_ms\"] is not None and attempt[\"wall_ms\"] > 0\r\n            assert attempt[\"provider_reported_duration_ms\"] is not None\r\n            assert attempt[\"provider_reported_duration_ms\"] > 0\r\n    \r\n        budget = document[\"budget\"]\r\n        assert budget[\"frozen_analysis_budget_seconds\"] == FROZEN_BUDGET_SECONDS\r\n        assert budget[\"model_bound_ms\"] is not None\r\n        documented_states = {\"WITHIN_BUDGET\", \"BUDGET_EXCEEDED\", \"NOT_ACHIEVED_OUTPUT_REJECTED\"}\r\n        assert budget[\"status\"] in documented_states, (\r\n            \"the budget verdict must be one of the documented states, never a guess\"\r\n        )\r\n        assert budget[\"model_bound_ms\"] <= FROZEN_BUDGET_SECONDS * 1000, (\r\n            \"the real extraction exceeded the frozen 20-second analysis budget: \"\r\n            f\"model_bound_ms={budget['model_bound_ms']}\"\r\n        )\r\n        if budget[\"status\"] == \"BUDGET_EXCEEDED\":\r\n            pytest.fail(\r\n                \"the tool reported BUDGET_EXCEEDED while the measured value was inside the \"\r\n                f\"budget: model_bound_ms={budget['model_bound_ms']}\"\r\n            )\r\n    \r\n>       _require_usable(live_run)\r\n\r\nbackend\\tests\\live\\test_real_extraction.py:268: \r\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\r\n\r\nrun = {'command': ['C:\\\\cv28\\\\venv\\\\Scripts\\\\python.exe', 'C:\\\\Users\\\\WONG Tsun Ming\\\\Desktop\\\\ŷ���źڿ���\\\\w28\\\\tools\\\\verificat... ...}, 'exit_code': 1, 'output_dir': WindowsPath('C:/cv28/tmp/pytest-of-WONG Tsun Ming/pytest-4/batch-28-live-0'), ...}\r\n\r\n    def _require_usable(run: dict[str, object]) -> dict[str, object]:\r\n        \"\"\"Fail on any non-success verdict, naming the tool's own reason.\"\"\"\r\n    \r\n        document = _document_of(run)\r\n        exit_code = int(run[\"exit_code\"])\r\n        if exit_code != 0:\r\n            attempts = document.get(\"attempts\") or []\r\n            summary = document.get(\"summary\") or {}\r\n            budget = (document.get(\"budget\") or {}).get(\"status\")\r\n>           pytest.fail(\r\n                f\"the live run did not produce an accepted extraction: \"\r\n                f\"{TOOL_EXIT_CODES[exit_code]} (exit {exit_code})\\n\"\r\n                f\"status={document.get('status')} budget={budget}\\n\"\r\n                f\"last outcome={summary.get('last_outcome')} \"\r\n                f\"rejection={summary.get('last_rejection_code')} \"\r\n                f\"reason={summary.get('last_failure_reason')}\\n\"\r\n                f\"attempts={json.dumps(attempts, ensure_ascii=False)[:1500]}\\n\"\r\n                f\"stderr:\\n{run['stderr']}\"\r\n            )\r\nE           Failed: the live run did not produce an accepted extraction: MODEL_OUTPUT_REJECTED (exit 1)\r\nE           status=MODEL_OUTPUT_REJECTED budget=NOT_ACHIEVED_OUTPUT_REJECTED\r\nE           last outcome=SOURCE_REJECTED rejection=MISSING_FIELD_TRACE reason=the server-side source validator refused the candidate\r\nE           attempts=[{\"attempt\": 1, \"candidate_accepted\": false, \"candidate_promise_texts\": [\"�������Ѵ�����48Сʱ�ڷ���\", \"�ȸ�����ȫ�µģ��յ����ð�������浥�ѻ��ļĻؾͺã��˷����ǳ�\"], \"failure_reason\": \"the server-side source validator refused the candidate\", \"image_sha256s\": [\"e2c6bbd230f906f113d75f2f582e778b6e79aea37544c2383f1ffda15a5295d5\", \"4709d7529803846d4ff4e123bfcc034d420449ae23923cb54468be573bd8cfc7\", \"c734bfb5a70ffa39e10b2535dc8321eace3c1fb358293fa22b590b9f7b5836bd\"], \"observations\": [\"The pump head of the foundation bottle is visibly cracked and damaged, with foundation product oozing from the fracture.\", \"The cardboard packaging box shows a crushed corner, indicating possible transit damage.\", \"The agent stated: '�������Ѵ�����48Сʱ�ڷ���' (The replacement order has been created and will be shipped within 48 hours).\", \"The agent previously stated: '�ȸ�����ȫ�µģ��յ����ð�������浥�ѻ��ļĻؾͺã��˷����ǳ�' (We will first send you a brand-new item; after you receive it, please return the defective one using the return label included in the package��we will cover the shipping cost).\"], \"outcome\": \"SOURCE_REJECTED\", \"provider_reported_duration_ms\": 8140, \"provider_request_id\": \"chatcmpl-71948bc2-1793-96e6-9b79-dcf4f532b9b7\", \"rejection_code\": \"MISSING_FIELD_TRACE\", \"rejection_stage\": null, \"request_bytes\": 360282, \"request_sha256\": \"3075acf24dc67d7bbc14576187c627713facb152b2229ec40b2f2f0b3ec349cd\", \"response_bytes\": 2064, \"response_sha256\": \"6afb56384c24c91f4596b7977318a8b7af8d72a30fcd1ac34f3703dcfac20eda\", \"source_trace\": [{\"field\": \"observations[0]\", \"source\r\nE           stderr:\r\n\r\nbackend\\tests\\live\\test_real_extraction.py:179: Failed\r\n____ test_accepted_candidate_is_uncached_and_bound_to_the_locked_revision _____\r\n\r\nlive_run = {'command': ['C:\\\\cv28\\\\venv\\\\Scripts\\\\python.exe', 'C:\\\\Users\\\\WONG Tsun Ming\\\\Desktop\\\\ŷ���źڿ���\\\\w28\\\\tools\\\\verificat... ...}, 'exit_code': 1, 'output_dir': WindowsPath('C:/cv28/tmp/pytest-of-WONG Tsun Ming/pytest-4/batch-28-live-0'), ...}\r\n\r\n    def test_accepted_candidate_is_uncached_and_bound_to_the_locked_revision(\r\n        live_run: dict[str, object],\r\n    ) -> None:\r\n        \"\"\"criterion 1: chat + real image -> candidate -> ExtractedJourney, cached_result false.\"\"\"\r\n    \r\n>       document = _require_usable(live_run)\r\n\r\nbackend\\tests\\live\\test_real_extraction.py:326: \r\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\r\n\r\nrun = {'command': ['C:\\\\cv28\\\\venv\\\\Scripts\\\\python.exe', 'C:\\\\Users\\\\WONG Tsun Ming\\\\Desktop\\\\ŷ���źڿ���\\\\w28\\\\tools\\\\verificat... ...}, 'exit_code': 1, 'output_dir': WindowsPath('C:/cv28/tmp/pytest-of-WONG Tsun Ming/pytest-4/batch-28-live-0'), ...}\r\n\r\n    def _require_usable(run: dict[str, object]) -> dict[str, object]:\r\n        \"\"\"Fail on any non-success verdict, naming the tool's own reason.\"\"\"\r\n    \r\n        document = _document_of(run)\r\n        exit_code = int(run[\"exit_code\"])\r\n        if exit_code != 0:\r\n            attempts = document.get(\"attempts\") or []\r\n            summary = document.get(\"summary\") or {}\r\n            budget = (document.get(\"budget\") or {}).get(\"status\")\r\n>           pytest.fail(\r\n                f\"the live run did not produce an accepted extraction: \"\r\n                f\"{TOOL_EXIT_CODES[exit_code]} (exit {exit_code})\\n\"\r\n                f\"status={document.get('status')} budget={budget}\\n\"\r\n                f\"last outcome={summary.get('last_outcome')} \"\r\n                f\"rejection={summary.get('last_rejection_code')} \"\r\n                f\"reason={summary.get('last_failure_reason')}\\n\"\r\n                f\"attempts={json.dumps(attempts, ensure_ascii=False)[:1500]}\\n\"\r\n                f\"stderr:\\n{run['stderr']}\"\r\n            )\r\nE           Failed: the live run did not produce an accepted extraction: MODEL_OUTPUT_REJECTED (exit 1)\r\nE           status=MODEL_OUTPUT_REJECTED budget=NOT_ACHIEVED_OUTPUT_REJECTED\r\nE           last outcome=SOURCE_REJECTED rejection=MISSING_FIELD_TRACE reason=the server-side source validator refused the candidate\r\nE           attempts=[{\"attempt\": 1, \"candidate_accepted\": false, \"candidate_promise_texts\": [\"�������Ѵ�����48Сʱ�ڷ���\", \"�ȸ�����ȫ�µģ��յ����ð�������浥�ѻ��ļĻؾͺã��˷����ǳ�\"], \"failure_reason\": \"the server-side source validator refused the candidate\", \"image_sha256s\": [\"e2c6bbd230f906f113d75f2f582e778b6e79aea37544c2383f1ffda15a5295d5\", \"4709d7529803846d4ff4e123bfcc034d420449ae23923cb54468be573bd8cfc7\", \"c734bfb5a70ffa39e10b2535dc8321eace3c1fb358293fa22b590b9f7b5836bd\"], \"observations\": [\"The pump head of the foundation bottle is visibly cracked and damaged, with foundation product oozing from the fracture.\", \"The cardboard packaging box shows a crushed corner, indicating possible transit damage.\", \"The agent stated: '�������Ѵ�����48Сʱ�ڷ���' (The replacement order has been created and will be shipped within 48 hours).\", \"The agent previously stated: '�ȸ�����ȫ�µģ��յ����ð�������浥�ѻ��ļĻؾͺã��˷����ǳ�' (We will first send you a brand-new item; after you receive it, please return the defective one using the return label included in the package��we will cover the shipping cost).\"], \"outcome\": \"SOURCE_REJECTED\", \"provider_reported_duration_ms\": 8140, \"provider_request_id\": \"chatcmpl-71948bc2-1793-96e6-9b79-dcf4f532b9b7\", \"rejection_code\": \"MISSING_FIELD_TRACE\", \"rejection_stage\": null, \"request_bytes\": 360282, \"request_sha256\": \"3075acf24dc67d7bbc14576187c627713facb152b2229ec40b2f2f0b3ec349cd\", \"response_bytes\": 2064, \"response_sha256\": \"6afb56384c24c91f4596b7977318a8b7af8d72a30fcd1ac34f3703dcfac20eda\", \"source_trace\": [{\"field\": \"observations[0]\", \"source\r\nE           stderr:\r\n\r\nbackend\\tests\\live\\test_real_extraction.py:179: Failed\r\n=========================== short test summary info ===========================\r\nFAILED backend\\tests\\live\\test_real_extraction.py::test_real_endpoint_answered_and_the_run_stayed_inside_the_budget\r\nFAILED backend\\tests\\live\\test_real_extraction.py::test_accepted_candidate_is_uncached_and_bound_to_the_locked_revision\r\n2 failed, 5 passed in 18.22s\r\n",
+      "verdict": "UNEXPECTED"
+    },
+    {
+      "command": [
+        "C:\\cv28\\venv\\Scripts\\python.exe",
+        "-m",
+        "pip",
+        "list",
+        "--format=json"
+      ],
+      "command_line": "C:\\cv28\\venv\\Scripts\\python.exe -m pip list --format=json",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w28",
+      "exit_code": 0,
+      "name": "pip_list",
+      "started_at": "2026-10-05T16:26:35.479419+00:00",
+      "stderr": "",
+      "stdout": "[{\"name\": \"annotated-types\", \"version\": \"0.7.0\"}, {\"name\": \"anyio\", \"version\": \"4.8.0\"}, {\"name\": \"attrs\", \"version\": \"26.1.0\"}, {\"name\": \"build\", \"version\": \"1.2.2.post1\"}, {\"name\": \"certifi\", \"version\": \"2025.1.31\"}, {\"name\": \"click\", \"version\": \"8.1.8\"}, {\"name\": \"colorama\", \"version\": \"0.4.6\"}, {\"name\": \"covenia-b\", \"version\": \"0.0.0\", \"editable_project_location\": \"C:\\\\Users\\\\WONG Tsun Ming\\\\Desktop\\\\\\u6b27\\u83b1\\u96c5\\u9ed1\\u5ba2\\u677e\\\\w28\\\\backend\"}, {\"name\": \"fastapi\", \"version\": \"0.115.6\"}, {\"name\": \"h11\", \"version\": \"0.14.0\"}, {\"name\": \"httpcore\", \"version\": \"1.0.7\"}, {\"name\": \"httpx\", \"version\": \"0.28.1\"}, {\"name\": \"idna\", \"version\": \"3.10\"}, {\"name\": \"iniconfig\", \"version\": \"2.0.0\"}, {\"name\": \"jsonschema\", \"version\": \"4.25.0\"}, {\"name\": \"jsonschema-specifications\", \"version\": \"2025.9.1\"}, {\"name\": \"packaging\", \"version\": \"24.2\"}, {\"name\": \"pip\", \"version\": \"25.1.1\"}, {\"name\": \"pluggy\", \"version\": \"1.5.0\"}, {\"name\": \"pydantic\", \"version\": \"2.10.5\"}, {\"name\": \"pydantic_core\", \"version\": \"2.27.2\"}, {\"name\": \"pydantic-settings\", \"version\": \"2.7.1\"}, {\"name\": \"pyproject_hooks\", \"version\": \"1.2.0\"}, {\"name\": \"pytest\", \"version\": \"8.3.4\"}, {\"name\": \"python-dotenv\", \"version\": \"1.0.1\"}, {\"name\": \"referencing\", \"version\": \"0.37.0\"}, {\"name\": \"rpds-py\", \"version\": \"2026.6.3\"}, {\"name\": \"ruff\", \"version\": \"0.8.4\"}, {\"name\": \"setuptools\", \"version\": \"75.8.0\"}, {\"name\": \"sniffio\", \"version\": \"1.3.1\"}, {\"name\": \"starlette\", \"version\": \"0.41.3\"}, {\"name\": \"typing_extensions\", \"version\": \"4.12.2\"}, {\"name\": \"uvicorn\", \"version\": \"0.34.0\"}, {\"name\": \"wheel\", \"version\": \"0.45.1\"}]\r\n",
+      "verdict": "AS_EXPECTED"
+    },
+    {
+      "command": [
+        "C:\\cv28\\venv\\Scripts\\python.exe",
+        "-m",
+        "pip",
+        "check"
+      ],
+      "command_line": "C:\\cv28\\venv\\Scripts\\python.exe -m pip check",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w28",
+      "exit_code": 0,
+      "name": "pip_check",
+      "started_at": "2026-10-05T16:26:35.787277+00:00",
+      "stderr": "",
+      "stdout": "No broken requirements found.\r\n",
+      "verdict": "AS_EXPECTED"
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "command_line": "git diff --check",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w28",
+      "exit_code": 0,
+      "name": "git_diff_check",
+      "started_at": "2026-10-05T16:26:36.204760+00:00",
+      "stderr": "",
+      "stdout": "",
+      "verdict": "AS_EXPECTED"
+    },
+    {
+      "command": [
+        "git",
+        "status",
+        "--short"
+      ],
+      "command_line": "git status --short",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w28",
+      "exit_code": 0,
+      "name": "git_status",
+      "started_at": "2026-10-05T16:26:36.297147+00:00",
+      "stderr": "",
+      "stdout": "?? backend/tests/live/\n?? reports/batches/BATCH-28/\n?? tools/verification/live_smoke.py\n",
+      "verdict": "AS_EXPECTED"
+    },
+    {
+      "command": [
+        "C:\\cv28\\venv\\Scripts\\python.exe",
+        "tools/verification/live_smoke.py",
+        "--require-live",
+        "--disable-cache",
+        "--endpoint",
+        "http://127.0.0.1:8002/v1/chat/completions",
+        "--timeout-seconds",
+        "2",
+        "--output",
+        "C:\\cv28\\negative"
+      ],
+      "command_line": "C:\\cv28\\venv\\Scripts\\python.exe tools/verification/live_smoke.py --require-live --disable-cache --endpoint http://127.0.0.1:8002/v1/chat/completions --timeout-seconds 2 --output C:\\cv28\\negative",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w28",
+      "exit_code": 3,
+      "name": "negative_default",
+      "started_at": "2026-10-05T16:26:36.368579+00:00",
+      "stderr": "endpoint error [endpoint_unreachable]: --require-live and the endpoint is not reachable: tcp 127.0.0.1:8002 unreachable (ConnectionRefusedError)\r\n",
+      "stdout": "mode: --disable-cache asserted; no cache adapter exists, every attempt is a real call\r\n",
+      "verdict": "AS_EXPECTED"
+    },
+    {
+      "command": [
+        "C:\\cv28\\venv\\Scripts\\python.exe",
+        "tools/verification/live_smoke.py",
+        "--require-live",
+        "--disable-cache",
+        "--skip-endpoint-probe",
+        "--endpoint",
+        "http://127.0.0.1:8002/v1/chat/completions",
+        "--timeout-seconds",
+        "2",
+        "--output",
+        "C:\\cv28\\negative-http"
+      ],
+      "command_line": "C:\\cv28\\venv\\Scripts\\python.exe tools/verification/live_smoke.py --require-live --disable-cache --skip-endpoint-probe --endpoint http://127.0.0.1:8002/v1/chat/completions --timeout-seconds 2 --output C:\\cv28\\negative-http",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w28",
+      "exit_code": 3,
+      "name": "negative_http_client",
+      "started_at": "2026-10-05T16:26:41.574751+00:00",
+      "stderr": "",
+      "stdout": "mode: --disable-cache asserted; no cache adapter exists, every attempt is a real call\r\nlive-smoke-v1: ENDPOINT_UNAVAILABLE\r\n  PASS        facts_and_image_binding\r\n  FAIL        real_http_call\r\n  FAIL        candidate_schema\r\n  FAIL        source_validation\r\n  NOT_REACHED extracted_journey\r\n  NOT_REACHED accountability_state\r\n  attempt 1: ENDPOINT_TIMEOUT status=None wall_ms=2011 provider_ms=None usage=None (NOT_ATTEMPTED)\r\n  budget: NOT_ACHIEVED_OUTPUT_REJECTED model_bound_ms=2012 frozen=20.0s\r\n  artifacts: C:\\cv28\\negative-http\r\n========================================================================\r\nlive-smoke-v1: ENDPOINT_UNAVAILABLE  (exit=3, attempts=1, budget=NOT_ACHIEVED_OUTPUT_REJECTED)\r\n",
+      "verdict": "AS_EXPECTED"
+    },
+    {
+      "command": [
+        "C:\\cv28\\venv\\Scripts\\python.exe",
+        "tools/verification/live_smoke.py",
+        "--require-live",
+        "--disable-cache",
+        "--output",
+        "C:\\cv28\\noreg"
+      ],
+      "command_line": "C:\\cv28\\venv\\Scripts\\python.exe tools/verification/live_smoke.py --require-live --disable-cache --output C:\\cv28\\noreg",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w28",
+      "exit_code": 2,
+      "name": "no_registration",
+      "started_at": "2026-10-05T16:26:47.895978+00:00",
+      "stderr": "tool error: the model deployment is not registered (missing: COVENIA_MODEL_DEPLOYMENT_ID)\r\n",
+      "stdout": "mode: --disable-cache asserted; no cache adapter exists, every attempt is a real call\r\n",
+      "verdict": "AS_EXPECTED"
+    },
+    {
+      "command": [
+        "C:\\cv28\\venv\\Scripts\\python.exe",
+        "-m",
+        "ruff",
+        "check",
+        "tools/verification/live_smoke.py",
+        "backend/tests/live/"
+      ],
+      "command_line": "C:\\cv28\\venv\\Scripts\\python.exe -m ruff check tools/verification/live_smoke.py backend/tests/live/",
+      "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w28",
+      "exit_code": 0,
+      "name": "ruff",
+      "started_at": "2026-10-05T16:26:49.037178+00:00",
+      "stderr": "",
+      "stdout": "All checks passed!\n",
+      "verdict": "AS_EXPECTED"
+    }
+  ],
+  "environment_variables_for_live_runs": {
+    "COVENIA_MODEL_API_KEY": "NOT_SET (never set by this batch)",
+    "COVENIA_MODEL_DEPLOYMENT_ID": "ws-czn4i6tkzgc4so32",
+    "COVENIA_MODEL_ENDPOINT": "http://127.0.0.1:8001/v1/chat/completions",
+    "COVENIA_MODEL_PROMPT_VERSION": "NOT_SET (frozen default candidate-extraction-v1)",
+    "COVENIA_MODEL_REVISION": "qwen3-vl-plus-2025-12-19"
+  },
+  "generated_at": "2026-10-05T16:27:59.112944+00:00",
+  "interpreter": "C:\\cv28\\venv\\Scripts\\python.exe",
+  "required_gate_summary": {
+    "git_diff_check_exit": 0,
+    "import_precheck_exit": 0,
+    "interpreter_isolation_exit": 0,
+    "live_pytest_exit": 1,
+    "live_smoke_exit": 1,
+    "negative_default_exit": 3,
+    "negative_http_client_exit": 3,
+    "no_registration_exit": 2,
+    "pip_check_exit": 0
+  },
+  "run_dir": "C:\\cv28",
+  "statement": "本批由辅助调度器实现，非独立实现方；验收须由他方完成。 Every command below was executed from the repository root with the absolute interpreter recorded here; exit codes and raw output are reproduced verbatim."
+}

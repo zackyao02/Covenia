@@ -1,0 +1,9 @@
+batch_id: BATCH-28
+generated_at: 2026-10-05T16:27:59.113893+00:00
+interpreter: C:\cv28\venv\Scripts\python.exe
+command: C:\cv28\venv\Scripts\python.exe -m pip check
+cwd: C:\Users\WONG Tsun Ming\Desktop\欧莱雅黑客松\w28
+exit_code: 0
+--- stdout ---
+No broken requirements found.
+--- stderr ---
