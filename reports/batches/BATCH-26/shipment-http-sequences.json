@@ -1,0 +1,359 @@
+{
+  "artifact_type": "SHIPMENT_HTTP_SEQUENCE_EVIDENCE",
+  "batch_id": "BATCH-26",
+  "records": {
+    "sequence-approved-not-picked-up-later-pickup-delivered": {
+      "case_id": "CASE-SHIPMENT-HTTP-SEQUENCE-A",
+      "persisted_case_status": "RESOLVED",
+      "persisted_ledger_version": 4,
+      "steps": [
+        {
+          "audit_actions": [
+            "RESOLUTION_APPROVED",
+            "SHIPMENT_NOT_PICKED_UP"
+          ],
+          "audit_trail_length": 2,
+          "case_status": "IN_FULFILLMENT",
+          "event_id": "EVENT-SEQ-A-NOT-PICKED-UP",
+          "event_time": "2030-01-01T09:30:00+00:00",
+          "event_type": "SHIPMENT_NOT_PICKED_UP",
+          "follow_up_candidate": null,
+          "http_status": 200,
+          "milestone": "AWAITING_CARRIER_PICKUP",
+          "next_update_by": "2030-01-01T10:05:00+00:00",
+          "notification_commits_next_update_at": "2030-01-01T10:05:00+00:00",
+          "obligation_executor": "WAREHOUSE",
+          "obligation_status": "ON_TRACK",
+          "receipt_status": "ACTIVE",
+          "request_id": "454c4fc4-83c2-408b-9267-546a285acae1",
+          "supervisor_escalation_candidate": null
+        },
+        {
+          "audit_actions": [
+            "RESOLUTION_APPROVED",
+            "SHIPMENT_NOT_PICKED_UP",
+            "SHIPMENT_PICKED_UP"
+          ],
+          "audit_trail_length": 3,
+          "case_status": "IN_FULFILLMENT",
+          "event_id": "EVENT-SEQ-A-LATER-PICKUP",
+          "event_time": "2030-01-01T10:06:00+00:00",
+          "event_type": "SHIPMENT_PICKED_UP",
+          "follow_up_candidate": null,
+          "http_status": 200,
+          "milestone": "IN_TRANSIT",
+          "next_update_by": "2030-01-01T10:36:00+00:00",
+          "notification_commits_next_update_at": "2030-01-01T10:36:00+00:00",
+          "obligation_executor": "LOGISTICS_PROVIDER",
+          "obligation_status": "ON_TRACK",
+          "receipt_status": "ACTIVE",
+          "request_id": "9c291142-af69-4973-a8cd-bd17985ed9a1",
+          "supervisor_escalation_candidate": null
+        },
+        {
+          "audit_actions": [
+            "RESOLUTION_APPROVED",
+            "SHIPMENT_NOT_PICKED_UP",
+            "SHIPMENT_PICKED_UP",
+            "SHIPMENT_DELIVERED"
+          ],
+          "audit_trail_length": 4,
+          "case_status": "RESOLVED",
+          "event_id": "EVENT-SEQ-A-DELIVERED",
+          "event_time": "2030-01-01T11:00:00+00:00",
+          "event_type": "SHIPMENT_DELIVERED",
+          "follow_up_candidate": null,
+          "http_status": 200,
+          "milestone": "DELIVERED",
+          "next_update_by": null,
+          "notification_commits_next_update_at": null,
+          "obligation_executor": "LOGISTICS_PROVIDER",
+          "obligation_status": "COMPLETED",
+          "receipt_status": "COMPLETED",
+          "request_id": "0c0c6149-85ad-404f-acf0-893f6381c781",
+          "supervisor_escalation_candidate": null
+        }
+      ]
+    },
+    "sequence-approved-on-time-pickup-delivered": {
+      "case_id": "CASE-SHIPMENT-HTTP-SEQUENCE-B",
+      "persisted_ledger_version": 3,
+      "steps": [
+        {
+          "audit_actions": [
+            "RESOLUTION_APPROVED",
+            "SHIPMENT_PICKED_UP"
+          ],
+          "audit_trail_length": 2,
+          "case_status": "IN_FULFILLMENT",
+          "event_id": "EVENT-SEQ-B-ON-TIME-PICKUP",
+          "event_time": "2030-01-01T09:40:00+00:00",
+          "event_type": "SHIPMENT_PICKED_UP",
+          "follow_up_candidate": null,
+          "http_status": 200,
+          "milestone": "IN_TRANSIT",
+          "next_update_by": "2030-01-01T10:05:00+00:00",
+          "notification_commits_next_update_at": "2030-01-01T10:05:00+00:00",
+          "obligation_executor": "LOGISTICS_PROVIDER",
+          "obligation_status": "ON_TRACK",
+          "receipt_status": "ACTIVE",
+          "request_id": "fad5fc2a-5fe3-4057-9010-b1407d5f4f69",
+          "supervisor_escalation_candidate": null
+        },
+        {
+          "audit_actions": [
+            "RESOLUTION_APPROVED",
+            "SHIPMENT_PICKED_UP",
+            "SHIPMENT_DELIVERED"
+          ],
+          "audit_trail_length": 3,
+          "case_status": "RESOLVED",
+          "event_id": "EVENT-SEQ-B-DELIVERED",
+          "event_time": "2030-01-01T10:10:00+00:00",
+          "event_type": "SHIPMENT_DELIVERED",
+          "follow_up_candidate": null,
+          "http_status": 200,
+          "milestone": "DELIVERED",
+          "next_update_by": null,
+          "notification_commits_next_update_at": null,
+          "obligation_executor": "LOGISTICS_PROVIDER",
+          "obligation_status": "COMPLETED",
+          "receipt_status": "COMPLETED",
+          "request_id": "7ff749a2-2b00-47f4-b7ed-a6fd7f00c71c",
+          "supervisor_escalation_candidate": null
+        }
+      ]
+    },
+    "vector-concurrency": {
+      "distinct_key_concurrent": {
+        "bodies_identical": true,
+        "case_id": "CASE-SHIPMENT-HTTP-CONCURRENT-DISTINCT",
+        "http_statuses": [
+          200,
+          200
+        ],
+        "ledger_version": 2,
+        "row_counts": {
+          "audit_entries": 2,
+          "case_versions": 2,
+          "events": 1,
+          "idempotent_requests": 2
+        },
+        "shared_request_id": "4221db92-1a02-4fae-bd43-42c1e9fc0641"
+      },
+      "same_key_concurrent": {
+        "audit_trail_length": 2,
+        "bodies_identical": true,
+        "case_id": "CASE-SHIPMENT-HTTP-CONCURRENT-SAME",
+        "http_statuses": [
+          200,
+          200
+        ],
+        "ledger_version": 2,
+        "row_counts": {
+          "audit_entries": 2,
+          "case_versions": 2,
+          "events": 1,
+          "idempotent_requests": 1
+        },
+        "shared_request_id": "02e44f34-7c31-43a8-b4cc-ce68196d5ab0"
+      }
+    },
+    "vector-direct-delivery-rollback": {
+      "case_id": "CASE-SHIPMENT-HTTP-DIRECT",
+      "error": {
+        "code": "INVALID_EVENT_TRANSITION",
+        "message": "Shipment delivery requires IN_TRANSIT.",
+        "retryable": false
+      },
+      "http_status": 409,
+      "next_legal_event_milestone": "IN_TRANSIT",
+      "next_legal_event_status": "IN_FULFILLMENT",
+      "row_counts_after_rejection": {
+        "event_high_watermark": "2030-01-01T09:00:00+00:00",
+        "ledger_version": 1,
+        "row_counts": {
+          "audit_entries": 1,
+          "case_versions": 1,
+          "events": 0,
+          "idempotent_requests": 0
+        }
+      },
+      "row_counts_before": {
+        "event_high_watermark": "2030-01-01T09:00:00+00:00",
+        "ledger_version": 1,
+        "row_counts": {
+          "audit_entries": 1,
+          "case_versions": 1,
+          "events": 0,
+          "idempotent_requests": 0
+        }
+      }
+    },
+    "vector-duplicate-request-key": {
+      "audit_trail_length_before_and_after": [
+        2,
+        2
+      ],
+      "case_id": "CASE-SHIPMENT-HTTP-KEY-REPLAY",
+      "conflict_error": {
+        "code": "IDEMPOTENCY_CONFLICT",
+        "message": "The idempotency key was already used with a different normalized body.",
+        "retryable": false
+      },
+      "conflict_http_status": 409,
+      "first_http_status": 200,
+      "first_request_id": "813ca3e1-b80d-4855-89eb-8686db62c070",
+      "replay_body_identical": true,
+      "replay_http_status": 200,
+      "replay_request_id": "813ca3e1-b80d-4855-89eb-8686db62c070",
+      "row_counts_after_replay": {
+        "event_high_watermark": "2030-01-01T09:30:00+00:00",
+        "ledger_version": 2,
+        "row_counts": {
+          "audit_entries": 2,
+          "case_versions": 2,
+          "events": 1,
+          "idempotent_requests": 1
+        }
+      }
+    },
+    "vector-event-id-conflict": {
+      "case_id": "CASE-SHIPMENT-HTTP-EVENT-CONFLICT",
+      "error": {
+        "code": "IDEMPOTENCY_CONFLICT",
+        "message": "event_id was already recorded with different event content.",
+        "retryable": false
+      },
+      "http_status": 409,
+      "row_counts_after_conflict": {
+        "event_high_watermark": "2030-01-01T09:30:00+00:00",
+        "ledger_version": 2,
+        "row_counts": {
+          "audit_entries": 2,
+          "case_versions": 2,
+          "events": 1,
+          "idempotent_requests": 1
+        }
+      },
+      "row_counts_after_first": {
+        "event_high_watermark": "2030-01-01T09:30:00+00:00",
+        "ledger_version": 2,
+        "row_counts": {
+          "audit_entries": 2,
+          "case_versions": 2,
+          "events": 1,
+          "idempotent_requests": 1
+        }
+      }
+    },
+    "vector-fault-rollback": {
+      "conflicting_ledger": {
+        "http_status": 409,
+        "retryable": false
+      },
+      "unavailable_ledger": {
+        "http_status": 503,
+        "retryable": true
+      },
+      "unknown_case": {
+        "http_status": 409,
+        "message": "Shipment event requires an existing accountability ledger."
+      },
+      "unknown_case_rows_created": false
+    },
+    "vector-reverse-order": {
+      "case_id": "CASE-SHIPMENT-HTTP-REVERSE",
+      "first_event": {
+        "case_id": "CASE-SHIPMENT-HTTP-REVERSE",
+        "event_id": "EVENT-REVERSE-FIRST",
+        "event_time": "2030-01-01T10:30:00+00:00",
+        "event_type": "SHIPMENT_NOT_PICKED_UP",
+        "idempotency_key": "reverse-order-key-1"
+      },
+      "first_http_status": 200,
+      "persisted_event_high_watermark": "2030-01-01T10:30:00+00:00",
+      "rejected_error": {
+        "code": "INVALID_EVENT_TRANSITION",
+        "message": "Shipment event conflicts with the persisted ledger ordering or version.",
+        "retryable": false
+      },
+      "rejected_event": {
+        "event_id": "EVENT-REVERSE-EARLIER",
+        "event_time": "2030-01-01T10:29:00+00:00"
+      },
+      "rejected_http_status": 409,
+      "replay_body_identical": true,
+      "row_counts_after_rejection": {
+        "event_high_watermark": "2030-01-01T10:30:00+00:00",
+        "ledger_version": 2,
+        "row_counts": {
+          "audit_entries": 2,
+          "case_versions": 2,
+          "events": 1,
+          "idempotent_requests": 1
+        }
+      }
+    },
+    "vector-schema-boundary": {
+      "extra_field": {
+        "code": "SCHEMA_INVALID",
+        "http_status": 400
+      },
+      "invalid_event_time": {
+        "code": "SCHEMA_INVALID",
+        "http_status": 400
+      },
+      "missing_case_id": {
+        "code": "SCHEMA_INVALID",
+        "http_status": 400
+      },
+      "non_json_body": {
+        "code": "VALIDATION_ERROR",
+        "http_status": 400
+      },
+      "row_counts_after_rejections": {
+        "event_high_watermark": "2030-01-01T09:00:00+00:00",
+        "ledger_version": 1,
+        "row_counts": {
+          "audit_entries": 1,
+          "case_versions": 1,
+          "events": 0,
+          "idempotent_requests": 0
+        }
+      },
+      "short_idempotency_key": {
+        "code": "SCHEMA_INVALID",
+        "http_status": 400
+      },
+      "unknown_event_type": {
+        "code": "SCHEMA_INVALID",
+        "http_status": 400
+      }
+    },
+    "vector-terminal-replay": {
+      "case_id": "CASE-SHIPMENT-HTTP-TERMINAL",
+      "delivered_http_status": 200,
+      "post_completion_error": {
+        "code": "INVALID_EVENT_TRANSITION",
+        "message": "Completed shipment only permits an exact recorded replay.",
+        "retryable": false
+      },
+      "post_completion_http_status": 409,
+      "replay_body_identical": true,
+      "replay_http_status": 200,
+      "row_counts_after_delivery": {
+        "event_high_watermark": "2030-01-01T10:10:00+00:00",
+        "ledger_version": 3,
+        "row_counts": {
+          "audit_entries": 3,
+          "case_versions": 3,
+          "events": 2,
+          "idempotent_requests": 2
+        }
+      }
+    }
+  },
+  "route": "POST /api/events/shipment",
+  "transport": "in-process ASGI application; no network listener or external call"
+}

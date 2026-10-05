@@ -1,0 +1,121 @@
+{
+  "artifact_type": "IMPLEMENTATION_COMMAND_RECORD",
+  "batch_id": "BATCH-26",
+  "producer": "implementation",
+  "cwd": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w26",
+  "run_dir": "C:\\cv26",
+  "interpreter": "C:\\cv26\\venv\\Scripts\\python.exe",
+  "shell": "PowerShell 5.1 for interactive work; the recorded transcript was captured through the same absolute interpreter with an explicit argv list, so no bare python/pytest/pip name is used anywhere.",
+  "environment": {
+    "TEMP": "C:\\cv26\\tmp",
+    "TMP": "C:\\cv26\\tmp"
+  },
+  "transcript": "reports/batches/BATCH-26/command-log.txt",
+  "commands": [
+    {
+      "id": "01-interpreter-isolation",
+      "command": "C:\\cv26\\venv\\Scripts\\python.exe -c \"import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)\" C:\\cv26\\venv\\Scripts\\python.exe",
+      "result": "C:\\cv26\\venv\\Scripts\\python.exe / 3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]",
+      "exit_code": 0
+    },
+    {
+      "id": "02-lock-install",
+      "command": "C:\\cv26\\venv\\Scripts\\python.exe -m pip install --no-deps -r backend/requirements-dev.lock",
+      "result": "all pinned distributions present or installed from the unchanged lock",
+      "exit_code": 0
+    },
+    {
+      "id": "03-editable-install",
+      "command": "C:\\cv26\\venv\\Scripts\\python.exe -m pip install --no-deps --no-build-isolation -e backend",
+      "result": "Successfully installed covenia-b-0.0.0",
+      "exit_code": 0
+    },
+    {
+      "id": "04-import-preflight",
+      "command": "C:\\cv26\\venv\\Scripts\\python.exe -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+      "result": "pytest/jsonschema import OK",
+      "exit_code": 0
+    },
+    {
+      "id": "05-targeted-api-tests",
+      "command": "C:\\cv26\\venv\\Scripts\\python.exe -m pytest backend/tests/api/test_shipment.py -q",
+      "result": "10 passed in 1.07s",
+      "exit_code": 0
+    },
+    {
+      "id": "06-strict-contracts",
+      "command": "C:\\cv26\\venv\\Scripts\\python.exe tools/contracts/check_contracts.py --strict",
+      "result": "{\"lock\": \"docs/contracts/b-contract-lock.json\", \"schemas_validated\": 14, \"strict\": true, \"vectors_validated\": 18}",
+      "exit_code": 0
+    },
+    {
+      "id": "07-pip-list",
+      "command": "C:\\cv26\\venv\\Scripts\\python.exe -m pip list --format=json",
+      "result": "31 distributions, including the editable covenia-b and the pinned pytest/jsonschema/fastapi/ruff set",
+      "exit_code": 0
+    },
+    {
+      "id": "08-pip-check",
+      "command": "C:\\cv26\\venv\\Scripts\\python.exe -m pip check",
+      "result": "No broken requirements found.",
+      "exit_code": 0,
+      "evidence": "reports/batches/BATCH-26/pip-check.txt"
+    },
+    {
+      "id": "09-anti-shortcut-scan",
+      "command": "C:\\cv26\\venv\\Scripts\\python.exe \"C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\checks\\anti_shortcut_scan.py\" backend/src/covenia_b/services/shipment.py backend/src/covenia_b/api/shipment.py",
+      "result": "2 implementation files scanned; none of the three shortcut criteria matched",
+      "exit_code": 0
+    },
+    {
+      "id": "10-ruff",
+      "command": "C:\\cv26\\venv\\Scripts\\python.exe -m ruff check backend/src/covenia_b/services/shipment.py backend/src/covenia_b/api/shipment.py backend/tests/api/test_shipment.py",
+      "result": "All checks passed!",
+      "exit_code": 0
+    },
+    {
+      "id": "11-git-diff-check",
+      "command": "git diff --check",
+      "result": "no whitespace errors",
+      "exit_code": 0
+    },
+    {
+      "id": "12-git-status-short",
+      "command": "git status --short",
+      "result": "?? reports/batches/BATCH-26/ (the code and test commit was already created; no other path is dirty)",
+      "exit_code": 0
+    },
+    {
+      "id": "13-lock-blob-sha256",
+      "command": "C:\\cv26\\venv\\Scripts\\python.exe -c \"<git show 7aae56f:backend/requirements-dev.lock raw-bytes SHA-256 probe>\"",
+      "result": "blob_bytes 676 crlf 0 / blob_sha256 177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+      "exit_code": 0
+    }
+  ],
+  "artifact_generation": {
+    "command": "C:\\cv26\\venv\\Scripts\\python.exe -m pytest backend/tests/api/test_shipment.py -q  (with COVENIA_BATCH26_SEQUENCE_ARTIFACT=reports/batches/BATCH-26/shipment-http-sequences.json)",
+    "result": "10 passed",
+    "exit_code": 0,
+    "note": "The sequence artifact is written by the test module itself from responses observed during that run; the artifact environment variable was removed for the plain acceptance run so the required command is recorded unchanged."
+  },
+  "supplementary_commands": [
+    {
+      "id": "S1-per-directory-regression",
+      "command": "C:\\cv26\\venv\\Scripts\\python.exe -m pytest backend/tests/<each subdirectory> -q",
+      "result": "api 17, cache 17, commitments 15, contracts 16, domain 23, evidence 16, images 14, importing 14, model 27, observability 10, privacy 24, receipts 15, resolutions 7, rules 155, services 17, shipments 13, state 4, storage 38 passed; backend/tests/test_bootstrap.py 4 passed",
+      "exit_code": 0
+    },
+    {
+      "id": "S2-whole-tree-collection",
+      "command": "C:\\cv26\\venv\\Scripts\\python.exe -m pytest backend/tests -q",
+      "result": "collection error: module basename clash between backend/tests/api/test_approve.py and backend/tests/services/test_approve.py (both pre-existing, unmodified, and in directories without __init__.py)",
+      "exit_code": 2,
+      "classification": "PRE_EXISTING_REPOSITORY_CONDITION_NOT_CAUSED_BY_BATCH_26"
+    }
+  ],
+  "notes": [
+    "Every Python command used the batch-local absolute interpreter; no bare python, pytest, pip, or uvicorn invocation was used.",
+    "pip writes a 'new release is available' advisory to stderr; under PowerShell 5.1 that advisory alone renders as a NativeCommandError while $LASTEXITCODE remains 0. The captured transcript therefore shows that advisory without any failing command.",
+    "No command created reports/batches/BATCH-26/VERIFICATION_REPORT.json or reports/batches/BATCH-26/verification-evidence/**."
+  ]
+}

@@ -1,0 +1,105 @@
+
+===== [01-interpreter-isolation] C:\cv26\venv\Scripts\python.exe -c "import sys; from pathlib import Path; assert Path(sys.executable).resolve() == Path(sys.argv[1]).resolve() and sys.prefix != sys.base_prefix; print(sys.executable); print(sys.version)" C:\cv26\venv\Scripts\python.exe
+C:\cv26\venv\Scripts\python.exe
+3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]
+----- [01-interpreter-isolation] exit_code=0
+
+===== [02-lock-install] C:\cv26\venv\Scripts\python.exe -m pip install --no-deps -r backend/requirements-dev.lock
+Requirement already satisfied: annotated-types==0.7.0 in c:\cv26\venv\lib\site-packages (from -r backend/requirements-dev.lock (line 3)) (0.7.0)
+Requirement already satisfied: anyio==4.8.0 in c:\cv26\venv\lib\site-packages (from -r backend/requirements-dev.lock (line 4)) (4.8.0)
+Requirement already satisfied: attrs==26.1.0 in c:\cv26\venv\lib\site-packages (from -r backend/requirements-dev.lock (line 5)) (26.1.0)
+Requirement already satisfied: build==1.2.2.post1 in c:\cv26\venv\lib\site-packages (from -r backend/requirements-dev.lock (line 6)) (1.2.2.post1)
+Requirement already satisfied: click==8.1.8 in c:\cv26\venv\lib\site-packages (from -r backend/requirements-dev.lock (line 7)) (8.1.8)
+Requirement already satisfied: colorama==0.4.6 in c:\cv26\venv\lib\site-packages (from -r backend/requirements-dev.lock (line 8)) (0.4.6)
+Requirement already satisfied: fastapi==0.115.6 in c:\cv26\venv\lib\site-packages (from -r backend/requirements-dev.lock (line 9)) (0.115.6)
+Requirement already satisfied: h11==0.14.0 in c:\cv26\venv\lib\site-packages (from -r backend/requirements-dev.lock (line 10)) (0.14.0)
+Requirement already satisfied: idna==3.10 in c:\cv26\venv\lib\site-packages (from -r backend/requirements-dev.lock (line 11)) (3.10)
+Requirement already satisfied: iniconfig==2.0.0 in c:\cv26\venv\lib\site-packages (from -r backend/requirements-dev.lock (line 12)) (2.0.0)
+Requirement already satisfied: jsonschema==4.25.0 in c:\cv26\venv\lib\site-packages (from -r backend/requirements-dev.lock (line 13)) (4.25.0)
+Requirement already satisfied: jsonschema-specifications==2025.9.1 in c:\cv26\venv\lib\site-packages (from -r backend/requirements-dev.lock (line 14)) (2025.9.1)
+Requirement already satisfied: packaging==24.2 in c:\cv26\venv\lib\site-packages (from -r backend/requirements-dev.lock (line 15)) (24.2)
+Requirement already satisfied: pluggy==1.5.0 in c:\cv26\venv\lib\site-packages (from -r backend/requirements-dev.lock (line 16)) (1.5.0)
+Requirement already satisfied: pydantic==2.10.5 in c:\cv26\venv\lib\site-packages (from -r backend/requirements-dev.lock (line 17)) (2.10.5)
+Requirement already satisfied: pydantic-core==2.27.2 in c:\cv26\venv\lib\site-packages (from -r backend/requirements-dev.lock (line 18)) (2.27.2)
+Requirement already satisfied: pydantic-settings==2.7.1 in c:\cv26\venv\lib\site-packages (from -r backend/requirements-dev.lock (line 19)) (2.7.1)
+Requirement already satisfied: pyproject-hooks==1.2.0 in c:\cv26\venv\lib\site-packages (from -r backend/requirements-dev.lock (line 20)) (1.2.0)
+Requirement already satisfied: pytest==8.3.4 in c:\cv26\venv\lib\site-packages (from -r backend/requirements-dev.lock (line 21)) (8.3.4)
+Requirement already satisfied: python-dotenv==1.0.1 in c:\cv26\venv\lib\site-packages (from -r backend/requirements-dev.lock (line 22)) (1.0.1)
+Requirement already satisfied: referencing==0.37.0 in c:\cv26\venv\lib\site-packages (from -r backend/requirements-dev.lock (line 23)) (0.37.0)
+Requirement already satisfied: rpds-py==2026.6.3 in c:\cv26\venv\lib\site-packages (from -r backend/requirements-dev.lock (line 24)) (2026.6.3)
+Requirement already satisfied: ruff==0.8.4 in c:\cv26\venv\lib\site-packages (from -r backend/requirements-dev.lock (line 25)) (0.8.4)
+Requirement already satisfied: setuptools==75.8.0 in c:\cv26\venv\lib\site-packages (from -r backend/requirements-dev.lock (line 26)) (75.8.0)
+Requirement already satisfied: sniffio==1.3.1 in c:\cv26\venv\lib\site-packages (from -r backend/requirements-dev.lock (line 27)) (1.3.1)
+Requirement already satisfied: starlette==0.41.3 in c:\cv26\venv\lib\site-packages (from -r backend/requirements-dev.lock (line 28)) (0.41.3)
+Requirement already satisfied: typing-extensions==4.12.2 in c:\cv26\venv\lib\site-packages (from -r backend/requirements-dev.lock (line 29)) (4.12.2)
+Requirement already satisfied: uvicorn==0.34.0 in c:\cv26\venv\lib\site-packages (from -r backend/requirements-dev.lock (line 30)) (0.34.0)
+Requirement already satisfied: wheel==0.45.1 in c:\cv26\venv\lib\site-packages (from -r backend/requirements-dev.lock (line 31)) (0.45.1)
+--- stderr ---
+
+[notice] A new release of pip is available: 25.1.1 -> 26.2.1
+[notice] To update, run: C:\cv26\venv\Scripts\python.exe -m pip install --upgrade pip
+----- [02-lock-install] exit_code=0
+
+===== [03-editable-install] C:\cv26\venv\Scripts\python.exe -m pip install --no-deps --no-build-isolation -e backend
+Obtaining file:///C:/Users/WONG%20Tsun%20Ming/Desktop/%E6%AC%A7%E8%8E%B1%E9%9B%85%E9%BB%91%E5%AE%A2%E6%9D%BE/w26/backend
+  Checking if build backend supports build_editable: started
+  Checking if build backend supports build_editable: finished with status 'done'
+  Preparing editable metadata (pyproject.toml): started
+  Preparing editable metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: covenia-b
+  Building editable for covenia-b (pyproject.toml): started
+  Building editable for covenia-b (pyproject.toml): finished with status 'done'
+  Created wheel for covenia-b: filename=covenia_b-0.0.0-0.editable-py3-none-any.whl size=2803 sha256=655f7ee2f06138540ee23c6c8f37f265fa4cf59f882dc377b83013b759883c04
+  Stored in directory: C:\cv26\tmp\pip-ephem-wheel-cache-m1dogol_\wheels\f3\81\5c\c6424016cefbe67ad45decbe52685fd0af07bd3a28162fb2f9
+Successfully built covenia-b
+Installing collected packages: covenia-b
+  Attempting uninstall: covenia-b
+    Found existing installation: covenia-b 0.0.0
+    Uninstalling covenia-b-0.0.0:
+      Successfully uninstalled covenia-b-0.0.0
+Successfully installed covenia-b-0.0.0
+--- stderr ---
+
+[notice] A new release of pip is available: 25.1.1 -> 26.2.1
+[notice] To update, run: C:\cv26\venv\Scripts\python.exe -m pip install --upgrade pip
+----- [03-editable-install] exit_code=0
+
+===== [04-import-preflight] C:\cv26\venv\Scripts\python.exe -c "import pytest, jsonschema; print('pytest/jsonschema import OK')"
+pytest/jsonschema import OK
+----- [04-import-preflight] exit_code=0
+
+===== [05-targeted-api-tests] C:\cv26\venv\Scripts\python.exe -m pytest backend/tests/api/test_shipment.py -q
+..........                                                               [100%]
+10 passed in 1.07s
+----- [05-targeted-api-tests] exit_code=0
+
+===== [06-strict-contracts] C:\cv26\venv\Scripts\python.exe tools/contracts/check_contracts.py --strict
+{"lock": "docs/contracts/b-contract-lock.json", "schemas_validated": 14, "strict": true, "vectors_validated": 18}
+----- [06-strict-contracts] exit_code=0
+
+===== [07-pip-list] C:\cv26\venv\Scripts\python.exe -m pip list --format=json
+[{"name": "annotated-types", "version": "0.7.0"}, {"name": "anyio", "version": "4.8.0"}, {"name": "attrs", "version": "26.1.0"}, {"name": "build", "version": "1.2.2.post1"}, {"name": "click", "version": "8.1.8"}, {"name": "colorama", "version": "0.4.6"}, {"name": "covenia-b", "version": "0.0.0", "editable_project_location": "C:\\Users\\WONG Tsun Ming\\Desktop\\\u6b27\u83b1\u96c5\u9ed1\u5ba2\u677e\\w26\\backend"}, {"name": "fastapi", "version": "0.115.6"}, {"name": "h11", "version": "0.14.0"}, {"name": "idna", "version": "3.10"}, {"name": "iniconfig", "version": "2.0.0"}, {"name": "jsonschema", "version": "4.25.0"}, {"name": "jsonschema-specifications", "version": "2025.9.1"}, {"name": "packaging", "version": "24.2"}, {"name": "pip", "version": "25.1.1"}, {"name": "pluggy", "version": "1.5.0"}, {"name": "pydantic", "version": "2.10.5"}, {"name": "pydantic_core", "version": "2.27.2"}, {"name": "pydantic-settings", "version": "2.7.1"}, {"name": "pyproject_hooks", "version": "1.2.0"}, {"name": "pytest", "version": "8.3.4"}, {"name": "python-dotenv", "version": "1.0.1"}, {"name": "referencing", "version": "0.37.0"}, {"name": "rpds-py", "version": "2026.6.3"}, {"name": "ruff", "version": "0.8.4"}, {"name": "setuptools", "version": "75.8.0"}, {"name": "sniffio", "version": "1.3.1"}, {"name": "starlette", "version": "0.41.3"}, {"name": "typing_extensions", "version": "4.12.2"}, {"name": "uvicorn", "version": "0.34.0"}, {"name": "wheel", "version": "0.45.1"}]
+----- [07-pip-list] exit_code=0
+
+===== [09-anti-shortcut-scan] C:\cv26\venv\Scripts\python.exe "C:\Users\WONG Tsun Ming\Desktop\欧莱雅黑客松\checks\anti_shortcut_scan.py" backend/src/covenia_b/services/shipment.py backend/src/covenia_b/api/shipment.py
+扫描 2 个实现文件
+
+==================================================================
+通过：三项判据均无命中
+----- [09-anti-shortcut-scan] exit_code=0
+
+===== [10-ruff] C:\cv26\venv\Scripts\python.exe -m ruff check backend/src/covenia_b/services/shipment.py backend/src/covenia_b/api/shipment.py backend/tests/api/test_shipment.py
+All checks passed!
+----- [10-ruff] exit_code=0
+
+===== [11-git-diff-check] git diff --check
+----- [11-git-diff-check] exit_code=0
+
+===== [12-git-status-short] git status --short
+?? reports/batches/BATCH-26/
+----- [12-git-status-short] exit_code=0
+
+===== [13-lock-blob-sha256] C:\cv26\venv\Scripts\python.exe -c "import hashlib, subprocess;raw = subprocess.run(['git','show','7aae56fbd9664b4fe7ddd4b9924bb793eb482c8f:backend/requirements-dev.lock'], capture_output=True).stdout;print('blob_bytes', len(raw), 'crlf', raw.count(b'\r\n'));print('blob_sha256', hashlib.sha256(raw).hexdigest().upper())"
+blob_bytes 676 crlf 0
+blob_sha256 177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04
+----- [13-lock-blob-sha256] exit_code=0

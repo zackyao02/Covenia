@@ -1,0 +1,93 @@
+{
+  "artifact_type": "IMPLEMENTATION_ENVIRONMENT",
+  "batch_id": "BATCH-26",
+  "repo_root": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w26",
+  "branch": "codex/covenia-batch-26-aux",
+  "base_integration_sha": "7aae56fbd9664b4fe7ddd4b9924bb793eb482c8f",
+  "integration_branch": "integration/covenia-b",
+  "run_dir": "C:\\cv26",
+  "run_dir_length": 7,
+  "run_dir_length_limit_recommendation": 60,
+  "venv": "C:\\cv26\\venv",
+  "venv_is_direct_child_of_run_dir": true,
+  "interpreter": "C:\\cv26\\venv\\Scripts\\python.exe",
+  "base_interpreter": "D:\\python\\python.exe",
+  "python_version": "3.13.5",
+  "pip_version": "25.1.1",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "pyvenv_cfg": {
+    "path": "C:\\cv26\\venv\\pyvenv.cfg",
+    "include_system_site_packages": false,
+    "version": "3.13.5",
+    "home": "D:\\python",
+    "command": "D:\\python\\python.exe -m venv C:\\cv26\\venv"
+  },
+  "sys_prefix": "C:\\cv26\\venv",
+  "sys_base_prefix": "D:\\python",
+  "interpreter_isolation_assertion": "exit 0: sys.executable resolves to C:\\cv26\\venv\\Scripts\\python.exe, sys.prefix != sys.base_prefix, and pyvenv.cfg sets include-system-site-packages=false.",
+  "path_length_preflight": {
+    "longest_observed_venv_path": "C:\\cv26\\venv\\Lib\\site-packages\\pkg_resources\\tests\\data\\my-test-package_unpacked-egg\\my_test_package-1.0-py3.7.egg\\EGG-INFO\\dependency_links.txt",
+    "longest_observed_venv_path_length": 144,
+    "limit": 250,
+    "result": "PASS"
+  },
+  "pytest_tmp_redirect": {
+    "TEMP": "C:\\cv26\\tmp",
+    "TMP": "C:\\cv26\\tmp",
+    "reason": "pytest's default temp root on this host raises WinError 5; every recorded command ran with the run-local temp directory."
+  },
+  "requirements_dev_lock": {
+    "path": "backend/requirements-dev.lock",
+    "change_type": "UNCHANGED",
+    "changed": false,
+    "third_party_dependencies_added": [],
+    "baseline_ref": "7aae56fbd9664b4fe7ddd4b9924bb793eb482c8f",
+    "baseline_raw_git_blob_sha256": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+    "baseline_git_blob_sha1": "4c3f8019eda3a683a5cf424eaa5dbc69b0cf91ef",
+    "baseline_blob_bytes": 676,
+    "baseline_blob_crlf_count": 0,
+    "hash_method": "SHA-256 over the raw bytes of `git show 7aae56fbd9664b4fe7ddd4b9924bb793eb482c8f:backend/requirements-dev.lock`; the worktree copy was not used.",
+    "working_copy_sha256_diagnostic": "886A9FC311F16DA186158EFF8478F3058FF8E0AEFA00091830BBF87863CD0C5D",
+    "working_copy_crlf_count": 31,
+    "appended_diff": "",
+    "installation_commands": [
+      {
+        "command": "C:\\cv26\\venv\\Scripts\\python.exe -m pip install --no-deps -r backend/requirements-dev.lock",
+        "exit_code": 0
+      },
+      {
+        "command": "C:\\cv26\\venv\\Scripts\\python.exe -m pip install --no-deps --no-build-isolation -e backend",
+        "exit_code": 0
+      },
+      {
+        "command": "C:\\cv26\\venv\\Scripts\\python.exe -c \"import pytest, jsonschema; print('pytest/jsonschema import OK')\"",
+        "exit_code": 0
+      }
+    ]
+  },
+  "git_line_ending_evidence": {
+    "core_autocrlf_value": "true",
+    "core_autocrlf_origin": "file:C:/Program Files/Git/etc/gitconfig",
+    "ls_files_eol": {
+      "backend/requirements-dev.lock": "i/lf w/crlf attr/",
+      "backend/src/covenia_b/services/shipment.py": "i/lf w/lf attr/",
+      "backend/src/covenia_b/api/shipment.py": "i/lf w/lf attr/",
+      "backend/tests/api/test_shipment.py": "i/lf w/lf attr/"
+    },
+    "note": "core.autocrlf=true only affects the worktree; every hash in this report was taken from committed git blobs. No global git configuration was changed."
+  },
+  "pip_check": {
+    "command": "C:\\cv26\\venv\\Scripts\\python.exe -m pip check",
+    "exit_code": 0,
+    "stdout": "No broken requirements found.",
+    "evidence": "reports/batches/BATCH-26/pip-check.txt"
+  },
+  "installed_distributions_count": 31,
+  "installed_distributions_evidence": "reports/batches/BATCH-26/command-log.txt (command 07-pip-list)",
+  "resource_lock": {
+    "resource": "file:backend/requirements-dev.lock",
+    "acquired": false,
+    "reason": "No third-party dependency was added or changed, so the lock stayed read-only per MASTER_PLAN 5.5 item 4."
+  },
+  "environment_conflicts": []
+}

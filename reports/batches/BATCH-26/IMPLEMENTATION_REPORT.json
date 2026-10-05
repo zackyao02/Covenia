@@ -1,0 +1,199 @@
+{
+  "report_type": "IMPLEMENTATION_REPORT",
+  "batch_id": "BATCH-26",
+  "title": "shipment HTTP 事务接口",
+  "status": "IMPLEMENTED_PENDING_INDEPENDENT_VERIFICATION",
+  "attribution": "本批由辅助调度器实现，非独立实现方；验收须由他方完成。",
+  "self_verification_performed": false,
+  "verification_report_created": false,
+  "branch": "codex/covenia-batch-26-aux",
+  "worktree": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w26",
+  "base_integration_sha": "7aae56fbd9664b4fe7ddd4b9924bb793eb482c8f",
+  "code_commit": "ff0ea6665583001090a9fd9a74b355ebed3ec7e9",
+  "code_commit_message": "feat(shipment): atomically execute the shipment state machine over HTTP",
+  "report_commit": null,
+  "report_commit_note": "The report commit cannot reference its own SHA; the coordinating scheduler records it after this commit exists.",
+  "scope": {
+    "implementation_paths": [
+      "backend/src/covenia_b/services/shipment.py",
+      "backend/src/covenia_b/api/shipment.py",
+      "backend/tests/api/test_shipment.py"
+    ],
+    "report_paths": [
+      "reports/batches/BATCH-26/shipment-http-sequences.json",
+      "reports/batches/BATCH-26/IMPLEMENTATION_REPORT.json",
+      "reports/batches/BATCH-26/IMPLEMENTATION_REPORT.md",
+      "reports/batches/BATCH-26/commands.json",
+      "reports/batches/BATCH-26/environment.json",
+      "reports/batches/BATCH-26/pip-check.txt",
+      "reports/batches/BATCH-26/command-log.txt"
+    ],
+    "requirements_lock_changed": false,
+    "verification_report_created": false,
+    "verification_evidence_created": false,
+    "forbidden_paths_modified": false,
+    "other_batches_started": false,
+    "other_worktrees_touched": false,
+    "push_performed": false
+  },
+  "source_fingerprints": [
+    {
+      "path": "backend/src/covenia_b/services/shipment.py",
+      "git_blob_sha1": "f871366bf570106312519e2b61106d3c4657ac26",
+      "sha256": "F10376450B3A0F377ED3A9B56335AFE5E4F8518B0177D2351833CCAAEBEFA96A",
+      "bytes": 15558,
+      "hash_method": "SHA-256 over the raw bytes of git show ff0ea6665583001090a9fd9a74b355ebed3ec7e9:backend/src/covenia_b/services/shipment.py"
+    },
+    {
+      "path": "backend/src/covenia_b/api/shipment.py",
+      "git_blob_sha1": "d35337b599dea449db9bcc84d644a0700f0f8c7e",
+      "sha256": "5853476A8EC1F446363EF692C9759A34F21B14347EE37AA6ADF9B69367E228FF",
+      "bytes": 5081,
+      "hash_method": "SHA-256 over the raw bytes of git show ff0ea6665583001090a9fd9a74b355ebed3ec7e9:backend/src/covenia_b/api/shipment.py"
+    },
+    {
+      "path": "backend/tests/api/test_shipment.py",
+      "git_blob_sha1": "7e2e6f4d41004b2dc495f3ccdd75ec7e46973bba",
+      "sha256": "06B2106CBB1F2D064225A6DEDA229B085E3B410141C00A7E810F26B5DE7E491A",
+      "bytes": 37790,
+      "hash_method": "SHA-256 over the raw bytes of git show ff0ea6665583001090a9fd9a74b355ebed3ec7e9:backend/tests/api/test_shipment.py"
+    }
+  ],
+  "implementation_summary": [
+    "Added ShipmentEventService: one call binds HTTP request identity to the BATCH-18 serialized transaction, so the idempotency lookup, the event-identity lookup, state-machine validation, the audit append, the ledger write, and the first-response persistence all succeed or roll back together.",
+    "The service converts the persisted LedgerSnapshot back into the pure reducer's ShipmentLedger (state contract, event high-watermark, derived existing ticket id) and never accepts client-supplied status, milestone, receipt, or candidate values.",
+    "Terminal state compatibility reuses the storage codec rule (StoredAccountabilityState) so a delivered shipment can persist next_update_by=null while the older public DTO still declares a non-null field; no schema, domain, or storage file was modified.",
+    "The envelope stored on the first successful execution is validated against shipment-event-response.schema.json and api-envelope.schema.json before it is persisted; a contract violation raises the retryable infrastructure error instead of writing a partial result.",
+    "Added create_shipment_router / install_shipment_router for POST /api/events/shipment with idempotent installation, mirroring the approved approve adapter: schema-invalid bodies map to SCHEMA_INVALID/400, unknown event_id content and reused keys map to IDEMPOTENCY_CONFLICT/409, illegal or out-of-order events to INVALID_EVENT_TRANSITION/409, ledger unavailability to a retryable INTERNAL_ERROR/503.",
+    "The adapter derives the frozen contract-vector message 'event_time must be a date-time with an offset.' from the failing schema path and delegates every business decision to the injected service; the application factory was not modified because main.py is outside this batch's allowed paths.",
+    "Replays return the first persisted envelope verbatim, including its original request_id, so a retry with a different X-Request-Id cannot grow the audit trail or re-decide the event.",
+    "Added ten ASGI boundary tests that drive the real service, transaction, and SQLite database with no HTTP client, model, carrier, warehouse, or notification side effect."
+  ],
+  "acceptance_criteria_evidence": [
+    {
+      "criterion_index": 1,
+      "criterion": "批准→未揽收→稍后揽收→送达 和 批准→按时揽收→送达 两个独立序列通过。",
+      "result": "IMPLEMENTED_PENDING_INDEPENDENT_VERIFICATION",
+      "evidence": [
+        "backend/tests/api/test_shipment.py::test_approved_not_picked_up_then_later_pickup_then_delivered — case CASE-SHIPMENT-HTTP-SEQUENCE-A: SHIPMENT_NOT_PICKED_UP 09:30 keeps AWAITING_CARRIER_PICKUP/ON_TRACK with next_update_by 10:05, later SHIPMENT_PICKED_UP 10:06 moves to IN_TRANSIT and commits 10:36, SHIPMENT_DELIVERED 11:00 ends RESOLVED/DELIVERED/COMPLETED with next_update_by null and no draft; persisted version 4.",
+        "backend/tests/api/test_shipment.py::test_approved_on_time_pickup_then_delivered — case CASE-SHIPMENT-HTTP-SEQUENCE-B: on-time SHIPMENT_PICKED_UP 09:40 keeps the already-later check 10:05, SHIPMENT_DELIVERED 10:10 ends RESOLVED; persisted version 3.",
+        "reports/batches/BATCH-26/shipment-http-sequences.json records both sequences with per-step HTTP status, request_id, case_status, milestone, obligation status, receipt status, and audit actions."
+      ]
+    },
+    {
+      "criterion_index": 2,
+      "criterion": "直接送达/倒序/相同 event_id 异体/重复键/并发/故障回滚可复现。",
+      "result": "IMPLEMENTED_PENDING_INDEPENDENT_VERIFICATION",
+      "evidence": [
+        "Direct delivery: test_direct_delivery_is_rejected_without_any_partial_write asserts 409 INVALID_EVENT_TRANSITION with the frozen message, then proves events=0 / idempotent_requests=0 / audit_entries=1 / case_versions=1 and ledger version 1 are byte-identical before and after the rejection, and that the next legal event still succeeds.",
+        "Reverse order: test_reverse_ordered_event_is_rejected_and_the_first_response_is_preserved accepts an at-risk 10:30 event, rejects a 10:29 event with 409 while every stored counter and the high-watermark stay unchanged, and then replays the first payload to an identical body.",
+        "Same event_id with different content: test_same_event_id_with_different_content_is_an_idempotency_conflict asserts 409 IDEMPOTENCY_CONFLICT with the contract-vector message and no further rows.",
+        "Repeated key: test_duplicate_request_key_replays_the_first_response_and_rejects_new_content asserts the identical first envelope and request_id on replay, no audit growth, and 409 for the same key with a different body.",
+        "Completion: test_event_after_completion_replays_exactly_and_rejects_new_content shows an exact recorded replay still returns 200 after RESOLVED, while a new event gets 409 'Completed shipment only permits an exact recorded replay.'",
+        "Concurrency: test_concurrent_duplicate_and_distinct_keys_record_one_transition runs two threads through a barrier against one database; the same event_id + same key yields two identical 200 bodies, one request_id, one event row, one transition, and the same event_id with two keys yields two identical 200 bodies with two request rows and still one transition.",
+        "Fault rollback: test_unknown_case_and_unavailable_ledger_never_become_success shows a missing ledger is 409 with no row created, an injected LedgerUnavailable is a retryable 503 INTERNAL_ERROR, and an injected LedgerConflict is a 409; neither failure is ever reported as success.",
+        "Pointer-scoped input never becomes state: the state machine, idempotency decision, and audit append all live inside one SQLite BEGIN IMMEDIATE transaction whose callback raises before any write on rejection."
+      ]
+    },
+    {
+      "criterion_index": 3,
+      "criterion": "返回相同首个 response/request_id 不增加 audit_trail。",
+      "result": "IMPLEMENTED_PENDING_INDEPENDENT_VERIFICATION",
+      "evidence": [
+        "test_duplicate_request_key_replays_the_first_response_and_rejects_new_content: the replay response body is equal to the first body, request_id equals the first request_id, the audit trail length is unchanged (2 before and after), and the database row counts and ledger version are unchanged.",
+        "test_event_after_completion_replays_exactly_and_rejects_new_content repeats the assertion after the shipment is terminal.",
+        "test_concurrent_duplicate_and_distinct_keys_record_one_transition shows two simultaneous identical requests both return the same first envelope and leave a single audit entry.",
+        "The service returns the stored envelope verbatim instead of rebuilding it from the new request_id, and the middleware therefore only affects the response header, not the body."
+      ]
+    },
+    {
+      "criterion_index": 4,
+      "criterion": "按5.5使用本批绝对隔离venv解释器；新增第三方依赖只增不改、精确钉版本并提交锁文件差异/原因/hash证据；交付前同解释器 pip check 退出0。环境证据缺失或冲突不得PASS。",
+      "result": "IMPLEMENTED_PENDING_INDEPENDENT_VERIFICATION",
+      "evidence": [
+        "Interpreter isolation: C:\\cv26\\venv\\Scripts\\python.exe with sys.prefix=C:\\cv26\\venv, sys.base_prefix=D:\\python, and pyvenv.cfg include-system-site-packages=false; command 01-interpreter-isolation exited 0 (reports/batches/BATCH-26/environment.json, command-log.txt).",
+        "No third-party dependency was added: backend/requirements-dev.lock change_type=UNCHANGED, appended diff empty, raw git-blob SHA-256 177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04 at the integration base equals the value already accepted for BATCH-25, and the working copy is not modified.",
+        "Lock rebuilt in this batch's own venv: pip install --no-deps -r backend/requirements-dev.lock exit 0, pip install --no-deps --no-build-isolation -e backend exit 0, import pytest, jsonschema exit 0.",
+        "pip check in the same interpreter exited 0 with 'No broken requirements found.' (reports/batches/BATCH-26/pip-check.txt).",
+        "RUN_DIR is the short absolute path C:\\cv26 (7 characters) with venv directly beneath it; the longest observed venv path is 144 characters, below the 250-character limit.",
+        "pytest ran with TEMP=TMP=C:\\cv26\\tmp because the host default temp root raises WinError 5; every recorded command used that run-local temp directory.",
+        "No environment conflict was observed; core.autocrlf=true comes from the machine-level gitconfig and was neither changed nor used for any hash."
+      ]
+    }
+  ],
+  "test_results": {
+    "targeted": {
+      "command": "C:\\cv26\\venv\\Scripts\\python.exe -m pytest backend/tests/api/test_shipment.py -q",
+      "result": "10 passed in 1.07s",
+      "exit_code": 0
+    },
+    "contracts": {
+      "command": "C:\\cv26\\venv\\Scripts\\python.exe tools/contracts/check_contracts.py --strict",
+      "result": "14 schemas and 18 vectors validated, strict=true",
+      "exit_code": 0
+    },
+    "lint": {
+      "command": "C:\\cv26\\venv\\Scripts\\python.exe -m ruff check backend/src/covenia_b/services/shipment.py backend/src/covenia_b/api/shipment.py backend/tests/api/test_shipment.py",
+      "result": "All checks passed!",
+      "exit_code": 0
+    },
+    "anti_shortcut_scan": {
+      "command": "C:\\cv26\\venv\\Scripts\\python.exe <checks>\\anti_shortcut_scan.py backend/src/covenia_b/services/shipment.py backend/src/covenia_b/api/shipment.py",
+      "result": "2 implementation files scanned, none of the three shortcut criteria matched",
+      "exit_code": 0
+    },
+    "regression_by_directory": {
+      "command": "C:\\cv26\\venv\\Scripts\\python.exe -m pytest backend/tests/<subdirectory> -q",
+      "result": "api 17, cache 17, commitments 15, contracts 16, domain 23, evidence 16, images 14, importing 14, model 27, observability 10, privacy 24, receipts 15, resolutions 7, rules 155, services 17, shipments 13, state 4, storage 38, test_bootstrap 4 — all exit 0",
+      "exit_code": 0
+    },
+    "whole_tree_collection": {
+      "command": "C:\\cv26\\venv\\Scripts\\python.exe -m pytest backend/tests -q",
+      "result": "collection error from a pre-existing duplicate module basename (tests/api/test_approve.py vs tests/services/test_approve.py, both unmodified and in directories without __init__.py)",
+      "exit_code": 2,
+      "classification": "PRE_EXISTING_REPOSITORY_CONDITION_NOT_CAUSED_BY_BATCH_26"
+    },
+    "pip_check": {
+      "command": "C:\\cv26\\venv\\Scripts\\python.exe -m pip check",
+      "result": "No broken requirements found.",
+      "exit_code": 0
+    },
+    "git_diff_check": {"command": "git diff --check", "result": "clean", "exit_code": 0},
+    "git_status_short": {
+      "command": "git status --short",
+      "result": "only reports/batches/BATCH-26/ untracked at capture time (code and test commit already created)",
+      "exit_code": 0
+    }
+  },
+  "dependency_evidence": {
+    "lock_path": "backend/requirements-dev.lock",
+    "change_type": "UNCHANGED",
+    "changed": false,
+    "third_party_dependencies_added": [],
+    "baseline_raw_git_blob_sha256": "177865457F146985726B02EF5C640363624E2A0C9B76B67FBED3929DADA13D04",
+    "baseline_git_blob_sha1": "4c3f8019eda3a683a5cf424eaa5dbc69b0cf91ef",
+    "appended_diff": "",
+    "pip_check": "reports/batches/BATCH-26/pip-check.txt",
+    "environment": "reports/batches/BATCH-26/environment.json"
+  },
+  "required_outputs_status": {
+    "reports/batches/BATCH-26/shipment-http-sequences.json": "PRODUCED_BY_IMPLEMENTATION (written by the test module from responses observed during the recorded run)",
+    "reports/batches/BATCH-26/IMPLEMENTATION_REPORT.json": "PRODUCED_BY_IMPLEMENTATION",
+    "reports/batches/BATCH-26/IMPLEMENTATION_REPORT.md": "PRODUCED_BY_IMPLEMENTATION",
+    "reports/batches/BATCH-26/commands.json": "PRODUCED_BY_IMPLEMENTATION",
+    "reports/batches/BATCH-26/environment.json": "PRODUCED_BY_IMPLEMENTATION",
+    "reports/batches/BATCH-26/pip-check.txt": "PRODUCED_BY_IMPLEMENTATION",
+    "reports/batches/BATCH-26/VERIFICATION_REPORT.json": "NOT_PRODUCED_BY_IMPLEMENTATION (reserved for the independent verifier)"
+  },
+  "runtime_composition_handoff": "main.py is outside this batch's allowed paths, so the application factory still installs only the transport seams. An authorized composition change must call install_shipment_router(app, shipment_service=ShipmentEventService(repository=...)) once with a process-owned repository, exactly as the approve route is wired.",
+  "remaining_risks": [
+    "The endpoint is not yet reachable from the default application factory because main.py is out of scope for this batch; only the router factory and its tests exist.",
+    "The storage layer owns durable event replay, so the reducer's in-memory processed_events replay path is intentionally not exercised through this service; the service passes an empty processed-event tuple and relies on the events table.",
+    "The service maps two BATCH-18 IdempotencyConflict causes by inspecting the repository message ('event identity' selects the event-id message); if BATCH-18 changes those messages, the frozen wording asserted by the tests would need a coordinated update.",
+    "Running pytest over the whole backend/tests tree fails at collection time because of a pre-existing duplicate basename (tests/api/test_approve.py and tests/services/test_approve.py). This batch's acceptance command and the per-directory regression runs are unaffected, but a repository-wide invocation remains broken until an owner adds __init__.py files or unique names.",
+    "win32 console encoding: the recorded transcript is UTF-8; pip's 'new release' advisory on stderr renders as a NativeCommandError under PowerShell 5.1 even though the exit code is 0."
+  ],
+  "rollback": "Revert code commit ff0ea6665583001090a9fd9a74b355ebed3ec7e9 (service, adapter, and tests) and then the report commit; only this batch's one-off test databases are affected, and no rejected event was written into history.",
+  "handoff_to_next_batch": "Router factory create_shipment_router/install_shipment_router for POST /api/events/shipment, the service constructor ShipmentEventService(repository=..., request_id_factory=...), four replay vectors (duplicate key, same event_id with different content, terminal exact replay, post-completion rejection), the two complete legal timelines with per-step state evidence in shipment-http-sequences.json, and this batch's environment.json/pip-check.txt/lock SHA-256 evidence. The next batch must build its own venv and must not reuse C:\\cv26.",
+  "verification_note": "This is implementation evidence only. The four acceptance criteria above are mapped to observed implementation checks and are explicitly NOT a verification verdict; the independent verifier must re-run the commands in its own RUN_DIR and write VERIFICATION_REPORT.json."
+}
