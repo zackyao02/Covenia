@@ -234,9 +234,17 @@ def test_priority_order_is_p0_then_h1_then_e1() -> None:
     reset_service()
     source = analyze()["extracted_journey"]
     assert source["case_id"] == "DEMO_001"
-    close = client.post("/api/actions/evaluate", json={"case_id": "DEMO_001", "prepared_action": hero_action("CLOSE_CASE")}).json()
-    assert close["data"]["rule_id"] == "P0_PROHIBITED_ACTION"
-    assert close["data"]["rule_priority"] == 400
+    close = client.post("/api/actions/evaluate", json={"case_id": "DEMO_001", "prepared_action": hero_action("CLOSE_CASE")})
+    assert close.status_code == 400
+    assert close.json()["data"] is None
+    assert close.json()["error"]["code"] == "P0_PROHIBITED_ACTION"
+    wrapped_close = client.post("/api/decisions", json={
+        "case_id": "DEMO_001",
+        "prepared_action": hero_action("CLOSE_CASE"),
+    })
+    assert wrapped_close.status_code == 400
+    assert wrapped_close.json()["data"] is None
+    assert wrapped_close.json()["error"]["code"] == "P0_PROHIBITED_ACTION"
 
     case_input = client.post("/api/cases/analyze", json={"case_id": "DEMO_001"}).json()["data"]
     # Build the adverse case through the permitted challenge input, rather than a rule keyed by case ID.

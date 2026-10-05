@@ -296,9 +296,6 @@ function decisionFor(state: AccountabilityState, input: EvaluateActionRequest): 
 
   const e1Matches = action === "ASK_EVIDENCE" && evidenceStatus === "VALID" && scopeMatch === true;
   const h1Matches = evidenceStatus === "NEED_HUMAN_REVIEW" || state.current_scope.issue_type === "ADVERSE_REACTION";
-  const p0Matches = action === "CLOSE_CASE" && state.prohibited_actions.includes("CLOSE_BEFORE_RESOLUTION");
-
-  if (p0Matches) return apply(interveneDecision, "P0_PROHIBITED_ACTION", 400, "INTERVENE", h1Matches ? ["H1"] : []);
   if (h1Matches) {
     const result = apply(reviewDecision, "H1", 350, "HUMAN_REVIEW", e1Matches ? ["E1"] : []);
     if (state.current_scope.issue_type === "ADVERSE_REACTION") {
@@ -430,6 +427,9 @@ export const mockApi = {
       return fail("INVALID_EVENT_TRANSITION", "责任状态已变化，请刷新后重试。", "REQ_EVALUATE");
     }
     const state = states.get(input.case_id) ?? structuredClone(heroAnalysis.accountability_state);
+    if (input.prepared_action.action_type === "CLOSE_CASE" && state.prohibited_actions.includes("CLOSE_BEFORE_RESOLUTION")) {
+      return fail("P0_PROHIBITED_ACTION", "当前不能结案，已有未完成的服务责任。", "REQ_EVALUATE", false);
+    }
     const decision = decisionFor(state, input);
     decision.case_id = input.case_id;
     decision.accountability_state = structuredClone(state);

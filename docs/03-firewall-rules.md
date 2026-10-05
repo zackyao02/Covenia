@@ -55,7 +55,7 @@ AND prepared_action = ASK_EVIDENCE
 | `SHIFT_FOLLOW_UP_TO_CONSUMER` | 把已完成输入后的履约跟进交回消费者的动作 |
 | `CLOSE_BEFORE_RESOLUTION` | `CLOSE_CASE` |
 
-输出：`INTERVENE` / `P0_PROHIBITED_ACTION` / `400`。禁止项和责任状态只由服务端状态构建器产生，前端提交的同名字段不参与判定。
+输出：HTTP 400 `ApiEnvelope` 错误，`error.code=P0_PROHIBITED_ACTION` 且 `data=null`。P0 不属于成功 `DecisionResult`；成功 schema 必须拒绝 P0/400。禁止项和责任状态只由服务端状态构建器产生，前端提交的同名字段不参与判定。
 
 ## E0_NO_RULE_MATCHED｜无规则命中
 

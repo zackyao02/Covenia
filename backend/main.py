@@ -929,6 +929,8 @@ async def create_decision(request: Request) -> JSONResponse:
         return error("VALIDATION_ERROR", "未找到案例事实。", rid, 400)
     if isinstance(body.get("prepared_action"), dict):
         full = evaluate(state, body)
+        if full["rule_id"] == "P0_PROHIBITED_ACTION":
+            return error("P0_PROHIBITED_ACTION", full["reason"], rid, 400)
         case_input = find_case(body["case_id"]) or {"conversation": [], "evidence_images": [], "service_tickets": [], "order": {}, "evaluation_time": SERVICE_CLOCK}
         advisory = decision_advisory_for(body["case_id"], state, case_input, deadline_state_for(body["case_id"], state), now=SERVICE_CLOCK)
         data = {
@@ -964,6 +966,8 @@ async def evaluate_action(request: Request) -> JSONResponse:
     if state is None:
         return error("VALIDATION_ERROR", "未找到案例事实。", rid, 400)
     result = evaluate(state, body)
+    if result["rule_id"] == "P0_PROHIBITED_ACTION":
+        return error("P0_PROHIBITED_ACTION", result["reason"], rid, 400)
     return envelope(result, rid)
 
 

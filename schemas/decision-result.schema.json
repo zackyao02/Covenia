@@ -8,8 +8,8 @@
   "properties": {
     "case_id": {"type": "string"},
     "decision": {"enum": ["INTERVENE", "ALLOW", "HUMAN_REVIEW"]},
-    "rule_id": {"enum": ["P0_PROHIBITED_ACTION", "E1", "E2", "H1", "E0_NO_RULE_MATCHED"]},
-    "rule_priority": {"enum": [400, 350, 300, 100, 0]},
+    "rule_id": {"enum": ["E1", "E2", "H1", "E0_NO_RULE_MATCHED"]},
+    "rule_priority": {"enum": [350, 300, 100, 0]},
     "accountability_state": {"$ref": "accountability-state.schema.json"},
     "challenge_mode": {"type": "boolean"},
     "draft_assessment": {
@@ -87,10 +87,6 @@
     "runtime_metrics": {"$ref": "runtime-metrics.schema.json"}
   },
   "allOf": [
-    {
-      "if": {"properties": {"rule_id": {"const": "P0_PROHIBITED_ACTION"}}},
-      "then": {"properties": {"decision": {"const": "INTERVENE"}, "rule_priority": {"const": 400}}}
-    },
     {
       "if": {"properties": {"rule_id": {"const": "E1"}}},
       "then": {"properties": {"decision": {"const": "INTERVENE"}, "rule_priority": {"const": 300}}}

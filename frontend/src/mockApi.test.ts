@@ -216,7 +216,8 @@ describe("Covenia v0.8 frontend API contract", () => {
       ...hero,
       prepared_action: { ...hero.prepared_action, action_type: "CLOSE_CASE" },
     });
-    expect(close.data).toMatchObject({ decision: "INTERVENE", rule_id: "P0_PROHIBITED_ACTION", rule_priority: 400 });
+    expect(close.data).toBeNull();
+    expect(close.error?.code).toBe("P0_PROHIBITED_ACTION");
 
     const adverseInput = structuredClone(demoCases[0].input);
     adverseInput.current_issue.issue_type = "ADVERSE_REACTION";

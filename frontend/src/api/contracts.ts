@@ -345,8 +345,9 @@ export interface PreparedAction {
 }
 
 export type Decision = "INTERVENE" | "ALLOW" | "HUMAN_REVIEW";
-export type RuleId = "P0_PROHIBITED_ACTION" | "E1" | "E2" | "H1" | "E0_NO_RULE_MATCHED";
-export type RulePriority = 400 | 350 | 300 | 100 | 0;
+export type RuleId = "E1" | "E2" | "H1" | "E0_NO_RULE_MATCHED";
+export type RulePriority = 350 | 300 | 100 | 0;
+export type SuppressedRuleId = "P0_PROHIBITED_ACTION" | RuleId;
 
 export interface RuntimeMetrics {
   measurement_status: "MEASURED" | "NOT_MEASURED";
@@ -618,7 +619,7 @@ export interface DecisionResult {
     prepared_action: string;
     scope_match?: boolean | null;
     active_promise_count?: number;
-    suppressed_rule_ids?: Array<Exclude<RuleId, "E0_NO_RULE_MATCHED">>;
+    suppressed_rule_ids?: Array<Exclude<SuppressedRuleId, "E0_NO_RULE_MATCHED">>;
   };
   reason: string;
   resolution_path: ResolutionPath;
