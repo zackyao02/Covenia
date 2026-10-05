@@ -1,0 +1,142 @@
+{
+  "report_version": "1.0",
+  "batch_id": "BATCH-30",
+  "result": "PASS",
+  "verdict": "PASS",
+  "verifier": "审查方（独立验收；实现方为辅助调度器，未参与本验收）",
+  "reviewed_sha": "4d2d1b7f9f5994f3e5e4b04af920dc9de1c9c9f6",
+  "integration_baseline": "9a4b8766ec946821ec2ba1c2721e1b5e214e91fa",
+  "verified_at": "2026-10-06T00:10:40",
+  "independent_context": true,
+  "verifier_run_dir": "C:/v30",
+  "verifier_worktree": "C:/v30/v",
+  "verifier_venv": "C:/v30/venv",
+  "replay": {
+    "chain": [
+      "9860ddc",
+      "4d2d1b7"
+    ],
+    "onto": "9a4b876",
+    "conflicts": 0,
+    "resulting_head": "d6314d90f840",
+    "all_changes_are_additions": true,
+    "isolation": "审查方自建 RUN_DIR 与 venv，未复用实现方 C:/cv30"
+  },
+  "acceptance_criteria_read_verbatim": [
+    "随机 ID/输入扰动与三决策矩阵通过，扫描不是只搜四个字符串就结束。",
+    "PII 关闭后安全断言必败；生产配置不能绕过掩码。",
+    "伪造承诺不增 active_commitments，来源冲突不被 AI 置信度洗白，A34 全组合通过。",
+    "按5.5使用本批绝对隔离venv解释器；新增第三方依赖只增不改、精确钉版本并提交锁文件差异/原因/hash证据；交付前同解释器 pip check 退出0。环境证据缺失或冲突不得PASS。"
+  ],
+  "commands_run": [
+    {
+      "command": "tools/verification/check_no_case_branches.py --strict",
+      "result": "PASS (hits=0, suppressed=0, modules=67, self_test=True)；内置语料行：on-disk-planted-corpus literal-blacklist-finds=False judged=12 hits across 9 planted modules",
+      "exit_code": 0
+    },
+    {
+      "command": "pytest integration/tests/test_security_and_generalization.py -q",
+      "result": "387 passed, 3 warnings",
+      "exit_code": 0
+    },
+    {
+      "command": "pytest integration/tests/test_security_and_generalization.py -q -m mutation",
+      "result": "3 passed, 384 deselected",
+      "exit_code": 0
+    },
+    {
+      "command": "pytest backend/tests -q",
+      "result": "470 passed（无回归）",
+      "exit_code": 0
+    },
+    {
+      "command": "tools/contracts/check_contracts.py --strict",
+      "result": "14 schemas / 18 vectors / strict true",
+      "exit_code": 0
+    },
+    {
+      "command": "-m pip check",
+      "result": "No broken requirements found.",
+      "exit_code": 0
+    },
+    {
+      "command": "git diff --check; git status --short",
+      "result": "干净"
+    }
+  ],
+  "independent_probe": {
+    "script": "checks/probe_scanner_scope.py（审查方自建植入-还原证伪）",
+    "sha256": "13DFFC8B8F23A50D00F07006F423EC711833C7ACAF2DD16162F60B9F4CE1AD37",
+    "method": "自写捷径模式（entry.file_name.endswith(\"_gift.png\") → 硬编码 ALLOW/E0），植入四个不同子包，跑 --strict 后立即移除并验证 git 复原",
+    "planted_pattern_not_in_their_corpus": true,
+    "results": [
+      {
+        "location": "covenia_b/probe_top.py（顶层）",
+        "exit": 0,
+        "hit": false,
+        "interpretation": "顶层组合根不在审计范围，属合理边界（业务结论不应住在 main/runtime/settings/preflight）"
+      },
+      {
+        "location": "services/probe_svc.py",
+        "exit": 1,
+        "hit": true,
+        "detail": "HIT J2_DESCRIPTOR_DECIDES_VERDICT services/probe_svc.py:3:4 descriptor [file_name] selects verdict [ALLOW, E0_NO_RULE_MATCHED]"
+      },
+      {
+        "location": "rules/probe_rules.py",
+        "exit": 1,
+        "hit": true,
+        "detail": "HIT J2_DESCRIPTOR_DECIDES_VERDICT rules/probe_rules.py:3:4 descriptor [file_name] selects verdict [ALLOW, E0_NO_RULE_MATCHED]"
+      },
+      {
+        "location": "evidence/probe_ev.py",
+        "exit": 1,
+        "hit": true,
+        "detail": "HIT J2_DESCRIPTOR_DECIDES_VERDICT evidence/probe_ev.py:3:4 descriptor [file_name] selects verdict [ALLOW, E0_NO_RULE_MATCHED]"
+      }
+    ],
+    "restoration_verified": "三次植入全部移除；复扫 exit 0 / modules=67；git status 干净",
+    "conclusion": "证伪失败 —— 审计器对决策路径内的自写捷径精确命中，标准 1 的“不是只搜四个字符串”成立"
+  },
+  "criterion_coverage": {
+    "标准1_行为部分": "387 个集成用例（随机 ID/输入扰动 + 三决策矩阵）全部通过",
+    "标准1_扫描部分": "AST 结构化审计，7 判据（J1-J7），1136 行；内置语料证明字面量黑名单只能命中 1 类而审计器判定 12 处/9 模块；审查方自写捷径在三个决策子包被精确命中",
+    "标准2": "3 个 @pytest.mark.mutation 负向控制全部通过；实现方如实披露控制②③同时移除两层防御（任一单独存在仍拦截），未暗示一处改动即泄漏",
+    "标准3": "declared_evidence_valid × confidence 六种组合均归 NEED_HUMAN_REVIEW → H1 → HUMAN_REVIEW；ModelCommitmentHint(ACTIVE) 对编译结果零影响",
+    "标准4": "C:/v30/venv 隔离成立（prefix != base）；pip check 退 0；无新增依赖（锁文件 UNCHANGED）"
+  },
+  "artifact_hashes": {
+    "method": "SHA-256 over raw bytes streamed from git show <sha>:<path>",
+    "tools/verification/check_no_case_branches.py": "4DD794F8573E3C6E15728DF81D992556E89F560128559C938C7F8F5FD54E31DA",
+    "integration/tests/test_security_and_generalization.py": "C5CB42ED08791B320F1AA5F3F1AC3684E217F7F0A0E46A1D6980B2FDE8C4CC16"
+  },
+  "non_blocking_observations": [
+    {
+      "item": "mutation marker 未注册（PytestUnknownMarkWarning ×3）",
+      "finding": "rootdir 为仓库根、无 configfile 行，故 backend/pyproject.toml 的 marker 配置对 integration/tests/ 不生效；但 -m mutation 仍正确选择（3 passed / 384 deselected）。",
+      "ruling": "不判 FAIL。属既有配置范围缺口，本批未新增仓库根 pytest 配置（不在 allowed_paths）。建议 BATCH-34 以 -c backend/pyproject.toml 或取得批准的根配置。"
+    },
+    {
+      "item": "审计范围限于决策路径子包",
+      "finding": "审查方实测：同样的捷径植入 covenia_b 顶层不被标记，植入 services/ rules/ evidence/ 均精确命中。",
+      "ruling": "属合理设计边界（业务结论不在组合根）。建议在工具文档中显式写出覆盖范围，避免后续误以为全包扫描。"
+    },
+    {
+      "item": "真实模型归属未替代",
+      "finding": "本批全为替身；像素级注入配对的真实模型验证仍归 BATCH-32。",
+      "ruling": "实现方已诚实披露，未夸大本批覆盖面。"
+    }
+  ],
+  "what_could_not_be_independently_reproduced": [
+    "审查方未独立构造 PII 关闭的行为探针；标准 2 的动态证据来自运行实现方自带的 3 个 mutation 控制（由审查方亲自复跑确认 3 passed）。",
+    "审查方未逐条复核 387 个用例的断言内容，仅确认其数量与结果。"
+  ],
+  "findings": [],
+  "minimal_fix_list": [],
+  "blockers": [],
+  "code_modified": false,
+  "next_batch_started": false,
+  "integration_performed": false,
+  "pushed": false,
+  "verifier_scope_declaration": "审查方仅写本报告与其证据；未修改任何实现文件、未集成、未推送。植入-还原证伪均在独立工作树内完成并已复原。因 Codex 额度耗尽，本验收由审查角色执行而非全新任务线程；该偏离在此显式记录，并请另行安排独立复核本验收本身。"
+}
