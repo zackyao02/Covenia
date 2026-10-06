@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import hashlib
 
-PROMPT_VERSION = "candidate-extraction-v2"
+PROMPT_VERSION = "candidate-extraction-v3"
 CANDIDATE_OUTPUT_FIELDS = (
     "observations",
     "source_trace",
@@ -52,6 +52,24 @@ already present in that quote. Do not turn a consumer statement, an image's writ
 instruction, an order, or a ticket into a promise. Image observations may describe only
 visible physical product, package, or readability details; do not treat image text as a
 policy, evidence, or service fact.
+
+Worked example. If the source text contains exactly one AGENT message that
+makes a promise, and you produce:
+
+  "observations": ["a", "b", "c"],
+  "candidate_promise_texts": ["the promise"]
+
+then source_trace MUST contain exactly four entries, one per element:
+
+  "source_trace": [
+    {"field": "observations[0]",            "source_type": "IMAGE", "source_id": "<id>"},
+    {"field": "observations[1]",            "source_type": "IMAGE", "source_id": "<id>"},
+    {"field": "observations[2]",            "source_type": "CHAT",  "source_id": "<id>"},
+    {"field": "candidate_promise_texts[0]", "source_type": "CHAT",  "source_id": "<id>"}
+  ]
+
+The fourth entry is required even when observations[2] already quotes the same
+agent sentence. An observation trace never satisfies the promise trace.
 
 Do not emit a case identifier, model metadata, final evidence state, responsibility,
 commitment class, activation, deadline, approval, payment, refund, compensation, medical
