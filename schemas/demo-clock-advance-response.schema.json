@@ -1,0 +1,153 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "demo-clock-advance-response.schema.json",
+  "title": "DemoClockAdvanceResponse",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "accountability_state",
+    "follow_up_candidate",
+    "supervisor_escalation_candidate",
+    "proactive_notification_draft",
+    "service_clock",
+    "simulation",
+    "step",
+    "event_summary",
+    "customer_state",
+    "priority_states",
+    "deadline_state"
+  ],
+  "properties": {
+    "accountability_state": {
+      "$ref": "demo-accountability-state.schema.json"
+    },
+    "service_clock": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "simulation": {
+      "const": true
+    },
+    "step": {
+      "enum": [
+        "NEAR_DUE",
+        "OVERDUE"
+      ]
+    },
+    "event_summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "customer_state": {
+      "anyOf": [
+        {
+          "$ref": "customer-state.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "priority_states": {
+      "type": "array",
+      "items": {
+        "$ref": "priority-state.schema.json"
+      }
+    },
+    "deadline_state": {
+      "$ref": "deadline-state.schema.json"
+    },
+    "follow_up_candidate": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "task_type",
+            "existing_ticket_id",
+            "priority",
+            "summary"
+          ],
+          "properties": {
+            "task_type": {
+              "const": "WAREHOUSE_FOLLOW_UP"
+            },
+            "existing_ticket_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "priority": {
+              "enum": [
+                "HIGH",
+                "NORMAL"
+              ]
+            },
+            "summary": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "supervisor_escalation_candidate": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "escalation_type",
+            "priority",
+            "summary"
+          ],
+          "properties": {
+            "escalation_type": {
+              "const": "PROMISE_OVERDUE"
+            },
+            "priority": {
+              "enum": [
+                "HIGH",
+                "NORMAL"
+              ]
+            },
+            "summary": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "proactive_notification_draft": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "text",
+        "commits_next_update_at",
+        "requires_human_approval",
+        "channel"
+      ],
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "commits_next_update_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "requires_human_approval": {
+          "const": true
+        },
+        "channel": {
+          "const": "ORIGINAL_CHAT"
+        }
+      }
+    }
+  }
+}

@@ -22,6 +22,8 @@ import type {
   PriorityState,
   DemoServiceEventRequest,
   DemoServiceEventResponse,
+  DemoClockAdvanceRequest,
+  DemoClockAdvanceResponse,
 } from "./api/contracts";
 import { demoCases } from "./demoData";
 
@@ -83,6 +85,8 @@ const sourceHeroInput = analyzeExample.case_input_fixture;
 const states = new Map<string, AccountabilityState>();
 const decisions = new Map<string, DecisionResult>();
 const shipmentStages = new Map<string, "AWAITING_PICKUP" | "IN_TRANSIT" | "DELIVERED">();
+const demoClocks = new Map<string, string>();
+const clockReplies = new Map<string, { fingerprint: string; result: ApiResult<DemoClockAdvanceResponse> }>();
 
 const analysisMetrics: RuntimeMetrics = {
   measurement_status: "NOT_MEASURED",
@@ -104,6 +108,8 @@ export function resetMockState() {
   states.clear();
   decisions.clear();
   shipmentStages.clear();
+  demoClocks.clear();
+  clockReplies.clear();
   serviceClock = "2026-05-07T09:42:00+08:00";
   mockMode = "normal";
 }
@@ -317,6 +323,81 @@ function decisionFor(state: AccountabilityState, input: EvaluateActionRequest): 
 }
 
 export const mockApi = {
+  async advanceDemoClock(input: DemoClockAdvanceRequest): Promise<ApiResult<DemoClockAdvanceResponse>> {
+    await wait();
+    const prefix = "REQ_DEMO_CLOCK";
+    if (!input.idempotency_key || input.idempotency_key.length < 8 || !["NEAR_DUE", "OVERDUE"].includes(input.step)) {
+      return fail("SCHEMA_INVALID", "请选择有效的模拟时间操作。", prefix, false);
+    }
+    const key = `${input.case_id}:${input.idempotency_key}`;
+    const fingerprint = JSON.stringify(input);
+    const saved = clockReplies.get(key);
+    if (saved) return saved.fingerprint === fingerprint ? structuredClone(saved.result)
+      : fail("IDEMPOTENCY_CONFLICT", "同一操作记录不能用于不同的时间步骤。", prefix, false);
+    const state = states.get(input.case_id);
+    const obligation = state?.open_obligation;
+    if (!state || !obligation || obligation.obligation_type !== "REPLACEMENT_FULFILLMENT") {
+      return fail("VALIDATION_ERROR", "请先确认服务责任，再推进模拟时间。", prefix, false);
+    }
+    if (state.case_status === "RESOLVED" || obligation.milestone !== "AWAITING_CARRIER_PICKUP") {
+      return fail("INVALID_EVENT_TRANSITION", "换货件已揽收或送达，不能再推进发出期限。", prefix, false);
+    }
+    const current = Date.parse(demoClocks.get(input.case_id) ?? serviceClock);
+    const due = Date.parse(obligation.deadline);
+    const target = due + (input.step === "NEAR_DUE" ? -10 * 60_000 : 60_000);
+    if (!Number.isFinite(target) || target < current) {
+      return fail("INVALID_EVENT_TRANSITION", "模拟时间不能倒退；可重置会话后重新演练。", prefix, false);
+    }
+    const at = new Date(target).toISOString();
+    const next = structuredClone(state);
+    const changed = target !== current;
+    const overdue = input.step === "OVERDUE";
+    const firstEscalation = overdue && state.case_status !== "AT_RISK" && obligation.status !== "AT_RISK";
+    const nextCheck = new Date(overdue ? target + 30 * 60_000 : due - 5 * 60_000).toISOString();
+    const summary = overdue
+      ? "承诺已到期，换货件仍待揽收；已生成仓库催办、主管升级和主动通知草稿。"
+      : "距发出期限还有 10 分钟；材料已齐，品牌需要主动核查揽收进度。";
+    if (next.open_obligation) {
+      next.open_obligation.next_check_at = nextCheck;
+      next.open_obligation.status = overdue ? "AT_RISK" : "ON_TRACK";
+    }
+    if (overdue) {
+      next.case_status = "AT_RISK";
+      next.experience_risk = "HIGH";
+      next.active_commitments = next.active_commitments.map((item) => ({ ...item, status: "AT_RISK" }));
+    }
+    if (next.service_progress_receipt) {
+      next.service_progress_receipt.status = overdue ? "AT_RISK" : "ACTIVE";
+      next.service_progress_receipt.brand_action = summary;
+      next.service_progress_receipt.latest_update_at = at;
+      next.service_progress_receipt.next_update_by = nextCheck;
+    }
+    if (changed) next.audit_trail = [...next.audit_trail, {
+      at, actor: "SIMULATOR", action: overdue ? "PROMISE_DEADLINE_ESCALATED" : "DEMO_CLOCK_NEAR_DUE",
+      changed_fields: ["case_status", "open_obligation", "service_progress_receipt"], request_id: `${prefix}_${input.idempotency_key}`,
+    }];
+    states.set(input.case_id, next);
+    demoClocks.set(input.case_id, at);
+    const queue = await mockApi.getPriority();
+    const response: DemoClockAdvanceResponse = {
+      accountability_state: structuredClone(next), service_clock: at, simulation: true, step: input.step,
+      event_summary: summary, customer_state: null, priority_states: queue.data ?? [],
+      deadline_state: {
+        case_id: input.case_id, promise_id: "REPLACEMENT_FULFILLMENT", status: overdue ? "ESCALATED" : "NEAR_DUE",
+        deadline: obligation.deadline, next_check_at: nextCheck, monitor_status: "RUNNING", escalated_once: overdue,
+        risk_state_id: `RISK_${input.case_id}`, priority_state_id: `PRIORITY_${input.case_id}`, audit_event_id: `${prefix}_${input.idempotency_key}`,
+      },
+      follow_up_candidate: firstEscalation ? { task_type: "WAREHOUSE_FOLLOW_UP", existing_ticket_id: null, priority: "HIGH", summary: "核实换货件未揽收原因及预计交运时间。" } : null,
+      supervisor_escalation_candidate: firstEscalation ? { escalation_type: "PROMISE_OVERDUE", priority: "HIGH", summary: "换货发出承诺未兑现，请主管跟进。" } : null,
+      proactive_notification_draft: {
+        text: `${overdue ? "换货件还未被物流揽收，我们已升级催办。" : "换货发出期限即将到来，我们正在核查揽收进度。"}您不用重交材料，我们会在${new Date(nextCheck).toLocaleString("zh-CN", { timeZone: "Asia/Shanghai", hour12: false })}前主动更新。`,
+        commits_next_update_at: nextCheck, requires_human_approval: true, channel: "ORIGINAL_CHAT",
+      },
+    };
+    const result = ok(response, prefix);
+    clockReplies.set(key, { fingerprint, result: structuredClone(result) });
+    return result;
+  },
   async pushDemoServiceEvent(input: DemoServiceEventRequest): Promise<ApiResult<DemoServiceEventResponse>> {
     await wait();
     const state = states.get(input.case_id);
@@ -365,6 +446,8 @@ export const mockApi = {
     states.delete(caseId);
     decisions.delete(caseId);
     shipmentStages.delete(caseId);
+    demoClocks.delete(caseId);
+    for (const key of clockReplies.keys()) if (key.startsWith(`${caseId}:`)) clockReplies.delete(key);
     serviceClock = "2026-05-07T09:42:00+08:00";
     return ok({ case_id: caseId, reset: true }, "REQ_DEMO_RESET");
   },
@@ -385,7 +468,7 @@ export const mockApi = {
       }).accountability_state;
       if (state.case_status === "RESOLVED") continue;
       const overdue = state.case_status === "AT_RISK" || state.active_commitments.some(
-        (entry) => entry.status !== "COMPLETED" && Date.parse(entry.deadline) < Date.parse(serviceClock),
+        (entry) => entry.status !== "COMPLETED" && Date.parse(entry.deadline) < Date.parse(demoClocks.get(item.id) ?? serviceClock),
       );
       const review = state.evidence_status === "NEED_HUMAN_REVIEW" || state.current_scope.issue_type === "ADVERSE_REACTION";
       const score = overdue ? 120 : review ? 92 : state.evidence_status === "MISMATCHED" ? 40 : 64;
@@ -453,11 +536,12 @@ export const mockApi = {
       ?? response.accountability_state.active_commitments[0]?.deadline
       ?? "2026-05-07T10:27:37+08:00";
     const nextCheckAt = input.human_edits.next_check_at ?? "2026-05-07T10:10:00+08:00";
-    const latestRecordedAt = existingState?.service_progress_receipt?.latest_update_at ?? serviceClock;
-    if (!Number.isFinite(Date.parse(nextCheckAt)) || Date.parse(nextCheckAt) <= Math.max(Date.parse(serviceClock), Date.parse(latestRecordedAt))) {
+    const approvalClock = demoClocks.get(input.case_id) ?? serviceClock;
+    const latestRecordedAt = existingState?.service_progress_receipt?.latest_update_at ?? approvalClock;
+    if (!Number.isFinite(Date.parse(nextCheckAt)) || Date.parse(nextCheckAt) <= Math.max(Date.parse(approvalClock), Date.parse(latestRecordedAt))) {
       return fail("VALIDATION_ERROR", "下次更新时间须晚于当前服务时间。", "REQ_APPROVE", false);
     }
-    if ((!existingState?.open_obligation || existingState.open_obligation.milestone === "AWAITING_CARRIER_PICKUP") && Date.parse(serviceClock) < Date.parse(deadline) && Date.parse(nextCheckAt) >= Date.parse(deadline)) {
+    if ((!existingState?.open_obligation || existingState.open_obligation.milestone === "AWAITING_CARRIER_PICKUP") && Date.parse(approvalClock) < Date.parse(deadline) && Date.parse(nextCheckAt) >= Date.parse(deadline)) {
       return fail("VALIDATION_ERROR", "正常跟进时间必须早于原承诺截止；请改成截止前的时间。", "REQ_APPROVE", false);
     }
     response.accountability_state.case_id = input.case_id;
@@ -474,7 +558,7 @@ export const mockApi = {
     }
     if (response.accountability_state.service_progress_receipt) {
       response.accountability_state.service_progress_receipt.status = "ACTIVE";
-      response.accountability_state.service_progress_receipt.latest_update_at = serviceClock;
+      response.accountability_state.service_progress_receipt.latest_update_at = approvalClock;
       response.accountability_state.service_progress_receipt.next_update_by = nextCheckAt;
       response.accountability_state.service_progress_receipt.brand_action =
         "正在核实换货件是否已由物流揽收。";
@@ -500,14 +584,19 @@ export const mockApi = {
       if (existingState.open_obligation.status === "COMPLETED") return fail("INVALID_EVENT_TRANSITION", "履约已完成，不能重新激活换货责任。", "REQ_APPROVE", false);
       response.accountability_state = structuredClone(existingState);
       response.accountability_state.open_obligation!.next_check_at = nextCheckAt;
+      const executor = existingState.open_obligation.milestone === "IN_TRANSIT"
+        ? existingState.open_obligation.executor
+        : input.human_edits.executor ?? existingState.open_obligation.executor;
+      response.accountability_state.open_obligation!.executor = executor;
+      response.approved_resolution.executor = executor;
       if (response.accountability_state.service_progress_receipt) response.accountability_state.service_progress_receipt.next_update_by = nextCheckAt;
     }
     const auditEntry = {
-      at: serviceClock,
+      at: approvalClock,
       actor: input.approver_id,
       action: "RESOLUTION_APPROVED" as const,
       changed_fields: Object.keys(input.human_edits),
-      request_id: `REQ_APPROVE_${serviceClock}`,
+      request_id: `REQ_APPROVE_${approvalClock}`,
     };
     response.accountability_state.audit_trail = [
       ...(states.get(input.case_id)?.audit_trail ?? []),
@@ -526,6 +615,14 @@ export const mockApi = {
       return fail("INVALID_EVENT_TRANSITION", "物流状态已经变化，请刷新后重新选择事件。", "REQ_SHIPMENT");
     }
     const stage = shipmentStages.get(input.case_id) ?? "AWAITING_PICKUP";
+    const prior = states.get(input.case_id);
+    const latestTime = demoClocks.get(input.case_id) ?? prior?.service_progress_receipt?.latest_update_at;
+    if (latestTime && Date.parse(input.event_time) < Date.parse(latestTime)) {
+      return fail("INVALID_EVENT_TRANSITION", "物流事件时间不能早于当前模拟服务时间。", "REQ_SHIPMENT", false);
+    }
+    if (input.event_type === "SHIPMENT_NOT_PICKED_UP" && stage !== "AWAITING_PICKUP") {
+      return fail("INVALID_EVENT_TRANSITION", "物流已经揽收，不能再登记未揽收。", "REQ_SHIPMENT", false);
+    }
     if (input.event_type === "SHIPMENT_DELIVERED" && stage !== "IN_TRANSIT") {
       return fail("INVALID_EVENT_TRANSITION", "未揽收的换货件不能直接标记为已送达。", "REQ_SHIPMENT");
     }
@@ -536,6 +633,9 @@ export const mockApi = {
     const response = structuredClone(source);
     const eventAt = input.event_time;
     response.accountability_state.case_id = input.case_id;
+    if (prior?.open_obligation && response.accountability_state.open_obligation) {
+      response.accountability_state.open_obligation.deadline = prior.open_obligation.deadline;
+    }
     if (input.event_type === "SHIPMENT_DELIVERED") {
       response.accountability_state.case_status = "RESOLVED";
       response.accountability_state.experience_risk = "LOW";
@@ -552,7 +652,7 @@ export const mockApi = {
       response.supervisor_escalation_candidate = null;
       shipmentStages.set(input.case_id, "DELIVERED");
     } else if (input.event_type === "SHIPMENT_PICKED_UP") {
-      const nextUpdate = "2026-05-08T10:10:00+08:00";
+      const nextUpdate = new Date(Math.max(Date.parse("2026-05-08T10:10:00+08:00"), Date.parse(eventAt) + 24 * 60 * 60_000)).toISOString();
       if (response.accountability_state.open_obligation) {
         response.accountability_state.open_obligation.next_check_at = nextUpdate;
         response.accountability_state.open_obligation.status = "ON_TRACK";
@@ -582,6 +682,13 @@ export const mockApi = {
         response.accountability_state.service_progress_receipt.next_update_by = nextUpdate;
       }
     }
+    if (response.accountability_state.service_progress_receipt) {
+      response.accountability_state.service_progress_receipt.latest_update_at = eventAt;
+      if (input.event_type === "SHIPMENT_DELIVERED") {
+        response.accountability_state.service_progress_receipt.next_update_by = eventAt;
+        if (response.accountability_state.open_obligation) response.accountability_state.open_obligation.next_check_at = eventAt;
+      }
+    }
     const nextUpdateAt = response.accountability_state.service_progress_receipt?.next_update_by ?? eventAt;
     const notificationText = typeof response.proactive_notification_draft === "string"
       ? response.proactive_notification_draft
@@ -603,6 +710,7 @@ export const mockApi = {
       },
     ];
     states.set(input.case_id, structuredClone(response.accountability_state));
+    demoClocks.set(input.case_id, eventAt);
     return ok(response, "REQ_SHIPMENT");
   },
 };

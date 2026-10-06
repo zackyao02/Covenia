@@ -1,5 +1,5 @@
 from fastapi.testclient import TestClient
-from datetime import datetime
+from datetime import datetime, timedelta
 import copy
 import json
 from pathlib import Path
@@ -7,7 +7,7 @@ import pytest
 
 from backend.decision import engine as decision_engine
 from backend.draft_review import assess_draft, contains_unsupported_fulfillment_guarantee
-from backend.main import app, analyses, analyzed_inputs, deadline_escalations, idempotency, last_event_times, redact_for_model, shipment_stages, states
+from backend.main import app, analyses, analyzed_inputs, deadline_escalations, idempotency, last_event_times, redact_for_model, shipment_stages, simulated_clocks, states
 
 
 client = TestClient(app)
@@ -130,10 +130,166 @@ def reset_service() -> None:
     analyzed_inputs.clear()
     shipment_stages.clear()
     last_event_times.clear()
+    simulated_clocks.clear()
     idempotency.clear()
     deadline_escalations.clear()
     decision_engine._CACHE.clear()
     decision_engine.AUDIT_LOG.clear()
+
+
+def approve_demo_replacement() -> dict:
+    response = client.post("/api/resolutions/approve", json={
+        "case_id": "DEMO_001", "candidate_type": "CHECK_REPLACEMENT_FULFILLMENT",
+        "approver_id": "AGENT_ZHOU", "idempotency_key": "approve-clock-demo",
+        "human_edits": {"executor": "WAREHOUSE"},
+    })
+    assert response.status_code == 200
+    return response.json()["data"]["accountability_state"]
+
+
+def test_demo_clock_requires_approved_active_replacement_and_near_due_is_honest() -> None:
+    reset_service()
+    analyze()
+    rejected = client.post("/api/demo/clock/advance", json={
+        "case_id": "DEMO_001", "step": "NEAR_DUE", "idempotency_key": "clock-before-approval",
+    })
+    assert rejected.status_code == 409
+    assert states["DEMO_001"]["active_commitments"]
+    assert states["DEMO_001"]["open_obligation"] is None
+
+    approved = approve_demo_replacement()
+    deadline = datetime.fromisoformat(approved["open_obligation"]["deadline"])
+    response = client.post("/api/demo/clock/advance", json={
+        "case_id": "DEMO_001", "step": "NEAR_DUE", "idempotency_key": "clock-near-due-01",
+    })
+    assert response.status_code == 200
+    data = response.json()["data"]
+    expected_clock = deadline - timedelta(minutes=10)
+    assert data["simulation"] is True
+
+    assert "人工审核" not in data["proactive_notification_draft"]["text"]
+    assert "T10:" not in data["proactive_notification_draft"]["text"]
+    assert datetime.fromisoformat(data["service_clock"]) == expected_clock
+    assert data["deadline_state"]["status"] == "NEAR_DUE"
+    assert data["accountability_state"]["active_commitments"][0]["status"] == "ACTIVE"
+    assert data["accountability_state"]["case_status"] == approved["case_status"]
+    assert data["proactive_notification_draft"]["requires_human_approval"] is True
+    next_check = (deadline - timedelta(minutes=5)).isoformat()
+    assert data["proactive_notification_draft"]["commits_next_update_at"] == next_check
+    assert data["accountability_state"]["open_obligation"]["next_check_at"] == next_check
+    assert data["accountability_state"]["service_progress_receipt"]["next_update_by"] == next_check
+    assert data["accountability_state"]["audit_trail"][-1]["actor"] == "DEMO_CLOCK_SIMULATOR"
+
+
+def test_demo_clock_overdue_escalates_once_and_idempotency_conflicts() -> None:
+    reset_service()
+    analyze()
+    approve_demo_replacement()
+    response = client.post("/api/demo/clock/advance", json={
+        "case_id": "DEMO_001", "step": "OVERDUE", "idempotency_key": "clock-overdue-01",
+    })
+    assert response.status_code == 200
+    data = response.json()["data"]
+    clock = datetime.fromisoformat(data["service_clock"])
+    deadline = datetime.fromisoformat(data["accountability_state"]["open_obligation"]["deadline"])
+    assert clock == deadline + timedelta(minutes=1)
+    assert data["accountability_state"]["case_status"] == "AT_RISK"
+    assert data["accountability_state"]["active_commitments"][0]["status"] == "AT_RISK"
+    obligation = data["accountability_state"]["open_obligation"]
+    receipt = data["accountability_state"]["service_progress_receipt"]
+    assert datetime.fromisoformat(obligation["next_check_at"]) > clock
+    assert obligation["next_check_at"] == receipt["next_update_by"] == data["proactive_notification_draft"]["commits_next_update_at"]
+    assert data["follow_up_candidate"]["task_type"] == "WAREHOUSE_FOLLOW_UP"
+    assert data["follow_up_candidate"]["existing_ticket_id"]
+    assert data["supervisor_escalation_candidate"]["escalation_type"] == "PROMISE_OVERDUE"
+    assert data["proactive_notification_draft"]["requires_human_approval"] is True
+    assert data["simulation"] is True
+    assert any("已逾期" in fact["statement"] for fact in data["customer_state"]["facts"])
+    assert all("仍在有效期内" not in item for item in data["customer_state"]["evidence"]["known"])
+    before_rewind = copy.deepcopy(states["DEMO_001"])
+    rewind = client.post("/api/demo/clock/advance", json={
+        "case_id": "DEMO_001", "step": "NEAR_DUE", "idempotency_key": "clock-overdue-rewind",
+    })
+    assert rewind.status_code == 409
+    assert states["DEMO_001"] == before_rewind
+    reviewed = client.post("/api/actions/evaluate", json={
+        "case_id": "DEMO_001", "prepared_action": hero_action("CHECK_REPLACEMENT_PROGRESS"),
+        "draft_reply": data["proactive_notification_draft"]["text"],
+    }).json()["data"]
+    assert reviewed["resolution_path"]["compiled_service_responsibility"]["next_check_at"] == receipt["next_update_by"]
+    confirmed = client.post("/api/resolutions/approve", json={
+        "case_id": "DEMO_001", "candidate_type": "CHECK_REPLACEMENT_FULFILLMENT",
+        "approver_id": "AGENT_ZHOU", "idempotency_key": "approve-clock-notification",
+        "human_edits": {"executor": "WAREHOUSE", "next_check_at": receipt["next_update_by"],
+                        "consumer_reply": data["proactive_notification_draft"]["text"]},
+    })
+    assert confirmed.status_code == 200
+    assert confirmed.json()["data"]["accountability_state"]["open_obligation"]["status"] == "AT_RISK"
+
+    audit_count = len(states["DEMO_001"]["audit_trail"])
+    repeated = client.post("/api/demo/clock/advance", json={
+        "case_id": "DEMO_001", "step": "OVERDUE", "idempotency_key": "clock-overdue-02",
+    }).json()["data"]
+    assert repeated["follow_up_candidate"] is None
+    assert repeated["supervisor_escalation_candidate"] is None
+    assert len(states["DEMO_001"]["audit_trail"]) == audit_count
+    conflict = client.post("/api/demo/clock/advance", json={
+        "case_id": "DEMO_001", "step": "NEAR_DUE", "idempotency_key": "clock-overdue-01",
+    })
+    assert conflict.status_code == 409
+    assert conflict.json()["error"]["code"] == "IDEMPOTENCY_CONFLICT"
+
+
+def test_demo_clock_outputs_match_extension_contract_without_changing_frozen_schema() -> None:
+    from jsonschema import Draft202012Validator, FormatChecker
+    from referencing import Registry, Resource
+
+    schemas = [json.loads(file.read_text(encoding="utf-8")) for file in (PROJECT_ROOT / "schemas").glob("*.json")]
+    registry = Registry().with_resources((schema["$id"], Resource.from_contents(schema)) for schema in schemas)
+    extension = next(schema for schema in schemas if schema["$id"] == "demo-clock-advance-response.schema.json")
+    validator = Draft202012Validator(extension, registry=registry, format_checker=FormatChecker())
+    reset_service()
+    analyze()
+    approve_demo_replacement()
+    for step in ("NEAR_DUE", "OVERDUE"):
+        response = client.post("/api/demo/clock/advance", json={
+            "case_id": "DEMO_001", "step": step, "idempotency_key": f"clock-schema-{step}",
+        })
+        assert response.status_code == 200
+        errors = list(validator.iter_errors(response.json()["data"]))
+        def leaf_errors(error):
+            return [leaf for child in error.context for leaf in leaf_errors(child)] if error.context else [error]
+        assert not errors, [(list(error.absolute_path), error.validator, str(error.validator_value)[:240]) for root in errors for error in leaf_errors(root)]
+
+
+def test_demo_clock_never_rewinds_blocks_in_transit_and_reset_clears_it() -> None:
+    reset_service()
+    analyze()
+    approve_demo_replacement()
+    near = client.post("/api/demo/clock/advance", json={
+        "case_id": "DEMO_001", "step": "NEAR_DUE", "idempotency_key": "clock-no-rewind-01",
+    }).json()["data"]
+    near_clock = datetime.fromisoformat(near["service_clock"])
+    repeated_near = client.post("/api/demo/clock/advance", json={
+        "case_id": "DEMO_001", "step": "NEAR_DUE", "idempotency_key": "clock-no-rewind-02",
+    }).json()["data"]
+    assert datetime.fromisoformat(repeated_near["service_clock"]) == near_clock
+
+    pickup_time = (near_clock + timedelta(minutes=1)).isoformat()
+    pickup = client.post("/api/events/shipment", json={
+        "case_id": "DEMO_001", "event_id": "PICKUP_AFTER_CLOCK", "event_type": "SHIPMENT_PICKED_UP",
+        "event_time": pickup_time, "idempotency_key": "pickup-after-demo-clock",
+    })
+    assert pickup.status_code == 200
+    blocked = client.post("/api/demo/clock/advance", json={
+        "case_id": "DEMO_001", "step": "OVERDUE", "idempotency_key": "clock-after-pickup",
+    })
+    assert blocked.status_code == 409
+
+    reset = client.post("/api/demo/session/reset", json={"case_id": "DEMO_001"})
+    assert reset.status_code == 200
+    assert "DEMO_001" not in simulated_clocks
+    assert client.get("/api/customer-state/DEMO_001").json()["data"]["service_clock"] == "2026-05-07T09:42:00+08:00"
 
 
 def analyze(case_id: str = "DEMO_001") -> dict:
@@ -225,9 +381,11 @@ def test_evaluate_uses_server_state_and_challenge_gate() -> None:
     repeated_photo_reply = client.post("/api/actions/evaluate", json={
         **base,
         "draft_reply": "麻烦您再上传一次泵头破损照片，我收到后才能继续处理。",
-    }).json()["data"]
-    assert repeated_photo_reply["rule_id"] == "E1"
-    assert repeated_photo_reply["decision"] == "INTERVENE"
+    })
+    assert repeated_photo_reply.status_code == 400
+    assert repeated_photo_reply.json()["data"] is None
+    assert repeated_photo_reply.json()["error"]["code"] == "P0_PROHIBITED_ACTION"
+    assert "重复提交" in repeated_photo_reply.json()["error"]["message"]
 
 
 def test_priority_order_is_p0_then_h1_then_e1() -> None:
@@ -546,6 +704,13 @@ def test_delayed_pickup_can_recover_after_not_picked_up_and_rejects_contradictio
     assert delayed.status_code == 200
     assert delayed.json()["data"]["accountability_state"]["case_status"] == "AT_RISK"
 
+    backdated_pickup = client.post("/api/events/shipment", json={
+        "case_id": "DEMO_001", "event_id": "BACKDATED-PICKUP", "event_type": "SHIPMENT_PICKED_UP",
+        "event_time": "2026-05-07T10:10:00+08:00", "idempotency_key": "shipment-backdated-pickup",
+    })
+    assert backdated_pickup.status_code == 409
+    assert backdated_pickup.json()["error"]["code"] == "INVALID_EVENT_TRANSITION"
+
     pickup = client.post("/api/events/shipment", json={
         "case_id": "DEMO_001", "event_id": "PICKUP-AFTER-DELAY", "event_type": "SHIPMENT_PICKED_UP",
         "event_time": "2026-05-07T11:50:00+08:00", "idempotency_key": "shipment-pickup-after-delay",
@@ -614,11 +779,16 @@ def test_v11_decisions_aliases_evaluate_and_deadline_monitor_runs_once() -> None
     first = client.post("/api/deadlines/run", json={"case_ids": ["DEMO_001"], "now": "2026-05-07T11:00:00+08:00"}).json()["data"]
     assert "DEMO_001" in first["escalated_case_ids"]
     assert first["deadline_states"][0]["status"] == "ESCALATED"
+    assert states["DEMO_001"]["audit_trail"][-1]["at"] == "2026-05-07T11:00:00+08:00"
+    assert states["DEMO_001"]["audit_trail"][-1]["action"] == "PROMISE_DEADLINE_ESCALATED"
     audit_count = len(states["DEMO_001"]["audit_trail"])
 
     second = client.post("/api/deadlines/run", json={"case_ids": ["DEMO_001"], "now": "2026-05-07T12:00:00+08:00"}).json()["data"]
     assert second["deadline_states"][0]["escalated_once"] is True
-    assert len(states["DEMO_001"]["audit_trail"]) == audit_count
+    assert len(states["DEMO_001"]["audit_trail"]) == audit_count + 1
+    assert states["DEMO_001"]["audit_trail"][-1]["at"] == "2026-05-07T12:00:00+08:00"
+    assert states["DEMO_001"]["audit_trail"][-1]["action"] == "DEADLINE_MONITOR_CLOCK_ADVANCED"
+    assert sum(item["action"] == "PROMISE_DEADLINE_ESCALATED" for item in states["DEMO_001"]["audit_trail"]) == 1
 
 
 def test_jev_decision_layer_falls_back_without_provider(monkeypatch) -> None:

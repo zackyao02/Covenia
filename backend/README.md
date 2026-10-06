@@ -52,3 +52,11 @@ TYPESAFE_TIMEOUT_SECONDS=10
 ```powershell
 python -m pytest backend/tests -q
 ```
+
+## 本地模拟时间扩展（2026-10-05）
+
+`POST /api/demo/clock/advance` 接受 `{case_id, step: "NEAR_DUE" | "OVERDUE", idempotency_key}`。仅允许尚未揽收、已人工批准的换货义务，分别推进至原截止前 10 分钟或之后 1 分钟。返回统一响应外壳下的 `service_clock`、责任、Customer State、期限、优先队列、跟进/升级候选与待确认通知。
+
+重置案例会清除模拟时钟和对应幂等记录；倒退、越级或时序矛盾会拒绝。通知更新时间、回执和义务同步，重复逾期检查不重复生成升级。此接口是手动模拟检查，不是生产定时调度或真实仓库任务。
+
+扩展返回契约见 `schemas/demo-clock-advance-response.schema.json` 与 `schemas/demo-accountability-state.schema.json`。冻结的基础责任 Schema 保持原样；不要用它校验新增的本地模拟审计事件。

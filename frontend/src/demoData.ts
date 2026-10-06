@@ -272,3 +272,16 @@ export function formatClock(value: string) {
     hour12: false,
   }).format(new Date(value));
 }
+
+export function formatServiceDateTime(value: string) {
+  const parts = new Intl.DateTimeFormat("zh-CN", {
+    timeZone: "Asia/Shanghai",
+    month: "numeric",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).formatToParts(new Date(value));
+  const part = (type: Intl.DateTimeFormatPartTypes) => parts.find((item) => item.type === type)?.value ?? "";
+  return `${part("month")}月${part("day")}日 ${part("hour")}:${part("minute")}`;
+}

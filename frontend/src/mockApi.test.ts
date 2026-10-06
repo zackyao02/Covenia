@@ -54,6 +54,47 @@ describe("Covenia v0.8 frontend API contract", () => {
     configureMockMode("normal");
   });
 
+  it("advances simulated time into recovery without making the customer contact again", async () => {
+    await analyze("DEMO_001");
+    const unapproved = await mockApi.advanceDemoClock({ case_id: "DEMO_001", step: "NEAR_DUE", idempotency_key: "clock-before-approval" });
+    expect(unapproved.error?.code).toBe("VALIDATION_ERROR");
+    const evaluated = await mockApi.evaluateAction(evaluateRequest("DEMO_001"));
+    if (evaluated.error) throw new Error(evaluated.error.message);
+    await mockApi.approveResolution({ case_id: "DEMO_001", candidate_type: evaluated.data.resolution_path.candidate_type, approver_id: "AGENT_ZHOU", idempotency_key: "clock-approve", human_edits: {} });
+    const near = await mockApi.advanceDemoClock({ case_id: "DEMO_001", step: "NEAR_DUE", idempotency_key: "clock-near" });
+    if (near.error) throw new Error(near.error.message);
+    expect(near.data.deadline_state.status).toBe("NEAR_DUE");
+    expect(near.data.accountability_state.active_commitments[0].status).toBe("ACTIVE");
+    const request = { case_id: "DEMO_001", step: "OVERDUE" as const, idempotency_key: "clock-overdue" };
+    const overdue = await mockApi.advanceDemoClock(request);
+    if (overdue.error) throw new Error(overdue.error.message);
+    expect(overdue.data.accountability_state.case_status).toBe("AT_RISK");
+    expect(overdue.data.follow_up_candidate?.priority).toBe("HIGH");
+    expect(overdue.data.supervisor_escalation_candidate).not.toBeNull();
+    expect(overdue.data.proactive_notification_draft?.requires_human_approval).toBe(true);
+    expect(overdue.data.proactive_notification_draft?.commits_next_update_at).toBe(overdue.data.accountability_state.open_obligation?.next_check_at);
+    expect(Date.parse(overdue.data.proactive_notification_draft!.commits_next_update_at)).toBeGreaterThan(Date.parse(overdue.data.service_clock));
+    expect(await mockApi.advanceDemoClock(request)).toEqual(overdue);
+    const rewind = await mockApi.advanceDemoClock({ case_id: "DEMO_001", step: "NEAR_DUE", idempotency_key: "clock-rewind" });
+    expect(rewind.error?.code).toBe("INVALID_EVENT_TRANSITION");
+    const picked = await mockApi.pushShipmentEvent({ case_id: "DEMO_001", event_type: "SHIPMENT_PICKED_UP", event_time: new Date(Date.parse(overdue.data.service_clock) + 60_000).toISOString(), event_id: "picked-after-clock", idempotency_key: "picked-after-clock" });
+    expect(picked.data?.accountability_state.open_obligation?.milestone).toBe("IN_TRANSIT");
+    const lateBreach = await mockApi.advanceDemoClock({ case_id: "DEMO_001", step: "OVERDUE", idempotency_key: "clock-after-pickup" });
+    expect(lateBreach.error?.code).toBe("INVALID_EVENT_TRANSITION");
+  }, 15000);
+
+  it("reset clears the simulated clock and its operation records", async () => {
+    await analyze("DEMO_001");
+    const evaluated = await mockApi.evaluateAction(evaluateRequest("DEMO_001"));
+    if (evaluated.error) throw new Error(evaluated.error.message);
+    await mockApi.approveResolution({ case_id: "DEMO_001", candidate_type: evaluated.data.resolution_path.candidate_type, approver_id: "AGENT_ZHOU", idempotency_key: "reset-clock-approve", human_edits: {} });
+    const input = { case_id: "DEMO_001", step: "OVERDUE" as const, idempotency_key: "reset-clock-overdue" };
+    expect((await mockApi.advanceDemoClock(input)).error).toBeNull();
+    await mockApi.resetDemoSession("DEMO_001");
+    await analyze("DEMO_001");
+    expect((await mockApi.advanceDemoClock(input)).error?.code).toBe("VALIDATION_ERROR");
+  }, 10000);
+
   it("advances the two service side cases through recorded simulator events", async () => {
     await analyze("DEMO_002");
     const evidence = await mockApi.pushDemoServiceEvent({ case_id: "DEMO_002", event_type: "CURRENT_SCOPE_EVIDENCE_SUBMITTED", idempotency_key: "mock-evidence-001" });

@@ -21,6 +21,36 @@ def contains_unsupported_fulfillment_guarantee(text: str) -> bool:
     return False
 
 
+def reply_conflict_with_state(state: dict, text: str) -> str | None:
+    """Block requests for evidence already on file and completion claims ahead of facts."""
+    t = re.sub(r"\s+", "", text).lower()
+    clauses = re.split(r"[，。；;！!？?]|但|不过|然而|同时|另外", t)
+    negative = r"(?:不需要|无需|不用|不必|不再|不要|请勿|不会|不能|无法|尚未|还没|未|没|别)"
+    if state.get("evidence_status") == "VALID":
+        evidence_terms = r"(?:照片|图片|凭证|证据|材料|近照)"
+        repeat_request = r"(?:再|重新|再次|重复|补充|补拍|重传|再发|再拍|重新上传|重新发送|再次提交|再提交|补交|补发).{0,12}" + evidence_terms
+        reverse_request = evidence_terms + r".{0,10}(?:重传|再发|补发|重新上传|再拍|重复提交|重新提交)"
+        for clause in clauses:
+            if re.search(repeat_request, clause) or re.search(reverse_request, clause):
+                if not re.search(negative + r".{0,12}(?:再|重新|再次|重复|补充|补拍|重传|再发|再拍|上传|发送|提交|提供|拍)", clause):
+                    return "当前材料已经收到，不能要求消费者重复提交。"
+
+    obligation = state.get("open_obligation") or {}
+    delivered = obligation.get("status") == "COMPLETED" or obligation.get("milestone") == "DELIVERED" or state.get("case_status") in ("RESOLVED", "CLOSED")
+    has_open_service = bool(obligation or state.get("active_commitments")) and not delivered
+    if has_open_service:
+        fulfillment_claim = r"(?:换货件|补发件|包裹|快递|商品|物流).{0,12}(?:已经|已|成功)?(?:送达|送到|到货|签收|收到了)"
+        resolution_claim = r"(?:问题|服务|本次处理).{0,8}(?:已经|已)?(?:解决|完成)|(?:不用|无需|不必).{0,5}再跟进"
+        for clause in clauses:
+            if re.search(r"(?:吗|么|没有|呢|是否)$", clause):
+                continue
+            if re.search(fulfillment_claim, clause) and not re.search(negative + r".{0,10}(?:送达|送到|到货|签收)", clause):
+                return "当前履约记录尚未显示送达，不能声称换货件已经送达。"
+            if re.search(resolution_claim, clause) and not re.search(negative + r".{0,10}(?:解决|完成|跟进)", clause):
+                return "当前仍有服务事项待处理，不能把问题表述为已解决。"
+    return None
+
+
 def assess_draft(text: str) -> dict:
     t = re.sub(r"\s+", "", text).lower()
     clauses = re.split(r"[，。；;！!？?]|但|不过|然而|同时|另外|并请", t)

@@ -14,6 +14,8 @@ import type {
   DemoServiceEventRequest,
   DemoServiceEventResponse,
   PriorityState,
+  DemoClockAdvanceRequest,
+  DemoClockAdvanceResponse,
 } from "./contracts";
 import { mockApi } from "../mockApi";
 
@@ -28,7 +30,15 @@ async function get<T>(path: string): Promise<ApiResult<T>> {
       headers: { "X-Request-Id": requestId },
       signal: controller.signal,
     });
-    return await response.json() as ApiResult<T>;
+    const result = await response.json() as ApiResult<T>;
+    if (!response.ok) {
+      return {
+        data: null,
+        error: result.error ?? { code: "INTERNAL_ERROR", message: "服务暂时不可用，请稍后重试。", retryable: true },
+        request_id: requestId,
+      };
+    }
+    return result;
   } catch {
     return {
       data: null,
@@ -60,6 +70,13 @@ async function post<TRequest, TResponse>(
       signal: controller.signal,
     });
     const result = (await response.json()) as ApiResult<TResponse>;
+    if (!response.ok) {
+      return {
+        data: null,
+        error: result.error ?? { code: "INTERNAL_ERROR", message: "服务暂时不可用，请稍后重试。", retryable: true },
+        request_id: requestId,
+      };
+    }
     return result;
   } catch (error) {
     return {
@@ -81,6 +98,11 @@ async function post<TRequest, TResponse>(
 }
 
 export const httpApi: CoveniaApi = {
+  advanceDemoClock(input: DemoClockAdvanceRequest) {
+    return post<DemoClockAdvanceRequest, DemoClockAdvanceResponse>("/api/demo/clock/advance", input, {
+      timeoutMs: 20_000,
+    });
+  },
   resetDemoSession(caseId: string) {
     return post<{ case_id: string }, { case_id: string; reset: true }>("/api/demo/session/reset", { case_id: caseId }, {
       timeoutMs: 10_000,

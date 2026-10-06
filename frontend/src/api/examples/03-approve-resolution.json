@@ -87,7 +87,7 @@
           "accountable_side": "BRAND",
           "executor": "WAREHOUSE",
           "deadline": "2026-05-07T10:27:37+08:00",
-          "next_check_at": "2026-05-07T11:30:00+08:00",
+          "next_check_at": "2026-05-07T10:10:00+08:00",
           "milestone": "AWAITING_CARRIER_PICKUP",
           "resolution_condition": "REPLACEMENT_DELIVERED"
         },
@@ -143,7 +143,7 @@
           "commitment_class": "STANDARD_APPROVED",
           "activation_status": "ACTIVE",
           "deadline": "2026-05-07T10:27:37+08:00",
-          "next_check_at": "2026-05-07T10:00:00+08:00",
+          "next_check_at": "2026-05-07T10:10:00+08:00",
           "recovery_if_missed": "品牌主动催办仓库，升级给主管并通知消费者新的处理时间。"
         }
       },

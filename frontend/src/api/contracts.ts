@@ -326,6 +326,10 @@ export interface AuditTrailEntry {
     | "SHIPMENT_PICKED_UP"
     | "SHIPMENT_NOT_PICKED_UP"
     | "SHIPMENT_DELIVERED"
+    | "PROMISE_DEADLINE_ESCALATED"
+    | "DEMO_CLOCK_NEAR_DUE"
+    | "DEMO_CLOCK_OVERDUE_ESCALATED"
+    | "DEMO_CLOCK_OVERDUE_ALREADY_ESCALATED"
     | DemoServiceEventType;
   changed_fields: string[];
   request_id: string;
@@ -384,7 +388,7 @@ export interface RiskState {
   score: number;
   level: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
   factors: Array<{
-    factor_type: "PROMISE_OVERDUE" | "REPEAT_CONTACT" | "EVIDENCE_CONFLICT" | "HUMAN_REVIEW_REQUIRED" | "FULFILLMENT_STALLED" | "EFFORT_HIGH";
+    factor_type: "PROMISE_NEAR_DUE" | "PROMISE_OVERDUE" | "REPEAT_CONTACT" | "EVIDENCE_CONFLICT" | "HUMAN_REVIEW_REQUIRED" | "FULFILLMENT_STALLED" | "EFFORT_HIGH";
     weight: number;
     reason: string;
     source_evidence_ids: string[];
@@ -750,6 +754,25 @@ export interface DemoServiceEventResponse {
   event_summary: string;
 }
 
+export type DemoClockStep = "NEAR_DUE" | "OVERDUE";
+
+export interface DemoClockAdvanceRequest {
+  case_id: string;
+  step: DemoClockStep;
+  idempotency_key: string;
+}
+
+/** Local simulation; the backend computes the resulting responsibility and queue. */
+export interface DemoClockAdvanceResponse extends ShipmentEventResponse {
+  service_clock: ISODateTime;
+  simulation: true;
+  step: DemoClockStep;
+  event_summary: string;
+  customer_state: CustomerState | null;
+  priority_states: PriorityState[];
+  deadline_state: DeadlineState;
+}
+
 export type ApiErrorCode =
   | "SCHEMA_INVALID"
   | "VALIDATION_ERROR"
@@ -788,6 +811,7 @@ export interface CoveniaApi {
     input: ShipmentEventRequest,
   ): Promise<ApiResult<ShipmentEventResponse>>;
   pushDemoServiceEvent(input: DemoServiceEventRequest): Promise<ApiResult<DemoServiceEventResponse>>;
+  advanceDemoClock(input: DemoClockAdvanceRequest): Promise<ApiResult<DemoClockAdvanceResponse>>;
   getRiskStates?(): Promise<ApiResult<RiskState[]>>;
   getPriorityStates?(): Promise<ApiResult<PriorityState[]>>;
   getEmergingIssues?(): Promise<ApiResult<EmergingIssue[]>>;

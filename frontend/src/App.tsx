@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type KeyboardEvent as ReactKeyboardEvent, type MutableRefObject } from "react";
 import {
   AlertCircle,
   AlertTriangle,
@@ -42,9 +42,11 @@ import type {
   CustomerState,
   ConversationMessage,
   PriorityState,
+  DemoClockStep,
 } from "./api/contracts";
 import { api } from "./api/client";
-import { decisionLabels, demoCases, formatClock, type DemoCase } from "./demoData";
+import { RetryIdentityStore } from "./api/retryIdentity";
+import { decisionLabels, demoCases, formatClock, formatServiceDateTime, type DemoCase } from "./demoData";
 import { simulateConsumerReply } from "./consumerSimulator";
 import { canRefreshSuggestedDraft, replySuggestionsFor, type ReplySuggestion } from "./replySuggestions";
 import { configureMockMode, type MockMode } from "./mockApi";
@@ -195,16 +197,8 @@ function fromShanghaiDateTimeInput(localTime: string) {
 }
 
 function useCountdown(target?: string, referenceTime?: string) {
-  const [wallAnchor, setWallAnchor] = useState(Date.now());
-  const [, setTick] = useState(0);
-  useEffect(() => {
-    setWallAnchor(Date.now());
-    const timer = window.setInterval(() => setTick((value) => value + 1), 1000);
-    return () => window.clearInterval(timer);
-  }, [referenceTime]);
-
   if (!target) return { label: "未设置", overdue: false };
-  const simulatedNow = referenceTime ? new Date(referenceTime).getTime() + Date.now() - wallAnchor : Date.now();
+  const simulatedNow = referenceTime ? Date.parse(referenceTime) : Date.now();
   const difference = new Date(target).getTime() - simulatedNow;
   const absoluteSeconds = Math.max(0, Math.floor(Math.abs(difference) / 1000));
   const hours = Math.floor(absoluteSeconds / 3600);
@@ -216,7 +210,13 @@ function useCountdown(target?: string, referenceTime?: string) {
   return { label, overdue: difference < 0 };
 }
 
+function nextShipmentEventTime(serviceClock: string | undefined, receiptUpdatedAt: string | undefined, fallback: string) {
+  const latest = Math.max(Date.parse(serviceClock ?? fallback), Date.parse(receiptUpdatedAt ?? fallback), Date.parse(fallback));
+  return new Date(latest + 60_000).toISOString();
+}
+
 function App() {
+  const retryIdentities = useRef(new RetryIdentityStore());
   const [selectedId, setSelectedId] = useState("DEMO_001");
   const [accountability, setAccountability] = useState<AccountabilityState | null>(null);
   const [journey, setJourney] = useState<ExtractedJourney | null>(null);
@@ -231,6 +231,7 @@ function App() {
   const [approvalError, setApprovalError] = useState<string | null>(null);
   const [extraMessages, setExtraMessages] = useState<AddedMessage[]>([]);
   const [blockedDraftText, setBlockedDraftText] = useState<string | null>(null);
+  const [blockedDraftReason, setBlockedDraftReason] = useState<string | null>(null);
   const [simulationEnded, setSimulationEnded] = useState(false);
   const [consumerTyping, setConsumerTyping] = useState(false);
   const [consumerStatePending, setConsumerStatePending] = useState(false);
@@ -258,6 +259,10 @@ function App() {
   const consumerAnalysisSequence = useRef(0);
   const extraMessagesRef = useRef<AddedMessage[]>([]);
   const [simulationTime, setSimulationTime] = useState(demoCases[0].input.evaluation_time);
+  const [clockStepPending, setClockStepPending] = useState<DemoClockStep | null>(null);
+  const [clockEventSummary, setClockEventSummary] = useState<string | null>(null);
+  const [clockNotificationDraft, setClockNotificationDraft] = useState<string | null>(null);
+  const [clockDeadlineStatus, setClockDeadlineStatus] = useState<string | null>(null);
   const [hydratedSessionCase, setHydratedSessionCase] = useState<string | null>(null);
 
   useEffect(() => { draftRef.current = draft; }, [draft]);
@@ -287,6 +292,10 @@ function App() {
       setRuntimeMetrics(null);
       setCustomerState(null);
       setSimulationTime(selectedCase.input.evaluation_time);
+      setClockStepPending(null);
+      setClockEventSummary(null);
+      setClockNotificationDraft(null);
+      setClockDeadlineStatus(null);
       setFollowUpCandidate(null);
       setSupervisorCandidate(null);
       setAccountability(null);
@@ -345,8 +354,7 @@ function App() {
         setExtraMessages(storedSession.messages);
         setSimulationEnded(storedSession.simulationEnded);
         consumerTurn.current = storedSession.consumerTurn;
-        const restoredCustomerState = storedSession.customerState ?? result.data.customer_state ?? null;
-        if (storedSession.customerState) setCustomerState(storedSession.customerState);
+        const restoredCustomerState = result.data.customer_state ?? null;
         const latestConsumerText = [...storedSession.messages].reverse().find((item) => item.kind === "consumer")?.text;
         if (latestConsumerText) {
           const refreshedSuggestions = replySuggestionsFor(
@@ -369,7 +377,7 @@ function App() {
       }
       void refreshPriority();
 
-      const restoredAsApproved = Boolean(backendHasSavedResolution || (storedSession?.phase === "approved" && storedSession.accountability));
+      const restoredAsApproved = backendHasSavedResolution;
       const shouldRestoreDecision = selectedCase.id !== "DEMO_001" || Boolean(storedSession && storedSession.phase !== "overview") || hasApprovedReview;
       if (shouldRestoreDecision) {
         const restoreAction: PreparedAction = selectedCase.id === "DEMO_001" && storedSession?.phase === "resolution"
@@ -439,7 +447,7 @@ function App() {
       ?? source?.open_obligation?.next_check_at
       ?? source?.open_obligation?.deadline
       ?? source?.active_commitments[0]?.deadline;
-    return value ? formatClock(value) : null;
+    return value ? formatServiceDateTime(value) : null;
   }
 
   async function evaluateAction(action?: PreparedAction, draftReply?: string) {
@@ -454,6 +462,10 @@ function App() {
     if (generation !== caseGeneration.current || caseId !== selectedId) return null;
     setActing(false);
     if (result.error) {
+      if (result.error.code === "P0_PROHIBITED_ACTION" && draftReply !== undefined) {
+        setBlockedDraftText(draftReply);
+        setBlockedDraftReason(result.error.message);
+      }
       setToast(result.error.message);
       return null;
     }
@@ -465,6 +477,10 @@ function App() {
 
   async function handleAttemptSend() {
     if (!draft.trim() || acting || consumerTyping) return;
+    if (loading || !accountability) {
+      setToast("服务分析尚未就绪，请等待分析完成或重新分析后检查回复");
+      return;
+    }
 
     const submittedDraft = draftRef.current;
     const caseId = selectedCase.id;
@@ -472,14 +488,17 @@ function App() {
     const result = await evaluateAction(undefined, submittedDraft);
     if (sequence !== sendSequence.current || caseId !== selectedId) return;
     if (!result) return;
-    setPhase("decision");
     const assessment = result.draft_assessment;
     if (result.decision === "INTERVENE") {
+      setPhase("decision");
       setBlockedDraftText(submittedDraft);
+      setBlockedDraftReason(result.reason);
       setReplySuggestions(replySuggestionsFor(caseId, customerState, submittedDraft, nextUpdateTimeLabel(), accountability?.demo_service_event ?? null, accountability?.open_obligation));
       setToast("消息已暂停，未发送给消费者");
     } else if (result.decision === "ALLOW" && assessment && !assessment.requires_confirmation) {
       setBlockedDraftText(null);
+      setBlockedDraftReason(null);
+      setPhase(accountabilityRef.current?.open_obligation ? "approved" : "decision");
       setExtraMessages((items) => [
         ...items,
         { id: `MSG_${crypto.randomUUID()}`, kind: "agent", text: assessment.evaluated_text, time: "本地记录" },
@@ -489,15 +508,18 @@ function App() {
       if (draftRef.current === submittedDraft) setDraft("");
       setToast("回复已记录在本地；千牛发送尚未接入");
     } else if (assessment) {
+      setPhase("decision");
       setBlockedDraftText(null);
+      setBlockedDraftReason(null);
       setApprovalReply(assessment.evaluated_text);
       pendingDraftRef.current = submittedDraft;
-      setExecutor(result.resolution_path.executor);
+      setExecutor(accountability?.open_obligation?.milestone === "IN_TRANSIT" ? "LOGISTICS_PROVIDER" : result.resolution_path.executor);
       const suggested = result.resolution_path.compiled_service_responsibility?.next_check_at ?? accountability?.service_progress_receipt?.next_update_by ?? accountability?.open_obligation?.next_check_at ?? accountability?.open_obligation?.deadline;
       setNextCheckAt(suggested ? toShanghaiDateTimeInput(suggested) : "");
       setApprovalOpen(true);
       setToast(assessment.explanation || "草稿需要人工确认");
     } else {
+      setPhase("decision");
       setToast("草稿评估未确认可发送，请人工确认后再处理");
     }
   }
@@ -634,17 +656,25 @@ function App() {
     }
     const generation = caseGeneration.current;
     const caseId = selectedCase.id;
+    const identityScope = `approve-${caseId}`;
+    const humanEdits = {
+      ...(decision.resolution_path.creates_obligation ? { executor: executor as ApproveResolutionRequest["human_edits"]["executor"] } : {}),
+      ...(decision.resolution_path.creates_obligation && nextCheckAt ? { next_check_at: fromShanghaiDateTimeInput(nextCheckAt) } : {}),
+      consumer_reply: approvalReply,
+    };
+    const identity = retryIdentities.current.get(identityScope, {
+      case_id: caseId,
+      candidate_type: decision.resolution_path.candidate_type,
+      approver_id: "AGENT_ZHOU",
+      human_edits: humanEdits,
+    });
     setActing(true);
     const input: ApproveResolutionRequest = {
       case_id: selectedCase.id,
       candidate_type: decision.resolution_path.candidate_type,
       approver_id: "AGENT_ZHOU",
-      idempotency_key: `approve-${selectedCase.id}-${crypto.randomUUID()}`,
-      human_edits: {
-        ...(decision.resolution_path.creates_obligation ? { executor: executor as ApproveResolutionRequest["human_edits"]["executor"] } : {}),
-        ...(decision.resolution_path.creates_obligation && nextCheckAt ? { next_check_at: fromShanghaiDateTimeInput(nextCheckAt) } : {}),
-        consumer_reply: approvalReply,
-      },
+      idempotency_key: identity.idempotencyKey,
+      human_edits: humanEdits,
     };
     const result = await api.approveResolution(input);
     if (generation !== caseGeneration.current || caseId !== selectedId) return;
@@ -656,6 +686,7 @@ function App() {
       setToast(result.error.message);
       return;
     }
+    retryIdentities.current.clear(identityScope);
     setApprovalError(null);
     accountabilityRef.current = result.data.accountability_state;
     setAccountability(result.data.accountability_state);
@@ -697,19 +728,23 @@ function App() {
     const generation = caseGeneration.current;
     const caseId = selectedCase.id;
     setActing(true);
-    const pickupAfterDelay = accountability.open_obligation?.milestone === "AWAITING_CARRIER_PICKUP";
-    const eventTime = eventType === "SHIPMENT_PICKED_UP"
-      ? (pickupAfterDelay ? "2026-05-07T11:50:00+08:00" : "2026-05-07T10:10:00+08:00")
-      : eventType === "SHIPMENT_NOT_PICKED_UP"
-        ? "2026-05-07T11:35:00+08:00"
-        : "2026-05-08T15:20:00+08:00";
-    setSimulationTime(eventTime);
-    const result = await api.pushShipmentEvent({
-      case_id: selectedCase.id,
-      event_id: `EVT_${crypto.randomUUID()}`,
+    const eventTime = nextShipmentEventTime(
+      customerState?.service_clock ?? simulationTime,
+      accountability.service_progress_receipt?.latest_update_at,
+      simulationTime,
+    );
+    const identityScope = `shipment-${caseId}-${eventType}`;
+    const identity = retryIdentities.current.get(identityScope, {
+      case_id: caseId,
       event_type: eventType,
       event_time: eventTime,
-      idempotency_key: `shipment-${selectedCase.id}-${crypto.randomUUID()}`,
+    }, true);
+    const result = await api.pushShipmentEvent({
+      case_id: selectedCase.id,
+      event_id: identity.eventId!,
+      event_type: eventType,
+      event_time: eventTime,
+      idempotency_key: identity.idempotencyKey,
     });
     if (generation !== caseGeneration.current || caseId !== selectedId) return;
     setActing(false);
@@ -717,6 +752,8 @@ function App() {
       setToast(result.error.message);
       return;
     }
+    retryIdentities.current.clear(identityScope);
+    setSimulationTime(eventTime);
     accountabilityRef.current = result.data.accountability_state;
     setAccountability(result.data.accountability_state);
     const latestConsumer = [...extraMessagesRef.current].reverse().find((item) => item.kind === "consumer")?.text ?? "";
@@ -736,7 +773,7 @@ function App() {
     const receipt = result.data.accountability_state.service_progress_receipt;
     if (receipt) {
       setExtraMessages((items) => [
-        ...items,
+        ...items.map((item) => item.kind === "receipt" ? { ...item, receipt, time: "现在" } : item),
         {
           id: `STATUS_${Date.now()}`,
           kind: "status",
@@ -755,19 +792,70 @@ function App() {
     );
   }
 
+  async function handleAdvanceDemoClock(step: DemoClockStep) {
+    const obligation = accountability?.open_obligation;
+    if (selectedCase.id !== "DEMO_001" || phase !== "approved" || !obligation || obligation.milestone !== "AWAITING_CARRIER_PICKUP" || !accountability?.service_progress_receipt) return;
+    const generation = caseGeneration.current;
+    const caseId = selectedCase.id;
+    const identityScope = `demo-clock-${caseId}-${step}`;
+    const identity = retryIdentities.current.get(identityScope, { case_id: caseId, step });
+    setActing(true);
+    const result = await api.advanceDemoClock({
+      case_id: caseId,
+      step,
+      idempotency_key: identity.idempotencyKey,
+    });
+    if (generation !== caseGeneration.current || caseId !== selectedId) return;
+    setActing(false);
+    if (result.error) {
+      setToast(result.error.message);
+      return;
+    }
+    retryIdentities.current.clear(identityScope);
+
+    const updated = result.data.accountability_state;
+    accountabilityRef.current = updated;
+    setAccountability(updated);
+    setSimulationTime(result.data.service_clock);
+    setCustomerState((previous) => result.data.customer_state ?? (previous ? {
+      ...previous,
+      service_clock: result.data.service_clock,
+      promises: { ...previous.promises, deadline_state: result.data.deadline_state },
+    } : null));
+    setPriorityStates(result.data.priority_states);
+    setPriorityError(null);
+    setFollowUpCandidate(result.data.follow_up_candidate);
+    setSupervisorCandidate(result.data.supervisor_escalation_candidate);
+    setClockEventSummary(result.data.event_summary);
+    setClockNotificationDraft(result.data.proactive_notification_draft?.text ?? null);
+    setClockDeadlineStatus(result.data.deadline_state.status);
+    setClockStepPending(null);
+    const latestConsumer = [...extraMessagesRef.current].reverse().find((item) => item.kind === "consumer")?.text ?? "";
+    const options = replySuggestionsFor(caseId, result.data.customer_state, latestConsumer, nextUpdateTimeLabel(updated), null, updated.open_obligation);
+    setReplySuggestions(options);
+    if (canRefreshSuggestedDraft(draftRef.current, suggestedDraftRef.current)) {
+      suggestedDraftRef.current = options[0]?.text ?? null;
+      if (options[0]) setDraft(options[0].text);
+    }
+    setToast(result.data.event_summary);
+  }
+
   async function handleDemoServiceEvent(eventType: DemoServiceEventType) {
     if (selectedCase.id !== "DEMO_002" && selectedCase.id !== "DEMO_003") return;
     const generation = caseGeneration.current;
     const caseId = selectedCase.id;
+    const identityScope = `demo-service-${caseId}-${eventType}`;
+    const identity = retryIdentities.current.get(identityScope, { case_id: caseId, event_type: eventType });
     setActing(true);
     const result = await api.pushDemoServiceEvent({
       case_id: caseId,
       event_type: eventType,
-      idempotency_key: `demo-service-${caseId}-${crypto.randomUUID()}`,
+      idempotency_key: identity.idempotencyKey,
     });
     if (generation !== caseGeneration.current || caseId !== selectedId) return;
     setActing(false);
     if (result.error) { setToast(result.error.message); return; }
+    retryIdentities.current.clear(identityScope);
     const updated = result.data.accountability_state;
     accountabilityRef.current = updated;
     setAccountability(updated);
@@ -829,7 +917,13 @@ function App() {
       <TopBar />
       <main className="workbench">
         <ConversationRail
-          cases={demoCases}
+          cases={demoCases.map((item) => {
+            if (item.id !== selectedId || !extraMessages.length) return item;
+            const latest = [...extraMessages].reverse().find((message) => message.kind === "consumer" || message.kind === "agent");
+            if (!latest?.text) return item;
+            const latestIsConsumer = latest.kind === "consumer";
+            return { ...item, preview: latest.text, time: latest.time, unread: latestIsConsumer ? 1 : 0 };
+          })}
           selectedId={selectedId}
           onSelect={handleSelectCase}
         />
@@ -839,22 +933,44 @@ function App() {
           draft={draft}
           setDraft={setDraft}
           onSend={handleAttemptSend}
-          acting={acting}
+          acting={acting || loading}
           phase={phase}
           addedMessages={extraMessages}
+          currentReceipt={accountability?.service_progress_receipt ?? null}
           blockedDraftText={blockedDraftText}
+          blockedDraftReason={blockedDraftReason}
           onDraftChange={(value) => {
             if (value !== suggestedDraftRef.current) suggestedDraftRef.current = null;
             setDraft(value);
-            if (value !== blockedDraftText) setBlockedDraftText(null);
+            if (value !== blockedDraftText) {
+              setBlockedDraftText(null);
+              setBlockedDraftReason(null);
+            }
           }}
           onUseSafeReply={() => {
-            const safeReply = replySuggestions[0]?.text ?? decision?.resolution_path.consumer_reply_draft ?? "";
-            if (safeReply) {
-              suggestedDraftRef.current = safeReply;
-              setDraft(safeReply);
+            const latestConsumer = [...extraMessages].reverse().find((item) => item.kind === "consumer")?.text ?? "";
+            const currentOptions = replySuggestions.length
+              ? replySuggestions
+              : replySuggestionsFor(
+                  selectedId,
+                  customerState,
+                  latestConsumer,
+                  nextUpdateTimeLabel(),
+                  accountability?.demo_service_event ?? null,
+                  accountability?.open_obligation,
+                );
+            const currentDraft = draftRef.current.trim();
+            const safeReply = currentOptions.find((item) => item.text.trim() && item.text.trim() !== currentDraft)?.text
+              ?? (decision?.resolution_path.consumer_reply_draft.trim() !== currentDraft ? decision?.resolution_path.consumer_reply_draft : undefined);
+            if (!safeReply?.trim() || safeReply.trim() === currentDraft) {
+              setToast("暂时没有不同的安全回复，请修改草稿后重新检查");
+              return;
             }
+            setReplySuggestions(currentOptions);
+            suggestedDraftRef.current = safeReply;
+            setDraft(safeReply);
             setBlockedDraftText(null);
+            setBlockedDraftReason(null);
             setToast("已替换为安全回复，请核对后再发送");
           }}
           simulationEnded={simulationEnded}
@@ -881,7 +997,7 @@ function App() {
             if (decision) {
               setApprovalError(null);
               setApprovalReply(decision.resolution_path.consumer_reply_draft);
-              setExecutor(decision.resolution_path.executor);
+              setExecutor(accountability?.open_obligation?.milestone === "IN_TRANSIT" ? "LOGISTICS_PROVIDER" : decision.resolution_path.executor);
               const suggested = decision.resolution_path.compiled_service_responsibility?.next_check_at ?? accountability?.service_progress_receipt?.next_update_by ?? accountability?.open_obligation?.next_check_at ?? accountability?.open_obligation?.deadline;
               setNextCheckAt(suggested ? toShanghaiDateTimeInput(suggested) : "");
             }
@@ -891,6 +1007,18 @@ function App() {
             setApprovalOpen(true);
           }}
           onShipment={handleShipment}
+          onAdvanceDemoClock={handleAdvanceDemoClock}
+          extraMessages={extraMessages}
+          clockStepPending={clockStepPending}
+          onClockStepPendingChange={setClockStepPending}
+          clockEventSummary={clockEventSummary}
+          clockNotificationDraft={clockNotificationDraft}
+          clockDeadlineStatus={clockDeadlineStatus}
+          onUseClockNotificationDraft={(text) => {
+            suggestedDraftRef.current = null;
+            setDraft(text);
+            setToast("已放入客服草稿；发送前仍需检查并确认");
+          }}
           onDemoServiceEvent={handleDemoServiceEvent}
           runtimeMetrics={runtimeMetrics}
           customerState={customerState}
@@ -915,6 +1043,7 @@ function App() {
         <ApprovalDialog
           decision={decision}
           hasExistingObligation={Boolean(accountability?.open_obligation)}
+          fixedExecutor={accountability?.open_obligation?.milestone === "IN_TRANSIT"}
           reply={approvalReply}
           setReply={(value) => { setApprovalReply(value); setApprovalError(null); }}
           executor={executor}
@@ -1052,7 +1181,9 @@ function ChatWorkspace({
   acting,
   phase,
   addedMessages,
+  currentReceipt,
   blockedDraftText,
+  blockedDraftReason,
   onUseSafeReply,
   simulationEnded,
   consumerTyping,
@@ -1068,7 +1199,9 @@ function ChatWorkspace({
   acting: boolean;
   phase: PluginPhase;
   addedMessages: AddedMessage[];
+  currentReceipt: ServiceProgressReceipt | null;
   blockedDraftText: string | null;
+  blockedDraftReason: string | null;
   onUseSafeReply: () => void;
   simulationEnded: boolean;
   consumerTyping: boolean;
@@ -1079,11 +1212,14 @@ function ChatWorkspace({
   const [historyOpen, setHistoryOpen] = useState(false);
   const [resetConfirmOpen, setResetConfirmOpen] = useState(false);
   const messagesRef = useRef<HTMLDivElement>(null);
+  const resetDialogRef = useRef<HTMLElement>(null);
+  const resetTriggerRef = useRef<HTMLButtonElement>(null);
   const currentItem = demoCase.input.order.items.find((item) => item.sku_id === demoCase.input.current_issue.sku_id);
   const productName = (currentItem?.product_name ?? "商品").replace(/^测试/, "").replace(" #", " · ");
   const historicalMessages = demoCase.input.conversation.slice(0, -1);
   const todayMessages = demoCase.input.conversation.slice(-1);
-  const latestCustomerQuestion = [...demoCase.input.conversation].reverse().find((message) => message.speaker === "CONSUMER");
+  const latestCustomerQuestion = [...addedMessages].reverse().find((message) => message.kind === "consumer")?.text
+    ?? [...demoCase.input.conversation].reverse().find((message) => message.speaker === "CONSUMER")?.text;
   const historyStart = historicalMessages[0]?.timestamp;
   const historyEnd = historicalMessages[historicalMessages.length - 1]?.timestamp;
   const memoryMilestones = demoCase.id === "DEMO_001"
@@ -1093,6 +1229,34 @@ function ChatWorkspace({
   useEffect(() => {
     setHistoryOpen(false);
   }, [demoCase.id]);
+
+  useEffect(() => {
+    if (!resetConfirmOpen) return;
+    const dialog = resetDialogRef.current;
+    dialog?.querySelector<HTMLElement>("button:not(:disabled)")?.focus();
+    const trigger = resetTriggerRef.current;
+    return () => trigger?.focus();
+  }, [resetConfirmOpen]);
+
+  function trapDialogKeys(event: ReactKeyboardEvent<HTMLElement>, onClose: () => void) {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      onClose();
+      return;
+    }
+    if (event.key !== "Tab") return;
+    const dialog = event.currentTarget;
+    const stops = [...dialog.querySelectorAll<HTMLElement>("button:not(:disabled), input:not(:disabled), select:not(:disabled), textarea:not(:disabled), [href], [tabindex]:not([tabindex='-1'])")]
+      .filter((node) => node.getClientRects().length > 0);
+    if (!stops.length) { event.preventDefault(); return; }
+    const first = stops[0];
+    const last = stops[stops.length - 1];
+    if (event.shiftKey && (document.activeElement === first || !dialog.contains(document.activeElement))) {
+      event.preventDefault(); last.focus();
+    } else if (!event.shiftKey && (document.activeElement === last || !dialog.contains(document.activeElement))) {
+      event.preventDefault(); first.focus();
+    }
+  }
 
   useEffect(() => {
     if (addedMessages.length || consumerTyping) {
@@ -1132,7 +1296,7 @@ function ChatWorkspace({
         </div>
         <div className="chat-header-actions">
           <button onClick={() => setHistoryOpen((value) => !value)} aria-expanded={historyOpen}><Clock3 size={16} /> 服务记录</button>
-          <button className="session-reset-button" onClick={() => setResetConfirmOpen(true)} disabled={acting} title="重置当前演示会话"><RefreshCw size={14} /><span>重置会话</span></button>
+          <button ref={resetTriggerRef} className="session-reset-button" onClick={() => setResetConfirmOpen(true)} disabled={acting} title="重置当前演示会话"><RefreshCw size={14} /><span>重置会话</span></button>
         </div>
       </header>
       <div className="context-strip">
@@ -1146,7 +1310,7 @@ function ChatWorkspace({
         <div className="context-price">{demoCase.productPrice}</div>
       </div>
       <div className="messages story-messages" key={demoCase.id} ref={messagesRef}>
-        {latestCustomerQuestion ? <div className="current-need-callout"><span>消费者当前最关心</span><strong>“{latestCustomerQuestion.text}”</strong></div> : null}
+        {latestCustomerQuestion ? <div className="current-need-callout"><span>消费者当前最关心</span><strong>“{latestCustomerQuestion}”</strong></div> : null}
         {historicalMessages.length > 0 ? (
           <section className="history-summary-card">
             <div>
@@ -1159,7 +1323,7 @@ function ChatWorkspace({
             </button>
             {!historyOpen ? (
               <ol className="history-milestones">
-                {memoryMilestones.map((message) => (
+                {memoryMilestones.slice(-2).map((message) => (
                   <li key={message.message_id}>
                     <time>{formatClock(message.timestamp)}</time>
                     <span>{message.text}</span>
@@ -1196,7 +1360,7 @@ function ChatWorkspace({
             );
           }
           if (message.kind === "receipt" && message.receipt) {
-            return <ReceiptMessage key={message.id} receipt={message.receipt} />;
+            return <ReceiptMessage key={message.id} receipt={currentReceipt ?? message.receipt} />;
           }
           if (message.kind === "status") {
             return (
@@ -1235,7 +1399,7 @@ function ChatWorkspace({
       <div className="composer">
         {blockedDraftText ? (
           <div className="blocked-draft-notice" role="alert">
-            <div><strong>这条回复已拦截，未发给消费者</strong><span>已有泵头照片不需要重复上传。可以改为核实现有换货进度。</span></div>
+            <div><strong>这条回复已拦截，未发给消费者</strong><span>{blockedDraftReason ?? "请根据已有材料和当前履约状态修改回复。"}</span></div>
             <button type="button" onClick={onUseSafeReply}>换成安全回复</button>
           </div>
         ) : null}
@@ -1279,7 +1443,7 @@ function ChatWorkspace({
       </div>
       {resetConfirmOpen ? (
         <div className="modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setResetConfirmOpen(false); }}>
-          <section className="approval-dialog reset-session-dialog" role="alertdialog" aria-modal="true" aria-labelledby="reset-session-title" aria-describedby="reset-session-description">
+          <section ref={resetDialogRef} className="approval-dialog reset-session-dialog" role="alertdialog" aria-modal="true" aria-labelledby="reset-session-title" aria-describedby="reset-session-description" onKeyDown={(event) => trapDialogKeys(event, () => setResetConfirmOpen(false))}>
             <header>
               <div className="dialog-icon"><RefreshCw size={20} /></div>
               <div><span>当前案例</span><h2 id="reset-session-title">从头开始这段会话？</h2></div>
@@ -1351,7 +1515,7 @@ function ReceiptMessage({ receipt }: { receipt: ServiceProgressReceipt }) {
       </div>
       <p><b>已收到</b> {receipt.received_evidence[0]}，无需再次提交</p>
       <p><b>正在处理</b> {receipt.brand_action}</p>
-      <p><b>下次更新</b> {formatClock(receipt.next_update_by)} 前</p>
+      <p><b>下次更新</b> {formatServiceDateTime(receipt.next_update_by)}</p>
       <div><Check size={14} /> 消费者当前无需操作</div>
     </div>
   );
@@ -1549,7 +1713,7 @@ function buildStoryCards(
       key: "promise",
       eyebrow: "服务承诺",
       title: commitment ? "48 小时内换货承诺" : "尚无有效承诺",
-      body: commitment ? `截止 ${formatClock(commitment.deadline)}，由店铺继续跟进。` : "确认责任后再建立服务承诺。",
+      body: commitment ? `截止 ${formatServiceDateTime(commitment.deadline)}，由店铺继续跟进。` : "确认责任后再建立服务承诺。",
       tags: [commitment?.status === "ACTIVE" ? "跟进中" : "待确认"],
       focusTitle: "承诺如何运行",
       focusPoints: [
@@ -2156,6 +2320,14 @@ function CoveniaPlugin({
   onGenerate,
   onApprove,
   onShipment,
+  onAdvanceDemoClock,
+  extraMessages,
+  clockStepPending,
+  onClockStepPendingChange,
+  clockEventSummary,
+  clockNotificationDraft,
+  clockDeadlineStatus,
+  onUseClockNotificationDraft,
   onDemoServiceEvent,
   runtimeMetrics,
   customerState,
@@ -2190,6 +2362,14 @@ function CoveniaPlugin({
   onGenerate: () => void;
   onApprove: () => void;
   onShipment: (event: ShipmentEventType) => void;
+  onAdvanceDemoClock: (step: DemoClockStep) => void;
+  extraMessages: AddedMessage[];
+  clockStepPending: DemoClockStep | null;
+  onClockStepPendingChange: (step: DemoClockStep | null) => void;
+  clockEventSummary: string | null;
+  clockNotificationDraft: string | null;
+  clockDeadlineStatus: string | null;
+  onUseClockNotificationDraft: (text: string) => void;
   onDemoServiceEvent: (event: DemoServiceEventType) => void;
   runtimeMetrics: RuntimeMetrics | null;
   customerState: CustomerState | null;
@@ -2214,15 +2394,15 @@ function CoveniaPlugin({
   const [evidencePreview, setEvidencePreview] = useState<{ fileName: string; label: string } | null>(null);
   const evidenceTriggerRef = useRef<HTMLButtonElement | null>(null);
   const evidenceCloseRef = useRef<HTMLButtonElement | null>(null);
+  const handoffTriggerRef = useRef<HTMLButtonElement | null>(null);
+  const handoffDialogRef = useRef<HTMLDivElement | null>(null);
+  const [handoffOpen, setHandoffOpen] = useState(false);
   useEffect(() => { setEvidencePreview(null); }, [selectedId]);
   useEffect(() => {
     if (!evidencePreview) return;
     const handlePreviewKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") setEvidencePreview(null);
-      if (event.key === "Tab") {
-        event.preventDefault();
-        evidenceCloseRef.current?.focus();
-      }
+      if (event.key === "Tab") { event.preventDefault(); evidenceCloseRef.current?.focus(); }
     };
     window.addEventListener("keydown", handlePreviewKey);
     return () => {
@@ -2230,6 +2410,34 @@ function CoveniaPlugin({
       evidenceTriggerRef.current?.focus();
     };
   }, [evidencePreview]);
+  useEffect(() => {
+    if (!handoffOpen) return;
+    const dialog = handoffDialogRef.current;
+    (dialog?.querySelector<HTMLElement>("button:not(:disabled)") ?? dialog)?.focus();
+    const handleHandoffKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setHandoffOpen(false);
+        return;
+      }
+      if (event.key !== "Tab" || !dialog) return;
+      const stops = [...dialog.querySelectorAll<HTMLElement>("button:not(:disabled), [href], [tabindex]:not([tabindex='-1'])")]
+        .filter((node) => node.getClientRects().length > 0);
+      if (!stops.length) { event.preventDefault(); return; }
+      const first = stops[0];
+      const last = stops[stops.length - 1];
+      if (event.shiftKey && (document.activeElement === first || !dialog.contains(document.activeElement))) {
+        event.preventDefault(); last.focus();
+      } else if (!event.shiftKey && (document.activeElement === last || !dialog.contains(document.activeElement))) {
+        event.preventDefault(); first.focus();
+      }
+    };
+    window.addEventListener("keydown", handleHandoffKey);
+    return () => {
+      window.removeEventListener("keydown", handleHandoffKey);
+      handoffTriggerRef.current?.focus();
+    };
+  }, [handoffOpen]);
   useEffect(() => {
     if (!detailsOpen) return;
     const frame = window.requestAnimationFrame(() => {
@@ -2273,6 +2481,9 @@ function CoveniaPlugin({
     <aside className="plugin-panel">
       <PluginHeader mockMode={mockMode} onMockModeChange={onMockModeChange} />
       <div className="plugin-scroll">
+        <button className="handoff-open-button" type="button" ref={handoffTriggerRef} onClick={() => setHandoffOpen(true)}>
+          <ClipboardCheck size={15} /><span><b>交接摘要</b><small>已知情况、已做事项与下一步</small></span><ChevronRight size={15} />
+        </button>
         {phase === "approved" && accountability.service_progress_receipt && accountability.open_obligation ? (
           <ProgressView
             accountability={accountability}
@@ -2280,6 +2491,16 @@ function CoveniaPlugin({
             deadline={accountability.open_obligation?.deadline}
             acting={acting}
             onShipment={onShipment}
+            onAdvanceDemoClock={onAdvanceDemoClock}
+            clockStepPending={clockStepPending}
+            onClockStepPendingChange={onClockStepPendingChange}
+            clockEventSummary={clockEventSummary}
+            onUseClockNotificationDraft={onUseClockNotificationDraft}
+            canAdvanceDemoClock={selectedId === "DEMO_001" && accountability.open_obligation.milestone === "AWAITING_CARRIER_PICKUP"}
+            notificationDraft={clockNotificationDraft}
+            clockDeadlineStatus={clockDeadlineStatus ?? customerState?.promises.deadline_state.status}
+            queueRank={priorityStates.find((item) => item.case_id === selectedId)?.rank ?? null}
+            queueReason={priorityStates.find((item) => item.case_id === selectedId)?.queue_reasons[0] ?? null}
             runtimeMetrics={runtimeMetrics}
             followUpCandidate={followUpCandidate}
             supervisorCandidate={supervisorCandidate}
@@ -2312,7 +2533,12 @@ function CoveniaPlugin({
                       reviewSubmitted={reviewSubmitted}
                     />
                   )}
-                  <JevInsightCard state={customerState} />
+                  <JevInsightCard
+                    state={customerState}
+                    latestConsumerText={[...extraMessages].reverse().find((item) => item.kind === "consumer" && item.text)?.text
+                      ?? [...demoCase.input.conversation].reverse().find((item) => item.speaker === "CONSUMER")?.text
+                      ?? ""}
+                  />
                   <section className="customer-facts" aria-label="本次服务依据">
                     <div className="fact-evidence" data-status={accountability.evidence_status}>
                       <div className="fact-evidence-copy">
@@ -2334,7 +2560,7 @@ function CoveniaPlugin({
                       </div>
                     </div>
                     <div className="fact-owner"><span><UserRoundCheck size={14} /> 负责方</span><b>{accountability.accountable_side === "BRAND" ? "品牌跟进" : accountability.accountable_side === "CONSUMER" ? "消费者待补充" : "待人工确认"}</b></div>
-                    <div className="fact-deadline"><span><Clock3 size={14} /> 下次更新</span><b>{accountability.service_progress_receipt?.next_update_by ? formatClock(accountability.service_progress_receipt.next_update_by) : "待确认时间"}</b>{!accountability.service_progress_receipt && accountability.active_commitments[0]?.deadline ? <span>原承诺 {formatClock(accountability.active_commitments[0].deadline)} 前</span> : null}</div>
+                    <div className="fact-deadline"><span><Clock3 size={14} /> 下次更新</span><b>{accountability.service_progress_receipt?.next_update_by ? formatServiceDateTime(accountability.service_progress_receipt.next_update_by) : "待确认时间"}</b>{!accountability.service_progress_receipt && accountability.active_commitments[0]?.deadline ? <span>原承诺 {formatServiceDateTime(accountability.active_commitments[0].deadline)}</span> : null}</div>
                     <small>{customerState?.emotion.trend === "WORSENING" ? "可能需要优先安抚 · " : customerState?.emotion.trend === "UNKNOWN" ? "情绪待确认 · " : "沟通建议 · "}{customerState?.emotion.communication_guidance ?? "先确认已有材料，再说明下一步。"}</small>
                   </section>
                 </div>
@@ -2364,11 +2590,19 @@ function CoveniaPlugin({
           </section>
         </div>
       ) : null}
+      {handoffOpen ? <HandoffDialog
+        refElement={handoffDialogRef}
+        demoCase={demoCase}
+        accountability={accountability}
+        customerState={customerState}
+        extraMessages={extraMessages}
+        onClose={() => setHandoffOpen(false)}
+      /> : null}
     </aside>
   );
 }
 
-function JevInsightCard({ state }: { state: CustomerState | null }) {
+function JevInsightCard({ state, latestConsumerText }: { state: CustomerState | null; latestConsumerText: string }) {
   const advisory = state?.decision_advisory ?? state?.decision?.decision_advisory;
   if (!state || !advisory) return null;
 
@@ -2408,8 +2642,6 @@ function JevInsightCard({ state }: { state: CustomerState | null }) {
         ) : null}
       </div>
 
-      {citedEvidence[0] ? <p className="jev-evidence-lead">依据：“{citedEvidence[0].claim}”</p> : null}
-
       <div className="jev-action-row">
         <div className="jev-action-icon"><CheckCircle2 size={15} /></div>
         <div><small>{live ? "回复侧重点" : "规则建议仍可使用"}</small><strong>{communicationGuidance}</strong></div>
@@ -2417,9 +2649,14 @@ function JevInsightCard({ state }: { state: CustomerState | null }) {
 
       {citedEvidence.length > 0 ? (
         <details className="jev-evidence-disclosure">
-          <summary>查看依据（{citedEvidence.length} 段对话）</summary>
+          <summary>查看本次分析输入（{citedEvidence.length} 段对话）</summary>
           <div className="jev-evidence-list" aria-label="情绪分析引用的对话">
-            {citedEvidence.map((item) => <p key={item.source_id}><span>{item.observed_at ? formatClock(item.observed_at) : "对话"}</span>“{item.claim}”</p>)}
+            {citedEvidence.map((item) => {
+              const normalize = (value: string) => value.replace(/[\s，。！？,.!?]/gu, "");
+              const isCurrent = latestConsumerText && (normalize(item.claim).includes(normalize(latestConsumerText)) || normalize(latestConsumerText).includes(normalize(item.claim)));
+              const messageScope = isCurrent ? "当前消息" : item.source_type === "CHAT" ? "此前消息" : item.source_label;
+              return <p key={item.source_id}><span>{messageScope}<small>{item.observed_at ? formatClock(item.observed_at) : ""}</small></span>“{item.claim}”</p>;
+            })}
           </div>
         </details>
       ) : null}
@@ -2536,7 +2773,7 @@ function AccountabilitySummary({ accountability }: { accountability: Accountabil
       <div><span>案件状态</span><b>{{ WAITING_FOR_CONSUMER: "等待消费者回复", READY_FOR_BRAND: "等待品牌处理", ACTION_REVIEW: "待确认处理动作", IN_FULFILLMENT: "处理中", AT_RISK: "承诺有超时风险", RESOLVED: "已解决" }[accountability.case_status]}</b></div>
       {commitment ? <>
         <div><span>承诺原文</span><b>{commitment.raw_text}</b></div>
-        <div><span>当前义务</span><b>{commitment.status} · {formatClock(commitment.deadline)} 前</b></div>
+        <div><span>当前义务</span><b>{commitment.status} · {formatServiceDateTime(commitment.deadline)}</b></div>
         <div><span>执行方</span><b>{accountability.open_obligation?.executor ?? "待人工确认"}</b></div>
       </> : <div><span>当前义务</span><b>尚未激活</b></div>}
     </section>
@@ -2580,7 +2817,7 @@ function SideCaseActionPanel({ caseId, accountability, acting, onEvent }: {
     <div className="sidecase-action-top"><span>{isEvidence ? "材料跟进" : "专人跟进"}</span><small>{event ? "品牌负责" : "待处理"}</small></div>
     <h3>{title}</h3>
     <p>{description}</p>
-    {accountability.service_progress_receipt ? <div className="sidecase-action-facts"><span>{isEvidence ? "当前证据" : "接手人"}<b>{isEvidence ? "精华瓶口近照已收到" : accountability.demo_specialist ?? "售后专员"}</b></span><span>下次更新<b>{formatClock(accountability.service_progress_receipt.next_update_by)} 前</b></span></div> : null}
+    {accountability.service_progress_receipt ? <div className="sidecase-action-facts"><span>{isEvidence ? "当前证据" : "接手人"}<b>{isEvidence ? "精华瓶口近照已收到" : accountability.demo_specialist ?? "售后专员"}</b></span><span>下次更新<b>{formatServiceDateTime(accountability.service_progress_receipt.next_update_by)}</b></span></div> : null}
     {nextEvent ? <button type="button" onClick={() => onEvent(nextEvent)} disabled={acting}><RefreshCw size={16} />{buttonText}<ChevronRight size={16} /></button> : null}
     <small className="sidecase-local-note">本地模拟进度，未连接真实材料上传或人工任务系统。</small>
   </section>;
@@ -2592,6 +2829,16 @@ function ProgressView({
   deadline,
   acting,
   onShipment,
+  onAdvanceDemoClock,
+  clockStepPending,
+  onClockStepPendingChange,
+  clockEventSummary,
+  onUseClockNotificationDraft,
+  canAdvanceDemoClock,
+  notificationDraft,
+  clockDeadlineStatus,
+  queueRank,
+  queueReason,
   runtimeMetrics,
   followUpCandidate,
   supervisorCandidate,
@@ -2601,6 +2848,16 @@ function ProgressView({
   deadline?: string;
   acting: boolean;
   onShipment: (event: ShipmentEventType) => void;
+  onAdvanceDemoClock: (step: DemoClockStep) => void;
+  clockStepPending: DemoClockStep | null;
+  onClockStepPendingChange: (step: DemoClockStep | null) => void;
+  clockEventSummary: string | null;
+  onUseClockNotificationDraft: (text: string) => void;
+  canAdvanceDemoClock: boolean;
+  notificationDraft: string | null;
+  clockDeadlineStatus?: string;
+  queueRank: number | null;
+  queueReason: string | null;
   runtimeMetrics: RuntimeMetrics | null;
   followUpCandidate: FollowUpCandidate | null;
   supervisorCandidate: SupervisorEscalationCandidate | null;
@@ -2610,6 +2867,13 @@ function ProgressView({
   const delivered = accountability.open_obligation?.milestone === "DELIVERED";
   const atRisk = accountability.case_status === "AT_RISK";
   const countdown = useCountdown(deadline, serviceClock);
+  const deadlineStatusLabel = clockDeadlineStatus === "NEAR_DUE" ? "临近承诺"
+    : clockDeadlineStatus === "OVERDUE" ? "已逾期"
+      : clockDeadlineStatus === "ESCALATED" ? "已升级"
+        : clockDeadlineStatus === "CLOSED" ? "已关闭"
+          : "按期处理中";
+  const nearDueReached = ["NEAR_DUE", "OVERDUE", "ESCALATED", "CLOSED"].includes(clockDeadlineStatus ?? "");
+  const overdueReached = ["OVERDUE", "ESCALATED", "CLOSED"].includes(clockDeadlineStatus ?? "");
   return (
     <div className="progress-view">
       <div className={`progress-hero ${pickedUp || delivered ? "on-track" : atRisk ? "at-risk" : ""}`}>
@@ -2626,7 +2890,7 @@ function ProgressView({
           <div className={`countdown-strip ${countdown.overdue ? "overdue" : ""}`}>
             <span>{countdown.overdue ? "承诺已超时" : "距承诺节点"}</span>
             <b>{countdown.label}</b>
-            <small>{countdown.overdue ? "补救计时中" : "系统持续检查"}</small>
+            <small>{countdown.overdue ? "模拟时间已越过承诺节点" : "模拟时间固定，推进后触发检查"}</small>
           </div>
         ) : null}
         <div className="responsibility-line"><span /> <b>{delivered ? "换货送达已核验，责任闭环" : "品牌继续负责，直至换货商品送达"}</b></div>
@@ -2637,7 +2901,7 @@ function ProgressView({
         <dl>
           <div><dt>已收到</dt><dd>{receipt.received_evidence[0]}，无需再次提交</dd></div>
           <div><dt>处理进度</dt><dd>{receipt.brand_action}</dd></div>
-          <div><dt>下次更新</dt><dd>{formatClock(receipt.next_update_by)} 前</dd></div>
+          <div><dt>下次更新</dt><dd>{formatServiceDateTime(receipt.next_update_by)}</dd></div>
           <div><dt>未完成时</dt><dd>{receipt.recovery_if_missed}</dd></div>
         </dl>
         <div className="no-action"><CheckCircle2 size={16} /> 消费者当前无需操作</div>
@@ -2654,6 +2918,26 @@ function ProgressView({
         </div>
         <p><AlertCircle size={14} /> 工单创建和物流单号生成都不等于问题已解决</p>
       </section>
+
+      {canAdvanceDemoClock ? <section className="demo-clock-card" aria-label="模拟时间控制">
+        <div className="demo-clock-heading"><span><Clock3 size={15} /> 模拟时间</span><b>{serviceClock ? formatServiceDateTime(serviceClock) : "待获取"}</b></div>
+        <div className="demo-clock-state">
+          <span>承诺节点 <b>{deadline ? formatServiceDateTime(deadline) : "待确认"}</b></span>
+          <span>期限状态 <b>{clockDeadlineStatus ? deadlineStatusLabel : atRisk ? "已逾期" : "按期处理中"}</b></span>
+          <span>队列 <b>{queueRank ? `第 ${queueRank} 位` : "待刷新"}</b></span>
+        </div>
+        {queueReason ? <small className="demo-clock-reason">当前排序原因：{queueReason}</small> : null}
+        {clockEventSummary ? <p className="demo-clock-result" role="status">{clockEventSummary}</p> : null}
+        {clockStepPending ? <div className="demo-clock-approval" role="group" aria-label="确认模拟时间推进">
+          <p>将调用服务端期限检查并更新责任状态、待办排序和模拟时间。</p>
+          <div><button type="button" className="clock-cancel" disabled={acting} onClick={() => onClockStepPendingChange(null)}>取消</button>
+            <button type="button" className="clock-confirm" disabled={acting} onClick={() => onAdvanceDemoClock(clockStepPending)}>{acting ? "处理中…" : `确认推进至${clockStepPending === "NEAR_DUE" ? "到期前 10 分钟" : "逾期"}`}</button></div>
+        </div> : <div className="demo-clock-actions">
+          <button type="button" disabled={acting || nearDueReached} onClick={() => onClockStepPendingChange("NEAR_DUE")}>{nearDueReached ? "已推进至临近承诺" : "到期前 10 分钟"}</button>
+          <button type="button" disabled={acting || overdueReached} onClick={() => onClockStepPendingChange("OVERDUE")}>{overdueReached ? "已推进至逾期" : "推进至逾期"}</button>
+        </div>}
+        {notificationDraft ? <div className="clock-notification-draft"><small>主动通知草稿 · 需客服确认</small><p>{notificationDraft}</p><button type="button" onClick={() => onUseClockNotificationDraft(notificationDraft)}>放入客服草稿</button></div> : null}
+      </section> : null}
 
       <section className="shipment-simulator">
         <div className="simulator-title">
@@ -2688,9 +2972,95 @@ function ProgressView({
   );
 }
 
+function HandoffDialog({
+  refElement,
+  demoCase,
+  accountability,
+  customerState,
+  extraMessages,
+  onClose,
+}: {
+  refElement: MutableRefObject<HTMLDivElement | null>;
+  demoCase: DemoCase;
+  accountability: AccountabilityState;
+  customerState: CustomerState | null;
+  extraMessages: AddedMessage[];
+  onClose: () => void;
+}) {
+  const product = demoCase.input.order.items.find((item) => item.fulfillment_item_id === demoCase.input.current_issue.fulfillment_item_id);
+  const issueLabel = demoCase.id === "DEMO_003" ? "使用后泛红、刺痛" : demoCase.id === "DEMO_002" ? "精华瓶口裂痕" : "粉底液泵头损坏与换货进度";
+  const latestConsumer = [...extraMessages].reverse().find((item) => item.kind === "consumer" && item.text)?.text
+    ?? [...demoCase.input.conversation].reverse().find((item) => item.speaker === "CONSUMER")?.text
+    ?? "当前没有可显示的消费者原话。";
+  const imageEvidence = demoCase.input.evidence_images;
+  const knownEvidence = customerState?.evidence.known ?? (accountability.evidence_status === "VALID" ? ["当前问题所需材料已确认"] : []);
+  const missingEvidence = customerState?.evidence.missing ?? (accountability.evidence_status === "MISMATCHED"
+    ? ["当前商品对应的问题照片仍待补充"]
+    : accountability.evidence_status === "NEED_HUMAN_REVIEW" ? ["需人工核实；无需先补充未确认的材料"] : []);
+  const doNotAskAgain = customerState?.evidence.do_not_ask_again?.length
+    ? customerState.evidence.do_not_ask_again
+    : accountability.prohibited_actions.map((action) => ({
+        ASK_SAME_EVIDENCE: "不要重复索取已收到的同一材料",
+        ASK_REPEAT_EXPLANATION: "不要要求消费者重复说明已记录的问题",
+        SHIFT_FOLLOW_UP_TO_CONSUMER: "不要把品牌跟进责任交给消费者",
+        MAKE_UNTRACKABLE_PROMISE: "不要作出没有更新时间的承诺",
+        CLOSE_BEFORE_RESOLUTION: "问题未解决前不要结案",
+      }[action]));
+  const auditLabels: Record<AccountabilityState["audit_trail"][number]["action"], string> = {
+    ANALYZED: "已核对案件材料",
+    RESOLUTION_APPROVED: "客服已确认服务安排",
+    SHIPMENT_PICKED_UP: "已记录物流揽收",
+    SHIPMENT_NOT_PICKED_UP: "已记录未揽收并触发跟进",
+    SHIPMENT_DELIVERED: "已记录送达",
+    CURRENT_SCOPE_EVIDENCE_SUBMITTED: "已记录当前问题所需材料",
+    SPECIALIST_ASSIGNED: "已记录专人接手",
+    SPECIALIST_FOLLOWED_UP: "已记录专人回访",
+    PROMISE_DEADLINE_ESCALATED: "已记录承诺逾期升级",
+    DEMO_CLOCK_NEAR_DUE: "已记录期限临近检查",
+    DEMO_CLOCK_OVERDUE_ESCALATED: "已记录首次逾期升级",
+    DEMO_CLOCK_OVERDUE_ALREADY_ESCALATED: "已检查逾期状态，升级已存在",
+  };
+  const priorActions = accountability.audit_trail.slice(-4).reverse();
+  const nextUpdate = accountability.service_progress_receipt?.next_update_by
+    ?? accountability.open_obligation?.next_check_at
+    ?? accountability.open_obligation?.deadline;
+  const nextAction = customerState?.actions.next_best_action
+    ?? accountability.experience_gap_diagnosis.reply_strategy;
+  const responsibleParty = accountability.accountable_side === "BRAND" ? "品牌" : accountability.accountable_side === "CONSUMER" ? "消费者" : "待人工确认";
+  const executor = accountability.open_obligation?.executor === "WAREHOUSE" ? "仓库（演示责任方）"
+    : accountability.open_obligation?.executor === "LOGISTICS_PROVIDER" ? "物流服务方（演示责任方）"
+    : accountability.open_obligation?.executor === "BRAND" ? "品牌客服"
+    : accountability.demo_specialist ?? "尚未记录具体执行人";
+
+  return <div className="handoff-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}>
+    <div ref={refElement} className="handoff-dialog" role="dialog" aria-modal="true" aria-labelledby="handoff-title" tabIndex={-1}>
+      <header><div><small>当前案件 · {demoCase.shortId}</small><h2 id="handoff-title">交接摘要</h2></div><button type="button" onClick={onClose} aria-label="关闭交接摘要"><X size={18} /></button></header>
+      <p className="handoff-issue"><b>{product?.product_name ?? "当前商品"}</b><span>{issueLabel}</span><q>{latestConsumer}</q></p>
+      <div className="handoff-grid">
+        <section><h3>已知情况与材料</h3>
+          {knownEvidence.length ? <ul>{knownEvidence.map((fact, index) => <li key={`${fact}-${index}`}>{fact}</li>)}</ul> : <p>当前没有已确认的材料信息。</p>}
+          {imageEvidence.length ? <div className="handoff-source-list"><b>关联图片来源</b>{imageEvidence.map((item) => <p key={item.evidence_id}>
+            {item.source_kind === "TEAM_SYNTHETIC_AUGMENTATION" || item.source_kind === "TEAM_SYNTHETIC_RECREATION" ? "团队合成示意素材" : "案件关联图片"} · {item.declared_view_type === "PACKAGE_CONTEXT" ? "包装/赠品视角" : item.declared_view_type === "ISSUE_DETAIL" ? "问题细节" : item.declared_view_type === "PRODUCT_OVERVIEW" ? "商品整体" : "其他视角"} · {formatServiceDateTime(item.submitted_at)}
+          </p>)}</div> : <small>当前案件没有关联图片。</small>}
+        </section>
+        <section><h3>仍缺材料</h3>{missingEvidence.length ? <ul>{missingEvidence.map((fact, index) => <li key={`${fact}-${index}`}>{fact}</li>)}</ul> : <p>没有待消费者补充的材料。</p>}</section>
+        <section><h3>此前已做</h3>{priorActions.length ? <ul>{priorActions.map((item) => <li key={`${item.request_id}-${item.action}`}>{auditLabels[item.action]} · {formatServiceDateTime(item.at)}</li>)}</ul> : <p>当前服务账本尚无已记录的处理动作。</p>}
+          {demoCase.input.service_tickets.length ? <small>关联工单：{demoCase.input.service_tickets.map((ticket) => ticket.ticket_id).join("、")}</small> : null}
+        </section>
+        <section><h3>责任与下一步</h3><p>责任方：{responsibleParty} · 执行方：{executor}</p><p>下一次更新：{nextUpdate ? formatServiceDateTime(nextUpdate) : "尚未约定"}</p><p>建议动作：{nextAction}</p></section>
+      </div>
+      <section className="handoff-do-not-ask"><h3>当前案件避免重复询问</h3><small>以下范围仅适用于已知的当前商品与问题。</small>
+        {doNotAskAgain.length ? <ul>{doNotAskAgain.map((item, index) => <li key={`${item}-${index}`}>{item}</li>)}</ul> : <p>尚无足够依据列出需要避免的问题。</p>}
+      </section>
+      <footer><small>摘要来自当前案件与服务记录；演示责任方不代表真实外部任务已分派。</small><button type="button" onClick={onClose}>完成</button></footer>
+    </div>
+  </div>;
+}
+
 function ApprovalDialog({
   decision,
   hasExistingObligation,
+  fixedExecutor,
   reply,
   setReply,
   executor,
@@ -2704,6 +3074,7 @@ function ApprovalDialog({
 }: {
   decision: DecisionResult;
   hasExistingObligation: boolean;
+  fixedExecutor: boolean;
   reply: string;
   setReply: (value: string) => void;
   executor: string;
@@ -2715,6 +3086,34 @@ function ApprovalDialog({
   onClose: () => void;
   onConfirm: () => void;
 }) {
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const restoreFocusRef = useRef(document.activeElement as HTMLElement);
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    (dialog?.querySelector<HTMLElement>("textarea") ?? dialog?.querySelector<HTMLElement>("button:not(:disabled), input:not(:disabled), select:not(:disabled)"))?.focus();
+    return () => restoreFocusRef.current?.focus();
+  }, []);
+  function handleKeyDown(event: ReactKeyboardEvent<HTMLDivElement>) {
+    if (event.key === "Escape" && !acting) {
+      event.preventDefault();
+      event.stopPropagation();
+      onClose();
+      return;
+    }
+    if (event.key !== "Tab") return;
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+    const stops = [...dialog.querySelectorAll<HTMLElement>("button:not(:disabled), input:not(:disabled), select:not(:disabled), textarea:not(:disabled), [href], [tabindex]:not([tabindex='-1'])")]
+      .filter((node) => node.getClientRects().length > 0);
+    if (!stops.length) { event.preventDefault(); return; }
+    const first = stops[0];
+    const last = stops[stops.length - 1];
+    if (event.shiftKey && (document.activeElement === first || !dialog.contains(document.activeElement))) {
+      event.preventDefault(); last.focus();
+    } else if (!event.shiftKey && (document.activeElement === last || !dialog.contains(document.activeElement))) {
+      event.preventDefault(); first.focus();
+    }
+  }
   const createsObligation = decision.resolution_path.creates_obligation;
   const confirmationTitle = decision.resolution_path.candidate_type === "HUMAN_EVIDENCE_REVIEW"
     ? "确认人工复核记录"
@@ -2730,9 +3129,7 @@ function ApprovalDialog({
       : "确认后记录人工复核决定与回复，不会创建服务义务或发送到千牛。");
   return (
     <div className="modal-backdrop" role="presentation">
-      <div className="approval-dialog" role="dialog" aria-modal="true" aria-labelledby="approval-title" onKeyDown={(event) => {
-        if (event.key === "Escape" && !acting) { event.stopPropagation(); onClose(); }
-      }}>
+      <div ref={dialogRef} className="approval-dialog" role="dialog" aria-modal="true" aria-labelledby="approval-title" onKeyDown={handleKeyDown}>
         <header>
           <div className="dialog-icon"><img src="/brand/covenia-relay-glass-v5.png" alt="" /></div>
           <div><span>人工确认</span><h2 id="approval-title">{confirmationTitle}</h2></div>
@@ -2740,7 +3137,10 @@ function ApprovalDialog({
         </header>
         {createsObligation ? <div className="approval-grid">
           <label><span>责任方</span><div className="fixed-input"><ShieldCheck size={15} /> {decision.resolution_path.accountable_side === "BRAND" ? "品牌" : decision.resolution_path.accountable_side}</div></label>
-          <label><span>执行方</span><select value={executor} onChange={(event) => setExecutor(event.target.value)}><option value="WAREHOUSE">仓库</option><option value="BRAND">品牌客服</option><option value="LOGISTICS_PROVIDER">物流服务方</option></select></label>
+          <label><span>执行方</span>{fixedExecutor
+            ? <div className="fixed-input"><Truck size={15} /> 物流服务方 · 揽收后保持当前履约方</div>
+            : <select value={executor} onChange={(event) => setExecutor(event.target.value)}><option value="WAREHOUSE">仓库</option><option value="BRAND">品牌客服</option><option value="LOGISTICS_PROVIDER">物流服务方</option></select>}
+          </label>
           <label><span>下次更新时间</span><input className="fixed-input" type="datetime-local" required value={nextCheckAt} onChange={(event) => setNextCheckAt(event.target.value)} /></label>
           <label><span>完成条件</span><div className="fixed-input"><PackageCheck size={15} /> 换货商品送达</div></label>
         </div> : null}

@@ -142,7 +142,7 @@
     "request": {
       "case_id": "DEMO_001",
       "event_type": "SHIPMENT_PICKED_UP",
-      "event_time": "2026-05-07T10:10:00+08:00",
+      "event_time": "2026-05-07T11:50:00+08:00",
       "event_id": "EVT_PICKED_001",
       "idempotency_key": "shipment-DEMO_001-0002"
     },
@@ -233,7 +233,7 @@
             "换货工单 BH919209358357"
           ],
           "brand_action": "换货件已由物流揽收，当前正在运输。",
-          "latest_update_at": "2026-05-07T10:10:00+08:00",
+          "latest_update_at": "2026-05-07T11:50:00+08:00",
           "next_update_by": "2026-05-08T10:10:00+08:00",
           "consumer_action_required": false,
           "recovery_if_missed": "若物流长时间无更新，品牌将主动查询并通知处理结果。"
@@ -241,7 +241,7 @@
         "experience_risk": "LOW",
         "audit_trail": [
           {
-            "at": "2026-05-07T10:10:00+08:00",
+            "at": "2026-05-07T11:50:00+08:00",
             "actor": "SIMULATOR",
             "action": "SHIPMENT_PICKED_UP",
             "changed_fields": [

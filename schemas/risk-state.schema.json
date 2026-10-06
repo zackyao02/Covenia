@@ -16,7 +16,7 @@
         "additionalProperties": false,
         "required": ["factor_type", "weight", "reason", "source_evidence_ids"],
         "properties": {
-          "factor_type": {"enum": ["PROMISE_OVERDUE", "REPEAT_CONTACT", "EVIDENCE_CONFLICT", "HUMAN_REVIEW_REQUIRED", "FULFILLMENT_STALLED", "EFFORT_HIGH"]},
+          "factor_type": {"enum": ["PROMISE_NEAR_DUE", "PROMISE_OVERDUE", "REPEAT_CONTACT", "EVIDENCE_CONFLICT", "HUMAN_REVIEW_REQUIRED", "FULFILLMENT_STALLED", "EFFORT_HIGH"]},
           "weight": {"type": "integer"},
           "reason": {"type": "string"},
           "source_evidence_ids": {"type": "array", "items": {"type": "string"}}

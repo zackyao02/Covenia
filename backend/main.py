@@ -6,7 +6,7 @@ import json
 import logging
 import re
 import uuid
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
@@ -15,7 +15,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from backend.decision import decision_advisory_for
-from backend.draft_review import assess_draft, contains_unsupported_fulfillment_guarantee
+from backend.draft_review import assess_draft, contains_unsupported_fulfillment_guarantee, reply_conflict_with_state
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -47,6 +47,7 @@ shipment_stages: dict[str, str] = {}
 last_event_times: dict[str, datetime] = {}
 idempotency: dict[tuple[str, str, str], tuple[str, dict[str, Any]]] = {}
 deadline_escalations: set[str] = set()
+simulated_clocks: dict[str, datetime] = {}
 
 
 def load_json(path: Path) -> dict[str, Any] | list[Any]:
@@ -87,12 +88,16 @@ def parse_time(value: str) -> datetime:
 def service_time_for(case_id: str) -> str:
     baseline = parse_time(SERVICE_CLOCK)
     latest = last_event_times.get(case_id, baseline)
-    return max(baseline, latest).isoformat()
+    simulated = simulated_clocks.get(case_id, baseline)
+    return max(baseline, latest, simulated).isoformat()
 
 
 def default_next_check(case_id: str, deadline: str | None) -> str:
     """Schedule a proactive check before the promise deadline when time remains."""
     now = parse_time(service_time_for(case_id))
+    scheduled = (states.get(case_id, {}).get("open_obligation") or {}).get("next_check_at")
+    if scheduled and parse_time(scheduled) > now:
+        return scheduled
     if not deadline:
         return (now + timedelta(minutes=28)).isoformat()
     deadline_at = parse_time(deadline)
@@ -479,6 +484,8 @@ def deadline_state_for(case_id: str, state: dict[str, Any]) -> dict[str, Any]:
         status, monitor_status = "ESCALATED", "RUNNING"
     elif due is not None and now >= due:
         status, monitor_status = "OVERDUE", "RUNNING"
+    elif due is not None and case_id in simulated_clocks and now >= due - timedelta(minutes=10):
+        status, monitor_status = "NEAR_DUE", "WAITING"
     elif obligation or commitment:
         status, monitor_status = "SCHEDULED", "WAITING"
     else:
@@ -522,6 +529,8 @@ def risk_state_for(case_id: str, state: dict[str, Any], case_input: dict[str, An
     fact_sources = [source for fact in facts for source in fact.get("source_ids", [])]
     if state.get("case_status") == "AT_RISK":
         add("PROMISE_OVERDUE", 60, "服务承诺或物流节点已经进入风险状态。", fact_sources)
+    elif case_id in simulated_clocks and deadline_state_for(case_id, state)["status"] == "NEAR_DUE":
+        add("PROMISE_NEAR_DUE", 12, "已批准的换货履约承诺接近截止，需要主动核实进度。", fact_sources)
     if len(case_input.get("conversation", [])) >= 3:
         add("REPEAT_CONTACT", 18, "消费者已多轮沟通或二次进线。", [case_input["conversation"][-1]["message_id"]])
     if state.get("evidence_status") == "MISMATCHED":
@@ -551,7 +560,7 @@ def customer_decision_for(case_id: str, state: dict[str, Any]) -> dict[str, Any]
         prepared = {"action_id": f"DECISION_{case_id}", "action_type": "ASK_EVIDENCE", "requested_scope": state["current_scope"], "requires_human_approval": False}
     decision = evaluate(state, {"case_id": case_id, "prepared_action": prepared})
     case_input = find_case(case_id) or {"conversation": [], "evidence_images": [], "service_tickets": [], "order": {}, "evaluation_time": SERVICE_CLOCK}
-    advisory = decision_advisory_for(case_id, state, case_input, deadline_state_for(case_id, state), now=SERVICE_CLOCK)
+    advisory = decision_advisory_for(case_id, state, case_input, deadline_state_for(case_id, state), now=service_time_for(case_id))
     return {
         "case_id": case_id,
         "decision": decision["decision"],
@@ -600,13 +609,19 @@ def customer_state_for(case_id: str, rid: str, case_input_override: dict[str, An
         for item in case_input.get("conversation", [])
         if str(item.get("speaker", "")).upper() in {"CONSUMER", "CUSTOMER"}
     ][-2:]
+    current_facts = clone(state.get("experience_gap_diagnosis", {}).get("traceable_service_facts", []))
+    promise_status = "已完成" if state.get("case_status") == "RESOLVED" else "已揽收，继续跟踪送达" if (state.get("open_obligation") or {}).get("milestone") == "IN_TRANSIT" else "已逾期，升级跟进" if deadline["status"] in ("OVERDUE", "ESCALATED") else None
+    if promise_status:
+        for fact in current_facts:
+            if "承诺" in fact["statement"] and "仍在有效期内" in fact["statement"]:
+                fact["statement"] = fact["statement"].replace("仍在有效期内。", f"已记录；当前状态：{promise_status}。")
     facts = [
         {"fact_id": f"FACT_{index+1}", "statement": fact["statement"], "source_evidence_ids": fact.get("source_ids", [])}
-        for index, fact in enumerate(state.get("experience_gap_diagnosis", {}).get("traceable_service_facts", []))
+        for index, fact in enumerate(current_facts)
     ]
     if not facts:
         facts.append({"fact_id": "FACT_SCOPE", "statement": "已恢复订单、商品和当前问题范围。", "source_evidence_ids": [case_input.get("order", {}).get("order_id", case_id)]})
-    evidence_known = [fact["statement"] for fact in state.get("experience_gap_diagnosis", {}).get("traceable_service_facts", [])]
+    evidence_known = [fact["statement"] for fact in current_facts]
     missing = []
     if state.get("evidence_status") == "MISMATCHED":
         issue = case_input.get("current_issue", {})
@@ -767,6 +782,7 @@ async def reset_demo_session(request: Request) -> JSONResponse:
     analyzed_inputs.pop(case_id, None)
     shipment_stages.pop(case_id, None)
     last_event_times.pop(case_id, None)
+    simulated_clocks.pop(case_id, None)
     deadline_escalations.discard(case_id)
     for key in [key for key in idempotency if len(key) > 1 and key[1] == case_id]:
         idempotency.pop(key, None)
@@ -880,6 +896,14 @@ async def run_deadline_monitor(request: Request) -> JSONResponse:
     body, problem = await body_or_error(request, rid)
     if problem:
         return problem
+    requested_now = body.get("now")
+    if requested_now is not None:
+        try:
+            requested_at = parse_time(requested_now)
+            if requested_at.tzinfo is None:
+                raise ValueError
+        except (TypeError, ValueError):
+            return error("SCHEMA_INVALID", "now 必须是带时区的 ISO 8601 时间。", rid, 400)
     case_ids = body.get("case_ids") if isinstance(body.get("case_ids"), list) else demo_case_ids()
     updated: list[dict[str, Any]] = []
     for case_id in case_ids:
@@ -888,11 +912,16 @@ async def run_deadline_monitor(request: Request) -> JSONResponse:
         state = state_for(case_id, rid)
         if state is None:
             continue
+        clock_before = parse_time(service_time_for(case_id))
+        if requested_now is not None:
+            simulated_clocks[case_id] = max(simulated_clocks.get(case_id, parse_time(SERVICE_CLOCK)), requested_at)
+        effective_now = parse_time(service_time_for(case_id))
+        clock_advanced = effective_now > clock_before
         deadline = deadline_state_for(case_id, state)
-        if state.get("open_obligation") and deadline["status"] == "SCHEDULED":
+        escalated_now = False
+        if state.get("open_obligation") and deadline["status"] in ("SCHEDULED", "NEAR_DUE", "OVERDUE"):
             due = parse_time(deadline["deadline"])
-            now = parse_time(body.get("now") or SERVICE_CLOCK)
-            if now >= due and case_id not in deadline_escalations:
+            if effective_now >= due and case_id not in deadline_escalations:
                 changed = clone(state)
                 changed["case_status"] = "AT_RISK"
                 changed["experience_risk"] = "HIGH"
@@ -903,7 +932,7 @@ async def run_deadline_monitor(request: Request) -> JSONResponse:
                     for commitment in changed.get("active_commitments", [])
                 ]
                 changed["audit_trail"] = [*changed.get("audit_trail", []), {
-                    "at": body.get("now") or SERVICE_CLOCK,
+                    "at": effective_now.isoformat(),
                     "actor": "DEADLINE_MONITOR",
                     "action": "PROMISE_DEADLINE_ESCALATED",
                     "changed_fields": ["case_status", "open_obligation", "active_commitments"],
@@ -912,8 +941,140 @@ async def run_deadline_monitor(request: Request) -> JSONResponse:
                 states[case_id] = changed
                 deadline_escalations.add(case_id)
                 state = changed
+                escalated_now = True
+        if clock_advanced and not escalated_now:
+            changed = clone(state)
+            changed["audit_trail"] = [*changed.get("audit_trail", []), {
+                "at": effective_now.isoformat(), "actor": "DEADLINE_MONITOR",
+                "action": "DEADLINE_MONITOR_CLOCK_ADVANCED", "changed_fields": ["service_clock"],
+                "request_id": rid,
+            }]
+            states[case_id] = changed
+            state = changed
         updated.append(deadline_state_for(case_id, state))
     return envelope({"deadline_states": updated, "escalated_case_ids": sorted(deadline_escalations)}, rid)
+
+
+@app.post("/api/demo/clock/advance")
+async def advance_demo_clock(request: Request) -> JSONResponse:
+    """Move one approved replacement case to a deterministic demo deadline checkpoint."""
+    rid = request_id(request, "REQ_DEMO_CLOCK")
+    body, problem = await body_or_error(request, rid)
+    if problem:
+        return problem
+    case_id, step, idem_key = body.get("case_id"), body.get("step"), body.get("idempotency_key")
+    if not isinstance(case_id, str) or step not in ("NEAR_DUE", "OVERDUE") or not isinstance(idem_key, str) or len(idem_key) < 8:
+        return error("SCHEMA_INVALID", "case_id、有效 step 与至少 8 个字符的 idempotency_key 均为必填字段。", rid, 400)
+    key = ("demo_clock", case_id, idem_key)
+    fingerprint = canonical(body)
+    if key in idempotency:
+        previous_fingerprint, previous = idempotency[key]
+        if previous_fingerprint != fingerprint:
+            return error("IDEMPOTENCY_CONFLICT", "同一幂等键不能对应不同请求。", rid, 409)
+        return JSONResponse(previous)
+    state = state_for(case_id, rid)
+    if state is None:
+        return error("VALIDATION_ERROR", "未找到案例事实。", rid, 400)
+    obligation = state.get("open_obligation") or {}
+    if (
+        obligation.get("obligation_type") != "REPLACEMENT_FULFILLMENT"
+        or obligation.get("status") not in ("ON_TRACK", "ACTIVE", "AT_RISK")
+        or state.get("case_status") == "RESOLVED"
+        or shipment_stages.get(case_id) in ("IN_TRANSIT", "DELIVERED")
+        or obligation.get("milestone") in ("IN_TRANSIT", "DELIVERED")
+    ):
+        return error("INVALID_EVENT_TRANSITION", "演示时钟仅适用于尚未完成且未揽收的已批准换货履约义务。", rid, 409)
+    deadline = obligation.get("deadline")
+    if not isinstance(deadline, str):
+        return error("VALIDATION_ERROR", "已批准的换货义务缺少有效截止时间。", rid, 409)
+    try:
+        due_at = parse_time(deadline)
+        if due_at.tzinfo is None:
+            raise ValueError
+    except (TypeError, ValueError):
+        return error("VALIDATION_ERROR", "换货义务截止时间必须带时区。", rid, 409)
+
+    before = parse_time(service_time_for(case_id))
+    requested_target = due_at - timedelta(minutes=10) if step == "NEAR_DUE" else due_at + timedelta(minutes=1)
+    if requested_target < before:
+        return error("INVALID_EVENT_TRANSITION", "模拟时间不能倒退，请重置会话后重新演示。", rid, 409)
+    target = requested_target
+    simulated_clocks[case_id] = target
+    first_escalation = (
+        step == "OVERDUE"
+        and state.get("case_status") != "AT_RISK"
+        and obligation.get("status") != "AT_RISK"
+        and case_id not in deadline_escalations
+    )
+    changed = clone(state)
+    next_update = due_at - timedelta(minutes=5) if step == "NEAR_DUE" else target + timedelta(minutes=30)
+    next_update_text = next_update.isoformat() if isinstance(next_update, datetime) else next_update
+    if step == "OVERDUE":
+        changed["case_status"] = "AT_RISK"
+        changed["experience_risk"] = "HIGH"
+        changed["open_obligation"]["status"] = "AT_RISK"
+        changed["active_commitments"] = [
+            {**commitment, "status": "AT_RISK"}
+            for commitment in changed.get("active_commitments", [])
+        ]
+        if first_escalation:
+            deadline_escalations.add(case_id)
+    changed["open_obligation"]["next_check_at"] = next_update_text
+    receipt = clone(changed.get("service_progress_receipt") or {})
+    if not receipt:
+        case_input = analyzed_inputs.get(case_id) or find_case(case_id) or {}
+        evidence_facts = [fact.get("statement") for fact in changed.get("experience_gap_diagnosis", {}).get("traceable_service_facts", []) if fact.get("statement")]
+        receipt = {
+            "receipt_id": f"RECEIPT_{case_id}_001", "received_evidence": evidence_facts,
+            "consumer_action_required": False,
+            "recovery_if_missed": "若仍未确认揽收，品牌将继续升级催办并主动通知新的处理时间。",
+        }
+    receipt.update({
+        "status": "AT_RISK" if step == "OVERDUE" else receipt.get("status", "ACTIVE"),
+        "brand_action": "换货件仍未确认揽收，品牌已向仓库发起催办并升级给主管。" if step == "OVERDUE" else "已接近约定截止，品牌正在主动核实换货件的仓库与揽收进度。",
+        "latest_update_at": target.isoformat(), "next_update_by": next_update_text,
+    })
+    changed["service_progress_receipt"] = receipt
+    if target > before or changed != state or first_escalation:
+        changed["audit_trail"] = [*changed.get("audit_trail", []), {
+            "at": target.isoformat(), "actor": "DEMO_CLOCK_SIMULATOR",
+            "action": "DEMO_CLOCK_NEAR_DUE" if step == "NEAR_DUE" else "DEMO_CLOCK_OVERDUE_ESCALATED" if first_escalation else "DEMO_CLOCK_OVERDUE_ALREADY_ESCALATED",
+            "changed_fields": ["service_clock", "open_obligation", "service_progress_receipt"] + (["case_status", "active_commitments", "experience_risk"] if step == "OVERDUE" else []),
+            "request_id": rid,
+        }]
+        states[case_id] = changed
+    case_input = analyzed_inputs.get(case_id) or find_case(case_id) or {}
+    tickets = case_input.get("service_tickets", [])
+    ticket_fact = next((fact for fact in changed.get("experience_gap_diagnosis", {}).get("traceable_service_facts", []) if fact.get("fact_type") == "TICKET_CREATED"), {})
+    ticket_id = next(iter(ticket_fact.get("source_ids") or []), None) or next((ticket.get("ticket_id") for ticket in tickets if ticket.get("ticket_id")), None)
+    if step == "OVERDUE" and first_escalation:
+        follow_up = {"task_type": "WAREHOUSE_FOLLOW_UP", "existing_ticket_id": ticket_id, "priority": "HIGH", "summary": f"{case_id} 的换货履约已超过承诺截止，立即确认仓库状态和预计交运时间。"}
+        escalation = {"escalation_type": "PROMISE_OVERDUE", "priority": "HIGH", "summary": f"{case_id} 的已批准换货履约承诺已逾期，建议主管介入。"}
+        event_summary = "演示时钟已推进至承诺逾期 1 分钟，仓库跟进和主管升级候选已生成；对客通知仍需人工批准。"
+    elif step == "OVERDUE":
+        follow_up = escalation = None
+        event_summary = "演示时钟已到逾期检查点；既有升级状态保持不变，没有重复生成升级候选。"
+    else:
+        follow_up = escalation = None
+        event_summary = "演示时钟已推进至承诺截止前 10 分钟；系统建议主动核实进度，对客通知仍需人工批准。"
+    update_label = parse_time(next_update_text).astimezone(timezone(timedelta(hours=8))).strftime("%m月%d日 %H:%M")
+    notification_text = (
+        f"您的换货件尚未确认揽收，我们已向仓库升级催办，并将在 {update_label} 前主动更新处理进展。您无需重复提交材料。"
+        if step == "OVERDUE" else
+        f"您的换货件接近约定处理时间，我们正在核实仓库和物流进度，并将在 {update_label} 前主动更新。您无需重复提交材料。"
+    )
+    data = {
+        "accountability_state": changed,
+        "follow_up_candidate": follow_up,
+        "supervisor_escalation_candidate": escalation,
+        "proactive_notification_draft": {"text": notification_text, "commits_next_update_at": next_update_text, "requires_human_approval": True, "channel": "ORIGINAL_CHAT"},
+        "service_clock": service_time_for(case_id), "simulation": True, "step": step,
+        "event_summary": event_summary, "customer_state": customer_state_for(case_id, rid),
+        "priority_states": priority_states(rid), "deadline_state": deadline_state_for(case_id, changed),
+    }
+    response = {"data": data, "error": None, "request_id": rid}
+    idempotency[key] = (fingerprint, response)
+    return JSONResponse(response)
 
 
 @app.post("/api/decisions")
@@ -928,11 +1089,15 @@ async def create_decision(request: Request) -> JSONResponse:
     if state is None:
         return error("VALIDATION_ERROR", "未找到案例事实。", rid, 400)
     if isinstance(body.get("prepared_action"), dict):
+        if isinstance(body.get("draft_reply"), str):
+            conflict = reply_conflict_with_state(state, body["draft_reply"])
+            if conflict:
+                return error("P0_PROHIBITED_ACTION", conflict, rid, 400)
         full = evaluate(state, body)
         if full["rule_id"] == "P0_PROHIBITED_ACTION":
             return error("P0_PROHIBITED_ACTION", full["reason"], rid, 400)
         case_input = find_case(body["case_id"]) or {"conversation": [], "evidence_images": [], "service_tickets": [], "order": {}, "evaluation_time": SERVICE_CLOCK}
-        advisory = decision_advisory_for(body["case_id"], state, case_input, deadline_state_for(body["case_id"], state), now=SERVICE_CLOCK)
+        advisory = decision_advisory_for(body["case_id"], state, case_input, deadline_state_for(body["case_id"], state), now=service_time_for(body["case_id"]))
         data = {
             "case_id": full["case_id"],
             "decision": full["decision"],
@@ -965,6 +1130,10 @@ async def evaluate_action(request: Request) -> JSONResponse:
     state = state_for(body["case_id"], rid)
     if state is None:
         return error("VALIDATION_ERROR", "未找到案例事实。", rid, 400)
+    if isinstance(body.get("draft_reply"), str):
+        conflict = reply_conflict_with_state(state, body["draft_reply"])
+        if conflict:
+            return error("P0_PROHIBITED_ACTION", conflict, rid, 400)
     result = evaluate(state, body)
     if result["rule_id"] == "P0_PROHIBITED_ACTION":
         return error("P0_PROHIBITED_ACTION", result["reason"], rid, 400)
@@ -1006,10 +1175,13 @@ async def approve_resolution(request: Request) -> JSONResponse:
         return error("SCHEMA_INVALID", "candidate_type 不在允许范围。", rid, 400)
     approved = resolution(state, candidate, "E1")
     draft = edits.get("consumer_reply", approved["consumer_reply_draft"])
+    conflict = reply_conflict_with_state(state, draft)
+    if conflict:
+        return error("P0_PROHIBITED_ACTION", conflict, rid, 400)
     draft_review = assess_draft(draft)
     guard = evaluate(state, {"prepared_action": {"action_type": "CHECK_REPLACEMENT_PROGRESS", "requested_scope": state["current_scope"]}, "draft_reply": draft})
     if guard["decision"] == "INTERVENE":
-        return error("P0_PROHIBITED_ACTION", guard["reason"], rid, 409)
+        return error("P0_PROHIBITED_ACTION", guard["reason"], rid, 400)
     if re.search(r"(?:会|将|保证|承诺|办理|安排|立即).{0,8}(?:退款|退钱|原路退)", draft) and not re.search(r"(?:不会|不能|无法|尚未|暂不).{0,8}(?:退款|退钱|原路退)", draft):
         return error("VALIDATION_ERROR", "当前演示不支持批准退款承诺。", rid, 409)
     if contains_unsupported_fulfillment_guarantee(draft):
@@ -1035,7 +1207,9 @@ async def approve_resolution(request: Request) -> JSONResponse:
         if edits.get("consumer_reply"):
             approved["consumer_reply_draft"] = edits["consumer_reply"]
         updated = clone(state)
-        audit = {"at": SERVICE_CLOCK, "actor": body["approver_id"].strip(), "action": "RESOLUTION_APPROVED", "changed_fields": sorted(edits.keys()), "request_id": rid}
+        latest_receipt_time = (state.get("service_progress_receipt") or {}).get("latest_update_at")
+        approval_time = max(parse_time(service_time_for(body["case_id"])), parse_time(latest_receipt_time)) if latest_receipt_time else parse_time(service_time_for(body["case_id"]))
+        audit = {"at": approval_time.isoformat(), "actor": body["approver_id"].strip(), "action": "RESOLUTION_APPROVED", "changed_fields": sorted(edits.keys()), "request_id": rid}
         updated["audit_trail"] = [*updated.get("audit_trail", []), audit]
         states[body["case_id"]] = updated
         data = {"accountability_state": updated, "approved_resolution": approved, "audit_trail": updated["audit_trail"]}
@@ -1049,7 +1223,9 @@ async def approve_resolution(request: Request) -> JSONResponse:
     if (draft_review["kind"] == "UNCLASSIFIED" and "NEW_COMMITMENT" not in draft_review.get("_detected_actions", []) and not explicit_follow_up) or state.get("demo_service_event"):
         approved.update({"consumer_reply_draft": draft, "creates_obligation": False, "compiled_service_responsibility": None, "requires_human_approval": True})
         updated = clone(state)
-        audit = {"at": SERVICE_CLOCK, "actor": body["approver_id"].strip(), "action": "RESOLUTION_APPROVED", "changed_fields": sorted(edits.keys()), "request_id": rid}
+        latest_receipt_time = (state.get("service_progress_receipt") or {}).get("latest_update_at")
+        approval_time = max(parse_time(service_time_for(body["case_id"])), parse_time(latest_receipt_time)) if latest_receipt_time else parse_time(service_time_for(body["case_id"]))
+        audit = {"at": approval_time.isoformat(), "actor": body["approver_id"].strip(), "action": "RESOLUTION_APPROVED", "changed_fields": sorted(edits.keys()), "request_id": rid}
         updated["audit_trail"] = [*updated.get("audit_trail", []), audit]
         states[body["case_id"]] = updated
         data = {"accountability_state": updated, "approved_resolution": approved, "audit_trail": updated["audit_trail"]}
@@ -1092,6 +1268,10 @@ async def approve_resolution(request: Request) -> JSONResponse:
         return error("INVALID_EVENT_TRANSITION", "履约已完成，不能重新激活换货责任。", rid, 409)
     obligation = clone(existing_obligation) if existing_obligation else {"obligation_type": "REPLACEMENT_FULFILLMENT", "status": "ON_TRACK", "accountable_side": "BRAND", "executor": approved["executor"], "deadline": deadline, "next_check_at": next_check, "milestone": "AWAITING_CARRIER_PICKUP", "resolution_condition": "REPLACEMENT_DELIVERED"}
     obligation["next_check_at"] = next_check
+    # A chat approval cannot move an in-transit parcel back to the warehouse.
+    if existing_obligation.get("milestone") == "IN_TRANSIT":
+        approved["executor"] = existing_obligation["executor"]
+    obligation["executor"] = approved["executor"]
     receipt = clone(state.get("service_progress_receipt")) if state.get("service_progress_receipt") else {"receipt_id": f"RECEIPT_{body['case_id']}_001", "status": "ACTIVE", "received_evidence": ["粉底液泵头损坏图片", "订单和商品货号", "换货工单"], "brand_action": "正在核实换货件是否已由物流揽收。", "latest_update_at": SERVICE_CLOCK, "next_update_by": next_check, "consumer_action_required": False, "recovery_if_missed": recovery}
     receipt["next_update_by"] = next_check
     receipt["recovery_if_missed"] = recovery
@@ -1103,7 +1283,9 @@ async def approve_resolution(request: Request) -> JSONResponse:
     compiled = approved.get("compiled_service_responsibility")
     if compiled is not None:
         compiled.update({"deadline": deadline, "next_check_at": next_check, "recovery_if_missed": recovery})
-    audit = {"at": SERVICE_CLOCK, "actor": body["approver_id"].strip(), "action": "RESOLUTION_APPROVED", "changed_fields": sorted(edits.keys()), "request_id": rid}
+    latest_receipt_time = (state.get("service_progress_receipt") or {}).get("latest_update_at")
+    approval_time = max(parse_time(service_time_for(body["case_id"])), parse_time(latest_receipt_time)) if latest_receipt_time else parse_time(service_time_for(body["case_id"]))
+    audit = {"at": approval_time.isoformat(), "actor": body["approver_id"].strip(), "action": "RESOLUTION_APPROVED", "changed_fields": sorted(edits.keys()), "request_id": rid}
     updated["audit_trail"] = [*updated["audit_trail"], audit]
     states[body["case_id"]] = updated
     data = {"accountability_state": updated, "approved_resolution": approved, "audit_trail": updated["audit_trail"]}
@@ -1134,7 +1316,9 @@ async def shipment_event(request: Request) -> JSONResponse:
         if previous_fingerprint != fingerprint:
             return error("IDEMPOTENCY_CONFLICT", "同一幂等键不能对应不同请求。", rid, 409)
         return JSONResponse(previous)
-    if event_time < last_event_times.get(body["case_id"], datetime.min.replace(tzinfo=event_time.tzinfo)):
+    if event_time < last_event_times.get(body["case_id"], datetime.min.replace(tzinfo=event_time.tzinfo)) or (
+        body["case_id"] in simulated_clocks and event_time <= parse_time(service_time_for(body["case_id"]))
+    ):
         return error("INVALID_EVENT_TRANSITION", "物流事件时间不能倒退。", rid, 409)
     state = state_for(body["case_id"], rid)
     if state is None:
