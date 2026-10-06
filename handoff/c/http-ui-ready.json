@@ -1,0 +1,79 @@
+{
+  "artifact": "C-line HTTP/UI readiness evidence",
+  "created_on": "2026-10-06",
+  "baseline_commit": "aae07fe95cdafbc0548c0336d0edca2d1818f8ba",
+  "readiness": "Ready for the local simulated demo path; browser end-to-end acceptance has not been run and real Qianniu delivery is not connected.",
+  "requirements": [
+    {
+      "id": "confirm-before-customer-chat",
+      "status": "PASS_FOR_CURRENT_SIMULATED_PRODUCT",
+      "behavior": "There is no customer-chat send API or real Qianniu transport. Evaluated/approved replies are recorded locally after the corresponding user action; the UI explicitly says Qianniu sending is not connected.",
+      "evidence": [
+        {"path": "frontend/src/App.tsx", "sha256": "48D6DD34C44EE84190B30960D2E5EF88CB6D5873B43E1D07BB0B946451273AB6", "anchors": ["handleAttemptSend", "handleApprove", "resolved success toast: 千牛发送尚未接入"]},
+        {"path": "docs/05-api-and-ui.md", "sha256": "E6F7467E58C863F8706918E107A6D17D1C6B9FC2D90162477EB1A8F0BC8CD925", "anchors": ["four core write/evaluate APIs", "approval request"]}
+      ],
+      "limitation": "This proves the demo does not claim an external send. It is not proof of a production Qianniu connector."
+    },
+    {
+      "id": "retry-keeps-same-idempotency-key",
+      "status": "PASS",
+      "behavior": "Approve, shipment, demo-clock, and demo-service mutations reuse an identity for an identical failed request; changing the payload or succeeding starts a fresh identity. Shipment retry also reuses event_id.",
+      "evidence": [
+        {"path": "frontend/src/api/retryIdentity.ts", "sha256": "9D6081E882F4F8CB9BC3740D112706594F324F82A498BB11B4D3469F160430CB"},
+        {"path": "frontend/src/api/retryIdentity.test.ts", "sha256": "3A97CBA9E9A809944EC6B18D723F71F40D4867295ACFC8A52C31EFB4F2A515E4", "result": "2 unit tests passed within the 29-test frontend suite"},
+        {"path": "frontend/src/App.tsx", "sha256": "48D6DD34C44EE84190B30960D2E5EF88CB6D5873B43E1D07BB0B946451273AB6"}
+      ]
+    },
+    {
+      "id": "network-failure-never-shows-success",
+      "status": "PASS",
+      "behavior": "HTTP non-2xx, malformed/network failures return data=null with a retryable error; UI mutation handlers stop before changing business state when result.error is set.",
+      "evidence": [
+        {"path": "frontend/src/api/client.ts", "sha256": "8A29C6A74CB468D64A07CC94A54F53F6DBD08FA7FA4620A8DEDE12A01961A0E3"},
+        {"path": "frontend/src/api/client.test.ts", "sha256": "89DC637E1BA95D86B16B40FB0772FA6197667351CAB1096832788BD1ACDBB7F6", "result": "2 tests verify failed HTTP and network responses cannot return success data"},
+        {"path": "frontend/src/App.tsx", "sha256": "48D6DD34C44EE84190B30960D2E5EF88CB6D5873B43E1D07BB0B946451273AB6"}
+      ]
+    },
+    {
+      "id": "backend-is-state-source-of-truth",
+      "status": "PASS_WITH_DEMO_SCOPE",
+      "behavior": "On reload, CustomerState comes from the analyze API response; cached browser CustomerState no longer overwrites it. Mutations render server-returned state. The demo backend stores state in process memory, so a server restart resets it.",
+      "evidence": [
+        {"path": "frontend/src/App.tsx", "sha256": "48D6DD34C44EE84190B30960D2E5EF88CB6D5873B43E1D07BB0B946451273AB6", "anchors": ["restoredCustomerState=result.data.customer_state", "restoredAsApproved=backendHasSavedResolution"]},
+        {"path": "backend/main.py", "sha256": "1B6EDEC35D0DA023AA6D6770D5EB4774227D6941A51EF0CDB8FC9049F716D3EF", "note": "In-process demo state dictionaries; not durable production storage."}
+      ]
+    },
+    {
+      "id": "event-time-monotonicity",
+      "status": "PASS",
+      "behavior": "The UI chooses an event time after the latest service clock, receipt update, and simulation time. Backend rejects earlier event times with INVALID_EVENT_TRANSITION. The example sequence is not-picked-up at 11:35 then picked-up at 11:50.",
+      "evidence": [
+        {"path": "frontend/src/App.tsx", "sha256": "48D6DD34C44EE84190B30960D2E5EF88CB6D5873B43E1D07BB0B946451273AB6", "anchor": "nextShipmentEventTime"},
+        {"path": "backend/main.py", "sha256": "1B6EDEC35D0DA023AA6D6770D5EB4774227D6941A51EF0CDB8FC9049F716D3EF", "anchor": "shipment event time monotonic guard"},
+        {"path": "backend/tests/test_api.py", "sha256": "C0A9CCBB8EDBF9D4F76C0272506FE144F9A085549B497C5C1A1948B4FCDF7FF5", "test": "test_delayed_pickup_can_recover_after_not_picked_up_and_rejects_contradiction", "result": "11:35 → 10:10 rejected; 11:50 accepted"},
+        {"path": "frontend/src/api/examples/04-shipment-event.json", "sha256": "52D85DC04D2167EB1A380EF2D9B360D076F1D68F0263801E98808DB8641443B1"}
+      ]
+    },
+    {
+      "id": "reset-does-not-fake-server-reset",
+      "status": "PASS_BY_CODE_REVIEW_AND_BACKEND_TEST",
+      "behavior": "UI calls resetDemoSession first and only removes local session state/reloads after a successful response. On error, it preserves the local session and displays the error. Backend reset test verifies only the selected demo case and its idempotency records are cleared.",
+      "evidence": [
+        {"path": "frontend/src/App.tsx", "sha256": "48D6DD34C44EE84190B30960D2E5EF88CB6D5873B43E1D07BB0B946451273AB6", "anchor": "handleResetSession"},
+        {"path": "backend/tests/test_api.py", "sha256": "C0A9CCBB8EDBF9D4F76C0272506FE144F9A085549B497C5C1A1948B4FCDF7FF5", "test": "test_demo_session_reset_clears_only_selected_demo_case"}
+      ],
+      "limitation": "The UI reset failure branch has not yet been exercised in a browser end-to-end test."
+    }
+  ],
+  "verification": {
+    "frontend_tests": {"command": "npm test", "exit_code": 0, "summary": "5 files passed; 29 tests passed"},
+    "backend_tests": {"command": "python -m pytest backend/tests/test_api.py -q", "exit_code": 0, "summary": "26 passed in 1.58s"},
+    "production_build": {"command": "npm run build", "exit_code": 0, "summary": "TypeScript check and Vite build passed; 1590 modules transformed"},
+    "browser_end_to_end": "NOT_RUN"
+  },
+  "production_gaps": [
+    "Real Qianniu customer-chat delivery is not connected.",
+    "Demo state is in process memory and resets when the backend restarts.",
+    "The C-line owner should independently replay the verification before treating this as their approval."
+  ]
+}
