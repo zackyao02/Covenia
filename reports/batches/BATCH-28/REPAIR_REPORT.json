@@ -117,7 +117,15 @@
       }
     ],
     "recommended_prompt_increment_verbatim": "Worked example. If the source text contains exactly one AGENT message that makes a promise, and you produce:\n\n  \"observations\": [\"a\", \"b\", \"c\"],\n  \"candidate_promise_texts\": [\"the promise\"]\n\nthen source_trace MUST contain exactly four entries, one per element:\n\n  \"source_trace\": [\n    {\"field\": \"observations[0]\",            \"source_type\": \"IMAGE\", \"source_id\": \"<id>\"},\n    {\"field\": \"observations[1]\",            \"source_type\": \"IMAGE\", \"source_id\": \"<id>\"},\n    {\"field\": \"observations[2]\",            \"source_type\": \"CHAT\",  \"source_id\": \"<id>\"},\n    {\"field\": \"candidate_promise_texts[0]\", \"source_type\": \"CHAT\",  \"source_id\": \"<id>\"}\n  ]\n\nThe fourth entry is required even when observations[2] already quotes the same agent sentence. An observation trace never satisfies the promise trace.",
-    "conclusion": "the v2 change alone does NOT close the gap; adding the worked example does, and it preserves the image traces that variant C loses"
+    "conclusion": "the v2 change alone does NOT close the gap; adding the worked example does, and it preserves the image traces that variant C loses",
+    "cross_round_reconciliation": {
+      "other_round": "reports/batches/BATCH-28/AUX_CROSS_LINE_REPAIR_REPORT.json (it refers to this session as 'the concurrent implementation session')",
+      "its_independent_attempt_level_count": {"prompt_v1": "0/5 accepted", "prompt_v2": "2/9 accepted"},
+      "this_round_probe": {"prompt_v2": "1/3 accepted", "prompt_v2_plus_worked_example": "7/7 accepted"},
+      "agreement": "both independent measurements put prompt v2 at roughly one acceptance in four",
+      "shared_caveat_reaffirmed": "0/5 versus 2/9 is not a statistical separation at this sample size, so neither round claims that v2 raised the acceptance probability; both claim only that criterion 1 was reached with real calls and that the dominant failure mode persists",
+      "value_of_the_agreement": "two independent rounds converging on the same order of magnitude is stronger than either round alone: the prompt repair is necessary but not sufficient"
+    }
   },
 
   "diagnostic_answers": {
