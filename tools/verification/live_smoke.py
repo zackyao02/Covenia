@@ -486,7 +486,13 @@ def _load_modules() -> dict[str, Any]:
         SafeInputSource,
     )
     from covenia_b.ports.errors import ModelUnavailable  # noqa: PLC0415
-    from covenia_b.services.analyze import AnalyzeService  # noqa: PLC0415
+    from covenia_b.services.analyze import (  # noqa: PLC0415
+        _DEFAULT_POLICY,
+        AnalyzeService,
+        _aggregate_server_evidence,
+        _compile_from_server_facts,
+        _enrich_extracted_journey,
+    )
     from covenia_b.services.fact_loader import (  # noqa: PLC0415
         FactLoader,
         ImageSafetyDeclarations,
@@ -528,6 +534,10 @@ def _load_modules() -> dict[str, Any]:
         "SafeInputSource": SafeInputSource,
         "ModelUnavailable": ModelUnavailable,
         "AnalyzeService": AnalyzeService,
+        "DEFAULT_POLICY": _DEFAULT_POLICY,
+        "compile_from_server_facts": _compile_from_server_facts,
+        "enrich_extracted_journey": _enrich_extracted_journey,
+        "aggregate_server_evidence": _aggregate_server_evidence,
         "FactLoader": FactLoader,
         "ImageSafetyDeclarations": ImageSafetyDeclarations,
         "get_settings": get_settings,
@@ -1150,13 +1160,20 @@ def run_live(
     candidate = accepted_result.candidate
     service = modules["AnalyzeService"]
     source_summary = service._validate_candidate(candidate, loaded)
-    compilation = service._compile_from_server_facts(
-        loaded.case_input, policy=service._DEFAULT_POLICY
+    # ``_compile_from_server_facts``, ``_enrich_extracted_journey`` and
+    # ``_aggregate_server_evidence`` are module-level helpers in
+    # ``covenia_b.services.analyze`` (lines 399, 410 and 539), not members of
+    # ``AnalyzeService``.  ``_validate_candidate`` above is the only one of the
+    # four that really is a static method on the service.  Resolving all four
+    # through the reviewed module keeps the tool on the same code path the
+    # ``analyze`` endpoint uses instead of re-implementing any of it.
+    compilation = modules["compile_from_server_facts"](
+        loaded.case_input, policy=modules["DEFAULT_POLICY"]
     )
-    journey = service._enrich_extracted_journey(
+    journey = modules["enrich_extracted_journey"](
         case_input=loaded.case_input, candidate=candidate, compilation=compilation
     )
-    evidence = service._aggregate_server_evidence(loaded.case_input, journey, candidate)
+    evidence = modules["aggregate_server_evidence"](loaded.case_input, journey, candidate)
     from covenia_b.state import build_accountability_state  # noqa: PLC0415
 
     state = build_accountability_state(
@@ -1526,6 +1543,23 @@ def main(argv: Sequence[str] | None = None) -> int:
         print(f"artifact error: {type(error).__name__}: {error}", file=sys.stderr)
         _write_failure_document(output_dir, repo, args, exit_code=EXIT_ARTIFACT_ERROR, status="ARTIFACT_ERROR", detail=str(error))
         return EXIT_ARTIFACT_ERROR
+    except Exception as error:  # noqa: BLE001 - an escaping exception is a finding
+        # An unanticipated exception is still a real outcome and must leave an
+        # auditable artifact.  Before this handler existed, a failure between the
+        # model call and the journey projection escaped uncaught and produced no
+        # artifact at all, which made a genuine defect look like a missing run.
+        # The failure is recorded and then re-raised: this tool never converts a
+        # crash into a verdict, and the traceback must stay visible on stderr.
+        print(f"unexpected error: {type(error).__name__}: {error}", file=sys.stderr)
+        _write_failure_document(
+            output_dir,
+            repo,
+            args,
+            exit_code=EXIT_TOOL_ERROR,
+            status="TOOL_ERROR",
+            detail=f"{type(error).__name__}: {error}",
+        )
+        raise
 
     if args.json:
         print(json.dumps(_redact(document), ensure_ascii=False, indent=2, sort_keys=True))

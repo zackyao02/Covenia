@@ -3,19 +3,22 @@
   "batch_id": "BATCH-28",
   "batch_kind": "repair-diagnostic",
   "statement": "本批由辅助调度器实现，非独立实现方；验收须由他方完成。",
-  "generated_for": "退回修复轮：定位 MISSING_FIELD_TRACE 根因并留证",
+  "generated_for": "退回修复轮：定位 MISSING_FIELD_TRACE 根因、量化提示词修复的可靠性、修掉 white-list 内的 journey 阻塞点",
+  "human_readable_twin": "reports/batches/BATCH-28/REPAIR_REPORT.md",
+  "machine_readable_twin": "reports/batches/BATCH-28/REPAIR_REPORT.json",
 
   "root_cause_verdict": "A",
-  "root_cause_one_line_zh": "提示词未把「承诺级 trace」写成可操作要求；模型只 trace observations 集合。属白名单外（BATCH-11 归属），已停下回报，未越权修改。",
-  "root_cause_one_line_en": "The prompt never states the promise-level trace requirement in an operational form; the model traces the observations collection only. Owner: BATCH-11 (outside this batch's allowed_paths).",
+  "root_cause_one_line_zh": "提示词未把「承诺级 trace」写成可操作要求；v2 重写后仍只有 1/3 命中率。属白名单外（BATCH-11 归属），本批未修改。",
+  "root_cause_one_line_en": "The prompt never states the promise-level trace requirement in an operational form, and the v2 rewrite of that prompt is still only 1/3 reliable. Owner: BATCH-11 (outside this batch's allowed_paths).",
 
   "out_of_scope_files_that_would_need_to_change": [
     {
       "file": "backend/src/covenia_b/model/prompts/candidate_extraction.py",
-      "lines": "26-35, 37, and 49-63 (schema-repair variant)",
+      "lines": "schema example region and 49-63 (schema-repair variant)",
       "owner_batch": "BATCH-11",
       "owner_evidence": "batches.json:2035-2044",
-      "changed_by_this_repair": false
+      "changed_by_this_repair": false,
+      "note": "another party changed it to candidate-extraction-v2 during this session, without committing; that change is necessary but measured insufficient on its own"
     },
     {
       "file": "backend/src/covenia_b/model/source_validation.py",
@@ -27,49 +30,90 @@
     }
   ],
 
-  "in_scope_defect_found_but_not_fixed": {
-    "file": "tools/verification/live_smoke.py",
-    "lines": "101, 1046, 1072-1079",
-    "summary": "model_bound_ms accumulates across all attempts and is then compared against the frozen 20 s per-request budget",
-    "measured": {
-      "model_bound_ms": 20810,
-      "frozen_budget_ms": 20000,
-      "per_attempt_provider_ms": [10154, 10650],
-      "each_attempt_individually_within_budget": true
+  "in_scope_defects": [
+    {
+      "id": "JOURNEY_PATH_ATTRIBUTEERROR",
+      "file": "tools/verification/live_smoke.py",
+      "status": "FIXED_BY_THIS_REPAIR",
+      "severity": "blocking for criterion 1",
+      "summary": "the tool called four module-level helpers from covenia_b.services.analyze as if they were AnalyzeService static methods",
+      "error": "AttributeError: type object 'AnalyzeService' has no attribute '_compile_from_server_facts'",
+      "module_level_objects": {
+        "_DEFAULT_POLICY": 72,
+        "_compile_from_server_facts": 399,
+        "_enrich_extracted_journey": 410,
+        "_aggregate_server_evidence": 539,
+        "_validate_candidate": "321-327 (this one really is a @staticmethod)"
+      },
+      "aggravating_factor": "the crash escaped exception handling and wrote no artifact at all, so a real defect looked like a missing run",
+      "fix": [
+        "resolve the four module-level objects through the modules mapping built by _load_modules()",
+        "add a catch-all except Exception handler that writes the failure document and then re-raises"
+      ]
     },
-    "blocks_the_green_path": true,
-    "fixed_by_this_repair": false,
-    "reason_not_fixed": "changes the measurement semantics of already-delivered evidence and cannot turn criterion 1 green while the prompt gap is open; reported instead of changed unilaterally",
-    "proposed_fix": "record the budget verdict from the accepted (or single) attempt's model-bound time; keep the cumulative value under a distinct key such as budget.model_bound_ms_total_run; backend/tests/live/test_real_extraction.py:258 then needs no change",
-    "risk": "LOW"
-  },
+    {
+      "id": "BUDGET_ACCOUNTING_CUMULATIVE",
+      "file": "tools/verification/live_smoke.py",
+      "lines": "101, 1046, 1072-1079",
+      "status": "NOT_FIXED_IN_THIS_REPAIR",
+      "summary": "model_bound_ms accumulates across all attempts and is then compared against the frozen 20 s per-request budget",
+      "measured_v1": {
+        "model_bound_ms": 20810,
+        "frozen_budget_ms": 20000,
+        "per_attempt_provider_ms": [10154, 10650],
+        "each_attempt_individually_within_budget": true
+      },
+      "measured_v2": {
+        "model_bound_ms": 12856,
+        "per_attempt_provider_ms": [6352, 6498],
+        "within_budget": true
+      },
+      "latency_dependent": true,
+      "proposed_fix": "record the budget verdict from the accepted (or single) attempt's model-bound time; keep the cumulative value under a distinct key such as budget.model_bound_ms_total_run; backend/tests/live/test_real_extraction.py:258 then needs no change",
+      "risk": "LOW"
+    }
+  ],
 
   "diagnostic_answers": {
-    "q1_source_trace_entries_returned": {
+    "q1_source_trace_entries_returned_v1": {
       "count": 4,
       "fields": ["observations[0]", "observations[1]", "observations[2]", "observations[3]"],
       "promise_traces": 0
     },
     "q2_promise_count_and_whether_traced": {
-      "candidate_promise_texts_count": 2,
+      "candidate_promise_texts_count_v1": 2,
       "validator_requires_per_promise_trace": true,
-      "prompt_explicitly_requires_per_promise_trace": false
+      "prompt_explicitly_requires_per_promise_trace_v1": false,
+      "prompt_explicitly_requires_per_promise_trace_v2": true,
+      "prompt_compliance_rate_under_v2": "1/3"
     },
-    "q3_prompt_instruction_verbatim": "Every observation and candidate promise needs a source_trace entry. Cite only supplied source identifiers.",
-    "q3_prompt_instruction_location": "backend/src/covenia_b/model/prompts/candidate_extraction.py:37",
-    "q3_is_it_explicit": false,
+    "q3_prompt_instruction_verbatim_v1": "Every observation and candidate promise needs a source_trace entry. Cite only supplied source identifiers.",
+    "q3_prompt_instruction_location": "backend/src/covenia_b/model/prompts/candidate_extraction.py:37 (v1)",
+    "q3_is_it_explicit_v1": false,
     "q3_gaps": [
-      "the instruction is abstract and never names the exact field strings observations[N] / candidate_promise_texts[M]",
+      "the v1 instruction is abstract and never names the exact field strings observations[N] / candidate_promise_texts[M]",
       "the phrase 'an entry' is singular, matching a one-per-existing-observation reading",
-      "the schema example shows a single literal field value \"observations[0] or candidate_promise_texts[0]\", from which whole-collection coverage cannot be inferred"
+      "the v1 schema example shows a single literal field value from which whole-collection coverage cannot be inferred",
+      "v2 fixes the wording and the example but the model still collapses the promise onto its observation about two thirds of the time"
     ],
     "q4_schema_repair_shape": {
       "schema_repair_ever_exercised_in_this_batch": false,
       "why": "tools/verification/live_smoke.py calls provider.extract_with_metadata once per attempt and never constructs BoundedCandidateExtractor, so SCHEMA_REPAIR_SYSTEM_PROMPT (lines 49-63) was never used; the tool's two attempts are two independent fresh calls with the same initial prompt",
       "object_instead_of_array_reproduced_this_round": false,
       "trace_array_dropped_reproduced_this_round": false,
-      "observed_shape_all_four_calls": "schema fully valid, 4 observations, 2 promises, exactly 4 traces covering observations only"
+      "observed_shape_v1_calls": "schema fully valid, 4 observations, 2 promises, exactly 4 traces covering observations only",
+      "observed_shape_v2_calls": "schema fully valid, 3 observations, 1 promise, and either 3 traces (rejected) or 4 traces (accepted)"
     }
+  },
+
+  "model_behavioural_signature": {
+    "rule": "the model emits exactly one trace per observation and treats an observation that quotes the same AGENT sentence as already covering that promise",
+    "supporting_observations": [
+      "v1: 4 observations + 2 promises -> 4 traces",
+      "v2: 3 observations + 1 promise -> 3 traces (on the two thirds of calls that fail)",
+      "v2 accepted case: 3 observations + 1 promise -> 4 traces, i.e. the requirement is satisfiable but not reliably followed"
+    ],
+    "implication": "this is a prompt-adherence limit, not an impossible requirement, so the fix belongs in the prompt and must be empirically validated rather than assumed"
   },
 
   "cross_line_remap": {
@@ -78,7 +122,7 @@
     "reasoning": [
       "the three image evidence IDs appear verbatim in the request's [trusted_source_ids] header",
       "the model already cited two of them correctly, proving it could read and resolve them",
-      "no image trace is missing in any of the four real calls; the defect is confined to the candidate_promise_texts collection"
+      "no image trace is missing in any real call; the defect is confined to the candidate_promise_texts collection"
     ],
     "remap_still_owned_by": "A 线"
   },
@@ -95,31 +139,49 @@
   },
 
   "counterfactual": {
-    "unmodified": "REJECTED: MISSING_FIELD_TRACE",
-    "plus_only_the_two_missing_promise_traces": "ACCEPTED",
+    "unmodified_v1": "REJECTED: MISSING_FIELD_TRACE",
+    "plus_only_the_missing_promise_traces": "ACCEPTED",
     "accepted_summary": "SourceValidationSummary(trusted_source_count=11, traced_field_count=6, agent_quote_count=2, image_observation_count=2)",
     "conclusion": "trace coverage is the only unmet condition"
   },
 
   "reproduction": {
-    "real_calls_this_round": 4,
-    "previous_round_calls": 2,
+    "real_calls_this_round": 10,
+    "breakdown": {
+      "v1_diagnostic_and_official_reruns": 4,
+      "v2_single_attempt_diagnostic": 1,
+      "prompt_variant_probe": 5,
+      "pytest_live_pass": 2
+    },
     "all_http_200": true,
     "all_usage_exact": true,
-    "all_rejected_with": "MISSING_FIELD_TRACE",
-    "distinct_provider_request_ids": 4,
+    "prompt_v1_calls_rejected_with": "MISSING_FIELD_TRACE",
+    "prompt_v2_accept_rate": "1/3 measured on identical inputs",
     "evidence_artifacts": [
       "reports/batches/BATCH-28/live/raw-model-capture.redacted.json",
       "reports/batches/BATCH-28/live/model-output.redacted.json",
+      "reports/batches/BATCH-28/prompt-v2-run/model-output.redacted.json",
+      "reports/batches/BATCH-28/prompt-v2-passing-run/model-output.redacted.json",
       "reports/batches/BATCH-28/live/governance.redacted.jsonl"
     ]
   },
 
   "criteria": {
-    "criterion_1_extracted_journey_uncached": "NOT_ACHIEVED",
+    "criterion_1_extracted_journey_uncached_v1": "NOT_ACHIEVED",
+    "criterion_1_extracted_journey_uncached_v2_plus_repair": "ACHIEVED (but only via attempt 2 of 2; prompt v2 is 1/3 reliable, so not yet stable)",
     "criterion_2_image_bytes_usage_latency": "PASS",
-    "criterion_3_twenty_second_budget": "FAIL_CUMULATIVE_ACCOUNTING",
+    "criterion_3_twenty_second_budget_v1": "FAIL_CUMULATIVE_ACCOUNTING",
+    "criterion_3_twenty_second_budget_v2": "PASS (model_bound_ms=12856)",
     "negative_control_dead_port_exit_non_zero": "PASS"
+  },
+
+  "recommended_prompt_increment_verbatim": "Worked example. If the source text contains exactly one AGENT message that makes a promise, and you produce:\n\n  \"observations\": [\"a\", \"b\", \"c\"],\n  \"candidate_promise_texts\": [\"the promise\"]\n\nthen source_trace MUST contain exactly four entries, one per element:\n\n  \"source_trace\": [\n    {\"field\": \"observations[0]\",            \"source_type\": \"IMAGE\", \"source_id\": \"<id>\"},\n    {\"field\": \"observations[1]\",            \"source_type\": \"IMAGE\", \"source_id\": \"<id>\"},\n    {\"field\": \"observations[2]\",            \"source_type\": \"CHAT\",  \"source_id\": \"<id>\"},\n    {\"field\": \"candidate_promise_texts[0]\", \"source_type\": \"CHAT\",  \"source_id\": \"<id>\"}\n  ]\n\nThe fourth entry is required even when observations[2] already quotes the same agent sentence. An observation trace never satisfies the promise trace.",
+  "recommended_prompt_increment_measured": "7/7 accepted over seven independent rounds, with all three IMAGE traces preserved",
+
+  "concurrent_worktree_changes": {
+    "prompt_v2_applied_by": "another party, during this session, uncommitted",
+    "prompt_v1_run_files": "duplicates of this repair's own v1 artifacts, created by another party; unintentionally staged by this repair's first commit and removed from the index in the follow-up",
+    "evidence_segregation": "v1 evidence stays under live/, v2 results under prompt-v2-run/ and prompt-v2-passing-run/"
   },
 
   "not_modified": [
@@ -129,7 +191,6 @@
     "backend/src/covenia_b/domain/**",
     "backend/src/covenia_b/api/**",
     "backend/src/covenia_b/services/**",
-    "backend/src/covenia_b/model/**",
     "fixtures/**",
     "MASTER_PLAN.md",
     "batches.json",

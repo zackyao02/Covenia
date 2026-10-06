@@ -11,20 +11,27 @@
 | 工作树 | `C:\Users\WONG Tsun Ming\Desktop\欧莱雅黑客松\w28` |
 | 分支 | `codex/covenia-batch-28-aux` |
 | 修复前 HEAD | `f76dd1c3f9de1bc548d8c11841b25ad733533c10`（工作树干净） |
+| 本报告轮次的提交 | 见 §11 提交记录 |
 | 解释器 | `C:\cv28\venv\Scripts\python.exe`（Python 3.13.5，隔离 venv） |
 | 端点 | `http://127.0.0.1:8001/v1/chat/completions`（共享 shim，**未 kill**） |
 | VERIFICATION_REPORT.json | **未写**（验收方专属） |
 
 ---
 
-## 0. 一句话结论
+## 0. 结论摘要
 
-**根因判定：(A) 提示词未要求承诺级 trace —— 白名单外，已停下回报，未越权修改。**
+本轮定位并处理了**三个**阻塞点：
 
-模型输出的 JSON **结构完全合法**，`observations` 每一条都有 trace，但
-`candidate_promise_texts` **一条 trace 都没有**；服务端校验器要求两个集合逐条覆盖，
-于是抛出 `MISSING_FIELD_TRACE`。反事实证明：**只补上那 2 条 promise trace，校验立即通过** ——
-说明这是提示词措辞缺口，不是校验器要求过高，也不是请求构造有误。
+| # | 阻塞点 | 归属 | 状态 |
+| --- | --- | --- | --- |
+| 1 | **提示词未把「承诺级 trace」写成可操作要求** → `MISSING_FIELD_TRACE` | **BATCH-11（白名单外）** | 由**他人**在工作树改成 v2；**v2 只解决 1/3**，见 §5 |
+| 2 | **`live_smoke.py` 把 4 个模块级函数当成 `AnalyzeService` 静态方法** → `AttributeError`，journey 永远构造不出来 | **BATCH-28（白名单内）** | ✅ **本轮已修**，见 §4 |
+| 3 | `model_bound_ms` 跨 attempt 累加，与 20 秒**单请求**预算口径不符 | **BATCH-28（白名单内）** | ⚠️ 未修，已给精确方案，见 §4.3 |
+
+**标准 1 已达成**（在 v2 提示词 + 本轮的 journey 修复下）：
+`HTTP 200 → schema 合法 → 来源校验 PASS → ExtractedJourney 构造成功 → cached_result=false`，
+Qwen revision 可核对。**但请务必读完 §5 的可靠性限制** —— 这次通过依赖了一个 1/3 概率的
+提示词行为，不能当作稳定的绿灯。
 
 ---
 
@@ -47,7 +54,7 @@
 
 > 摘要逐字节一致 ⇒ **本报告引用的模型原始输出，就是工具实际收到的那一份**，不是推测。
 
-### 1.2 逐条回答审查方的问题
+### 1.2 逐条回答审查方的问题（v1 基线）
 
 **Q1：模型实际返回了哪些 `source_trace` 条目？`field` 值分别是什么？**
 
@@ -75,7 +82,7 @@
 
 **Q3：提示词里关于 `source_trace` 的指令原文？是否明确要求「每个 observation 与每个 promise 各一条」？**
 
-`backend/src/covenia_b/model/prompts/candidate_extraction.py:26-37`，逐字原文：
+`backend/src/covenia_b/model/prompts/candidate_extraction.py:26-37`（v1），逐字原文：
 
 ```
   "source_trace": [
@@ -101,8 +108,8 @@ source identifiers.
 3. schema 示例中 `"field"` 的值是**单条字面量** `"observations[0] or candidate_promise_texts[0]"`，
    推不出「两个集合都要逐条覆盖」。
 
-补充观察：本批真实输出里 `observations[2]`/`[3]` 与两条 promise 文本高度重合，模型很可能据此
-认为 observation 的 trace 已经「覆盖」了承诺。
+补充观察：真实输出里 `observations[2]`/`[3]` 与两条 promise 文本高度重合，模型据此认为
+observation 的 trace 已经「覆盖」了承诺。
 
 **Q4：一次 schema-repair 重试后的返回形状是什么？**
 
@@ -110,13 +117,12 @@ source identifiers.
 `provider.extract_with_metadata`，**没有**使用 `BoundedCandidateExtractor`，因此
 `SCHEMA_REPAIR_SYSTEM_PROMPT`（同文件 49-63 行）在本批**完全未被行使**。工具里的 2 次 attempt
 是两次同提示词的独立新调用，不是 initial+repair 配对。上一轮观测到的
-「observations 变对象 → `ModelResponseInvalid`」「丢 trace 数组」在本轮 **未复现**：4 次真实调用的
-形状**结构完全一致**（adapter 解析通过、schema 合法、4 obs + 2 promise + 4 trace）。
+「observations 变对象 → `ModelResponseInvalid`」「丢 trace 数组」在本轮 **未复现**。
 
 ### 1.3 复现次数与一致性
 
-本轮 4 次真实调用（2 次诊断 + 2 次官方复核；上一轮另有 2 次），**全部** HTTP 200、
-usage EXACT、被 `MISSING_FIELD_TRACE` 拒绝，且 trace 形状**每次完全相同**：
+v1 提示词下 4 次真实调用（上一轮 2 次 + 本轮 2 次），**全部** HTTP 200、usage EXACT、
+被 `MISSING_FIELD_TRACE` 拒绝，且 trace 形状**每次完全相同**：
 
 | # | provider_request_id | output_tokens | provider_ms | traced fields | promise traces |
 | --- | --- | --- | --- | --- | --- |
@@ -125,11 +131,9 @@ usage EXACT、被 `MISSING_FIELD_TRACE` 拒绝，且 trace 形状**每次完全�
 | 3 | `chatcmpl-5123d499-…` | 373 | 8975 | observations[0..3] | 0 |
 | 4 | `chatcmpl-ed465f80-…` | — | 9596 | observations[0..3] | 0 |
 
-这排除了偶发/采样噪声解释：**稳定行为缺陷**。
-
 ---
 
-## 2. 根因判定
+## 2. 根因判定（针对 v1 基线）
 
 ### 2.1 归入 (A)，并排除 (B)/(C)/(D)
 
@@ -140,15 +144,11 @@ text part **完全一致**，其中：
 
 - `[trusted_source_ids]` 列出**全部 12 个** 合法来源 ID；
 - `order_id=6920185815517983396`；
-- **6 条**带 `speaker=` 的聊天行，三条 AGENT 消息**逐字在场**：
-  - `[message_id=51831669257761.PNM … speaker=AGENT] 亲亲抱歉！麻烦拍下破损部位的照片发给测试客服，为您核实换货哈~`
-  - `[message_id=22703823958720.PNM … speaker=AGENT] 收到亲，确认属包装破损，为您登记换货：先给您发全新的，收到后用包裹里的面单把坏的寄回就好，运费我们出~`
-  - `[message_id=36199788469718.PNM … speaker=AGENT] 换货单已创建，48小时内发出，给您带来不便啦~`
+- **6 条**带 `speaker=` 的聊天行，三条 AGENT 消息**逐字在场**；
+- 模型引用的两条承诺**逐字可回溯**到对应 AGENT 消息，即
+  `PROMISE_NOT_AGENT_QUOTE` 也不成立。
 
-模型引用的两条承诺**逐字可回溯**到对应 AGENT 消息（NFKC/casefold/空白归一化后包含），
-即 `PROMISE_NOT_AGENT_QUOTE` 也不成立。**模型做 trace 所需要的一切都在请求里。**
-
-**(B) 已排除 —— 校验器要求是可满足的。** 见 §2.2 反事实证明。
+**(B) 已排除 —— 校验器要求是可满足的。** 见 §2.2。
 
 **(D) 无其他因素。**
 
@@ -167,10 +167,9 @@ ACCEPTED: SourceValidationSummary(trusted_source_count=11, traced_field_count=6,
 ```
 
 ⇒ **trace 覆盖是唯一未满足条件。** 其余规则（图片绑定、`source_type` 匹配、AGENT 引文包含、
-重复检测、图片指令语言排除）**模型本来就全对**。所以这不是「校验器要求超出模型能力」，
-而是「提示词没有把要求写成可操作的形式」。
+重复检测、图片指令语言排除）**模型本来就全对**。
 
-### 2.3 归属与为什么不能自行修
+### 2.3 归属
 
 | 文件 | 归属批次 | 依据 |
 | --- | --- | --- |
@@ -179,67 +178,75 @@ ACCEPTED: SourceValidationSummary(trusted_source_count=11, traced_field_count=6,
 
 `MASTER_PLAN.md` 明文禁令：
 
-- **:3637** 「仅调整测试/调用参数在既定协议范围内；模型质量问题回 BATCH-10/11 所属修复，**不在本批偷偷改 Prompt 或规则**。」
+- **:3637** 「…模型质量问题回 BATCH-10/11 所属修复，**不在本批偷偷改 Prompt 或规则**。」
 - **:3682** 「发现根因属于其他批则提交最小修复请求，**不越界改**。」
 
-⇒ **按纪律停在此处，未修改任何白名单外文件。**
+⇒ 我**没有**修改这两个文件（工作树里出现的 v2 改动**不是本轮修复所为**，见 §5）。
 
 ### 2.4 跨线 remap 是否影响本次 trace 问题？
 
-**不影响。** `CROSS-LINE-FIXTURE-EVIDENCE-ID-MISMATCH-20261006` 确实改变了送入模型的图片
-evidence id（`S00001_IMG_OVERVIEW/PUMP/PACKAGE` →
-`S00001_IMG_PRODUCT_OVERVIEW/PUMP_DETAIL/PACKAGE_CONTEXT`），但：
-
-1. 三个图片 ID **逐字出现在**请求文本的 `[trusted_source_ids]` 里；
-2. 模型**已经正确引用了其中两个**（`S00001_IMG_PUMP_DETAIL`、`S00001_IMG_PACKAGE_CONTEXT`），
-   证明它能读、能解析；
-3. 缺陷**只发生在 `candidate_promise_texts` 集合**，4 次真实调用中**没有任何一条图片 trace 缺失**。
+**不影响。** 三个图片 ID **逐字出现在**请求文本的 `[trusted_source_ids]` 里；模型**已正确引用
+其中两个**；缺陷**只发生在 `candidate_promise_texts` 集合**，4 次真实调用中**没有任何一条图片
+trace 缺失**。
 
 ---
 
 ## 3. 四条标准逐条结果
 
-| # | 标准 | 结果 | 说明 |
+| # | 标准 | v1 基线 | v2 + journey 修复 |
 | --- | --- | --- | --- |
-| 1 | 聊天+真实图片 → 候选 → `ExtractedJourney`，`cached_result=false`，可核对 Qwen revision | **NOT_ACHIEVED** | HTTP 200、schema 合法，但被 `MISSING_FIELD_TRACE` 拒绝；`extracted_journey` 未构造。失败即发现，不作粉饰 |
-| 2 | 模型确实收到图片字节，不是观察 JSON；真实 usage/时延 | **PASS** | 见 §3.1 |
-| 3 | 20 秒分析预算可达 | **本轮 FAIL** | `model_bound_ms=20810 > 20000` → exit 4；但**单次 attempt 均在预算内**（10155 / 10650 ms）。口径缺陷见 §4 |
-| — | 负向演示（死端口必须非零退出） | **PASS** | 两条路径均 **exit 3**，未触碰 8001 shim |
+| 1 | 聊天+真实图片 → 候选 → `ExtractedJourney`，`cached_result=false`，可核对 Qwen revision | **NOT_ACHIEVED** | ✅ **ACHIEVED**（附可靠性限制，见 §5） |
+| 2 | 模型确实收到图片字节，不是观察 JSON；真实 usage/时延 | PASS | PASS |
+| 3 | 20 秒分析预算可达 | FAIL（累加口径 20810 ms） | ✅ PASS（`model_bound_ms=12856`） |
+| — | 负向演示（死端口必须非零退出） | PASS（exit 3） | PASS（exit 3） |
 
-### 3.1 标准 2 独立复核：28 项检查 27 项通过
-
-| 检查 | 结果 |
-| --- | --- |
-| 请求体字节数 | 360282 |
-| content parts | `["text", "image_url", "image_url", "image_url"]` |
-| 图片 sha256 集合 == ACCEPTED manifest | ✅ 三张全部一致 |
-| 图片字节长度 / 尺寸 / MIME == manifest | ✅ 三张全部一致 |
-| 磁盘上的 JPEG 文件 sha256 == manifest | ✅ 三张全部一致 |
-| wire 上的图片 sha256 集合 == 工具记录的集合 | ✅ |
-| `observation_json_sent_as_image` | `false` |
-| wire request_bytes == 工具 `request_bytes` | ✅ 360282 |
-| 每次 attempt HTTP 200 + provider request id | ✅ |
-| usage_status | 全部 `EXACT` |
-| upstream usage（逐字） | `prompt_tokens=5589, completion_tokens=373, total_tokens=5962` |
-| `prompt_tokens_details` | `{image_tokens: 4569, text_tokens: 1020, cached_tokens: 0}` |
-
-> `image_tokens=4569` 是**真发了图**的独立旁证 —— 文本只有 1079 字符。
-> `cached_tokens=0` 与 `--disable-cache` / `cached_result=false` 口径一致。
-
-**唯一未通过的检查**：`recorded model_bound_ms (=20810) <= 20000` → 见 §4。
-
-### 3.2 负向演示输出
+### 3.1 标准 1 的达成证据（`prompt-v2-passing-run`）
 
 ```
-### 死端口 8099，TCP 预检路径（spec docstring 形态）
-endpoint error [endpoint_unreachable]: --require-live and the endpoint is not reachable:
-  tcp 127.0.0.1:8099 unreachable (ConnectionRefusedError)
+status  : PASS
+stages  : {"accountability_state":"PASS","candidate_schema":"PASS",
+           "extracted_journey":"PASS","facts_and_image_binding":"PASS",
+           "real_http_call":"PASS","source_validation":"PASS"}
+budget  : WITHIN_BUDGET  model_bound_ms=12856  frozen=20.0s
+```
+
+| 项 | 值 |
+| --- | --- |
+| accepted attempt | 2（attempt 1 被 `MISSING_FIELD_TRACE` 拒绝） |
+| prompt_version | `candidate-extraction-v2` |
+| candidate prompt SHA256 | `415814b938ef6fd85cdd4e299259308efae75c75190063f3b4b969ef3ca08f9e` |
+| `model_metadata.model_id` | `qwen3-vl-plus` |
+| `model_metadata.model_revision` | `qwen3-vl-plus-2025-12-19`（与 `configuration.model_revision` 一致） |
+| **`model_metadata.cached_result`** | **`false`** |
+| `extracted_journey.case_id` | `DEMO_001`（== `input_binding.case_id`） |
+| `extracted_journey.model_metadata.cached_result` | `false` |
+| `extracted_journey.source_trace` 长度 | 15 |
+| `image_observations` / `promise_events` | 3 / 5 |
+| `extracted_scope` | `order_id=6920185815517983396`、`sku_id=XC33003`、`issue_type=PACKAGE_DAMAGE` |
+| `source_validation` | `trusted_source_count=11`、`traced_field_count=4`、`agent_quote_count=1`、`image_observation_count=3` |
+| `accountability_state.case_id` | `DEMO_001` |
+| `case_status` / `evidence_status` | `ACTION_REVIEW` / `NEED_HUMAN_REVIEW` |
+| `run_id` | `qwen-427e1e79df88495488ae485b9672e89d` |
+
+> attempt 2 的 4 条 trace：`observations[0]`、`observations[1]`、`observations[2]`（IMAGE）
+> + **`candidate_promise_texts[0]`（CHAT `36199788469718.PNM`）** —— 正是缺失的那类条目。
+
+### 3.2 标准 2 独立复核：28 项检查 27 项通过（v1 基线）
+
+图片 sha256 / 字节长度 / 尺寸 / MIME 与 ACCEPTED manifest **及磁盘文件**三方一致；
+wire 上 `content parts = [text, image_url×3]`、`observation_json_sent_as_image=false`；
+usage 全部 `EXACT`；上游 `prompt_tokens_details = {image_tokens: 4569, text_tokens: 1020,
+cached_tokens: 0}` —— `image_tokens=4569` 是**真发了图**的独立旁证（文本只有 1079 字符）。
+
+### 3.3 负向演示输出
+
+```
+### 死端口 8099，TCP 预检路径
+endpoint error [endpoint_unreachable]: ... tcp 127.0.0.1:8099 unreachable (ConnectionRefusedError)
 EXITCODE_PROBE=3
 
 ### 死端口 8099，客户端失败路径（--skip-endpoint-probe）
 live-smoke-v1: ENDPOINT_UNAVAILABLE
-  PASS        facts_and_image_binding
-  FAIL        real_http_call
   attempt 1: ENDPOINT_TIMEOUT status=None wall_ms=2016 usage=None (NOT_ATTEMPTED)
 EXITCODE_CLIENT=3
 ```
@@ -248,70 +255,112 @@ EXITCODE_CLIENT=3
 
 ---
 
-## 4. 第二个缺陷（白名单内，**本轮未修**，等裁决）
+## 4. 白名单内的修复（本轮实际改动）
 
-`tools/verification/live_smoke.py` 的 `model_bound_ms` 是**跨 attempt 累加**的：
+### 4.1 缺陷：把模块级函数当成 `AnalyzeService` 的静态方法
 
-- `:1046` `model_bound_started = time.perf_counter()`（循环**之前**）
-- `:1072` `run.model_bound_ms = round((time.perf_counter() - model_bound_started) * 1000)`（循环**之后**）
-- `:1074-1079` 用它判预算；`backend/tests/live/test_real_extraction.py:258` 也拿它跟 20 s 比
+原代码（`tools/verification/live_smoke.py:1152-1159`）：
 
-而冻结语义是**单次请求**的上限（`docs/05-api-and-ui.md`；`covenia_b.api.analyze`
-的 `DEFAULT_ANALYSIS_TIMEOUT_SECONDS`；`BoundedCandidateExtractor(total_timeout_seconds=…)`
-在 `extraction.py:129-138` 把 initial + 至多一次 repair 包在**一个** timeout 里）。
+```python
+service = modules["AnalyzeService"]
+source_summary = service._validate_candidate(candidate, loaded)
+compilation = service._compile_from_server_facts(...)      # AttributeError
+journey = service._enrich_extracted_journey(...)           # AttributeError
+evidence = service._aggregate_server_evidence(...)         # AttributeError
+```
 
-后果：本轮真实时延升到 10.2 / 10.7 s，两次 attempt 累加 **20810 ms > 20000**
-→ `BUDGET_EXCEEDED`（exit 4）。**单独每一次 attempt 都在预算内。**
+`backend/src/covenia_b/services/analyze.py`（**git 状态干净，未被任何人修改**）里：
 
-> ⚠️ **这会挡住绿灯路径**：即使把提示词问题修好，默认 `--attempts 2`
-> （`DEFAULT_ATTEMPTS`，`:101`）仍会累加到超预算并报 `BUDGET_EXCEEDED`。
+| 名称 | 行 | 实际种类 |
+| --- | --- | --- |
+| `_DEFAULT_POLICY` | 72 | 模块级 `CommitmentPolicy` |
+| `_compile_from_server_facts` | 399 | 模块级函数 |
+| `_enrich_extracted_journey` | 410 | 模块级函数 |
+| `_aggregate_server_evidence` | 539 | 模块级函数 |
+| `_validate_candidate` | 321-327 | ✅ 真的是 `@staticmethod` |
 
-**为什么不在这轮修**：它改的是**已交付证据的度量语义**，且在提示词缺口未闭合前**无法**把标准 1
-变绿。按「修复范围严格限定」的纪律，我报告而不擅自改动。
+实测报错：`AttributeError: type object 'AnalyzeService' has no attribute '_compile_from_server_facts'`
 
-**建议的最小改法**（白名单内，可立即执行）：
+**这是标准 1 的硬阻塞**：即使提示词完全修好，只要进入 journey 构造就必然抛异常。
+v1 时它被 `MISSING_FIELD_TRACE` 挡在前面所以没暴露 —— 也就是说
+**`_enrich_extracted_journey` 这条路径在上一轮交付里从未被执行过**。
 
-- 循环内为每次 attempt 单独计时，把该 attempt 的 model-bound ms 记到 `AttemptRecord`
-  （新增一个字段，例如 `model_bound_ms`）；
-- `:1072-1079` 令 `run.model_bound_ms` = 被接受 attempt（被拒时取单次最大）的 model-bound ms；
-  另存全程累计值，例如 `document["budget"]["model_bound_ms_total_run"]`；
-- `test_real_extraction.py:258` **无需改动**，因为彼时 `model_bound_ms` 才真正等于冻结预算的语义。
+### 4.2 修复
 
-**风险 LOW**：只改变预算判据读哪个数，**不可能**凭空造出被接受的候选；
-每次 attempt 的原始 wall/provider ms 仍全部留在产物里。
+- 在 `_load_modules()` 中一并导入这 4 个模块级对象并放进 `modules` 字典；
+- 调用点改为经 `modules[...]` 解析；
+- **另加** `except Exception` 兜底处理器：先 `_write_failure_document(...)` 落盘失败证据，
+  **再 `raise`**。此前 v2 崩溃时**一个产物都没写**，真实缺陷看起来像「没跑」——
+  这个漏洞会让任何意外异常变成不可审计的缺失。工具**不把崩溃变成 verdict**，traceback 仍留在 stderr。
+
+修复后 `py_compile` 通过，`_load_modules()` 实测 4 个对象全部解析成功。
+
+### 4.3 未修：`model_bound_ms` 预算口径（白名单内，等你裁决）
+
+- `:1046` 计时器在循环**之前**启动，`:1072` 在循环**之后**停止 ⇒ **跨 attempt 累加**；
+- `:1074-1079` 与 `test_real_extraction.py:258` 拿它跟**单请求**的 20 秒冻结预算比。
+
+实测：v1 两次 attempt 累加 **20810 ms > 20000** → `BUDGET_EXCEEDED`（exit 4），
+而**单次 attempt 都在预算内**（10155 / 10650 ms）。
+
+建议改法：循环内为每次 attempt 单独计时；`run.model_bound_ms` 取被接受 attempt
+（被拒时取单次最大）的值，全程累计值另存 `budget.model_bound_ms_total_run`。
+`test_real_extraction.py:258` 无需改动。**风险 LOW**，不可能凭空造出被接受的候选。
+
+> 注：在 v2 下两次 attempt 各约 6.4 s，累加 12.8 s 仍在预算内，所以这个问题**这一次没有触发**；
+> 但它对时延敏感，仍应修正。
 
 ---
 
-## 5. 白名单外修改方案（精确，待授权）
+## 5. ⚠️ 关键限制：v2 提示词**不可靠**，标准 1 的通过带运气成分
 
-**推荐 OPTION 1。** 理由：校验器是对的且是精确的（反事实证明它是精准拦截而非一刀切），
-削弱它会**真的**拿掉一道防线；而模型输出在其余各方面**毫无瑕疵**，所以把 trace 要求写成
-可操作形式是杠杆最高、改动最小的方案。
+我**没有**修改提示词（见 §2.3）。工作树中的 **v2** 改动是**他人在本轮作业期间**写入的，
+且**从未提交**（`git log -S'candidate-extraction-v2' --all` 为空）。见 §7。
 
-### OPTION 1（推荐）：让提示词把「逐条 field 引用」写清楚
+v2 把指令强化为「Emit one source_trace entry per observation and one per candidate promise;
+a single entry never covers two fields」，并在 schema 示例里加了 `candidate_promise_texts[0]`。
+但**这仍然不够**。我用**同一份真实输入、仅更换系统提示词**做了对照实验
+（走 shim，不读也不落盘密钥）：
 
-| 项 | 内容 |
-| --- | --- |
-| 文件 | `backend/src/covenia_b/model/prompts/candidate_extraction.py` |
-| 行号 | **26-35**（schema 示例）与 **37**（指令句）；**并需同步 49-63**（`SCHEMA_REPAIR_SYSTEM_PROMPT`） |
-| 最小改动 | ① 第 29 行 `field` 的值由单条字面量 `"observations[0] or candidate_promise_texts[0]"` 改为**按集合编号的占位符**，明确 observations 每条用 `observations[0]`、`observations[1]`…，promises 每条用 `candidate_promise_texts[0]`、`candidate_promise_texts[1]`…<br>② 第 37 行改为**可计数的硬要求**，例如：`Emit one source_trace entry for EVERY element of observations and EVERY element of candidate_promise_texts. If observations has 4 elements and candidate_promise_texts has 2, source_trace must contain 6 entries with fields observations[0..3] and candidate_promise_texts[0..1]. A trace for an observation does not also cover a promise.`<br>③ 49-63 行同步同一措辞<br>④ `prompt_manifest()` 的 `candidate_prompt_sha256` / `schema_repair_prompt_sha256` 自动变化，需同步持有该哈希的下游记录 |
-| 理由 | 指令抽象 + 示例单数化，模型据 observation 数量给出恰好一一对应的 4 条，只覆盖 observations 集合；把「两个集合逐条覆盖」写成可计数硬要求即可闭合契约 |
-| 风险 | **MEDIUM-LOW** —— 提示词哈希变化会让相关记录需同步；承诺须为 AGENT 逐字引用这一约束不变，而该行为在 4 次真实调用中已稳定正确 |
-| 影响面 | `model/prompts/candidate_extraction.py`；`prompt_manifest()` 哈希的下游引用；BATCH-11 的 `tests/model/test_extraction.py`、`test_sources.py`；BATCH-28 需重跑取新证据 |
+| 变体 | 通过校验规则的轮次 | promise trace 数 | 图片 trace |
+| --- | --- | --- | --- |
+| **A：v2 现状** | **1/3** ❌ | `[0, 1, 0]` | 3 |
+| **B：v2 + 完整 worked example** | **7/7** ✅ | 全 1 | 3（保留） |
+| C：v2 + 只补 promise trace 指令 | 3/3 ✅ | 全 1 | **observations 被压成 2 条**（丢一条图片观察） |
 
-### OPTION 2（**不推荐**）：放宽校验器
+**v2 失败的样子**（字节级抓包，第 4 次真实调用）：系统提示词里明明写着那条硬要求，
+示例里也有 `candidate_promise_texts[0]`，模型**仍然**只输出 3 条 trace 对应 3 条 observation，
+**promise trace = 0**。
 
-| 项 | 内容 |
-| --- | --- |
-| 文件 | `backend/src/covenia_b/model/source_validation.py` |
-| 行号 | **103-111** |
-| 最小改动 | 期望集合中允许 `candidate_promise_texts[j]` 由一个已 trace 且引文包含该 promise 的 `observations[i]` 满足 |
-| 风险 | **HIGH** —— promise 将不再拥有**独立**来源绑定，promise 与 observation 的证据链合并，来源校验的严格性下降 |
-| 建议 | **不采用**；除非产品负责人判断「承诺级独立 trace」不是必需防线强度 |
+**模型的系统性倾向**：把「引用了同一句 AGENT 原话的 observation」当成已覆盖该 promise。
+观测完全一致 —— v1 是 4 obs + 2 promise → 4 traces；v2 是 3 obs + 1 promise → 3 traces，
+**恒为「每个 observation 一条」**。
 
-### OPTION 3：把两个文件纳入 BATCH-28 白名单
+⇒ **v2 是 1/3 的抛硬币。** 本轮 `pytest -m live` 之所以 7/7 通过，是因为工具的
+`--attempts 2` 循环里 **attempt 1 被拒、attempt 2 恰好被接受**（见 `prompt-v2-passing-run`）。
+**这不是稳定的绿灯，不能据此认定标准 1 已稳定达成。**
 
-需改 `MASTER_PLAN.md` / `batches.json` 的批次白名单，属流程变更，需产品负责人裁决。
+**所需的增量很小**：把下面这段（变体 B，实测 7/7）并入 v2 即可：
+
+```
+Worked example. If the source text contains exactly one AGENT message that
+makes a promise, and you produce:
+
+  "observations": ["a", "b", "c"],
+  "candidate_promise_texts": ["the promise"]
+
+then source_trace MUST contain exactly four entries, one per element:
+
+  "source_trace": [
+    {"field": "observations[0]",            "source_type": "IMAGE", "source_id": "<id>"},
+    {"field": "observations[1]",            "source_type": "IMAGE", "source_id": "<id>"},
+    {"field": "observations[2]",            "source_type": "CHAT",  "source_id": "<id>"},
+    {"field": "candidate_promise_texts[0]", "source_type": "CHAT",  "source_id": "<id>"}
+  ]
+
+The fourth entry is required even when observations[2] already quotes the same
+agent sentence. An observation trace never satisfies the promise trace.
+```
 
 ---
 
@@ -320,28 +369,52 @@ EXITCODE_CLIENT=3
 > 明确记录，**不作为验收结论**。
 
 1. **live 通路是真的（HTTP 200 + 真实 usage），不是空跑。**
-   本轮 4 次真实 HTTP 200，均带上游 provider request id 与 `EXACT` usage
-   （input 5589；output 373/400/416）。字节透明抓包**独立复现**了与工具自身记录**完全相同**的
-   `request_sha256` / `response_sha256` —— 抓到的字节就是工具实际收发的字节。
+   本轮共 **10 次**真实 HTTP 200（4 次 v1 诊断/复核 + 1 次 v2 诊断 + 5 次对照实验/通过轮），
+   均带上游 provider request id 与 `EXACT` usage。字节透明抓包**独立复现**了与工具自身记录
+   **完全相同**的 `request_sha256` / `response_sha256` —— 抓到的字节就是工具实际收发的字节。
+   上游 `image_tokens=4569`（文本仅 1079 字符）进一步证明图片字节真的送达。
 
 2. **来源校验确实在拦（`MISSING_FIELD_TRACE`）—— 防线有效，不是摆设。**
-   每一个真实候选都被 `source_validation.py:110-111` 以
-   `SourceValidationCode.MISSING_FIELD_TRACE` 拒绝。反证明同时表明该检查是**精确**的而非一刀切：
-   恰好多补 2 条缺失 trace，判据即翻转为 `ACCEPTED`。
+   v1 下**每一个**真实候选都被 `source_validation.py:110-111` 以
+   `SourceValidationCode.MISSING_FIELD_TRACE` 拒绝；v2 下仍是 1/3 拦截率。反证明同时表明
+   该检查是**精确**的而非一刀切：恰好多补那条缺失 trace，判据即翻转为 `ACCEPTED`。
 
 ---
 
-## 7. 交付物与哈希
+## 7. 重要：工作树被并发修改（**不是本轮修复所为**）
+
+本轮作业期间，以下变更**由他人**写入工作树：
+
+| 路径 | 状态 |
+| --- | --- |
+| `backend/src/covenia_b/model/prompts/candidate_extraction.py` → **v2** | 已改，**未提交** |
+| `backend/src/covenia_b/settings.py` → `candidate-extraction-v2` | 已改，**未提交** |
+| `reports/batches/BATCH-28/prompt-v1-run/**`（4 个文件） | 突然出现；**内容是我 v1 产物的副本**，`generated_at` 完全相同（`2026-10-06T06:35:43.462679+00:00`） |
+
+- v2 改动**从未提交**（`git log -S'candidate-extraction-v2' --all` 为空）。
+- 我的第一次提交**误将 `prompt-v1-run/**` 一并 stage**（我只想 add 自己写的报告）。
+  这是我的操作失误：这些文件**不是我创建**的，我已在下一次提交中把它们从索引移除
+  （磁盘保留，交由创建者处置）。
+- 由于提示词被改成 v2，本报告 §1/§2/§3.2 的 v1 证据**保留在 `live/`**（其 `generated_at`
+  早于 v2 改动），而 v2 结果放在 `prompt-v2-run/` 与 `prompt-v2-passing-run/`，两者不混淆。
+
+---
+
+## 8. 交付物与哈希
 
 | 文件 | 字节 | SHA256 |
 | --- | --- | --- |
-| `reports/batches/BATCH-28/live/model-output.redacted.json` | 14101 | `86c4332ae0f256b2ea1ca5ee2df3a4e0ef9cbf9af849879a473643db86c83327` |
-| `reports/batches/BATCH-28/live/governance.redacted.jsonl` | 4941 | `cb26fa03ef12b9109c41c3d26369a26c4aa36a4eb260f37a66d0eb1192f9871b` |
-| `reports/batches/BATCH-28/live/environment.json` | 6142 | `dffbf8609cd183f80942a67c8b1619c1f23f064185f65db84f3419ac9d8d9734` |
-| `reports/batches/BATCH-28/live/raw-model-capture.redacted.json`（新增） | 8971 | `4f5524c2039696f8bfab727c1303972a0f80eecb28bbec00947f5f1c9b3b799c` |
+| `live/model-output.redacted.json`（v1 基线） | 14101 | `86c4332ae0f256b2ea1ca5ee2df3a4e0ef9cbf9af849879a473643db86c83327` |
+| `live/governance.redacted.jsonl` | 4941 | `cb26fa03ef12b9109c41c3d26369a26c4aa36a4eb260f37a66d0eb1192f9871b` |
+| `live/environment.json` | 6142 | `dffbf8609cd183f80942a67c8b1619c1f23f064185f65db84f3419ac9d8d9734` |
+| `live/raw-model-capture.redacted.json`（新增） | 8971 | `4f5524c2039696f8bfab727c1303972a0f80eecb28bbec00947f5f1c9b3b799c` |
+| `prompt-v2-run/model-output.redacted.json`（v2 单次诊断，仍被拒） | 见文件 | — |
+| `prompt-v2-passing-run/model-output.redacted.json`（新增，**标准 1 达成证据**） | 23832 | `4bbee112972b77b8da32e514beb49f56d446f68f3164e3a8fae53e86a273ad10` |
+| `prompt-v2-passing-run/governance.redacted.jsonl` | 4938 | `bc257be6c6d47e92cd5c14a277f894579338436f2c430abb881ea3c80ff42d5a` |
+| `prompt-v2-passing-run/environment.json` | 6142 | `83bdea14ae107364a1956654c4b61f839cc867813b1528a69fec1cb3ccc328c6` |
 | `reports/batches/BATCH-28/environment.json` | 6142 | `8350a8594a451171cf0719306c8e0401fdb6664b8eb469f4f916a4da3c4b16d3` |
-| `reports/batches/BATCH-28/DIAGNOSTIC.json`（新增） | — | 见文件 |
-| `reports/batches/BATCH-28/REPAIR_REPORT.json`（本文件） | — | — |
+| `DIAGNOSTIC.json`（新增） | 见文件 | — |
+| `REPAIR_REPORT.json` / `.md`（本文件） | 见文件 | — |
 
 ### 依赖锁文件
 
@@ -357,45 +430,52 @@ EXITCODE_CLIENT=3
 | 只追加 diff | **无**（`appended_entries: []`） |
 | 原因 | 本批未新增任何第三方依赖；工具与 live 测试只使用标准库 + 已钉住的既有依赖 |
 
-> blob 与工作树 canonical LF 摘要相同，原始字节摘要因 Windows CRLF 检出而不同，属设计如此。
-
 ---
 
-## 8. 命令与退出码
+## 9. 命令与退出码
 
 | 命令 | 退出码 | verdict |
 | --- | --- | --- |
-| `python tools/verification/live_smoke.py --require-live --disable-cache --output reports/batches/BATCH-28/live` | **4** | `BUDGET_EXCEEDED`（两次 attempt 均 `SOURCE_REJECTED`） |
-| `python tools/verification/live_smoke.py --require-live --disable-cache --attempts 1 --output <诊断目录>` | **1** | `MODEL_OUTPUT_REJECTED`（预算内 8980 ms） |
-| `python -m pytest tests/live/test_real_extraction.py -q -m live` | **1** | `2 failed, 5 passed` |
+| `live_smoke.py --require-live --disable-cache --output reports/batches/BATCH-28/live`（v1） | **4** | `BUDGET_EXCEEDED`（两次 attempt 均 `SOURCE_REJECTED`） |
+| `live_smoke.py --attempts 1`（v1，诊断） | **1** | `MODEL_OUTPUT_REJECTED`（预算内 8980 ms） |
+| `live_smoke.py --attempts 1 --output …/prompt-v2-run`（v2，journey 修复后） | **1** | `MODEL_OUTPUT_REJECTED`（6723 ms，仍 `MISSING_FIELD_TRACE`） |
+| **`pytest tests/live/test_real_extraction.py -v -m live`（v2 + 修复）** | **0** | ✅ **7 passed in 14.41s** |
 | 负向控制（死端口 8099，预检路径） | **3** | `ENDPOINT_UNAVAILABLE` |
 | 负向控制（死端口 8099，`--skip-endpoint-probe`） | **3** | `ENDPOINT_UNAVAILABLE` |
 | `git diff --check` | **0** | 无空白错误 |
 
-pytest 失败详情（失败文本自己点出根因，未被绕过）：
+`pytest -m live` 逐项（全 PASS）：
 
 ```
-FAILED tests/live/test_real_extraction.py::test_real_endpoint_answered_and_the_run_stayed_inside_the_budget
-FAILED tests/live/test_real_extraction.py::test_accepted_candidate_is_uncached_and_bound_to_the_locked_revision
-E   Failed: the live run did not produce an accepted extraction: MODEL_OUTPUT_REJECTED (exit 1)
-E   last outcome=SOURCE_REJECTED rejection=MISSING_FIELD_TRACE
+test_live_tool_is_invoked_uncached_under_this_interpreter                      PASSED
+test_real_endpoint_answered_and_the_run_stayed_inside_the_budget               PASSED
+test_the_model_received_registered_image_bytes_not_observation_json            PASSED
+test_usage_and_latency_are_taken_from_upstream                                 PASSED
+test_accepted_candidate_is_uncached_and_bound_to_the_locked_revision           PASSED
+test_a_rejected_run_is_reported_honestly                                       PASSED
+test_governance_log_is_redacted_and_complete                                   PASSED
 ```
 
 ---
 
-## 9. 本轮**故意未做**的事
+## 10. 本轮**故意未做**的事
 
-- ✗ 未改 `backend/src/covenia_b/model/prompts/candidate_extraction.py`
+- ✗ 未改 `backend/src/covenia_b/model/prompts/candidate_extraction.py`（工作树里的 v2 是他人所为）
 - ✗ 未改 `backend/src/covenia_b/model/source_validation.py`
-- ✗ 未改 `schemas/**`、`domain/**`、`api/**`、`services/**`、`model/**`、`fixtures/**`、计划文件、`CLAUDE*.md`
+- ✗ 未改 `schemas/**`、`domain/**`、`api/**`、`services/**`、`fixtures/**`、计划文件、`CLAUDE*.md`
 - ✗ 未写 `reports/batches/BATCH-28/VERIFICATION_REPORT.json`
 - ✗ 未做任何验收结论
 - ✗ 未 kill / 重启 8001 shim
+- ✗ 未读取、未复制、未落盘 `DASHSCOPE_API_KEY`（对照实验走 shim，由 shim 注入凭据）
 
-## 10. 待调度方裁决
+---
 
-1. **授权 BATCH-11** 按 OPTION 1 修改提示词（含 schema-repair 变体），随后 BATCH-28 重跑取新证据；
-2. **授权修正 `model_bound_ms` 预算口径**（§4）—— 否则修好提示词后默认 2 次 attempt 仍会
-   `BUDGET_EXCEEDED`；
-3. 确认 `CROSS-LINE-FIXTURE-EVIDENCE-ID-MISMATCH-20261006` 仍由 A 线持有（本批只能用
-   `file_name` 绑定并如实记录 remap）。
+## 11. 待调度方裁决
+
+1. **是否把 §5 的 worked example 增量并入 v2 提示词**（白名单外，BATCH-11 归属）。
+   这是让标准 1 **稳定**达成的必要步骤；v2 现状只有 1/3。
+2. **是否授权修正 `model_bound_ms` 累计口径**（§4.3）。
+3. **`prompt-v1-run/**` 与 v2 未提交改动如何处置**（§7）——
+   我已在后续提交中把 `prompt-v1-run/**` 移出索引但保留在磁盘。
+4. 确认 `CROSS-LINE-FIXTURE-EVIDENCE-ID-MISMATCH-20261006` 仍由 A 线持有。
+

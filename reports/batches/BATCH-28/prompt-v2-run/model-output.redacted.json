@@ -5,8 +5,7 @@
       "attempt": 1,
       "candidate_accepted": false,
       "candidate_promise_texts": [
-        "换货单已创建，48小时内发出",
-        "确认属包装破损，为您登记换货：先给您发全新的，收到后用包裹里的面单把坏的寄回就好，运费我们出"
+        "换货单已创建，48小时内发出"
       ],
       "failure_reason": "the server-side source validator refused the candidate",
       "image_sha256s": [
@@ -15,20 +14,19 @@
         "c734bfb5a70ffa39e10b2535dc8321eace3c1fb358293fa22b590b9f7b5836bd"
       ],
       "observations": [
-        "The pump head of the foundation bottle is visibly cracked and damaged, with foundation residue oozing from the fracture.",
+        "The pump head of the foundation bottle is visibly cracked and broken, with foundation product oozing from the fracture.",
         "The cardboard packaging box shows a crushed corner, indicating possible transit damage.",
-        "The agent stated: '换货单已创建，48小时内发出' (The replacement order has been created and will be shipped within 48 hours).",
-        "The agent previously confirmed: '确认属包装破损，为您登记换货：先给您发全新的，收到后用包裹里的面单把坏的寄回就好，运费我们出' (Confirmed as packaging damage; replacement registered: we’ll send a new one first, and after you receive it, return the defective item using the return label included in the package—shipping cost covered by us)."
+        "The agent stated: '换货单已创建，48小时内发出' (The replacement order has been created and will be shipped within 48 hours)."
       ],
       "outcome": "SOURCE_REJECTED",
-      "provider_reported_duration_ms": 10154,
-      "provider_request_id": "chatcmpl-b0ac6129-d449-9896-b1d7-32b5834b34e1",
+      "provider_reported_duration_ms": 6719,
+      "provider_request_id": "chatcmpl-fe49fe31-eb17-913c-95b2-9ddd861817da",
       "rejection_code": "MISSING_FIELD_TRACE",
       "rejection_stage": null,
-      "request_bytes": 360282,
-      "request_sha256": "e5499addb3893245e1c345d8d01155ae8dd0f7b0434a8d206d35ba2c26bbc913",
-      "response_bytes": 2192,
-      "response_sha256": "770ce61f58d8ee7d8977f235eaed87dccb82d7259087f7e4cb928286e1367892",
+      "request_bytes": 360711,
+      "request_sha256": "db8454e117f55389638b2efc977455c26f19e17c33e1712040c2190cf6d78ced",
+      "response_bytes": 1512,
+      "response_sha256": "0f663209d650b433cd2c1882157522ef0efd800000a46b32e71edccf3f8750c6",
       "source_trace": [
         {
           "field": "observations[0]",
@@ -44,108 +42,40 @@
           "field": "observations[2]",
           "source_id": "36199788469718.PNM",
           "source_type": "CHAT"
-        },
-        {
-          "field": "observations[3]",
-          "source_id": "22703823958720.PNM",
-          "source_type": "CHAT"
         }
       ],
       "stage": "INITIAL",
-      "started_at": "2026-10-06T06:35:43.788631+00:00",
+      "started_at": "2026-10-06T06:40:07.171088+00:00",
       "status_code": 200,
       "usage": {
-        "input_tokens": 5589,
-        "output_tokens": 400
+        "input_tokens": 5684,
+        "output_tokens": 237
       },
       "usage_note": null,
       "usage_status": "EXACT",
-      "wall_ms": 10155
-    },
-    {
-      "attempt": 2,
-      "candidate_accepted": false,
-      "candidate_promise_texts": [
-        "换货单已创建，48小时内发出",
-        "收到亲，确认属包装破损，为您登记换货：先给您发全新的，收到后用包裹里的面单把坏的寄回就好，运费我们出~"
-      ],
-      "failure_reason": "the server-side source validator refused the candidate",
-      "image_sha256s": [
-        "e2c6bbd230f906f113d75f2f582e778b6e79aea37544c2383f1ffda15a5295d5",
-        "4709d7529803846d4ff4e123bfcc034d420449ae23923cb54468be573bd8cfc7",
-        "c734bfb5a70ffa39e10b2535dc8321eace3c1fb358293fa22b590b9f7b5836bd"
-      ],
-      "observations": [
-        "The pump head of the foundation bottle is visibly cracked and damaged, with foundation product oozing from the fracture.",
-        "The cardboard packaging box shows a crushed corner, indicating possible transit damage.",
-        "The agent stated: '换货单已创建，48小时内发出' (The replacement order has been created and will be shipped within 48 hours).",
-        "The agent previously stated: '收到亲，确认属包装破损，为您登记换货：先给您发全新的，收到后用包裹里的面单把坏的寄回就好，运费我们出~' (Received, confirmed as packaging damage; we’ve registered a replacement: we’ll send you a new one first, and after you receive it, please return the defective item using the return label included in the package—we’ll cover the shipping cost~)."
-      ],
-      "outcome": "SOURCE_REJECTED",
-      "provider_reported_duration_ms": 10650,
-      "provider_request_id": "chatcmpl-48650709-d121-9ac9-bf04-090e8a11ef84",
-      "rejection_code": "MISSING_FIELD_TRACE",
-      "rejection_stage": null,
-      "request_bytes": 360282,
-      "request_sha256": "54dfb9171ce8d6edb85db88d0d799fdf26b6113771ba60d83a2a2e35af8e52a1",
-      "response_bytes": 2254,
-      "response_sha256": "ce795b486337308c390f09444229f514fb86fae143b05e7b02d44d773e681b0d",
-      "source_trace": [
-        {
-          "field": "observations[0]",
-          "source_id": "S00001_IMG_PUMP_DETAIL",
-          "source_type": "IMAGE"
-        },
-        {
-          "field": "observations[1]",
-          "source_id": "S00001_IMG_PACKAGE_CONTEXT",
-          "source_type": "IMAGE"
-        },
-        {
-          "field": "observations[2]",
-          "source_id": "36199788469718.PNM",
-          "source_type": "CHAT"
-        },
-        {
-          "field": "observations[3]",
-          "source_id": "22703823958720.PNM",
-          "source_type": "CHAT"
-        }
-      ],
-      "stage": "INITIAL",
-      "started_at": "2026-10-06T06:35:53.946351+00:00",
-      "status_code": 200,
-      "usage": {
-        "input_tokens": 5589,
-        "output_tokens": 416
-      },
-      "usage_note": null,
-      "usage_status": "EXACT",
-      "wall_ms": 10650
+      "wall_ms": 6720
     }
   ],
   "batch_id": "BATCH-28",
   "budget": {
-    "case_load_ms": 38,
+    "case_load_ms": 41,
     "frozen_analysis_budget_seconds": 20.0,
     "measurement_boundary": "model_bound_ms covers the model call and its source validation, which is the part of one analyze request the 20s budget must cover; case_load_ms is reported separately and is not a model cost",
     "measurement_source": "perf_counter around the real provider call plus the provider's own reported duration_ms; no value is estimated",
-    "model_bound_ms": 20810,
-    "model_bound_seconds": 20.81,
+    "model_bound_ms": 6723,
+    "model_bound_seconds": 6.723,
     "provider_reported_duration_ms": [
-      10154,
-      10650
+      6719
     ],
     "provider_wall_ms": [
-      10155,
-      10650
+      6720
     ],
-    "status": "BUDGET_EXCEEDED"
+    "status": "NOT_ACHIEVED_OUTPUT_REJECTED"
   },
   "configuration": {
     "api_key_present_in_environment": false,
     "api_key_value_recorded": false,
-    "attempts_requested": 2,
+    "attempts_requested": 1,
     "cache_adapter_exists": false,
     "cache_mode_setting": "disabled",
     "cache_statement": "no ExtractionStore/cache adapter is wired anywhere in this repository, so every attempt below is a real HTTP request and cached_result is false by construction",
@@ -168,18 +98,18 @@
         "source_trace",
         "candidate_promise_texts"
       ],
-      "candidate_prompt_sha256": "743d8c9668739b29a926261b5e99cf227eeb7cddda24d49a9e6b5fcb5ae34f5e",
-      "prompt_version": "candidate-extraction-v1",
-      "schema_repair_prompt_sha256": "e3eba756c7e2e14411e93677b83c6b58a20a2fddcc1a9f75678651f5cdf5ab18"
+      "candidate_prompt_sha256": "415814b938ef6fd85cdd4e299259308efae75c75190063f3b4b969ef3ca08f9e",
+      "prompt_version": "candidate-extraction-v2",
+      "schema_repair_prompt_sha256": "66b01ba18f434f8c1475429cd03230693bdd88c8d075838cdf46c607c3f86889"
     },
     "model_id": "qwen3-vl-plus",
     "model_revision": "qwen3-vl-plus-2025-12-19",
-    "prompt_version": "candidate-extraction-v1",
+    "prompt_version": "candidate-extraction-v2",
     "prompt_version_matches_manifest": true,
     "require_live_requested": true,
     "timeout_seconds": 20.0
   },
-  "generated_at": "2026-10-06T06:35:43.462679+00:00",
+  "generated_at": "2026-10-06T06:40:06.849026+00:00",
   "input_binding": {
     "assembled_evidence_images": [
       {
@@ -305,10 +235,10 @@
     "source_validation": "FAIL"
   },
   "statement": "本批由辅助调度器实现，非独立实现方；验收须由他方完成。 This artifact records one real, uncached multimodal extraction attempt against the registered Qwen deployment. It is implementation evidence, not a verification verdict.",
-  "status": "BUDGET_EXCEEDED",
+  "status": "MODEL_OUTPUT_REJECTED",
   "summary": {
     "accepted_attempt": null,
-    "attempts": 2,
+    "attempts": 1,
     "last_failure_reason": "the server-side source validator refused the candidate",
     "last_outcome": "SOURCE_REJECTED",
     "last_rejection_code": "MISSING_FIELD_TRACE"

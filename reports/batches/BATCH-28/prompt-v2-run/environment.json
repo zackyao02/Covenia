@@ -11,7 +11,7 @@
       "bytes": 725,
       "method": "sha256(git show <sha>:<path> raw stdout bytes)",
       "path": "backend/requirements-dev.lock",
-      "revision": "f76dd1c3f9de1bc548d8c11841b25ad733533c10",
+      "revision": "ab3dba97a2fe02cf0c0e870edd8df39c2a0545b3",
       "sha256": "602c268b684d60e2d1b8bbfc6820663a622eb24093144a87c111f43d3c06fdae"
     },
     "eol_note": "the committed blob is stored with LF; the Windows worktree checkout uses CRLF, so the raw worktree digest differs from the blob digest by design. MASTER_PLAN 5.5-8 requires the git-show blob digest for hash verification, and that value is recorded above as committed_blob.sha256.",
@@ -29,7 +29,7 @@
     "COVENIA_MODEL_PROMPT_VERSION": "NOT_SET",
     "COVENIA_MODEL_REVISION": "SET"
   },
-  "generated_at": "2026-10-06T06:36:04.702920+00:00",
+  "generated_at": "2026-10-06T06:40:14.003350+00:00",
   "interpreter": {
     "include_system_site_packages": "false",
     "isolated_venv": true,
@@ -204,7 +204,7 @@
     "image_manifest_path": "handoff\\a\\images-manifest.json",
     "model_deployment_id": "ws-czn4i6tkzgc4so32",
     "model_endpoint": "http://127.0.0.1:8001/v1/chat/completions",
-    "model_prompt_version": "candidate-extraction-v1",
+    "model_prompt_version": "candidate-extraction-v2",
     "model_revision": "qwen3-vl-plus-2025-12-19",
     "workbook_path": "data\\tianchi-track1-mock-data.xlsx"
   },
