@@ -53,7 +53,7 @@ class Settings(BaseSettings):
     # blocker by ``covenia_b.preflight`` instead of being silently replaced.
     model_endpoint: str = "http://127.0.0.1:8001"
     model_revision: str = "local-unregistered-revision"
-    model_prompt_version: str = "candidate-extraction-v1"
+    model_prompt_version: str = "candidate-extraction-v2"
     model_deployment_id: str = ""
 
     # Service budgets.
