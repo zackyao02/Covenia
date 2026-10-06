@@ -137,7 +137,7 @@
       {
         "run": "V1-b",
         "started_at_utc": "2026-10-06T06:35:43Z",
-        "source": "preserved at reports/batches/BATCH-28/prompt-v1-run/**",
+        "source": "preserved at reports/batches/BATCH-28/prompt-v1-run/** and copied byte for byte into reports/batches/BATCH-28/aux-cross-line-v2/v1-baseline/** (see self_contained_copies)",
         "prompt_version": "candidate-extraction-v1",
         "attempts": 2,
         "accepted": 0,
@@ -417,6 +417,16 @@
     "repair_commit_insertions": 27,
     "repair_commit_deletions": 13,
     "report_commit": "the commit that carries this report and its evidence; recorded in the delivery message because a file cannot contain the hash of the commit that creates it"
+  },
+
+  "self_contained_copies": {
+    "why": "the concurrent implementation session is reorganising its own directories while this report is being written, so every artifact this report cites is also kept inside this round's evidence directory; the per-file sha256 values are in aux-cross-line-v2/PROVENANCE.json",
+    "v1_baseline": "reports/batches/BATCH-28/aux-cross-line-v2/v1-baseline/** (taken from commit ab3dba9, not from the worktree)",
+    "concurrent_session_runs": [
+      "reports/batches/BATCH-28/aux-cross-line-v2/concurrent-session-runs/prompt-v2-run/** (run D)",
+      "reports/batches/BATCH-28/aux-cross-line-v2/concurrent-session-runs/prompt-v2-passing-run/** (run F, the accepted official-command run)"
+    ],
+    "note": "these are snapshots for traceability; they are not this round's own results and are labelled as the concurrent session's in every table above"
   },
 
   "artifacts": [

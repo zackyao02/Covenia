@@ -1,0 +1,669 @@
+{
+  "accountability_state": {
+    "accountable_side": "BRAND",
+    "active_commitments": [
+      {
+        "deadline": "2026-05-07T10:27:37+08:00",
+        "promise_type": "REPLACEMENT_DISPATCH",
+        "raw_text": "换货单已创建，48小时内发出，给您带来不便啦~",
+        "source_ids": [
+          "36199788469718.PNM"
+        ],
+        "status": "ACTIVE"
+      }
+    ],
+    "audit_trail": [
+      {
+        "action": "ANALYZED",
+        "actor": "ANALYZE_SERVICE",
+        "at": "2026-05-07T09:40:00+08:00",
+        "changed_fields": [
+          "case_status",
+          "consumer_input_required",
+          "accountable_side",
+          "evidence_status",
+          "active_commitments",
+          "prohibited_actions",
+          "open_obligation",
+          "service_progress_receipt",
+          "experience_risk"
+        ],
+        "request_id": "live-smoke-20261006T064303Z"
+      }
+    ],
+    "case_id": "DEMO_001",
+    "case_status": "ACTION_REVIEW",
+    "consumer_input_required": false,
+    "current_scope": {
+      "fulfillment_item_id": "6920185815517983396-XC33003",
+      "issue_type": "PACKAGE_DAMAGE",
+      "order_id": "6920185815517983396",
+      "sku_id": "XC33003"
+    },
+    "evidence_status": "NEED_HUMAN_REVIEW",
+    "experience_gap_diagnosis": {
+      "action_impacts": [
+        "ROUTE_TO_HUMAN",
+        "START_PROACTIVE_UPDATE"
+      ],
+      "consumer_expression": "MODEL_CANDIDATE_REMAINS_UNTRUSTED",
+      "deterioration_cause": "责任动作尚未形成可执行批准",
+      "latent_need": "TRACEABLE_STATUS_UPDATE",
+      "reply_strategy": "当前事实已保留，转入人工复核并等待可审计的责任动作。",
+      "responsibility_judgment": {
+        "accountable_side": "BRAND",
+        "consumer_input_complete": true
+      },
+      "traceable_service_facts": [
+        {
+          "fact_type": "EVIDENCE_SUBMITTED",
+          "source_ids": [
+            "S00001_IMG_PACKAGE_CONTEXT",
+            "S00001_IMG_PRODUCT_OVERVIEW",
+            "S00001_IMG_PUMP_DETAIL"
+          ],
+          "statement": "当前问题证据已提交并进入服务事实链"
+        },
+        {
+          "fact_type": "TICKET_CREATED",
+          "source_ids": [
+            "BH919209358357"
+          ],
+          "statement": "已有服务工单记录当前处理范围"
+        },
+        {
+          "fact_type": "PROMISE_ACTIVE",
+          "source_ids": [
+            "36199788469718.PNM"
+          ],
+          "statement": "服务责任账本保留已编译的履约承诺"
+        }
+      ]
+    },
+    "experience_risk": "HIGH",
+    "open_obligation": {
+      "accountable_side": "BRAND",
+      "deadline": "2026-05-07T10:27:37+08:00",
+      "executor": "WAREHOUSE",
+      "milestone": "AWAITING_CARRIER_PICKUP",
+      "next_check_at": "2026-05-07T10:30:00+08:00",
+      "obligation_type": "REPLACEMENT_FULFILLMENT",
+      "resolution_condition": "REPLACEMENT_DELIVERED",
+      "status": "ON_TRACK"
+    },
+    "prohibited_actions": [
+      "ASK_REPEAT_EXPLANATION",
+      "SHIFT_FOLLOW_UP_TO_CONSUMER",
+      "MAKE_UNTRACKABLE_PROMISE",
+      "CLOSE_BEFORE_RESOLUTION"
+    ],
+    "service_progress_receipt": {
+      "brand_action": "品牌将跟进补发商品并等待物流揽收",
+      "consumer_action_required": false,
+      "latest_update_at": "2026-05-07T09:40:00+08:00",
+      "next_update_by": "2026-05-07T10:30:00+08:00",
+      "receipt_id": "DEMO_001:replacement",
+      "received_evidence": [
+        "S00001_IMG_PACKAGE_CONTEXT",
+        "S00001_IMG_PRODUCT_OVERVIEW",
+        "S00001_IMG_PUMP_DETAIL"
+      ],
+      "recovery_if_missed": "品牌将主动催办并通知新的处理时间",
+      "status": "ACTIVE"
+    }
+  },
+  "artifact": "reports/batches/BATCH-28/live/model-output.redacted.json",
+  "attempts": [
+    {
+      "attempt": 1,
+      "candidate_accepted": false,
+      "candidate_promise_texts": [
+        "换货单已创建，48小时内发出"
+      ],
+      "failure_reason": "the server-side source validator refused the candidate",
+      "image_sha256s": [
+        "e2c6bbd230f906f113d75f2f582e778b6e79aea37544c2383f1ffda15a5295d5",
+        "4709d7529803846d4ff4e123bfcc034d420449ae23923cb54468be573bd8cfc7",
+        "c734bfb5a70ffa39e10b2535dc8321eace3c1fb358293fa22b590b9f7b5836bd"
+      ],
+      "observations": [
+        "The pump head of the foundation bottle is visibly cracked and broken, with foundation product oozing from the fracture.",
+        "The cardboard packaging box shows a crushed corner, indicating possible transit damage.",
+        "The agent stated: '换货单已创建，48小时内发出' (The replacement order has been created and will be shipped within 48 hours)."
+      ],
+      "outcome": "SOURCE_REJECTED",
+      "provider_reported_duration_ms": 6352,
+      "provider_request_id": "chatcmpl-b820ee86-c814-9e6b-b83d-d90a678266c7",
+      "rejection_code": "MISSING_FIELD_TRACE",
+      "rejection_stage": null,
+      "request_bytes": 360711,
+      "request_sha256": "84e86e2455a2f3fe7b4ec872d4d8e2e9d846f4581b67bcb06d59e97d3e8ad10c",
+      "response_bytes": 1512,
+      "response_sha256": "7ff9f875c3095bf776e7c1b05d61814645c94901348f0c9bb7ef3efaef5186cf",
+      "source_trace": [
+        {
+          "field": "observations[0]",
+          "source_id": "S00001_IMG_PUMP_DETAIL",
+          "source_type": "IMAGE"
+        },
+        {
+          "field": "observations[1]",
+          "source_id": "S00001_IMG_PACKAGE_CONTEXT",
+          "source_type": "IMAGE"
+        },
+        {
+          "field": "observations[2]",
+          "source_id": "36199788469718.PNM",
+          "source_type": "CHAT"
+        }
+      ],
+      "stage": "INITIAL",
+      "started_at": "2026-10-06T06:43:03.129257+00:00",
+      "status_code": 200,
+      "usage": {
+        "input_tokens": 5684,
+        "output_tokens": 237
+      },
+      "usage_note": null,
+      "usage_status": "EXACT",
+      "wall_ms": 6353
+    },
+    {
+      "attempt": 2,
+      "candidate_accepted": true,
+      "candidate_promise_texts": [
+        "换货单已创建，48小时内发出，给您带来不便啦~"
+      ],
+      "failure_reason": null,
+      "image_sha256s": [
+        "e2c6bbd230f906f113d75f2f582e778b6e79aea37544c2383f1ffda15a5295d5",
+        "4709d7529803846d4ff4e123bfcc034d420449ae23923cb54468be573bd8cfc7",
+        "c734bfb5a70ffa39e10b2535dc8321eace3c1fb358293fa22b590b9f7b5836bd"
+      ],
+      "observations": [
+        "粉底液泵头存在明显物理破损，包括裂纹和断裂，泵头顶部结构不完整",
+        "泵头破损处有粉底液溢出并凝固在泵体颈部",
+        "产品包装纸盒一角有压损变形"
+      ],
+      "outcome": "ACCEPTED",
+      "provider_reported_duration_ms": 6498,
+      "provider_request_id": "chatcmpl-48655bfa-db01-9fab-b6a2-e4f3016159ee",
+      "rejection_code": null,
+      "rejection_stage": null,
+      "request_bytes": 360711,
+      "request_sha256": "49a10bd4bc696bed78da25dab05f42eaab4c9cc1873c4fb19a7a145bbe2f179c",
+      "response_bytes": 1533,
+      "response_sha256": "3e7a1d0112cc3e183f794c59e72f1965cde362e92be885d5d14f9143f0ecbed5",
+      "source_trace": [
+        {
+          "field": "observations[0]",
+          "source_id": "S00001_IMG_PUMP_DETAIL",
+          "source_type": "IMAGE"
+        },
+        {
+          "field": "observations[1]",
+          "source_id": "S00001_IMG_PUMP_DETAIL",
+          "source_type": "IMAGE"
+        },
+        {
+          "field": "observations[2]",
+          "source_id": "S00001_IMG_PACKAGE_CONTEXT",
+          "source_type": "IMAGE"
+        },
+        {
+          "field": "candidate_promise_texts[0]",
+          "source_id": "36199788469718.PNM",
+          "source_type": "CHAT"
+        }
+      ],
+      "stage": "INITIAL",
+      "started_at": "2026-10-06T06:43:09.485405+00:00",
+      "status_code": 200,
+      "usage": {
+        "input_tokens": 5684,
+        "output_tokens": 264
+      },
+      "usage_note": null,
+      "usage_status": "EXACT",
+      "wall_ms": 6499
+    }
+  ],
+  "batch_id": "BATCH-28",
+  "budget": {
+    "case_load_ms": 140,
+    "frozen_analysis_budget_seconds": 20.0,
+    "measurement_boundary": "model_bound_ms covers the model call and its source validation, which is the part of one analyze request the 20s budget must cover; case_load_ms is reported separately and is not a model cost",
+    "measurement_source": "perf_counter around the real provider call plus the provider's own reported duration_ms; no value is estimated",
+    "model_bound_ms": 12856,
+    "model_bound_seconds": 12.856,
+    "provider_reported_duration_ms": [
+      6352,
+      6498
+    ],
+    "provider_wall_ms": [
+      6353,
+      6499
+    ],
+    "status": "WITHIN_BUDGET"
+  },
+  "configuration": {
+    "api_key_present_in_environment": false,
+    "api_key_value_recorded": false,
+    "attempts_requested": 2,
+    "cache_adapter_exists": false,
+    "cache_mode_setting": "disabled",
+    "cache_statement": "no ExtractionStore/cache adapter is wired anywhere in this repository, so every attempt below is a real HTTP request and cached_result is false by construction",
+    "deployment_id": "ws-czn4i6tkzgc4so32",
+    "disable_cache_requested": true,
+    "endpoint": "http://127.0.0.1:8001/v1/chat/completions",
+    "endpoint_port_confirmed_closed": false,
+    "endpoint_probe": {
+      "detail": "tcp 127.0.0.1:8001 reachable",
+      "endpoint": "http://127.0.0.1:8001/v1/chat/completions",
+      "host": "127.0.0.1",
+      "port": 8001,
+      "tcp_reachable": true
+    },
+    "endpoint_probe_skipped": false,
+    "frozen_analysis_budget_seconds": 20.0,
+    "frozen_prompt_manifest": {
+      "candidate_output_fields": [
+        "observations",
+        "source_trace",
+        "candidate_promise_texts"
+      ],
+      "candidate_prompt_sha256": "415814b938ef6fd85cdd4e299259308efae75c75190063f3b4b969ef3ca08f9e",
+      "prompt_version": "candidate-extraction-v2",
+      "schema_repair_prompt_sha256": "66b01ba18f434f8c1475429cd03230693bdd88c8d075838cdf46c607c3f86889"
+    },
+    "model_id": "qwen3-vl-plus",
+    "model_revision": "qwen3-vl-plus-2025-12-19",
+    "prompt_version": "candidate-extraction-v2",
+    "prompt_version_matches_manifest": true,
+    "require_live_requested": true,
+    "timeout_seconds": 20.0
+  },
+  "extracted_journey": {
+    "case_id": "DEMO_001",
+    "completed_actions": {
+      "evidence_submitted": true,
+      "issue_explained": true,
+      "order_verified": true
+    },
+    "extracted_scope": {
+      "fulfillment_item_id": "6920185815517983396-XC33003",
+      "issue_type": "PACKAGE_DAMAGE",
+      "order_id": "6920185815517983396",
+      "sku_id": "XC33003"
+    },
+    "image_observations": [
+      {
+        "affected_component": "UNKNOWN",
+        "confidence": 0.0,
+        "coverage": [],
+        "evidence_id": "S00001_IMG_PRODUCT_OVERVIEW",
+        "hygiene_risk_signal": "UNKNOWN",
+        "integrity_concern": false,
+        "issue_visible": false,
+        "product_identifiable": false,
+        "product_role": "UNKNOWN",
+        "readability": "UNKNOWN",
+        "sku_match": "UNKNOWN",
+        "view_type": "PRODUCT_OVERVIEW"
+      },
+      {
+        "affected_component": "UNKNOWN",
+        "confidence": 0.0,
+        "coverage": [],
+        "evidence_id": "S00001_IMG_PUMP_DETAIL",
+        "hygiene_risk_signal": "UNKNOWN",
+        "integrity_concern": false,
+        "issue_visible": false,
+        "product_identifiable": false,
+        "product_role": "UNKNOWN",
+        "readability": "UNKNOWN",
+        "sku_match": "UNKNOWN",
+        "view_type": "ISSUE_DETAIL"
+      },
+      {
+        "affected_component": "UNKNOWN",
+        "confidence": 0.0,
+        "coverage": [],
+        "evidence_id": "S00001_IMG_PACKAGE_CONTEXT",
+        "hygiene_risk_signal": "UNKNOWN",
+        "integrity_concern": false,
+        "issue_visible": false,
+        "product_identifiable": false,
+        "product_role": "UNKNOWN",
+        "readability": "UNKNOWN",
+        "sku_match": "UNKNOWN",
+        "view_type": "PACKAGE_CONTEXT"
+      }
+    ],
+    "journey_understanding": {
+      "action_impact": "REQUIRES_SERVER_EVIDENCE_AGGREGATION",
+      "consumer_intent": "REQUEST_TRACEABLE_SERVICE_REVIEW",
+      "cooperation_willingness": "UNKNOWN",
+      "experience_expression": "MODEL_CANDIDATE_REMAINS_UNTRUSTED",
+      "latent_need": "TRACEABLE_STATUS_UPDATE",
+      "service_cause": "SERVER_FACTS_REQUIRE_EVIDENCE_AGGREGATION",
+      "source_ids": [
+        "20974795108539.PNM"
+      ]
+    },
+    "model_metadata": {
+      "cached_result": false,
+      "model_id": "qwen3-vl-plus",
+      "model_revision": "qwen3-vl-plus-2025-12-19",
+      "prompt_version": "candidate-extraction-v2",
+      "run_id": "qwen-427e1e79df88495488ae485b9672e89d"
+    },
+    "promise_events": [
+      {
+        "activation_recommendation": "IGNORED",
+        "commitment_class": "AMBIGUOUS",
+        "committed_at": "2026-05-05T10:20:59+08:00",
+        "conditions": [
+          "AMBIGUOUS_TIME_EXPRESSION"
+        ],
+        "confidence": 1.0,
+        "deadline": null,
+        "promise_type": "REPLACEMENT_DISPATCH",
+        "raw_text": "亲亲抱歉！麻烦拍下破损部位的照片发给测试客服，为您核实换货哈~",
+        "source_ids": [
+          "51831669257761.PNM"
+        ]
+      },
+      {
+        "activation_recommendation": "IGNORED",
+        "commitment_class": "AMBIGUOUS",
+        "committed_at": "2026-05-05T10:24:13+08:00",
+        "conditions": [
+          "AMBIGUOUS_TIME_EXPRESSION"
+        ],
+        "confidence": 1.0,
+        "deadline": null,
+        "promise_type": "REPLACEMENT_DISPATCH",
+        "raw_text": "收到亲，确认属包装破损，为您登记换货：先给您发全新的，收到后用包裹里的面单把坏的寄回就好，运费我们出~",
+        "source_ids": [
+          "22703823958720.PNM"
+        ]
+      },
+      {
+        "activation_recommendation": "IGNORED",
+        "commitment_class": "ERRONEOUS_OR_UNAUTHORIZED",
+        "committed_at": "2026-05-05T10:25:13+08:00",
+        "conditions": [
+          "SOURCE_NOT_AGENT"
+        ],
+        "confidence": 1.0,
+        "deadline": null,
+        "promise_type": "UNKNOWN",
+        "raw_text": "行，那尽快哈",
+        "source_ids": [
+          "94357468399952.PNM"
+        ]
+      },
+      {
+        "activation_recommendation": "ACTIVE",
+        "commitment_class": "STANDARD_APPROVED",
+        "committed_at": "2026-05-05T10:27:37+08:00",
+        "conditions": [
+          "AUTHORIZED_STANDARD"
+        ],
+        "confidence": 1.0,
+        "deadline": "2026-05-07T10:27:37+08:00",
+        "promise_type": "REPLACEMENT_DISPATCH",
+        "raw_text": "换货单已创建，48小时内发出，给您带来不便啦~",
+        "source_ids": [
+          "36199788469718.PNM"
+        ]
+      },
+      {
+        "activation_recommendation": "IGNORED",
+        "commitment_class": "ERRONEOUS_OR_UNAUTHORIZED",
+        "committed_at": "2026-05-07T09:32:00+08:00",
+        "conditions": [
+          "SOURCE_NOT_AGENT"
+        ],
+        "confidence": 1.0,
+        "deadline": null,
+        "promise_type": "REPLACEMENT_DISPATCH",
+        "raw_text": "我前天图片都发过了，换货到底有没有发？怎么还要我重新说明？",
+        "source_ids": [
+          "DEMO_AUG_MSG_001"
+        ]
+      }
+    ],
+    "source_trace": [
+      {
+        "field": "candidate_promise_texts[0]",
+        "source_id": "36199788469718.PNM",
+        "source_type": "CHAT"
+      },
+      {
+        "field": "completed_actions.order_verified",
+        "source_id": "6920185815517983396",
+        "source_type": "ORDER"
+      },
+      {
+        "field": "extracted_scope",
+        "source_id": "6920185815517983396",
+        "source_type": "ORDER"
+      },
+      {
+        "field": "image_observations[0]",
+        "source_id": "S00001_IMG_PRODUCT_OVERVIEW",
+        "source_type": "IMAGE"
+      },
+      {
+        "field": "image_observations[1]",
+        "source_id": "S00001_IMG_PUMP_DETAIL",
+        "source_type": "IMAGE"
+      },
+      {
+        "field": "image_observations[2]",
+        "source_id": "S00001_IMG_PACKAGE_CONTEXT",
+        "source_type": "IMAGE"
+      },
+      {
+        "field": "journey_understanding",
+        "source_id": "20974795108539.PNM",
+        "source_type": "CHAT"
+      },
+      {
+        "field": "observations[0]",
+        "source_id": "S00001_IMG_PUMP_DETAIL",
+        "source_type": "IMAGE"
+      },
+      {
+        "field": "observations[1]",
+        "source_id": "S00001_IMG_PUMP_DETAIL",
+        "source_type": "IMAGE"
+      },
+      {
+        "field": "observations[2]",
+        "source_id": "S00001_IMG_PACKAGE_CONTEXT",
+        "source_type": "IMAGE"
+      },
+      {
+        "field": "promise_events[0]",
+        "source_id": "51831669257761.PNM",
+        "source_type": "CHAT"
+      },
+      {
+        "field": "promise_events[1]",
+        "source_id": "22703823958720.PNM",
+        "source_type": "CHAT"
+      },
+      {
+        "field": "promise_events[2]",
+        "source_id": "94357468399952.PNM",
+        "source_type": "CHAT"
+      },
+      {
+        "field": "promise_events[3]",
+        "source_id": "36199788469718.PNM",
+        "source_type": "CHAT"
+      },
+      {
+        "field": "promise_events[4]",
+        "source_id": "DEMO_AUG_MSG_001",
+        "source_type": "CHAT"
+      }
+    ]
+  },
+  "generated_at": "2026-10-06T06:43:02.631674+00:00",
+  "input_binding": {
+    "assembled_evidence_images": [
+      {
+        "evidence_id": "S00001_IMG_OVERVIEW",
+        "file_name": "s00001-product-overview.jpg",
+        "rejection": "ImagePathRejected",
+        "rejection_code": "evidence_id_unregistered",
+        "resolvable_by_production_resolver": false
+      },
+      {
+        "evidence_id": "S00001_IMG_PUMP",
+        "file_name": "s00001-pump-detail.jpg",
+        "rejection": "ImagePathRejected",
+        "rejection_code": "evidence_id_unregistered",
+        "resolvable_by_production_resolver": false
+      },
+      {
+        "evidence_id": "S00001_IMG_PACKAGE",
+        "file_name": "s00001-package-context.jpg",
+        "rejection": "ImagePathRejected",
+        "rejection_code": "evidence_id_unregistered",
+        "resolvable_by_production_resolver": false
+      }
+    ],
+    "case_id": "DEMO_001",
+    "cross_artifact_discrepancy": "fixtures/demo-cases.json declares S00001_IMG_OVERVIEW / S00001_IMG_PUMP / S00001_IMG_PACKAGE while handoff/a/images-manifest.json registers S00001_IMG_PRODUCT_OVERVIEW / S00001_IMG_PUMP_DETAIL / S00001_IMG_PACKAGE_CONTEXT. Only file_name agrees, so the production resolver rejects the assembled case as-is. This batch may not edit either artifact; the accepted registry is treated as the authority and every remap is listed above.",
+    "declared_source_ids": [
+      "6920185815517983396",
+      "20974795108539.PNM",
+      "51831669257761.PNM",
+      "80525870445254.PNM",
+      "22703823958720.PNM",
+      "94357468399952.PNM",
+      "36199788469718.PNM",
+      "DEMO_AUG_MSG_001",
+      "BH919209358357",
+      "S00001_IMG_PRODUCT_OVERVIEW",
+      "S00001_IMG_PUMP_DETAIL",
+      "S00001_IMG_PACKAGE_CONTEXT"
+    ],
+    "evaluation_time": "2026-05-07T09:40:00+08:00",
+    "image_sha256s_sent": [
+      "e2c6bbd230f906f113d75f2f582e778b6e79aea37544c2383f1ffda15a5295d5",
+      "4709d7529803846d4ff4e123bfcc034d420449ae23923cb54468be573bd8cfc7",
+      "c734bfb5a70ffa39e10b2535dc8321eace3c1fb358293fa22b590b9f7b5836bd"
+    ],
+    "observation_json_sent_as_image": false,
+    "observation_json_statement": "the provider request carries the sanitized chat text as the single text part and each verified image as an image_url data part; no observation JSON, candidate, or derived label is serialized into the request",
+    "pii_masked_count": 0,
+    "provider_content_parts": [
+      "text",
+      "image_url",
+      "image_url",
+      "image_url"
+    ],
+    "provider_request_contains_image_url_parts": 3,
+    "registry_remaps": [
+      {
+        "accepted_evidence_id": "S00001_IMG_PRODUCT_OVERVIEW",
+        "assembled_evidence_id": "S00001_IMG_OVERVIEW",
+        "effect": "the assembled case named an evidence ID that the accepted registry does not contain; the registry's own ID is used so the production resolver can verify the bytes",
+        "file_name": "s00001-product-overview.jpg",
+        "match_key": "file_name"
+      },
+      {
+        "accepted_evidence_id": "S00001_IMG_PUMP_DETAIL",
+        "assembled_evidence_id": "S00001_IMG_PUMP",
+        "effect": "the assembled case named an evidence ID that the accepted registry does not contain; the registry's own ID is used so the production resolver can verify the bytes",
+        "file_name": "s00001-pump-detail.jpg",
+        "match_key": "file_name"
+      },
+      {
+        "accepted_evidence_id": "S00001_IMG_PACKAGE_CONTEXT",
+        "assembled_evidence_id": "S00001_IMG_PACKAGE",
+        "effect": "the assembled case named an evidence ID that the accepted registry does not contain; the registry's own ID is used so the production resolver can verify the bytes",
+        "file_name": "s00001-package-context.jpg",
+        "match_key": "file_name"
+      }
+    ],
+    "resolved_provider_images": [
+      {
+        "byte_length": 71574,
+        "content_sha256": "e2c6bbd230f906f113d75f2f582e778b6e79aea37544c2383f1ffda15a5295d5",
+        "declared_view_type": "PRODUCT_OVERVIEW",
+        "evidence_id": "S00001_IMG_PRODUCT_OVERVIEW",
+        "height": 1254,
+        "media_type": "image/jpeg",
+        "provenance_source_kind": "TEAM_SYNTHETIC_RECREATION",
+        "provenance_source_message_id": "80525870445254.PNM",
+        "width": 1254
+      },
+      {
+        "byte_length": 66764,
+        "content_sha256": "4709d7529803846d4ff4e123bfcc034d420449ae23923cb54468be573bd8cfc7",
+        "declared_view_type": "ISSUE_DETAIL",
+        "evidence_id": "S00001_IMG_PUMP_DETAIL",
+        "height": 1254,
+        "media_type": "image/jpeg",
+        "provenance_source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
+        "provenance_source_message_id": "80525870445254.PNM",
+        "width": 1254
+      },
+      {
+        "byte_length": 129230,
+        "content_sha256": "c734bfb5a70ffa39e10b2535dc8321eace3c1fb358293fa22b590b9f7b5836bd",
+        "declared_view_type": "PACKAGE_CONTEXT",
+        "evidence_id": "S00001_IMG_PACKAGE_CONTEXT",
+        "height": 1254,
+        "media_type": "image/jpeg",
+        "provenance_source_kind": "TEAM_SYNTHETIC_AUGMENTATION",
+        "provenance_source_message_id": "80525870445254.PNM",
+        "width": 1254
+      }
+    ],
+    "source_session_id": "S00001"
+  },
+  "model_metadata": {
+    "cached_result": false,
+    "model_id": "qwen3-vl-plus",
+    "model_revision": "qwen3-vl-plus-2025-12-19",
+    "prompt_version": "candidate-extraction-v2",
+    "run_id": "qwen-427e1e79df88495488ae485b9672e89d"
+  },
+  "source_validation": {
+    "agent_quote_count": 1,
+    "image_observation_count": 3,
+    "traced_field_count": 4,
+    "trusted_source_count": 11
+  },
+  "stages": {
+    "accountability_state": "PASS",
+    "candidate_schema": "PASS",
+    "extracted_journey": "PASS",
+    "facts_and_image_binding": "PASS",
+    "real_http_call": "PASS",
+    "source_validation": "PASS"
+  },
+  "statement": "本批由辅助调度器实现，非独立实现方；验收须由他方完成。 This artifact records one real, uncached multimodal extraction attempt against the registered Qwen deployment. It is implementation evidence, not a verification verdict.",
+  "status": "PASS",
+  "summary": {
+    "accepted_attempt": 2,
+    "agent_quote_count": 1,
+    "attempts": 2,
+    "cached_result": false,
+    "case_status": "ACTION_REVIEW",
+    "evidence_status": "NEED_HUMAN_REVIEW",
+    "image_observation_count": 3,
+    "model_revision": "qwen3-vl-plus-2025-12-19",
+    "run_id": "qwen-427e1e79df88495488ae485b9672e89d"
+  },
+  "tool": "tools/verification/live_smoke.py",
+  "tool_version": "live-smoke-v1"
+}

@@ -99,10 +99,14 @@ reports/batches/BATCH-28/aux-cross-line-v2/PROVENANCE.json         ← 下列文
 reports/batches/BATCH-28/aux-cross-line-v2/official-run-1-rejected/**      运行 A
 reports/batches/BATCH-28/aux-cross-line-v2/official-run-2-rejected/**      运行 C
 reports/batches/BATCH-28/aux-cross-line-v2/pytest-live-run-accepted/**     运行 B（接受）
+reports/batches/BATCH-28/aux-cross-line-v2/v1-baseline/**                  v1 基线快照（取自提交 ab3dba9）
+reports/batches/BATCH-28/aux-cross-line-v2/concurrent-session-runs/**      并发会话运行 D / F 的快照
 reports/batches/BATCH-28/aux-cross-line-v2/aux_verify_criteria_2_3.py      标准 2/3 独立复核脚本
 reports/batches/BATCH-28/aux-cross-line-v2/aux-criteria-2-3.log            其输出
 reports/batches/BATCH-28/live/**                                          运行 C（官方命令落点）
 ```
+
+**自包含说明**：并发会话正在持续重排它自己的目录（本轮期间它已把 `prompt-v1-run/` 的文件 staged 成 rename 到 `prompt-v2-run/`、`prompt-v2-passing-run/`），因此本报告引用的每一份证据都在 `aux-cross-line-v2/` 内留有逐字节副本，逐文件 sha256 见 `PROVENANCE.json`。这些副本只是可追溯快照，**不是本轮自己的结果**，表格中一律标注为并发会话产出。
 
 `backend/requirements-dev.lock`：**UNCHANGED**（`appended_entries=[]`；worktree 规范化 LF sha256 = 提交 blob sha256 = `602c268b684d60e2d1b8bbfc6820663a622eb24093144a87c111f43d3c06fdae`；`git diff --numstat` 为空）。
 

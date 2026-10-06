@@ -33,6 +33,42 @@
       "sha256": "3c674192c47ef4799b7eb548a370b4e833c87cddcdba31662ebc4a77031da737"
     },
     {
+      "bytes": 6142,
+      "origin": "snapshots of the concurrent implementation session's own v2 runs: prompt-v2-run/ is run D (1 attempt, rejected) and prompt-v2-passing-run/ is run F (attempt 1 rejected, attempt 2 accepted, document status PASS). They are that session's results, kept here only so this report's citations cannot dangle",
+      "path": "reports/batches/BATCH-28/aux-cross-line-v2/concurrent-session-runs/prompt-v2-passing-run/environment.json",
+      "sha256": "83bdea14ae107364a1956654c4b61f839cc867813b1528a69fec1cb3ccc328c6"
+    },
+    {
+      "bytes": 4938,
+      "origin": "snapshots of the concurrent implementation session's own v2 runs: prompt-v2-run/ is run D (1 attempt, rejected) and prompt-v2-passing-run/ is run F (attempt 1 rejected, attempt 2 accepted, document status PASS). They are that session's results, kept here only so this report's citations cannot dangle",
+      "path": "reports/batches/BATCH-28/aux-cross-line-v2/concurrent-session-runs/prompt-v2-passing-run/governance.redacted.jsonl",
+      "sha256": "bc257be6c6d47e92cd5c14a277f894579338436f2c430abb881ea3c80ff42d5a"
+    },
+    {
+      "bytes": 23832,
+      "origin": "snapshots of the concurrent implementation session's own v2 runs: prompt-v2-run/ is run D (1 attempt, rejected) and prompt-v2-passing-run/ is run F (attempt 1 rejected, attempt 2 accepted, document status PASS). They are that session's results, kept here only so this report's citations cannot dangle",
+      "path": "reports/batches/BATCH-28/aux-cross-line-v2/concurrent-session-runs/prompt-v2-passing-run/model-output.redacted.json",
+      "sha256": "4bbee112972b77b8da32e514beb49f56d446f68f3164e3a8fae53e86a273ad10"
+    },
+    {
+      "bytes": 6142,
+      "origin": "snapshots of the concurrent implementation session's own v2 runs: prompt-v2-run/ is run D (1 attempt, rejected) and prompt-v2-passing-run/ is run F (attempt 1 rejected, attempt 2 accepted, document status PASS). They are that session's results, kept here only so this report's citations cannot dangle",
+      "path": "reports/batches/BATCH-28/aux-cross-line-v2/concurrent-session-runs/prompt-v2-run/environment.json",
+      "sha256": "aad3dc6c53f6cc031e0f1bc3f867d59da8fa6d0df45dd7cd64356653298f44e2"
+    },
+    {
+      "bytes": 2468,
+      "origin": "snapshots of the concurrent implementation session's own v2 runs: prompt-v2-run/ is run D (1 attempt, rejected) and prompt-v2-passing-run/ is run F (attempt 1 rejected, attempt 2 accepted, document status PASS). They are that session's results, kept here only so this report's citations cannot dangle",
+      "path": "reports/batches/BATCH-28/aux-cross-line-v2/concurrent-session-runs/prompt-v2-run/governance.redacted.jsonl",
+      "sha256": "8bd2450e11ed32d7f4447928223679f3603e5815972113d5506ef3339a19cd7a"
+    },
+    {
+      "bytes": 10529,
+      "origin": "snapshots of the concurrent implementation session's own v2 runs: prompt-v2-run/ is run D (1 attempt, rejected) and prompt-v2-passing-run/ is run F (attempt 1 rejected, attempt 2 accepted, document status PASS). They are that session's results, kept here only so this report's citations cannot dangle",
+      "path": "reports/batches/BATCH-28/aux-cross-line-v2/concurrent-session-runs/prompt-v2-run/model-output.redacted.json",
+      "sha256": "f0aac3078d8c7df45d8e7cc0afc5127b88057747e15e90d17d1ef47b44ffe411"
+    },
+    {
       "bytes": 1842,
       "origin": "stdout of this round's official run 1: live_smoke.py --require-live --disable-cache --output reports/batches/BATCH-28/live -> exit 1 MODEL_OUTPUT_REJECTED",
       "path": "reports/batches/BATCH-28/aux-cross-line-v2/live-official-v2.log",
@@ -75,6 +111,12 @@
       "sha256": "4a9b8381a22aa09281915144231d63e4b6c1d25e9fc1c0b9cdcc4062fb4d15a9"
     },
     {
+      "bytes": 6002,
+      "origin": "copied verbatim from the run it belongs to",
+      "path": "reports/batches/BATCH-28/aux-cross-line-v2/PROVENANCE.json",
+      "sha256": "f07a621a8d3b1aa84f27624265c8b36bbef39d026838098caf6a6b7f0d4b0ab1"
+    },
+    {
       "bytes": 2468,
       "origin": "verbatim copy of the artifact tree pytest wrote for the accepted live run, taken from C:\\cv28\\tmp\\pytest-of-<user>\\pytest-7\\batch-28-live-0\\; model-output.redacted.json is the accepted document (PASS, cached_result false, ExtractedJourney built)",
       "path": "reports/batches/BATCH-28/aux-cross-line-v2/pytest-live-run-accepted/governance.redacted.jsonl",
@@ -91,6 +133,30 @@
       "origin": "stdout of that pytest run: 7 passed in 8.07s",
       "path": "reports/batches/BATCH-28/aux-cross-line-v2/pytest-live-run-accepted/pytest-live.log",
       "sha256": "de5e4512274612edc68466c4396176eaa9f2ff3b32a1fc431fb6618edeffc171"
+    },
+    {
+      "bytes": 6142,
+      "origin": "the prompt-v1 baseline (2 attempts, both MISSING_FIELD_TRACE), taken byte for byte from commit ab3dba9 rather than from the worktree, because the concurrent session is moving the prompt-v1-run/ directory it used to live in",
+      "path": "reports/batches/BATCH-28/aux-cross-line-v2/v1-baseline/environment.json",
+      "sha256": "8350a8594a451171cf0719306c8e0401fdb6664b8eb469f4f916a4da3c4b16d3"
+    },
+    {
+      "bytes": 6142,
+      "origin": "the prompt-v1 baseline (2 attempts, both MISSING_FIELD_TRACE), taken byte for byte from commit ab3dba9 rather than from the worktree, because the concurrent session is moving the prompt-v1-run/ directory it used to live in",
+      "path": "reports/batches/BATCH-28/aux-cross-line-v2/v1-baseline/live/environment.json",
+      "sha256": "dffbf8609cd183f80942a67c8b1619c1f23f064185f65db84f3419ac9d8d9734"
+    },
+    {
+      "bytes": 4941,
+      "origin": "the prompt-v1 baseline (2 attempts, both MISSING_FIELD_TRACE), taken byte for byte from commit ab3dba9 rather than from the worktree, because the concurrent session is moving the prompt-v1-run/ directory it used to live in",
+      "path": "reports/batches/BATCH-28/aux-cross-line-v2/v1-baseline/live/governance.redacted.jsonl",
+      "sha256": "cb26fa03ef12b9109c41c3d26369a26c4aa36a4eb260f37a66d0eb1192f9871b"
+    },
+    {
+      "bytes": 14101,
+      "origin": "the prompt-v1 baseline (2 attempts, both MISSING_FIELD_TRACE), taken byte for byte from commit ab3dba9 rather than from the worktree, because the concurrent session is moving the prompt-v1-run/ directory it used to live in",
+      "path": "reports/batches/BATCH-28/aux-cross-line-v2/v1-baseline/live/model-output.redacted.json",
+      "sha256": "86c4332ae0f256b2ea1ca5ee2df3a4e0ef9cbf9af849879a473643db86c83327"
     }
   ],
   "hash_method": "sha256 of the file bytes on disk (no line-ending normalisation)",
