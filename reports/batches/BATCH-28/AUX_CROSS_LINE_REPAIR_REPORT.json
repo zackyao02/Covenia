@@ -1,0 +1,436 @@
+{
+  "artifact": "reports/batches/BATCH-28/AUX_CROSS_LINE_REPAIR_REPORT.json",
+  "batch_id": "BATCH-28",
+  "report_kind": "IMPLEMENTATION_REPAIR_REPORT",
+  "round": "cross-line prompt and settings repair (candidate-extraction-v2), implemented by the auxiliary dispatcher's delegated implementer",
+  "statement": "本批由辅助调度器实现，非独立实现方；验收须由他方完成。",
+  "statement_en": "This batch was implemented by the auxiliary dispatcher, not by an independent implementer; verification must be performed by another party. This file is implementation evidence, never a verification verdict.",
+  "verification_report_written": false,
+  "verification_report_note": "reports/batches/BATCH-28/VERIFICATION_REPORT.json belongs to the independent verifier. This round neither created nor modified it.",
+
+  "why_this_file_is_not_called_REPAIR_REPORT": {
+    "reason": "reports/batches/BATCH-28/REPAIR_REPORT.json and .md already exist and were committed by a second, concurrently running implementation session in this same worktree (commit ab3dba9, 2026-10-06T14:39:01+08:00) with different content. Overwriting them would have destroyed another party's deliverable, so this round wrote its own report under a distinct name and left both in place.",
+    "concurrent_report_left_untouched": [
+      "reports/batches/BATCH-28/REPAIR_REPORT.json",
+      "reports/batches/BATCH-28/REPAIR_REPORT.md",
+      "reports/batches/BATCH-28/DIAGNOSTIC.json",
+      "reports/batches/BATCH-28/prompt-v1-run/**",
+      "reports/batches/BATCH-28/prompt-v2-run/**",
+      "reports/batches/BATCH-28/prompt-v2-passing-run/**"
+    ],
+    "requested_name_honoured_by": "this file plus reports/batches/BATCH-28/AUX_CROSS_LINE_REPAIR_REPORT.md"
+  },
+
+  "concurrent_implementation_session": {
+    "detected": true,
+    "how": "the worktree HEAD moved from f76dd1c3 to ab3dba9 while this round was running, reports/batches/BATCH-28/REPAIR_REPORT.json and DIAGNOSTIC.json appeared, tools/verification/live_smoke.py was modified at 14:39:57, and a fresh byte-capture proxy was started on 127.0.0.1:8002 at 14:40:20 by a process outside this session",
+    "session_status_at_report_time": "still active; it ran its own v2 experiments at 14:40:06, 14:40:32 and 14:43:02 and left tools/verification/live_smoke.py modified but uncommitted",
+    "consequences_for_this_report": [
+      "two of the live runs listed below were produced by that session, not by this one; they are cited as attributed corroboration and marked as such",
+      "the accepted official-command run of the same tool currently lives in reports/batches/BATCH-28/prompt-v2-passing-run/, written by that session",
+      "live_smoke.py carried an uncommitted fix from that session during two of this round's runs; the tool revision of every run is recorded below"
+    ],
+    "nothing_of_the_other_session_was_overwritten_or_committed_by_this_round": true,
+    "shared_model_shim_on_8001_never_killed_or_reconfigured": true
+  },
+
+  "authorized_change": {
+    "authorization": "the product owner authorized the auxiliary dispatcher to modify across the batch's file whitelist for BATCH-28",
+    "commit": "8326e7360d26c96f6f379340bf8db8559bcb4b6f",
+    "items": [
+      {
+        "file": "backend/src/covenia_b/model/prompts/candidate_extraction.py",
+        "change": "the JSON example now shows three concrete source_trace entries with concrete indices (observations[0], observations[1], candidate_promise_texts[0]); the string \"or\" is gone from the example",
+        "line_region": "24-45"
+      },
+      {
+        "file": "backend/src/covenia_b/model/prompts/candidate_extraction.py",
+        "change": "both prompt bodies gained the same operational sentence: \"Emit one source_trace entry per observation and one per candidate promise; a single entry never covers two fields.\"",
+        "line_region": "47-49 (candidate prompt) and 66-68 (schema-repair prompt)"
+      },
+      {
+        "file": "backend/src/covenia_b/model/prompts/candidate_extraction.py",
+        "change": "PROMPT_VERSION: candidate-extraction-v1 -> candidate-extraction-v2"
+      },
+      {
+        "file": "backend/src/covenia_b/settings.py",
+        "change": "model_prompt_version default: candidate-extraction-v1 -> candidate-extraction-v2, because runtime.py:589 compares the setting with prompt_manifest()[\"prompt_version\"] and raises RuntimeConfigurationError when they differ"
+      }
+    ],
+    "not_touched": [
+      "backend/src/covenia_b/model/source_validation.py (the validator stays strict; the defect was never that the validator is too strict)",
+      "every schema, domain type and contract vector",
+      "every other batch's artifacts",
+      "CLAUDE*.md"
+    ]
+  },
+
+  "prompt_hashes": {
+    "method": "sha256 of the prompt string as Python holds it, taken from prompt_manifest() in the worktree",
+    "method_self_check": "the v1 values were re-derived from the committed blob (git show f76dd1c3:backend/src/covenia_b/model/prompts/candidate_extraction.py) and reproduced the recorded v1 pair byte for byte",
+    "v2": {
+      "prompt_version": "candidate-extraction-v2",
+      "candidate_prompt_sha256": "415814b938ef6fd85cdd4e299259308efae75c75190063f3b4b969ef3ca08f9e",
+      "schema_repair_prompt_sha256": "66b01ba18f434f8c1475429cd03230693bdd88c8d075838cdf46c607c3f86889",
+      "candidate_output_fields": [
+        "observations",
+        "source_trace",
+        "candidate_promise_texts"
+      ]
+    },
+    "superseded_v1": {
+      "prompt_version": "candidate-extraction-v1",
+      "candidate_prompt_sha256": "743d8c9668739b29a926261b5e99cf227eeb7cddda24d49a9e6b5fcb5ae34f5e",
+      "schema_repair_prompt_sha256": "e3eba756c7e2e14411e93677b83c6b58a20a2fddcc1a9f75678651f5cdf5ab18"
+    },
+    "recorded_in": "reports/batches/BATCH-28/prompt-manifest-v2.json",
+    "historical_manifest_not_rewritten": "reports/batches/BATCH-11/prompt-manifest.json still records the v1 pair as BATCH-11's own implementation evidence; it was not edited"
+  },
+
+  "prompt_version_sync": {
+    "runtime_check": "covenia_b.runtime:589",
+    "settings_default": "candidate-extraction-v2",
+    "manifest_prompt_version": "candidate-extraction-v2",
+    "comparison_result": "WOULD_PASS",
+    "observed_in_the_live_run": {
+      "configuration.prompt_version": "candidate-extraction-v2",
+      "configuration.prompt_version_matches_manifest": true,
+      "COVENIA_MODEL_PROMPT_VERSION": "NOT_SET (the new default was exercised on purpose instead of an environment override)"
+    },
+    "manifest_source": "prompt_manifest() is computed in memory by runtime.py:588 and tools/verification/live_smoke.py:855; no JSON file is read, so the bump cannot desynchronise a file"
+  },
+
+  "offline_gates": [
+    {
+      "command": "C:\\cv28\\venv\\Scripts\\python.exe -m pytest backend/tests integration/tests -q -m \"not live and not http and not e2e\"",
+      "exit_code": 0,
+      "result": "857 passed, 7 deselected in 13.39s",
+      "note": "no test anywhere asserts the real PROMPT_VERSION value; the literals in backend/tests and integration/tests are local fixtures, which the green suite confirms"
+    },
+    {
+      "command": "C:\\cv28\\venv\\Scripts\\python.exe -m ruff check backend/src/covenia_b/model/prompts/candidate_extraction.py backend/src/covenia_b/settings.py",
+      "exit_code": 0,
+      "result": "All checks passed!"
+    },
+    {
+      "command": "C:\\cv28\\venv\\Scripts\\python.exe -m ruff check .",
+      "exit_code": 1,
+      "result": "54 pre-existing findings, all inside reports/batches/BATCH-08|18|19|26|27|30/verification-evidence/*.py and two backend/tests/domain files; none in a file this round touched"
+    }
+  ],
+
+  "live_run_log": {
+    "scope": "every real model call this round knows about, before and after the prompt change, including the failures and including the runs produced by the concurrent session",
+    "baseline_prompt_v1": [
+      {
+        "run": "V1-a",
+        "started_at_utc": "2026-10-05T16:26:00Z",
+        "source": "committed evidence, commit f76dd1c3",
+        "prompt_version": "candidate-extraction-v1",
+        "attempts": 2,
+        "accepted": 0,
+        "document_status": "MODEL_OUTPUT_REJECTED",
+        "model_bound_ms": 16052,
+        "rejection_code": "MISSING_FIELD_TRACE",
+        "trace_fields": "observations[0..3] only, in both attempts"
+      },
+      {
+        "run": "V1-b",
+        "started_at_utc": "2026-10-06T06:35:43Z",
+        "source": "preserved at reports/batches/BATCH-28/prompt-v1-run/**",
+        "prompt_version": "candidate-extraction-v1",
+        "attempts": 2,
+        "accepted": 0,
+        "document_status": "BUDGET_EXCEEDED",
+        "model_bound_ms": 20810,
+        "rejection_code": "MISSING_FIELD_TRACE",
+        "trace_fields": "observations[0..3] only, in both attempts"
+      },
+      {
+        "run": "V1-c",
+        "started_at_utc": "2026-10-06T06:37:33Z",
+        "source": "raw byte capture, reports/batches/BATCH-28/live/raw-model-capture.redacted.json",
+        "prompt_version": "candidate-extraction-v1",
+        "attempts": 1,
+        "accepted": 0,
+        "rejection_code": "MISSING_FIELD_TRACE",
+        "trace_fields": "observations[0..3] only"
+      }
+    ],
+    "after_the_prompt_change": [
+      {
+        "run": "A",
+        "id": "this round, official run 1",
+        "started_at_utc": "2026-10-06T06:39:27Z",
+        "command": "python tools/verification/live_smoke.py --require-live --disable-cache --output reports/batches/BATCH-28/live",
+        "tool_revision": "pristine committed tool, blob sha256 5616347860dd61d4e98fe9b4704acac8aee8553f6f337c03417e3a2568d128c1",
+        "attempts": 2,
+        "attempt_detail": [
+          {"attempt": 1, "outcome": "SOURCE_REJECTED", "rejection_code": "MISSING_FIELD_TRACE", "status_code": 200, "provider_ms": 6058, "usage": {"input_tokens": 5684, "output_tokens": 237}},
+          {"attempt": 2, "outcome": "SOURCE_REJECTED", "rejection_code": "MISSING_FIELD_TRACE", "status_code": 200, "provider_ms": 6448, "usage": {"input_tokens": 5684, "output_tokens": 237}}
+        ],
+        "accepted": 0,
+        "exit_code": 1,
+        "document_status": "MODEL_OUTPUT_REJECTED",
+        "model_bound_ms": 12514,
+        "budget_status": "NOT_ACHIEVED_OUTPUT_REJECTED",
+        "artifact": "reports/batches/BATCH-28/aux-cross-line-v2/official-run-1-rejected/**"
+      },
+      {
+        "run": "D",
+        "id": "concurrent session, prompt-v2-run",
+        "started_at_utc": "2026-10-06T06:40:06Z",
+        "attempts": 1,
+        "accepted": 0,
+        "document_status": "MODEL_OUTPUT_REJECTED",
+        "rejection_code": "MISSING_FIELD_TRACE",
+        "model_bound_ms": 6723,
+        "artifact": "reports/batches/BATCH-28/prompt-v2-run/model-output.redacted.json",
+        "produced_by": "the concurrent implementation session, not by this round"
+      },
+      {
+        "run": "E",
+        "id": "concurrent session, byte capture through the 8002 proxy",
+        "started_at_utc": "2026-10-06T06:40:32Z",
+        "attempts": 1,
+        "accepted": 0,
+        "raw_output_verified": "the captured response body contains 3 observations, 1 promise and 3 traces covering observations[0..2] only; metadata.prompt_version = candidate-extraction-v2; upstream usage prompt_tokens 5684 / completion_tokens 237",
+        "produced_by": "the concurrent implementation session, not by this round"
+      },
+      {
+        "run": "B",
+        "id": "this round, the repository's own live gate",
+        "started_at_utc": "2026-10-06T06:42:17Z",
+        "command": "python -m pytest backend/tests/live/test_real_extraction.py -q -m live",
+        "tool_revision": "worktree tool with the concurrent session's uncommitted fix, sha256 dd6213687dd0c48c32a37a2ff4bf29e2081acbf986b9ff04d1eede013e6f64bd",
+        "attempts": 1,
+        "attempt_detail": [
+          {"attempt": 1, "outcome": "ACCEPTED", "status_code": 200, "provider_ms": 6708, "usage": {"input_tokens": 5684, "output_tokens": 270}, "traced_fields": ["observations[0]", "observations[1]", "observations[2]", "candidate_promise_texts[0]"]}
+        ],
+        "accepted": 1,
+        "exit_code": 0,
+        "document_status": "PASS",
+        "model_bound_ms": 6711,
+        "budget_status": "WITHIN_BUDGET",
+        "pytest_result": "7 passed in 8.07s",
+        "artifact": "reports/batches/BATCH-28/aux-cross-line-v2/pytest-live-run-accepted/model-output.redacted.json"
+      },
+      {
+        "run": "F",
+        "id": "concurrent session, prompt-v2-passing-run",
+        "started_at_utc": "2026-10-06T06:43:02Z",
+        "attempts": 2,
+        "attempt_detail": [
+          {"attempt": 1, "outcome": "SOURCE_REJECTED", "rejection_code": "MISSING_FIELD_TRACE", "usage": {"input_tokens": 5684, "output_tokens": 237}},
+          {"attempt": 2, "outcome": "ACCEPTED", "usage": {"input_tokens": 5684, "output_tokens": 264}, "traced_fields": ["observations[0]", "observations[1]", "observations[2]", "candidate_promise_texts[0]"]}
+        ],
+        "accepted": 1,
+        "document_status": "PASS",
+        "model_bound_ms": 12856,
+        "budget_status": "WITHIN_BUDGET",
+        "artifact": "reports/batches/BATCH-28/prompt-v2-passing-run/model-output.redacted.json",
+        "produced_by": "the concurrent implementation session, not by this round",
+        "overlap_note": "this run overlapped in wall-clock time with run C below; the two sessions were calling the shared shim on 8001 at the same moment"
+      },
+      {
+        "run": "C",
+        "id": "this round, official run 2",
+        "started_at_utc": "2026-10-06T06:43:04Z",
+        "command": "python tools/verification/live_smoke.py --require-live --disable-cache --output reports/batches/BATCH-28/live",
+        "tool_revision": "worktree tool with the concurrent session's uncommitted fix, sha256 dd6213687dd0c48c32a37a2ff4bf29e2081acbf986b9ff04d1eede013e6f64bd",
+        "attempts": 2,
+        "attempt_detail": [
+          {"attempt": 1, "outcome": "SOURCE_REJECTED", "rejection_code": "MISSING_FIELD_TRACE", "status_code": 200, "provider_ms": 6435, "usage": {"input_tokens": 5684, "output_tokens": 237}},
+          {"attempt": 2, "outcome": "SOURCE_REJECTED", "rejection_code": "MISSING_FIELD_TRACE", "status_code": 200, "provider_ms": 6438, "usage": {"input_tokens": 5684, "output_tokens": 237}}
+        ],
+        "accepted": 0,
+        "exit_code": 1,
+        "document_status": "MODEL_OUTPUT_REJECTED",
+        "model_bound_ms": 12879,
+        "budget_status": "NOT_ACHIEVED_OUTPUT_REJECTED",
+        "artifact": "reports/batches/BATCH-28/live/** and reports/batches/BATCH-28/aux-cross-line-v2/official-run-2-rejected/**"
+      }
+    ]
+  },
+
+  "attempt_level_statistics": {
+    "prompt_v1": {"attempts": 5, "accepted": 0, "acceptance_rate": "0/5"},
+    "prompt_v2": {"attempts": 9, "accepted": 2, "acceptance_rate": "2/9"},
+    "honest_reading": "the prompt change makes an accepted candidate reachable, but it does not make it reliable: the same request produced 3 observations, 1 promise and only observation traces in 7 of 9 attempts, and produced the missing candidate_promise_texts[0] trace in 2 of 9. 0/5 versus 2/9 is not a statistical separation at this sample size, so this round does NOT claim that v2 raised the acceptance probability; it claims only that criterion 1 was reached twice with real calls and that the dominant failure mode persists."
+  },
+
+  "four_criteria": {
+    "criterion_1_real_chat_and_images_to_an_extracted_journey": {
+      "verdict": "ACHIEVED, twice, with real calls; NOT reliably",
+      "evidence": [
+        {
+          "run": "B",
+          "http_status": 200,
+          "provider_request_id": "chatcmpl-5d50c29b-4d54-9272-83fc-89d8a2810349",
+          "candidate_schema": "PASS",
+          "source_validation": "PASS (traced_field_count=4, image_observation_count=2, agent_quote_count=1, trusted_source_count=11)",
+          "extracted_journey": "PASS - the ExtractedJourney was constructed",
+          "accountability_state": "PASS (case_status ACTION_REVIEW, evidence_status NEED_HUMAN_REVIEW)",
+          "cached_result": false,
+          "model_revision_check": "qwen3-vl-plus-2025-12-19, equal to the configured COVENIA_MODEL_REVISION",
+          "prompt_version_check": "candidate-extraction-v2, equal to prompt_manifest()[\"prompt_version\"]"
+        },
+        {
+          "run": "F",
+          "document_status": "PASS",
+          "extracted_journey": "PASS",
+          "cached_result": false,
+          "model_revision_check": "qwen3-vl-plus-2025-12-19",
+          "produced_by": "the concurrent implementation session"
+        }
+      ],
+      "what_the_two_acceptances_have_in_common": "the model emitted a fourth source_trace entry whose field is candidate_promise_texts[0]; every rejection is the same candidate without that entry",
+      "not_achieved_by": "runs A, C (this round's two official command runs) and D, E (the concurrent session's two earlier v2 runs)"
+    },
+    "criterion_2_images_really_reached_the_model": {
+      "verdict": "ACHIEVED",
+      "independent_recheck": "reports/batches/BATCH-28/aux-cross-line-v2/aux_verify_criteria_2_3.py recomputes the digests from the bytes on disk and compares them with handoff/a/images-manifest.json without trusting the artifact's own claims",
+      "result": "19/19 checks for the rejected official run 2, 16/16 for the accepted live-gate run, 19/19 for the v1 baseline",
+      "facts": {
+        "registry_entries_used": ["S00001_IMG_PRODUCT_OVERVIEW", "S00001_IMG_PUMP_DETAIL", "S00001_IMG_PACKAGE_CONTEXT"],
+        "image_sha256s": [
+          "e2c6bbd230f906f113d75f2f582e778b6e79aea37544c2383f1ffda15a5295d5",
+          "4709d7529803846d4ff4e123bfcc034d420449ae23923cb54468be573bd8cfc7",
+          "c734bfb5a70ffa39e10b2535dc8321eace3c1fb358293fa22b590b9f7b5836bd"
+        ],
+        "digest_agreement": "artifact == handoff/a/images-manifest.json == recomputed from frontend/public/evidence (the registry stores upper case, the artifacts lower case; the comparison is case-folded on purpose)",
+        "byte_lengths": {"s00001-product-overview.jpg": 71574, "s00001-pump-detail.jpg": 66764, "s00001-package-context.jpg": 129230},
+        "request_bytes": 360711,
+        "provider_content_parts": ["text", "image_url", "image_url", "image_url"],
+        "observation_json_sent_as_image": false,
+        "byte_capture_corroboration": "the concurrent session's transparent 8002 proxy captured the same request shape on the wire: one text part plus three image_url data parts, 360711 request bytes"
+      }
+    },
+    "criterion_3_real_usage_latency_and_the_budget": {
+      "verdict": "ACHIEVED",
+      "usage": "taken from the upstream response only; every answered attempt is usage_status EXACT with an upstream pair, no value is estimated and no value is inferred",
+      "usage_examples": [
+        {"run": "A attempt 1", "input_tokens": 5684, "output_tokens": 237, "provider_reported_duration_ms": 6058, "wall_ms": 6059},
+        {"run": "B attempt 1 (accepted)", "input_tokens": 5684, "output_tokens": 270, "provider_reported_duration_ms": 6708, "wall_ms": 6709},
+        {"run": "C attempt 2", "input_tokens": 5684, "output_tokens": 237, "provider_reported_duration_ms": 6438, "wall_ms": 6439}
+      ],
+      "upstream_detail_observed": "prompt_tokens_details.cached_tokens was 0 on the v1 capture and 5120 on the v2 capture; that is an upstream prefix cache, it does not make any attempt a cached application result, and the extraction cache statement in the artifact (no ExtractionStore adapter exists, cached_result is false by construction) is unaffected",
+      "budget": {
+        "frozen_seconds": 20.0,
+        "accepted_run": "6711 ms, WITHIN_BUDGET",
+        "rejected_official_runs": "12514 ms and 12879 ms while both attempts were individually inside the budget, so the recorded verdict is NOT_ACHIEVED_OUTPUT_REJECTED and not BUDGET_EXCEEDED",
+        "note": "live_smoke.py accumulates model_bound_ms across all attempts of a run and compares the sum with the per-request 20s budget; with a per-attempt cost near 6.5 s two attempts stay inside it, which is why the verdict in this round is no longer BUDGET_EXCEEDED"
+      }
+    },
+    "criterion_4_negative_control": {
+      "verdict": "ACHIEVED",
+      "endpoint": "http://127.0.0.1:8099/v1/chat/completions (nothing listens on 8099)",
+      "port_deviation": "the review asked for 8002, but the concurrent implementation session is holding a byte-capture proxy on 8002 for its own diagnostic, so 8002 is not an unlistened port in this worktree right now. 8099 was used instead and is proven unlistened by the tool's own probe.",
+      "runs": [
+        {
+          "command": "python tools/verification/live_smoke.py --require-live --disable-cache --endpoint http://127.0.0.1:8099/v1/chat/completions --timeout-seconds 2 --output C:\\cv28\\diag\\aux-negative-default",
+          "exit_code": 3,
+          "status": "ENDPOINT_UNAVAILABLE",
+          "attempts": 0,
+          "detail": "--require-live and the endpoint is not reachable: tcp 127.0.0.1:8099 unreachable (ConnectionRefusedError)"
+        },
+        {
+          "command": "python tools/verification/live_smoke.py --require-live --disable-cache --skip-endpoint-probe --endpoint http://127.0.0.1:8099/v1/chat/completions --timeout-seconds 2 --output C:\\cv28\\diag\\aux-negative-client",
+          "exit_code": 3,
+          "status": "ENDPOINT_UNAVAILABLE",
+          "attempts": 1,
+          "detail": "the real HTTP client failed on its own: attempt 1 ENDPOINT_TIMEOUT after 2008 ms"
+        }
+      ],
+      "shim_untouched": "the shared model shim on 127.0.0.1:8001 (pids 36552 and 24772) was never killed, restarted or reconfigured by this round"
+    }
+  },
+
+  "byproducts_required_by_the_reviewer": {
+    "live_path_is_real_not_an_empty_run": {
+      "claim": "live 通路是真的 —— HTTP 200 + 真实 usage，不是空跑。",
+      "evidence": [
+        "every attempt that reached the endpoint returned HTTP 200 and a provider request id (for example chatcmpl-5d50c29b-4d54-9272-83fc-89d8a2810349)",
+        "real upstream usage on every answered attempt (input_tokens 5684; output_tokens 237 or 270), recorded as EXACT, never estimated",
+        "real upstream duration reported by the provider (6058-6708 ms) next to the locally measured wall time, which agrees within 1-2 ms",
+        "the request really carried the verified image bytes: 360711 request bytes, one text part plus three image_url data parts, image digests equal to the accepted registry",
+        "a byte-transparent proxy capture of the same request shape shows the model input text and the response body, so the bytes on the wire are inspectable rather than asserted"
+      ]
+    },
+    "source_validation_really_blocks": {
+      "claim": "来源校验确实在拦 —— MISSING_FIELD_TRACE 证明防线有效；正因为防线有效，才暴露出提示词缺陷。",
+      "evidence": [
+        "every rejection in this batch is the same stable code, MISSING_FIELD_TRACE, raised by source_validation.py:110 when the traced field set differs from the expected set",
+        "the rejection is structural, not cosmetic: the model returned a schema-valid candidate whose promises carried no trace at all, so the validator refused a candidate that the HTTP adapter had already accepted",
+        "the validator refused 5 of 5 v1 attempts and 7 of 9 v2 attempts, i.e. it is not a formality that any output passes",
+        "because the validator refused instead of guessing, the defect surfaced as a named code with the exact missing fields recorded, which is what made the prompt-side repair possible at all"
+      ],
+      "precision_of_the_validator": "unchanged and untouched by this round: backend/src/covenia_b/model/source_validation.py was not modified"
+    }
+  },
+
+  "open_questions_for_the_independent_verifier": [
+    "why the same request body (the run id inside metadata is stripped by the shared shim, so the upstream request is identical) produced an accepted candidate once and the identical rejection otherwise; upstream prompt_tokens_details.cached_tokens was 0 on the v1 capture and 5120 on the v2 capture, and whether that prefix cache contributes to the bimodality is not established by this evidence",
+    "whether the batch should keep trying the documented command until an accepted run lands in reports/batches/BATCH-28/live, or record the accepted run exactly as produced (this round did the latter: reports/batches/BATCH-28/live holds the rejected run C, and the two accepted runs are preserved beside it)",
+    "tools/verification/live_smoke.py in the committed tree calls service._compile_from_server_facts / _enrich_extracted_journey / _aggregate_server_evidence, but those three helpers are module-level functions in covenia_b.services.analyze, not AnalyzeService members (only _validate_candidate is a static method on the service). The committed tool therefore cannot reach exit 0 at all: an accepted candidate raises AttributeError before the journey is built. The concurrent session has an uncommitted fix for this in the worktree, and the two accepted runs above were produced with that fix present. The verifier should decide which revision of the tool is the one under acceptance, because an accepted artifact produced by an uncommitted tool revision is not reproducible from the commit."
+  ],
+
+  "not_done_intentionally": [
+    "no change to source_validation.py, any schema, any domain type or any contract vector",
+    "no rewrite of reports/batches/BATCH-11/prompt-manifest.json (it is BATCH-11's own historical evidence)",
+    "no overwrite of the concurrent session's REPAIR_REPORT.json / .md / DIAGNOSTIC.json / prompt-v1-run / prompt-v2-run / prompt-v2-passing-run",
+    "no commit of the concurrent session's uncommitted tools/verification/live_smoke.py change: that change is theirs to land, and committing another party's in-flight work under this round's name would misattribute it",
+    "no push, no other worktree touched, no git add . used anywhere",
+    "no further live call was made after run C: the sample was stopped rather than extended until the command happened to return green, so the reported acceptance statistics are not selected"
+  ],
+
+  "dependency_lock": {
+    "path": "backend/requirements-dev.lock",
+    "change_type": "UNCHANGED",
+    "appended_entries": [],
+    "worktree_raw_bytes": 759,
+    "worktree_raw_sha256": "a7524fec02641fe9edcf300be27ee17969ca1188630d3d411162d6bba26d447f",
+    "worktree_canonical_lf_sha256": "602c268b684d60e2d1b8bbfc6820663a622eb24093144a87c111f43d3c06fdae",
+    "committed_blob_sha256_at_the_repair_commit": "602c268b684d60e2d1b8bbfc6820663a622eb24093144a87c111f43d3c06fdae",
+    "canonical_matches_committed_blob": true,
+    "git_diff_numstat": "empty",
+    "eol_note": "the committed blob is stored with LF while the Windows worktree checkout uses CRLF, so the raw digests differ by design; the canonical LF digest is the comparable value"
+  },
+
+  "repository": {
+    "worktree": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w28",
+    "branch": "codex/covenia-batch-28-aux",
+    "head_at_round_start": "f76dd1c3f9de1bc548d8c11841b25ad733533c10",
+    "head_moved_during_the_round": {
+      "to": "ab3dba97a2fe02cf0c0e870edd8df39c2a0545b3",
+      "by": "the concurrent implementation session",
+      "when": "2026-10-06T14:39:01+08:00"
+    },
+    "repair_commit_sha1": "8326e7360d26c96f6f379340bf8db8559bcb4b6f",
+    "repair_commit_subject": "fix(prompt): emit one source_trace entry per promise, not only per observation",
+    "repair_commit_author": "aux-dispatcher <aux@local>",
+    "repair_commit_date": "2026-10-06T14:41:25+08:00",
+    "repair_commit_files": [
+      "backend/src/covenia_b/model/prompts/candidate_extraction.py",
+      "backend/src/covenia_b/settings.py"
+    ],
+    "repair_commit_insertions": 27,
+    "repair_commit_deletions": 13,
+    "report_commit": "the commit that carries this report and its evidence; recorded in the delivery message because a file cannot contain the hash of the commit that creates it"
+  },
+
+  "artifacts": [
+    "reports/batches/BATCH-28/AUX_CROSS_LINE_REPAIR_REPORT.json",
+    "reports/batches/BATCH-28/AUX_CROSS_LINE_REPAIR_REPORT.md",
+    "reports/batches/BATCH-28/prompt-manifest-v2.json",
+    "reports/batches/BATCH-28/aux-cross-line-v2/PROVENANCE.json",
+    "reports/batches/BATCH-28/aux-cross-line-v2/official-run-1-rejected/**",
+    "reports/batches/BATCH-28/aux-cross-line-v2/official-run-2-rejected/**",
+    "reports/batches/BATCH-28/aux-cross-line-v2/pytest-live-run-accepted/**",
+    "reports/batches/BATCH-28/aux-cross-line-v2/aux_verify_criteria_2_3.py",
+    "reports/batches/BATCH-28/aux-cross-line-v2/aux-criteria-2-3.log",
+    "reports/batches/BATCH-28/live/model-output.redacted.json (run C, rejected)",
+    "reports/batches/BATCH-28/live/governance.redacted.jsonl (run C)",
+    "reports/batches/BATCH-28/live/environment.json (run C)"
+  ]
+}

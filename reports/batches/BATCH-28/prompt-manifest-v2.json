@@ -1,0 +1,66 @@
+{
+  "artifact_version": "1.0",
+  "artifact": "reports/batches/BATCH-28/prompt-manifest-v2.json",
+  "batch_id": "BATCH-28",
+  "classification": "IMPLEMENTATION_EVIDENCE",
+  "statement": "本批由辅助调度器实现，非独立实现方；验收须由他方完成。",
+  "purpose": "Record the prompt version and both prompt digests that BATCH-28's live repair ran under, together with the values they supersede. BATCH-11's own prompt-manifest.json is historical evidence for BATCH-11 and was deliberately not rewritten.",
+  "supersedes": {
+    "manifest": "reports/batches/BATCH-11/prompt-manifest.json",
+    "note": "that file still records the v1 pair because it is BATCH-11's record of what BATCH-11 delivered; it has no consumers in the repository and was left byte-identical"
+  },
+  "prompt_version": "candidate-extraction-v2",
+  "source_files": [
+    "backend/src/covenia_b/model/prompts/__init__.py",
+    "backend/src/covenia_b/model/prompts/candidate_extraction.py"
+  ],
+  "candidate_output_fields": [
+    "observations",
+    "source_trace",
+    "candidate_promise_texts"
+  ],
+  "prompt_sha256": {
+    "candidate": "415814b938ef6fd85cdd4e299259308efae75c75190063f3b4b969ef3ca08f9e",
+    "schema_repair": "66b01ba18f434f8c1475429cd03230693bdd88c8d075838cdf46c607c3f86889"
+  },
+  "superseded_prompt_sha256": {
+    "prompt_version": "candidate-extraction-v1",
+    "candidate": "743d8c9668739b29a926261b5e99cf227eeb7cddda24d49a9e6b5fcb5ae34f5e",
+    "schema_repair": "e3eba756c7e2e14411e93677b83c6b58a20a2fddcc1a9f75678651f5cdf5ab18"
+  },
+  "hash_method": {
+    "what_is_hashed": "sha256 of the prompt string as the module holds it (UTF-8), i.e. prompt_manifest()['candidate_prompt_sha256'] and ['schema_repair_prompt_sha256']",
+    "why_line_endings_do_not_matter": "Python normalises source newlines when it parses a module, so a CRLF checkout and an LF blob hash alike",
+    "self_check": "the superseded v1 pair was re-derived from the committed v1 module (git show f76dd1c3:backend/src/covenia_b/model/prompts/candidate_extraction.py) and reproduced the recorded v1 values exactly, which validates the method before it was used on v2"
+  },
+  "why_the_version_was_bumped": {
+    "trigger": "every live extraction of BATCH-28 was refused by the server-side source validator with MISSING_FIELD_TRACE: the model traced observations[0..n] and never traced candidate_promise_texts[0..m], while source_validation.py:103-111 requires one trace per observation and one per promise",
+    "ambiguity_removed": [
+      "the JSON example showed a single literal field value, \"observations[0] or candidate_promise_texts[0]\", which the model could read as one trace per observation only; the example now shows three concrete entries with concrete indices and no \"or\"",
+      "both prompt bodies now state the rule operationally: \"Emit one source_trace entry per observation and one per candidate promise; a single entry never covers two fields.\""
+    ],
+    "settings_sync_requirement": "covenia_b.runtime:589 compares settings.model_prompt_version with prompt_manifest()['prompt_version'] and raises RuntimeConfigurationError on a mismatch, so backend/src/covenia_b/settings.py:56 was moved to candidate-extraction-v2 in the same commit",
+    "manifest_source": "prompt_manifest() is computed in memory (runtime.py:588, tools/verification/live_smoke.py:855) and reads no JSON file, so bumping the constant keeps every consumer consistent automatically"
+  },
+  "commit": {
+    "sha1": "8326e7360d26c96f6f379340bf8db8559bcb4b6f",
+    "subject": "fix(prompt): emit one source_trace entry per promise, not only per observation",
+    "author": "aux-dispatcher <aux@local>",
+    "date": "2026-10-06T14:41:25+08:00",
+    "files": [
+      "backend/src/covenia_b/model/prompts/candidate_extraction.py",
+      "backend/src/covenia_b/settings.py"
+    ]
+  },
+  "observed_in_live_runs": {
+    "configuration.prompt_version": "candidate-extraction-v2",
+    "configuration.prompt_version_matches_manifest": true,
+    "COVENIA_MODEL_PROMPT_VERSION": "NOT_SET (the new default was exercised on purpose)",
+    "first_runs_under_v2": [
+      "reports/batches/BATCH-28/aux-cross-line-v2/official-run-1-rejected/model-output.redacted.json",
+      "reports/batches/BATCH-28/live/model-output.redacted.json",
+      "reports/batches/BATCH-28/aux-cross-line-v2/pytest-live-run-accepted/model-output.redacted.json"
+    ]
+  },
+  "outcome_under_v2_honest_note": "the bump does not make criterion 1 reliable: with this manifest 2 of 9 real attempts produced the missing candidate_promise_texts[0] trace and were accepted (one of them built the ExtractedJourney and the AccountabilityState with cached_result=false and the locked revision), while 7 of 9 repeated the old rejection. The full run log is in reports/batches/BATCH-28/AUX_CROSS_LINE_REPAIR_REPORT.json."
+}

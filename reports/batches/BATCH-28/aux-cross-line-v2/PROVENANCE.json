@@ -1,0 +1,99 @@
+{
+  "artifact": "reports/batches/BATCH-28/aux-cross-line-v2/PROVENANCE.json",
+  "batch_id": "BATCH-28",
+  "files": [
+    {
+      "bytes": 14460,
+      "origin": "stdout of that check: 19/19, 16/16 and 19/19 checks pass",
+      "path": "reports/batches/BATCH-28/aux-cross-line-v2/aux-criteria-2-3.log",
+      "sha256": "f9bc2204909cbf892fb7e5705e92c82d3f4129eb6f05ffa203a50ebce5e75292"
+    },
+    {
+      "bytes": 1436,
+      "origin": "stdout of the negative control with --skip-endpoint-probe against unlistened 8099 -> exit 3",
+      "path": "reports/batches/BATCH-28/aux-cross-line-v2/aux-negative-client.log",
+      "sha256": "ac2978b2604d0d7f82b430ceb1e909b6f064f1a572b03a5481b2e49db652e4fa"
+    },
+    {
+      "bytes": 1154,
+      "origin": "stdout of the negative control with the TCP preflight against unlistened 8099 -> exit 3",
+      "path": "reports/batches/BATCH-28/aux-cross-line-v2/aux-negative-default.log",
+      "sha256": "5035edfec716174dbb3e4bd82d77328c8e4b0213c5101e479c97a77ea2f3e4ee"
+    },
+    {
+      "bytes": 1842,
+      "origin": "stdout of this round's official run 2, same command -> exit 1 MODEL_OUTPUT_REJECTED",
+      "path": "reports/batches/BATCH-28/aux-cross-line-v2/aux-official-run2.log",
+      "sha256": "3031c07fb229ffd5f9c7ca26737c4e6f3d1b21cf25384354641d8f2d1a1be350"
+    },
+    {
+      "bytes": 7146,
+      "origin": "criteria 2 and 3 re-derived from on-disk bytes by this round; run as C:\\cv28\\venv\\Scripts\\python.exe C:\\cv28\\diag\\aux_verify_criteria_2_3.py",
+      "path": "reports/batches/BATCH-28/aux-cross-line-v2/aux_verify_criteria_2_3.py",
+      "sha256": "3c674192c47ef4799b7eb548a370b4e833c87cddcdba31662ebc4a77031da737"
+    },
+    {
+      "bytes": 1842,
+      "origin": "stdout of this round's official run 1: live_smoke.py --require-live --disable-cache --output reports/batches/BATCH-28/live -> exit 1 MODEL_OUTPUT_REJECTED",
+      "path": "reports/batches/BATCH-28/aux-cross-line-v2/live-official-v2.log",
+      "sha256": "902d697b81b306ad320867eae961dc5f680c7bfbe85b70236c8ac9cfe615c9cf"
+    },
+    {
+      "bytes": 6142,
+      "origin": "verbatim copy of reports/batches/BATCH-28/live/** as run 1 wrote it, taken before run 2 overwrote that path",
+      "path": "reports/batches/BATCH-28/aux-cross-line-v2/official-run-1-rejected/environment.json",
+      "sha256": "59c86c0f3d1ed31642404e7ee83c5fd956a8f41f18a33764ccb5358c8e26e907"
+    },
+    {
+      "bytes": 4938,
+      "origin": "verbatim copy of reports/batches/BATCH-28/live/** as run 1 wrote it, taken before run 2 overwrote that path",
+      "path": "reports/batches/BATCH-28/aux-cross-line-v2/official-run-1-rejected/governance.redacted.jsonl",
+      "sha256": "0b0537c7e4a37ca2845e182c33bba66d1a27acf5a3182f8284e73111912edc07"
+    },
+    {
+      "bytes": 12678,
+      "origin": "verbatim copy of reports/batches/BATCH-28/live/** as run 1 wrote it, taken before run 2 overwrote that path",
+      "path": "reports/batches/BATCH-28/aux-cross-line-v2/official-run-1-rejected/model-output.redacted.json",
+      "sha256": "3e143f9de181a6fe9aa83b6687da1913742725d0b941640a716d873ac2dc94c7"
+    },
+    {
+      "bytes": 6142,
+      "origin": "verbatim copy of reports/batches/BATCH-28/live/** as run 2 wrote it; the same three files are the ones committed under reports/batches/BATCH-28/live/",
+      "path": "reports/batches/BATCH-28/aux-cross-line-v2/official-run-2-rejected/environment.json",
+      "sha256": "9bf1ab34375e76015808791552da6b37571b57dbf59d468f981257fe2204fd29"
+    },
+    {
+      "bytes": 4938,
+      "origin": "verbatim copy of reports/batches/BATCH-28/live/** as run 2 wrote it; the same three files are the ones committed under reports/batches/BATCH-28/live/",
+      "path": "reports/batches/BATCH-28/aux-cross-line-v2/official-run-2-rejected/governance.redacted.jsonl",
+      "sha256": "687290f7e0122c7b19772e8810dbe9240dc0cadb7dcc5a6dc556bd129bcfd16e"
+    },
+    {
+      "bytes": 12678,
+      "origin": "verbatim copy of reports/batches/BATCH-28/live/** as run 2 wrote it; the same three files are the ones committed under reports/batches/BATCH-28/live/",
+      "path": "reports/batches/BATCH-28/aux-cross-line-v2/official-run-2-rejected/model-output.redacted.json",
+      "sha256": "4a9b8381a22aa09281915144231d63e4b6c1d25e9fc1c0b9cdcc4062fb4d15a9"
+    },
+    {
+      "bytes": 2468,
+      "origin": "verbatim copy of the artifact tree pytest wrote for the accepted live run, taken from C:\\cv28\\tmp\\pytest-of-<user>\\pytest-7\\batch-28-live-0\\; model-output.redacted.json is the accepted document (PASS, cached_result false, ExtractedJourney built)",
+      "path": "reports/batches/BATCH-28/aux-cross-line-v2/pytest-live-run-accepted/governance.redacted.jsonl",
+      "sha256": "2feb6f950431fb355414cd4484df45753e8baba5a0e30c1e075826a5e87a3ada"
+    },
+    {
+      "bytes": 21686,
+      "origin": "verbatim copy of the artifact tree pytest wrote for the accepted live run, taken from C:\\cv28\\tmp\\pytest-of-<user>\\pytest-7\\batch-28-live-0\\; model-output.redacted.json is the accepted document (PASS, cached_result false, ExtractedJourney built)",
+      "path": "reports/batches/BATCH-28/aux-cross-line-v2/pytest-live-run-accepted/model-output.redacted.json",
+      "sha256": "77dcccf853d43e9eed21c710a4c79d3db60591dc437ea0739d17806dc9bbd9ae"
+    },
+    {
+      "bytes": 202,
+      "origin": "stdout of that pytest run: 7 passed in 8.07s",
+      "path": "reports/batches/BATCH-28/aux-cross-line-v2/pytest-live-run-accepted/pytest-live.log",
+      "sha256": "de5e4512274612edc68466c4396176eaa9f2ff3b32a1fc431fb6618edeffc171"
+    }
+  ],
+  "hash_method": "sha256 of the file bytes on disk (no line-ending normalisation)",
+  "purpose": "Keep every live run of the prompt-v2 repair side by side, rejected runs included, so the acceptance statistics in AUX_CROSS_LINE_REPAIR_REPORT.json can be checked against the raw artifacts instead of being taken on trust.",
+  "statement": "本批由辅助调度器实现，非独立实现方；验收须由他方完成。"
+}

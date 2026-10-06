@@ -19,14 +19,14 @@
         "The agent stated: '换货单已创建，48小时内发出' (The replacement order has been created and will be shipped within 48 hours)."
       ],
       "outcome": "SOURCE_REJECTED",
-      "provider_reported_duration_ms": 6435,
-      "provider_request_id": "chatcmpl-92233e40-9de5-92df-bc71-06563ca5ff5a",
+      "provider_reported_duration_ms": 6058,
+      "provider_request_id": "chatcmpl-8b0e8844-026f-9012-8563-baf552aa3f2d",
       "rejection_code": "MISSING_FIELD_TRACE",
       "rejection_stage": null,
       "request_bytes": 360711,
-      "request_sha256": "2bc5b98b53b239aa833e54c7eb0d026b9a86a86dce58e5ad7950a9494de64e18",
+      "request_sha256": "a6ad791dbbf6e65a9ef6229980da67fdf1714564600b5e85747daed87ea54b02",
       "response_bytes": 1512,
-      "response_sha256": "139e4f32dd721ef319b3714cfb6cb319a83e5f967f8676707503ba96af876546",
+      "response_sha256": "947694d232ecd1d38d9280d59ec3aeb6922b6f7749866b7878a0d7807ca5f001",
       "source_trace": [
         {
           "field": "observations[0]",
@@ -45,7 +45,7 @@
         }
       ],
       "stage": "INITIAL",
-      "started_at": "2026-10-06T06:43:04.850637+00:00",
+      "started_at": "2026-10-06T06:39:27.788993+00:00",
       "status_code": 200,
       "usage": {
         "input_tokens": 5684,
@@ -53,7 +53,7 @@
       },
       "usage_note": null,
       "usage_status": "EXACT",
-      "wall_ms": 6437
+      "wall_ms": 6059
     },
     {
       "attempt": 2,
@@ -73,14 +73,14 @@
         "The agent stated: '换货单已创建，48小时内发出' (The replacement order has been created and will be shipped within 48 hours)."
       ],
       "outcome": "SOURCE_REJECTED",
-      "provider_reported_duration_ms": 6438,
-      "provider_request_id": "chatcmpl-f28f242d-60da-9e05-9d10-9ab5a666ab60",
+      "provider_reported_duration_ms": 6448,
+      "provider_request_id": "chatcmpl-a6bb0200-d37b-99b2-bba5-1e82d4e3f4f8",
       "rejection_code": "MISSING_FIELD_TRACE",
       "rejection_stage": null,
       "request_bytes": 360711,
-      "request_sha256": "676e6fd395878ba73c82f3bf76ab809d7356353474b4b3e91f23f472829243e3",
+      "request_sha256": "02fe167e4d8fe409a585c415bdad817480e0129f23a7b80061abff90d6be3403",
       "response_bytes": 1512,
-      "response_sha256": "744f5d5af67ae310c9a5bb5834178f99665ad984a4dc88d82975bc83e84fe5dc",
+      "response_sha256": "373d269e2b42a13643aff2f0cd531e37d4a5d39b8d4f765dfd5bb079e2a9d4bf",
       "source_trace": [
         {
           "field": "observations[0]",
@@ -99,7 +99,7 @@
         }
       ],
       "stage": "INITIAL",
-      "started_at": "2026-10-06T06:43:11.289153+00:00",
+      "started_at": "2026-10-06T06:39:33.851334+00:00",
       "status_code": 200,
       "usage": {
         "input_tokens": 5684,
@@ -107,24 +107,24 @@
       },
       "usage_note": null,
       "usage_status": "EXACT",
-      "wall_ms": 6439
+      "wall_ms": 6450
     }
   ],
   "batch_id": "BATCH-28",
   "budget": {
-    "case_load_ms": 45,
+    "case_load_ms": 42,
     "frozen_analysis_budget_seconds": 20.0,
     "measurement_boundary": "model_bound_ms covers the model call and its source validation, which is the part of one analyze request the 20s budget must cover; case_load_ms is reported separately and is not a model cost",
     "measurement_source": "perf_counter around the real provider call plus the provider's own reported duration_ms; no value is estimated",
-    "model_bound_ms": 12879,
-    "model_bound_seconds": 12.879,
+    "model_bound_ms": 12514,
+    "model_bound_seconds": 12.514,
     "provider_reported_duration_ms": [
-      6435,
-      6438
+      6058,
+      6448
     ],
     "provider_wall_ms": [
-      6437,
-      6439
+      6059,
+      6450
     ],
     "status": "NOT_ACHIEVED_OUTPUT_REJECTED"
   },
@@ -165,7 +165,7 @@
     "require_live_requested": true,
     "timeout_seconds": 20.0
   },
-  "generated_at": "2026-10-06T06:43:04.497980+00:00",
+  "generated_at": "2026-10-06T06:39:27.468411+00:00",
   "input_binding": {
     "assembled_evidence_images": [
       {
