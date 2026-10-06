@@ -41,6 +41,7 @@ import type {
   PreparedAction,
   ServiceProgressReceipt,
   ShipmentEventType,
+  ShipmentEventRequest,
   EvaluateActionRequest,
   FollowUpCandidate,
   SupervisorEscalationCandidate,
@@ -57,6 +58,13 @@ interface AddedMessage {
   kind: "agent" | "receipt" | "status";
   text?: string;
   receipt?: ServiceProgressReceipt;
+  time: string;
+}
+
+interface PendingNotificationDraft {
+  id: string;
+  text: string;
+  receipt: ServiceProgressReceipt;
   time: string;
 }
 
@@ -173,6 +181,18 @@ function useCountdown(target?: string) {
   return { label, overdue: difference < 0 };
 }
 
+function shipmentEventTime(eventType: ShipmentEventType, accountability: AccountabilityState) {
+  if (eventType === "SHIPMENT_PICKED_UP") {
+    return accountability.case_status === "AT_RISK"
+      ? "2026-05-07T12:20:00+08:00"
+      : "2026-05-07T10:10:00+08:00";
+  }
+  if (eventType === "SHIPMENT_NOT_PICKED_UP") {
+    return "2026-05-07T11:35:00+08:00";
+  }
+  return "2026-05-08T15:20:00+08:00";
+}
+
 function App() {
   const [selectedId, setSelectedId] = useState("DEMO_001");
   const [accountability, setAccountability] = useState<AccountabilityState | null>(null);
@@ -186,6 +206,7 @@ function App() {
   const [approvalOpen, setApprovalOpen] = useState(false);
   const [approvalReply, setApprovalReply] = useState("");
   const [extraMessages, setExtraMessages] = useState<AddedMessage[]>([]);
+  const [pendingNotification, setPendingNotification] = useState<PendingNotificationDraft | null>(null);
   const [shipmentChoice, setShipmentChoice] = useState<ShipmentEventType | null>(null);
   const [toast, setToast] = useState<string | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -195,6 +216,8 @@ function App() {
   const [supervisorCandidate, setSupervisorCandidate] = useState<SupervisorEscalationCandidate | null>(null);
   const [mockMode, setMockMode] = useState<MockMode>("normal");
   const [reloadKey, setReloadKey] = useState(0);
+  const approveRequestRef = useRef<ApproveResolutionRequest | null>(null);
+  const shipmentRequestRef = useRef<Partial<Record<ShipmentEventType, ShipmentEventRequest>>>({});
 
   const selectedCase = useMemo(
     () => demoCases.find((item) => item.id === selectedId) ?? demoCases[0],
@@ -216,7 +239,10 @@ function App() {
       setPhase("overview");
       setDetailsOpen(false);
       setExtraMessages([]);
+      setPendingNotification(null);
       setShipmentChoice(null);
+      approveRequestRef.current = null;
+      shipmentRequestRef.current = {};
       setDraft(selectedCase.composerText);
 
       const result = await api.analyzeCase({
@@ -361,7 +387,7 @@ function App() {
   async function handleApprove() {
     if (!decision) return;
     setActing(true);
-    const input: ApproveResolutionRequest = {
+    const input: ApproveResolutionRequest = approveRequestRef.current ?? {
       case_id: selectedCase.id,
       candidate_type: decision.resolution_path.candidate_type,
       approver_id: "AGENT_ZHOU",
@@ -370,12 +396,14 @@ function App() {
         executor: "WAREHOUSE",
       },
     };
+    approveRequestRef.current = input;
     const result = await api.approveResolution(input);
     setActing(false);
     if (result.error) {
       setToast(result.error.message);
       return;
     }
+    approveRequestRef.current = null;
     setAccountability(result.data.accountability_state);
     setPhase("approved");
     setApprovalOpen(false);
@@ -405,39 +433,38 @@ function App() {
   async function handleShipment(eventType: ShipmentEventType) {
     if (!accountability) return;
     setActing(true);
+    const previousShipmentChoice = shipmentChoice;
     setShipmentChoice(eventType);
-    const result = await api.pushShipmentEvent({
+    const input: ShipmentEventRequest = shipmentRequestRef.current[eventType] ?? {
       case_id: selectedCase.id,
       event_id: `EVT_${crypto.randomUUID()}`,
       event_type: eventType,
-      event_time:
-        eventType === "SHIPMENT_PICKED_UP"
-          ? "2026-05-07T10:10:00+08:00"
-          : eventType === "SHIPMENT_NOT_PICKED_UP"
-            ? "2026-05-07T11:35:00+08:00"
-            : "2026-05-08T15:20:00+08:00",
+      event_time: shipmentEventTime(eventType, accountability),
       idempotency_key: `shipment-${selectedCase.id}-${crypto.randomUUID()}`,
-    });
+    };
+    shipmentRequestRef.current[eventType] = input;
+    const result = await api.pushShipmentEvent(input);
     setActing(false);
     if (result.error) {
+      setShipmentChoice(previousShipmentChoice);
       setToast(result.error.message);
       return;
     }
+    delete shipmentRequestRef.current[eventType];
     setAccountability(result.data.accountability_state);
     setFollowUpCandidate(result.data.follow_up_candidate);
     setSupervisorCandidate(result.data.supervisor_escalation_candidate);
     const receipt = result.data.accountability_state.service_progress_receipt;
-    if (receipt) {
-      setExtraMessages((items) => [
-        ...items,
-        {
-          id: `STATUS_${Date.now()}`,
-          kind: "status",
-          text: result.data.proactive_notification_draft?.text ?? receipt.brand_action,
-          receipt,
-          time: "现在",
-        },
-      ]);
+    const notificationText = result.data.proactive_notification_draft?.text;
+    if (receipt && notificationText) {
+      setPendingNotification({
+        id: `STATUS_${Date.now()}`,
+        text: notificationText,
+        receipt,
+        time: "现在",
+      });
+    } else {
+      setPendingNotification(null);
     }
     setToast(
       eventType === "SHIPMENT_PICKED_UP"
@@ -446,6 +473,22 @@ function App() {
           ? "换货件已送达，服务责任已闭环"
           : "责任已升级，催办与主动通知已生成",
     );
+  }
+
+  function handleConfirmNotification() {
+    if (!pendingNotification) return;
+    setExtraMessages((items) => [
+      ...items,
+      {
+        id: pendingNotification.id,
+        kind: "status",
+        text: pendingNotification.text,
+        receipt: pendingNotification.receipt,
+        time: pendingNotification.time,
+      },
+    ]);
+    setPendingNotification(null);
+    setToast("主动通知已确认并同步至聊天");
   }
 
   function handleRetry() {
@@ -501,6 +544,8 @@ function App() {
           runtimeMetrics={runtimeMetrics}
           followUpCandidate={followUpCandidate}
           supervisorCandidate={supervisorCandidate}
+          pendingNotification={pendingNotification}
+          onConfirmNotification={handleConfirmNotification}
           loadError={loadError}
           cachedResult={cachedResult}
           mockMode={mockMode}
@@ -1607,6 +1652,8 @@ function CoveniaPlugin({
   runtimeMetrics,
   followUpCandidate,
   supervisorCandidate,
+  pendingNotification,
+  onConfirmNotification,
   loadError,
   cachedResult,
   mockMode,
@@ -1633,6 +1680,8 @@ function CoveniaPlugin({
   runtimeMetrics: RuntimeMetrics | null;
   followUpCandidate: FollowUpCandidate | null;
   supervisorCandidate: SupervisorEscalationCandidate | null;
+  pendingNotification: PendingNotificationDraft | null;
+  onConfirmNotification: () => void;
   loadError: string | null;
   cachedResult: boolean;
   mockMode: MockMode;
@@ -1686,6 +1735,8 @@ function CoveniaPlugin({
             runtimeMetrics={runtimeMetrics}
             followUpCandidate={followUpCandidate}
             supervisorCandidate={supervisorCandidate}
+            pendingNotification={pendingNotification}
+            onConfirmNotification={onConfirmNotification}
           />
         ) : (
           <>
@@ -1867,6 +1918,8 @@ function ProgressView({
   runtimeMetrics,
   followUpCandidate,
   supervisorCandidate,
+  pendingNotification,
+  onConfirmNotification,
 }: {
   accountability: AccountabilityState;
   acting: boolean;
@@ -1875,6 +1928,8 @@ function ProgressView({
   runtimeMetrics: RuntimeMetrics | null;
   followUpCandidate: FollowUpCandidate | null;
   supervisorCandidate: SupervisorEscalationCandidate | null;
+  pendingNotification: PendingNotificationDraft | null;
+  onConfirmNotification: () => void;
 }) {
   const receipt = accountability.service_progress_receipt!;
   const pickedUp = accountability.open_obligation?.milestone === "IN_TRANSIT";
@@ -1904,7 +1959,7 @@ function ProgressView({
       </div>
 
       <section className="receipt-card">
-        <div className="receipt-card-title"><span><ShieldCheck size={16} /> 服务进度回执</span><small>已同步至聊天</small></div>
+        <div className="receipt-card-title"><span><ShieldCheck size={16} /> 服务进度回执</span><small>以后端状态为准</small></div>
         <dl>
           <div><dt>已收到</dt><dd>{receipt.received_evidence[0]}，无需再次提交</dd></div>
           <div><dt>正在处理</dt><dd>{receipt.brand_action}</dd></div>
@@ -1936,7 +1991,7 @@ function ProgressView({
             className={shipmentChoice === "SHIPMENT_PICKED_UP" ? "selected" : ""}
             onClick={() => onShipment("SHIPMENT_PICKED_UP")}
             disabled={acting}
-          ><Truck size={16} /><span><b>已揽收</b><small>保持正常，不催办</small></span></button>
+          ><Truck size={16} /><span><b>{atRisk ? "恢复揽收" : "已揽收"}</b><small>{atRisk ? "12:20 合法恢复" : "保持正常，不催办"}</small></span></button>
           <button
             className={shipmentChoice === "SHIPMENT_NOT_PICKED_UP" ? "selected risk-choice" : ""}
             onClick={() => onShipment("SHIPMENT_NOT_PICKED_UP")}
@@ -1954,6 +2009,15 @@ function ProgressView({
         {followUpCandidate ? <p>催办：{followUpCandidate.summary}</p> : <p>当前没有仓库催办候选</p>}
         {supervisorCandidate ? <p>升级：{supervisorCandidate.summary}</p> : <p>当前没有主管升级候选</p>}
       </section>
+      {pendingNotification ? (
+        <section className="supervisor-zone">
+          <div className="timeline-title"><span>待确认主动通知</span><small>确认后才进入消费者聊天</small></div>
+          <p>{pendingNotification.text}</p>
+          <button className="approve-inline" onClick={onConfirmNotification} disabled={acting}>
+            确认并同步至聊天 <ChevronRight size={15} />
+          </button>
+        </section>
+      ) : null}
       {runtimeMetrics ? <RuntimeCostBar metrics={runtimeMetrics} /> : null}
     </div>
   );

@@ -3,7 +3,7 @@
   "owner_line": "C",
   "purpose": "HTTP/UI readiness credential for BATCH-31 and BATCH-32 unlock.",
   "status": "ready",
-  "generated_at": "2026-10-06T12:18:00+08:00",
+  "generated_at": "2026-10-06T12:35:00+08:00",
   "local_base": {
     "branch": "feature/bc-v1.1-product-attempt",
     "contract_sync_commit": "9700d2a",
@@ -31,11 +31,13 @@
       "evidence": [
         "frontend/src/App.tsx handleEvaluate only sets draft and approvalReply before confirmation.",
         "frontend/src/App.tsx handleApprove appends the agent message and service receipt only after approveResolution succeeds.",
-        "frontend/src/App.tsx shipment proactive_notification_draft is rendered as status/progress information after backend success, not as a pre-confirmation consumer chat send."
+        "frontend/src/App.tsx shipment proactive_notification_draft is stored in pendingNotification after backend success.",
+        "frontend/src/App.tsx handleConfirmNotification is the only path that appends the proactive notification into chat."
       ],
       "consumer_chat_mutation_points": [
         "handleApprove success path: appends AGENT message after backend approval.",
-        "handleShipment success path: appends STATUS message after backend shipment response."
+        "handleShipment success path: stores pending notification draft only.",
+        "handleConfirmNotification: appends STATUS message after operator confirmation."
       ],
       "blocked_before_confirmation": [
         "resolution_path.consumer_reply_draft",
@@ -54,7 +56,8 @@
         "schemas/approve-resolution-request.schema.json requires idempotency_key with minLength 8.",
         "schemas/shipment-event-request.schema.json requires idempotency_key with minLength 8.",
         "backend/main.py stores idempotency by operation, case_id and idempotency_key; same canonical body returns first response; changed body returns IDEMPOTENCY_CONFLICT.",
-        "docs/08-idempotency-and-ordering.md section 3 defines replay semantics."
+        "docs/08-idempotency-and-ordering.md section 3 defines replay semantics.",
+        "frontend/src/App.tsx keeps pending approve and shipment request bodies in refs, so a failed same-operation retry reuses the same event_id and idempotency_key."
       ],
       "retry_policy": {
         "automatic_transport_retry": false,
@@ -68,7 +71,8 @@
       "evidence": [
         "frontend/src/api/client.ts catch branch returns data=null and error.code INTERNAL_ERROR or MODEL_UNAVAILABLE.",
         "frontend/src/App.tsx handleApprove checks result.error before setAccountability, setPhase, chat append or success toast.",
-        "frontend/src/App.tsx handleShipment checks result.error before setAccountability, status append or success toast."
+        "frontend/src/App.tsx handleShipment checks result.error before setAccountability, notification confirmation state or success toast.",
+        "frontend/src/App.tsx handleShipment restores the previous selected shipment button on error, so failure is not rendered as a successful state."
       ],
       "failure_codes": [
         "INTERNAL_ERROR",
@@ -85,7 +89,7 @@
       "rule": "Responsibility state changes are derived from backend ApiResult data, not from local optimistic success.",
       "evidence": [
         "frontend/src/App.tsx handleApprove sets accountability from result.data.accountability_state only after success.",
-        "frontend/src/App.tsx handleShipment sets accountability, follow_up_candidate and supervisor_escalation_candidate from result.data only after success.",
+        "frontend/src/App.tsx handleShipment sets accountability, follow_up_candidate, supervisor_escalation_candidate and pending notification draft from result.data only after success.",
         "docs/04-responsibility-loop.md states event buttons call backend interfaces and must not directly modify frontend responsibility state."
       ],
       "backend_state_fields_used": [
@@ -148,7 +152,8 @@
         "backend/main.py rejects event_time earlier than last_event_times[case_id].",
         "backend/main.py rejects SHIPMENT_DELIVERED unless current shipment stage is IN_TRANSIT.",
         "frontend/src/mockApi.test.ts rejects direct delivery and closes only after pickup then delivery.",
-        "docs/08-idempotency-and-ordering.md section 4 defines monotonic event_time and legal delivery transition."
+        "docs/08-idempotency-and-ordering.md section 4 defines monotonic event_time and legal delivery transition.",
+        "frontend/src/App.tsx shipmentEventTime sends 12:20 pickup recovery after AT_RISK, never 10:10 pickup after 11:35 not-picked-up."
       ]
     },
     "no_frontend_reset_as_recovery": {
