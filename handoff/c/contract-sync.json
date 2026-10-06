@@ -1,0 +1,93 @@
+{
+  "artifact": "C-line contract synchronization evidence",
+  "created_on": "2026-10-06",
+  "contract_version": "BC Core v0.8 + Customer Extension v1.1",
+  "baseline_commit": "aae07fe95cdafbc0548c0336d0edca2d1818f8ba",
+  "scope": "Local repository evidence for the four C-facing API examples and their schemas; this file does not claim that an external C-line owner authored or independently approved it.",
+  "typescript_contract": {
+    "path": "frontend/src/api/contracts.ts",
+    "sha256": "0A404F220CE1B29C6C718858463774FCD1990F2D142A6FA059A65687E5447247",
+    "result_envelope": "ApiResult<T> is a discriminated success/error union; failed results have data=null and an error code/message/retryable flag.",
+    "limited_human_edits": {
+      "path": "schemas/approve-resolution-request.schema.json",
+      "sha256": "ABF6B9E1ABC134610350F858BCED504A4C017AE7FCC172494066E8A16F5F2E91",
+      "allowed_fields": ["executor", "next_check_at", "recovery_if_missed", "consumer_reply"],
+      "unknown_properties_rejected": true,
+      "implementation_note": "The request cannot replace the complete server-owned accountability state or approved resolution."
+    },
+    "decision_rule_contract": {
+      "path": "schemas/decision-result.schema.json",
+      "sha256": "A56E59417A0E5F849689C25815415C0EEA0B3C4F492DA8E64ED9AB47690E1252",
+      "success_rule_priorities": {"H1": 350, "E1": 300, "E2": 100, "E0_NO_RULE_MATCHED": 0},
+      "P0_is_error_not_success_decision": true
+    }
+  },
+  "api_examples": [
+    {
+      "id": "analyze-case",
+      "path": "frontend/src/api/examples/01-analyze-case.json",
+      "sha256": "4EFB815FC6F80A82CC39DC97A079AC715BD9EF36152F89DA1FF93EBD92C7C072",
+      "validated_schemas": ["analyze-case-request.schema.json", "analyze-case-response.schema.json"]
+    },
+    {
+      "id": "evaluate-action",
+      "path": "frontend/src/api/examples/02-evaluate-action.json",
+      "sha256": "4068F69BD59442D590DEB20F3707012C3B6D1DD8FD190C2970F29CAF8E758276",
+      "validated_schemas": ["evaluate-action-request.schema.json", "decision-result.schema.json"]
+    },
+    {
+      "id": "approve-resolution",
+      "path": "frontend/src/api/examples/03-approve-resolution.json",
+      "sha256": "92BECC7FAE23C4FEEC49C87C140C4F950305962DB26F2E342CE84F947FF51781",
+      "validated_schemas": ["approve-resolution-request.schema.json", "accountability-state.schema.json", "decision-result.schema.json#/properties/resolution_path"],
+      "time_alignment": "open_obligation.next_check_at and compiled_service_responsibility.next_check_at now match the 10:10 receipt update."
+    },
+    {
+      "id": "shipment-event",
+      "path": "frontend/src/api/examples/04-shipment-event.json",
+      "sha256": "52D85DC04D2167EB1A380EF2D9B360D076F1D68F0263801E98808DB8641443B1",
+      "validated_schemas": ["shipment-event-request.schema.json", "accountability-state.schema.json"],
+      "time_alignment": "The delayed-pickup variant follows the 11:35 not-picked-up event at 11:50; it no longer rewinds to 10:10."
+    }
+  ],
+  "a34": {
+    "source_of_expected_behavior": "PRODUCT-FREEZE.md#A34",
+    "expected_behavior": "When challenge_overrides is supplied while challenge_mode is omitted or false, ignore the overrides and echo challenge_mode=false; apply overrides only when challenge_mode=true.",
+    "automated_regressions": [
+      {"path": "frontend/src/mockApi.test.ts", "test": "ignores forged state and inactive challenge overrides", "sha256": "3F6520FA2F16877BC6D9AEAC5BC506866CCD2FB6A3E3FB807109259174D6A35B"},
+      {"path": "frontend/src/mockApi.test.ts", "test": "accepts challenge overrides only when challenge mode is explicitly enabled"},
+      {"path": "backend/tests/test_api.py", "test": "test_evaluate_uses_server_state_and_challenge_gate", "sha256": "C0A9CCBB8EDBF9D4F76C0272506FE144F9A085549B497C5C1A1948B4FCDF7FF5"}
+    ]
+  },
+  "error_mapping": {
+    "source": "docs/08-idempotency-and-ordering.md",
+    "mappings": {
+      "SCHEMA_INVALID": "400; invalid input; do not retry unchanged request",
+      "VALIDATION_ERROR": "400; business validation failed; do not retry unchanged request",
+      "P0_PROHIBITED_ACTION": "400; prohibited customer-impacting action; keep sending paused",
+      "INVALID_EVENT_TRANSITION": "409; invalid event order or time; refresh authoritative ledger",
+      "IDEMPOTENCY_CONFLICT": "409; same key with a different request body; start a new intentional request",
+      "MODEL_UNAVAILABLE": "503; model and cache unavailable; show failure state",
+      "MODEL_OUTPUT_INVALID": "502; invalid model output; route to human review"
+    }
+  },
+  "model_provenance": {
+    "source": "frontend/src/api/examples/01-analyze-case.json",
+    "model_id": "COVENIA_DEMO_ADAPTER",
+    "model_revision": "fixture-v1",
+    "prompt_version": "journey-v0.8.0",
+    "live_qwen_configured": false,
+    "claim_boundary": "The example is a prepared demo adapter result, not live Qwen inference."
+  },
+  "validation": {
+    "contract_example_schema_checks": {"result": "PASS", "checks": 11, "tool": "Python jsonschema Draft 2020-12 with format checking"},
+    "frontend_tests": {"command": "npm test", "working_directory": "frontend", "exit_code": 0, "summary": "5 test files passed; 29 tests passed; duration 28.25s"},
+    "backend_tests": {"command": "python -m pytest backend/tests/test_api.py -q", "exit_code": 0, "summary": "26 passed in 1.58s"},
+    "production_build": {"command": "npm run build", "working_directory": "frontend", "exit_code": 0, "summary": "TypeScript check passed; Vite transformed 1590 modules; production build completed in 8.81s"}
+  },
+  "limitations": [
+    "The repository does not define an official handoff/c JSON Schema; this receipt follows the fields requested in the supplied review note.",
+    "This local evidence has not been independently verified by the C-line owner.",
+    "Source hashes are SHA-256 digests of the exact committed blob bytes at baseline_commit, independently read through git show."
+  ]
+}
