@@ -13,7 +13,7 @@
 | `REPAIR_REPORT.json/.md`、`DIAGNOSTIC.json`、`prompt-v1-run/`、`prompt-v2-run/`、`prompt-v2-passing-run/` | 并发会话 | v1 根因诊断、原样原始输出、跨批修复提案 |
 | `AUX_CROSS_LINE_REPAIR_REPORT.json/.md`（本文件） | 本轮（辅助调度器实现方） | 授权跨线改动、v2 前后哈希、修复后全部 live 运行日志、四条标准逐条结果 |
 
-**并发事实**：本轮工作期间 HEAD 由 `f76dd1c3` 被推到 `ab3dba9`；`tools/verification/live_smoke.py` 在 14:39:57 被该会话改动（未提交）；14:40:20 起该会话在 `127.0.0.1:8002` 另起抓包代理。本轮**未覆盖**其任何产物、**未提交**其未提交改动、**未 kill 8001 的共享 shim**。
+**并发事实**：本轮工作期间 HEAD 由 `f76dd1c3` 被推到 `ab3dba9`；`tools/verification/live_smoke.py` 在 14:39:57 被该会话改动（未提交），该修复随后以 `2cb393e`（14:46:02）落地；14:40:20 起该会话在 `127.0.0.1:8002` 另起抓包代理；该会话随后又以 `7678735`（14:46:12）、`5613b64`（14:46:25，明确与"并行 aux 轮次"对齐接受率）提交。本轮**未覆盖**其任何产物、**未提交**其未提交改动（该改动由它自己提交）、**未 kill 8001 的共享 shim**。
 
 ## 1. 授权改动（提交 `8326e7360d26c96f6f379340bf8db8559bcb4b6f`）
 
@@ -47,9 +47,9 @@
 | A | 06:39:27 | 本轮官方 run 1：`live_smoke.py --require-live --disable-cache --output reports/batches/BATCH-28/live` | 提交态工具 `56163478…` | 2 | 两次 `SOURCE_REJECTED` / `MISSING_FIELD_TRACE`；exit 1；12514 ms |
 | D | 06:40:06 | 并发会话 `prompt-v2-run` | 并发会话 | 1 | `SOURCE_REJECTED` / `MISSING_FIELD_TRACE`；6723 ms |
 | E | 06:40:32 | 并发会话 8002 抓包运行 | 并发会话 | 1 | 拒绝；原始响应体经解码确认只有 `observations[0..2]` 三条 trace |
-| **B** | **06:42:17** | **本轮：`pytest backend/tests/live/test_real_extraction.py -q -m live`** | 含并发会话未提交修复 `dd621368…` | **1** | **ACCEPTED → PASS**；`7 passed in 8.07s`；exit 0；6711 ms `WITHIN_BUDGET` |
+| **B** | **06:42:17** | **本轮：`pytest backend/tests/live/test_real_extraction.py -q -m live`** | 提交 `2cb393e`（blob `dd621368…`；运行时未提交，落地后逐字节相同） | **1** | **ACCEPTED → PASS**；`7 passed in 8.07s`；exit 0；6711 ms `WITHIN_BUDGET` |
 | F | 06:43:02 | 并发会话 `prompt-v2-passing-run` | 并发会话 | 2 | 第 1 次拒绝、**第 2 次 ACCEPTED → PASS**；12856 ms |
-| C | 06:43:04 | 本轮官方 run 2（同 A 命令） | 含并发会话未提交修复 `dd621368…` | 2 | 两次拒绝；exit 1；12879 ms |
+| C | 06:43:04 | 本轮官方 run 2（同 A 命令） | 提交 `2cb393e`（blob `dd621368…`；同上） | 2 | 两次拒绝；exit 1；12879 ms |
 
 对照 v1 基线（**5 次尝试，0 次接受**）：`f76dd1c3` 提交的 2 次、`prompt-v1-run/` 的 2 次、原始抓包的 1 次，全部 `MISSING_FIELD_TRACE`。
 
@@ -79,14 +79,15 @@
 
 1. 上游请求体在不含 `metadata`（共享 shim 转发前会剥掉 run id）时对同一输入**逐字相同**，却出现"两次接受 / 七次同样拒绝"的双峰：v1 抓包 `cached_tokens=0`、v2 抓包 `cached_tokens=5120`，上游前缀缓存是否参与造成该双峰，**本轮证据不足以判定**。
 2. `reports/batches/BATCH-28/live/**` 目前放的是官方 run C（**拒绝**）；两次接受分别保存在 `aux-cross-line-v2/pytest-live-run-accepted/`（本轮）与并发会话的 `prompt-v2-passing-run/`。是否要把"跑到达标为止"的那次放进 `live/`，属于验收方的取舍，本轮**没有**为了好看而搬动文件。
-3. **提交态工具无法达到 exit 0**：`tools/verification/live_smoke.py` 调用 `service._compile_from_server_facts` / `_enrich_extracted_journey` / `_aggregate_server_evidence`，但这三个是 `covenia_b.services.analyze` 的**模块级函数**，不是 `AnalyzeService` 成员（实测：`AnalyzeService` 上只有 `_validate_candidate`）。候选一旦被接受，提交态工具会在构造 journey 前抛 `AttributeError`。并发会话在工作树里有未提交修复，本轮两次接受都是在该修复存在的情况下取得的。**请验收方裁定以哪个工具修订版为验收对象**：由未提交修订版产生的接受产物，无法从提交复现。
+3. **提交态工具（f76dd1c3 / ab3dba9）无法达到 exit 0**：`tools/verification/live_smoke.py` 调用 `service._compile_from_server_facts` / `_enrich_extracted_journey` / `_aggregate_server_evidence`，但这三个是 `covenia_b.services.analyze` 的**模块级函数**，不是 `AnalyzeService` 成员（实测：`AnalyzeService` 上只有 `_validate_candidate`）。候选一旦被接受，该修订版会在构造 journey 前抛 `AttributeError`。**本轮期间已由并发会话以 `2cb393e` 修复并提交**，其 blob（sha256 `dd6213687dd0c48c32a37a2ff4bf29e2081acbf986b9ff04d1eede013e6f64bd`）与两次接受运行所用的文件**逐字节相同**，故接受产物可从 HEAD 复现。验收方仍应确认验收针对哪个修订版。
+4. **同一请求体会出现双峰输出**：同一份请求体，模型时而只给 observation 的 trace（3 observation + 1 promise），时而补上 `candidate_promise_texts[0]`。本轮**未确立**其成因；另外工具在首次接受处即停止，因此单次运行记录到的只是被接受的样本，任何据单次运行得出的"接受率"应理解为重试成本的下界，而不是提示词的固有属性。
 
 ## 7. 本轮有意未做
 
 - 未改 `source_validation.py` / schema / domain / 契约向量；
 - 未改写 BATCH-11 的 `prompt-manifest.json`；
 - 未覆盖并发会话的任何产物；
-- **未提交**并发会话未提交的 `tools/verification/live_smoke.py` 改动（把它记在本轮名下属于错误归属）；
+- **未提交**并发会话当时的未提交 `tools/verification/live_smoke.py` 改动（把它记在本轮名下属于错误归属；该改动随后由该会话自己以 `2cb393e` 提交）；
 - 未 push、未动其他 worktree、任何地方都**没有**用 `git add .`；
 - run C 之后**不再追加 live 调用**：样本到此为止，而不是"跑到绿为止"，因此上面的接受率统计没有经过筛选。
 

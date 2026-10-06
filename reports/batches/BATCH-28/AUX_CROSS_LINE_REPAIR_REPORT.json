@@ -24,11 +24,11 @@
   "concurrent_implementation_session": {
     "detected": true,
     "how": "the worktree HEAD moved from f76dd1c3 to ab3dba9 while this round was running, reports/batches/BATCH-28/REPAIR_REPORT.json and DIAGNOSTIC.json appeared, tools/verification/live_smoke.py was modified at 14:39:57, and a fresh byte-capture proxy was started on 127.0.0.1:8002 at 14:40:20 by a process outside this session",
-    "session_status_at_report_time": "still active; it ran its own v2 experiments at 14:40:06, 14:40:32 and 14:43:02 and left tools/verification/live_smoke.py modified but uncommitted",
+    "session_status_at_report_time": "still active at the time of writing; during this round it ran its own v2 experiments at 14:40:06, 14:40:32 and 14:43:02, then committed three more times (2cb393e at 14:46:02, 7678735 at 14:46:12, 5613b64 at 14:46:25, the last of which explicitly reconciles its report with this round)",
     "consequences_for_this_report": [
       "two of the live runs listed below were produced by that session, not by this one; they are cited as attributed corroboration and marked as such",
-      "the accepted official-command run of the same tool currently lives in reports/batches/BATCH-28/prompt-v2-passing-run/, written by that session",
-      "live_smoke.py carried an uncommitted fix from that session during two of this round's runs; the tool revision of every run is recorded below"
+      "the accepted official-command run of the same tool is preserved at reports/batches/BATCH-28/prompt-v2-passing-run/ and copied into this round's evidence directory",
+      "live_smoke.py carried that session's journey-projection fix while it was still uncommitted, during two of this round's runs; the revision of every run is recorded below, and commit 2cb393e later landed that fix at exactly the same blob (dd6213687dd0c48c32a37a2ff4bf29e2081acbf986b9ff04d1eede013e6f64bd), so the runs are reproducible from HEAD"
     ],
     "nothing_of_the_other_session_was_overwritten_or_committed_by_this_round": true,
     "shared_model_shim_on_8001_never_killed_or_reconfigured": true
@@ -202,7 +202,7 @@
         "id": "this round, the repository's own live gate",
         "started_at_utc": "2026-10-06T06:42:17Z",
         "command": "python -m pytest backend/tests/live/test_real_extraction.py -q -m live",
-        "tool_revision": "worktree tool with the concurrent session's uncommitted fix, sha256 dd6213687dd0c48c32a37a2ff4bf29e2081acbf986b9ff04d1eede013e6f64bd",
+        "tool_revision": "commit 2cb393e, blob sha256 dd6213687dd0c48c32a37a2ff4bf29e2081acbf986b9ff04d1eede013e6f64bd (uncommitted at run time; the commit that later landed it is byte-identical)",
         "attempts": 1,
         "attempt_detail": [
           {"attempt": 1, "outcome": "ACCEPTED", "status_code": 200, "provider_ms": 6708, "usage": {"input_tokens": 5684, "output_tokens": 270}, "traced_fields": ["observations[0]", "observations[1]", "observations[2]", "candidate_promise_texts[0]"]}
@@ -237,7 +237,7 @@
         "id": "this round, official run 2",
         "started_at_utc": "2026-10-06T06:43:04Z",
         "command": "python tools/verification/live_smoke.py --require-live --disable-cache --output reports/batches/BATCH-28/live",
-        "tool_revision": "worktree tool with the concurrent session's uncommitted fix, sha256 dd6213687dd0c48c32a37a2ff4bf29e2081acbf986b9ff04d1eede013e6f64bd",
+        "tool_revision": "commit 2cb393e, blob sha256 dd6213687dd0c48c32a37a2ff4bf29e2081acbf986b9ff04d1eede013e6f64bd (uncommitted at run time; the commit that later landed it is byte-identical)",
         "attempts": 2,
         "attempt_detail": [
           {"attempt": 1, "outcome": "SOURCE_REJECTED", "rejection_code": "MISSING_FIELD_TRACE", "status_code": 200, "provider_ms": 6435, "usage": {"input_tokens": 5684, "output_tokens": 237}},
@@ -372,7 +372,8 @@
   "open_questions_for_the_independent_verifier": [
     "why the same request body (the run id inside metadata is stripped by the shared shim, so the upstream request is identical) produced an accepted candidate once and the identical rejection otherwise; upstream prompt_tokens_details.cached_tokens was 0 on the v1 capture and 5120 on the v2 capture, and whether that prefix cache contributes to the bimodality is not established by this evidence",
     "whether the batch should keep trying the documented command until an accepted run lands in reports/batches/BATCH-28/live, or record the accepted run exactly as produced (this round did the latter: reports/batches/BATCH-28/live holds the rejected run C, and the two accepted runs are preserved beside it)",
-    "tools/verification/live_smoke.py in the committed tree calls service._compile_from_server_facts / _enrich_extracted_journey / _aggregate_server_evidence, but those three helpers are module-level functions in covenia_b.services.analyze, not AnalyzeService members (only _validate_candidate is a static method on the service). The committed tool therefore cannot reach exit 0 at all: an accepted candidate raises AttributeError before the journey is built. The concurrent session has an uncommitted fix for this in the worktree, and the two accepted runs above were produced with that fix present. The verifier should decide which revision of the tool is the one under acceptance, because an accepted artifact produced by an uncommitted tool revision is not reproducible from the commit."
+    "tools/verification/live_smoke.py in the tree at f76dd1c3 and ab3dba9 calls service._compile_from_server_facts / _enrich_extracted_journey / _aggregate_server_evidence, but those three helpers are module-level functions in covenia_b.services.analyze, not AnalyzeService members (only _validate_candidate is a static method on the service). That revision therefore cannot reach exit 0 at all: an accepted candidate raises AttributeError before the journey is built. RESOLVED during this round: the concurrent session committed the journey-projection fix as 2cb393e, and the committed blob (sha256 dd6213687dd0c48c32a37a2ff4bf29e2081acbf986b9ff04d1eede013e6f64bd) is byte-identical to the file both accepted runs were produced with, so the accepted artifacts are reproducible from HEAD. The verifier should still confirm which revision the acceptance is recorded against.",
+    "the model's own output for one and the same request body is bimodal across attempts (3 observations + 1 promise with observation traces only, versus the same plus candidate_promise_texts[0]); no explanation is established here, and a run that is stopped at the first accepted attempt will record only the accepted sample, so any acceptance rate quoted from single runs should be read as a lower bound on the retry cost, not as a property of the prompt"
   ],
 
   "not_done_intentionally": [
