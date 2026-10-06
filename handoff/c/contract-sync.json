@@ -1,0 +1,208 @@
+{
+  "handoff_id": "c-contract-sync-batch-31-32",
+  "owner_line": "C",
+  "purpose": "Contract sync credential for BATCH-31 and BATCH-32 unlock.",
+  "status": "ready",
+  "generated_at": "2026-10-06T12:14:00+08:00",
+  "acknowledgement_from_receiver": {
+    "referenced_commit": "8b55d11",
+    "note": "Receiver reported schema and product-freeze byte alignment already checked for the 8b55d11 contract-sync pass."
+  },
+  "local_base": {
+    "branch": "feature/bc-v1.1-product-attempt",
+    "head_before_handoff_file": "752a23499e15ec9e2cf08a333e346d29da7eaea8"
+  },
+  "contract_version": {
+    "product_freeze": "PRODUCT-FREEZE.md / v0.8.0",
+    "frontend_package": "covenia-qianniu-plugin@0.1.0",
+    "backend_api": "Covenia local API 0.8.0",
+    "batch_scope": ["BATCH-03", "A34", "C-to-B HTTP UI gates"]
+  },
+  "typescript_alignment": {
+    "source_file": "frontend/src/api/contracts.ts",
+    "envelope": "ApiResult<T> = { data, error, request_id } success/error envelope",
+    "four_interfaces": [
+      {
+        "endpoint": "POST /api/cases/analyze",
+        "request_type": "AnalyzeCaseRequest",
+        "response_type": "ApiResult<AnalyzeCaseResponse>",
+        "example_file": "frontend/src/api/examples/01-analyze-case.json",
+        "request_sha256_canonical_json": "3d533c2f8590deb23707fcd821b52e2b59148a6063705292f10a775aba5936dd"
+      },
+      {
+        "endpoint": "POST /api/actions/evaluate",
+        "request_type": "EvaluateActionRequest",
+        "response_type": "ApiResult<DecisionResult>",
+        "example_file": "frontend/src/api/examples/02-evaluate-action.json",
+        "request_sha256_canonical_json": "4ab0d8b3c3053443531434ca8f13f59f5b272ef6a1fd5b5f21ca3d79627727ba"
+      },
+      {
+        "endpoint": "POST /api/resolutions/approve",
+        "request_type": "ApproveResolutionRequest",
+        "response_type": "ApiResult<ApproveResolutionResponse>",
+        "example_file": "frontend/src/api/examples/03-approve-resolution.json",
+        "request_sha256_canonical_json": "f219a482ff63b45d0b85d86810d57ca32266c0acca3924ddd4640ff6be733c66"
+      },
+      {
+        "endpoint": "POST /api/events/shipment",
+        "request_type": "ShipmentEventRequest",
+        "response_type": "ApiResult<ShipmentEventResponse>",
+        "example_file": "frontend/src/api/examples/04-shipment-event.json",
+        "request_sha256_canonical_json": "466cfe4954995645a4c78c89b770b93a157acfd2b8b7f11d7fef93b028bf0259"
+      }
+    ]
+  },
+  "batch_03_alignment": {
+    "status": "aligned",
+    "evidence": [
+      "frontend/src/api/contracts.ts keeps the four endpoint request/response types and shared ApiResult envelope.",
+      "frontend/src/api/examples/01-analyze-case.json through 04-shipment-event.json provide matching request/response examples.",
+      "schemas/analyze-case-request.schema.json, evaluate-action-request.schema.json, approve-resolution-request.schema.json and shipment-event-request.schema.json define the same request surfaces."
+    ]
+  },
+  "a34_alignment": {
+    "status": "aligned",
+    "requirement": "challenge_overrides are ignored unless challenge_mode is explicitly true; response echoes challenge_mode=false for inactive overrides.",
+    "evidence": [
+      "PRODUCT-FREEZE.md A34",
+      "frontend/src/mockApi.test.ts test: ignores forged state and inactive challenge overrides",
+      "frontend/src/mockApi.test.ts test: accepts challenge overrides only when challenge mode is explicitly enabled",
+      "schemas/evaluate-action-request.schema.json allOf gates challenge_overrides behind challenge_mode=true"
+    ]
+  },
+  "error_mapping": {
+    "source_files": [
+      "frontend/src/api/contracts.ts",
+      "docs/08-idempotency-and-ordering.md"
+    ],
+    "codes": {
+      "SCHEMA_INVALID": {
+        "http": 400,
+        "retryable": false,
+        "ui_action": "mark input/schema problem; do not retry automatically"
+      },
+      "VALIDATION_ERROR": {
+        "http": 400,
+        "retryable": false,
+        "ui_action": "show missing or invalid business field"
+      },
+      "P0_PROHIBITED_ACTION": {
+        "http": 400,
+        "retryable": false,
+        "ui_action": "pause send and show safer replacement action"
+      },
+      "INVALID_EVENT_TRANSITION": {
+        "http": 409,
+        "retryable": false,
+        "ui_action": "refresh ledger; never render the attempted transition as success"
+      },
+      "IDEMPOTENCY_CONFLICT": {
+        "http": 409,
+        "retryable": false,
+        "ui_action": "ask operator to start a new operation; do not retry the conflicting body"
+      },
+      "MODEL_OUTPUT_INVALID": {
+        "http": 502,
+        "retryable": false,
+        "ui_action": "route to human review"
+      },
+      "MODEL_UNAVAILABLE": {
+        "http": 503,
+        "retryable": true,
+        "ui_action": "show explicit model/service unavailable state"
+      },
+      "INTERNAL_ERROR": {
+        "http": 500,
+        "retryable": true,
+        "ui_action": "show network/service failure; do not display success"
+      }
+    },
+    "business_success_not_error": {
+      "E0_NO_RULE_MATCHED": "successful evaluate result; not an ApiErrorCode"
+    }
+  },
+  "model_source": {
+    "deterministic_fact_policy": "Rule/API/code owns order, ticket, evidence, deadline and shipment facts.",
+    "language_understanding": {
+      "field": "model_metadata",
+      "example_values": ["model_id", "prompt_version", "run_id", "cached_result"],
+      "source_files": [
+        "frontend/src/api/contracts.ts",
+        "schemas/extracted-journey.schema.json"
+      ]
+    },
+    "jev_decision_advisory": {
+      "source_file": "backend/decision/engine.py",
+      "transport_file": "backend/decision/jev_client.py",
+      "allowed_sources": ["JEV", "RULE_FALLBACK"],
+      "model_version_default": "jev-latest",
+      "audit_fields": [
+        "assessment_id",
+        "customer_state_version",
+        "threshold",
+        "provider_error",
+        "latency_ms",
+        "model_version"
+      ],
+      "non_blocking_policy": "JEV success provides advisory signal; JEV failure falls back to RULE_FALLBACK and does not block the business chain."
+    }
+  },
+  "limited_human_edits": {
+    "source_files": [
+      "frontend/src/api/contracts.ts",
+      "schemas/approve-resolution-request.schema.json",
+      "backend/main.py"
+    ],
+    "required_request_field": "human_edits",
+    "additional_properties": false,
+    "allowed_fields": {
+      "executor": ["BRAND", "WAREHOUSE", "LOGISTICS_PROVIDER"],
+      "next_check_at": "ISO 8601 date-time",
+      "recovery_if_missed": "non-empty string"
+    },
+    "disallowed": [
+      "consumer-facing success state",
+      "case_status",
+      "shipment milestone",
+      "audit_trail direct mutation",
+      "model output override"
+    ]
+  },
+  "verification": {
+    "npm_test": {
+      "working_directory": "frontend",
+      "command": "npm test",
+      "exit_code": 0,
+      "actual_output": [
+        "> covenia-qianniu-plugin@0.1.0 test",
+        "> vitest run",
+        "",
+        "RUN  v4.1.11 /Users/zly/Desktop/哦来源/Covenia-BC-integration/frontend",
+        "",
+        "Test Files  1 passed (1)",
+        "Tests  11 passed (11)",
+        "Start at  12:10:46",
+        "Duration  15.49s (transform 94ms, setup 0ms, import 117ms, tests 15.23s, environment 0ms)"
+      ]
+    },
+    "npm_build": {
+      "working_directory": "frontend",
+      "command": "npm run build",
+      "exit_code": 0,
+      "actual_output": [
+        "> covenia-qianniu-plugin@0.1.0 build",
+        "> tsc -b && vite build",
+        "",
+        "vite v6.4.3 building for production...",
+        "transforming...",
+        "✓ 1584 modules transformed.",
+        "rendering chunks...",
+        "computing gzip size...",
+        "dist/index.html                   0.47 kB │ gzip:  0.33 kB",
+        "dist/assets/index-v77tqjnB.css   44.31 kB │ gzip:  9.65 kB",
+        "dist/assets/index-CiB78Cl_.js   248.24 kB │ gzip: 72.48 kB",
+        "✓ built in 1.32s"
+      ]
+    }
+  }
+}
