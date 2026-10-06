@@ -157,7 +157,7 @@
     {
       "id": "X-A-TRUTH",
       "owner": "A authors; D receives; Zack approves policy semantics",
-      "status": "PARTIAL",
+      "status": "ACCEPTED",
       "required_before": ["BATCH-29"],
       "required_artifact": "fixtures/ground-truth.json plus handoff/a/evaluation-manifest.json",
       "required_evidence": [
@@ -166,7 +166,12 @@
       ],
       "observed_path": "handoff/a/evaluation-manifest.json",
       "observed_in_reviewed_base": false,
-      "receipt": null
+      "receipt": "handoff/a/evaluation-manifest.json",
+      "accepted_by": "产品负责人（Zack）",
+      "accepted_at": "2026-10-06",
+      "accepted_basis": "门的两条标准客观满足：① three_demo_truths.conflict_sync 的核验块全 true（含 DEMO_001 evaluation_time → 09:40、补回 94357468399952.PNM、DEMO_AUG_MSG_001 timestamp → 09:32、移除 RAISE_PRIORITY 共 4 项改动）；dev_samples.count = 20 且含 ticket_type / decision 覆盖摘要。② holdout_separation 明载 count = 10、separate_manifest = private-evaluation/holdout-manifest.json、in_repository = false，并显式声明 sample_division_is_not_new_scenarios。",
+      "provenance_caveat": "据实标注出处，不省略、不美化：handoff/a/evaluation-manifest.json 自述 produced_by = 『审查方（B 线）依 A 线 2026-10-05 交付包机械转换；原始作者为 A 线』，status = READY_FOR_ACCEPTANCE。即本次接受的是审查方据 A 线材料整理出的凭证，A 线尚未以原笔形式确认。A 线/D 线应在本门被下游批次实消费前（即 BATCH-29 验收前）确认其内容；BATCH-29 的验收报告须复核该保留。",
+      "ledger_sync_note": "两份状态源（batches.json 与 docs/planning/b/external-gates.json）同时更新；非新裁决。"
     },
     {
       "id": "X-C-CONTRACT",
