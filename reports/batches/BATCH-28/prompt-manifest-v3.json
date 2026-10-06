@@ -1,0 +1,67 @@
+{
+  "artifact_version": "1.0",
+  "artifact": "reports/batches/BATCH-28/prompt-manifest-v3.json",
+  "batch_id": "BATCH-28",
+  "classification": "IMPLEMENTATION_EVIDENCE",
+  "statement": "本批由辅助调度器实现，非独立实现方；验收须由他方完成。",
+  "purpose": "Record the prompt version and both prompt digests that BATCH-28's v3 stability runs ran under, together with the values they supersede. The v2 manifest is a separate artifact and was deliberately not rewritten; BATCH-11's own prompt-manifest.json remains BATCH-11's historical record and is untouched.",
+  "supersedes": {
+    "manifest": "reports/batches/BATCH-28/prompt-manifest-v2.json",
+    "note": "that file still records the v2 pair and is left byte-identical; this file is a new sibling artifact rather than an edit of it"
+  },
+  "prompt_version": "candidate-extraction-v3",
+  "source_files": [
+    "backend/src/covenia_b/model/prompts/__init__.py",
+    "backend/src/covenia_b/model/prompts/candidate_extraction.py"
+  ],
+  "candidate_output_fields": [
+    "observations",
+    "source_trace",
+    "candidate_promise_texts"
+  ],
+  "prompt_sha256": {
+    "candidate": "f9cf1b4a1e2af9090581a2bc7aebdb5362d0de67eb446f71e08faa0f8dd3dfef",
+    "schema_repair": "66b01ba18f434f8c1475429cd03230693bdd88c8d075838cdf46c607c3f86889"
+  },
+  "superseded_prompt_sha256": {
+    "prompt_version": "candidate-extraction-v2",
+    "candidate": "415814b938ef6fd85cdd4e299259308efae75c75190063f3b4b969ef3ca08f9e",
+    "schema_repair": "66b01ba18f434f8c1475429cd03230693bdd88c8d075838cdf46c607c3f86889",
+    "note": "the schema_repair digest is unchanged from v2 to v3 because the approved increment applies to the candidate prompt only"
+  },
+  "hash_method": {
+    "what_is_hashed": "sha256 of the prompt string as the module holds it (UTF-8), i.e. prompt_manifest()['candidate_prompt_sha256'] and ['schema_repair_prompt_sha256']",
+    "self_check": "the v1 pair recorded by BATCH-11's manifest was re-derived from the committed v1 module and reproduced exactly before the method was used on v2 and v3"
+  },
+  "why_the_version_was_bumped": {
+    "trigger": "under v2 the model still traced only observations: across two independent rounds 9 of 12 real attempts repeated MISSING_FIELD_TRACE, leaving criterion 1 reachable but unreliable (~25%)",
+    "increment_added": "the verbatim worked example from reports/batches/BATCH-28/REPAIR_REPORT.md:362-378, inserted into CANDIDATE_EXTRACTION_SYSTEM_PROMPT: with three observations and one candidate promise, source_trace MUST contain exactly four entries; the fourth is required even when observations[2] already quotes the same agent sentence, because an observation trace never satisfies the promise trace",
+    "placeholders_only": "the worked example uses <id> placeholders and generic a/b/c observations; it carries no case content and cannot induce a case-specific answer",
+    "retained_from_v2": [
+      "the JSON example with three concrete indices and no \"or\"",
+      "the disambiguation sentence \"Emit one source_trace entry per observation and one per candidate promise; a single entry never covers two fields.\""
+    ],
+    "settings_sync_requirement": "covenia_b.runtime:589 compares settings.model_prompt_version with prompt_manifest()['prompt_version'], so backend/src/covenia_b/settings.py:56 was moved to candidate-extraction-v3 in the same commit",
+    "scope_discipline": "source_validation.py was not touched: the validator is correct and stays strict. model_bound_ms was not touched. The schema_repair prompt keeps the v2 sentence only, because the worked example was authorised for the candidate prompt."
+  },
+  "commit": {
+    "sha1": "845d340adf6a318f7bd0106b80ec0d3d43aae663",
+    "subject": "fix(prompt): add the worked example so promise traces are emitted reliably",
+    "author": "aux-dispatcher <aux@local>",
+    "date": "2026-10-06T14:59:00+08:00",
+    "files": [
+      "backend/src/covenia_b/model/prompts/candidate_extraction.py",
+      "backend/src/covenia_b/settings.py"
+    ],
+    "diffstat": "2 files changed, 20 insertions(+), 2 deletions(-)"
+  },
+  "acceptance_bar": "product owner set >=6 consecutive live passes with image observations kept in every run",
+  "observed_in_live_runs": {
+    "configuration.prompt_version": "candidate-extraction-v3",
+    "configuration.prompt_version_matches_manifest": true,
+    "COVENIA_MODEL_PROMPT_VERSION": "NOT_SET (the new default was exercised on purpose)",
+    "stability_series": "reports/batches/BATCH-28/v3-stability/run-01 .. run-06",
+    "result": "6 of 6 consecutive PASS, every run accepted on its FIRST attempt, image observations kept in every run (image_observation_count=3, IMAGE traces=3), cached_result=false, revision qwen3-vl-plus-2025-12-19, model_bound_ms 6631-7327 ms against the frozen 20 s budget",
+    "determinism_note": "under v2 the same instrument accepted roughly 1 run in 4 and often needed the repair retry; under v3 all six runs were accepted on the first attempt"
+  }
+}

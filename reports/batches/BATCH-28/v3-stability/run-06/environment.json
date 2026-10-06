@@ -1,0 +1,214 @@
+{
+  "artifact": "reports/batches/BATCH-28/environment.json",
+  "batch_id": "BATCH-28",
+  "dependency_lock": {
+    "appended_entries": [],
+    "canonical_matches_committed_blob": true,
+    "change_note": "no dependency was added by BATCH-28; the worktree copy is byte-identical to the committed blob under the canonical LF form",
+    "change_type": "UNCHANGED",
+    "committed_blob": {
+      "available": true,
+      "bytes": 725,
+      "method": "sha256(git show <sha>:<path> raw stdout bytes)",
+      "path": "backend/requirements-dev.lock",
+      "revision": "845d340adf6a318f7bd0106b80ec0d3d43aae663",
+      "sha256": "602c268b684d60e2d1b8bbfc6820663a622eb24093144a87c111f43d3c06fdae"
+    },
+    "eol_note": "the committed blob is stored with LF; the Windows worktree checkout uses CRLF, so the raw worktree digest differs from the blob digest by design. MASTER_PLAN 5.5-8 requires the git-show blob digest for hash verification, and that value is recorded above as committed_blob.sha256.",
+    "path": "backend/requirements-dev.lock",
+    "worktree_bytes": 759,
+    "worktree_sha256_canonical_lf": "602c268b684d60e2d1b8bbfc6820663a622eb24093144a87c111f43d3c06fdae",
+    "worktree_sha256_raw_bytes": "a7524fec02641fe9edcf300be27ee17969ca1188630d3d411162d6bba26d447f"
+  },
+  "environment_variables_observed": {
+    "COVENIA_ANALYSIS_TIMEOUT_SECONDS": "NOT_SET",
+    "COVENIA_CACHE_MODE": "NOT_SET",
+    "COVENIA_MODEL_API_KEY": "NOT_SET",
+    "COVENIA_MODEL_DEPLOYMENT_ID": "SET",
+    "COVENIA_MODEL_ENDPOINT": "SET",
+    "COVENIA_MODEL_PROMPT_VERSION": "NOT_SET",
+    "COVENIA_MODEL_REVISION": "SET"
+  },
+  "generated_at": "2026-10-06T07:00:32.919233+00:00",
+  "interpreter": {
+    "include_system_site_packages": "false",
+    "isolated_venv": true,
+    "machine": "AMD64",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "python_executable": "C:\\cv28\\venv\\Scripts\\python.exe",
+    "python_version": "3.13.5",
+    "python_version_full": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]",
+    "pyvenv_cfg_present": true,
+    "run_dir": "C:\\cv28",
+    "sys_base_prefix": "D:\\python",
+    "sys_prefix": "C:\\cv28\\venv",
+    "temp_dir": "C:\\cv28\\tmp",
+    "venv_longest_path": "C:\\cv28\\venv\\Lib\\site-packages\\pkg_resources\\tests\\data\\my-test-package_unpacked-egg\\my_test_package-1.0-py3.7.egg\\EGG-INFO\\dependency_links.txt",
+    "venv_longest_path_length": 144,
+    "venv_longest_path_limit": 250,
+    "venv_longest_path_ok": true,
+    "working_directory": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w28"
+  },
+  "packages": {
+    "available": true,
+    "count": 34,
+    "packages": [
+      {
+        "name": "annotated-types",
+        "version": "0.7.0"
+      },
+      {
+        "name": "anyio",
+        "version": "4.8.0"
+      },
+      {
+        "name": "attrs",
+        "version": "26.1.0"
+      },
+      {
+        "name": "build",
+        "version": "1.2.2.post1"
+      },
+      {
+        "name": "certifi",
+        "version": "2025.1.31"
+      },
+      {
+        "name": "click",
+        "version": "8.1.8"
+      },
+      {
+        "name": "colorama",
+        "version": "0.4.6"
+      },
+      {
+        "name": "covenia-b",
+        "version": "0.0.0"
+      },
+      {
+        "name": "fastapi",
+        "version": "0.115.6"
+      },
+      {
+        "name": "h11",
+        "version": "0.14.0"
+      },
+      {
+        "name": "httpcore",
+        "version": "1.0.7"
+      },
+      {
+        "name": "httpx",
+        "version": "0.28.1"
+      },
+      {
+        "name": "idna",
+        "version": "3.10"
+      },
+      {
+        "name": "iniconfig",
+        "version": "2.0.0"
+      },
+      {
+        "name": "jsonschema",
+        "version": "4.25.0"
+      },
+      {
+        "name": "jsonschema-specifications",
+        "version": "2025.9.1"
+      },
+      {
+        "name": "packaging",
+        "version": "24.2"
+      },
+      {
+        "name": "pip",
+        "version": "25.1.1"
+      },
+      {
+        "name": "pluggy",
+        "version": "1.5.0"
+      },
+      {
+        "name": "pydantic",
+        "version": "2.10.5"
+      },
+      {
+        "name": "pydantic-settings",
+        "version": "2.7.1"
+      },
+      {
+        "name": "pydantic_core",
+        "version": "2.27.2"
+      },
+      {
+        "name": "pyproject_hooks",
+        "version": "1.2.0"
+      },
+      {
+        "name": "pytest",
+        "version": "8.3.4"
+      },
+      {
+        "name": "python-dotenv",
+        "version": "1.0.1"
+      },
+      {
+        "name": "referencing",
+        "version": "0.37.0"
+      },
+      {
+        "name": "rpds-py",
+        "version": "2026.6.3"
+      },
+      {
+        "name": "ruff",
+        "version": "0.8.4"
+      },
+      {
+        "name": "setuptools",
+        "version": "75.8.0"
+      },
+      {
+        "name": "sniffio",
+        "version": "1.3.1"
+      },
+      {
+        "name": "starlette",
+        "version": "0.41.3"
+      },
+      {
+        "name": "typing_extensions",
+        "version": "4.12.2"
+      },
+      {
+        "name": "uvicorn",
+        "version": "0.34.0"
+      },
+      {
+        "name": "wheel",
+        "version": "0.45.1"
+      }
+    ]
+  },
+  "secrets": {
+    "api_key_recorded": false,
+    "statement": "no credential value is read into, or written by, this tool; only the presence of COVENIA_MODEL_API_KEY is recorded"
+  },
+  "settings_snapshot": {
+    "analysis_timeout_seconds": 20.0,
+    "cache_mode": "disabled",
+    "case_manifest_path": "handoff\\a\\cases-manifest.json",
+    "demo_cases_path": "fixtures\\demo-cases.json",
+    "image_evidence_root": "frontend\\public\\evidence",
+    "image_manifest_path": "handoff\\a\\images-manifest.json",
+    "model_deployment_id": "ws-czn4i6tkzgc4so32",
+    "model_endpoint": "http://127.0.0.1:8001/v1/chat/completions",
+    "model_prompt_version": "candidate-extraction-v3",
+    "model_revision": "qwen3-vl-plus-2025-12-19",
+    "workbook_path": "data\\tianchi-track1-mock-data.xlsx"
+  },
+  "statement": "本批由辅助调度器实现，非独立实现方；验收须由他方完成。",
+  "tool": "tools/verification/live_smoke.py",
+  "tool_version": "live-smoke-v1"
+}
