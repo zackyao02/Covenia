@@ -335,7 +335,13 @@
     {
       "id": "X-C-CONTRACT",
       "owner": "C",
-      "status": "MISSING",
+      "status": "ACCEPTED",
+      "receipt": "handoff/c/contract-sync.json",
+      "upstream_commit": "9700d2a",
+      "accepted_blob_sha256": "DACAFA109F5CC6C7F71FFD98588823F602B10DFB5973D8C8DE8C30F80A2FFEC6",
+      "accepted_by": "产品负责人（Zack）",
+      "accepted_at": "2026-10-06",
+      "ledger_sync_note": "C 线交接凭证只读接收（frontend 源码归属 C 线，B 线不并入）。审查方 2026-10-06 独立复跑：npm ci exit 0（98 packages）、npm test exit 0（1 file / 11 tests，含 enforces P0, H1=350, E1 and E0 in the documented order）、npm run build exit 0（1584 modules transformed）；contract-sync.json 七个 section 齐备（typescript_alignment 含四端点类型与 4 个 request_sha256、batch_03_alignment、a34_alignment、error_mapping、model_source、limited_human_edits）。",
       "required_before": [
         "BATCH-31"
       ],
@@ -348,7 +354,13 @@
     {
       "id": "X-C-UI",
       "owner": "C；D 独立复验",
-      "status": "MISSING",
+      "status": "ACCEPTED",
+      "receipt": "handoff/c/http-ui-ready.json",
+      "upstream_commit": "4a72eff",
+      "accepted_blob_sha256": "90AC6ED8B1C34E82FB23276A1BF359C55E99D175F9924D477BC449B1CABC3BBC",
+      "accepted_by": "产品负责人（Zack）",
+      "accepted_at": "2026-10-06",
+      "ledger_sync_note": "6 个门全 ready，逐条对应 X-C-UI 标准；unlock_target = {batches:[BATCH-31,BATCH-32], downstream:[BATCH-33,BATCH-34]}。只取 handoff/c 文件，不并入 frontend/src/App.tsx 与 PDF 改名。",
       "required_before": [
         "BATCH-32"
       ],
