@@ -1,0 +1,191 @@
+{
+  "handoff_id": "c-http-ui-ready-batch-31-32",
+  "owner_line": "C",
+  "purpose": "HTTP/UI readiness credential for BATCH-31 and BATCH-32 unlock.",
+  "status": "ready",
+  "generated_at": "2026-10-06T12:18:00+08:00",
+  "local_base": {
+    "branch": "feature/bc-v1.1-product-attempt",
+    "contract_sync_commit": "9700d2a",
+    "head_before_handoff_file": "9700d2a"
+  },
+  "http_contract": {
+    "frontend_entry": "frontend/src/api/client.ts",
+    "api_selection": "VITE_API_MODE=http uses httpApi; otherwise mockApi",
+    "headers": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Request-Id": "client generated UUID per HTTP call"
+    },
+    "timeouts_ms": {
+      "POST /api/cases/analyze": 20000,
+      "POST /api/actions/evaluate": 10000,
+      "POST /api/resolutions/approve": 10000,
+      "POST /api/events/shipment": 10000
+    },
+    "error_envelope_policy": "UI consumes ApiResult<T>; network and timeout failures are converted to { data:null, error:{ code, message, retryable }, request_id }."
+  },
+  "gates": {
+    "notification_confirmation_before_consumer_chat": {
+      "status": "ready",
+      "rule": "Consumer-facing agent reply enters the chat only after the operator confirms the resolution path.",
+      "evidence": [
+        "frontend/src/App.tsx handleEvaluate only sets draft and approvalReply before confirmation.",
+        "frontend/src/App.tsx handleApprove appends the agent message and service receipt only after approveResolution succeeds.",
+        "frontend/src/App.tsx shipment proactive_notification_draft is rendered as status/progress information after backend success, not as a pre-confirmation consumer chat send."
+      ],
+      "consumer_chat_mutation_points": [
+        "handleApprove success path: appends AGENT message after backend approval.",
+        "handleShipment success path: appends STATUS message after backend shipment response."
+      ],
+      "blocked_before_confirmation": [
+        "resolution_path.consumer_reply_draft",
+        "proactive_notification_draft"
+      ]
+    },
+    "retry_keeps_same_idempotency_key": {
+      "status": "ready",
+      "rule": "State-changing operations carry caller-generated idempotency_key; retry of the same logical operation must reuse the same key and body.",
+      "state_changing_endpoints": [
+        "POST /api/resolutions/approve",
+        "POST /api/events/shipment"
+      ],
+      "evidence": [
+        "frontend/src/api/contracts.ts marks approveResolution and pushShipmentEvent as requiresIdempotencyKey=true.",
+        "schemas/approve-resolution-request.schema.json requires idempotency_key with minLength 8.",
+        "schemas/shipment-event-request.schema.json requires idempotency_key with minLength 8.",
+        "backend/main.py stores idempotency by operation, case_id and idempotency_key; same canonical body returns first response; changed body returns IDEMPOTENCY_CONFLICT.",
+        "docs/08-idempotency-and-ordering.md section 3 defines replay semantics."
+      ],
+      "retry_policy": {
+        "automatic_transport_retry": false,
+        "manual_retry_requirement": "Reuse the exact original request body and idempotency_key for the same logical approve/shipment operation.",
+        "conflict_behavior": "Same key with different body returns IDEMPOTENCY_CONFLICT and must not be rendered as success."
+      }
+    },
+    "network_failure_never_displays_success": {
+      "status": "ready",
+      "rule": "Network and timeout failure produce error envelope and no success toast, no chat append and no responsibility-state mutation.",
+      "evidence": [
+        "frontend/src/api/client.ts catch branch returns data=null and error.code INTERNAL_ERROR or MODEL_UNAVAILABLE.",
+        "frontend/src/App.tsx handleApprove checks result.error before setAccountability, setPhase, chat append or success toast.",
+        "frontend/src/App.tsx handleShipment checks result.error before setAccountability, status append or success toast."
+      ],
+      "failure_codes": [
+        "INTERNAL_ERROR",
+        "MODEL_UNAVAILABLE"
+      ],
+      "ui_behavior_on_failure": [
+        "show backend/client error message",
+        "do not append consumer-facing success message",
+        "do not mark shipment, approval or resolution as successful"
+      ]
+    },
+    "ui_uses_backend_state_only": {
+      "status": "ready",
+      "rule": "Responsibility state changes are derived from backend ApiResult data, not from local optimistic success.",
+      "evidence": [
+        "frontend/src/App.tsx handleApprove sets accountability from result.data.accountability_state only after success.",
+        "frontend/src/App.tsx handleShipment sets accountability, follow_up_candidate and supervisor_escalation_candidate from result.data only after success.",
+        "docs/04-responsibility-loop.md states event buttons call backend interfaces and must not directly modify frontend responsibility state."
+      ],
+      "backend_state_fields_used": [
+        "accountability_state.case_status",
+        "accountability_state.open_obligation",
+        "accountability_state.service_progress_receipt",
+        "follow_up_candidate",
+        "supervisor_escalation_candidate",
+        "proactive_notification_draft"
+      ]
+    },
+    "event_time_advances_on_legal_branches": {
+      "status": "ready",
+      "rule": "Shipment event time must be monotonic and branch-legal; an earlier pickup after a later not-picked-up event is not accepted as success.",
+      "legal_demo_sequence": [
+        {
+          "event_type": "SHIPMENT_PICKED_UP",
+          "event_time": "2026-05-07T10:10:00+08:00",
+          "legal_after": "AWAITING_CARRIER_PICKUP",
+          "result": "IN_TRANSIT"
+        },
+        {
+          "event_type": "SHIPMENT_NOT_PICKED_UP",
+          "event_time": "2026-05-07T11:35:00+08:00",
+          "legal_after": "AWAITING_CARRIER_PICKUP",
+          "result": "AT_RISK"
+        },
+        {
+          "event_type": "SHIPMENT_PICKED_UP",
+          "event_time": "2026-05-07T12:20:00+08:00",
+          "legal_after": "AT_RISK",
+          "result": "IN_FULFILLMENT"
+        },
+        {
+          "event_type": "SHIPMENT_DELIVERED",
+          "event_time": "2026-05-08T15:20:00+08:00",
+          "legal_after": "IN_TRANSIT",
+          "result": "RESOLVED"
+        }
+      ],
+      "explicitly_rejected": [
+        {
+          "sequence": [
+            "2026-05-07T11:35:00+08:00 SHIPMENT_NOT_PICKED_UP",
+            "2026-05-07T10:10:00+08:00 SHIPMENT_PICKED_UP"
+          ],
+          "expected_error": "INVALID_EVENT_TRANSITION",
+          "reason": "event_time must not move backward"
+        },
+        {
+          "sequence": [
+            "AWAITING_CARRIER_PICKUP",
+            "SHIPMENT_DELIVERED"
+          ],
+          "expected_error": "INVALID_EVENT_TRANSITION",
+          "reason": "delivery requires prior IN_TRANSIT"
+        }
+      ],
+      "evidence": [
+        "backend/main.py rejects event_time earlier than last_event_times[case_id].",
+        "backend/main.py rejects SHIPMENT_DELIVERED unless current shipment stage is IN_TRANSIT.",
+        "frontend/src/mockApi.test.ts rejects direct delivery and closes only after pickup then delivery.",
+        "docs/08-idempotency-and-ordering.md section 4 defines monotonic event_time and legal delivery transition."
+      ]
+    },
+    "no_frontend_reset_as_recovery": {
+      "status": "ready",
+      "rule": "Frontend must not reset local state to simulate recovery; recovery state comes from approve/shipment backend responses.",
+      "evidence": [
+        "frontend/src/App.tsx handleSelectCase clears stale UI decision while loading a case; it does not synthesize service recovery.",
+        "frontend/src/mockApi.ts resetMockState is limited to demo/test isolation and is not used as a production recovery path.",
+        "docs/04-responsibility-loop.md states event buttons call backend interfaces and do not directly modify responsibility state."
+      ],
+      "allowed_resets": [
+        "case switching clears stale decision/loading UI",
+        "test/demo isolation reset before a test case"
+      ],
+      "disallowed_resets": [
+        "resetting case_status to IN_FULFILLMENT after an error",
+        "clearing AT_RISK without a backend shipment response",
+        "clearing active_commitments without SHIPMENT_DELIVERED response"
+      ]
+    }
+  },
+  "verification": {
+    "npm_test": {
+      "working_directory": "frontend",
+      "command": "npm test",
+      "exit_code": 0,
+      "summary": "1 test file passed; 11 tests passed"
+    },
+    "npm_build": {
+      "working_directory": "frontend",
+      "command": "npm run build",
+      "exit_code": 0,
+      "summary": "TypeScript build and Vite production build succeeded"
+    }
+  },
+  "unlock_target": {
+    "batches": ["BATCH-31", "BATCH-32"],
+    "downstream_batches": ["BATCH-33", "BATCH-34"]
+  }
+}
