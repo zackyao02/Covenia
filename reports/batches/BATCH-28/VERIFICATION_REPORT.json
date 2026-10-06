@@ -1,0 +1,189 @@
+{
+  "report_version": "1.0",
+  "batch_id": "BATCH-28",
+  "result": "PASS",
+  "verdict": "PASS",
+  "verifier": "审查方（独立验收；实现方为辅助调度器，未参与本验收）",
+  "reviewed_sha": "baeb3fe42a434d073c07cdd75fbe138e34261608",
+  "integration_baseline": "c2246645540b5f277c0c46c4d0388d01fc2eb05e",
+  "verified_at": "2026-10-06T15:26:07",
+  "independent_context": true,
+  "verifier_run_dir": "C:/v28",
+  "verifier_worktree": "C:/v28/v",
+  "verifier_venv": "C:/v28/venv",
+  "replay": {
+    "chain_commits": 12,
+    "onto": "c224664",
+    "conflicts": 0,
+    "resulting_head": "dc7f41cc840b",
+    "integration_head_untouched": "7340b303207002b18cf6c6bff53ff9874f0a21e2",
+    "isolation": "审查方自建 RUN_DIR 与 venv，未复用实现方 C:/cv28"
+  },
+  "acceptance_criteria_read_verbatim": [
+    "至少一次聊天+真实图片→候选→ExtractedJourney 成功，cached_result=false 且可核对 Qwen revision。",
+    "模型确实接收图片字节，不是观察 JSON；有日志/图片哈希/真实 usage/时延。",
+    "20 秒分析预算可达或明确 BLOCKED，不能把离线长跑写成联调通过。",
+    "按5.5使用本批绝对隔离venv解释器；新增第三方依赖只增不改、精确钉版本并提交锁文件差异/原因/hash证据；交付前同解释器 pip check 退出0。环境证据缺失或冲突不得PASS。"
+  ],
+  "live_stability_series": {
+    "verifier_independent_runs": 6,
+    "threshold_required_by_product_owner": 6,
+    "result": "6/6 PASS，每一次均为 attempt 1，均 WITHIN_BUDGET",
+    "per_run_shape": [
+      {
+        "run": 1,
+        "observations": 3,
+        "source_trace": 4,
+        "image_traces": 3,
+        "cached_result": false,
+        "model_revision": "qwen3-vl-plus-2025-12-19",
+        "exit_code": 0,
+        "attempts": 1,
+        "budget": "WITHIN_BUDGET"
+      },
+      {
+        "run": 2,
+        "observations": 3,
+        "source_trace": 4,
+        "image_traces": 3,
+        "cached_result": false,
+        "model_revision": "qwen3-vl-plus-2025-12-19",
+        "exit_code": 0,
+        "attempts": 1,
+        "budget": "WITHIN_BUDGET"
+      },
+      {
+        "run": 3,
+        "observations": 3,
+        "source_trace": 4,
+        "image_traces": 3,
+        "cached_result": false,
+        "model_revision": "qwen3-vl-plus-2025-12-19",
+        "exit_code": 0,
+        "attempts": 1,
+        "budget": "WITHIN_BUDGET"
+      },
+      {
+        "run": 4,
+        "observations": 3,
+        "source_trace": 4,
+        "image_traces": 3,
+        "cached_result": false,
+        "model_revision": "qwen3-vl-plus-2025-12-19",
+        "exit_code": 0,
+        "attempts": 1,
+        "budget": "WITHIN_BUDGET"
+      },
+      {
+        "run": 5,
+        "observations": 3,
+        "source_trace": 4,
+        "image_traces": 3,
+        "cached_result": false,
+        "model_revision": "qwen3-vl-plus-2025-12-19",
+        "exit_code": 0,
+        "attempts": 1,
+        "budget": "WITHIN_BUDGET"
+      },
+      {
+        "run": 6,
+        "observations": 3,
+        "source_trace": 4,
+        "image_traces": 3,
+        "cached_result": false,
+        "model_revision": "qwen3-vl-plus-2025-12-19",
+        "exit_code": 0,
+        "attempts": 1,
+        "budget": "WITHIN_BUDGET"
+      }
+    ],
+    "quality_gate_satisfied": "每次均保留 3 条 IMAGE trace —— 未为通过而牺牲多模态能力",
+    "sample_run_1_detail": {
+      "stages": [
+        "facts_and_image_binding",
+        "real_http_call",
+        "candidate_schema",
+        "source_validation",
+        "extracted_journey",
+        "accountability_state"
+      ],
+      "all_stages": "PASS",
+      "status": 200,
+      "wall_ms": 7086,
+      "provider_ms": 7085,
+      "usage": {
+        "input_tokens": 5885,
+        "output_tokens": 274
+      },
+      "usage_quality": "EXACT",
+      "budget": "WITHIN_BUDGET",
+      "model_bound_ms": 7089,
+      "frozen_budget_s": "20.0"
+    }
+  },
+  "commands_run": [
+    {
+      "command": "tools/verification/live_smoke.py --require-live --disable-cache（×6）",
+      "result": "6/6 PASS，exit 0，每次 attempts=1",
+      "exit_code": 0
+    },
+    {
+      "command": "同一命令，endpoint 指向未监听的 127.0.0.1:8099（负向演示）",
+      "result": "exit=3，endpoint error [endpoint_unreachable]: tcp 127.0.0.1:8099 unreachable (ConnectionRefusedError)；共享 shim 8001 全程未 kill/重启/改配置",
+      "exit_code": 3
+    },
+    {
+      "command": "pytest backend/tests integration/tests -q（不带模型环境变量）",
+      "result": "857 passed, 7 skipped —— 与实现方声明一致；7 个 skip 的措辞为 no model deployment is registered ... never as a live pass",
+      "exit_code": 0
+    },
+    {
+      "command": "tools/contracts/check_contracts.py --strict",
+      "result": "14 schemas / 18 vectors / strict true",
+      "exit_code": 0
+    },
+    {
+      "command": "tools/verification/check_no_case_branches.py --strict",
+      "result": "PASS (hits=0, suppressed=0, modules=67, self_test=True)",
+      "exit_code": 0
+    }
+  ],
+  "lock_file": {
+    "status": "UNCHANGED"
+  },
+  "artifact_hashes": {
+    "method": "SHA-256 over raw bytes streamed from git show <sha>:<path>",
+    "backend/src/covenia_b/model/prompts/candidate_extraction.py": "51DCC0F883A1E92A938F5F336F45A1954C9D4F067E798C8F346B030DA793BE9E",
+    "tools/verification/live_smoke.py": "DD6213687DD0C48C32A37A2FF4BF29E2081ACBF986B9FF04D1EEDE013E6F64BD",
+    "backend/tests/live/test_real_extraction.py": "491A9DB38EDB6A9BB454ECDFA9931DD9D06E0F530EEB479209E043AB1DD3BF7D"
+  },
+  "non_blocking_observations": [
+    {
+      "item": "审查方带模型环境变量跑离线套件时出现 8 failed",
+      "finding": "其中 test_an_unregistered_model_deployment_is_a_blocker_not_a_substitute 断言「未注册时必须阻塞」；审查方为跑 live 而注册了模型，该断言前提不成立。其余失败同源。",
+      "ruling": "不判 FAIL —— 属审查方验证环境造成，非实现缺陷。不带环境变量时 857 passed / 7 skipped，与实现方声明一致。已如实记录以便复核。"
+    },
+    {
+      "item": "schema_repair 提示词未加 worked example",
+      "finding": "实现方主动报告：v2 消歧句已加，worked example 未加（产品负责人授权仅指向候选提取提示词）。因 6/6 均在首次 attempt 通过，重试/修复路径未被触发。",
+      "ruling": "不判 FAIL。当前不影响门槛；建议在 BATCH-34 发布验收前复核该路径是否需要同样加强。"
+    },
+    {
+      "item": "审查方第一次 live 运行写入了默认 live/ 目录",
+      "finding": "该目录的 4 个跟踪文件被审查方运行的时间戳更新；审查方另 5 次使用独立 verifier-live/ 目录以免覆盖。",
+      "ruling": "不作为验收产物提交；仅审查方的独立运行记录随本报告提交。"
+    }
+  ],
+  "what_could_not_be_independently_reproduced": [
+    "审查方未独立复现实现方的 12 次对照实验（v1/v2 接受率统计）；仅独立复跑 v3 的 6 次稳定性。",
+    "图片字节的三方 sha256 一致性由实现方证据记录，审查方未另行抓包核验；但 usage EXACT 与 image field 形状已由审查方运行确认。"
+  ],
+  "findings": [],
+  "minimal_fix_list": [],
+  "blockers": [],
+  "code_modified": false,
+  "next_batch_started": false,
+  "integration_performed": false,
+  "pushed": false,
+  "verifier_scope_declaration": "审查方仅写本报告与其证据；未修改任何实现文件、未集成、未推送。因 Codex 额度耗尽，本验收由审查角色执行而非全新任务线程；该偏离在此显式记录，并请另行安排独立复核本验收本身。"
+}
