@@ -1,0 +1,380 @@
+{
+  "artifact": "reports/batches/BATCH-28/REPAIR_REPORT.json",
+  "batch_id": "BATCH-28",
+  "report_kind": "REPAIR_REPORT",
+  "round": "repair-after-review-rejection",
+  "statement": "本批由辅助调度器实现，非独立实现方；验收须由他方完成。",
+  "statement_en": "This batch was implemented by the auxiliary dispatcher and is not an independent implementation; verification must be performed by another party.",
+  "verification_report_written": false,
+  "verification_report_note": "reports/batches/BATCH-28/VERIFICATION_REPORT.json is the independent verifier's file and was NOT written by this repair.",
+
+  "repository": {
+    "worktree": "C:\\Users\\WONG Tsun Ming\\Desktop\\欧莱雅黑客松\\w28",
+    "branch": "codex/covenia-batch-28-aux",
+    "head_before_repair": "f76dd1c3f9de1bc548d8c11841b25ad733533c10",
+    "fix_commit_sha": "SEE_GIT_LOG_AFTER_COMMIT",
+    "working_tree_state_at_start": "clean"
+  },
+
+  "environment": {
+    "interpreter": "C:\\cv28\\venv\\Scripts\\python.exe",
+    "python_version": "3.13.5",
+    "isolated_venv": true,
+    "include_system_site_packages": "false",
+    "venv_longest_path_ok": true,
+    "temp_dir": "C:\\cv28\\tmp",
+    "endpoint": "http://127.0.0.1:8001/v1/chat/completions",
+    "deployment_id": "ws-czn4i6tkzgc4so32",
+    "model_revision_requested": "qwen3-vl-plus-2025-12-19",
+    "shared_shim_untouched": true,
+    "shim_note": "the shared model shim on 127.0.0.1:8001 (PID 24772) was never killed, restarted, or reconfigured"
+  },
+
+  "root_cause": {
+    "verdict": "A",
+    "verdict_label": "prompt does not require promise-level trace",
+    "verdict_zh": "提示词未要求承诺级 trace —— 需改 prompt，属白名单外",
+    "not_because_of": {
+      "B": "校验器与契约一致，且其要求是可满足的：反事实证明仅补 2 条 promise trace 即通过（见 counterfactual_proof）",
+      "C": "请求构造/输入装配经逐字节核对完全正确（见 request_construction_verified）",
+      "D": "无其他因素"
+    },
+    "owner_of_the_two_out_of_scope_files": "BATCH-11",
+    "owner_evidence": "batches.json:2035-2044 lists backend/src/covenia_b/model/prompts/**, backend/src/covenia_b/model/extraction.py and backend/src/covenia_b/model/source_validation.py as BATCH-11 allowed_paths",
+    "plan_rule_that_forbids_self_repair": [
+      "MASTER_PLAN.md:3637 — 「仅调整测试/调用参数在既定协议范围内；模型质量问题回 BATCH-10/11 所属修复，不在本批偷偷改 Prompt 或规则。」",
+      "MASTER_PLAN.md:3682 — 「发现根因属于其他批则提交最小修复请求，不越界改。」"
+    ],
+    "mechanism": {
+      "validator_check": "backend/src/covenia_b/model/source_validation.py:103-111",
+      "validator_requirement": "set(traces_by_field) must equal {observations[i] for each observation} ∪ {candidate_promise_texts[j] for each promise}",
+      "model_behaviour": "traces every observation, never traces any candidate promise",
+      "prompt_instruction_verbatim": "Every observation and candidate promise needs a source_trace entry.",
+      "prompt_instruction_location": "backend/src/covenia_b/model/prompts/candidate_extraction.py:37",
+      "prompt_schema_example_location": "backend/src/covenia_b/model/prompts/candidate_extraction.py:26-35",
+      "prompt_schema_example_field_line": "\"field\": \"observations[0] or candidate_promise_texts[0]\",",
+      "why_the_model_misses_it": [
+        "指令原文是抽象的「Every ... needs an entry」，没有说明 field 必须逐条为 observations[N] / candidate_promise_texts[M] 的精确编号引用；",
+        "同一句把「an entry」写成单数，示意一字段一条，模型据 observation 数量给了 4 条恰好一一对应的 trace；",
+        "schema 示例里 field 的值是单条字面量 \"observations[0] or candidate_promise_texts[0]\"，无法推出「两个集合都要逐条覆盖」；",
+        "本批真实输出中 observations[2]/[3] 与两条 promise 文本高度重合，模型很可能据此认为 observation 的 trace 已经「覆盖」了承诺。"
+      ]
+    },
+    "evidence_paths": [
+      "reports/batches/BATCH-28/live/raw-model-capture.redacted.json",
+      "reports/batches/BATCH-28/live/model-output.redacted.json",
+      "reports/batches/BATCH-28/DIAGNOSTIC.json"
+    ]
+  },
+
+  "diagnostic_answers": {
+    "what_source_trace_entries_did_the_model_return": {
+      "count": 4,
+      "fields": ["observations[0]", "observations[1]", "observations[2]", "observations[3]"],
+      "sources": [
+        {"field": "observations[0]", "source_type": "IMAGE", "source_id": "S00001_IMG_PUMP_DETAIL"},
+        {"field": "observations[1]", "source_type": "IMAGE", "source_id": "S00001_IMG_PACKAGE_CONTEXT"},
+        {"field": "observations[2]", "source_type": "CHAT", "source_id": "36199788469718.PNM"},
+        {"field": "observations[3]", "source_type": "CHAT", "source_id": "22703823958720.PNM"}
+      ],
+      "promise_traces_returned": 0
+    },
+    "how_many_candidate_promises": 2,
+    "was_the_model_required_to_trace_each_promise": {
+      "by_the_validator": true,
+      "by_the_validator_location": "backend/src/covenia_b/model/source_validation.py:103-111",
+      "by_the_prompt_explicitly": false,
+      "by_the_prompt_implicitly": "yes, but only via the abstract sentence at line 37, which the model does not operationalise into per-promise field references"
+    },
+    "prompt_source_trace_instruction_verbatim": "Every observation and candidate promise needs a source_trace entry. Cite only supplied source identifiers.",
+    "schema_repair_retry_shape": {
+      "does_the_tool_retry": false,
+      "note": "tools/verification/live_smoke.py calls provider.extract_with_metadata once per attempt and never uses BoundedCandidateExtractor, so the schema-repair prompt at model/prompts/candidate_extraction.py:49-63 was NEVER exercised by this batch. The two attempts in one tool run are two independent fresh calls with the same initial prompt, not an initial+repair pair.",
+      "observed_shape_across_4_real_calls": "identical structure every time: schema fully valid (adapter parsed, candidate_schema=PASS), 4 observations, 2 promises, exactly 4 traces covering observations only",
+      "object_instead_of_array_was_not_reproduced": true
+    }
+  },
+
+  "cross_line_remap_effect_on_this_defect": {
+    "event": "CROSS-LINE-FIXTURE-EVIDENCE-ID-MISMATCH-20261006",
+    "remap_affects_source_ids_in_model_input": true,
+    "remap_detail": "fixtures/demo-cases.json declared S00001_IMG_OVERVIEW / S00001_IMG_PUMP / S00001_IMG_PACKAGE; the accepted registry handoff/a/images-manifest.json registers S00001_IMG_PRODUCT_OVERVIEW / S00001_IMG_PUMP_DETAIL / S00001_IMG_PACKAGE_CONTEXT. live_smoke.py binds by file_name and sends the registry's IDs.",
+    "does_it_cause_the_trace_defect": false,
+    "why_not": [
+      "the three image evidence IDs the model had to cite appear verbatim in the [trusted_source_ids] header of the request text;",
+      "the model cited two of them correctly (S00001_IMG_PUMP_DETAIL, S00001_IMG_PACKAGE_CONTEXT), proving it could read and resolve them;",
+      "the defect is confined to the candidate_promise_texts collection; no image trace is missing in any of the 4 real calls."
+    ]
+  },
+
+  "request_construction_verified": {
+    "verdict": "correct",
+    "method": "rebuilt with production code only (CaseAssembler + ManifestImageResolver + FactLoader + build_candidate_model_input) and compared against the byte-captured wire request",
+    "provider_text_chars": 1079,
+    "provider_text_lines": 9,
+    "declared_source_ids": 12,
+    "all_agent_messages_present_verbatim": true,
+    "agent_messages": [
+      "[message_id=51831669257761.PNM ... speaker=AGENT] 亲亲抱歉！麻烦拍下破损部位的照片发给测试客服，为您核实换货哈~",
+      "[message_id=22703823958720.PNM ... speaker=AGENT] 收到亲，确认属包装破损，为您登记换货：先给您发全新的，收到后用包裹里的面单把坏的寄回就好，运费我们出~",
+      "[message_id=36199788469718.PNM ... speaker=AGENT] 换货单已创建，48小时内发出，给您带来不便啦~"
+    ],
+    "promise_quotes_resolve_to_agent_messages": {
+      "p0_in_36199788469718.PNM": true,
+      "p1_in_22703823958720.PNM": true,
+      "note": "both promise quotations used by the model are genuine substrings of AGENT messages (NFKC/casefold/whitespace-normalised containment), so PROMISE_NOT_AGENT_QUOTE is not at issue"
+    },
+    "conclusion": "the model was shown complete and correct input; nothing required for a promise trace was missing from the request"
+  },
+
+  "counterfactual_proof": {
+    "method": "took the model's verbatim candidate from the byte-verified capture, appended ONLY the two missing promise traces, and re-ran validate_candidate_sources with the production SanitizedModelInput",
+    "unmodified_candidate_result": "REJECTED: MISSING_FIELD_TRACE",
+    "candidate_plus_two_promise_traces_result": "ACCEPTED",
+    "accepted_summary": "SourceValidationSummary(trusted_source_count=11, traced_field_count=6, agent_quote_count=2, image_observation_count=2)",
+    "conclusion": "trace coverage is the ONLY unmet condition. Every other rule — image binding, source-type match, AGENT-quote containment, duplicate detection, image-instruction exclusion — already passes with the model's real output.",
+    "implication": "the defect is a prompt-wording gap, not a validator that demands the impossible"
+  },
+
+  "four_criteria": {
+    "criterion_1_real_chat_plus_image_to_extracted_journey_uncached": {
+      "result": "NOT_ACHIEVED",
+      "blocker": "MISSING_FIELD_TRACE",
+      "extracted_journey_built": false,
+      "cached_result": null,
+      "cached_result_note": "model_metadata is absent by design on a rejected run; the tool must not publish an ExtractedJourney it never built",
+      "qwen_revision_checkable": true,
+      "qwen_revision_echoed": "qwen3-vl-plus",
+      "qwen_model_revision_echoed": "qwen3-vl-plus-2025-12-19",
+      "detail": "HTTP 200, schema-valid candidate, then the server-side source validator refuses it. This is the same outcome as the previous round and is now root-caused."
+    },
+    "criterion_2_model_received_image_bytes_with_real_usage_and_latency": {
+      "result": "PASS",
+      "request_bytes": 360282,
+      "content_parts": ["text", "image_url", "image_url", "image_url"],
+      "image_part_count": 3,
+      "observation_json_sent_as_image": false,
+      "image_sha256_set_equals_accepted_registry": true,
+      "image_sha256s": [
+        "e2c6bbd230f906f113d75f2f582e778b6e79aea37544c2383f1ffda15a5295d5",
+        "4709d7529803846d4ff4e123bfcc034d420449ae23923cb54468be573bd8cfc7",
+        "c734bfb5a70ffa39e10b2535dc8321eace3c1fb358293fa22b590b9f7b5836bd"
+      ],
+      "image_bytes_match_manifest_and_disk": true,
+      "upstream_usage_verbatim": {
+        "prompt_tokens": 5589,
+        "completion_tokens": 373,
+        "total_tokens": 5962,
+        "prompt_tokens_details": {"image_tokens": 4569, "text_tokens": 1020, "cached_tokens": 0}
+      },
+      "image_tokens_prove_real_images": true,
+      "usage_status_all_attempts": "EXACT",
+      "independently_rederived_checks_passed": "27/28"
+    },
+    "criterion_3_twenty_second_budget": {
+      "result": "FAIL_IN_THIS_ROUND",
+      "recorded_model_bound_ms": 20810,
+      "frozen_budget_ms": 20000,
+      "recorded_status": "BUDGET_EXCEEDED",
+      "per_attempt_provider_ms": [10154, 10650],
+      "each_attempt_individually_within_budget": true,
+      "budget_is_cumulative_over_attempts": true,
+      "second_defect_found": true,
+      "detail": "see second_defect below — the tool sums every attempt into model_bound_ms, so two ~10 s calls exceed the 20 s verdict even though no single request did"
+    },
+    "negative_control_dead_port_must_exit_non_zero": {
+      "result": "PASS",
+      "preflight_path": {"endpoint": "http://127.0.0.1:8099/v1/chat/completions", "exit_code": 3, "status": "ENDPOINT_UNAVAILABLE"},
+      "client_side_path": {"flags": "--require-live --disable-cache --skip-endpoint-probe", "exit_code": 3, "status": "ENDPOINT_UNAVAILABLE", "last_outcome": "ENDPOINT_TIMEOUT"},
+      "shim_not_killed": true
+    }
+  },
+
+  "second_defect_budget_accounting": {
+    "in_whitelist": true,
+    "file": "tools/verification/live_smoke.py",
+    "blocks_the_green_path": true,
+    "blocking_reason": "even after the prompt is fixed, the default --attempts 2 (DEFAULT_ATTEMPTS, line 101) would accumulate two ~10 s calls into model_bound_ms and still report BUDGET_EXCEEDED",
+    "measurement_sites": {
+      "start": "tools/verification/live_smoke.py:1046 — model_bound_started = time.perf_counter()",
+      "stop": "tools/verification/live_smoke.py:1072 — run.model_bound_ms = round((time.perf_counter() - model_bound_started) * 1000)",
+      "verdict_use": "tools/verification/live_smoke.py:1074-1079 and backend/tests/live/test_real_extraction.py:258"
+    },
+    "frozen_semantics": {
+      "docs_reference": "docs/05-api-and-ui.md freezes the 20 s analysis budget",
+      "production_enforcement": "covenia_b.api.analyze.DEFAULT_ANALYSIS_TIMEOUT_SECONDS bounds ONE analysis request",
+      "extractor_enforcement": "BoundedCandidateExtractor(total_timeout_seconds=...) bounds one initial call plus at most one schema repair (backend/src/covenia_b/model/extraction.py:129-138)",
+      "therefore": "the 20 s verdict is a per-request bound; summing N independent measurement attempts is not the same measurement"
+    },
+    "decision": "NOT_FIXED_IN_THIS_REPAIR",
+    "why_not_fixed": "it is a measurement-semantics change to a tracked deliverable's evidence, and fixing it cannot turn criterion 1 green while the prompt gap is open. Per the repair instruction this was reported instead of changed unilaterally; it is fully inside the whitelist and can be applied immediately once authorised.",
+    "proposed_minimal_change": {
+      "approach": "record the budget verdict from the accepted (or single) attempt's model-bound time, and keep the whole-run cumulative value as a separately named field",
+      "line_1046": "keep model_bound_started as the whole-run accumulator and add per-attempt start/stop around each _run_attempt call",
+      "line_1060": "after appending the AttemptRecord, store the attempt's model-bound ms on the record (a new AttemptRecord field, e.g. model_bound_ms)",
+      "line_1072_to_1079": "set run.model_bound_ms to the accepted attempt's model_bound_ms (or the max single-attempt model-bound time when rejected); add document['budget']['model_bound_ms_total_run'] = the cumulative value",
+      "test_side": "backend/tests/live/test_real_extraction.py:258 stays valid unchanged, because model_bound_ms then means what the frozen budget means",
+      "risk": "LOW — it changes only which number the budget verdict reads; it cannot manufacture an accepted candidate, and every attempt's raw wall/provider ms stay in the artifact",
+      "blast_radius": "tools/verification/live_smoke.py, backend/tests/live/test_real_extraction.py (only if the field name is surfaced), reports/batches/BATCH-28/** regenerated by a re-run"
+    }
+  },
+
+  "reproduction_evidence": {
+    "real_calls_in_this_round": 4,
+    "all_calls_http_200": true,
+    "all_calls_usage_exact": true,
+    "all_calls_rejected_with": "MISSING_FIELD_TRACE",
+    "trace_shape_identical_every_call": true,
+    "provider_request_ids": [
+      {
+        "source": "reports/batches/BATCH-28/live/model-output.redacted.json attempt 1",
+        "id": "chatcmpl-b0ac6129-d449-9896-b1d7-32b5834b34e1"
+      },
+      {
+        "source": "reports/batches/BATCH-28/live/model-output.redacted.json attempt 2",
+        "id": "chatcmpl-48650709-d121-9ac9-bf04-090e8a11ef84"
+      },
+      {
+        "source": "byte-verified capture run (diagnostic), attempt 1",
+        "id": "chatcmpl-5123d499-b8e2-96f9-9702-a50208b1cfba"
+      },
+      {
+        "source": "live pytest run, attempt 1",
+        "id": "chatcmpl-ed465f80-395b-94a9-99cf-299a574e62a6"
+      }
+    ],
+    "provider_request_ids_note": "every id is verbatim from the upstream response; the pytest-run id appears in that run's own redacted artifact"
+  },
+
+  "byproducts_required_by_the_reviewer": [
+    {
+      "id": 1,
+      "claim": "live 通路是真的（HTTP 200 + 真实 usage），不是空跑",
+      "status": "CONFIRMED",
+      "evidence": "4 real HTTP 200 responses this round with upstream provider request ids and EXACT usage (input 5589; output 373/400/416); the byte-transparent capture independently reproduced request_sha256 and response_sha256 identical to the tool's own records, so the captured bytes ARE the bytes the tool exchanged"
+    },
+    {
+      "id": 2,
+      "claim": "来源校验确实在拦（MISSING_FIELD_TRACE）—— 防线有效，不是摆设",
+      "status": "CONFIRMED",
+      "evidence": "every real candidate was refused with SourceValidationCode.MISSING_FIELD_TRACE at backend/src/covenia_b/model/source_validation.py:110-111; the counterfactual shows the check is precise rather than blanket, since adding exactly the two missing traces flips the verdict to ACCEPTED"
+    }
+  ],
+
+  "byproducts_note": "These two facts are the review-required byproducts of this batch and are recorded here verbatim, not as a verification verdict.",
+
+  "artifacts": {
+    "reports/batches/BATCH-28/live/model-output.redacted.json": {"bytes": 14101, "sha256": "86c4332ae0f256b2ea1ca5ee2df3a4e0ef9cbf9af849879a473643db86c83327"},
+    "reports/batches/BATCH-28/live/governance.redacted.jsonl": {"bytes": 4941, "sha256": "cb26fa03ef12b9109c41c3d26369a26c4aa36a4eb260f37a66d0eb1192f9871b"},
+    "reports/batches/BATCH-28/live/environment.json": {"bytes": 6142, "sha256": "dffbf8609cd183f80942a67c8b1619c1f23f064185f65db84f3419ac9d8d9734"},
+    "reports/batches/BATCH-28/live/raw-model-capture.redacted.json": {"bytes": 8971, "sha256": "4f5524c2039696f8bfab727c1303972a0f80eecb28bbec00947f5f1c9b3b799c"},
+    "reports/batches/BATCH-28/environment.json": {"bytes": 6142, "sha256": "8350a8594a451171cf0719306c8e0401fdb6664b8eb469f4f916a4da3c4b16d3"},
+    "reports/batches/BATCH-28/DIAGNOSTIC.json": {"note": "written by this repair"}
+  },
+
+  "dependency_lock": {
+    "path": "backend/requirements-dev.lock",
+    "change_type": "UNCHANGED",
+    "committed_blob_sha256": "602c268b684d60e2d1b8bbfc6820663a622eb24093144a87c111f43d3c06fdae",
+    "committed_blob_bytes": 725,
+    "worktree_sha256_canonical_lf": "602c268b684d60e2d1b8bbfc6820663a622eb24093144a87c111f43d3c06fdae",
+    "worktree_sha256_raw_bytes": "a7524fec02641fe9edcf300be27ee17969ca1188630d3d411162d6bba26d447f",
+    "worktree_bytes": 759,
+    "appended_entries": [],
+    "raw_diff": "none",
+    "git_status": "no modification reported for backend/requirements-dev.lock",
+    "reason": "BATCH-28 adds no third-party dependency; the tool and the live test use only the standard library plus already pinned project dependencies"
+  },
+
+  "tool_verdicts_this_round": [
+    {
+      "command": "python tools/verification/live_smoke.py --require-live --disable-cache --output reports/batches/BATCH-28/live",
+      "exit_code": 4,
+      "verdict": "BUDGET_EXCEEDED",
+      "note": "both attempts were SOURCE_REJECTED; the cumulative model_bound_ms of 20810 classified the run as budget-exceeded before the output-rejected status could be reported"
+    },
+    {
+      "command": "python tools/verification/live_smoke.py --require-live --disable-cache --attempts 1 --output <diagnostic dir>",
+      "exit_code": 1,
+      "verdict": "MODEL_OUTPUT_REJECTED",
+      "note": "single-attempt run inside the budget (8980 ms), rejected with MISSING_FIELD_TRACE"
+    },
+    {
+      "command": "python -m pytest tests/live/test_real_extraction.py -q -m live",
+      "exit_code": 1,
+      "verdict": "2 failed, 5 passed",
+      "failed_tests": [
+        "test_real_endpoint_answered_and_the_run_stayed_inside_the_budget",
+        "test_accepted_candidate_is_uncached_and_bound_to_the_locked_revision"
+      ],
+      "note": "the failing test text names rejection=MISSING_FIELD_TRACE as the reason — the failure is the finding, not something routed around"
+    },
+    {
+      "command": "python tools/verification/live_smoke.py --require-live --disable-cache --endpoint http://127.0.0.1:8099/v1/chat/completions --timeout-seconds 2",
+      "exit_code": 3,
+      "verdict": "ENDPOINT_UNAVAILABLE",
+      "note": "negative control, TCP preflight path"
+    },
+    {
+      "command": "python tools/verification/live_smoke.py --require-live --disable-cache --skip-endpoint-probe --endpoint http://127.0.0.1:8099/v1/chat/completions --timeout-seconds 2",
+      "exit_code": 3,
+      "verdict": "ENDPOINT_UNAVAILABLE",
+      "note": "negative control, client-side failure path"
+    }
+  ],
+
+  "precise_out_of_scope_repair_proposal": {
+    "authorisation_required_from": "产品负责人 / 调度方；文件归属 BATCH-11",
+    "recommended_option": "OPTION_1_PROMPT",
+    "why_recommended": "the validator is correct and precise; weakening it would remove a real defence. The model's output is otherwise flawless, so making the trace requirement operational in the prompt is the minimal, highest-leverage change.",
+    "options": [
+      {
+        "id": "OPTION_1_PROMPT",
+        "title": "让提示词把「逐条 field 引用」写清楚（推荐）",
+        "file": "backend/src/covenia_b/model/prompts/candidate_extraction.py",
+        "lines": "26-35 (schema 示例) 与 37 (指令句)",
+        "minimal_change": [
+          "第 29 行 field 的值改为按集合编号的占位符：\"observations[N]\" → 明确 observations 的每一条用 observations[0]、observations[1] ……，candidate_promise_texts 的每一条用 candidate_promise_texts[0]、candidate_promise_texts[1] ……",
+          "第 37 行改为可操作的计数式表述，例如：\"Emit one source_trace entry for EVERY element of observations and EVERY element of candidate_promise_texts. If observations has 4 elements and candidate_promise_texts has 2, source_trace must contain 6 entries with fields observations[0..3] and candidate_promise_texts[0..1]. A trace for an observation does not also cover a promise.\"",
+          "同一修改需同步到第 49-63 行的 SCHEMA_REPAIR_SYSTEM_PROMPT，否则两条提示词的契约仍不一致",
+          "prompt_manifest() 的 candidate_prompt_sha256 / schema_repair_prompt_sha256 会随之改变（自动计算，无需手工改），需要同步更新持有该哈希的下游记录"
+        ],
+        "reason": "指令抽象 + 示例单数化，模型据 observation 数量给出恰好一一对应的 4 条 trace，只覆盖 observations 集合；把「两个集合都要逐条覆盖」写成可计数的硬要求即可闭合契约。",
+        "risk": "MEDIUM-LOW — 提示词哈希变化会让 prompt_version 相关记录需要同步；模型仍需保持承诺为 AGENT 逐字引用，但该行为在 4 次真实调用中已稳定正确。",
+        "blast_radius": "backend/src/covenia_b/model/prompts/candidate_extraction.py；prompt_manifest() 哈希的下游引用；BATCH-11 的 tests/model/test_extraction.py 与 test_sources.py；BATCH-28 需重跑取新证据"
+      },
+      {
+        "id": "OPTION_2_VALIDATOR",
+        "title": "放宽校验器：允许 observation 级 trace 覆盖同一引文的 promise",
+        "file": "backend/src/covenia_b/model/source_validation.py",
+        "lines": "103-111",
+        "minimal_change": "在期望集合里允许 candidate_promise_texts[j] 由一个已 trace 且引文包含该 promise 的 observations[i] 满足",
+        "reason": "若产品判断「承诺级独立 trace」不是必需的防线强度，可这样降低契约要求",
+        "risk": "HIGH — 会削弱来源校验的严格性：promise 将不再拥有独立的来源绑定，promise 与 observation 的证据链会合并",
+        "recommendation": "NOT_RECOMMENDED",
+        "blast_radius": "source_validation.py、依赖其严格性的安全测试与负向用例、BATCH-11 的 test_sources.py"
+      },
+      {
+        "id": "OPTION_3_SERVICE",
+        "title": "在服务层把 model/prompts 与 model/source_validation 纳入 BATCH-28 白名单",
+        "minimal_change": "修改 MASTER_PLAN.md / batches.json 的批次白名单",
+        "risk": "流程风险：白名单文件本身受保护，需产品负责人裁决",
+        "recommendation": "仅在调度方希望本批自行修复时采用；否则保持职责分离"
+      }
+    ]
+  },
+
+  "open_items_for_the_dispatcher": [
+    "授权 BATCH-11 按 OPTION_1_PROMPT 修改提示词（含 schema-repair 变体），然后 BATCH-28 重跑取新证据",
+    "授权或在下一轮安排 second_defect_budget_accounting 的口径修正，否则修好提示词后默认 2 次 attempt 仍会 BUDGET_EXCEEDED",
+    "确认 CROSS-LINE-FIXTURE-EVIDENCE-ID-MISMATCH-20261006 仍由 A 线持有（本批只能用 file_name 绑定并如实记录 remap）"
+  ],
+
+  "not_done_intentionally": [
+    "未修改 backend/src/covenia_b/model/prompts/candidate_extraction.py",
+    "未修改 backend/src/covenia_b/model/source_validation.py",
+    "未修改 schemas/**、domain/**、api/**、services/**、fixtures/**、计划文件、CLAUDE*.md",
+    "未写 reports/batches/BATCH-28/VERIFICATION_REPORT.json",
+    "未做任何验收结论"
+  ]
+}

@@ -1,0 +1,137 @@
+{
+  "artifact": "reports/batches/BATCH-28/live/raw-model-capture.redacted.json",
+  "batch_id": "BATCH-28",
+  "byte_identity_proof": {
+    "note": "代理测得的 request/response 摘要与 live_smoke 在同一运行中记录的摘要完全一致，因此本文件中的模型原始输出就是工具实际收到的那一份。",
+    "request_bytes": 360282,
+    "request_sha256": "db0383f99f3bb047d3bf82e25314c62fe812dcf02369143ba398e7c0187c22ed",
+    "response_bytes": 2056,
+    "response_sha256": "6df1455a152de4140286a659004ad204c63d3694ea68d95a24031830b41f78e4",
+    "upstream_status": 200
+  },
+  "capture_method": {
+    "how": "字节透明代理：本机 127.0.0.1:8002 原样转发到已注册端点 127.0.0.1:8001，不修改任何请求/响应字节，只落盘两侧原始字节及其 SHA256。",
+    "redaction": "未写入任何凭据。请求体中不含 Authorization 头（未设 COVENIA_MODEL_API_KEY）；图片字节只保留 SHA256 与长度，不落盘。",
+    "script": "scratch-only, outside the repository (C:/cv28/diag/capture_proxy.py)",
+    "why_not_edit_the_tool": "tools/verification/live_smoke.py 是本批受控交付物；用代理抓包不改变线上字节，因此可以把代理测得的摘要与工具自己记录的摘要直接比对。"
+  },
+  "captured_at": "2026-10-06T06:37:33.186265+00:00",
+  "finding": "模型的 JSON 结构合法（adapter 解析通过、candidate_schema=PASS），observations 每条都有 trace，但 candidate_promise_texts 一条 trace 都没有。source_validation.py:103-111 要求每个 observation 与每条 promise 各有一条 trace，因此实际 trace 集合 != 期望集合，抛出 MISSING_FIELD_TRACE。",
+  "model_identity_echoed_by_upstream": {
+    "finish_reason": "stop",
+    "model": "qwen3-vl-plus",
+    "model_revision": "qwen3-vl-plus-2025-12-19",
+    "provider_request_id": "chatcmpl-5123d499-b8e2-96f9-9702-a50208b1cfba"
+  },
+  "purpose": "诊断用原始模型输出留存。上一轮交付只保留了 AttemptRecord 的结构化字段，没有留下模型的原始 JSON 文本，因此 MISSING_FIELD_TRACE 的根因无法从产物直接判定。本文件补齐该缺口。",
+  "raw_model_output_parsed": {
+    "candidate_promise_text_count": 2,
+    "candidate_promise_texts": [
+      "换货单已创建，48小时内发出",
+      "先给您发全新的，收到后用包裹里的面单把坏的寄回就好，运费我们出"
+    ],
+    "candidate_promises_have_no_trace": true,
+    "keys": [
+      "candidate_promise_texts",
+      "observations",
+      "source_trace"
+    ],
+    "observation_count": 4,
+    "observations": [
+      "The pump head of the foundation bottle is visibly cracked and damaged, with foundation product oozing from the fracture.",
+      "The cardboard packaging box shows a crushed corner, indicating possible transit damage.",
+      "The agent stated: '换货单已创建，48小时内发出' (The replacement order has been created and will be shipped within 48 hours).",
+      "The agent previously stated: '先给您发全新的，收到后用包裹里的面单把坏的寄回就好，运费我们出' (We will first send you a brand-new one; after you receive it, please return the defective item using the return label included in the package—we cover the shipping cost)."
+    ],
+    "source_trace": [
+      {
+        "field": "observations[0]",
+        "source_id": "S00001_IMG_PUMP_DETAIL",
+        "source_type": "IMAGE"
+      },
+      {
+        "field": "observations[1]",
+        "source_id": "S00001_IMG_PACKAGE_CONTEXT",
+        "source_type": "IMAGE"
+      },
+      {
+        "field": "observations[2]",
+        "source_id": "36199788469718.PNM",
+        "source_type": "CHAT"
+      },
+      {
+        "field": "observations[3]",
+        "source_id": "22703823958720.PNM",
+        "source_type": "CHAT"
+      }
+    ],
+    "source_trace_count": 4,
+    "source_trace_expected_fields": [
+      "candidate_promise_texts[0]",
+      "candidate_promise_texts[1]",
+      "observations[0]",
+      "observations[1]",
+      "observations[2]",
+      "observations[3]"
+    ],
+    "source_trace_missing_fields": [
+      "candidate_promise_texts[0]",
+      "candidate_promise_texts[1]"
+    ],
+    "source_trace_traced_fields": [
+      "observations[0]",
+      "observations[1]",
+      "observations[2]",
+      "observations[3]"
+    ],
+    "source_trace_unexpected_fields": []
+  },
+  "raw_model_output_verbatim": "{\n  \"observations\": [\n    \"The pump head of the foundation bottle is visibly cracked and damaged, with foundation product oozing from the fracture.\",\n    \"The cardboard packaging box shows a crushed corner, indicating possible transit damage.\",\n    \"The agent stated: '换货单已创建，48小时内发出' (The replacement order has been created and will be shipped within 48 hours).\",\n    \"The agent previously stated: '先给您发全新的，收到后用包裹里的面单把坏的寄回就好，运费我们出' (We will first send you a brand-new one; after you receive it, please return the defective item using the return label included in the package—we cover the shipping cost).\"\n  ],\n  \"source_trace\": [\n    {\n      \"field\": \"observations[0]\",\n      \"source_type\": \"IMAGE\",\n      \"source_id\": \"S00001_IMG_PUMP_DETAIL\"\n    },\n    {\n      \"field\": \"observations[1]\",\n      \"source_type\": \"IMAGE\",\n      \"source_id\": \"S00001_IMG_PACKAGE_CONTEXT\"\n    },\n    {\n      \"field\": \"observations[2]\",\n      \"source_type\": \"CHAT\",\n      \"source_id\": \"36199788469718.PNM\"\n    },\n    {\n      \"field\": \"observations[3]\",\n      \"source_type\": \"CHAT\",\n      \"source_id\": \"22703823958720.PNM\"\n    }\n  ],\n  \"candidate_promise_texts\": [\n    \"换货单已创建，48小时内发出\",\n    \"先给您发全新的，收到后用包裹里的面单把坏的寄回就好，运费我们出\"\n  ]\n}",
+  "request_shape": {
+    "content_part_types": [
+      "text",
+      "image_url",
+      "image_url",
+      "image_url"
+    ],
+    "image_bytes_embedded_as_data_urls_not_paths": true,
+    "image_part_byte_lengths": [
+      71574,
+      66764,
+      129230
+    ],
+    "image_part_count": 3,
+    "image_part_sha256s": [
+      "e2c6bbd230f906f113d75f2f582e778b6e79aea37544c2383f1ffda15a5295d5",
+      "4709d7529803846d4ff4e123bfcc034d420449ae23923cb54468be573bd8cfc7",
+      "c734bfb5a70ffa39e10b2535dc8321eace3c1fb358293fa22b590b9f7b5836bd"
+    ],
+    "metadata": {
+      "prompt_version": "candidate-extraction-v1",
+      "run_id": "qwen-bd86e87b3ed84373b2b3a400464573ef"
+    },
+    "model": "qwen3-vl-plus",
+    "model_revision": "qwen3-vl-plus-2025-12-19",
+    "observation_json_sent_as_image": false,
+    "observation_json_statement": "请求里没有任何 observation JSON、候选或派生标签；只有一个 text part（脱敏聊天文本）和三个 image_url data part（真实 JPEG 字节）。",
+    "response_format": {
+      "type": "json_object"
+    },
+    "text_part_chars": 1079
+  },
+  "statement": "本批由辅助调度器实现，非独立实现方；验收须由他方完成。 This is implementation diagnostic evidence, not a verification verdict.",
+  "the_model_input_text_verbatim": "[trusted_source_ids] [\"6920185815517983396\",\"20974795108539.PNM\",\"51831669257761.PNM\",\"80525870445254.PNM\",\"22703823958720.PNM\",\"94357468399952.PNM\",\"36199788469718.PNM\",\"DEMO_AUG_MSG_001\",\"BH919209358357\",\"S00001_IMG_PRODUCT_OVERVIEW\",\"S00001_IMG_PUMP_DETAIL\",\"S00001_IMG_PACKAGE_CONTEXT\"]\norder_id=6920185815517983396\n[message_id=20974795108539.PNM timestamp=2026-05-05T10:18:45+08:00 speaker=CONSUMER] 你好，收到的粉底液泵头是坏的，按不出来东西，急\n[message_id=51831669257761.PNM timestamp=2026-05-05T10:20:59+08:00 speaker=AGENT] 亲亲抱歉！麻烦拍下破损部位的照片发给测试客服，为您核实换货哈~\n[message_id=80525870445254.PNM timestamp=2026-05-05T10:21:38+08:00 speaker=CONSUMER] 喏，图发你了\n[message_id=22703823958720.PNM timestamp=2026-05-05T10:24:13+08:00 speaker=AGENT] 收到亲，确认属包装破损，为您登记换货：先给您发全新的，收到后用包裹里的面单把坏的寄回就好，运费我们出~\n[message_id=94357468399952.PNM timestamp=2026-05-05T10:25:13+08:00 speaker=CONSUMER] 行，那尽快哈\n[message_id=36199788469718.PNM timestamp=2026-05-05T10:27:37+08:00 speaker=AGENT] 换货单已创建，48小时内发出，给您带来不便啦~\n[message_id=DEMO_AUG_MSG_001 timestamp=2026-05-07T09:32:00+08:00 speaker=CONSUMER] 我前天图片都发过了，换货到底有没有发？怎么还要我重新说明？",
+  "upstream_usage_verbatim": {
+    "completion_tokens": 373,
+    "completion_tokens_details": {
+      "text_tokens": 373
+    },
+    "prompt_tokens": 5589,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "image_tokens": 4569,
+      "text_tokens": 1020
+    },
+    "total_tokens": 5962
+  }
+}

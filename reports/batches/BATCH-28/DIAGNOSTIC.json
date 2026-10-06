@@ -1,0 +1,139 @@
+{
+  "artifact": "reports/batches/BATCH-28/DIAGNOSTIC.json",
+  "batch_id": "BATCH-28",
+  "batch_kind": "repair-diagnostic",
+  "statement": "本批由辅助调度器实现，非独立实现方；验收须由他方完成。",
+  "generated_for": "退回修复轮：定位 MISSING_FIELD_TRACE 根因并留证",
+
+  "root_cause_verdict": "A",
+  "root_cause_one_line_zh": "提示词未把「承诺级 trace」写成可操作要求；模型只 trace observations 集合。属白名单外（BATCH-11 归属），已停下回报，未越权修改。",
+  "root_cause_one_line_en": "The prompt never states the promise-level trace requirement in an operational form; the model traces the observations collection only. Owner: BATCH-11 (outside this batch's allowed_paths).",
+
+  "out_of_scope_files_that_would_need_to_change": [
+    {
+      "file": "backend/src/covenia_b/model/prompts/candidate_extraction.py",
+      "lines": "26-35, 37, and 49-63 (schema-repair variant)",
+      "owner_batch": "BATCH-11",
+      "owner_evidence": "batches.json:2035-2044",
+      "changed_by_this_repair": false
+    },
+    {
+      "file": "backend/src/covenia_b/model/source_validation.py",
+      "lines": "103-111",
+      "owner_batch": "BATCH-11",
+      "owner_evidence": "batches.json:2035-2044",
+      "changed_by_this_repair": false,
+      "note": "listed only as the alternative the dispatcher could choose; weakening it is NOT recommended because the counterfactual shows the check is precise, not over-strict"
+    }
+  ],
+
+  "in_scope_defect_found_but_not_fixed": {
+    "file": "tools/verification/live_smoke.py",
+    "lines": "101, 1046, 1072-1079",
+    "summary": "model_bound_ms accumulates across all attempts and is then compared against the frozen 20 s per-request budget",
+    "measured": {
+      "model_bound_ms": 20810,
+      "frozen_budget_ms": 20000,
+      "per_attempt_provider_ms": [10154, 10650],
+      "each_attempt_individually_within_budget": true
+    },
+    "blocks_the_green_path": true,
+    "fixed_by_this_repair": false,
+    "reason_not_fixed": "changes the measurement semantics of already-delivered evidence and cannot turn criterion 1 green while the prompt gap is open; reported instead of changed unilaterally",
+    "proposed_fix": "record the budget verdict from the accepted (or single) attempt's model-bound time; keep the cumulative value under a distinct key such as budget.model_bound_ms_total_run; backend/tests/live/test_real_extraction.py:258 then needs no change",
+    "risk": "LOW"
+  },
+
+  "diagnostic_answers": {
+    "q1_source_trace_entries_returned": {
+      "count": 4,
+      "fields": ["observations[0]", "observations[1]", "observations[2]", "observations[3]"],
+      "promise_traces": 0
+    },
+    "q2_promise_count_and_whether_traced": {
+      "candidate_promise_texts_count": 2,
+      "validator_requires_per_promise_trace": true,
+      "prompt_explicitly_requires_per_promise_trace": false
+    },
+    "q3_prompt_instruction_verbatim": "Every observation and candidate promise needs a source_trace entry. Cite only supplied source identifiers.",
+    "q3_prompt_instruction_location": "backend/src/covenia_b/model/prompts/candidate_extraction.py:37",
+    "q3_is_it_explicit": false,
+    "q3_gaps": [
+      "the instruction is abstract and never names the exact field strings observations[N] / candidate_promise_texts[M]",
+      "the phrase 'an entry' is singular, matching a one-per-existing-observation reading",
+      "the schema example shows a single literal field value \"observations[0] or candidate_promise_texts[0]\", from which whole-collection coverage cannot be inferred"
+    ],
+    "q4_schema_repair_shape": {
+      "schema_repair_ever_exercised_in_this_batch": false,
+      "why": "tools/verification/live_smoke.py calls provider.extract_with_metadata once per attempt and never constructs BoundedCandidateExtractor, so SCHEMA_REPAIR_SYSTEM_PROMPT (lines 49-63) was never used; the tool's two attempts are two independent fresh calls with the same initial prompt",
+      "object_instead_of_array_reproduced_this_round": false,
+      "trace_array_dropped_reproduced_this_round": false,
+      "observed_shape_all_four_calls": "schema fully valid, 4 observations, 2 promises, exactly 4 traces covering observations only"
+    }
+  },
+
+  "cross_line_remap": {
+    "event_id": "CROSS-LINE-FIXTURE-EVIDENCE-ID-MISMATCH-20261006",
+    "affects_this_trace_defect": false,
+    "reasoning": [
+      "the three image evidence IDs appear verbatim in the request's [trusted_source_ids] header",
+      "the model already cited two of them correctly, proving it could read and resolve them",
+      "no image trace is missing in any of the four real calls; the defect is confined to the candidate_promise_texts collection"
+    ],
+    "remap_still_owned_by": "A 线"
+  },
+
+  "wire_byte_identity_proof": {
+    "method": "byte-transparent local proxy 127.0.0.1:8002 -> registered endpoint 127.0.0.1:8001; no byte altered",
+    "request_bytes": 360282,
+    "request_sha256": "db0383f99f3bb047d3bf82e25314c62fe812dcf02369143ba398e7c0187c22ed",
+    "response_bytes": 2056,
+    "response_sha256": "6df1455a152de4140286a659004ad204c63d3694ea68d95a24031830b41f78e4",
+    "tool_recorded_request_sha256": "db0383f99f3bb047d3bf82e25314c62fe812dcf02369143ba398e7c0187c22ed",
+    "tool_recorded_response_sha256": "6df1455a152de4140286a659004ad204c63d3694ea68d95a24031830b41f78e4",
+    "byte_identical": true
+  },
+
+  "counterfactual": {
+    "unmodified": "REJECTED: MISSING_FIELD_TRACE",
+    "plus_only_the_two_missing_promise_traces": "ACCEPTED",
+    "accepted_summary": "SourceValidationSummary(trusted_source_count=11, traced_field_count=6, agent_quote_count=2, image_observation_count=2)",
+    "conclusion": "trace coverage is the only unmet condition"
+  },
+
+  "reproduction": {
+    "real_calls_this_round": 4,
+    "previous_round_calls": 2,
+    "all_http_200": true,
+    "all_usage_exact": true,
+    "all_rejected_with": "MISSING_FIELD_TRACE",
+    "distinct_provider_request_ids": 4,
+    "evidence_artifacts": [
+      "reports/batches/BATCH-28/live/raw-model-capture.redacted.json",
+      "reports/batches/BATCH-28/live/model-output.redacted.json",
+      "reports/batches/BATCH-28/live/governance.redacted.jsonl"
+    ]
+  },
+
+  "criteria": {
+    "criterion_1_extracted_journey_uncached": "NOT_ACHIEVED",
+    "criterion_2_image_bytes_usage_latency": "PASS",
+    "criterion_3_twenty_second_budget": "FAIL_CUMULATIVE_ACCOUNTING",
+    "negative_control_dead_port_exit_non_zero": "PASS"
+  },
+
+  "not_modified": [
+    "backend/src/covenia_b/model/prompts/candidate_extraction.py",
+    "backend/src/covenia_b/model/source_validation.py",
+    "schemas/**",
+    "backend/src/covenia_b/domain/**",
+    "backend/src/covenia_b/api/**",
+    "backend/src/covenia_b/services/**",
+    "backend/src/covenia_b/model/**",
+    "fixtures/**",
+    "MASTER_PLAN.md",
+    "batches.json",
+    "CLAUDE*.md",
+    "reports/batches/BATCH-28/VERIFICATION_REPORT.json"
+  ]
+}
