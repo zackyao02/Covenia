@@ -1,0 +1,125 @@
+{
+  "schema_version": "covenia-hypothesis-validation.v1",
+  "generated_at": "2026-10-07T01:07:01.728760+00:00",
+  "base_commit": "c4f9c52",
+  "validation_branch": "codex/hypothesis-validation",
+  "data_classification": "COMPETITION_MOCK_AND_TEAM_DESIGNED_CASES",
+  "hypotheses": {
+    "H1": {
+      "hypothesis": "Customer State reduces context recovery time",
+      "current_verdict": "MECHANISM_VERIFIED_EFFECT_NOT_VALIDATED",
+      "mechanism_passed": true,
+      "case_checks": [
+        {
+          "case_id": "DEMO_001",
+          "required_sections_present": 8,
+          "required_sections_total": 8,
+          "has_source_evidence": true,
+          "has_do_not_ask_again": true
+        },
+        {
+          "case_id": "DEMO_002",
+          "required_sections_present": 8,
+          "required_sections_total": 8,
+          "has_source_evidence": true,
+          "has_do_not_ask_again": true
+        },
+        {
+          "case_id": "DEMO_003",
+          "required_sections_present": 8,
+          "required_sections_total": 8,
+          "has_source_evidence": true,
+          "has_do_not_ask_again": true
+        }
+      ],
+      "technical_proxy": {
+        "sample_count": 40,
+        "in_process_read_latency_ms_p50": 1.122,
+        "in_process_read_latency_ms_p95": 1.275,
+        "stable_payloads": true
+      },
+      "claim_boundary": "该结果只证明本地演示状态可完整、稳定地恢复。客服上下文恢复时间下降仍需真人对照实验。"
+    },
+    "H2": {
+      "hypothesis": "Firewall reduces repeat evidence requests without overblocking",
+      "current_verdict": "SUPPORTED_ON_DESIGNED_CASES_ONLY",
+      "mechanism_passed": true,
+      "case_results": [
+        {
+          "case_id": "DEMO_001",
+          "expected": {
+            "decision": "INTERVENE",
+            "rule_id": "E1"
+          },
+          "actual": {
+            "decision": "INTERVENE",
+            "rule_id": "E1"
+          },
+          "exact_match": true
+        },
+        {
+          "case_id": "DEMO_002",
+          "expected": {
+            "decision": "ALLOW",
+            "rule_id": "E2"
+          },
+          "actual": {
+            "decision": "ALLOW",
+            "rule_id": "E2"
+          },
+          "exact_match": true
+        },
+        {
+          "case_id": "DEMO_003",
+          "expected": {
+            "decision": "HUMAN_REVIEW",
+            "rule_id": "H1"
+          },
+          "actual": {
+            "decision": "HUMAN_REVIEW",
+            "rule_id": "H1"
+          },
+          "exact_match": true
+        }
+      ],
+      "exact_match": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "repeat_evidence_confusion_matrix": {
+        "tp": 1,
+        "fp": 0,
+        "tn": 2,
+        "fn": 0
+      },
+      "repeat_evidence_precision": 1.0,
+      "repeat_evidence_recall": 1.0,
+      "non_block_specificity": 1.0,
+      "claim_boundary": "3 个案例均为团队设计的合成边界测试。结果证明规则链按预期运行，不代表生产准确率。"
+    },
+    "H3": {
+      "hypothesis": "JEV detects worsening early",
+      "current_verdict": "GOVERNANCE_AND_TRACEABILITY_VERIFIED_ACCURACY_NOT_VALIDATED",
+      "mechanism_passed": true,
+      "fallback_safe": true,
+      "signal_traceable_to_new_message": true,
+      "service_state_not_rewritten_by_signal": true,
+      "risk_scoring_allowed_from_emotion": false,
+      "claim_boundary": "成功响应使用确定性桩验证映射与来源追踪，不是 JEV 准确率测试。提前发现能力、Precision/Recall 与阈值仍需独立人工标签。"
+    },
+    "H4": {
+      "hypothesis": "Promise Monitor raises proactive update rate",
+      "current_verdict": "MONITOR_AND_DRAFT_GENERATION_VERIFIED_UPLIFT_NOT_VALIDATED",
+      "mechanism_passed": true,
+      "scheduled_before_due": true,
+      "single_escalation_on_repeated_monitor_runs": true,
+      "audit_count_after_first_run": 3,
+      "audit_count_after_second_run": 3,
+      "proactive_notification_draft_generated": true,
+      "notification_requires_human_approval": true,
+      "claim_boundary": "结果证明模拟事件可触发监控、单次升级和主动通知草稿。主动更新率提升仍需真实承诺样本与发送日志作对照。"
+    }
+  },
+  "all_automatable_mechanisms_passed": true
+}

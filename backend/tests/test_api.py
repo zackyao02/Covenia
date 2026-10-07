@@ -12,6 +12,7 @@ from backend.main import app, analyses, analyzed_inputs, deadline_escalations, i
 
 client = TestClient(app)
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
+DEMO_CASES = json.loads((PROJECT_ROOT / "fixtures/demo-cases.json").read_text(encoding="utf-8"))
 
 
 def test_conversational_evidence_reply_stays_scoped_and_negative_phrase_is_not_request() -> None:
@@ -228,6 +229,24 @@ def test_evaluate_uses_server_state_and_challenge_gate() -> None:
     }).json()["data"]
     assert repeated_photo_reply["rule_id"] == "E1"
     assert repeated_photo_reply["decision"] == "INTERVENE"
+
+
+def test_configured_boundary_cases_are_inferred_from_facts_on_direct_analyze() -> None:
+    reset_service()
+    expected = {
+        "DEMO_002": ("MISMATCHED", "ALLOW", "E2"),
+        "DEMO_003": ("NEED_HUMAN_REVIEW", "HUMAN_REVIEW", "H1"),
+    }
+    for case_id, (evidence_status, decision, rule_id) in expected.items():
+        analyzed = analyze(case_id)
+        assert analyzed["accountability_state"]["evidence_status"] == evidence_status
+        fixture = next(item for item in DEMO_CASES if item["demo_case_id"] == case_id)
+        evaluated = client.post(
+            "/api/actions/evaluate",
+            json={"case_id": case_id, "prepared_action": fixture["prepared_action"]},
+        ).json()["data"]
+        assert evaluated["decision"] == decision
+        assert evaluated["rule_id"] == rule_id
 
 
 def test_priority_order_is_p0_then_h1_then_e1() -> None:

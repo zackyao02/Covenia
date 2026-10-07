@@ -249,9 +249,20 @@ def make_challenge_analysis(response: dict[str, Any], case_input: dict[str, Any]
                       "service_progress_receipt": None, "experience_risk": "MEDIUM"})
 
 
+def requires_variant_analysis(case_input: dict[str, Any]) -> bool:
+    """Identify configured boundary cases from their facts, not from a case id."""
+    evidence = case_input.get("evidence_images") or []
+    first = evidence[0] if evidence else {}
+    filename = str(first.get("file_name", "")).lower()
+    gift_scope = first.get("declared_view_type") == "PACKAGE_CONTEXT" and "blur" not in filename
+    blurred = "blur" in filename
+    adverse_without_image = case_input.get("current_issue", {}).get("issue_type") == "ADVERSE_REACTION" and not evidence
+    return gift_scope or blurred or adverse_without_image
+
+
 def analyze(case_id: str, case_input: dict[str, Any], evaluation_time: str, rid: str, challenge_mode: bool) -> dict[str, Any]:
     response = base_analysis(case_input, case_id, evaluation_time, rid)
-    if challenge_mode:
+    if challenge_mode or requires_variant_analysis(case_input):
         make_challenge_analysis(response, case_input)
     model_input, pii_count = redact_for_model(case_input)
     response["runtime_metrics"] = {
@@ -277,9 +288,7 @@ def state_for(case_id: str, rid: str) -> dict[str, Any] | None:
     source = find_case(case_id)
     if source is None:
         return None
-    first = (source.get("evidence_images") or [{}])[0]
-    variant = first.get("declared_view_type") == "PACKAGE_CONTEXT" or "blur" in first.get("file_name", "").lower()
-    return analyze(case_id, source, source.get("evaluation_time", SERVICE_CLOCK), rid, variant)["accountability_state"]
+    return analyze(case_id, source, source.get("evaluation_time", SERVICE_CLOCK), rid, requires_variant_analysis(source))["accountability_state"]
 
 
 def analysis_for(case_id: str, rid: str) -> dict[str, Any] | None:
@@ -288,8 +297,7 @@ def analysis_for(case_id: str, rid: str) -> dict[str, Any] | None:
     source = find_case(case_id)
     if source is None:
         return None
-    challenge_mode = case_id != "DEMO_001"
-    return analyze(case_id, source, source.get("evaluation_time", SERVICE_CLOCK), rid, challenge_mode)
+    return analyze(case_id, source, source.get("evaluation_time", SERVICE_CLOCK), rid, requires_variant_analysis(source))
 
 
 def same_scope(left: dict[str, Any] | None, right: dict[str, Any]) -> bool | None:
